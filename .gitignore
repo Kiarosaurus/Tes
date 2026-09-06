@@ -1,0 +1,47 @@
+@'
+# ---- NUNCA subir ----
+# PDFs con copyright del editor
+papers/*
+!papers/.gitkeep
+
+# Volumenes CT: pesados y potencialmente identificables
+data/*
+!data/.gitkeep
+
+*.nii
+*.nii.gz
+*.dcm
+*.mhd
+*.raw
+*.opdownload
+
+# ---- Artefactos ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ---- LaTeX ----
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# ---- Salidas de experimentos ----
+experiments/**/checkpoints/
+experiments/**/outputs/
+*.ckpt
+*.pth
+
+# ---- Sistema ----
+.DS_Store
+Thumbs.db
+'@ | Set-Content -Encoding utf8 .gitignore

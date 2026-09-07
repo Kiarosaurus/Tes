@@ -101,3 +101,42 @@ metal, y que casos estan incompletos o inusables.
 
 Genera tambien scripts/inventario_datos.py que reproduzca ese reporte.
 No modifiques ni muevas nada dentro de data/.
+
+---
+
+## P9 — Tarea semanal del asesor
+
+Victor me encargo esta tarea: <describir la tarea>.
+
+Antes de empezar lee docs/00-tesis.md, docs/01-decisiones.md, docs/ESTADO.md y
+docs/04-implicancias.md.
+
+Al terminar:
+1. Escribe el resultado donde corresponda (docs/, src/, experiments/).
+2. Agrega la entrada de la reunion en docs/05-asesor.md.
+3. Evalua explicitamente el impacto sobre la tesis segun la regla 13 de CLAUDE.md
+   y registra lo que corresponda en docs/04-implicancias.md.
+4. Actualiza docs/ESTADO.md.
+
+Si concluyes que no hay implicancias, dimelo explicitamente y explica por que.
+
+---
+
+## P10 — Revision de implicancias (antes de cada reunion)
+
+Lee docs/04-implicancias.md y dame un resumen de las entradas ABIERTAS ordenadas
+por gravedad: primero las de tipo RIESGO y ALCANCE, luego GAP, luego BASELINE y
+REDACCION.
+
+Para cada una, en dos lineas: que decision me falta tomar y que necesito para
+tomarla. No edites nada.
+
+Usalo para preparar lo que le llevo a Victor.
+
+---
+
+## P11 — Revision de snowballing (mensual)
+
+Lee docs/literatura/_candidatos.md y dame las entradas PENDIENTE agrupadas por la
+regla que cumplen. Para cada una: en una linea, que afirmacion mia reforzaria o
+amenazaria. Recomiendame cuales pasar a LEER, maximo cinco. No edites nada.

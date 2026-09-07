@@ -74,3 +74,30 @@ Baseline fisico de comparacion: XCIST/CatSim.
 
 12. **Al final de cada sesion, actualiza `docs/ESTADO.md`**: ultimo paso completado,
     siguiente paso, y pendientes que surgieron. Se breve, tres o cuatro lineas.
+13. **Evaluacion de impacto, siempre.** Al terminar CUALQUIER tarea (lectura,
+    encargo del asesor, experimento, analisis de datos), pregunta explicitamente:
+    este hallazgo obliga a ajustar la redaccion, el alcance, un supuesto, un
+    baseline, o abre un gap nuevo? Si la respuesta es si en algun punto, agrega una
+    entrada a `docs/04-implicancias.md` con estado ABIERTA. Si es no, dilo
+    explicitamente en el chat: "sin implicancias sobre la tesis". Nunca lo omitas
+    en silencio.
+
+14. **No apliques implicancias por tu cuenta.** No edites `tesis/main.tex` ni
+    `docs/00-tesis.md` a raiz de una implicancia. Registrala y espera decision de
+    la autora.
+
+15. **Snowballing.** Al leer un paper, si aparece una referencia que cumple las
+    reglas de `docs/literatura/_candidatos.md`, agregala ahi como PENDIENTE. No
+    la busques, no la descargues, no la agregues a refs.bib.
+
+16. **Accesibilidad.** Toda fuente procesada se registra en
+    `docs/literatura/_acceso.md` con su nivel de acceso. Si una ficha se genero
+    solo desde el abstract, escribe "Profundidad: solo abstract" al inicio de la
+    nota y no llenes la tabla de Evidencia textual con cifras del cuerpo.
+
+17. **`docs/04-implicancias.md` es el archivo critico irreemplazable.** Registra
+    hallazgos que tocan el argumento de la tesis y que no se pueden reconstruir
+    despues. Si dudas entre registrar o no, registra.
+
+18. **`docs/literatura/_index.md` absorbio el registro de accesibilidad.** No crees
+    `_acceso.md`. El nivel de acceso va como columna en `_index.md`.

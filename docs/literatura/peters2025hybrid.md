@@ -5,6 +5,12 @@
 - **Leido a fondo por la autora:** no
 - **PDF:** papers/peters2025hybrid.pdf
 
+**Actualización de uso, 2026-09-07:** N1 confirmado como protocolo híbrido adoptado
+del brazo físico. Su elección no equivale a validación propia de síntesis 3D.
+La equivalencia automática entre bone/metal integrity y BFC/ISC propuesta más abajo
+queda cuestionada por #16: son antecedentes que requieren adaptación, no definiciones
+ya aprobadas de esas métricas. La implementación y validación siguen abiertas en #17.
+
 Profundidad: texto completo (12 paginas). Los Supplements S1-S3 se citan en el PDF pero no
 estan incluidos en el archivo leido.
 

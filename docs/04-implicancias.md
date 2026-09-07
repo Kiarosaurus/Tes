@@ -16,7 +16,7 @@ Estados: ABIERTA | APLICADA | DESCARTADA
 | 5 | 2026-09-06, ACTUALIZADA con el PDF leido | `liu2025pipeline`, leido con `lector-papers` | La colision NO es de metodo: planifica un optimo determinista, sin distribucion de poses, sin tornillos iliosacrales, sin zonas seguras. Pero corre sobre CTPelvic1K y define CSV (distancia al borde oseo) y QID, vecinas de SAP y BFC | Related Work; definicion de SAP y BFC | RIESGO | ABIERTA |
 | 6 | 2026-09-06, ACTUALIZADA con los PDFs leidos | `ren2022metalinsertion` y `yun2026simulationdriven`, leidos con `lector-papers` | `ren2022` aporta la frase que FUNDAMENTA el gap (su fisica se rompe con implantes ortopedicos), pero exige datos crudos de fabricante que CTPelvic1K no tiene. `yun2026` es MAR, no segmentacion, pero ya publica cifras sobre CLINIC-metal | Related Work; novedad del renderizador | GAP | ABIERTA |
 | 7 | 2026-09-06 | `ramadanov2025safezone` leido con `lector-papers` | La unica fuente de "zona segura" de la bibliografia no da geometria 3D, ni umbral, ni margen: es un procedimiento cualitativo sobre proyeccion 2D con n=1. El muestreador se queda sin fuente operacional para su restriccion principal | Objetivo 2 (alcance MINIMO VIABLE); definicion de la restriccion del muestreador | RIESGO | ABIERTA |
-| 8 | 2026-09-06, AGRAVADA con `wu2022xcist` leido | `deman2007catsim`, `yun2026simulationdriven`, `haneda2025aapm` y `wu2022xcist`, los cuatro leidos | La "reimplementacion validada de XCIST" NO es sostenible: el propio paper de XCIST no contiene ningun estudio ni validacion de artefacto metalico, declara su validacion como "first-order" y "in progress", y su pipeline agrega un ciclo de reconstruccion que el renderizador no sufre | Alcance COMPLETO, brazo de comparacion; Objetivo 3 | BASELINE | ABIERTA |
+| 8 | 2026-09-06, AGRAVADA con `wu2022xcist` leido | `deman2007catsim`, `yun2026simulationdriven`, `haneda2025aapm` y `wu2022xcist`, los cuatro leidos | La "reimplementacion validada de XCIST" NO es sostenible: el propio paper de XCIST no contiene ningun estudio ni validacion de artefacto metalico, declara su validacion como "first-order" y "in progress", y su pipeline agrega un ciclo de reconstruccion que el renderizador no sufre | Alcance COMPLETO, brazo de comparacion; Objetivo 3 | BASELINE | APLICADA (redacción; ver #17) |
 | 9 | 2026-09-06 | Patron transversal de cuatro lecturas: `wang2019cochlear`, `ren2022metalinsertion`, `karageorgos2024ddpm`, `haneda2025aapm` | Insertar metal sintetico en CT para fabricar datos de entrenamiento YA es practica establecida y publicada, en cuatro trabajos independientes. Ademas, difusion latente aplicada a artefactos metalicos ya compitio en el reto AAPM (5to lugar). El gap no puede enunciarse como "insertar metal sintetico" ni como "difusion latente en artefactos metalicos" | Problem Statement; reclamo de novedad completo | GAP | ABIERTA |
 | 10 | 2026-09-06 | `chen2024tumorsynthesis` leido con `lector-papers` | Identidad DiffTumor confirmada. Declara que no modela nada fuera de la mascara y trunca HU a [-175, 250]: es respaldo citable directo de B_delta y de la multi-ventana C3 | Justificacion de B_delta (Obj 3) y de C3 (Obj 1) | REDACCION | ABIERTA |
 | 11 | 2026-09-06 | `smith2006iliosacral` leido con `lector-papers` | El paper suma al score una SEGUNDA escala, angular (grados <5, 5-10, 11-15, >15), que la tesis no estaba considerando. Y sus tasas por brazo son cadavericas con n=4 y sin significancia: no sirven de prior clinico | Definicion de SAP; supuesto sobre de donde salen los priors del muestreador | RIESGO | ABIERTA |
@@ -27,6 +27,87 @@ Estados: ABIERTA | APLICADA | DESCARTADA
 Tipos: REDACCION (ajustar como lo digo) | ALCANCE (agranda o achica el trabajo)
 | GAP (posible nueva contribucion) | RIESGO (amenaza un supuesto mio)
 | BASELINE (afecta con que me comparo)
+
+## Actualización 2026-09-06 — encargo de Víctor y decisión de la autora
+
+Evaluación explícita de regla 13: **sí**, el trabajo obliga a ajustar supuestos de
+selección de datos y la redacción del baseline; también detecta una incompatibilidad
+en la interpretación previa de las métricas. No cambia por sí solo el alcance mínimo.
+
+| # | Fecha | Origen | Hallazgo | Qué sección toca | Tipo | Estado |
+|---|---|---|---|---|---|---|
+| 15 | 2026-09-06 | Exploración local y observación de la compañera | La revisión 2D anterior no certifica ausencia de objetos; dataset6 debe revisarse también. El registro previo contiene duplicados entre y dentro de datasets. HU solo prioriza | Datasets; separación entrenamiento/prueba; Objetivo 5 | RIESGO | ABIERTA |
+| 16 | 2026-09-06 | Contraste de main.tex con la ficha Peters y #14 | ISC significa Inter-slice Consistency en la tesis, pero la ficha la equipara a metal integrity. BFC es Boundary Feature Coherence, no automáticamente Dice óseo ni grado de brecha cortical | Objetivo 4; definición de métricas | RIESGO | ABIERTA |
+| 17 | 2026-09-06 | Adopción autorizada de Peters | Adoptar un protocolo MAR 2D no valida su extensión a síntesis 3D; falta materializar versión, configuración, controles y adaptación | Baseline; Objetivos 3–5 | BASELINE | ABIERTA |
+
+### 8 — Decisión de la autora aplicada a la redacción (2026-09-06)
+
+La autora indica explícitamente: «Adoptaremos el protocolo de peters2025hybrid»
+y autoriza edición de `tesis/main.tex`. Se aplica la opción 3: el brazo físico se
+describe como adopción del protocolo híbrido publicado, y se retiran los umbrales
+RMSE ≤30 HU / SSIM ≥0.95 de aprobación de una reimplementación independiente.
+Se distingue colocación aleatoria en entrenamiento de colocación experta en scoring.
+**Estado de la decisión de baseline: APLICADA a main.tex.** La ejecución y validación
+no están completas; se siguen en #17. Los detalles históricos de #8 se conservan.
+`docs/00-tesis.md` aún contiene la formulación anterior y `docs/01-decisiones.md`
+queda reservado a la autora; se propone registrar allí esta decisión.
+
+### 15 — Revisión 3D y separación de cohortes — ABIERTA
+
+**Cierre medido, 2026-09-07:** 103 CT dataset6 (38 candidatos HU), 75 CT dataset7
+(75 candidatos HU), seis grupos de duplicados exactos confirmados (172 contenidos
+únicos), cero errores y cero máscaras locales vinculadas por nombre. Tres casos
+tienen revisión parcial; ninguno revisión completa. Las cifras se refieren a esta
+carpeta local, no a disponibilidad remota ni a un conteo confirmado de metales.
+
+- **Evidencia:** `experiments/exploration/duplicados.csv` registra seis pares de
+  volúmenes con vóxeles iguales, tres cruzando dataset6/dataset7. La nueva ejecución
+  verifica duplicados mediante SHA256 sobre forma y HU escalados; el resultado
+  reproducible queda en `experiments/exploration-3d/resumen.md` y `revision.csv`.
+- **Cambio necesario:** revisar 3D y todos los cortes, incluir objetos externos y
+  otros cuerpos extraños, resolver duplicados y pacientes antes de separar cohortes.
+  Ni un nombre CLINIC ni un resultado HU negativo garantizan una imagen limpia.
+- **Implementado:** un único CSV, antecedentes separados de revisión nueva y
+  elegibilidad conservadora. No se ha aprobado una cohorte final.
+- **Pendiente:** revisión manual, tipo de implante, identidad por paciente y
+  disponibilidad/alineación de anotaciones para evaluación supervisada. Ver data card.
+
+### 16 — Integridad del metal no equivale a consistencia entre cortes — ABIERTA
+
+- **Evidencia local:** Objetivo 4 y tabla Expected Results de `tesis/main.tex`
+  expanden ISC como *Inter-slice Consistency* y BFC como *Boundary Feature Coherence*.
+  La ficha `peters2025hybrid.md` y #14 las vinculan directamente a metal/bone integrity.
+- **Implicación:** adoptar Peters no autoriza a cambiar el significado de estas siglas.
+  Dice de metal frente a CAD puede complementar ISC, pero no mide por sí solo la
+  consistencia entre cortes. Dice/volumen óseo tampoco demuestra continuidad cortical.
+- **Otra cautela:** trasladar streak amplitude a CT clínicos sin referencia sin metal
+  exige definir un estimador distinto o una referencia justificable. No hay pares
+  clínicos sin/con metal garantizados por el inventario.
+- **Pendiente:** especificar cada métrica, referencia y ROI; mantener separadas las
+  métricas heredadas de Peters y las contribuciones propias. No se sustituyeron
+  definiciones de BFC/ISC en main.tex.
+
+### 17 — Adopción del protocolo y validación pendiente — ABIERTA
+
+**Actualización 2026-09-07 — decisión registrada y niveles ajustados:** con permiso
+explícito se escribió la adopción de Peters en `01-decisiones.md`. Peters queda N1
+como protocolo adoptado y Wu baja a N2 como fundamento técnico y fuente de límites;
+N4 se incorpora para descartes completos, sin entradas por ahora. Se resuelve así
+el pendiente de registro de #8; `00-tesis.md` aún requiere armonización de su frase
+sobre reimplementación independiente.
+
+**Evaluación explícita de regla 13:** la decisión mantiene impacto sobre el baseline
+y su justificación, ya cubierto por #8 y #17. La recategorización no es un hallazgo
+experimental ni valida la adaptación; no abre un gap ni modifica el alcance mínimo.
+Se actualiza esta entrada ABIERTA en lugar de duplicar la misma implicancia.
+
+- **Base documental:** ficha Peters ya leída, secciones de limitaciones y reutilización.
+  La validación publicada es para su diseño; su adopción no certifica el nuestro.
+- **Aplicación autorizada:** main.tex declara la adaptación, mismas anatomías/poses
+  entre brazos y un control de simulación/reconstrucción sin metal para separar su error.
+- **Pendiente técnico:** fijar revisión del código y configuración, verificar acceso
+  y licencia, reproducir ejemplos y definir tratamiento 2D/2.5D/3D y métricas de síntesis.
+  La escala MAR 0–4 y su calibración no se trasladaron automáticamente.
 
 ---
 
@@ -696,3 +777,48 @@ fuerte de las tres.
 - **Advertencia de nivel 1:** el mapeo exacto de cada metrica a la escala 0-4 **no esta
   en el PDF**; solo se recupera del codigo en GitHub. Si la tesis cita la escala, hay que
   leer ese codigo o citar solo el ancla NMAR = 2. Registrado en `_candidatos.md`.
+
+---
+
+## Actualización 2026-09-07 — auditoría del encargo de Víctor
+
+Evaluación explícita de regla 13: **sí hay implicancia.** No por el resultado del
+inventario, que ya estaba registrado en #15, sino por su cobertura: la descripción de
+datos que se va a entregar y a citar en la tesis no cubre CTPelvic1K, cubre dos de sus
+siete sub-datasets. Eso toca la sección Datasets y cualquier frase sobre generalización.
+
+| # | Fecha | Origen | Hallazgo | Qué sección toca | Tipo | Estado |
+|---|---|---|---|---|---|---|
+| 18 | 2026-09-07 | Auditoría de `experiments/exploration-3d` contra el encargo de Víctor | Solo hay 178 de los 1184 volúmenes de CTPelvic1K en disco (CLINIC 103 y CLINIC-metal 75). Faltan ABDOMEN, COLONOG, MSD_T10, KITS19 y CERVIX: 1006 volúmenes. Además la correspondencia `dataset6`→CLINIC y `dataset7`→CLINIC-metal es una inferencia por conteo, spacing y dimensiones, no un dato declarado en los archivos | Datasets; alcance del entrenamiento; Objetivo 5 | DATOS | ABIERTA |
+
+### 18 — La base local es CLINIC + CLINIC-metal, no CTPelvic1K — ABIERTA
+
+- **Origen:** auditoría de `experiments/exploration-3d` del 2026-09-07, contrastada con
+  la Tabla 1 de `liu2021ctpelvic1k` (p. 3) ya verificada en su ficha.
+- **Hallazgo:** en `data/` hay 178 CT: 103 en `dataset6` y 75 en `dataset7`. El paper
+  declara 1184 volúmenes en siete sub-datasets. Los cinco públicos (ABDOMEN 35,
+  COLONOG 731, MSD_T10 155, KITS19 44, CERVIX 41 = 1006) no están descargados.
+- **Por qué importa:** dos cosas distintas. Primera, el entregable a Víctor dice
+  «datasets» y hoy solo puede describir dos; hay que decir que es inventario local o
+  descargar el resto. Segunda, y más de fondo: si el entrenamiento del renderizador se
+  alimenta solo de CLINIC, el modelo ve un único origen clínico, un único protocolo de
+  adquisición y spacing en un rango estrecho (0.64–1.129 mm en plano). La robustez que
+  la tesis promete aportar se mediría sobre la variabilidad que el propio dataset
+  primario aporta para eso.
+- **Segundo hallazgo, menor:** la correspondencia `dataset6`→CLINIC y
+  `dataset7`→CLINIC-metal no está declarada en ningún header NIfTI. Se sostiene por
+  coincidencia de conteo (103 y 75), spacing (0.85/0.83 en plano, 0.80 en z) y
+  dimensiones (512, 512, ~345 y ~334) con la Tabla 1. Es consistente, pero en la tesis
+  debe enunciarse como identificación inferida, no como metadato.
+- **Cuantificación que refuerza #15:** 38 de los 103 volúmenes de `dataset6` superan
+  2500 HU, y los 75 de `dataset7` también. `dataset6` no es un conjunto limpio por
+  defecto; el nombre del sub-dataset no define la cohorte de entrenamiento.
+- **Sección afectada:** Datasets; separación entrenamiento/prueba; cualquier afirmación
+  de generalización del renderizador.
+- **Opciones:**
+  1. Descargar los cinco sub-datasets faltantes y rehacer el inventario (el script ya
+     escala: `explorar.py inventario` conserva las anotaciones manuales por Caso).
+  2. Declarar explícitamente que el alcance de datos es CLINIC + CLINIC-metal y ajustar
+     las afirmaciones de generalización a ese límite.
+  3. Preguntar a Víctor si el encargo pedía la descripción de las siete filas.
+- **Pendiente de:** decisión de la autora y consulta al asesor. No requiere más lectura.

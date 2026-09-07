@@ -7,11 +7,26 @@ o el benchmark principal.
 - **Nivel 1** — critico. Si me equivoco aqui, se cae una tesis o el benchmark.
 - **Nivel 2** — afecta la redaccion. Related Work, encuadre, justificacion.
 - **Nivel 3** — apoyo. No amenaza nada; se cita, no se discute.
+- **Nivel 4** — descartado del uso actual. No queda un rol útil en la tesis;
+  documentar si falta el aporte necesario o si está fuera de alcance. No es una
+  evaluación de calidad del paper y no elimina su entrada de refs.bib.
+
+**Descarte (autorización de la autora, 2026-09-06):** se registra como estado
+separado del nivel de riesgo, para no confundir relevancia con suficiencia.
+- **DESCARTADO PARA UN ROL:** relacionado, pero no aporta lo necesario para el uso
+  propuesto; indicar rol y carencia verificable. Puede conservar otro rol y su nivel.
+- **FUERA DE ALCANCE:** no aporta a los componentes, evaluación ni contexto de esta
+  tesis; indicar motivo verificable. No equivale a un paper de mala calidad.
+La falta de PDF es un estado de acceso, nunca motivo de descarte por contenido.
+Un descarte para un rol conserva N1–N3 si el paper tiene otro uso vigente. N4 se
+reserva al descarte del uso completo. No se eliminan entradas de refs.bib.
+Actualización 2026-09-07: ningún paper pasa a N4; adoptar Peters no vuelve
+irrelevantes las fuentes del simulador.
 
 **Acceso:** COMPLETO (PDF entero) | PARCIAL | ABSTRACT | SIN ACCESO
 **PDF:** si = archivo presente en `papers/` | FALTA = no esta
 
-27 entradas en `refs.bib`, 27 filas aqui. Reparto: 8 en N1, 12 en N2, 7 en N3.
+27 entradas en `refs.bib`, 27 filas vigentes aquí. Reparto: 7 en N1, 13 en N2, 7 en N3, 0 en N4.
 Las 10 filas que dependian de inferencia ya se verificaron leyendo el PDF, ver "Verificado contra el PDF".
 
 ## Nivel 1 — critico
@@ -22,8 +37,7 @@ Las 10 filas que dependian de inferencia ya se verificaron leyendo el PDF, ver "
 | smith2006iliosacral (CONFIRMADO) | si | COMPLETO | smith2006iliosacral.md | no | Escala graduada 0-3 con umbrales 2 mm y 4 mm. Confirmado N1. Pero es fuente SECUNDARIA: la escala viene de la literatura de tornillos pediculares |
 | liu2021ctpelvic1k (CONFIRMADO, con reservas) | si | COMPLETO | liu2021ctpelvic1k.md | no | Dataset primario. **Solo 14 de 75 volumenes de CLINIC-metal estan anotados**; no dice que tipo de metal; no da cifra de degradacion. Ver implicancia #13 |
 | wang2025adaptiveweighting | **FALTA** | ABSTRACT | wang2025adaptiveweighting.md | no | Multi-ventana en HU (C3). Obj 1 es Go/No-Go: si cae, cae el minimo viable |
-| peters2025hybrid (CONFIRMADO, el mas valioso) | si | COMPLETO | peters2025hybrid.md | no | Fuente unica de bone integrity (150 HU + SDC) y metal integrity, base operacional de BFC e ISC. Y declara por escrito que la colocacion realista de metal es impracticable: sostiene la novedad del muestreador |
-| wu2022xcist (N1 CONFIRMADO, ROL CORREGIDO) | si | COMPLETO | wu2022xcist.md | no | Da geometria, espectro y ecuaciones, pero **no contiene ningun estudio ni validacion de artefacto metalico**. Es referencia fisica parcial, no baseline validado. Ver implicancia #8 |
+| peters2025hybrid (N1, PROTOCOLO ADOPTADO 2026-09-07) | si | COMPLETO | peters2025hybrid.md | no | Fuente principal del protocolo híbrido y benchmark elegidos: un error afecta el brazo físico. Aporta métricas de integridad ósea/metálica y la limitación de colocación aleatoria. Adaptación a síntesis pendiente; no equiparar automáticamente esas métricas con BFC/ISC (#16–17) |
 | zhang2026pediclescrew (sube) | **FALTA** | ABSTRACT | zhang2026pediclescrew.md | no | Implicancias #3 y #4: colision con mi reclamo de novedad y segunda escala de brecha cortical |
 | ren2022metalinsertion (CONFIRMADO tras leer) | si | COMPLETO | ren2022metalinsertion.md | no | Unica fuente con la advertencia explicita del metodo analitico sobre implantes ortopedicos. Fija umbrales de artefacto -75/75/500 HU |
 
@@ -31,6 +45,7 @@ Las 10 filas que dependian de inferencia ya se verificaron leyendo el PDF, ver "
 
 | Clave | PDF | Acceso | Nota generada | Leido por mi | Para que lo uso |
 |---|---|---|---|---|---|
+| wu2022xcist (N1 → N2, 2026-09-07) | si | COMPLETO | wu2022xcist.md | no | Fundamento técnico de XCIST y discusión de límites de validación y reconstrucción. Descartado como respaldo autónomo de validación de metal; conserva uso metodológico. El protocolo adoptado se sustenta en Peters (#8, #17) |
 | chen2024tumorsynthesis (VERIFICADO) | si | COMPLETO | chen2024tumorsynthesis.md | no | DiffTumor confirmado. No modela nada fuera de la mascara y trunca HU a [-175,250]: respaldo de B_delta y de C3. Candidato a N1 |
 | zhang2025diffboost | si | COMPLETO | | no | Difusion guiada por texto para aumentacion en segmentacion |
 | ramzan2026claim | si | COMPLETO | | no | Analogo metodologico: sintesis de lesion condicionada (LGE-MRI) |
@@ -64,7 +79,24 @@ Las 10 filas que dependian de inferencia ya se verificaron leyendo el PDF, ver "
 > hay que leerlos igual, como manual de implementacion. Estan en N3 porque no
 > amenazan el argumento, no porque sobren.
 
-## Recriterio de niveles — 2026-09-06
+## Nivel 4 — descartes
+
+Sin entradas actualmente. Al mover un paper aquí, conservar una única fila vigente
+con clave, acceso, ficha y motivo: **aporte insuficiente para el uso previsto** o
+**fuera de alcance**. La falta de acceso nunca demuestra insuficiencia de contenido.
+
+## Recategorización vigente — 2026-09-07
+
+Peters permanece en N1: elegir su protocolo aumenta la dependencia del benchmark
+respecto a su lectura correcta. Wu baja de N1 a N2 porque ya no sostiene por sí solo
+el protocolo de comparación, pero sus límites y funcionamiento aún deben discutirse.
+Solo correspondería N3 si quedara como cita del software sin argumento metodológico;
+N4 exigiría que dejara de tener todo uso vigente. Véase `../01-decisiones.md`.
+
+Las secciones siguientes conservan el historial: sus niveles no sustituyen las
+tablas vigentes N1–N4 de arriba.
+
+## Recriterio de niveles — 2026-09-06 (histórico)
 
 El reparto anterior seguia una regla de tema (dataset / sintesis generativa / resto).
 La autora lo redefinio por **riesgo sobre el argumento central o el benchmark

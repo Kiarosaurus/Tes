@@ -1,11 +1,17 @@
 # wu2022xcist — XCIST: toolkit abierto de simulacion X-ray/CT
 
 - **DOI / URL:** 10.1088/1361-6560/ac9174 (Phys Med Biol 67(19); manuscrito de autor HHS Public Access, PMC 2023-09-28)
-- **Nivel de lectura:** 1 (profunda)
+- **Nivel de lectura:** 2 (vigente desde 2026-09-07; lectura profunda previa conservada)
 - **Leido a fondo por la autora:** no
 - **PDF:** papers/wu2022xcist.pdf
 
 Profundidad: texto completo del manuscrito de autor (paginas 1-36, incluye Tablas 1-6 y Figuras 1-11). El material suplementario (S1-S14) esta referenciado pero NO incluido en el PDF.
+
+**Actualización de uso, 2026-09-07:** tras adoptar Peters, esta fuente queda en N2
+para fundamento técnico y limitaciones de XCIST. No se usa como validación autónoma
+de artefactos metálicos ni como configuración sustitutiva de Peters. Los análisis
+de N1 y reimplementación más abajo corresponden al encuadre anterior; se conservan
+como historial de la lectura, no como decisión vigente. Ver `_index.md` y #17.
 
 ## Que hace (3 lineas maximo)
 Presenta XCIST, un entorno abierto de simulacion X-ray/CT en Python + C/C++ que reune fantomas digitales, el simulador CatSim reimplementado y algoritmos de reconstruccion.

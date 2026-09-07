@@ -3,6 +3,26 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-07: auditado `experiments/exploration-3d` contra el encargo de Victor.
+Descripcion de datos cubierta para lo local; metal y split instrumentados pero SIN
+ejecutar (0 de 178 confirmadas, 166 pendiente + 12 duplicado). Nuevo: solo 178 de los
+1184 volumenes de CTPelvic1K estan en disco -> implicancia #18. Construido (no corrido)
+el subagente `clasificador-metal` con `laminas.py` y `propuesta_clasificacion.csv`.
+Siguiente: correr el agente sobre los 113 candidatos y los 65 no candidatos de dataset6.
+
+## Paso anterior
+2026-09-07: adopción de Peters registrada en `01-decisiones.md` con autorización.
+Índice y fichas armonizados: Peters N1, Wu/XCIST N2; N4 de descartes creado y vacío.
+Siguiente: concretar adaptación/validación del protocolo (#16–17) y armonizar `00-tesis.md`.
+Continúan pendientes revisión 3D completa, pacientes/duplicados y máscaras.
+
+## Paso anterior — exploración 3D
+2026-09-07 (cierre del encargo del 06): flujo 3D con un script y un CSV listo;
+178 CT, 113 candidatos HU, 6 grupos duplicados, 3 revisiones parciales. Peters en main.tex.
+Siguiente: completar revisión 3D+cortes, resolver duplicados/pacientes y máscaras.
+Nuevas implicancias #15–17; #8 aplicada a redacción, validación técnica pendiente.
+
+## Paso anterior — verificación bibliográfica
 P4: verificacion de niveles con 10 subagentes `lector-papers`, uno por PDF. **6 de mis
 7 movimientos verificados estaban mal.** Reparto corregido a 8/12/7, con 10 fichas
 nuevas. Salieron 4 implicancias (#7 a #10) y se actualizaron #5 y #6 con evidencia
@@ -25,7 +45,7 @@ Ademas: `scripts/renombrar_papers.sh` generado (NO ejecutado). Los 25 PDFs
 emparejados, ninguno pendiente. Conflicto de claves resuelto: manda `refs.bib`,
 se corrigio `_index.md`. Ficha de `wang2025adaptiveweighting` creada desde abstract.
 
-## Siguiente paso
+## Pendientes bibliográficos anteriores
 Decidir sobre la implicancia #9 (reenunciar el gap) y la #7 (el muestreador sin fuente
 operacional de zona segura). Las dos tocan el alcance minimo viable y ninguna se puede
 resolver leyendo mas: son decision de la autora. En paralelo, conseguir McLaren 2021,
@@ -47,8 +67,8 @@ que es la posible solucion de #7.
   el gap pero no sirve de brazo de comparacion (exige raw data de fabricante).
 - Implicancia #7 ABIERTA (RIESGO): el muestreador se queda SIN fuente operacional de
   zona segura. Toca el alcance minimo viable. La mas urgente.
-- Implicancia #8 ABIERTA (BASELINE): el brazo XCIST/CatSim se debilita por tres
-  frentes independientes. Leer `wu2022xcist` antes de decidir.
+- Implicancia #8: decisión de adoptar Peters APLICADA a main.tex en esta sesión;
+  ejecución, configuración y validación pendientes en #17.
 - Implicancia #9 ABIERTA (GAP): insertar metal sintetico ya es practica establecida en
   4 trabajos, y la difusion latente ya compitio en MAR. Hay que reenunciar la novedad.
 - Implicancia #10 ABIERTA (REDACCION): `chen2024tumorsynthesis` no modela nada fuera de
@@ -65,10 +85,17 @@ que es la posible solucion de #7.
   `zwingmann2009navigated`. Son dos complementos derivados de dos brazos distintos.
 - Implicancia #13 ABIERTA (RIESGO): CLINIC-metal tiene solo 14 de 75 volumenes anotados,
   el paper no dice que metal contiene, y no da cifra de degradacion.
+- Implicancia #18 ABIERTA (DATOS): en disco hay 178 de los 1184 volumenes de
+  CTPelvic1K; faltan ABDOMEN, COLONOG, MSD_T10, KITS19 y CERVIX. Decidir si se
+  descargan o si el alcance de datos se declara como CLINIC + CLINIC-metal.
+- Encargo de Victor a medias: `experiments/exploration-3d/cumplimiento-encargo.md`
+  detalla que sub-tarea esta cubierta. Falta correr `clasificador-metal`, resolver
+  6 grupos de duplicados y establecer identidad por paciente antes de cualquier split.
 - Implicancia #14 ABIERTA (GAP): `peters2025hybrid` da la base operacional de BFC e ISC y
   sostiene por escrito la novedad del muestreador. La lectura mas productiva de todas.
-- Implicancia #8 AGRAVADA: `wu2022xcist` no valida metal. La reimplementacion prometida
-  no es sostenible; la salida viable es adoptar el protocolo de `peters2025hybrid`.
+- Antecedente de #8: `wu2022xcist` no valida metal. La autora ya adoptó el protocolo
+  de `peters2025hybrid`; decisión registrada en `01-decisiones.md` con autorización
+  el 2026-09-07. Falta armonizar el alcance completo de `00-tesis.md`.
 - Dos verificaciones de #13 no son bibliograficas y nadie las bloquea: ver si CLINIC-metal
   amplio su anotacion desde 2021, y mirar los volumenes para saber que metal contienen.
 - `wang2025adaptiveweighting`: unico N1 SIN VERIFICAR, tercera ronda bloqueado por el PDF.

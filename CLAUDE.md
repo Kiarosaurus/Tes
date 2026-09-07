@@ -60,3 +60,17 @@ Baseline fisico de comparacion: XCIST/CatSim.
 - Espanol para documentacion interna (`docs/`), ingles para `tesis/`.
 - Python + PyTorch. Codigo con type hints y docstrings cortos.
 - Nada de notebooks para logica reutilizable: eso va a `src/`.
+
+9. **refs.bib es autoridad.** La lista de referencias la definio la autora a mano.
+   Nunca agregues, elimines ni sustituyas entradas. Nunca "corrijas" un campo con
+   conocimiento propio. Si detectas un problema, marcalo con
+   `% VERIFICAR: <clave> — <que problema>` y sigue.
+
+10. **Lecturas de literatura siempre via el subagente `lector-papers`.** No leas
+    PDFs en la sesion principal.
+
+11. **Al inicio de cada sesion, lee `docs/ESTADO.md`** para saber en que punto va el
+    proyecto. No asumas continuidad con sesiones anteriores.
+
+12. **Al final de cada sesion, actualiza `docs/ESTADO.md`**: ultimo paso completado,
+    siguiente paso, y pendientes que surgieron. Se breve, tres o cuatro lineas.

@@ -1,3 +1,63 @@
+#!/usr/bin/env bash
+# =====================================================================
+# setup_paso2.sh
+# Instala el subagente de lectura y reescribe docs/prompts.md con el
+# orden definitivo. Correr DESPUES de setup_metalsynth.sh, dentro del repo.
+# =====================================================================
+set -euo pipefail
+
+if [ ! -f CLAUDE.md ]; then
+  echo "ERROR: no estas en la carpeta del repo (no encuentro CLAUDE.md)."
+  exit 1
+fi
+
+mkdir -p .claude/agents scripts
+
+cat > .claude/agents/lector-papers.md <<'EOF'
+---
+name: lector-papers
+description: Lee un PDF de papers/ y escribe su ficha en docs/literatura/. Usar para cualquier lectura de literatura de este proyecto.
+tools: [Read, Write, Glob, Grep]
+---
+
+Eres un extractor de literatura cientifica. Tu unica salida es un archivo .md.
+
+Procedimiento:
+1. Lee docs/literatura/_plantilla.md y respetala exactamente.
+2. Lee el PDF que se te indica en papers/.
+3. Escribe docs/literatura/<clave-bibtex>.md siguiendo la plantilla.
+4. Agrega al final una seccion "## Evidencia textual": tabla con TODA cifra,
+   umbral, definicion de escala o criterio de evaluacion del paper, cada uno con
+   la frase original (maximo 15 palabras) y la seccion o pagina exacta.
+5. Deja siempre "Leido a fondo por la autora: no".
+
+Prohibido:
+- Inventar cifras, DOIs, paginas o resultados. Si no esta en el PDF, escribe
+  literalmente NO ENCONTRADO EN EL PDF.
+- Completar con conocimiento general del area.
+- Reproducir parrafos completos del paper.
+
+Devuelve al final solo dos lineas: la ruta del archivo escrito, y cuantas
+entradas quedaron como NO ENCONTRADO EN EL PDF.
+EOF
+echo "  creado  .claude/agents/lector-papers.md"
+
+# Agregar la regla 9 a CLAUDE.md si aun no esta
+if ! grep -q "refs.bib es autoridad" CLAUDE.md; then
+  cat >> CLAUDE.md <<'EOF'
+
+9. **refs.bib es autoridad.** La lista de referencias la definio la autora a mano.
+   Nunca agregues, elimines ni sustituyas entradas. Nunca "corrijas" un campo con
+   conocimiento propio. Si detectas un problema, marcalo con
+   `% VERIFICAR: <clave> — <que problema>` y sigue.
+
+10. **Lecturas de literatura siempre via el subagente `lector-papers`.** No leas
+    PDFs en la sesion principal.
+EOF
+  echo "  actualizado  CLAUDE.md (reglas 9 y 10)"
+fi
+
+cat > docs/prompts.md <<'EOF'
 # Prompts — ORDEN DEFINITIVO
 
 Copiar y pegar en Claude Code, abierto en la carpeta del repo.
@@ -101,3 +161,8 @@ metal, y que casos estan incompletos o inusables.
 
 Genera tambien scripts/inventario_datos.py que reproduzca ese reporte.
 No modifiques ni muevas nada dentro de data/.
+EOF
+echo "  reescrito  docs/prompts.md"
+
+echo ""
+echo "Listo. Abre docs/prompts.md y sigue P1 -> P8 en orden."

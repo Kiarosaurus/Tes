@@ -73,7 +73,11 @@
   tesis.** Evalua el muestreador, no el renderizador. Se compara con distancia de
   Wasserstein-1 contra las **dos distribuciones ordinales de cuatro grados** de
   `zwingmann2009navigated` (navegado: 69/15/8/8; convencional: 40/37/11.5/11.5),
-  condicionadas por tecnica quirurgica y por nivel sacro.
+  condicionadas por tecnica quirurgica **en S1**. El nivel S1/S2 condiciona la
+  geometria del muestreador; S2 se reporta descriptivamente, sin referencia ordinal
+  clinica para Wasserstein-1. `vandenbosch2002` aporta quejas neurologicas por
+  paciente/configuracion y posicion binaria por tornillo; ninguna equivale a
+  los cuatro grados de SAP. Ver cierre de #12 y #28 (2026-09-08).
 - **BFC (Boundary Feature Coherence) e ISC (Inter-slice Consistency): RETIRADAS**
   el 2026-09-08. Se proponian como metricas propias, pero se iban a rellenar con medidas
   heredadas de `peters2025hybrid`, lo que vaciaba el objetivo de "formalizacion"

@@ -3,6 +3,26 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-08: Gardner incorporado como respaldo anatomico S1/S2 en `00-tesis.md`,
+`01-decisiones.md` y `main.tex` (Problem Statement y Objetivo 2), por encargo de la autora.
+Se mantiene geometria individual sin fenotipos y benchmark ordinal SAP solo en S1.
+PDF recompilado: 4 paginas, sin citas indefinidas. Siguiente: sensibilidad HU y landmarks (#26).
+
+## Paso anterior
+2026-09-08: auditada consistencia de Gardner contra su ficha ya leida. Corregidos
+candidatos, indice, ficha e implicancias: LEIDO; areas S1/S2 similares en dismorficos,
+no inversion ni prior ordinal. Sin cambio de alcance: geometria individual sin fenotipos;
+SAP clinico solo S1. Siguiente: sensibilidad HU y landmarks (#26).
+
+## Paso anterior
+2026-09-08: van den Bosch leido con `lector-papers`; 6/31 vs 1/49 son pacientes con
+quejas neurologicas, no malposicion por nivel. #28 resuelta; #12 cerrada delimitando
+SAP ordinal a S1 por tecnica, S2 descriptivo. Aplicado en tesis y alcance; 35 referencias.
+Siguiente: sensibilidad HU y landmarks (#26). Prior ordinal clinico S2 sigue no disponible.
+Validacion: PDF recompilado, 35 entradas y ninguna cita indefinida; dos avisos BibTeX
+ya documentados por revistas sin volumen (Hinsche y Templeman).
+
+## Paso anterior
 2026-09-08 (cierre): auditada entera la cadena de citas del umbral de 10 mm con tres
 lecturas mas (`ziran2007fluoroscopic`, `moed2006s2screw`, `gardner2010safezones`).
 **Cuatro eslabones, ninguno lo mide**: Ziran no contiene el umbral, el "1 cm" de Moed es

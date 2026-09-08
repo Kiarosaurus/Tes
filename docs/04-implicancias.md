@@ -7,6 +7,13 @@
 
 Estados: ABIERTA | APLICADA | DESCARTADA
 
+> **Estado vigente S1/S2 (auditoria 2026-09-08):** Gardner esta LEIDO. Sus medidas
+> anatomicas respaldan evaluar cada corredor; no aportan un prior ordinal S2.
+> #27 CERRADA (sin fenotipos); #28 RESUELTA (van den Bosch leido); #12 CERRADA
+> POR DELIMITACION (benchmark ordinal S1 por tecnica, S2 descriptivo). Los bloques
+> de lecturas sucesivas conservan estados historicos; no son tareas vigentes.
+> Ver la auditoria de Gardner al final para las correcciones de interpretacion.
+
 | # | Fecha | Origen | Hallazgo | Que seccion toca | Tipo | Estado |
 |---|---|---|---|---|---|---|
 | 1 | 2026-09-06 | Inventario de `papers/` vs `refs.bib`; abstract aportado por la autora | `wang2025adaptiveweighting` es nivel 1 y sostiene la multi-ventana en HU (C3), pero solo hay abstract. Respaldo de C3 queda cualitativo | Metodo (C3, codificacion multi-ventana) | RIESGO | ABIERTA |
@@ -20,7 +27,7 @@ Estados: ABIERTA | APLICADA | DESCARTADA
 | 9 | 2026-09-06 | Patron transversal de cuatro lecturas: `wang2019cochlear`, `ren2022metalinsertion`, `karageorgos2024ddpm`, `haneda2025aapm` | Insertar metal sintetico en CT para fabricar datos de entrenamiento YA es practica establecida y publicada, en cuatro trabajos independientes. Ademas, difusion latente aplicada a artefactos metalicos ya compitio en el reto AAPM (5to lugar). El gap no puede enunciarse como "insertar metal sintetico" ni como "difusion latente en artefactos metalicos" | Problem Statement; reclamo de novedad completo | GAP | ABIERTA |
 | 10 | 2026-09-06 | `chen2024tumorsynthesis` leido con `lector-papers` | Identidad DiffTumor confirmada. Declara que no modela nada fuera de la mascara y trunca HU a [-175, 250]: es respaldo citable directo de B_delta y de la multi-ventana C3 | Justificacion de B_delta (Obj 3) y de C3 (Obj 1) | REDACCION | ABIERTA |
 | 11 | 2026-09-06 | `smith2006iliosacral` leido con `lector-papers` | El paper suma al score una SEGUNDA escala, angular (grados <5, 5-10, 11-15, >15), que la tesis no estaba considerando. Y sus tasas por brazo son cadavericas con n=4 y sin significancia: no sirven de prior clinico | Definicion de SAP; supuesto sobre de donde salen los priors del muestreador | RIESGO | ABIERTA |
-| 12 | 2026-09-06 | `zwingmann2009navigated` leido con `lector-papers` | El rango "31-60%" NO existe en el PDF. Son dos complementos aritmeticos (100-69 y 100-40) de dos brazos tecnicamente distintos, navegado y convencional. Citarlo como rango del paper seria error de atribucion, y tratarlo como una sola distribucion es error de categoria | Benchmark del alcance MINIMO VIABLE; comparacion de distribuciones de SAP | RIESGO | ABIERTA |
+| 12 | 2026-09-06 | `zwingmann2009navigated` leido con `lector-papers` | El rango "31-60%" NO existe en el PDF. Son dos complementos aritmeticos (100-69 y 100-40) de dos brazos tecnicamente distintos, navegado y convencional. Citarlo como rango del paper seria error de atribucion, y tratarlo como una sola distribucion es error de categoria | Benchmark del alcance MINIMO VIABLE; comparacion de distribuciones de SAP | RIESGO | CERRADA POR DELIMITACION; ver cierre van den Bosch |
 | 13 | 2026-09-06 | `liu2021ctpelvic1k` leido con `lector-papers` | CLINIC-metal tiene solo 14 de 75 volumenes anotados: los autores lo excluyeron del entrenamiento supervisado por dificultad de etiquetado. Ademas el paper nunca dice que tipo de metal contiene, y no reporta ninguna cifra de degradacion por metal | Objetivo 5 (downstream); premisa central de la tesis; data card | RIESGO | ABIERTA |
 | 14 | 2026-09-06 | `peters2025hybrid` leido con `lector-papers` | Da la definicion operacional de bone integrity (150 HU + SDC) y metal integrity (max HU en ROI + 250), base citable de BFC e ISC. Declara por escrito que la colocacion realista de metal es impracticable a mano, lo que sostiene la novedad del muestreador. Y su benchmark NO cubre osteosintesis pelvica | Definicion de BFC e ISC (Obj 4); brazo de comparacion (Obj 3); Related Work | GAP | ABIERTA |
 
@@ -549,7 +556,7 @@ origen de la escala seria un error de atribucion.
   3. Usar `smith2006iliosacral` solo como fuente de la escala, nunca de tasas.
 - **Pendiente de:** decision de la autora sobre 1 o 2. La opcion 3 no es opcional.
 
-### 12 El benchmark 31-60% no es una cita: es un calculo propio sobre dos poblaciones distintas — ABIERTA
+### 12 El benchmark 31-60% no es una cita: es un calculo propio sobre dos poblaciones distintas — CERRADA POR DELIMITACION
 - **Origen:** `zwingmann2009navigated` leido con `lector-papers` el 2026-09-06. Es la
   entrada mas grave de todas las rondas de verificacion, porque toca el unico numero
   contra el que se compara el alcance MINIMO VIABLE.
@@ -1613,7 +1620,7 @@ landmarks bajo artefacto no esta establecida por la fuente, y que se cuantificar
 cohorte local antes de comprometerse, con contingencia explicita.
 **Sigue ABIERTA hasta que exista la cifra medida en casa.**
 
-### 27 — PENDIENTE en RIESGO: hasta donde comprometerse con Kaiser — ABIERTA
+### 27 — Riesgo historico sobre Kaiser — CERRADA: sin fenotipos ni score
 
 - **Origen:** decision de la autora del 2026-09-08. Se adopta lo operacional de Kaiser y se
   deja explicitamente sin decidir el resto.
@@ -1838,17 +1845,21 @@ ese es el motivo por el que podria valer la pena, no el umbral.
 2. **Ziran 2003**: serie clinica guiada por CT; posible tasa por nivel.
 3. `templeman1996proximity`: baja de prioridad; su rol en el 2-15% ya no es decisivo.
 
-### 24 y Objetivo 2 — GARDNER APORTA LO QUE NADIE MAS TENIA: geometria S1/S2 por fenotipo
+### Objetivo 2 y #27 — Gardner: geometria S1/S2 por morfologia (interpretacion corregida)
 
-Es la unica fuente leida que publica geometria **separada por segmento y por fenotipo**, y
-trae un resultado que toca directamente la decision de condicionar por nivel sacro: **la
-inversion S1/S2**. En sacros dismorficos el area de S1 **cae a 222 mm2** y la de S2 **sube
-a 220.1 mm2**, es decir, los dos segmentos se igualan e invierten su jerarquia habitual.
+Publica geometria **separada por segmento y morfologia**. Las areas medias iliosacras
+son S1/S2 = **346/109.3 mm2** en normales y **222/220.1 mm2** en dismorficos
+(Results, p. 624 y Tabla 1, p. 627; evidencia en la ficha). Las dos ultimas son
+aproximadamente iguales: no se invierte el orden de las medias ni se demuestra
+equivalencia estadistica. La mayor viabilidad transversa de S2 en dismorficos es
+otro resultado, con otra geometria; no debe confundirse con area ni riesgo clinico.
 
-**Por que importa:** la tesis acaba de escribir que el muestreador se condiciona por nivel
-sacro. Gardner dice que **ese condicionamiento depende del fenotipo**: en un sacro
-dismorfico, S2 deja de ser el nivel dificil. Si se adopta, el condicionamiento es
-`nivel x fenotipo`, no solo `nivel`.
+**Por que importa:** no justifica afirmar que S2 siempre sea mas estrecho o dificil.
+Tampoco obliga a introducir `nivel x fenotipo`: esa fue una propuesta de interpretacion,
+no una exigencia del paper, y #27 la descarto. La decision vigente mide la geometria
+de cada corredor sobre cada volumen, manteniendo S1/S2 sin fenotipos ni score.
+Las trayectorias centrales ideales de Gardner no son poses quirurgicas observadas
+ni distribuciones ordinales de malposicion; no completan el benchmark SAP en S2.
 
 **Riesgos de citarlo mal, registrados por el lector:**
 - Atribuirle el umbral de 10 mm.
@@ -1970,7 +1981,10 @@ cuantos volumenes cambian de clase.
 cribado, adaptativo por ROI de `peters2025hybrid` para medir metal integrity sobre
 geometria CAD propia). `03-glosario.md` sigue con la redaccion de umbral unico.
 
-### 28 — Que se espera de van den Bosch, y por que se lee antes que nada — ABIERTA
+### 28 — Encargo historico de van den Bosch — RESUELTA: lectura e integracion completadas
+
+> El bloque siguiente conserva el encargo previo a la llegada del PDF. Sus menciones
+> a falta de PDF y lectura no ejecutada quedaron superadas por el cierre posterior.
 
 - **Origen:** `moed2006s2screw` lo cita como fuente de la unica comparativa S1 vs S2 medida
   en pacientes que ha aparecido en el proyecto. Decision de la autora del 2026-09-08:
@@ -2052,3 +2066,112 @@ No lanzar mas de dos `lector-papers` en paralelo mientras compartan `_index.md` 
 `_candidatos.md`. En la ronda de tres, el agente de Gardner perdio cuatro intentos de
 escritura y el merge lo tuvo que hacer la sesion principal, que ademas encontro una fila
 duplicada de Ziran 2003 creada por otro agente.
+
+
+## 2026-09-08 ? Resolucion tras leer van den Bosch con `lector-papers`
+
+Encargo de la autora: analizar el PDF nuevo y resolver sus implicancias. Fuente:
+`docs/literatura/vandenbosch2002.md`, texto completo, pp. 44-48; metadatos del raw.
+Esta actualizacion prevalece sobre los pendientes historicos de #12 y #28.
+
+### 28 - RESUELTA: respaldo clinico del eje S1/S2, con otro desenlace
+
+**Hallazgo:** los pares citados por Moed se confirman, pero son **pacientes con quejas
+neurologicas**, agrupados por configuracion, no tornillos malposicionados por nivel:
+6 de 31 con tornillo inferior en S2 y 1 de 49 con ambos en S1, p=0.01
+(Results, p. 46). Ocho pacientes con un solo tornillo se excluyeron de esa comparacion.
+No se deben convertir estos pares en probabilidades de brecha cortical por tornillo.
+
+**Limite:** la serie es retrospectiva y el cambio de colocacion hacia S1 ocurre durante
+el periodo estudiado. El paper reconoce sesgo por curva de aprendizaje. La CT se solicitaba inicialmente por sospecha y solo despues se hizo rutinaria;
+la cohorte mezcla trauma, no union y dolor posparto. No se transporta su porcentaje
+binario a la cohorte de la tesis. La asociacion
+clinica respalda distinguir el nivel, pero no aisla un efecto causal de S2 ni demuestra
+que toda tecnica tenga el mismo riesgo. Hinsche conserva valor de banco, deja de ser
+el unico apoyo del eje.
+
+**Aplicacion:** Problem Statement de `main.tex` cita directamente a van den Bosch y
+explicita desenlace, unidad y sesgo. S1/S2 sigue como variable geometrica del muestreador;
+no se introducen fenotipos ni una tasa neurologica como objetivo de SAP.
+
+### 12 - CERRADA POR DELIMITACION: benchmark ordinal en S1; S2 descriptivo
+
+**Correccion del diagnostico previo:** era incorrecto decir que no habia *ningun*
+prior clinico leido. Zwingmann ya aporta las dos distribuciones ordinales por tecnica,
+pero su ficha documenta **S1**, no distribuciones medidas para S1 y S2.
+
+**Lo nuevo:** van den Bosch si publica 2.1%-6.8% de malposicion dependiendo de la
+modalidad (abstract, p. 44). No es un intervalo de incertidumbre ni un rango por nivel.
+La evaluacion de posicion es **binaria**, sin grados de penetracion en milimetros.
+La Tabla 2 registra 11 tornillos malposicionados asintomaticos y 4 sintomaticos en CT;
+son sobre **220 tornillos evaluados por CT** (suma propia de las cuatro celdas
+de la tabla, corroborada por 218 + 2 en el texto), no sobre los 285 de toda la serie
+(Results y Tabla 2, p. 46). No reconstruimos de ahi un prior ordinal ni porcentajes S1/S2.
+
+**Resolucion aplicada al alcance:** se mantienen las dos distribuciones de Zwingmann
+como referencias de SAP/Wasserstein-1 **en S1, separadas por tecnica**. S2 conserva
+medicion de geometria y reporte descriptivo de grados; no se reclama ajuste a una
+distribucion clinica ordinal S2. Corregidos Objetivo 2, Expected Results,
+`00-tesis.md` y `03-glosario.md` para no prometer una tabla tecnica x nivel inexistente.
+
+**Sentido del cierre:** se retira el compromiso sin fuente. Van den Bosch **no cierra
+la carencia empirica de un prior ordinal S2**; esta queda declarada como limite de la
+validacion, sin bloquear el alcance delimitado. Si se decide exigir calibracion clinica
+S2, hay que reabrir #12 y obtener datos ordinales compatibles por nivel y tecnica.
+No se mezclan posicion binaria, sintomas neurologicos y grados de brecha.
+
+### Nivel de lectura y efecto sobre otras implicancias
+
+- `vandenbosch2002`: **N1**, porque una lectura incorrecta de sus denominadores o
+  desenlaces invalidaria el fundamento del eje S1/S2 y contaminaria SAP.
+- `moed2006s2screw`: **N2 confirmado**. Ser via de acceso a una fuente primaria no
+  convierte al intermediario en soporte del benchmark; la tesis cita el original.
+- #25: se resuelve la procedencia de esta comparativa consultando el original, sin
+  reabrir la cadena agotada del umbral de 10 mm.
+- #26: sigue pendiente la medicion local de landmarks. Que van den Bosch eval?e
+  tornillos por CT no constituye una caracterizacion del corredor bajo artefacto.
+
+**Evaluacion de impacto:** si obliga a ajustar redaccion, supuesto y alcance de
+validacion. Los cambios anteriores quedan aplicados por el encargo actual de resolver
+las implicancias; no abre un nuevo baseline ni aporta una escala nueva de SAP.
+
+## Auditoria de consistencia de Gardner y S1/S2 (2026-09-08)
+
+**Verificacion:** contra la ficha completa `gardner2010safezones.md`, sus tablas y
+localizadores; no se hizo una nueva lectura del PDF. La lectura previa si estaba
+integrada parcialmente: existian fila LEIDO y bloque de resultados, pero convivian
+con una fila duplicada PENDIENTE, rutas de lectura agotadas y propuestas descartadas.
+
+**Correcciones aplicadas:** una sola fila de Gardner en candidatos, LEIDO; referencias
+al estado final de la cadena de 10 mm y de Moed; estado vigente visible al inicio de
+este archivo y encabezados #12/#27/#28 sincronizados. Corregidas ficha e indice:
+222 frente a 220.1 mm2 no es inversion de medias, y la variacion anatomica no obliga
+a estratificar por fenotipo ni permite heredar una distribucion clinica de poses.
+La atribucion previa a #24 era incorrecta: esta cuestion corresponde al Objetivo 2
+con #27; #24 trata de multi-ventana.
+
+**Impacto en S1/S2:** Gardner ya aporta respaldo anatomico en CT para considerar los
+dos niveles y medir su geometria individual. Decir que solo habia respaldo de plastico
+confundia el texto entonces escrito en main.tex con toda la literatura ya leida.
+Van den Bosch agrega un desenlace clinico por configuracion; no inaugura la evidencia
+anatomica S1/S2 ni sustituye a Gardner. La similitud de areas no prueba igual seguridad.
+
+**Impacto en SAP:** ninguno sobre la delimitacion vigente. Gardner mide corredores
+y trayectorias ideales, no frecuencias de grados de brecha en colocaciones clinicas.
+S1 mantiene el benchmark ordinal por tecnica; S2 sigue descriptivo. #27 no se reabre:
+la medicion individual preserva la variabilidad anatomica sin introducir fenotipos.
+No se adopta una regla universal de que S2 sea peor o mejor que S1.
+
+**Estado:** correccion documental APLICADA a #7/#12/#25/#27/#28; no se adopta un metodo
+nuevo ni se cambia el alcance. El texto actual de main.tex ya distingue resultados
+clinicos y geometria individual y no afirma superioridad universal de S1 o S2.
+
+
+### Gardner S1/S2 - respaldo anatomico APLICADO a la tesis (2026-09-08)
+
+Por encargo explicito de la autora, incorporado a `00-tesis.md`, registrado en
+`01-decisiones.md` y citado en Problem Statement y Objetivo 2 de `main.tex`.
+Se explicitan las areas por nivel y morfologia con evidencia en la ficha, y su
+limite: anatomia del lado no lesionado y trayectorias ideales, no prior clinico SAP.
+Impacto: se completa el respaldo anatomico de la redaccion; no cambia el alcance
+ni reabre #27, ni la delimitacion de #12. La medicion individual sigue vigente.

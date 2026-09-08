@@ -1,0 +1,115 @@
+PMID- 41058534
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20251008
+LR  - 20251008
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Linking)
+VI  - 52
+IP  - 10
+DP  - 2025 Oct
+TI  - A hybrid training database and evaluation benchmark for assessing metal artifact 
+      reduction methods for X-ray CT imaging.
+PG  - e70020
+LID - 10.1002/mp.70020 [doi]
+AB  - BACKGROUND: Metal artifacts significantly degrade the image quality in computed 
+      tomography (CT) imaging, obscuring or even feigning pathology. While many 
+      different algorithms for metal artifact reduction (MAR) have been proposed, no 
+      comprehensive, clinically relevant evaluation benchmark exists. A major 
+      contributing factor to this is the lack of artifact-free ground truth data in 
+      clinical cases. Similarly, deep-learning based algorithms are hindered by the 
+      lack of paired training datasets with and without artifacts. PURPOSE: We propose 
+      the simulation of a large training database for deep-learning based MAR 
+      algorithms as well as the definition of a comprehensive evaluation benchmark for 
+      MAR. For this we utilize and validate a framework for the realistic simulation of 
+      metal artifacts on clinical CT data. METHODS: A clinical and a generic CT scanner 
+      geometry is modelled in the CatSim CT simulator within the open-access toolkit 
+      XCIST. Since most MAR research is performed in 2D, all datasets are simulated in 
+      2D. The metal artifact simulation capability is experimentally validated in CT 
+      phantom scans containing various metal types and -geometries. The tool is then 
+      used to simulate metal artifact scenarios as training data for deep-learning 
+      algorithms utilizing two public CT databases. Lastly, a benchmark is defined for 
+      clinically realistic metal artifact scenarios and applied to a numerical and a 
+      deep-learning based MAR algorithm, respectively. RESULTS: Within specified 
+      regions of interest, the mean CT number deviation between simulation and real 
+      data was less than 2%, making the simulation tool suitable for the aspired tasks. 
+      In total, 14,000 metal scenarios in the head, thorax and pelvis regions were 
+      simulated. For the clinical benchmark, a set of metrics covering CT number 
+      accuracy, noise, image sharpness, streak amplitude, structural integrity, and the 
+      effect on range in proton therapy, were defined for a range of clinical 
+      scenarios. Metal scenarios covered the most relevant clinical use cases, covering 
+      small metal implants such as fiducial markers up to large metal implants such as 
+      hip replacements. Both the simulation tools and the benchmark with the test cases 
+      were made publicly available. CONCLUSIONS: We developed and distributed tools and 
+      datasets for the development and evaluation of MAR algorithms. This is the first 
+      comprehensive evaluation benchmark covering a large number of clinically 
+      realistic metal artifact scenarios.
+CI  - © 2025 American Association of Physicists in Medicine.
+FAU - Peters, Nils
+AU  - Peters N
+AD  - Department of Radiation Oncology, Mass General Brigham and Harvard Medical 
+      School, Boston, Massachusetts, USA.
+AD  - Department of Radiation Oncology, University of Washington & Fred Hutch Cancer 
+      Center, Seattle, Washington, USA.
+FAU - Haneda, Eri
+AU  - Haneda E
+AD  - GE HealthCare Technology & Innovation Center, Niskayuna, New York, USA.
+FAU - Zhang, Jiayong
+AU  - Zhang J
+AD  - GE HealthCare Technology & Innovation Center, Niskayuna, New York, USA.
+FAU - Karageorgos, Grigorios
+AU  - Karageorgos G
+AD  - GE HealthCare Technology & Innovation Center, Niskayuna, New York, USA.
+FAU - Xia, Wenjun
+AU  - Xia W
+AD  - Department of Biomedical Engineering, Rensselaer Polytechnic Institute, Troy, New 
+      York, USA.
+FAU - Verburg, Joost
+AU  - Verburg J
+AD  - Department of Radiation Oncology, Mass General Brigham and Harvard Medical 
+      School, Boston, Massachusetts, USA.
+FAU - Wang, Ge
+AU  - Wang G
+AD  - Department of Biomedical Engineering, Rensselaer Polytechnic Institute, Troy, New 
+      York, USA.
+FAU - Paganetti, Harald
+AU  - Paganetti H
+AD  - Department of Radiation Oncology, Mass General Brigham and Harvard Medical 
+      School, Boston, Massachusetts, USA.
+FAU - De Man, Bruno
+AU  - De Man B
+AD  - GE HealthCare Technology & Innovation Center, Niskayuna, New York, USA.
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Artifacts
+MH  - *Tomography, X-Ray Computed
+MH  - *Metals
+MH  - Benchmarking
+MH  - *Databases, Factual
+MH  - *Image Processing, Computer-Assisted/methods
+MH  - Humans
+MH  - Phantoms, Imaging
+MH  - Deep Learning
+MH  - Algorithms
+OTO - NOTNLM
+OT  - computed tomography
+OT  - image quality benchmark
+OT  - metal artifacts
+EDAT- 2025/10/08 06:29
+MHDA- 2025/10/08 06:30
+CRDT- 2025/10/08 04:33
+PHST- 2025/07/27 00:00 [revised]
+PHST- 2025/04/18 00:00 [received]
+PHST- 2025/07/28 00:00 [accepted]
+PHST- 2025/10/08 06:30 [medline]
+PHST- 2025/10/08 06:29 [pubmed]
+PHST- 2025/10/08 04:33 [entrez]
+AID - 10.1002/mp.70020 [doi]
+PST - ppublish
+SO  - Med Phys. 2025 Oct;52(10):e70020. doi: 10.1002/mp.70020.

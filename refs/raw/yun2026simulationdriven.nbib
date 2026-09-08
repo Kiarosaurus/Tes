@@ -1,0 +1,108 @@
+PMID- 41699969
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20260708
+LR  - 20260708
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Linking)
+VI  - 53
+IP  - 2
+DP  - 2026 Feb
+TI  - A strategy for simulation-driven CT metal artifact reduction toward improving 
+      network generalizability.
+PG  - e70336
+LID - 10.1002/mp.70336 [doi]
+AB  - BACKGROUND: We address computed tomography (CT) metal artifacts reduction (MAR) 
+      using a generative deep-learning model in the imaging physics framework. Existing 
+      deep learning-based MAR methods, though promising, generally lack explicit 
+      physical modeling of artifact formation and rely heavily on data-driven mappings. 
+      The absence of physics priors not only limits scalability, as they often require 
+      paired or task-specific datasets, but also makes such methods prone to 
+      hallucination, anatomical distortion, and unstable artifact suppression. PURPOSE: 
+      We propose a novel self-supervised framework for CT MAR, integrating a 
+      lightweight multi-layer perceptron (MLP)-based beam-hardening correction with a 
+      conditional latent diffusion model (LDM). By incorporating a physics-informed 
+      correction step and an artifact-reproducing simulation technique, the framework 
+      aims to enhance scalability across diverse scenarios, reduce hallucination 
+      effects, and improve structural fidelity in the reconstructed images. METHODS: 
+      The proposed MLP performs physics-driven polynomial correction, serving as a 
+      simplified but efficient alternative to existing approaches. Also, the proposed 
+      MLP implicitly incorporates sinogram consistency into its optimization objective, 
+      allowing case-specific adaptation and convergence toward the desired solution. 
+      Additionally, the learned MLP parameters are reused to simulate 
+      artifact-contaminated images from artifact-free scans, generating pseudo paired 
+      data for self-supervised training without requiring real paired datasets. A 
+      conditional LDM is trained on these synthetic pairs to remove residual artifacts. 
+      RESULTS: By operating in a low-dimensional latent space, the LDM significantly 
+      reduces inference time while maintaining high-quality reconstructions. The 
+      proposed method is evaluated on both the SynDeepLesion dataset and real clinical 
+      data, demonstrating superior artifact removal and structural preservation 
+      compared to the existing state-of-the-art MAR techniques. We particularly 
+      highlight the robustness, generalizability, and clinical applicability of the 
+      proposed framework. CONCLUSION: We proposed a self-supervised metal artifact 
+      reduction framework that combines MLP-based beam-hardening correction with a 
+      conditional latent diffusion model in the imaging physics framework. The MLP 
+      module provides physics motivated beam-hardening corrected CT images, while the 
+      residual artifact simulation strategy enables fully self-supervised training 
+      without the need for paired data. The proposed method demonstrated superior 
+      artifact suppression and structural preservation on both synthetic and clinical 
+      datasets, outperforming existing approaches.
+CI  - © 2026 American Association of Physicists in Medicine.
+FAU - Yun, Sungho
+AU  - Yun S
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Hyun, Subong
+AU  - Hyun S
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Choi, Da-In
+AU  - Choi DI
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Cho, Seungryong
+AU  - Cho S
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+AD  - KAIST Institute for Health Science and Technology, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+AD  - KAIST Institute for IT Convergence, Korea Advanced Institute of Science and 
+      Technology (KAIST), Daejeon, South Korea.
+LA  - eng
+GR  - NRF-2020R1A2C2011959/National Research Foundation of Korea/
+GR  - NRF-2021M3I1A1097909/National Research Foundation of Korea/
+GR  - RS-2023-00285089/National Research Foundation of Korea/
+GR  - 2710003307/National Research Foundation of Korea/
+GR  - 20014921/Ministry of Trade, Industry and Energy/
+PT  - Journal Article
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Artifacts
+MH  - *Metals
+MH  - *Tomography, X-Ray Computed
+MH  - *Image Processing, Computer-Assisted/methods
+MH  - Multilayer Perceptrons
+MH  - *Computer Simulation
+OTO - NOTNLM
+OT  - artifact simulation
+OT  - beam‐hardening correction
+OT  - computed tomography
+OT  - latent diffusion model
+OT  - metal artifact reduction
+OT  - multi‐layer perceptron
+EDAT- 2026/02/17 06:31
+MHDA- 2026/02/17 06:32
+CRDT- 2026/02/17 02:33
+PHST- 2026/01/14 00:00 [revised]
+PHST- 2025/09/15 00:00 [received]
+PHST- 2026/01/29 00:00 [accepted]
+PHST- 2026/02/17 06:32 [medline]
+PHST- 2026/02/17 06:31 [pubmed]
+PHST- 2026/02/17 02:33 [entrez]
+AID - 10.1002/mp.70336 [doi]
+PST - ppublish
+SO  - Med Phys. 2026 Feb;53(2):e70336. doi: 10.1002/mp.70336.

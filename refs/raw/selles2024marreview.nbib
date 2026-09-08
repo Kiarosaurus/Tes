@@ -1,0 +1,85 @@
+PMID- 38142571
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20240116
+LR  - 20240116
+IS  - 1872-7727 (Electronic)
+IS  - 0720-048X (Linking)
+VI  - 170
+DP  - 2024 Jan
+TI  - Advances in metal artifact reduction in CT images: A review of traditional and 
+      novel metal artifact reduction techniques.
+PG  - 111276
+LID - S0720-048X(23)00590-9 [pii]
+LID - 10.1016/j.ejrad.2023.111276 [doi]
+AB  - Metal artifacts degrade CT image quality, hampering clinical assessment. Numerous 
+      metal artifact reduction methods are available to improve the image quality of CT 
+      images with metal implants. In this review, an overview of traditional methods is 
+      provided including the modification of acquisition and reconstruction parameters, 
+      projection-based metal artifact reduction techniques (MAR), dual energy CT (DECT) 
+      and the combination of these techniques. Furthermore, the additional value and 
+      challenges of novel metal artifact reduction techniques that have been introduced 
+      over the past years are discussed such as photon counting CT (PCCT) and deep 
+      learning based metal artifact reduction techniques.
+CI  - Copyright © 2023 Elsevier B.V. All rights reserved.
+FAU - Selles, Mark
+AU  - Selles M
+AD  - Department of Radiology, Isala, 8025 AB Zwolle, the Netherlands; Department of 
+      Radiology and Nuclear Medicine, Amsterdam University Medical Centre, 1105 AZ 
+      Amsterdam, the Netherlands; Amsterdam Movement Sciences, 1081 BT Amsterdam, the 
+      Netherlands. Electronic address: m.selles@isala.nl.
+FAU - van Osch, Jochen A C
+AU  - van Osch JAC
+AD  - Department of Medical Physics, Isala, 8025 AB Zwolle, the Netherlands.
+FAU - Maas, Mario
+AU  - Maas M
+AD  - Department of Radiology and Nuclear Medicine, Amsterdam University Medical 
+      Centre, 1105 AZ Amsterdam, the Netherlands; Amsterdam Movement Sciences, 1081 BT 
+      Amsterdam, the Netherlands.
+FAU - Boomsma, Martijn F
+AU  - Boomsma MF
+AD  - Department of Radiology, Isala, 8025 AB Zwolle, the Netherlands.
+FAU - Wellenberg, Ruud H H
+AU  - Wellenberg RHH
+AD  - Department of Radiology and Nuclear Medicine, Amsterdam University Medical 
+      Centre, 1105 AZ Amsterdam, the Netherlands; Amsterdam Movement Sciences, 1081 BT 
+      Amsterdam, the Netherlands.
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20231221
+PL  - Ireland
+TA  - Eur J Radiol
+JT  - European journal of radiology
+JID - 8106411
+RN  - 0 (Metals)
+SB  - IM
+MH  - Humans
+MH  - *Artifacts
+MH  - *Tomography, X-Ray Computed/methods
+MH  - Prostheses and Implants
+MH  - Metals
+MH  - Algorithms
+OTO - NOTNLM
+OT  - Artificial intelligence
+OT  - CT
+OT  - Dual energy CT
+OT  - Metal artifact reduction
+OT  - Photon counting CT
+COIS- Declaration of competing interest The authors declare that they have no known 
+      competing financial interests or personal relationships that could have appeared 
+      to influence the work reported in this paper.
+EDAT- 2023/12/25 00:42
+MHDA- 2024/01/16 06:42
+CRDT- 2023/12/24 18:07
+PHST- 2023/11/02 00:00 [received]
+PHST- 2023/12/14 00:00 [revised]
+PHST- 2023/12/18 00:00 [accepted]
+PHST- 2024/01/16 06:42 [medline]
+PHST- 2023/12/25 00:42 [pubmed]
+PHST- 2023/12/24 18:07 [entrez]
+AID - S0720-048X(23)00590-9 [pii]
+AID - 10.1016/j.ejrad.2023.111276 [doi]
+PST - ppublish
+SO  - Eur J Radiol. 2024 Jan;170:111276. doi: 10.1016/j.ejrad.2023.111276. Epub 2023 
+      Dec 21.

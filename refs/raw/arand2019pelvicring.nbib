@@ -1,0 +1,123 @@
+PMID- 30575034
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20200605
+LR  - 20210302
+IS  - 1469-7580 (Electronic)
+IS  - 0021-8782 (Print)
+IS  - 0021-8782 (Linking)
+VI  - 234
+IP  - 3
+DP  - 2019 Mar
+TI  - 3D statistical model of the pelvic ring - a CT-based statistical evaluation of 
+      anatomical variation.
+PG  - 376-383
+LID - 10.1111/joa.12928 [doi]
+AB  - The pelvic ring is a highly complex construct with a central role for human 
+      stability and mobility. The observable interindividual differences in skeletal 
+      anatomy are caused by anatomical variation in the innominate bones as well as the 
+      sacrum, further to differences in the spatial arrangement of these bones to each 
+      other. The aim of this study was to generate a 3D statistical model of the entire 
+      pelvic ring in order to analyse the observed interindividual differences and 
+      anatomical variation. A series of 50 anonymized pelvic CT scans of uninjured 
+      Japanese adults [30 males, 20 females, average age of 74.9 years, standard 
+      deviation (SD) 16.9 years] were processed and analysed, resulting in a 3D 
+      statistical overall mean model and separate male and female mean models. 
+      Principal component analysis (PCA) of the overall statistical model predominantly 
+      showed size variation (20.39%) followed by shape variation (14.13%), and a 
+      variation of the spatial arrangement of the sacrum to the innominate bones in 
+      different anatomical peculiarities (11.39 and 8.85%). In addition, selected 
+      internal and external pelvic parameters were manually measured with the objective 
+      of further evaluating and quantifying the observed interindividual as well as the 
+      known sex-specific differences. A separate statistical model of the grey value 
+      distribution based on the given Hounsfield unit (HU) values was calculated for 
+      assessing bone mass distribution, thus an indication of bone quality utilizing 
+      grey values as a quantitative description of radiodensity was obtained. A 
+      consistent pattern of grey value distribution was shown, with the highest grey 
+      values observed between the sacro-iliac joint and the acetabulum along the pelvic 
+      brim. Low values were present in the sacral ala, in the area of the iliac fossa 
+      as well as in the pubic rami next to the symphysis. The present model allows a 
+      differentiated analysis of the observed interindividual variation of the pelvic 
+      ring and an evaluation of the grey value distribution therein. Besides providing 
+      a better understanding of anatomical variation, this model could be also used as 
+      a helpful tool for educational purposes, preoperative planning and implant 
+      design.
+CI  - © 2018 Anatomical Society.
+FAU - Arand, Charlotte
+AU  - Arand C
+AUID- ORCID: 0000-0003-3840-0299
+AD  - AO Research Institute Davos, Davos, Switzerland.
+AD  - Department of Orthopaedics and Traumatology, University Medical Center Mainz, 
+      Mainz, Germany.
+FAU - Wagner, Daniel
+AU  - Wagner D
+AUID- ORCID: 0000-0003-4455-1018
+AD  - Department of Orthopaedics and Traumatology, University Medical Center Mainz, 
+      Mainz, Germany.
+FAU - Richards, Robert Geoff
+AU  - Richards RG
+AUID- ORCID: 0000-0002-7778-2480
+AD  - AO Research Institute Davos, Davos, Switzerland.
+FAU - Noser, Hansrudi
+AU  - Noser H
+AUID- ORCID: 0000-0002-8337-4416
+AD  - AO Research Institute Davos, Davos, Switzerland.
+FAU - Kamer, Lukas
+AU  - Kamer L
+AUID- ORCID: 0000-0001-8173-4361
+AD  - AO Research Institute Davos, Davos, Switzerland.
+FAU - Sawaguchi, Takeshi
+AU  - Sawaguchi T
+AD  - Department of Orthopaedics and Joint Reconstructive Surgery, Toyama Municipal 
+      Hospital, Toyama, Japan.
+FAU - Rommens, Pol M
+AU  - Rommens PM
+AUID- ORCID: 0000-0002-5175-3876
+AD  - Department of Orthopaedics and Traumatology, University Medical Center Mainz, 
+      Mainz, Germany.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20181221
+PL  - England
+TA  - J Anat
+JT  - Journal of anatomy
+JID - 0137162
+SB  - IM
+MH  - Adult
+MH  - Aged
+MH  - *Anatomic Variation
+MH  - Biometry
+MH  - Female
+MH  - Gender Identity
+MH  - Humans
+MH  - Ilium/anatomy & histology
+MH  - Imaging, Three-Dimensional/*methods
+MH  - Male
+MH  - Models, Statistical
+MH  - Pelvic Bones/*anatomy & histology
+MH  - Pelvis/*anatomy & histology
+MH  - Principal Component Analysis
+MH  - Sacroiliac Joint/anatomy & histology
+MH  - Sacrum/*anatomy & histology
+MH  - Tomography, X-Ray Computed/methods
+PMC - PMC6365482
+OTO - NOTNLM
+OT  - 3D model
+OT  - anatomical variation
+OT  - interindividual variability
+OT  - pelvic ring
+OT  - principal component analysis
+EDAT- 2018/12/24 06:00
+MHDA- 2020/06/06 06:00
+PMCR- 2021/03/01
+CRDT- 2018/12/22 06:00
+PHST- 2018/11/25 00:00 [accepted]
+PHST- 2018/12/24 06:00 [pubmed]
+PHST- 2020/06/06 06:00 [medline]
+PHST- 2018/12/22 06:00 [entrez]
+PHST- 2021/03/01 00:00 [pmc-release]
+AID - JOA12928 [pii]
+AID - 10.1111/joa.12928 [doi]
+PST - ppublish
+SO  - J Anat. 2019 Mar;234(3):376-383. doi: 10.1111/joa.12928. Epub 2018 Dec 21.

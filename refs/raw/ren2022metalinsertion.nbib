@@ -1,0 +1,78 @@
+PMID- 35721310
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+LR  - 20230618
+IS  - 2329-4302 (Print)
+IS  - 2329-4310 (Electronic)
+IS  - 2329-4302 (Linking)
+VI  - 9
+IP  - 3
+DP  - 2022 May
+TI  - Framework of metal insertion in the projection domain for image quality 
+      optimization in interventional computed tomography.
+PG  - 035001
+LID - 10.1117/1.JMI.9.3.035001 [doi]
+LID - 035001
+AB  - Purpose: This work aims to develop a framework to accurately and efficiently 
+      simulate metallic objects used during interventional oncology (IO) procedures and 
+      their artifacts in computed tomography (CT) images of different body regions. 
+      Approach: A metal insertion framework based on an existing lesion insertion tool 
+      was developed. Noise and beam hardening models were incorporated into the model 
+      and validated by comparing images of real and artificially inserted metallic rods 
+      of known material composition and dimensions. The framework was further validated 
+      by inserting ablation probes into a water phantom and comparing image appearance 
+      to scans of real probes at matching locations in the phantom. Finally, a 
+      comprehensive library of metallic probes used in our IO practice was generated 
+      and a graphical user interface was built to efficiently insert any number of 
+      probes at arbitrary positions in patient CT data, including projection and image 
+      domain insertions. Results: Metallic rod experiments demonstrated that noise and 
+      beam hardening were properly modeled. Phantom and patient data with virtually 
+      inserted probes demonstrated similar artifact appearance and magnitude compared 
+      with real probes. The developed user interface resulted in accurately 
+      co-registered virtual probes both with and without accompanying artifacts from 
+      projection and image domain insertions, respectively. Conclusions: The developed 
+      metal insertion framework successfully replicates metallic object and artifact 
+      appearance with projection domain insertions and provides corresponding 
+      artifact-free images with the metallic object in the identical location through 
+      image domain insertion. This framework has potential to generate robust training 
+      libraries for deep learning algorithms and facilitate image quality optimization 
+      in interventional CT.
+CI  - © 2022 The Authors.
+FAU - Ren, Liqiang
+AU  - Ren L
+AD  - Mayo Clinic, Department of Radiology, Rochester, Minnesota, United States.
+FAU - Ferrero, Andrea
+AU  - Ferrero A
+AD  - Mayo Clinic, Department of Radiology, Rochester, Minnesota, United States.
+FAU - Favazza, Christopher
+AU  - Favazza C
+AD  - Mayo Clinic, Department of Radiology, Rochester, Minnesota, United States.
+LA  - eng
+PT  - Journal Article
+DEP - 20220617
+PL  - United States
+TA  - J Med Imaging (Bellingham)
+JT  - Journal of medical imaging (Bellingham, Wash.)
+JID - 101643461
+PMC - PMC9204473
+OTO - NOTNLM
+OT  - ablation probes
+OT  - image quality optimization
+OT  - interventional computed tomography
+OT  - metal artifact
+OT  - metal insertion
+EDAT- 2022/06/21 06:00
+MHDA- 2022/06/21 06:01
+PMCR- 2023/06/17
+CRDT- 2022/06/20 03:52
+PHST- 2021/06/24 00:00 [received]
+PHST- 2022/05/12 00:00 [accepted]
+PHST- 2022/06/20 03:52 [entrez]
+PHST- 2022/06/21 06:00 [pubmed]
+PHST- 2022/06/21 06:01 [medline]
+PHST- 2023/06/17 00:00 [pmc-release]
+AID - 21165RR [pii]
+AID - 10.1117/1.JMI.9.3.035001 [doi]
+PST - ppublish
+SO  - J Med Imaging (Bellingham). 2022 May;9(3):035001. doi: 10.1117/1.JMI.9.3.035001. 
+      Epub 2022 Jun 17.

@@ -81,9 +81,17 @@ En orden de bloqueo:
 4. Aparte, decidir con el asesor si el entregable cubre los 7 sub-datasets o solo
    CLINIC y CLINIC-metal.
 
+## 3-bis. Ejecutado el 2026-09-07
+
+Doce agentes cubrieron los 113 candidatos: `propuesta_clasificacion.csv`, 113 filas,
+todas `propuesta sin validar`. Eso mueve la sub-tarea «mostrar ejemplos» de parcial a
+cubierta y da material para «qué dataset contiene metal», pero **no** cambia el conteo
+de metal confirmado ni desbloquea el split: hace falta tu validación, resolver los
+duplicados y fijar identidad por paciente. Implicancias #19-22.
+
 ## 4. Agente `clasificador-metal`
 
-Construido, no ejecutado, tal como se pidió. Definición en
+Construido y ya ejecutado sobre los 113 candidatos. Definición en
 `.claude/agents/clasificador-metal.md`; insumo visual en `laminas.py`.
 
 `python experiments/exploration-3d/laminas.py <caso>` escribe en

@@ -3,10 +3,10 @@
 Unidad: volumen CT, no corte. Rangos = mínimo–máximo. Spacing en mm;
 dimensiones en vóxeles y ejes nativos del archivo. Candidato HU ≠ metal confirmado.
 
-| Dataset | Volúmenes | Candidatos HU | Metal sí revisado | Pendientes |
-|---|---:|---:|---:|---:|
-| dataset6 | 103 | 38 | 0 | 103 |
-| dataset7 | 75 | 75 | 0 | 75 |
+| Dataset | Volúmenes | Candidatos HU | Metal sí (3D) | Metal sí (3D+cortes) | Sin revisar |
+|---|---:|---:|---:|---:|---:|
+| dataset6 | 103 | 38 | 33 | 0 | 0 |
+| dataset7 | 75 | 75 | 75 | 0 | 0 |
 
 | Dataset | Medida | Mediana [mín–máx] |
 |---|---|---|

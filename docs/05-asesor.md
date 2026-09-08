@@ -3,6 +3,52 @@
 > Una entrada por reunion. La autora anota la tarea encargada;
 > Claude completa "que se hizo" e "implicancias" al cerrar la tarea.
 
+## 2026-09-07 — revision 3D de la autora y fusion
+
+**Que se hizo:** la autora reviso en 3D los 178 volumenes y anoto tipo y cantidad.
+Dicto tres reglas de lectura (dataset6 vacio = sin objeto; dataset7 vacio = con material
+ortopedico; en duplicados cruzados prevalece dataset7 y ese volumen no tiene material
+ortopedico). Se aplicaron a las 178 filas y se les sumo la investigacion de los agentes.
+
+**Resultado:** dataset7 con material ortopedico 72 de 75, 69 de contenido unico.
+dataset6 con objeto 33 de 103, de ellos 27 solo extracorporeo y 6 con DIU. Candidatos a
+entrenamiento limpio: 70, o 97 si `Objeto extraño` se restringe a lo intracorporeo.
+
+**Implicancias:** #20 y #21 resueltas en criterio (falta que la autora las escriba en
+`01-decisiones.md`); #22 cuantificada; #19 sigue abierta por `CLINIC_0074`.
+
+**Para la proxima reunion:**
+- Preguntas que le llevo:
+  - El test con metal son 72 volumenes, no 75. Se usan los 69 de contenido unico?
+  - Los objetos extracorporeos producen estrias igual: el entrenamiento exige limpio de
+    objeto o limpio de artefacto?
+- Lo que quedo pendiente: representante en los 3 grupos duplicados internos de dataset7,
+  identidad por paciente, recorrido de cortes y `CLINIC_0074`.
+
+## 2026-09-07 — clasificacion visual asistida de los 113 candidatos
+
+**Que se hizo:** doce agentes `clasificador-metal` en paralelo, 9-10 casos cada uno,
+sobre las laminas de los 113 candidatos HU. Salida fusionada en
+`experiments/exploration-3d/propuesta_clasificacion.csv` (113 filas, cero perdidas,
+cero duplicadas). Los CSV por lote quedan como trazabilidad. `revision.csv` intacto.
+
+**Resultado:** 65 `si (propuesto)` en `Metal`, 42 `incierto`, 1 `no`, 5 mixtos.
+En `Objeto extraño` ningun `no`: 16 axiales no demuestran ausencia. Metal confirmado
+sigue en 0 porque ninguna fila esta validada.
+
+**Implicancias detectadas:** #19, #20, #21 y #22. Las cuatro salen de la revision, no
+de bibliografia. #20 y #22 bloquean el split; #19 obliga a decidir si se revisan los
+178 en vez de los 113.
+
+**Para la proxima reunion:**
+- Preguntas que le llevo:
+  - Duplicados exactos que cruzan CLINIC y CLINIC-metal: como se reparte eso sin fuga?
+  - Si parte de CLINIC-metal no es osteosintesis pelvica, el test del Objetivo 5 se
+    define sobre los 75 o sobre un subconjunto confirmado?
+  - `Objeto extraño` incluye mesa, ropa y soportes, o solo lo intracorporeo?
+- Lo que quedo pendiente: validar las 113 propuestas, decidir #19, resolver duplicados
+  e identidad por paciente.
+
 ## 2026-09-07 — auditoria del encargo semanal de Victor
 
 **Fecha de la reunion:** no indicada. Esta entrada registra la revision del encargo

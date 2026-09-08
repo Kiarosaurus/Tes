@@ -96,12 +96,15 @@ def report(rows: list[dict], out: Path) -> None:
     lines = ['# Resumen de la exploración 3D', '',
              'Unidad: volumen CT, no corte. Rangos = mínimo–máximo. Spacing en mm;',
              'dimensiones en vóxeles y ejes nativos del archivo. Candidato HU ≠ metal confirmado.', '',
-             '| Dataset | Volúmenes | Candidatos HU | Metal sí revisado | Pendientes |',
-             '|---|---:|---:|---:|---:|']
+             '| Dataset | Volúmenes | Candidatos HU | Metal sí (3D) | Metal sí (3D+cortes) | Sin revisar |',
+             '|---|---:|---:|---:|---:|---:|']
     for dataset in sorted({r['Dataset'] for r in rows}):
         group = [r for r in rows if r['Dataset'] == dataset]
+        seen = [r for r in group if r['Revisión 3D y cortes'] in ('3D completa', 'completa')]
         confirmed = sum(r['Metal'] == 'sí' and r['Revisión 3D y cortes'] == 'completa' for r in group)
-        lines.append(f"| {dataset} | {len(group)} | {sum(r['Candidato HU'] == 'sí' for r in group)} | {confirmed} | {sum(r['Revisión 3D y cortes'] != 'completa' for r in group)} |")
+        lines.append(f"| {dataset} | {len(group)} | {sum(r['Candidato HU'] == 'sí' for r in group)} "
+                     f"| {sum(r['Metal'] == 'sí' for r in seen)} | {confirmed} "
+                     f"| {sum(r['Revisión 3D y cortes'] not in ('3D completa', 'completa') for r in group)} |")
     lines += ['', '| Dataset | Medida | Mediana [mín–máx] |', '|---|---|---|']
     for dataset in sorted({r['Dataset'] for r in rows}):
         for field in AUTO[3:9]:

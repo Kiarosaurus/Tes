@@ -81,6 +81,43 @@ dominante» no debe interpretarse como inventario exhaustivo. Dataset6_0017 mues
 una estructura pélvica hiperdensa compatible con el antecedente de DIU, pendiente
 de confirmación. Ninguno de estos ejemplos equivale a revisión completa del CT.
 
+## Clasificación visual asistida (2026-09-07)
+
+Doce agentes `clasificador-metal` revisaron las láminas de los 113 candidatos HU.
+Resultado en `experiments/exploration-3d/propuesta_clasificacion.csv`: 113 filas,
+**todas `propuesta sin validar`**. Reparto en `Metal`: 65 `sí (propuesto)`,
+42 `incierto`, 1 `no (propuesto)`, 5 con valor mixto por convivir varias estructuras.
+En `Objeto extraño`: 60 `sí (propuesto)`, 52 `incierto`, 1 mixto. Ningún `no` en esa
+columna, porque 16 cortes axiales no demuestran ausencia.
+
+Estas filas **no** son clasificación validada y no entran a `revision.csv` ni a
+ninguna cohorte hasta que la autora recorra el volumen. Los conteos de metal
+confirmado siguen en 0.
+
+Cuatro límites que la revisión dejó documentados, con sus implicancias:
+el umbral no detecta objetos bajo 1500 HU (#19), hay duplicados exactos que cruzan
+dataset6 y dataset7 (#20), parte de CLINIC-metal tiene material extracorpóreo y no
+osteosíntesis (#21), y `Objeto extraño` carece de definición operativa (#22).
+
+## Revisión 3D de la autora, fusionada el 2026-09-07
+
+La autora revisó en 3D los 178 volúmenes y anotó tipo y cantidad. Sus reglas de lectura
+y las cifras resultantes están en `04-implicancias.md`, sección del 2026-09-07.
+
+| Magnitud | Valor |
+|---|---:|
+| dataset7 con material ortopédico | 72 de 75 |
+| ...de contenido único (sin 3 duplicados internos de dataset7) | 69 |
+| dataset7 SIN material ortopédico (duplicados cruzados con dataset6) | 3 |
+| dataset6 con objeto metálico | 33 de 103 |
+| ...solo extracorpóreo (ropa, piel) | 27 |
+| ...con DIU | 6 |
+| dataset6 sin objeto, candidatos a entrenamiento limpio | 70 |
+
+`Revisión 3D y cortes` vale `3D completa`, no `completa`: falta el recorrido de cortes.
+Ninguna cohorte se asigna todavía; `Grupo paciente` sigue vacío en las 178 filas.
+Copia previa a la fusión: `experiments/exploration-3d/revision.previo-merge.csv`.
+
 ## Cohortes y anotaciones
 
 - Entrenamiento candidato: revisión 3D y todos los cortes completa, metal=no,

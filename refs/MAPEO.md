@@ -91,18 +91,17 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 ## Campos RETIRADOS por falta de respaldo (2026-09-07)
 
 Se aplico la regla de precedencia. El .bib oficial de Springer **no trae `series` ni
-`volume`** en sus capitulos de actas: su exportador los omite. Los tres volumenes LNCS
-salieron de `refs.bib` y de `tesis/main.tex`. Se anotan aqui por si se recuperan de
-otra fuente (la portada del volumen, el DOI de la serie o SpringerLink).
+`volume`** en sus capitulos de actas: su exportador los omite. Por eso las tres actas
+de Springer (`jacob2026lgesynthnet`, `ramzan2026claim`, `wang2019cochlear`) no llevan
+serie ni volumen.
 
-| Clave | Campo retirado | Valor que tenia |
-|---|---|---|
-| `jacob2026lgesynthnet` | `series` + `volume` | LNCS 16459 |
-| `ramzan2026claim` | `series` + `volume` | LNCS 16038 |
-| `wang2019cochlear` | `series` + `volume` | LNCS 11769 |
+**Decision de la autora (2026-09-07): el asunto queda CERRADO.** No se persiguen esos
+volumenes en otra fuente y los valores que tenian no se conservan aqui, para que nadie
+los reintroduzca sin respaldo en `refs/raw/`. Si algun dia se quisieran, se empieza por
+pegar en `refs/raw/` un archivo del editor que si los traiga.
 
 **Ningun campo queda ya sin respaldo.** `refs.bib` no lleva ninguna marca: ni
-`% VERIFICAR` ni `% NOTA`. Esta tabla es el unico registro de lo retirado.
+`% VERIFICAR` ni `% NOTA`.
 
 **Aviso sobre los ISBN.** Al sustituir los raw de Springer por los oficiales, el ISBN
 de `jacob2026lgesynthnet` paso de `978-3-032-17733-9` a `978-3-032-17734-6` y el de

@@ -3,6 +3,19 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-07: cerrados tres pendientes abiertos por orden de la autora.
+(1) **LNCS: se ignoran.** La tabla con los volumenes retirados salio de `refs/MAPEO.md`;
+en su lugar queda la decision de no perseguirlos, sin los valores, para que nadie los
+reintroduzca sin respaldo en `refs/raw/`. (2) **`.gitignore` limpio**: se quitaron el
+`@'` inicial y la linea `'@ | Set-Content ...` final; las reglas se verificaron con
+`git check-ignore` (`papers/`, `data/`, `*.nii.gz`, `*.bbl`). (3) **`main.tex` migrado a
+BibTeX**: `natbib` con `abbrvnat`, `\bibliography{../refs}` y las 19 citas del cuerpo
+convertidas a `\citep`/`\citet`/`\citealp`. La lista en texto plano (27 entradas a mano)
+desaparecio; ahora sale de `refs.bib`. Compila limpio, 0 citas indefinidas, 27 entradas
+en el `.bbl`, y las citas del cuerpo se imprimen igual que antes.
+Siguiente: cerrar el representante de los 3 grupos internos de dataset7.
+
+## Paso anterior
 2026-09-07: montado el pipeline bibliografico `refs/raw` -> `refs/clean` -> `refs.bib`
 por encargo de la autora. 27 fuentes del editor (16 nbib de PubMed, 10 bib, 1 txt),
 27 entradas normalizadas en `refs/clean/`, procedencia y reglas en `refs/MAPEO.md`,
@@ -88,14 +101,18 @@ resolver leyendo mas: son decision de la autora. En paralelo, conseguir McLaren 
 que es la posible solucion de #7.
 
 ## Pendientes abiertos
-- Los tres volumenes LNCS retirados (`jacob2026lgesynthnet` 16459, `ramzan2026claim`
-  16038, `wang2019cochlear` 11769) siguen sin fuente. El exportador de Springer los
-  omite. Si se quieren de vuelta hay que sacarlos de la portada del volumen o de
-  SpringerLink, no del .bib. Valores anotados en `refs/MAPEO.md`.
-- `.gitignore` corrupto: su contenido empieza con `@'` y termina con
-  `'@ | Set-Content -Encoding utf8 .gitignore`. Un here-string de PowerShell que se
-  escribio en vez de ejecutarse. Las reglas funcionan igual (`papers/` y `data/` se
-  ignoran, verificado), pero conviene limpiarlo.
+- La bibliografia crecio de 2 a 3 paginas al migrar a BibTeX. No es un error: la lista
+  a mano llevaba `et al.` y omitia DOI, editores e ISBN; la generada los imprime todos.
+  Se probo `plainnat`, `abbrvnat` y `biblatex` con `maxbibnames=1`: las tres dan
+  3 paginas. Si hay limite de dos, la decision es de la autora y las palancas son
+  quitar los DOI del impreso o bajar el cuerpo de letra de la lista.
+- 11 de las 27 entradas no se citan en el cuerpo (`karageorgos2024ddpm`,
+  `kazerouni2023diffusionsurvey`, `ren2022metalinsertion`, `rombach2022latentdiffusion`,
+  `selles2024marreview`, `singhrao2024fiducial`, `vanbosse2011pelvicpositioning`,
+  `wang2019cochlear`, `yun2026simulationdriven`, `zhang2023controlnet`,
+  `zhang2026pediclescrew`). Las sostiene `\nocite{*}`, puesto para que la lista siga
+  siendo exactamente la que definio la autora. Citarlas en el cuerpo o retirarlas es
+  decision suya; sin `\nocite{*}` la lista bajaria a 16 entradas.
 - Implicancia #1 ABIERTA: `wang2025adaptiveweighting` es nivel 1 y solo hay abstract.
   Al llegar el PDF, releer con `lector-papers` y regenerar la ficha completa.
 - Implicancia #2 ABIERTA (GAP): el multi-ventana publicado es todo de remocion, no
@@ -151,9 +168,6 @@ que es la posible solucion de #7.
   `arand2019pelvicring` y `xie2024implantsegmentation`.
 - `SAP`, `BFC` e `ISC` siguen sin definir en `docs/03-glosario.md`. El nivel de
   `xie2024implantsegmentation` y el de `liu2025pipeline` dependen de esas definiciones.
-- `tesis/main.tex` sigue con la bibliografia en texto plano y el documento no tiene
-  ningun `\cite`. Migrar a `\bibliography{refs}` exigiria citar en el cuerpo o usar
-  `\nocite{*}`: sigue siendo decision de la autora, no se hizo.
 
 ## Pendientes cerrados
 > Lo que ya no requiere accion. Se conserva para no reabrirlo por olvido.
@@ -212,6 +226,26 @@ que es la posible solucion de #7.
   en el raw y mantiene que la lista de entradas la define la autora.
 - **Marcas eliminadas de `refs.bib`.** Ni `% VERIFICAR` ni `% NOTA`: lo que esta en el
   archivo tiene respaldo en el raw. Lo retirado queda solo en `refs/MAPEO.md`.
+- **`main.tex`, MIGRADO A BIBTEX** el 2026-09-07 con orden explicita de la autora.
+  `\usepackage[round,authoryear]{natbib}`, `\bibliographystyle{abbrvnat}` y
+  `\bibliography{../refs}` dentro del `multicols`, con `\renewcommand{\bibsection}{}`
+  para no duplicar el encabezado `\section{References}`. Las 17 citas del cuerpo pasaron
+  de texto a `\citep` (parentesis), `\citet` (autor + anio en linea) y `\citealp`
+  (dentro del parentesis de C1). La lista a mano se borro entera. Compila con
+  `pdflatex; bibtex; pdflatex; pdflatex` desde `tesis/`: 0 citas indefinidas, 27
+  `\bibitem` en el `.bbl` y las citas del cuerpo impresas igual que antes. Lo que
+  cambia de aspecto es la lista: 3 paginas en vez de 2, y 11 entradas la sostiene
+  `\nocite{*}`. Las dos cosas estan en Pendientes abiertos.
+- **`.gitignore`: LIMPIADO** el 2026-09-07. Se quitaron el `@'` de la primera linea y
+  el `'@ | Set-Content -Encoding utf8 .gitignore` de la ultima, restos de un here-string
+  de PowerShell que se escribio en vez de ejecutarse. Reglas verificadas con
+  `git check-ignore -v`: `papers/`, `data/`, `*.nii.gz` y `*.bbl` se ignoran;
+  `refs/raw/*.bib` no.
+- **LNCS: IGNORADOS por decision de la autora** el 2026-09-07. Los tres volumenes
+  (`jacob2026lgesynthnet`, `ramzan2026claim`, `wang2019cochlear`) no se persiguen en
+  otra fuente. Sus valores salieron de `refs/MAPEO.md` para que nadie los reintroduzca
+  sin respaldo en `refs/raw/`; ahi queda solo la decision y el motivo (el exportador de
+  Springer no trae `series` ni `volume`).
 - **`main.tex`, lista de referencias actualizada** el 2026-09-07 con autorizacion
   explicita: 15 correcciones (revistas completas, fasciculos, paginas de las tres
   actas, volumen de SPIE). Sigue en texto plano; no se migro a BibTeX.

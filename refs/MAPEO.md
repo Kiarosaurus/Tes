@@ -155,3 +155,11 @@ motivo de descarte.
 
 **`wang2025adaptiveweighting` YA TIENE PDF** desde el 2026-09-08. Era la unica fuente de
 nivel 1 sin texto completo y el origen de la implicancia #1.
+
+## Alta de van den Bosch (2026-09-08)
+
+`refs/raw/vandenbosch2002.nbib` (PMID 12131388) ->
+`refs/clean/vandenbosch2002.bib` -> `refs.bib`. Alta por el encargo de lectura e
+integracion de la autora. Autores de FAU; titulo de TI; revista de JT; ano de DP;
+volumen 53 de VI; numero 1 de IP; paginas 44-8 de PG expandidas a 44--48;
+DOI de AID. PDF local completo. Ningun campo completado desde otra fuente.

@@ -450,3 +450,43 @@ ya supera el tamaño de una lectura, así que una reescritura completa desde un 
 dejado de ser segura.
 
 ---
+
+
+## 2026-09-08 (3) ? Van den Bosch: nivel sacro clinicamente motivado, benchmark ordinal solo en S1
+
+**Decision:** se conserva S1/S2 como variable geometrica del muestreador con respaldo
+clinico asociativo de `vandenbosch2002`. El benchmark ordinal de SAP queda limitado a
+S1, con las dos distribuciones por tecnica de `zwingmann2009navigated`. S2 se evalua
+con geometria y grados descriptivos, sin afirmar calibracion clinica ordinal.
+Resolucion registrada por el asistente en cumplimiento del encargo actual de la autora
+de leer van den Bosch y resolver sus implicancias.
+
+**Alternativas descartadas:** usar 6/31 y 1/49 como tasas de malposicion por tornillo;
+convertir posicion binaria en cuatro grados; extrapolar a S2 las distribuciones de S1.
+
+**Por que:** los pares son pacientes con quejas neurologicas por configuracion de
+fijacion, con sesgo temporal y de aprendizaje declarado. El paper publica malposicion
+binaria dependiente de modalidad, sin prior ordinal S2. #28 queda resuelta y #12 se
+cierra por delimitar el benchmark, no por haber encontrado ese prior. Si se exige
+calibracion clinica ordinal S2, #12 debe reabrirse. Moed queda N2 confirmado: la cita
+primaria sustituye su papel de intermediario. Aplicado en `main.tex`, `00-tesis.md`,
+`03-glosario.md` y los registros de literatura.
+
+
+## 2026-09-08 (4) - Gardner como respaldo anatomico explicito del eje S1/S2
+
+**Decision:** incorporar `gardner2010safezones` al alcance y a `main.tex`
+(Problem Statement y Objetivo 2) como respaldo anatomico para evaluar S1 y S2
+midiendo el corredor de cada nivel sobre cada volumen. Registrado y aplicado por
+el asistente por encargo explicito de la autora en este turno.
+
+**Por que:** las areas medias minimas S1/S2 son 346/109.3 mm2 en normales y
+222/220.1 mm2 en dismorficos (Results, p. 624 y Tabla 1, p. 627). No sostienen una
+jerarquia universal de amplitud. Gardner aporta geometria en el lado no lesionado
+y trayectorias ideales; van den Bosch aporta una asociacion de sintomas clinicos
+por configuracion. Son respaldos distintos para considerar el nivel sacro.
+
+**Alternativas descartadas:** describir las areas dismorficas como inversion o igual
+seguridad, importar medias como reglas universales, reintroducir fenotipos o score,
+y usar geometria ideal como prior ordinal de malposicion. Se mantiene #27 cerrada y
+el benchmark SAP de Zwingmann solo en S1 por tecnica; S2 conserva reporte descriptivo.

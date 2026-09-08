@@ -169,8 +169,9 @@ El termino **"Dmax"**: **NO ENCONTRADO EN EL PDF**.
 | Axial transverse width | 11.2 mm (2.7) | 14.4 mm (3.2) | < 0.001 |
 | Transverse screw possible | 19 (68%) | 21 (95%) | < 0.001 |
 
-**Inversion S1/S2, la observacion central del paper:** en dismorficos S1 se estrecha (222 mm2) y S2
-se ensancha (220.1 mm2), quedando iguales. Frase textual: *"the dysmorphic upper sacral safe zone
+**Areas S1/S2 aproximadamente iguales en dismorficos:** respecto a los normales, S1 tiene menor
+area (222 mm2) y S2 mayor area (220.1 mm2). No es una inversion del orden de esas medias ni
+una prueba de equivalencia estadistica entre niveles. Frase textual: *"the dysmorphic upper sacral safe zone
 cross-sectional area was the same as that of the second sacral segment (approximately 220 mm2)"*
 (Discusion, p. 627).
 
@@ -259,16 +260,23 @@ cada grupo**.
 - **Objetivo 2 (muestreador), restriccion anatomica.** Es hoy la unica fuente leida que da
   simultaneamente area transversal minima, longitud, dos angulos con landmarks de vista y ancho
   transverso, todo separado por segmento (S1/S2) y por fenotipo (normal/dismorfico). Sirve como
-  distribucion de referencia para muestrear pose, no solo como umbral binario.
-- **Estratificacion del muestreador.** La inversion S1/S2 obliga a que el muestreador no trate S1 y
-  S2 con la misma restriccion, y a que el fenotipo sea una variable del modelo: en dismorficos, S2
-  es el segmento amplio y S1 el estrecho.
+  referencia anatomica descriptiva; no es una distribucion de poses quirurgicas observadas
+  ni un prior ordinal de brecha cortical para SAP.
+- **Estratificacion del muestreador (actualizado tras decision #27).** La variacion por
+  segmento y morfologia impide asumir una jerarquia universal de amplitud S1/S2. No obliga
+  a introducir fenotipo como variable: la decision vigente mide cada corredor sobre cada
+  volumen y excluye fenotipos y score. Las areas medias dismorficas son aproximadamente
+  iguales; la mayor viabilidad transversa de S2 es otra medida, no una tasa de malposicion.
 - **Cadena de citas del umbral de 10 mm (implicancias #7 y #25).** Aporta la prueba de que el
   eslabon Gardner tampoco es el origen: el umbral se hereda de Ziran 2003 y Moed 2006.
 - **Caveat de transferencia a CLINIC-metal.** Mide pelvis sin lesion en el lado evaluado y advierte
   que la malreduccion contrae la zona segura. La tesis trabaja sobre CT con fractura e implante.
 
 ## Dudas para el asesor
+
+> Preguntas historicas de la lectura. Las decisiones del 2026-09-08 resolvieron 1
+> (10 mm como convencion) y 3 (sin fenotipos ni score). Los angulos ideales no se
+> adoptaron como una distribucion clinica de poses; la transferencia sigue en #26.
 
 1. ¿Se adopta 10 mm como restriccion dura del muestreador sabiendo que ya son **tres** eslabones sin
    medicion (McLaren -> Kaiser -> Gardner -> Ziran 2003 / Moed 2006), o se cambia a un criterio
@@ -361,7 +369,7 @@ son datos que la tesis podria necesitar y que el paper no trae.
 | **S2 transsacro** en texto: outlet | *"In all dysmorphic sacra ... compared with only 50% of normal sacra (P < 0.001)"* | Resultados, Second Sacral Segment, p. 626 |
 | **S2 transsacro** en texto: inlet | *"In 95% of dysmorphic sacra ... compared with only 68% of normal sacra"* | Resultados, p. 626 |
 | **Inversion S1/S2 (hallazgo central)** | *"the dysmorphic upper sacral safe zone cross-sectional area was the same as that of the second sacral segment"* | Discusion, p. 627 |
-| Valor comun de esa inversion | *"(approximately 220 mm2)"* | Discusion, p. 627 |
+| Area aproximadamente comun entre niveles | *"(approximately 220 mm2)"* | Discusion, p. 627 |
 | Fraccion con area adecuada (Discusion) | *"for iliosacral screw placement into the sacral body in 91% of patients"* | Discusion, p. 627 |
 | Obliquidad requerida en dismorficos, redondeada | *"30° caudal to cranial on the pelvic outlet view and 15° posterior to anterior"* | Discusion, p. 627 |
 | Conclusion sobre S2 en dismorficos | *"This segment may be a primary fixation opportunity in patients with sacral dysmorphism."* | Abstract, Conclusions, p. 622 |

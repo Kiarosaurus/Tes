@@ -24,7 +24,9 @@ artifacts in pelvic CT scan volumes using Multi-Window Latent Diffusion.
   axial contra la linea de espinas iliacas posteriores; holgura cortical de 5 mm), con
   viabilidad de corredor segun `mclaren2021corridor`
 - Metrica SAP + comparacion contra las DOS distribuciones ordinales de cuatro grados de
-  `zwingmann2009navigated`, condicionadas por tecnica quirurgica y por nivel sacro (S1/S2)
+  `zwingmann2009navigated`, condicionadas por tecnica quirurgica **solo en S1**.
+  S1/S2 se conserva como variable geometrica del muestreador; S2 se evalua
+  descriptivamente (geometria y grados de brecha), sin prior ordinal clinico disponible.
 
 Defendible por si solo como: "un muestreador de colocacion de implantes
 quirurgicamente admisible, validado contra la distribucion clinica real de malposiciones".
@@ -114,12 +116,27 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
 - **`templeman1996proximity` sigue en `refs.bib` sin PDF.** Su prioridad bajo: su papel en
   la cadena del 2-15% ya no es decisivo.
 
-## Proxima fuente (implicancia #28)
+## Eje S1/S2 y limite del benchmark (2026-09-08; implicancias #12 y #28)
 
-**van den Bosch**, por delante de Ziran 2003 y de Templeman. Decide el eje S1/S2 del
-muestreador (hoy respaldado solo por banco sobre plastico) y puede cerrar la implicancia
-#12. **Falta el PDF**; el encargo para el subagente ya esta redactado en
-`04-implicancias.md`, entrada #28.
+`gardner2010safezones` aporta el respaldo **anatomico** del eje S1/S2: areas medias
+minimas iliosacras de 346/109.3 mm2 en normales y 222/220.1 mm2 en dismorficos
+(S1/S2; Results, p. 624 y Tabla 1, p. 627; evidencia textual en su ficha).
+Las ultimas son aproximadamente iguales, no una inversion de las medias ni prueba
+de igual seguridad clinica. Se evalua cada nivel midiendo su corredor en cada volumen,
+sin imponer una jerarquia universal de amplitud ni reintroducir fenotipos o score.
+Gardner mide el lado no lesionado y trayectorias centrales ideales: no aporta
+frecuencias clinicas de grados de brecha ni calibra SAP en S2.
+
+`vandenbosch2002` ya fue leido con `lector-papers`. Los 6/31 frente a 1/49
+son **pacientes con quejas neurologicas por configuracion de tornillos**, no tornillos
+malposicionados por nivel. Aporta respaldo clinico asociativo para distinguir S1/S2,
+con sesgo temporal y de aprendizaje declarado. Su evaluacion de posicion es binaria
+y no permite construir los cuatro grados de SAP en S2.
+
+Se conserva el benchmark ordinal por tecnica de Zwingmann **en S1**; no se extrapola
+a S2 ni se convierte lesion neurologica en brecha cortical. S2 conserva evaluacion
+geometrica y descriptiva. #28 queda resuelta; #12 se cierra por delimitar el benchmark
+al soporte disponible, no porque van den Bosch aporte el prior ordinal faltante.
 
 ## Fechas
 

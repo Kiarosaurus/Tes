@@ -822,3 +822,225 @@ siete sub-datasets. Eso toca la sección Datasets y cualquier frase sobre genera
      las afirmaciones de generalización a ese límite.
   3. Preguntar a Víctor si el encargo pedía la descripción de las siete filas.
 - **Pendiente de:** decisión de la autora y consulta al asesor. No requiere más lectura.
+
+---
+
+## Actualización 2026-09-07 — clasificación visual asistida de los 113 candidatos
+
+Evaluación explícita de regla 13: **sí, y en cuatro frentes.** Corrieron 12 agentes
+`clasificador-metal` sobre los 113 candidatos HU; 113 filas en
+`experiments/exploration-3d/propuesta_clasificacion.csv`, todas `propuesta sin validar`.
+Ninguna toca `revision.csv` y no hay cohortes nuevas. Lo que cambia no es el conteo:
+es que el criterio de selección de datos resultó menos fiable de lo que suponía el
+diseño del inventario.
+
+| # | Fecha | Origen | Hallazgo | Qué sección toca | Tipo | Estado |
+|---|---|---|---|---|---|---|
+| 19 | 2026-09-07 | Clasificación visual asistida, lotes 03, 05, 09, 10 | El umbral HU no detecta ni certifica: `dataset6_CLINIC_0074_data` es candidato por 1 vóxel pero contiene un objeto tubular por DEBAJO de 1500 HU que ningún umbral de ese rango encuentra; el artefacto fabrica «componentes» que son cortical realzada; y la mesa del escáner entra como componente | Selección del conjunto limpio; data card; Objetivos 1 y 3 | RIESGO | ABIERTA |
+| 20 | 2026-09-07 | Lotes 03, 07, 02. Criterio de duplicados cruzados APLICADO en `01-decisiones.md` 2026-09-07; sigue abierto el representante de los 3 grupos internos de dataset7 | Duplicados exactos CRUZADOS entre sub-datasets: `dataset7_CLINIC_metal_0064` = `dataset6_CLINIC_0070` y `dataset7_CLINIC_metal_0036` = `dataset6_CLINIC_0048`. Además `metal_0059` y `metal_0071` comparten geometría y HU mínimo sin compartir SHA256 | Separación entrenamiento/prueba; Objetivo 5 | RIESGO | ABIERTA |
+| 21 | 2026-09-07 | Lotes 03, 05, 09, 10 | Estar en CLINIC-metal no implica osteosíntesis pélvica intracorpórea: en `metal_0036` el único material sobre umbral es extracorpóreo junto al antebrazo; `metal_0074`/`metal_0046` muestran objetos de superficie con HU 24 340 y morfología no de implante; `CLINIC_0089` tiene antecedente «metal» con lo denso fuera del contorno | Conjunto de prueba con metal; Objetivo 5; premisa de la tesis | RIESGO | ABIERTA |
+| 22 | 2026-09-07 | Lotes 09 y 12, ambos trabados en lo mismo | `Objeto extraño` no está definido: ¿cualquier material no anatómico, incluida la mesa y la ropa, o solo cuerpo extraño distinto del implante? La regla actual de exclusión de entrenamiento depende de esa columna | Criterio de exclusión del entrenamiento; data card | DEFINICION | ABIERTA |
+
+### 19 — El umbral HU no es un criterio de detección — ABIERTA
+
+- **Origen:** revisión asistida de las láminas de los 113 candidatos, 2026-09-07.
+- **Hallazgo, en tres formas distintas del mismo problema:**
+  1. **Falso negativo.** `dataset6_CLINIC_0074_data` entra a la lista de candidatos por
+     **un solo vóxel** sobre 2500 HU (HU máx 2540). Pero las proyecciones muestran una
+     estructura tubular larga y curva con un lazo cerrado en pelvis media (axiales
+     164-174) que **no está** entre los vóxeles sobre umbral. Reejecutado a 1500 HU
+     aparecen 12 componentes y ninguno es esa estructura: son hueso denso. El objeto
+     vive por debajo de 1500 HU.
+  2. **Componentes fabricados.** En `dataset7_CLINIC_metal_0042_data` el componente 4
+     (2485 vóxeles) es cortical ilíaca realzada por endurecimiento de haz y estrías que
+     cruzan 2500 HU, no una pieza discreta.
+  3. **Contaminación por el entorno.** En `metal_0002`, `metal_0026` y `metal_0038`
+     aparecen componentes de 5-26 vóxeles a x cerca de -174 mm RAS, sobre el arco de la mesa.
+- **Por qué importa:** el inventario usa «candidato HU» para priorizar, y eso sigue
+  siendo válido. Lo que ya no se sostiene es la idea implícita de que **los 65 no
+  candidatos de dataset6 son el lugar donde buscar volúmenes limpios**: si un objeto
+  puede quedar bajo 1500 HU, la lista de candidatos no es un superconjunto de los
+  volúmenes con objeto. El conjunto de entrenamiento «sin metal ni objetos extraños»
+  no se puede construir descartando por umbral, hay que mirar los 178.
+- **Sección afectada:** data card; definición del conjunto limpio de entrenamiento;
+  cualquier frase que diga que el entrenamiento usa CT sin material.
+- **Opciones:**
+  1. Revisar los 178, no solo los 113. Cuesta 65 volúmenes más de láminas (~25 min).
+  2. Aceptar el riesgo y declararlo como limitación en la tesis.
+  3. Buscar un detector que no dependa de un umbral fijo (p. ej. gradiente local o
+     detección de estrías), que es trabajo adicional no previsto en el alcance.
+- **Pendiente de:** decisión de la autora. La opción 1 es barata y yo la recomiendo.
+
+### 20 — Duplicados cruzados entre sub-datasets: fuga train/test — ABIERTA
+
+- **Origen:** lotes 03, 07 y 02 de la clasificación asistida.
+- **Hallazgo:** dos pares de duplicados exactos por vóxeles **cruzan la frontera de
+  sub-dataset**: `dataset7_CLINIC_metal_0064_data` = `dataset6_CLINIC_0070_data`, y
+  `dataset7_CLINIC_metal_0036_data` = `dataset6_CLINIC_0048_data`. Aparte,
+  `metal_0059` y `metal_0071` tienen el mismo spacing, el mismo HU mínimo y una
+  configuración casi idéntica pero SHA256 distintos: el hash no los agrupa y podrían
+  ser dos estudios del mismo paciente.
+- **Por qué importa:** el reparto más natural (dataset6 como entrenamiento limpio,
+  dataset7 como prueba con metal) mete el mismo volumen a ambos lados. Es fuga directa,
+  y el `Grupo duplicado` del inventario la detecta solo porque el hash coincide; el caso
+  `0059`/`0071` muestra que hay repeticiones que el hash **no** detecta.
+- **Sección afectada:** separación entrenamiento/prueba; validez del Objetivo 5.
+- **Opciones:**
+  1. Elegir representante por grupo y excluir el gemelo del otro lado del split.
+  2. Establecer identidad por paciente con algo más que el hash (geometría, fecha de
+     adquisición si el header la trae, correlación de contenido).
+- **Pendiente de:** decisión de la autora. Bloquea cualquier split.
+
+### 21 — Estar en CLINIC-metal no implica osteosíntesis pélvica — ABIERTA
+
+- **Origen:** lotes 03, 05, 09 y 10.
+- **Hallazgo:** en `dataset7_CLINIC_metal_0036_data` el único material sobre umbral es
+  extracorpóreo, junto al antebrazo, sin material intrapélvico visible en las 16 axiales
+  ni en los tres MIP. `metal_0074` y `metal_0046` (duplicados entre sí) muestran dos
+  objetos de superficie con HU máximo 24 340 y morfología que no corresponde a un
+  implante. `dataset6_CLINIC_0089_data` tiene antecedente «metal» de la revisión 2D
+  previa, pero lo denso está fuera del contorno corporal.
+- **Por qué importa:** conecta directamente con #13, donde quedó registrado que el
+  paper **nunca dice qué metal contiene CLINIC-metal**. Ahora hay evidencia local de
+  que al menos parte de ese subconjunto no es osteosíntesis pélvica. Si el conjunto de
+  prueba del Objetivo 5 se define como «los 75 de CLINIC-metal», se está evaluando la
+  síntesis de implantes contra volúmenes cuyo metal puede ser un objeto externo.
+- **Sección afectada:** definición del conjunto de prueba; Objetivo 5; la premisa de que
+  CLINIC-metal es el escenario clínico objetivo.
+- **Opciones:**
+  1. Definir un subconjunto «osteosíntesis pélvica confirmada» dentro de CLINIC-metal,
+     y decir cuántos son. Es trabajo de revisión, no de lectura.
+  2. Evaluar sobre todo CLINIC-metal y declarar la heterogeneidad como limitación.
+- **Pendiente de:** revisión de la autora y, probablemente, consulta a Víctor.
+
+### 22 — `Objeto extraño` no tiene definición operativa — ABIERTA
+
+- **Origen:** dos agentes independientes (lotes 09 y 12) se trabaron en la misma duda.
+- **Hallazgo:** la guía dice que la columna «incluye implantes, DIU, clips y objetos
+  externos», lo que leído al pie marca `sí` por la mesa de exploración o por un botón
+  de la ropa. Pero la regla de cohortes exige `Objeto extraño = no` para entrar a
+  entrenamiento. Con la lectura amplia, casi ningún volumen entra.
+- **Por qué importa:** esa columna es el filtro de entrada al entrenamiento. Su
+  definición decide el tamaño del conjunto limpio, no es un detalle de anotación.
+- **Opciones:**
+  1. Restringir a material no anatómico **dentro del contorno cutáneo**, y tratar mesa,
+     ropa y soportes como artefacto de adquisición, no como objeto extraño.
+  2. Mantener la lectura amplia y añadir una columna aparte para lo extracorpóreo.
+- **Pendiente de:** decisión de la autora. Es barata y desbloquea la columna entera.
+
+---
+
+## Actualización 2026-09-07 — revisión 3D de la autora fusionada con la de los agentes
+
+Evaluación explícita de regla 13: **sí.** La revisión 3D completa de los 178 volúmenes
+cierra en criterio dos entradas abiertas (#20, #21), deja una decidible en una línea
+(#22) y deja #19 con un conflicto concreto sin resolver. No aplico nada a `main.tex`
+ni a `00-tesis.md`; las reglas de clasificación son de la autora y deben pasar a
+`01-decisiones.md` de su puño.
+
+### Reglas de clasificación dictadas por la autora (2026-09-07)
+
+1. `dataset6`: columna 2 vacía o `nada` = no encontró implante ni material metálico.
+   Con texto = ese es el objeto metálico.
+2. `dataset7`: columna 2 vacía = **sí hay material ortopédico**. Con texto = material
+   ortopédico **y además** lo anotado.
+3. Duplicados: si el grupo tiene un volumen en dataset7 y otro en dataset6, **prevalece
+   el de dataset7** como representante. Y ese volumen de dataset7 **no** contiene
+   material ortopédico, porque ningún volumen de dataset6 lo tiene.
+
+Aplicadas sobre las 178 filas, con la investigación de los agentes añadida en
+`Ubicación anatómica`, `Lateralidad`, `Artefactos`, `Severidad`, `Confianza` y `Notas`.
+Copia previa a la fusión en `experiments/exploration-3d/revision.previo-merge.csv`.
+
+### Números que salen de la fusión
+
+| Magnitud | Valor |
+|---|---:|
+| dataset7 con material ortopédico | 72 de 75 |
+| ...de contenido único (descontando 3 duplicados internos de dataset7) | 69 |
+| dataset7 SIN material ortopédico (duplicados cruzados con dataset6) | 3 |
+| dataset6 con objeto metálico | 33 de 103 |
+| ...de ellos, solo material extracorpóreo (ropa, piel) | 27 |
+| ...con DIU (intracorpóreo) | 6 |
+| dataset6 sin objeto = candidatos a entrenamiento limpio | 70 |
+
+### 20 — Duplicados cruzados: criterio RESUELTO por la autora, falta registrarlo
+
+- **Decisión dictada:** dataset7 prevalece siempre como representante del grupo cruzado,
+  y esos volúmenes quedan marcados sin material ortopédico. Afecta a tres grupos:
+  `metal_0061` = `CLINIC_0037`, `metal_0036` = `CLINIC_0048`, `metal_0064` = `CLINIC_0070`.
+- **Lo que sigue abierto:** los tres grupos internos de dataset7 (`0012`/`0021`,
+  `0013`/`0043`, `0046`/`0074`) no tienen regla: los dos miembros son de dataset7 y
+  ambos tienen material ortopédico. Hay que elegir representante igual, o el mismo
+  volumen entra dos veces al conjunto de prueba.
+- **`metal_0059` / `metal_0071`: DESCARTADO.** La autora confirma explícitamente el
+  2026-09-07, tras revisarlos en 3D, que **no son el mismo paciente**. Comparten spacing
+  y HU mínimo, nada más. No se toma ninguna acción sobre ese par y no se les asigna
+  `Grupo paciente` común. Registrado en `01-decisiones.md`.
+- **Pendiente de:** que la autora copie la regla 3 a `01-decisiones.md`, y que decida
+  representante en los tres grupos internos.
+
+### 21 — CONFIRMADA con cifra: 3 de 75 de CLINIC-metal no tienen osteosíntesis
+
+- La revisión 3D confirma lo que los agentes habían señalado: `metal_0036`,
+  `metal_0061` y `metal_0064` no contienen material ortopédico. Son duplicados exactos
+  de volúmenes de CLINIC, y su contenido denso es zipper, electrodos o DIU.
+- **Consecuencia para el Objetivo 5:** el conjunto de prueba con metal no son 75
+  volúmenes, son **72**, y de contenido único **69**. Definir el test como «los 75 de
+  CLINIC-metal» sobrestima el conjunto y mete tres volúmenes sin implante.
+- **Sección afectada:** definición del conjunto de prueba; cualquier cifra de tamaño
+  del test en la tesis.
+
+### 22 — La definición de `Objeto extraño` ahora tiene precio en volúmenes
+
+- De los 33 volúmenes de dataset6 con objeto, **27 son solo material extracorpóreo**
+  (cierres de cremallera, botones, electrodos de superficie, accesorios de ropa) y 6
+  contienen DIU, que sí es intracorpóreo.
+- **Por eso importa la definición:** con la lectura amplia actual, el conjunto limpio de
+  entrenamiento es de **70** volúmenes. Si `Objeto extraño` se restringe a material no
+  anatómico **dentro del contorno cutáneo**, pasa a **97**. Son 27 volúmenes, un 38 %
+  más de datos de entrenamiento, decididos por una línea de definición.
+- **Advertencia:** los objetos extracorpóreos igual producen estrías que atraviesan la
+  pelvis. «Limpio de objeto» y «limpio de artefacto» no son lo mismo, y la decisión
+  debería decir cuál de los dos exige el entrenamiento del renderizador.
+- **Pendiente de:** decisión de la autora.
+
+### 19 — Conflictos RESUELTOS por la autora; la entrada se estrecha
+
+Resolución del 2026-09-07, dictada por la autora:
+
+- **`CLINIC_0074`: no es metal.** Confirma que hay una estructura en lazo evidente, pero
+  no es material ortopédico ni metálico, así que no se anota como objeto. El volumen
+  sigue siendo candidato a entrenamiento limpio.
+- **Regla general:** si la autora anotó «sin objeto» y el agente quedó `incierto`, manda
+  «sin objeto». Cierra los cinco desacuerdos menores.
+
+**Qué queda vivo de #19 tras esto.** La pata del falso negativo pierde fuerza *para
+metal*: el objeto sub-1500 HU de `CLINIC_0074` existe, pero no es metálico, así que el
+umbral no dejó escapar ningún implante. Siguen en pie las otras dos patas, que no
+dependen de ese caso: el artefacto fabrica componentes que no son piezas
+(`metal_0042` comp4, cortical realzada) y la mesa del escáner entra como componente
+(`metal_0002`, `metal_0026`, `metal_0038`). Y sigue en pie la advertencia de fondo para
+#22: si «objeto extraño» llegara a incluir material no metálico, un umbral en HU no es
+el instrumento para encontrarlo.
+
+### 19 — Texto original del conflicto (histórico)
+
+- `dataset6_CLINIC_0074_data`: la autora no anotó objeto tras revisar el 3D; el agente
+  reportó una estructura tubular larga con lazo cerrado en pelvis media, axiales
+  164-174, **por debajo de 1500 HU**. Las superficies 3D se calculan a 300, 1500, 2500 y
+  3500 HU, así que un objeto sub-1500 se confunde con la superficie de 300 HU (piel y
+  partes blandas): es esperable que la revisión 3D no lo vea.
+- Otros cinco desacuerdos, todos con el agente en `incierto` y la autora en «sin objeto»:
+  `CLINIC_0039`, `CLINIC_0058`, `CLINIC_0066`, `CLINIC_0077` (los tres primeros y el
+  último, borde del FOV) y `CLINIC_0068` (aquí el agente propuso `no` y la autora sí
+  anotó objeto).
+- **Por qué no lo cierro solo:** si `CLINIC_0074` tiene un objeto, está hoy dentro de los
+  70 candidatos a entrenamiento limpio. Es exactamente el modo de fallo que #19 describe.
+- **Pendiente de:** que la autora mire `CLINIC_0074` en cortes, no en 3D.
+
+### Nota de método, sin implicancia
+
+`Revisión 3D y cortes` quedó en `3D completa`, no en `completa`, porque la revisión fue
+del 3D y no del recorrido de cortes. Por eso ninguna cohorte se asigna todavía; el otro
+bloqueo es `Grupo paciente`, vacío en las 178 filas.

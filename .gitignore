@@ -1,4 +1,3 @@
-@'
 # ---- NUNCA subir ----
 # PDFs con copyright del editor
 papers/*
@@ -44,4 +43,3 @@ experiments/**/outputs/
 # ---- Sistema ----
 .DS_Store
 Thumbs.db
-'@ | Set-Content -Encoding utf8 .gitignore

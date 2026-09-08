@@ -3,6 +3,54 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-08 (cierre): auditada entera la cadena de citas del umbral de 10 mm con tres
+lecturas mas (`ziran2007fluoroscopic`, `moed2006s2screw`, `gardner2010safezones`).
+**Cuatro eslabones, ninguno lo mide**: Ziran no contiene el umbral, el "1 cm" de Moed es
+separacion interforaminal (otra magnitud), Kaiser lo elige y Gardner lo declara como
+consenso por calibre de tornillo. Conclusion: **nunca fue una medicion, es una convencion
+profesional**, y la tesis lo afirma con frases literales. Cadena declarada agotada.
+Decisiones de la autora aplicadas: **no estratificar por fenotipo** (#27 CERRADA, y con eso
+la objecion de Carlson 2000 deja de aplicar); la geometria en pelvis intactas se reescribe
+como **limitacion del campo** en `main.tex`; se anade el respaldo **anatomico** de C2 con
+los coeficientes de variacion de Ziran (hasta 97-140%); se adopta la **tabla de
+sensibilidad** de cribado a 1500/2500/3500 HU; Ziran queda N2 y Moed baja a **N2
+provisional**. `refs.bib` = 34. 16 decisiones fechadas en `01-decisiones.md`.
+**#28 nueva**: van den Bosch preparado con el encargo completo redactado y SIN ejecutar.
+Siguiente: conseguir el PDF de van den Bosch (decide el eje S1/S2 y puede cerrar #12),
+correr la tabla de sensibilidad y la cifra de R1 (#26). Ambas sobre datos ya en disco.
+
+## Paso anterior
+2026-09-08 (tarde/noche): la autora adopto las opciones recomendadas y autorizo
+aplicarlas. **APLICADO** en `tesis/main.tex` (RQ e hipotesis sin downstream, Obj 5
+eliminado con parrafo `Explicitly out of scope`, Obj 4 con SAP como unica metrica propia
+y metricas de Peters con sus nombres, C3 reescrita, el rango 31-60% sustituido por las dos
+distribuciones ordinales de Zwingmann condicionadas por tecnica y nivel sacro, zona segura
+via McLaren con el umbral declarado heredado), en `docs/00-tesis.md` (`Fuera de alcance`
+escrito con seis puntos) y en `docs/03-glosario.md` (escrito entero). Compila limpio, 31
+entradas. **#14 y #16 CERRADAS**; #13 y #18 degradadas a limitacion declarada.
+Alta y lectura de `kaiser2014dysmorphism`: **no** establece el 10 mm (tercer salto de
+cita, hacia Gardner 2010 / Ziran 2007 / Moed 2006), pero aporta el marco de referencia
+calculable (reformateo perpendicular al platillo de S1, angulo coronal vs crestas iliacas,
+angulo axial vs espinas iliacas posteriores, margen cortical de 5 mm, tres fenotipos).
+**#26 nueva**: Kaiser midio en pelvis SIN implante y excluye los CT con metal.
+Siguiente: la autora decide sobre las cinco propuestas de Kaiser (a-e), y falta que
+recoja en `01-decisiones.md` las seis decisiones ya aplicadas.
+
+## Paso anterior
+2026-09-08: alta de 3 fuentes (`mclaren2021corridor`, `hinsche2002fluoroscopy`,
+`templeman1996proximity`) y llegada del PDF de `wang2025adaptiveweighting`. `refs.bib`
+regenerado a 30 entradas. Tres lecturas con `lector-papers`. Resultado: **#1 CERRADA**;
+**#2 confirmada** contra el cuerpo; **#7 pasa a PARCIALMENTE CUBIERTA** (McLaren da
+umbral y procedimiento, no geometria parametrizada); **#12 agravada** (el 2-15% es cita
+de tercera mano y Hinsche es banco sobre plastico); **#13** con tres datos cruzados;
+**#24 nueva** (el respaldo de C3 es fuente secundaria y el mecanismo es cascada, no
+codificacion de entrada); **#25 nueva** (patron sistemico: tres anclas cuantitativas son
+citas heredadas). Decision de la autora tomada: adoptar metricas de Peters, Obj 5 fuera
+de alcance, Obj 4 modificado; falta registrarla en `01-decisiones.md` y aplicarla.
+Siguiente: que la autora elija opciones en #7, #12, #24 y #25, y decida el nivel de
+McLaren (ficha dice N2, `_index.md` dice N1).
+
+## Paso anterior
 2026-09-07: cerrados tres pendientes abiertos por orden de la autora.
 (1) **LNCS: se ignoran.** La tabla con los volumenes retirados salio de `refs/MAPEO.md`;
 en su lugar queda la decision de no perseguirlos, sin los valores, para que nadie los

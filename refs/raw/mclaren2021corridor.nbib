@@ -1,0 +1,109 @@
+PMID- 33649991
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20210921
+LR  - 20220426
+IS  - 1432-1068 (Electronic)
+IS  - 1633-8065 (Linking)
+VI  - 31
+IP  - 7
+DP  - 2021 Oct
+TI  - Corridor-diameter-dependent angular tolerance for safe transiliosacral screw 
+      placement: an anatomic study of 433 pelves.
+PG  - 1485-1492
+LID - 10.1007/s00590-021-02913-5 [doi]
+AB  - BACKGROUND: The purpose of this study was to determine the angular tolerance of 
+      the S1 and S2 segments to accommodate a transiliosacral screw across both 
+      sacroiliac joints. HYPOTHESIS: We hypothesized that the angular tolerance for 
+      transiliosacral screw placement would be more constrained than the angular 
+      tolerance for iliosacral fixation in pelves where a safe osseous corridor was 
+      measured. MATERIALS AND METHODS: The cortical boundaries of the S1 and S2 sacral 
+      segments in 433 pelvic CTs were digitally mapped. A straight-line path was placed 
+      within each osseous corridor and extended across both SI joints past the outer 
+      iliac cortices. The diameter of the path was increased until it breached the 
+      cortex, geometrically determining maximum diameter (Dmax). Angular tolerance for 
+      screw placement was calculated with trigonometric analysis of the Dmax value of 
+      the corridor, and the average distance from the termination of the osseous 
+      corridor to the site of percutaneous insertion. Gender, age, and BMI were 
+      evaluated as independent predictors using binomial logistic regression. RESULTS: 
+      The transiliosacral angular tolerance for the S1 and S2 osseous corridors was 
+      1.53 ± 0.57 degrees and 1.02 ± 0.33 degrees, respectively. 68.9% of S1 corridors 
+      and 81.1% of S2 corridors had a safe zone (corridor diameter ≥ 10 mm) for 
+      transiliosacral placement, 48.3% of the pelves had a safe zone for both 
+      corridors, while 5.1% had no safe zones. Females had a less frequent Dmax ≥ 10 mm 
+      at S1, 52% vs 67% (p = 0.001), and at S2, 64% vs 86% (p < 0.001). DISCUSSION: In 
+      conclusion, the angular tolerance of 1.53 and 1.03 degrees for the S1 and S2 
+      segments, respectively, creating a narrow interval for safe passage of the 
+      trans-iliac and trans-sacral, with approximately 31.1% of patients not having a 
+      viable corridor for screw passage. A correlation exist between S1 and S2 
+      corridors with Dmax ≥ 10 mm and the resulting increase in angular tolerance for 
+      safe passage of a transilioscral screw. LEVEL OF EVIDENCE IV: Level Retrospective 
+      Cohort.
+CI  - © 2021. The Author(s), under exclusive licence to Springer-Verlag France SAS part 
+      of Springer Nature.
+FAU - McLaren, D Alex
+AU  - McLaren DA
+AD  - SharedClarity, LLC, Phoenix, AZ, USA.
+FAU - Busel, Gennadiy A
+AU  - Busel GA
+AD  - HealthPartners, Minneapolis, MN, USA.
+FAU - Parikh, Harsh R
+AU  - Parikh HR
+AD  - Value Initiative, Minneapolis, MN, USA.
+FAU - Only, Arthur
+AU  - Only A
+AD  - Value Initiative, Minneapolis, MN, USA.
+AD  - Park Nicollet Methodist Hospital, 640 Jackson Street, St. Paul, St. Louis Park, 
+      MN, 55101, USA.
+AD  - TRIA Orthopaedics, Bloomington, MN, USA.
+FAU - Patterson, Jason
+AU  - Patterson J
+AD  - OrthoArizona, Phoenix, AZ, USA.
+FAU - Gaston, Brandon T
+AU  - Gaston BT
+AD  - Virginia Commonwealth School of Medicine, Richmond, VA, USA.
+FAU - McLemore, Ryan
+AU  - McLemore R
+AD  - Schafer Corporation, Washington, D.C, USA.
+FAU - Cunningham, Brian
+AU  - Cunningham B
+AUID- ORCID: 0000-0002-6653-2451
+AD  - Value Initiative, Minneapolis, MN, USA. brian.cunningham@parknicollet.com.
+AD  - Park Nicollet Methodist Hospital, 640 Jackson Street, St. Paul, St. Louis Park, 
+      MN, 55101, USA. brian.cunningham@parknicollet.com.
+AD  - TRIA Orthopaedics, Bloomington, MN, USA. brian.cunningham@parknicollet.com.
+LA  - eng
+PT  - Journal Article
+DEP - 20210301
+PL  - France
+TA  - Eur J Orthop Surg Traumatol
+JT  - European journal of orthopaedic surgery & traumatology : orthopedie traumatologie
+JID - 9518037
+SB  - IM
+MH  - *Bone Screws
+MH  - Female
+MH  - Fracture Fixation, Internal
+MH  - Humans
+MH  - Ilium/surgery
+MH  - Pelvis
+MH  - Retrospective Studies
+MH  - *Sacrum/surgery
+OTO - NOTNLM
+OT  - Angular tolerance
+OT  - Osseous corridor
+OT  - Posterior pelvic ring
+OT  - Sacral geometry
+OT  - Transiliosacral screw
+EDAT- 2021/03/03 06:00
+MHDA- 2021/09/22 06:00
+CRDT- 2021/03/02 06:22
+PHST- 2020/10/31 00:00 [received]
+PHST- 2021/02/12 00:00 [accepted]
+PHST- 2021/03/03 06:00 [pubmed]
+PHST- 2021/09/22 06:00 [medline]
+PHST- 2021/03/02 06:22 [entrez]
+AID - 10.1007/s00590-021-02913-5 [pii]
+AID - 10.1007/s00590-021-02913-5 [doi]
+PST - ppublish
+SO  - Eur J Orthop Surg Traumatol. 2021 Oct;31(7):1485-1492. doi: 
+      10.1007/s00590-021-02913-5. Epub 2021 Mar 1.

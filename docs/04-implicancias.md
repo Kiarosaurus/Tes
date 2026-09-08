@@ -1044,3 +1044,1011 @@ el instrumento para encontrarlo.
 `Revisión 3D y cortes` quedó en `3D completa`, no en `completa`, porque la revisión fue
 del 3D y no del recorrido de cortes. Por eso ninguna cohorte se asigna todavía; el otro
 bloqueo es `Grupo paciente`, vacío en las 178 filas.
+
+---
+
+## Actualizacion 2026-09-07 — consulta de alcance a 3 meses de la entrega
+
+### 23 — Recortar por el Objetivo 4 no acorta el camino critico — ABIERTA
+
+- **Origen:** consulta de la autora del 2026-09-07. Quedan 3 meses y percibe el alcance
+  como demasiado grande; propone adoptar las metricas de Peters en vez de formalizar BFC
+  e ISC. Analisis sobre entradas ya abiertas (#7, #8, #12, #13, #14, #16, #17, #18).
+  **No hay lectura nueva ni cifra nueva**: es una sintesis de lo ya registrado.
+- **Hallazgo:** el recorte propuesto actua sobre el **Objetivo 4**, que en `00-tesis.md`
+  ya esta en el alcance COMPLETO, no en el MINIMO VIABLE. Recorta el camino opcional,
+  no el critico. El camino critico es el MINIMO (Obj 1 + Obj 2 + SAP) y hoy tiene **dos
+  cimientos abiertos**:
+  - **#7**: el Objetivo 2, unica contribucion propia del minimo, se queda sin fuente
+    operacional de zona segura (`ramadanov2025safezone` es piloto sobre una sola CT, en
+    proyeccion 2D, sin umbral numerico).
+  - **#12**: SAP dice compararse contra un 31-60% que **no aparece** en
+    `zwingmann2009navigated`. Es derivacion propia sobre dos poblaciones distintas.
+  Mientras esos dos sigan abiertos, ningun recorte en los objetivos 3-5 cambia el riesgo
+  de la sustentacion.
+- **Tres consecuencias no registradas antes:**
+  1. **Orden de recorte invertido.** El Objetivo 5 (downstream Dice/HD95) es mas caro y
+     esta mas bloqueado que el 4: #13 (14 de 75 de CLINIC-metal anotados) y #18 (178 de
+     1184 volumenes en disco). Si algo sale primero, es el 5, no el 4.
+  2. **`Fuera de alcance` esta vacio** en `00-tesis.md`. Mientras nada este declarado
+     fuera, todo sigue dentro; la sensacion de exceso no se arregla recortando por
+     dentro sino escribiendo esa seccion.
+  3. **El titulo promete el renderizador.** `main.tex` titula *"using Multi-Window Latent
+     Diffusion"* y la Research Question y la Hypothesis giran sobre el LDM. Si el alcance
+     efectivo se reduce al muestreador — el MINIMO que la propia autora declaro
+     defendible por si solo — el titulo, la pregunta y la hipotesis dejan de coincidir
+     con lo entregado. Ademas el **Objetivo 1 se queda sin consumidor**: valida una
+     representacion multi-ventana que ningun modelo llegaria a usar.
+- **Sobre adoptar las metricas de Peters, en si:** es legitimo y defendible (heredar de
+  un benchmark publicado es mas solido que inventar), pero **no es gratis**: la #16 exige
+  renombrar o redefinir. Reportar *bone integrity* y *metal integrity* bajo las siglas
+  BFC e ISC deja el Objetivo 4 diciendo "Formalization" sobre algo que no se formalizo.
+- **Por que importa:** determina que se entrega en 3 meses y como se enuncia. Recortar
+  por el 4 da alivio percibido sin mover la fecha de entrega real.
+- **Seccion afectada:** `00-tesis.md` (alcance minimo, alcance completo, fuera de
+  alcance, fechas). En `main.tex`: titulo, Research Question, Hypothesis, Objetivos 4 y 5.
+- **Opciones:**
+  1. **Recomendada.** Congelar el alcance en Obj 1 + Obj 2 + SAP + un renderizador
+     demostrativo sin evaluacion downstream. Declarar Obj 5 fuera de alcance por #13 y
+     #18. Adoptar las metricas de Peters con **sus propios nombres**, y dejar SAP como
+     unica metrica propia. Antes que nada, cerrar #7 y #12.
+  2. Mantener Obj 3 completo y sacar Obj 4 y Obj 5. Exige igualmente cerrar #7 y #12.
+  3. Reducir al muestreador puro (Obj 1 + Obj 2 + SAP). Es el MINIMO tal como esta
+     escrito, pero obliga a retitular la tesis y a reescribir pregunta e hipotesis.
+- **Pendiente de:** decision de la autora. Ninguna opcion exige lectura adicional, salvo
+  la opcion 1 de #7 (McLaren 2021), que pide un PDF nuevo.
+
+---
+
+### 12 — ACTUALIZACION tras leer hinsche2002fluoroscopy (2026-09-08)
+
+**El 2%-15% tampoco se mide en Hinsche. Es una cita heredada, y la cadena sigue rio
+arriba.** Ficha: `docs/literatura/hinsche2002fluoroscopy.md`, PDF completo.
+
+- **Hallazgo 1 — Hinsche no mide ninguna tasa clinica de malposicion.** El rango aparece
+  una sola vez, en su Introduccion (p. 135), y esta atribuido a sus propias referencias
+  5, 11, 20 y 24: *"has been reported to range between 2% and 15%, even by experienced
+  surgeons"*. Esas cuatro son Ebraheim 1993, Keating 1999, Routt 1997 y Templeman 1996.
+  Es decir: `zwingmann2009navigated` cita a Hinsche, y Hinsche cita a otros cuatro.
+  **Ninguna fuente leida hasta hoy mide ese rango.**
+- **Hallazgo 2 — Hinsche es un banco sobre plastico, no un estudio clinico.**
+  *"28 plastic pelvic models (Synthes, Oberdorf, Switzerland) were used"* (Materials,
+  p. 136), mas 7 modelos adicionales. Sin fractura ni desplazamiento: *"No attempt to
+  create a fracture or displacement was made"* (p. 136). La evaluacion fue fisica, no
+  radiologica: cortaron el sacro con sierra de banda e inspeccion visual (Measurements,
+  p. 138). Sus tasas propias (93% seguro en S1; 71% y 64% en S2, Discussion pp. 141-142)
+  **no son prior clinico** y no deben citarse como tal. Los autores mismos avisan que el
+  modelo se desvia de la anatomia real (*"The alar slope of the plastic model seemed to
+  be steeper"*, p. 141) y cierran declarandose preclinicos: *"have led to initiation of a
+  clinical trial"* (p. 143).
+- **Hallazgo 3 — dos definiciones de malposicion que NO son intercambiables.** Hinsche usa
+  un criterio **binario**: *"unsafe when the screw path perforated one of the cortices
+  while jeopardizing neurovascular structures"* (Measurements, p. 138). `smith2006iliosacral`
+  y `zwingmann2009navigated` usan una escala **ordinal de cuatro grados** con umbrales en
+  milimetros (0 / <2 / 2-4 / >4 mm). Mezclar tasas de las dos familias en un mismo
+  benchmark seria un error de categoria. Toca la definicion de SAP y la de BFC.
+- **Hallazgo 4, util para el muestreador — la malposicion se concentra en S2.**
+  *"18 of the 22 (82%) misplaced screws were at the S2 level"* (Discussion, p. 142), con
+  tasas de 93% en S1 frente a 71% y 64% en S2. Aunque las cifras sean de banco, el patron
+  sugiere que **el muestreador deberia condicionar la distribucion de malposicion por
+  nivel vertebral (S1 vs S2), no aplicar una tasa unica**. Eso es diseno del Objetivo 2.
+- **Cautela aritmetica registrada por el agente lector:** el texto habla de 22 tornillos
+  mal colocados (p. 142) pero la Tabla 1 (p. 140) suma 28 colocaciones inseguras, y el PDF
+  no reconcilia ambos. Por eso **no se derivo ninguna tasa global**. No la derives despues.
+- **Efecto neto sobre #12:** la tesis se queda **sin ningun prior clinico de malposicion
+  respaldado por una fuente leida**. Las dos cifras que estaban en juego caen:
+  - 31-60%: derivacion propia (100-69, 100-40) sobre dos poblaciones separadas por tecnica.
+  - 2-15%: cita de tercera mano, sin fuente primaria leida.
+- **Opciones, revisadas:**
+  1. **Recomendada, y ahora con mas fuerza que antes.** Abandonar el rango unico y comparar
+     la distribucion generada contra **las dos distribuciones de cuatro grados** de
+     `zwingmann2009navigated`, que si son medidas, clinicas, por TC postoperatoria y
+     separadas por tecnica. Es lo unico que hoy resiste una pregunta del jurado.
+  2. Subir en la cadena y conseguir la fuente primaria: Routt 1997, Templeman 1996,
+     Ebraheim 1993 o Keating 1999. Exige PDFs nuevos. `templeman1996proximity` ya tiene
+     entrada en `refs.bib` desde su raw, pero **no tiene PDF**.
+  3. Sustituir la afirmacion cuantitativa por una cualitativa hasta tener fuente primaria.
+- **Pendiente de:** decision de la autora. La opcion 1 no exige ninguna lectura nueva.
+- **Candidatas de snowballing anadidas por el agente:** Routt 1997, Ebraheim 1993,
+  Keating 1999 (Templeman ya estaba), y Noojin 2000 para #7. Todas en `_candidatos.md`
+  como PENDIENTE; no se buscaron ni se descargaron.
+
+---
+
+## Actualizacion 2026-09-08 — lectura completa de wang2025adaptiveweighting
+
+Ficha regenerada desde el PDF (16 paginas, pp. 2408-2423):
+`docs/literatura/wang2025adaptiveweighting.md`. Sustituye por entero la version que se
+habia hecho solo desde el abstract.
+
+### 1 — CERRADA (2026-09-08)
+
+El PDF llego y se leyo completo. La ficha ya no lleva "Profundidad: solo abstract" y la
+regla 16 deja de aplicarle. El unico nivel 1 sin texto completo pasa a estar verificado.
+**Lo que la lectura encontro no es tranquilizador**, pero eso es #2, #24 y #9, no #1.
+`_index.md` actualizado a PDF `si`, acceso `COMPLETO`. El lector mantiene **N1**: el
+riesgo no bajo, cambio de sitio.
+
+### 2 — CONFIRMADA contra el cuerpo (2026-09-08)
+
+El multi-ventana publicado **es de remocion**, ahora con evidencia textual y no
+cualitativa: *"The image-domain-based technique aims to directly recover artifact-removed
+images from the corresponding corrupted ones"* (Sec. II-A, p. 2409). No hay una sola
+linea que proponga generar artefacto como objetivo.
+
+**Matiz que obliga a corregir la redaccion:** el paper **si** sintetiza metal, pero solo
+como fabrica de datos de entrenamiento, no como contribucion. Inserta hierro en cortes
+clinicos limpios — *"we select Fe as the metal material, manually segment the metal masks
+from clinical data"* (Sec. V-A-2, p. 2413), *"then insert them into the collected clinical
+slices by carefully adjusting the size, angle, and position"* (p. 2414) — con simulacion
+de haz en abanico, 120 kVp, endurecimiento de haz y volumen parcial. **Es otra instancia
+del patron de #9**, y sube a cinco los trabajos que ya insertan metal sintetico.
+
+### 24 — El respaldo de C3 es fuente SECUNDARIA, y ademas el mecanismo no es el mismo — ABIERTA
+
+- **Origen:** `wang2025adaptiveweighting` leido completo el 2026-09-08. Es el hallazgo
+  mas incomodo de la lectura y no estaba previsto en ninguna entrada.
+- **Hallazgo 1 — el marco multi-ventana NO es de este paper.** Viene de su referencia
+  [24], Niu & Wang, *Multiple window learning for metal artifact reduction*, SPIE 2021
+  (MWLNet). El propio texto: *"Motivated by the existing work [24], we construct the
+  general multiple-window MAR framework"* (Sec. III, p. 2410) y *"Following [24], we set
+  the number of windows B to three"* (Sec. V-A-1, p. 2412). Lo propio de AdaW es el
+  **peso de la perdida por ventana** en una optimizacion bi-nivel, no la codificacion.
+  Es decir: la fuente N1 que sostiene C3 es **secundaria** para justo lo que C3 reclama.
+  Mismo defecto que ya tiene `smith2006iliosacral` respecto de la escala 0-3.
+- **Hallazgo 2 — el mecanismo publicado no es el que plantea C3.** AdaW combina las
+  ventanas en **cascada secuencial** de ancha a estrecha, con una *window transfer layer*
+  que reclipa y renormaliza, y concatenacion por canal entre etapas (Eq. 1 y Fig. 1,
+  p. 2410). La tesis plantea una **codificacion multi-ventana de entrada**. Refinamiento
+  progresivo y codificacion multicanal simultanea no son lo mismo. Escribir "multi-ventana
+  (Wang et al., 2025)" sin esa salvedad atribuye al paper un diseno que no tiene.
+- **Hallazgo 3 — lo que si es citable y es bueno.** Las tres ventanas concretas, en rango
+  [L, H] y no en centro/ancho: LW [-1000HU, 2000HU], MW [-320HU, 480HU], SW
+  [-160HU, 240HU] (Sec. V-A-1, p. 2412). Y la normalizacion `Ynorm = (Yclamp - L)/(H - L)`
+  (Eq. 2, p. 2410). Eso alimenta directo el Objetivo 1 (round-trip MAE < 25 HU).
+- **Hallazgo 4 — B_delta sigue SIN precedente.** Ninguna banda, margen ni region
+  peri-implante con valor numerico: **NO ENCONTRADO EN EL PDF**. Solo menciones
+  cualitativas (*"especially around the metal implants"*, Sec. V-E, p. 2421). Esto juega
+  **a favor** de la tesis y refuerza #10: B_delta es lo que queda intacto como novedad.
+- **Por que importa:** toca el reclamo de novedad de C3 en el Problem Statement y la
+  redaccion del Objetivo 3. Si C3 se sostiene sobre una fuente secundaria y ademas
+  describe otro mecanismo, el reclamo hay que reescribirlo o hay que conseguir el
+  primario.
+- **Seccion afectada:** Problem Statement (C3), Objetivo 1, Objetivo 3, Related Work.
+- **Opciones:**
+  1. Conseguir Niu & Wang, SPIE 2021, y citarlo como origen del marco multi-ventana,
+     dejando a `wang2025adaptiveweighting` como la fuente de las ventanas concretas y del
+     argumento de que una ventana fija no transfiere. Exige PDF nuevo; el lector ya lo
+     dejo como candidato N1 en `_candidatos.md`.
+  2. Reescribir C3 para que la novedad NO sea "multi-ventana" sino la combinacion
+     multi-ventana **para sintesis** mas B_delta, que es lo unico sin precedente hallado.
+     No exige lectura nueva y es coherente con #2 y con #9.
+  3. Migrar el N1 a Niu & Wang cuando llegue, y bajar `wang2025adaptiveweighting` a N2.
+     El lector dejo esa alternativa registrada en `_index.md`.
+- **Pendiente de:** decision de la autora. La opcion 2 no exige ninguna lectura nueva.
+
+### 13 — DATO CRUZADO desde wang2025adaptiveweighting (2026-09-08)
+
+No cambia el estado de #13, pero aporta tres cosas verificadas contra un paper publicado:
+
+1. **Las 14 series se confirman desde fuera.** *"it contains 14 metal-corrupted volumes"*
+   (Sec. V-A-2, p. 2413), sobre CLINIC-metal, citando a `liu2021ctpelvic1k` como su
+   referencia [54]. Coincide exactamente con la cifra de #13.
+2. **El problema de la falta de referencia limpia ya lo enfrento otro grupo, y su salida
+   es reutilizable.** *"we can only provide visual evaluations on these two testing sets"*
+   (Sec. V-A-3, p. 2414); resuelven con 30 imagenes y puntuacion de 5 medicos en escala de
+   5 niveles (Sec. V-C-3, p. 2415). Si la validacion de realismo de la tesis necesita
+   lectura humana, hay precedente citable de como se hace sobre este mismo subconjunto.
+3. **Umbral de segmentacion de metal, util para #19 y #22:** *"clinical metals for
+   CLINIC-metal and SpineWeb are segmented with the thresholding of 2,500HU"*
+   (Sec. V-A-2, p. 2413). La exploracion local uso superficies a 300/1500/2500/3500 HU.
+   Que un paper publicado fije 2500 HU para mascara metalica sobre este mismo dataset es
+   respaldo directo para la definicion operativa que #22 pide.
+
+**Efecto colateral util:** CLINIC-metal aparece como set de generalizacion clinica en un
+TMI de 2025. Sostiene por escrito que ese subconjunto es el estandar de facto para MAR
+pelvico, lo que ayuda a justificar la eleccion de datos sin depender solo de #18.
+
+---
+
+## Actualizacion 2026-09-08 — lectura completa de mclaren2021corridor
+
+Ficha: `docs/literatura/mclaren2021corridor.md`. **22 entradas NO ENCONTRADO EN EL PDF.**
+
+### 7 — PARCIALMENTE CUBIERTA, NO CERRADA (2026-09-08)
+
+McLaren es mejor fuente que `ramadanov2025safezone` por dos ordenes de magnitud (433
+pelves con cortical mapeada frente a una sola CT en proyeccion 2D), y da lo que
+Ramadanov no daba: un umbral con numero y un procedimiento reproducible. Pero **no
+entrega la geometria parametrizada** que el muestreador necesita.
+
+**Lo que SI resuelve:**
+- **Umbral de zona segura con valor:** *"Dmax of >= 10 mm was defned as the target amount
+  of available space"* (Material and methods, PDF p. 2). Mismo umbral para S1 y S2.
+- **Procedimiento de Dmax, reimplementable:** malla 3D de densidad por voxel de los
+  contornos corticales, recta de tabla externa iliaca a tabla externa contralateral
+  cruzando ambas articulaciones SI, y diametro creciente *"until it contacted and breached
+  the thickness of the cortex... in at least three locations"*.
+- **Tolerancia angular transiliosacra:** S1 `1.53 +/- 0.57` grados y S2 `1.02 +/- 0.33`
+  grados (Results, PDF p. 4).
+- **Distribucion poblacional verificada:** 68.9% S1, 81.1% S2, 48.3% ambos, 5.1% ninguno.
+- **Sexo si predice, edad y BMI no:** S1 52% vs 67% (p = 0.001), S2 64% vs 86% (p < 0.001).
+- **Los cinco pasos del calculo estan en prosa:** `(Dmax - 7 mm)/2` como cateto corto,
+  150 mm de piel a cuerpo sacro como cateto largo, arcotangente, por dos.
+
+**Lo que NO resuelve, y por que #7 no cierra:**
+1. **El umbral de 10 mm es heredado y el propio paper lo declara no establecido:**
+   *"Reported between 8 and 12 mm, the minimal corridor for safely placing a
+   transiliosacral screw has not yet been established"*, y lo adopta de Kaiser
+   (Introduccion, PDF p. 2). No es un valor asentado: es un rango 8-12 mm con una
+   recomendacion elegida.
+2. **La zona segura es un ESCALAR, no una region.** Toda la geometria colapsa en un
+   numero por segmento. El paper dice que la posicion y la alineacion quedan
+   determinadas, pero **sus valores no se reportan**: coordenadas, angulos de entrada,
+   margen al foramen o a la cortical, longitud del corredor y Dmax medio en mm son
+   **NO ENCONTRADO EN EL PDF**.
+3. **Es una recta unica y maximal, no una distribucion.** Busca el camino mas grande;
+   no muestrea el espacio de poses viables ni las malposiciones. **Mide capacidad
+   anatomica, no comportamiento clinico.** El muestreador de la tesis necesita
+   exactamente lo contrario.
+4. **La tolerancia angular mezcla anatomia con tecnica percutanea.** El cateto largo es
+   la distancia piel-sacro *"estimated to be 150 mm"*, tomada de Templeman, y el ancho
+   util resta un tornillo de 7 mm. Si el origen fuera la cortical iliaca contralateral
+   en vez de la piel, la tolerancia **subiria**; los autores lo admiten (Discusion,
+   PDF p. 5). No es una restriccion intrinseca del volumen CT.
+5. **Sin periostio:** *"The technique does not account for periosteal thickness"*.
+6. **Todo lo medido es TRANSILIOSACRO** (cruza ambas articulaciones SI). El 4 grados
+   iliosacro es cita de Templeman, no medicion de McLaren. No son intercambiables.
+7. **Ecuacion en notacion matematica: NO ENCONTRADO EN EL PDF.** Solo prosa.
+8. **Procedencia de los datos opaca:** 433 CTs de una institucion sin nombrar;
+   resolucion, escaner y protocolo **NO ENCONTRADO EN EL PDF**.
+
+**Dos inconsistencias internas del PDF, registradas para no tropezar con ellas:**
+- S2 aparece como `1.02 +/- 0.33` en Resultados y `1.03 +/- 0.33` en Discusion, en
+  abstract y en cuerpo. El paper no lo explica.
+- El 31.1% *"sin corredor viable"* aparece **solo en el abstract**; el cuerpo dice 31% y
+  lo declara especifico de S1. El "sin ningun corredor" es 5.1%.
+- En el mismo parrafo conviven 48.3% (n=209) y *"352 (81.3%) pelves had both S1 and S2
+  corridors Dmax >= 10 mm"*. No se derivo nada de ahi.
+
+**Efecto neto sobre #7:** la restriccion de zona segura pasa de "sin respaldo" a
+"respaldo parcial, con umbral heredado". El muestreador **ya puede** justificar por
+escrito una regla de contencion cortical y un criterio de corredor viable. Lo que sigue
+sin heredarse es la parametrizacion de la pose: eso queda como construccion propia y
+hay que **declararlo como tal**, que era la opcion 2 original de #7.
+
+**Discrepancia de nivel que la autora debe resolver:** la ficha encabeza
+`Nivel de lectura: 2 (metodo)` y el lector propuso **N1** en `_index.md`. Los dos
+criterios son defendibles y no los concilio yo.
+
+**Candidatas nuevas en `_candidatos.md`:** Gottschling 2009 (el algoritmo de mapeo
+cortical, que McLaren no describe), Kaiser 2014 (el origen del umbral de 10 mm) y
+Lee 2015, mas otras seis. `templeman1996proximity` sube de urgencia.
+
+### 25 — Patron sistemico: tres anclas cuantitativas son citas heredadas — ABIERTA
+
+- **Origen:** sintesis de las tres lecturas del 2026-09-08. No es un hallazgo de un
+  paper: es un patron que solo se ve poniendolas juntas, y por eso se registra.
+- **Hallazgo:** tres de los numeros que sostienen la tesis **no se miden en la fuente que
+  la tesis cita**. En los tres casos la fuente los hereda de un tercero:
+  1. **Tasa de malposicion 2%-15%** -> `hinsche2002fluoroscopy` la cita de Ebraheim 1993,
+     Keating 1999, Routt 1997 y Templeman 1996 (Introduccion, p. 135).
+  2. **Umbral de zona segura Dmax >= 10 mm** -> `mclaren2021corridor` lo adopta de Kaiser
+     y declara que el corredor minimo *"has not yet been established"*, con rango previo
+     de 8 a 12 mm (Introduccion, PDF p. 2).
+  3. **Marco multi-ventana en HU** -> `wang2025adaptiveweighting` lo toma de Niu & Wang,
+     SPIE 2021: *"Motivated by the existing work [24]"* (Sec. III, p. 2410).
+  Se suma un cuarto, mas fino: el **cateto de 150 mm** con el que McLaren deriva su
+  tolerancia angular esta *"estimated"* y tomado de Templeman.
+- **Por que importa:** no son tres coincidencias. Es que **las anclas cuantitativas de la
+  tesis estan sistematicamente a un salto de cita de donde se cree que estan.** Cada vez
+  que la tesis escriba "X segun Fuente", hay que verificar si Fuente lo mide o lo hereda.
+  Por la regla 2 de `CLAUDE.md`, citar a quien hereda es atribuir un dato que la fuente
+  no produjo.
+- **Consecuencia practica:** `templeman1996proximity` pasa a ser **la fuente sin PDF mas
+  cara del proyecto**. Sostiene dos cosas a la vez: es uno de los cuatro origenes del
+  2%-15% y es el origen del 150 mm de McLaren. Es el unico PDF cuya ausencia bloquea dos
+  entradas distintas.
+- **Seccion afectada:** toda cita cuantitativa. En concreto: Problem Statement (C3 y el
+  rango de malposicion), Objetivo 2 (zona segura), Objetivo 4 (SAP).
+- **Opciones:**
+  1. **Recomendada.** Auditar las cifras que ya estan escritas en `main.tex` marcando
+     cuales son medidas por su fuente y cuales heredadas, y reescribir las heredadas como
+     "reportado en la literatura y recogido por Fuente" en vez de "segun Fuente". No
+     exige ninguna lectura nueva.
+  2. Subir un eslabon en las tres cadenas: Kaiser, Niu & Wang y Routt/Templeman. Tres
+     PDFs nuevos; ninguno esta en `papers/`.
+  3. Reenunciar las afirmaciones para que no dependan de heredar un numero: usar
+     distribuciones medidas en vez de rangos citados, y reclamar novedad sobre la
+     combinacion en vez de sobre el componente.
+- **Pendiente de:** decision de la autora. La opcion 1 no exige lectura nueva y es la que
+  mas riesgo quita por hora invertida.
+
+---
+
+## Nota provisional 2026-09-08 — CUMPLIDA Y CERRADA
+
+Las tres lecturas terminaron el 2026-09-08 y sus hallazgos estan arriba, con evidencia
+textual y pagina: Hinsche en la actualizacion de #12, Wang en el cierre de #1 y en #24,
+McLaren en la actualizacion de #7 y en #25. Nada de la nota provisional sigue vigente;
+ninguna de sus cifras de abstract debe usarse: usar las de las fichas.
+
+## Actualizacion 2026-09-08 (tarde) — DECISIONES APLICADAS por orden de la autora
+
+La autora adopto las opciones recomendadas y autorizo aplicarlas en el mismo turno.
+Lo que sigue **ya esta escrito** en `tesis/main.tex`, `docs/00-tesis.md` y
+`docs/03-glosario.md`. Falta que la autora lo recoja en `docs/01-decisiones.md`, que
+Claude no toca (regla 3).
+
+### 12 — APLICADA (redaccion)
+El rango unico desaparece de `main.tex`. El Problem Statement, el Objetivo 2 y la fila
+SAP de Expected Results citan ahora las **dos distribuciones ordinales de cuatro grados**
+de `zwingmann2009navigated` (navegado 69/15/8/8; convencional 40/37/11.5/11.5), declaradas
+como dos poblaciones por tecnica y no como un rango. Se anade el condicionamiento por
+**nivel sacro** con el 82% en S2 de `hinsche2002fluoroscopy`, citado explicitamente como
+banco sobre plastico. **Lo que sigue vivo:** conseguir una fuente primaria del 2-15%
+(Routt, Ebraheim, Keating o Templeman) si alguna vez se quiere una tasa agregada.
+
+### 7 — APLICADA (redaccion), sigue ABIERTA en lo tecnico
+`main.tex` sustituye la zona segura cualitativa por la viabilidad de corredor de
+`mclaren2021corridor`, con las dos tolerancias angulares, y **declara por escrito** que
+el umbral de 10 mm es heredado y reportado como no establecido (8-12 mm), y que la
+parametrizacion de la pose es construccion propia. `ramadanov2025safezone` se conserva
+citado, pero como descripcion cualitativa, que es lo que es. **Lo que sigue vivo:** la
+geometria parametrizada (coordenadas, angulos de referencia, margenes) no existe en
+ninguna fuente leida. `kaiser2014dysmorphism` esta en lectura y puede cambiarlo.
+
+### 24 — APLICADA (redaccion)
+C3 reescrita. Ya no reclama el multi-ventana como novedad: dice que es de trabajo previo
+de MAR y que `wang2025adaptiveweighting` lo atribuye a su vez a trabajo anterior. La
+novedad reclamada es **el uso para sintesis mas B_delta**, y se afirma que no se hallo
+precedente publicado que cuantifique una banda peri-implante.
+
+### 14 y 16 — CERRADAS por la decision de retirar BFC e ISC
+No hay siglas propias que rellenar con medidas heredadas, asi que el conflicto
+desaparece. La apariencia se evalua con **bone integrity, metal integrity y streak
+amplitude** bajo sus nombres publicados. La escala 0-4 no se traslada. **SAP queda como
+unica metrica introducida por la tesis.** Registrado tambien en `03-glosario.md` con un
+aviso de no reintroducir BFC ni ISC.
+
+### 13 y 18 — DEGRADADAS de bloqueo a limitacion declarada
+Al salir el Objetivo 5 del alcance, dejan de bloquear. `main.tex` incorpora un parrafo
+**Why downstream evaluation is excluded** que da las dos condiciones auditables (anotacion
+parcial y coleccion incompleta en disco) en vez de alegar falta de tiempo, y usa
+`wang2025adaptiveweighting` para sostener que ese subconjunto es el estandar de facto.
+`00-tesis.md` las recoge en `Fuera de alcance`.
+
+### 22 — DEFINICION OPERATIVA ESCRITA, recuento pendiente
+`03-glosario.md` fija el umbral de mascara metalica en **2500 HU**, con la frase literal
+de `wang2025adaptiveweighting` sobre este mismo subconjunto. Queda el aviso de que un
+umbral en HU no encuentra material no metalico (#19). **Lo que sigue vivo y es de la
+autora:** rehacer el recuento de volumenes limpios con esa definicion. Es la diferencia
+entre 70 y 97 volumenes de entrenamiento.
+
+### 25 — APLICADA en `main.tex`, pendiente el barrido completo
+Las tres anclas heredadas quedan marcadas como tales en el texto: el umbral de 10 mm, el
+marco multi-ventana y el rango de malposicion. `03-glosario.md` repite el aviso en cada
+termino afectado. **Lo que sigue vivo:** el barrido del resto de cifras del documento y
+de las fichas, que no se ha hecho entero.
+
+### 23 — RESUELTA en su parte de alcance
+`00-tesis.md` ya tiene `Fuera de alcance` escrito con seis puntos, que era el vacio que
+la entrada senalaba. El Objetivo 5 sale; el Objetivo 4 se modifica. **Lo que sigue vivo:**
+la tabla de `Fechas` de `00-tesis.md` sigue vacia.
+
+### Cambios estructurales en `tesis/main.tex` (2026-09-08)
+- Research Question: se elimina el impacto downstream y se remite al alcance.
+- Hypothesis: se retira la frase de segmentacion downstream; SAP pasa a ser la unica
+  metrica propia; el brazo fisico se nombra como el protocolo adoptado.
+- Objetivo general: la robustez downstream pasa a "in future work".
+- Objetivos: el 5 desaparece de la lista y se anade el parrafo
+  **Explicitly out of scope**.
+- Expected Results: la fila de downstream se sustituye por **Preservation outside
+  $B_{\delta}$** (RMSE y SSIM en el complemento de la banda), que era lo que
+  `peters2025hybrid` ya sostenia.
+- Compila limpio: 0 citas indefinidas, 31 entradas en el `.bbl`.
+
+## Actualizacion 2026-09-08 (noche) — lectura completa de kaiser2014dysmorphism
+
+Ficha: `docs/literatura/kaiser2014dysmorphism.md`. **41 entradas NO ENCONTRADO EN EL PDF.**
+El Appendix (tabla de scores por quintil, figura de clusters) esta fuera del PDF.
+**Nada de esto se ha aplicado a `main.tex`: la autora pidio discutirlo antes.**
+
+### 25 — CONFIRMADA y PROFUNDIZADA: la cadena del 10 mm tiene tres saltos
+
+Kaiser **tampoco** establece el umbral. Lo elige y lo hereda:
+- Metodos, p. e120(2): *"A 10-mm-diameter corridor perpendicular to the axis of the safe
+  zone was chosen as a conservative size for passage of an iliosacral screw"* (refs. 29 y 37).
+- Discusion, p. e120(7): *"has been previously established as a reasonably 'safe'-diameter
+  corridor by experienced surgeons"* (refs. 4, 29 y 37).
+- Los autores lo llaman *"our conservative 10-mm threshold"*.
+
+Cadena completa: `mclaren2021corridor` -> `kaiser2014dysmorphism` -> Gardner 2010 (ref. 29),
+Ziran 2007 (ref. 37) y Moed 2006 (ref. 4). **Tres saltos y tres PDFs que no estan en
+`papers/`.** Las tres quedaron en `_candidatos.md` con nivel sugerido 1.
+
+**Hallazgo que cambia la recomendacion:** el paper **si** da su justificacion interna, y no
+es empirica sino **dimensional**: *"Ten millimeters was chosen to allow 1 to 2 mm of
+circumference around a 6.3 to 8-mm-diameter screw"* (Discusion, p. e120(7)). Es decir, el
+10 mm **no es un umbral de seguridad clinica validado: es una regla de holgura geometrica
+derivada del diametro del tornillo**. Eso se puede citar de Kaiser directamente, con su
+frase, sin subir la cadena. Perseguir Gardner, Ziran y Moed compraria muy poco.
+
+**Recomendacion (pendiente de la autora):** NO subir la cadena. Reenunciar el 10 mm como
+criterio de holgura geometrica, citando a Kaiser como quien lo adopta y su razon
+dimensional. Cierra la rama mas cara de #25 sin ningun PDF nuevo.
+
+### 7 — CUBIERTA OPERACIONALMENTE (propuesta de cierre, pendiente de la autora)
+
+Kaiser aporta lo unico que faltaba y que `mclaren2021corridor` no daba: **un marco de
+referencia calculable sobre un volumen CT.**
+
+- **Plano de reformateo:** *"Each CT scan was reformatted along the axis of the sacrum"*
+  (p. e120(2)), con el eje *"perpendicular to the superior end plate of the first sacral
+  segment"* (Fig. 1, pie, p. e120(3)).
+- **Angulo coronal:** *"angle subtended by a line drawn perpendicular to the axis of the
+  osseous corridor"* **y** *"a line connecting the top of the iliac crests"* (p. e120(2)).
+- **Angulo axial:** la misma perpendicular **y** *"a line connecting the posterior iliac
+  spines"* (p. e120(2)).
+- **Score:** *"sacral dysmorphism score = (first sacral coronal angle) + 2(first sacral
+  axial angle)"* (Resultados, p. e120(4)).
+- **Margen cortical operativo, que nadie mas daba:** *"no less than 5 mm of distance to the
+  cortex on either side"* (p. e120(2)). Es un numero para la contencion cortical.
+- **Valores poblacionales:** coronal S1 `22.6 +/- 11.1` grados, axial S1 `11 +/- 10.5`
+  grados, area minima S1 `417.4 +/- 81.1` mm2 (Tabla II, p. e120(5)).
+- **Estratificacion:** tres fenotipos por longitud de corredor (>120 mm en S1; <120 mm en
+  S1 y >110 mm en S2; corto en ambos), con medias y DE por cluster (Tabla III). El
+  fenotipo dismorfico es el **41%** de la cohorte.
+
+Los landmarks son **oseos y segmentables**: platillo superior de S1, crestas iliacas,
+espinas iliacas posteriores. Es la primera cosa de toda la bibliografia que se puede
+implementar directamente sobre un volumen.
+
+**Propuesta:** bajar #7 de RIESGO a cubierta operacionalmente. Lo que queda como
+construccion propia es la **distribucion de poses**, que es justamente la contribucion.
+
+**Cautelas que hay que escribir si se adopta:**
+1. El `>70` es **descriptivo, no umbral validado**: *"There were no safe transsacral
+   corridors in any subject with a dysmorphic score >70"* (Resultados, p. e120(4)), sobre
+   104 pelves. Presentarlo como corte validado seria repetir el error de #12.
+2. Los propios autores declaran que falta validacion: *"Future clinical research is
+   recommended to validate and test the ability to use reformatted CT"* (p. e120(7)).
+3. Cuatro discrepancias internas del PDF documentadas por el lector (tres rangos de
+   acuerdo entre revisores, dos de kappa, una fila de longitud que contradice al texto, y
+   las refs. 17 y 22 duplicadas).
+
+### 26 — Los landmarks de Kaiser se midieron en pelvis SIN implante — ABIERTA
+
+- **Origen:** `kaiser2014dysmorphism` leido el 2026-09-08. Riesgo tecnico nuevo, no
+  bibliografico.
+- **Hallazgo:** la cohorte es de **pelvis no lesionadas** (*"a consecutive series of 104
+  uninjured pelves"*, p. e120(2)) y el criterio de exclusion es explicito: se excluyen los
+  CT con *"any pelvic ring injury, radiographic contrast medium or implants obscuring the
+  lumbosacral junction"* (Materials and Methods, p. e120(2)). **Excluye justamente los
+  volumenes con implante, que son el caso de uso de esta tesis.**
+- **Por que importa:** el muestreador tiene que calcular el marco de referencia sobre
+  volumenes de CLINIC-metal, donde hay metal y artefacto. Los tres landmarks (platillo
+  superior de S1, crestas iliacas, espinas iliacas posteriores) pueden quedar oscurecidos
+  por streaking justo en la union lumbosacra. Si no sobreviven, el marco de referencia no
+  se puede calcular donde mas se necesita.
+- **Seccion afectada:** Objetivo 2, implementacion del muestreador. No toca la redaccion
+  del Problem Statement.
+- **Opciones:**
+  1. **Recomendada, y es barata.** Verificarlo localmente: medir en cuantos de los
+     volumenes con metal se pueden ubicar los tres landmarks. Es un experimento sobre datos
+     que ya estan en disco, no una lectura. Da una cifra propia y citable.
+  2. Calcular el marco de referencia solo sobre los volumenes limpios (que son la fuente de
+     anatomia del muestreador de todos modos) y declarar la limitacion para los de test.
+  3. Definir un marco de referencia alternativo con landmarks mas lejanos al metal.
+- **Pendiente de:** decision de la autora. La opcion 1 no exige lectura y responde con un
+  numero medido en casa.
+
+## Actualizacion 2026-09-08 (noche, 2) — Kaiser APLICADO y respuesta sobre el 2500 HU
+
+### 22 — El 2500 HU SI es arbitrario. Peters NO lo respalda, y respalda lo contrario
+
+La autora pregunto si hay alguna fuente que sostenga el umbral. Respuesta corta: **una
+sola, y para otra cosa.** Lo verificado:
+
+| Fuente | Umbral | Para que | Sirve para #22? |
+|---|---|---|---|
+| `wang2025adaptiveweighting` | **2500 HU fijo** | segmentar mascara metalica en CLINIC-metal y SpineWeb | Si, pero como **cribado**, no como definicion |
+| `peters2025hybrid` (metal integrity) | **adaptativo por ROI**: mayor HU del ROI + 250 | medir integridad del metal | **No.** Y contradice el enfoque de umbral fijo |
+| `peters2025hybrid` (bone integrity) | 150 HU | separar hueso | No, es para hueso |
+
+**Peters no respalda el 2500 HU: hace lo contrario.** Su umbral es **relativo al ROI**,
+precisamente porque un umbral absoluto no transfiere entre adquisiciones. Citar a Peters
+como respaldo de un 2500 fijo seria un error, y ademas del mismo tipo que #25.
+
+**Lo unico que respalda el 2500 es Wang**, y ahi es una conveniencia de segmentacion para
+fabricar mascaras, no una definicion fisica de metal. Su valor esta en que es **sobre el
+mismo subconjunto** (CLINIC-metal), asi que es un precedente citable y no una invencion.
+
+**Opinion, para decision de la autora: separar los dos trabajos, que hoy estan mezclados.**
+
+1. **Cribado y definicion de cohorte (#22).** Umbral **fijo de 2500 HU**, citando a Wang
+   sobre este mismo dataset, y **declarado como convencion de cribado**, no como
+   definicion fisica. Es defendible: reproducible, con precedente publicado, y la
+   pregunta que responde ("este volumen entra a entrenamiento limpio o no") tolera un
+   criterio conservador.
+2. **Medicion de metal integrity.** Umbral **adaptativo por ROI** de Peters, que es el que
+   la metrica exige. Es la metrica adoptada; usar su propia regla es lo coherente.
+
+Asi el 2500 deja de ser "la definicion de metal" y pasa a ser "el filtro con el que se
+armo la cohorte", que es todo lo que #22 necesitaba.
+
+**Dos limites que hay que escribir igualmente:**
+- Un umbral en HU **no encuentra material no metalico**. Si `objeto extrano` llega a
+  incluirlo, el instrumento es otro (#19). La revision 3D local ya encontro un objeto por
+  debajo de 1500 HU que resulto no ser metal.
+- La exploracion local uso superficies a 300/1500/2500/3500 HU. El 2500 coincide con una
+  de ellas, lo que facilita rehacer el recuento sin recalcular nada.
+
+**Pendiente de la autora:** aceptar la separacion en dos umbrales y rehacer el recuento de
+volumenes limpios. Es la diferencia entre 70 y 97 volumenes de entrenamiento.
+**No se ha tocado `03-glosario.md`**, que sigue con la redaccion de umbral unico.
+
+### 7 — APLICADA a `main.tex`, baja a cubierta operacionalmente
+
+El marco de referencia de Kaiser esta escrito en el Problem Statement y en el Objetivo 2:
+reformateo por el eje sacro perpendicular al platillo superior de S1, angulo coronal contra
+la linea de crestas iliacas, angulo axial contra la linea de espinas iliacas posteriores, y
+holgura cortical de 5 mm. Los fenotipos entran como estratificador descriptivo (41%
+dismorfico). El `>70` **no** se usa como corte.
+
+### 25 — APLICADA en su parte del 10 mm
+
+`main.tex` dice ahora que el criterio de 10 mm **no es un umbral de seguridad validado** y
+lo cita con la razon dimensional de Kaiser (holgura de 1-2 mm alrededor de un tornillo de
+6.3-8 mm). **Sigue vivo:** la autora subio `moed2006s2screw`, `gardner2010safezones` y
+`ziran2007fluoroscopic` en una primera ronda; estan en lectura. Si ninguno mide el umbral,
+la cadena se declara agotada y la redaccion actual queda firme.
+
+### 26 — ESCRITA COMO RIESGO DECLARADO en `main.tex`
+
+Por decision de la autora, el riesgo no se esconde: la seccion Datasets lleva un parrafo
+**Declared risk: landmark visibility under metal artifact** que dice que la cohorte de
+Kaiser excluyo los CT con implantes en la union lumbosacra, que la visibilidad de los
+landmarks bajo artefacto no esta establecida por la fuente, y que se cuantificara en la
+cohorte local antes de comprometerse, con contingencia explicita.
+**Sigue ABIERTA hasta que exista la cifra medida en casa.**
+
+### 27 — PENDIENTE en RIESGO: hasta donde comprometerse con Kaiser — ABIERTA
+
+- **Origen:** decision de la autora del 2026-09-08. Se adopta lo operacional de Kaiser y se
+  deja explicitamente sin decidir el resto.
+- **Lo adoptado:** marco de referencia, definiciones angulares, margen de 5 mm, fenotipos
+  como estratificador descriptivo.
+- **Lo que queda pendiente:** usar el score de dismorfismo como **predictor**, adoptar el
+  corte `>70`, o convertir los cortes de longitud de los tres fenotipos en **reglas duras**
+  del muestreador.
+- **Por que no se cierra:** el `>70` es descriptivo en su fuente, no un umbral propuesto;
+  los autores declaran que falta validacion externa (*"Future clinical research is
+  recommended to validate and test the ability to use reformatted CT"*); el Appendix con la
+  tabla de scores por quintil y la figura de clusters **esta fuera del PDF**; y la ficha
+  documenta cuatro discrepancias internas.
+- **Que decide la continuacion:** (a) el resultado de #26, porque si el marco no sobrevive
+  al metal comprometerse mas con Kaiser no tiene sentido; y (b) lo que aporten
+  `moed2006s2screw`, `gardner2010safezones` y `ziran2007fluoroscopic`.
+- **Pendiente de:** decision de la autora, despues de esas dos cosas.
+
+## Actualizacion 2026-09-08 (noche, 3) — lectura de ziran2007fluoroscopic
+
+Ficha: `docs/literatura/ziran2007fluoroscopic.md`. **24 entradas NO ENCONTRADO EN EL PDF.**
+Es el primero de los tres eslabones de la cadena del 10 mm que la autora subio.
+
+### 25 — PRIMER ESLABON DESCARTADO: la ref. 37 de Kaiser NO contiene el umbral
+
+**El umbral de 10 mm NO ESTA en `ziran2007fluoroscopic`.** El lector reviso texto completo,
+abstract, Tabla 1, pies de las figuras 1-10, Apendice y conclusiones. **El paper no mide
+ninguna distancia**: todas sus mediciones son angulares, en grados, con goniometro de
+1 grado. Los unicos milimetros del texto son el **diametro del tornillo**, no del corredor.
+
+Kaiser cita a esta fuente como una de las tres que habrian "establecido" el 10 mm. **No lo
+hace.** Queda documentado que la cadena no termina aqui, y que al menos una de las tres
+atribuciones de Kaiser no se sostiene.
+
+**Efecto sobre la decision ya tomada:** ninguno en contra. Refuerza la decision del
+2026-09-08 de usar el 10 mm como **convencion de holgura geometrica** con la razon
+dimensional de Kaiser, en vez de perseguir un origen empirico que, por ahora, no aparece.
+Quedan `gardner2010safezones` y `moed2006s2screw`, en lectura.
+
+### C2 — APORTE INESPERADO: evidencia de que el corredor NO es fijo
+
+Es lo mas util del paper para esta tesis, y no estaba previsto. Los coeficientes de
+variacion de la orientacion de las superficies oseas van de **7%-25%** en general hasta
+**43%**, **47%-52%** y, en el peor caso, *"the orientation of the superior S1 ala in the
+sacral frontal plane (97% to 140%)"* (Resultados, p. 352).
+
+**Por que importa:** la contribucion C2 afirma que no existe una pose canonica y que hay
+que muestrear una distribucion. Hasta hoy ese argumento se apoyaba en las tasas de
+malposicion. Ahora tiene un respaldo **anatomico y directo**: la geometria del corredor
+varia tanto entre individuos que una trayectoria fija no puede ser correcta para todos.
+Rol compartido con `arand2019pelvicring`. Material de Problem Statement y Related Work.
+
+### 26 — REFORZADA: toda esta literatura mide pelvis intactas
+
+Tercer paper consecutivo con el mismo sesgo de poblacion. `kaiser2014dysmorphism` excluye
+CT con implantes en la union lumbosacra; `mclaren2021corridor` usa CTs "naive";
+`ziran2007fluoroscopic` es cadaverico y avisa: *"the presence of fracture and displacement
+would significantly affect fluoroscopic visualization"*, ademas de *"presence of
+soft-tissue injury and variations of body habitus would affect the ability to visualize"*
+(Discusion, p. 354).
+
+**No es coincidencia: es el estado del campo.** Toda la geometria de corredor disponible se
+midio en pelvis intactas, sin fractura y sin implante. La tesis la necesita en pelvis con
+metal y, en el caso clinico, fracturadas. Esto **sube el peso del riesgo R1**: no es solo
+que los landmarks puedan no verse, es que ninguna fuente ha caracterizado el corredor en la
+poblacion de interes. Conviene escribirlo como limitacion del campo, no como debilidad
+propia.
+
+### Nivel propuesto
+El lector propone **N2, acceso COMPLETO**, y **descarta explicitamente N4**: cubre dos roles
+vigentes (eslabon auditado de la cadena, y evidencia de variabilidad angular). No entra al
+muestreador como restriccion ejecutable, porque no da longitudes ni trabaja en volumen:
+todo vive en el marco de referencia del haz de fluoroscopia, que un CT no tiene.
+
+## Actualizacion 2026-09-08 (noche, 4) — lectura de moed2006s2screw
+
+Ficha: `docs/literatura/moed2006s2screw.md`. **31 entradas NO ENCONTRADO EN EL PDF.**
+Segundo eslabon de la cadena del 10 mm.
+
+### 25 — EL HALLAZGO MAS GRAVE DE LA CADENA: el 10 mm CAMBIA DE MAGNITUD
+
+En `moed2006s2screw` **si aparece un 1 cm, y es nodo terminal**: no lleva llamada de
+referencia, o sea que no lo hereda de nadie. Pero **no mide lo que Kaiser dice que mide**.
+
+| Fuente | Que dice el numero | Que magnitud es |
+|---|---|---|
+| `moed2006s2screw` | *"a minimum of 1 cm between the S1 and S2 neural foramina on 3 sequential preoperative CT 3-mm sections"* (Metodos, p. 379) | **separacion interforaminal** medida en cortes axiales 2D, usada como **criterio de inclusion** de pacientes |
+| `kaiser2014dysmorphism` | *"A 10-mm-diameter corridor perpendicular to the axis of the safe zone"* | **diametro de corredor** en 3D |
+
+**No son la misma cantidad.** Una es la distancia entre dos forámenes en cortes axiales; la
+otra es el diámetro de un cilindro perpendicular al eje del corredor. Kaiser atribuye a
+Moed un umbral que Moed no formula.
+
+**Esto es peor que una cita heredada: es una cita heredada y transformada.** El numero
+sobrevive el salto pero cambia de significado. Es el caso mas fuerte de la implicancia #25
+encontrado hasta ahora, y es exactamente lo que la regla 2 de `CLAUDE.md` existe para
+evitar.
+
+**Estado de la cadena tras dos de tres lecturas:**
+- `ziran2007fluoroscopic` (ref. 37 de Kaiser): **no contiene el umbral**. No mide ninguna
+  distancia.
+- `moed2006s2screw` (ref. 4 de Kaiser): contiene un 1 cm terminal, pero **de otra magnitud**.
+- `gardner2010safezones` (ref. 29 de Kaiser): **en lectura. Unica candidata viva** a
+  contener un umbral que sea de verdad un diametro de corredor.
+
+**Efecto sobre la decision ya tomada:** la refuerza y le da un argumento que antes no
+tenia. El 10 mm se usa como **convencion de holgura geometrica** con la justificacion
+dimensional de Kaiser (1-2 mm alrededor de un tornillo de 6.3-8 mm) porque esa
+justificacion es **autocontenida**: no depende de una cadena que, auditada, pierde el
+origen y ademas cambia de magnitud. La tesis puede afirmar esto por escrito y con
+evidencia, que es mas de lo que la mayoria de trabajos del area puede.
+
+### 12 — NO SE CIERRA. Moed no aporta prior clinico
+
+Se leyo con la esperanza de que 49 casos dieran una tasa medida. **No la dan:**
+- **0 de 53 tornillos** mal colocados. El paper **nunca escribe un porcentaje**.
+- Criterio **binario** (*"satisfactory screw position"*, p. 380), **sin definicion
+  operacional**, sin observador cegado.
+- Cohorte **auto-seleccionada por el propio umbral de 1 cm**: solo entraron pacientes con
+  separacion interforaminal suficiente, o sea los anatomicamente faciles.
+- El unico compromiso foraminal fue por **perdida de reduccion postoperatoria**, no por
+  error de insercion.
+
+Como prior de malposicion es inservible, y ademas su criterio binario pertenece a la otra
+familia, no a la escala ordinal de `smith2006iliosacral`. **#12 sigue abierta.**
+
+### 12 — TRAMPA DE CRITERIO REGISTRADA, para no tropezar despues
+
+La unica escala en milimetros de `moed2006s2screw` (4 / 5-10 / 11-20 / >20 mm) es de
+**calidad de reduccion de la fractura**, tomada de Matta y Tornetta 1996. **No es posicion
+del tornillo.** Se parece peligrosamente a la escala 0/<2/2-4/>4 mm de
+`smith2006iliosacral` y mide algo distinto. **No mezclar.** Matta 1996 queda como candidato
+para deslindarla si hace falta.
+
+### 12 — LA PISTA QUE SI VALE: van den Bosch, S1 vs S2 en pacientes
+
+`moed2006s2screw` cita a van den Bosch con **6/31 frente a 1/49 por nivel vertebral**.
+**Es la unica cifra comparativa S1 vs S2 medida en pacientes que ha aparecido en todo el
+proyecto**, y llega justo despues de que la tesis decidiera condicionar el muestreador por
+nivel sacro.
+
+**Aviso de procedencia:** esa cifra es **de segunda mano**, leida dentro de Moed. Por la
+regla 2 no puede ir a la tesis sin el PDF de van den Bosch. Subido a nivel 1 en
+`_candidatos.md`.
+
+**Por que importa ahora:** el eje S1/S2 que se acaba de escribir en `main.tex` se apoya hoy
+**solo en `hinsche2002fluoroscopy`, que es banco sobre plastico**. Si van den Bosch se
+consigue, ese eje pasa a tener respaldo clinico. Es la fuente pendiente mas rentable del
+proyecto ahora mismo, por delante de `templeman1996proximity`.
+
+### Nivel propuesto
+El lector propone **N1**, con N2 como alternativa defendible: es el primer eslabon de la
+cadena que no reenvia a nadie y el que demuestra que el numero heredado mide otra magnitud.
+Citarlo mal deja mal definida la restriccion del Objetivo 2. Decision de la autora.
+
+## Actualizacion 2026-09-08 (noche, 5) — lectura de gardner2010safezones. CADENA CERRADA
+
+Ficha: `docs/literatura/gardner2010safezones.md`. **25 entradas NO ENCONTRADO EN EL PDF.**
+Tercer y ultimo eslabon de la ronda que subio la autora.
+
+### 25 — CUATRO ESLABONES AUDITADOS. NINGUNO MIDE EL UMBRAL
+
+**El 10 mm SI aparece en Gardner, pero se DECLARA, no se mide.** Materials and Methods,
+"Computed Tomography Measurements", p. 624:
+
+> *"A safe zone dimension of 10 mm was considered the critical threshold"* ... *"below
+> which placement of a large (6.5-mm to 8.0-mm) cannulated iliosacral screw would be
+> considered difficult by most orthopaedic surgeons."*
+
+Con llamada a las refs. **17 y 20 de Gardner**, que son **Ziran 2003 (JBJS Br 85:411-418)**
+y **Moed 2006**.
+
+**Cadena completa auditada:**
+
+| Salto | Fuente | Que hace con el 10 mm |
+|---|---|---|
+| 1 | `mclaren2021corridor` | Lo atribuye a Kaiser |
+| 2 | `kaiser2014dysmorphism` | *"was chosen as a conservative size"*. Lo atribuye a Moed, Gardner y Ziran 2007 |
+| 3a | `ziran2007fluoroscopic` | **No lo contiene.** No mide ninguna distancia |
+| 3b | `moed2006s2screw` | Contiene "1 cm" terminal, pero es **separacion interforaminal**, otra magnitud |
+| 3c | `gardner2010safezones` | Lo **declara** como criterio. Lo atribuye a Ziran **2003** y Moed 2006 |
+
+**CONCLUSION, y es la respuesta definitiva a la pregunta de la autora: el 10 mm nunca fue
+una medicion. Es una convencion profesional derivada del diametro del tornillo, y las dos
+fuentes que la enuncian lo dicen en su propio texto.** Kaiser la justifica como holgura de
+1-2 mm alrededor de un tornillo de 6.3-8 mm; Gardner la justifica como el punto *"below
+which placement of a large (6.5-mm to 8.0-mm) cannulated iliosacral screw would be
+considered difficult by most orthopaedic surgeons"* --- es decir, **consenso de expertos
+sobre un calibre de tornillo, explicitamente**.
+
+Que la cadena no tenga origen empirico **no es un fallo de la busqueda: es el hallazgo
+correcto.** No hay origen porque no es una medicion.
+
+**Efecto sobre la decision del 2026-09-08:** queda **plenamente vindicada y ahora es
+demostrable**. La tesis puede escribir, con cuatro fuentes auditadas y frases literales,
+que usa el 10 mm como convencion de holgura geometrica porque eso es exactamente lo que
+es. Muy pocos trabajos del area pueden sostener esa afirmacion con evidencia.
+
+**Recomendacion sobre seguir subiendo:** **parar.** Queda un eslabon sin auditar
+(**Ziran 2003**, eslabon NUEVO, no registrado hasta hoy), pero auditarlo **para el umbral**
+ya no cambia la redaccion: cuatro fuentes coinciden en que es una convencion por calibre.
+Ver mas abajo el motivo, distinto, por el que si podria valer la pena conseguirlo.
+
+**Aviso critico de desambiguacion:** el Ziran del umbral es el de **2003, JBJS Br**, y
+**NO** `ziran2007fluoroscopic`, que ya se leyo. Son dos trabajos del mismo primer autor.
+El de 2007 es la ref. 21 de Gardner y **nunca** se usa para el umbral. Registrado en
+`_candidatos.md` con la advertencia, y con una **discrepancia de ano sin resolver**: Moed
+lo imprime como `2002` y Gardner como `2003`, con el mismo volumen y las mismas paginas.
+
+### 12 — Ziran 2003 es ahora la segunda pista, por un motivo distinto del umbral
+
+Independientemente del umbral, `moed2006s2screw` cita a esa misma fuente asi: *"Ziran et al
+inserted 31 screws into S2 without an adverse event using a CT-guided technique"*
+(Discusion, p. 382). Es **serie clinica, con n por nivel sacro, y guiada por CT** --- el
+escenario mas cercano al que la tesis simula. Con #12 todavia sin ningun prior clinico,
+ese es el motivo por el que podria valer la pena, no el umbral.
+
+**Prioridad de fuentes pendientes, actualizada:**
+1. **van den Bosch** (via `moed2006s2screw`): unica cifra comparativa S1 vs S2 **medida en
+   pacientes** vista en todo el proyecto. Respaldaria el eje S1/S2 que hoy se apoya solo en
+   banco de plastico.
+2. **Ziran 2003**: serie clinica guiada por CT; posible tasa por nivel.
+3. `templeman1996proximity`: baja de prioridad; su rol en el 2-15% ya no es decisivo.
+
+### 24 y Objetivo 2 — GARDNER APORTA LO QUE NADIE MAS TENIA: geometria S1/S2 por fenotipo
+
+Es la unica fuente leida que publica geometria **separada por segmento y por fenotipo**, y
+trae un resultado que toca directamente la decision de condicionar por nivel sacro: **la
+inversion S1/S2**. En sacros dismorficos el area de S1 **cae a 222 mm2** y la de S2 **sube
+a 220.1 mm2**, es decir, los dos segmentos se igualan e invierten su jerarquia habitual.
+
+**Por que importa:** la tesis acaba de escribir que el muestreador se condiciona por nivel
+sacro. Gardner dice que **ese condicionamiento depende del fenotipo**: en un sacro
+dismorfico, S2 deja de ser el nivel dificil. Si se adopta, el condicionamiento es
+`nivel x fenotipo`, no solo `nivel`.
+
+**Riesgos de citarlo mal, registrados por el lector:**
+- Atribuirle el umbral de 10 mm.
+- Confundir sus cifras **iliosacras** (area, longitud, angulos) con las **transsacras**
+  (anchos y *"transverse screw possible"*). No son intercambiables.
+- Citar el abstract: imprime *"15% versus 4%"* donde el cuerpo dice **grados**, y mezcla
+  inlet con outlet en S2.
+- Ignorar que clasifica dismorfismo **por radiografia simple y sin score**, a diferencia de
+  Kaiser, y que mide el lado **no lesionado**.
+
+### 27 — OBJECION PUBLICADA a la estratificacion por fenotipo
+
+Gardner recoge que Carlson 2000 *"found no difference in the safe zone size between normal
+and dysmorphic sacra"* (Discusion, p. 628). **Es la objecion publicada mas directa a
+estratificar por fenotipo**, que es justo lo que la tesis adopto de Kaiser.
+
+**No rompe la decision, porque el fenotipo se adopto como estratificador DESCRIPTIVO y no
+como regla dura** --- que fue la razon de dejar #27 pendiente. Pero **hay que citarla**: si
+la tesis estratifica por fenotipo sin mencionar que existe evidencia en contra, un jurado
+que conozca Carlson lo nota. Aviso de paginacion: Ziran imprime `14:4` y Gardner
+`14:264-269` para esa misma fuente.
+
+Se anade un tercer aviso: `Noojin 2000` da dimensiones que Gardner describe como
+*"larger than in the present study"*. **Dos fuentes de CT discrepan sobre el mismo corredor
+segun el plano de medida.** Refuerza que las cifras absolutas de corredor no son
+transferibles entre protocolos, y por tanto que el muestreador debe medir sobre su propio
+volumen en vez de importar valores.
+
+### 12 — Gardner NO usa el 2%-15%: hay una cadena paralela
+
+Hereda otras dos cifras distintas: *"screw misplacements as high as 24%"* y *"neurologic
+complication rates as high as 18%"*. **No confundirlas con el 2-15%**: es otra cadena de
+citas, con otras fuentes. Registrado para que no se mezclen al redactar.
+
+### Nivel propuesto
+El lector propone **N1, acceso COMPLETO**: es a la vez el tercer eslabon auditado de la
+cadena y la unica fuente leida que publica geometria S1/S2 por fenotipo, asi que un error
+de cita golpea la restriccion del Objetivo 2 por dos rutas independientes. Alternativa
+defendible N2 si el 10 mm no se adopta como restriccion dura; en ese caso el N1 migraria a
+Ziran 2003 y Moed 2006.
+
+### Nota de proceso
+El agente de Gardner **no pudo escribir** en `_index.md` ni en `_candidatos.md`: cuatro
+intentos, todos rechazados por conflicto con los otros dos agentes que escribian a la vez,
+y `_candidatos.md` ya supera el limite de una lectura. **El merge lo hizo la sesion
+principal**, y al hacerlo detecto que el agente de Moed ya habia registrado Ziran 2003 por
+su cuenta: las dos filas se consolidaron en una, con la discrepancia de ano anotada.
+Lanzar tres lectores en paralelo sobre los mismos ficheros indice fue un error de
+planificacion; con mas de dos, conviene serializar o darles ficheros distintos.
+
+## Actualizacion 2026-09-08 (cierre) — decisiones de la autora aplicadas
+
+Todo lo de abajo esta **ya escrito** en `tesis/main.tex`, `docs/00-tesis.md`,
+`docs/01-decisiones.md` y `docs/literatura/_index.md`.
+
+### 27 — CERRADA: no se estratifica por fenotipo
+
+**Decision de la autora del 2026-09-08.** La estratificacion por fenotipo sacro sale del
+Objetivo 2. `main.tex` dice ahora que los fenotipos **no** se usan como variable
+estratificadora, porque su efecto sobre el tamano de la zona segura **no es consistente
+entre estudios**, y que el muestreador mide la geometria del corredor **directamente sobre
+cada volumen**.
+
+**Efecto util no previsto: la objecion de Carlson 2000 deja de aplicar.** Gardner recoge
+que ese trabajo *"found no difference in the safe zone size between normal and dysmorphic
+sacra"* (Discusion, p. 628). Era la objecion publicada mas directa a estratificar por
+fenotipo. Al no estratificar, la tesis **no queda expuesta a ella**, y ademas la
+inconsistencia entre estudios pasa a ser el **argumento** de la decision en vez de una
+amenaza. Tambien desaparece el problema de que Kaiser clasifique dismorfismo por score y
+Gardner por radiografia simple: dos criterios distintos que habria habido que conciliar.
+
+**Lo que queda de #27:** nada del fenotipo. El score de dismorfismo y el corte `>70` no se
+usan. #27 se cierra por completo.
+
+### 26 — REESCRITA COMO LIMITACION DEL CAMPO
+
+Por decision de la autora, el parrafo de `main.tex` deja de ser "riesgo que asumo" y pasa a
+ser **limitacion del campo**, que es lo que los datos sostienen:
+
+> *"This is not a limitation of the present cohort but of the available literature. Every
+> source that publishes sacral corridor geometry measured it in pelves without implants and
+> without fracture."*
+
+Con las tres fuentes nombradas y su exclusion respectiva: `kaiser2014dysmorphism` excluye
+CT con implantes en la union lumbosacra, `mclaren2021corridor` usa CTs no lesionados, y
+`ziran2007fluoroscopic` es cadaverico y avisa que fractura, desplazamiento y lesion de
+partes blandas alterarian lo visible.
+
+**Sigue ABIERTA en lo tecnico:** falta la cifra medida en casa (en cuantos volumenes locales
+con metal se ubican los tres landmarks). Lo que cambia es que ahora se reportara **como
+hallazgo**, no como confesion: nadie ha caracterizado el corredor en la poblacion de
+interes, asi que medirlo es aportacion, no remiendo.
+
+### C2 — APLICADO: la premisa del muestreador ahora tiene respaldo anatomico
+
+`main.tex` incorpora en el Problem Statement los coeficientes de variacion de
+`ziran2007fluoroscopic` (7-25% en la mayoria de superficies; 43%; 47-52%; y 97-140% para la
+orientacion del ala superior de S1 en el plano frontal sacro, sobre 17 pelvis cadavericas).
+
+**Por que importa:** hasta hoy la premisa "no existe pose canonica" se apoyaba **solo en
+que los cirujanos fallan**. Ahora se apoya tambien en que **la anatomia varia tanto que una
+trayectoria fija no puede servir a todos**. Es un argumento independiente del error humano
+y mas dificil de discutir.
+
+### 22 — ADOPTADA la tabla de sensibilidad
+
+La autora adopta el cribado con **varios umbrales fijos** en vez de comprometerse con uno
+solo. Se recontara la cohorte a **1500, 2500 y 3500 HU** --- valores que ya existen como
+superficies en la exploracion local, asi que no hay que recalcular nada --- y se reportara
+cuantos volumenes cambian de clase.
+
+- Si el recuento es **estable** en ese rango, la arbitrariedad del 2500 queda neutralizada
+  con una cifra propia.
+- Si es **inestable**, eso es un hallazgo, y ademas senala exactamente que volumenes
+  necesitan revision visual.
+
+**Pendiente:** correr el recuento. Es trabajo sobre datos ya en disco.
+**No decidido todavia:** si se adopta ademas el reparto en dos reglas (2500 fijo para
+cribado, adaptativo por ROI de `peters2025hybrid` para medir metal integrity sobre
+geometria CAD propia). `03-glosario.md` sigue con la redaccion de umbral unico.
+
+### 28 — Que se espera de van den Bosch, y por que se lee antes que nada — ABIERTA
+
+- **Origen:** `moed2006s2screw` lo cita como fuente de la unica comparativa S1 vs S2 medida
+  en pacientes que ha aparecido en el proyecto. Decision de la autora del 2026-09-08:
+  preparar la lectura sin ejecutarla.
+- **Estado:** **PDF NO DISPONIBLE.** No esta en `papers/` ni en `refs/raw/`. Por la regla 9,
+  darlo de alta empieza por pegar el archivo del editor en `refs/raw/`.
+- **La cifra que se persigue, y su procedencia:** Moed reporta **6/31 frente a 1/49 por
+  nivel vertebral**. Es **cita de segunda mano leida dentro de Moed**; por la regla 2 no
+  puede entrar a la tesis sin el PDF original.
+- **Que decide esta lectura, en concreto:**
+  1. **El eje S1/S2 del muestreador.** Hoy `main.tex` lo justifica **solo** con
+     `hinsche2002fluoroscopy`, que es banco sobre plastico (82% de los tornillos mal
+     colocados en S2). Si van den Bosch confirma una diferencia por nivel **en pacientes**,
+     ese eje pasa de respaldo de banco a respaldo clinico. Es la mejora mas grande
+     disponible por una sola lectura.
+  2. **La implicancia #12.** Sigue sin ningun prior clinico de malposicion respaldado por
+     fuente leida. Si van den Bosch publica una tasa medida con criterio explicito, #12
+     podria cerrarse por fin.
+  3. **El nivel de `moed2006s2screw`**, hoy N2 provisional por decision de la autora.
+- **Que se espera encontrar, y que seria decepcionante:** lo esperado es una serie clinica
+  con conteos por nivel sacro. Lo decepcionante, y hay precedente en esta misma ronda,
+  seria (a) que la cifra sea un conteo sin porcentaje ni criterio operacional, como en
+  `moed2006s2screw`; (b) que use criterio **binario** en vez de la escala ordinal de cuatro
+  grados de `smith2006iliosacral`, en cuyo caso **no se puede mezclar** con el benchmark de
+  SAP; o (c) que la cohorte este auto-seleccionada por un criterio anatomico de inclusion,
+  otra vez como Moed.
+- **Seccion afectada:** Problem Statement (justificacion del eje S1/S2), Objetivo 2,
+  benchmark de SAP.
+- **Pendiente de:** que la autora consiga el PDF. **No se ha lanzado ninguna lectura.**
+
+#### Encargo listo para el subagente `lector-papers` (no ejecutado)
+
+> Cuando el PDF este en `papers/`, este es el encargo. No hay que redactarlo de nuevo.
+
+```
+Lee `papers/<clave>.pdf` y escribe su ficha en `docs/literatura/<clave>.md` siguiendo
+`docs/literatura/_plantilla.md` sin excepciones. `Leido a fondo por la autora: no`.
+Usa los metadatos de `refs/raw/<clave>.nbib`; no los re-derives.
+
+CONTEXTO: esta tesis tiene ABIERTA la implicancia #12: no tiene NINGUN prior clinico de
+malposicion de tornillo iliosacro respaldado por una fuente leida. Cayeron el 31-60%
+(derivacion propia sobre dos poblaciones distintas de `zwingmann2009navigated`) y el
+2-15% (cita de tercera mano; `hinsche2002fluoroscopy` no lo mide y es banco sobre
+plastico). Ademas la tesis acaba de decidir condicionar su muestreador por NIVEL SACRO
+(S1 vs S2), y hoy ese eje se apoya solo en un estudio sobre modelos de plastico.
+`moed2006s2screw` cita a este trabajo como fuente de una comparativa por nivel.
+
+EXTRAE CON PRIORIDAD, cada cifra con su frase literal (menos de 15 palabras) y su
+seccion o pagina:
+1. LA PREGUNTA CENTRAL: hay una TASA DE MALPOSICION medida, expresada como porcentaje?
+   Frase exacta. Si el paper NO escribe un porcentaje, dilo destacado y reporta los
+   conteos crudos SIN derivar la tasa tu.
+2. CONTEOS POR NIVEL SACRO (S1 vs S2): cuantos tornillos por nivel y cuantos mal
+   colocados en cada uno. Moed cita "6/31 frente a 1/49": verifica esos dos pares
+   contra el cuerpo y di si coinciden.
+3. CRITERIO de colocacion incorrecta: binario o escala graduada con umbrales en mm?
+   Quien evalua, con que modalidad, cegado o no. CRITICO: si es binario NO se puede
+   mezclar con la escala ordinal 0/<2/2-4/>4 mm de `smith2006iliosacral`.
+4. POBLACION: cuantos pacientes, cuantos tornillos, tipo de lesion, si hay criterio de
+   inclusion anatomico que auto-seleccione la cohorte (como el "1 cm" de Moed).
+5. TECNICA de colocacion: fluoroscopia, navegacion, guiada por CT. Importa para
+   condicionar por tecnica, como se hace con `zwingmann2009navigated`.
+6. Complicaciones neurologicas o vasculares con cifras.
+7. Cualquier geometria del corredor en mm o grados.
+8. Limitaciones declaradas.
+
+REGLAS DURAS: no inventes ninguna cifra, DOI, pagina ni dato. Si algo no esta, escribe
+literalmente NO ENCONTRADO EN EL PDF. No estimes ni infieras. Si haces cualquier
+aritmetica, marcala como derivacion propia y nunca como cita.
+
+Al final, agrega la fila en `docs/literatura/_index.md`, marca el paper como LEIDO en
+`_candidatos.md`, y propon nivel con justificacion en una linea. Di explicitamente si la
+implicancia #12 se puede cerrar con lo leido o no, y si el eje S1/S2 queda respaldado
+clinicamente.
+```
+
+### Nota de proceso adoptada
+No lanzar mas de dos `lector-papers` en paralelo mientras compartan `_index.md` y
+`_candidatos.md`. En la ronda de tres, el agente de Gardner perdio cuatro intentos de
+escritura y el merge lo tuvo que hacer la sesion principal, que ademas encontro una fila
+duplicada de Ziran 2003 creada por otro agente.

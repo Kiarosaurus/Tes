@@ -50,11 +50,14 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `chen2024tumorsynthesis` | `chen2024tumorsynthesis.bib` | BibTeX IEEE | `10656868` | — |
 | `deman2007catsim` | `deman2007catsim.bib` | BibTeX SPIE | `10.1117/12.710713` | — |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
+| `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
 | `jacob2026lgesynthnet` | `jacob2026lgesynthnet.bib` | BibTeX Springer | `10.1007/978-3-032-17734-6_4` | — |
+| `kaiser2014dysmorphism` | `kaiser2014dysmorphism.nbib` | PubMed nbib | — | 25031382 |
 | `karageorgos2024ddpm` | `karageorgos2024ddpm.nbib` | PubMed nbib | — | 38963746 |
 | `kazerouni2023diffusionsurvey` | `kazerouni2023diffusionsurvey.nbib` | PubMed nbib | — | 37295311 |
 | `liu2021ctpelvic1k` | `liu2021ctpelvic1k.nbib` | PubMed nbib | — | 33864189 |
 | `liu2025pipeline` | `liu2025pipeline.nbib` | PubMed nbib | — | 39012731 |
+| `mclaren2021corridor` | `mclaren2021corridor.nbib` | PubMed nbib | — | 33649991 |
 | `peters2025hybrid` | `peters2025hybrid.nbib` | PubMed nbib | — | 41058534 |
 | `ramadanov2025safezone` | `ramadanov2025safezone.bib` | BibTeX MDPI | `jcm14103567` | 40429562 |
 | `ramzan2026claim` | `ramzan2026claim.bib` | BibTeX Springer | `10.1007/978-3-032-00652-3_20` | — |
@@ -63,6 +66,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `selles2024marreview` | `selles2024marreview.nbib` | PubMed nbib | — | 38142571 |
 | `singhrao2024fiducial` | `singhrao2024fiducial.nbib` | PubMed nbib | — | 38055419 |
 | `smith2006iliosacral` | `smith2006iliosacral.nbib` | PubMed nbib | — | 16418646 |
+| `templeman1996proximity` | `templeman1996proximity.nbib` | PubMed nbib | — | 8769451 |
 | `vanbosse2011pelvicpositioning` | `vanbosse2011pelvicpositioning.nbib` | PubMed nbib | — | 21365336 |
 | `wang2019cochlear` | `wang2019cochlear.bib` | BibTeX Springer | `10.1007/978-3-030-32226-7_14` | — |
 | `wang2025adaptiveweighting` | `wang2025adaptiveweighting.bib` | BibTeX IEEE | `10887049` | — |
@@ -73,6 +77,34 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `zhang2025diffboost` | `zhang2025diffboost.nbib` | PubMed nbib | — | 40030730 |
 | `zhang2026pediclescrew` | `zhang2026pediclescrew.bib` | BibTeX SAGE | `doi:10.1177/08953996261443500` | 42141954 |
 | `zwingmann2009navigated` | `zwingmann2009navigated.nbib` | PubMed nbib | — | 19034594 |
+
+## Alta de tres fuentes (2026-09-08)
+
+La autora pego tres archivos nuevos en `refs/raw/`, que es como se anade una fuente
+segun la regla 9. Con su autorizacion explicita se renombraron al estilo del resto
+(`apellidoANIOpalabraclave`); el CONTENIDO de los raw no se toco.
+
+| Nombre entregado | Nombre en el repo | PDF en `papers/` |
+|---|---|---|
+| `hinsche2002.nbib` | `hinsche2002fluoroscopy.nbib` | si |
+| `mclaren2021.nbib` | `mclaren2021corridor.nbib` | si |
+| `templeman1996.nbib` | `templeman1996proximity.nbib` | **no** |
+| `kaiser2014.nbib` | `kaiser2014dysmorphism.nbib` | si (alta del 2026-09-08) |
+
+`templeman1996proximity` entra a `refs.bib` con metadatos completos desde el raw, pero
+sin PDF. Es un estado de acceso, no un descarte.
+
+**Dos avisos de BibTeX, ambos correctos y ambos sin arreglo posible:**
+`Warning--there's a number but no volume` en `hinsche2002fluoroscopy` y
+`templeman1996proximity`. *Clinical Orthopaedics and Related Research* de esa epoca
+numeraba por fasciculo sin volumen, y el raw lo confirma: trae `IP` y no trae `VI`.
+Poner un volumen seria inventarlo. La cita sale bien impresa: `(395):135--144, 2002`.
+
+**Subtitulo de revista recortado en `mclaren2021corridor`.** El raw da
+`JT - European journal of orthopaedic surgery & traumatology : orthopedie traumatologie`.
+Se conserva `European Journal of Orthopaedic Surgery \& Traumatology` y se descarta el
+titulo paralelo en frances que anade NLM. Es la regla 4 (nombre oficial completo), no
+una correccion de contenido.
 
 ## Lo que el raw CONFIRMO
 
@@ -117,6 +149,9 @@ Importa porque es la fuente de la implicancia #7, la mas urgente del proyecto.
 
 ## Fuentes que siguen sin PDF
 
-`wang2025adaptiveweighting` y `zhang2026pediclescrew` no estan en `papers/`. Sus
-metadatos **si** quedaron completos desde el raw del editor. Esto **no** cierra la
-implicancia #1: para eso hace falta el texto, no la ficha bibliografica.
+`zhang2026pediclescrew` y `templeman1996proximity` no estan en `papers/`. Sus metadatos
+**si** quedaron completos desde el raw del editor. Falta de PDF es estado de acceso, no
+motivo de descarte.
+
+**`wang2025adaptiveweighting` YA TIENE PDF** desde el 2026-09-08. Era la unica fuente de
+nivel 1 sin texto completo y el origen de la implicancia #1.

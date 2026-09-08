@@ -1,0 +1,113 @@
+PMID- 38055419
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20240110
+LR  - 20240110
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Linking)
+VI  - 51
+IP  - 1
+DP  - 2024 Jan
+TI  - End-to-end validation of fiducial tracking accuracy in robotic radiosurgery using 
+      MRI-only simulation imaging.
+PG  - 31-41
+LID - 10.1002/mp.16857 [doi]
+AB  - BACKGROUND: Image-guided radiation-therapy (IGRT)-based robotic radiosurgery 
+      using magnetic resonance imaging (MRI)-only simulation could allow for improved 
+      target definition with highly conformal radiotherapy treatments. Fiducial marker 
+      (FM)-based alignment is used with robotic radiosurgery treatments of sites such 
+      as the prostate because it aids in accurate target localization. Synthetic CT 
+      (sCT) images are generated in the MRI-only workflow but FMs used for IGRT appear 
+      as signal voids in MRIs and do not appear in MR-generated sCTs, hindering the 
+      ability to use sCTs for fiducial-based IGRT. PURPOSE: In this study we evaluate 
+      the fiducial tracking accuracy for a novel artificial fiducial insertion method 
+      in sCT images that allows for fiducial marker tracking in robotic radiosurgery, 
+      using MRI-only simulation imaging (MRI-only workflow). METHODS: Artificial 
+      fiducial markers were inserted into sCT images at the site of the real marker 
+      implantation as visible in MRI. Two phantoms were used in this study. A custom 
+      anthropomorphic pelvis phantom was designed to validate the tracking accuracy for 
+      a variety of artificial fiducials in an MRI-only workflow. A head phantom 
+      containing a hidden target and orthogonal film pair inserts was used to perform 
+      end-to-end tests of artificial fiducial configurations inserted in sCT images. 
+      The setup and end-to-end targeting accuracy of the MRI-only workflow were 
+      compared to the computed tomography (CT)-based standard. Each phantom had six FMs 
+      implanted with a minimum spacing of 2 cm. For each phantom a bulk-density sCT was 
+      generated, and artificial FMs were inserted at the implantation location. Several 
+      methods of FM insertion were tested including: (1) replacing HU with a fixed 
+      value (10000HU) (voxel-burned); (2) using a representative fiducial image derived 
+      from a linear combination of fiducial templates (composite-fiducial); (3) 
+      computationally simulating FM signal voids using a digital phantom containing FMs 
+      and inserting the corresponding signal void into sCT images (simulated-fiducial). 
+      All tests were performed on a CyberKnife system (Accuray, Sunnyvale, CA). 
+      Treatment plans and digital-reconstructed-radiographs were generated from the 
+      original CT and sCTs with embedded fiducials and used to align the phantom on the 
+      treatment couch. Differences in the initial phantom alignment (3D 
+      translations/rotations) and tracking parameters between CT-based plans and 
+      sCT-based plans were analyzed. End-to-end plans for both scenarios were generated 
+      and analyzed following our clinical protocol. RESULTS: For all plans, the 
+      fiducial tracking algorithm was able to identify the fiducial locations. The mean 
+      FM-extraction uncertainty for the composite and simulated FMs was below 48% for 
+      fiducials in both the anthropomorphic pelvis and end-to-end phantoms, which is 
+      below the 70% treatment uncertainty threshold. The total targeting error was 
+      within tolerance (<0.95 mm) for end-to-end tests of sCT images with the composite 
+      and head-on simulated FMs (0.26, 0.44, and 0.35 mm for the composite fiducial in 
+      sCT, head-on simulated fiducial in sCT, and fiducials in original CT, 
+      respectively. CONCLUSIONS: MRI-only simulation for robotic radiosurgery could 
+      potentially improve treatment accuracy and reduce planning margins. Our study has 
+      shown that using a composite-derived or simulated FM in conjunction with sCT 
+      images, MRI-only workflow can provide clinically acceptable setup accuracy in 
+      line with CT-based standards for FM-based robotic radiosurgery.
+CI  - © 2023 American Association of Physicists in Medicine.
+FAU - Singhrao, Kamal
+AU  - Singhrao K
+AD  - Department of Radiation Oncology, Brigham and Women's Hospital, Dana-Farber 
+      Cancer Institute and Harvard Medical School, Boston, Massachusetts, USA.
+FAU - Zubair, Muhammad
+AU  - Zubair M
+AD  - Department of Radiation Oncology, University of California, San Francisco, 
+      California, USA.
+FAU - Nano, Tomi
+AU  - Nano T
+AD  - Department of Radiation Oncology, University of California, San Francisco, 
+      California, USA.
+FAU - Scholey, Jessica E
+AU  - Scholey JE
+AD  - Department of Radiation Oncology, University of California, San Francisco, 
+      California, USA.
+FAU - Descovich, Martina
+AU  - Descovich M
+AD  - Department of Radiation Oncology, University of California, San Francisco, 
+      California, USA.
+LA  - eng
+PT  - Journal Article
+DEP - 20231206
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+SB  - IM
+MH  - Male
+MH  - Humans
+MH  - *Radiosurgery
+MH  - *Robotic Surgical Procedures
+MH  - Magnetic Resonance Imaging/methods
+MH  - *Radiotherapy, Image-Guided/methods
+MH  - Fiducial Markers
+MH  - Phantoms, Imaging
+MH  - Radiotherapy Planning, Computer-Assisted/methods
+OTO - NOTNLM
+OT  - MRI-only simulation
+OT  - fiducial tracking
+OT  - robotic radiosurgery
+EDAT- 2023/12/06 18:42
+MHDA- 2024/01/10 06:41
+CRDT- 2023/12/06 12:44
+PHST- 2023/10/13 00:00 [revised]
+PHST- 2023/06/28 00:00 [received]
+PHST- 2023/11/05 00:00 [accepted]
+PHST- 2024/01/10 06:41 [medline]
+PHST- 2023/12/06 18:42 [pubmed]
+PHST- 2023/12/06 12:44 [entrez]
+AID - 10.1002/mp.16857 [doi]
+PST - ppublish
+SO  - Med Phys. 2024 Jan;51(1):31-41. doi: 10.1002/mp.16857. Epub 2023 Dec 6.

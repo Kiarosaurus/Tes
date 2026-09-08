@@ -1,0 +1,87 @@
+PMID- 38963746
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20241028
+LR  - 20251029
+IS  - 1558-254X (Electronic)
+IS  - 0278-0062 (Print)
+IS  - 0278-0062 (Linking)
+VI  - 43
+IP  - 10
+DP  - 2024 Oct
+TI  - A Denoising Diffusion Probabilistic Model for Metal Artifact Reduction in CT.
+PG  - 3521-3532
+LID - 10.1109/TMI.2024.3416398 [doi]
+AB  - The presence of metal objects leads to corrupted CT projection measurements, 
+      resulting in metal artifacts in the reconstructed CT images. AI promises to offer 
+      improved solutions to estimate missing sinogram data for metal artifact reduction 
+      (MAR), as previously shown with convolutional neural networks (CNNs) and 
+      generative adversarial networks (GANs). Recently, denoising diffusion 
+      probabilistic models (DDPM) have shown great promise in image generation tasks, 
+      potentially outperforming GANs. In this study, a DDPM-based approach is proposed 
+      for inpainting of missing sinogram data for improved MAR. The proposed model is 
+      unconditionally trained, free from information on metal objects, which can 
+      potentially enhance its generalization capabilities across different types of 
+      metal implants compared to conditionally trained approaches. The performance of 
+      the proposed technique was evaluated and compared to the state-of-the-art 
+      normalized MAR (NMAR) approach as well as to CNN-based and GAN-based MAR 
+      approaches. The DDPM-based approach provided significantly higher SSIM and PSNR, 
+      as compared to NMAR (SSIM: p [Formula: see text]; PSNR: p [Formula: see text]), 
+      the CNN (SSIM: p [Formula: see text]; PSNR: p [Formula: see text]) and the GAN 
+      (SSIM: p [Formula: see text]; PSNR: p <0.05) methods. The DDPM-MAR technique was 
+      further evaluated based on clinically relevant image quality metrics on clinical 
+      CT images with virtually introduced metal objects and metal artifacts, 
+      demonstrating superior quality relative to the other three models. In general, 
+      the AI-based techniques showed improved MAR performance compared to the 
+      non-AI-based NMAR approach. The proposed methodology shows promise in enhancing 
+      the effectiveness of MAR, and therefore improving the diagnostic accuracy of CT.
+FAU - Karageorgos, Grigorios M
+AU  - Karageorgos GM
+FAU - Zhang, Jiayong
+AU  - Zhang J
+FAU - Peters, Nils
+AU  - Peters N
+FAU - Xia, Wenjun
+AU  - Xia W
+FAU - Niu, Chuang
+AU  - Niu C
+FAU - Paganetti, Harald
+AU  - Paganetti H
+FAU - Wang, Ge
+AU  - Wang G
+FAU - De Man, Bruno
+AU  - De Man B
+LA  - eng
+GR  - R01 EB031102/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20241028
+PL  - United States
+TA  - IEEE Trans Med Imaging
+JT  - IEEE transactions on medical imaging
+JID - 8310780
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Artifacts
+MH  - *Metals
+MH  - *Tomography, X-Ray Computed/methods
+MH  - Humans
+MH  - *Models, Statistical
+MH  - *Algorithms
+MH  - Image Processing, Computer-Assisted/methods
+MH  - Phantoms, Imaging
+MH  - Neural Networks, Computer
+PMC - PMC11657996
+MID - NIHMS2032288
+EDAT- 2024/07/04 18:42
+MHDA- 2024/10/28 18:23
+PMCR- 2025/10/28
+CRDT- 2024/07/04 12:23
+PHST- 2024/10/28 18:23 [medline]
+PHST- 2024/07/04 18:42 [pubmed]
+PHST- 2024/07/04 12:23 [entrez]
+PHST- 2025/10/28 00:00 [pmc-release]
+AID - 10.1109/TMI.2024.3416398 [doi]
+PST - ppublish
+SO  - IEEE Trans Med Imaging. 2024 Oct;43(10):3521-3532. doi: 10.1109/TMI.2024.3416398. 
+      Epub 2024 Oct 28.

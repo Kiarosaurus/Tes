@@ -1,0 +1,135 @@
+PMID- 39107679
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20240807
+LR  - 20240809
+IS  - 1471-2342 (Electronic)
+IS  - 1471-2342 (Linking)
+VI  - 24
+IP  - 1
+DP  - 2024 Aug 6
+TI  - Metal implant segmentation in CT images based on diffusion model.
+PG  - 204
+LID - 10.1186/s12880-024-01379-1 [doi]
+LID - 204
+AB  - BACKGROUND: Computed tomography (CT) is widely in clinics and is affected by 
+      metal implants. Metal segmentation is crucial for metal artifact correction, and 
+      the common threshold method often fails to accurately segment metals. PURPOSE: 
+      This study aims to segment metal implants in CT images using a diffusion model 
+      and further validate it with clinical artifact images and phantom images of known 
+      size. METHODS: A retrospective study was conducted on 100 patients who received 
+      radiation therapy without metal artifacts, and simulated artifact data were 
+      generated using publicly available mask data. The study utilized 11,280 slices 
+      for training and verification, and 2,820 slices for testing. Metal mask 
+      segmentation was performed using DiffSeg, a diffusion model incorporating 
+      conditional dynamic coding and a global frequency parser (GFParser). Conditional 
+      dynamic coding fuses the current segmentation mask and prior images at multiple 
+      scales, while GFParser helps eliminate high-frequency noise in the mask. Clinical 
+      artifact images and phantom images are also used for model validation. RESULTS: 
+      Compared with the ground truth, the accuracy of DiffSeg for metal segmentation of 
+      simulated data was 97.89% and that of DSC was 95.45%. The mask shape obtained by 
+      threshold segmentation covered the ground truth and DSCs were 82.92% and 84.19% 
+      for threshold segmentation based on 2500 HU and 3000 HU. Evaluation metrics and 
+      visualization results show that DiffSeg performs better than other classical deep 
+      learning networks, especially for clinical CT, artifact data, and phantom data. 
+      CONCLUSION: DiffSeg efficiently and robustly segments metal masks in artifact 
+      data with conditional dynamic coding and GFParser. Future work will involve 
+      embedding the metal segmentation model in metal artifact reduction to improve the 
+      reduction effect.
+CI  - © 2024. The Author(s).
+FAU - Xie, Kai
+AU  - Xie K
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China.
+FAU - Gao, Liugang
+AU  - Gao L
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China.
+FAU - Zhang, Yutao
+AU  - Zhang Y
+AD  - Center for Medical Physics, Nanjing Medical University, Changzhou, 213003, China.
+AD  - Changzhou Key Laboratory of Medical Physics, Changzhou, 213000, China.
+FAU - Zhang, Heng
+AU  - Zhang H
+AD  - Center for Medical Physics, Nanjing Medical University, Changzhou, 213003, China.
+AD  - Changzhou Key Laboratory of Medical Physics, Changzhou, 213000, China.
+FAU - Sun, Jiawei
+AU  - Sun J
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China.
+FAU - Lin, Tao
+AU  - Lin T
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China.
+FAU - Sui, Jianfeng
+AU  - Sui J
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China.
+FAU - Ni, Xinye
+AU  - Ni X
+AD  - Radiotherapy Department, The Affiliated Changzhou NO.2 People's Hospital of 
+      Nanjing Medical University, Changzhou, 213000, China. nxy@njmu.edu.cn.
+AD  - Jiangsu Province Engineering Research Center of Medical Physics, Changzhou, 
+      213000, China. nxy@njmu.edu.cn.
+AD  - Center for Medical Physics, Nanjing Medical University, Changzhou, 213003, China. 
+      nxy@njmu.edu.cn.
+AD  - Changzhou Key Laboratory of Medical Physics, Changzhou, 213000, China. 
+      nxy@njmu.edu.cn.
+LA  - eng
+GR  - 62371243/the National Natural Science Foundation of China/
+GR  - CE20235063/Changzhou Social Development Program/
+GR  - BE2022720/Jiangsu Provincial Key Research and Development Program Social 
+      Development Project/
+GR  - M2020006/General Program of Jiangsu Provincial Health Commission/
+GR  - JSDW202237/Jiangsu Provincial Medical Key Discipline Cultivation Unit of Oncology 
+      Therapeutics (Radiotherapy)/
+GR  - BK20231190/the National Natural Science Foundation of Jiangsu/
+PT  - Journal Article
+DEP - 20240806
+PL  - England
+TA  - BMC Med Imaging
+JT  - BMC medical imaging
+JID - 100968553
+RN  - 0 (Metals)
+SB  - IM
+MH  - Humans
+MH  - *Artifacts
+MH  - *Tomography, X-Ray Computed/methods
+MH  - *Metals
+MH  - Retrospective Studies
+MH  - *Phantoms, Imaging
+MH  - *Prostheses and Implants
+MH  - Algorithms
+PMC - PMC11301972
+OTO - NOTNLM
+OT  - CT
+OT  - Diffusion model
+OT  - Mask segmentation
+OT  - Metal artifact
+OT  - Metal implant
+COIS- The authors declare no competing interests.
+EDAT- 2024/08/07 00:42
+MHDA- 2024/08/07 06:42
+PMCR- 2024/08/06
+CRDT- 2024/08/06 23:35
+PHST- 2024/06/17 00:00 [received]
+PHST- 2024/07/25 00:00 [accepted]
+PHST- 2024/08/07 06:42 [medline]
+PHST- 2024/08/07 00:42 [pubmed]
+PHST- 2024/08/06 23:35 [entrez]
+PHST- 2024/08/06 00:00 [pmc-release]
+AID - 10.1186/s12880-024-01379-1 [pii]
+AID - 1379 [pii]
+AID - 10.1186/s12880-024-01379-1 [doi]
+PST - epublish
+SO  - BMC Med Imaging. 2024 Aug 6;24(1):204. doi: 10.1186/s12880-024-01379-1.

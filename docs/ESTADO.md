@@ -3,6 +3,21 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-07: montado el pipeline bibliografico `refs/raw` -> `refs/clean` -> `refs.bib`
+por encargo de la autora. 27 fuentes del editor (16 nbib de PubMed, 10 bib, 1 txt),
+27 entradas normalizadas en `refs/clean/`, procedencia y reglas en `refs/MAPEO.md`,
+regeneracion con `scripts/build_refs.py`. Los 27 DOIs y las 27 claves quedaron
+identicos; se corrigio `issue`->`number` en tres entradas (fasciculo que BibTeX
+descartaba), se desambiguo `CORR`, se completaron autores y el volumen de SPIE.
+`main.tex`: 15 correcciones en la lista de referencias, sin migrar a BibTeX.
+Cerrado con los 5 .bib oficiales que pego la autora: `wu2022xcist` confirmado por IOP,
+`ramadanov2025safezone` por MDPI, y los tres volumenes LNCS retirados porque el
+exportador de Springer no los trae. `refs.bib` sin ningun `% VERIFICAR`. Decision de
+precedencia registrada en `01-decisiones.md` con orden explicita.
+Regla 9 de `CLAUDE.md` reescrita y marcas eliminadas de `refs.bib`.
+Siguiente: cerrar el representante de los 3 grupos internos de dataset7.
+
+## Paso anterior
 2026-09-07: la autora reviso en 3D los 178 volumenes; fusionadas sus tres reglas de
 clasificacion con la investigacion de los agentes en `revision.csv` (178 filas,
 `3D completa`). Cifras: dataset7 con material ortopedico 72 de 75 (69 de contenido
@@ -73,12 +88,14 @@ resolver leyendo mas: son decision de la autora. En paralelo, conseguir McLaren 
 que es la posible solucion de #7.
 
 ## Pendientes abiertos
-- `refs.bib`: los comentarios `% VERIFICAR` quedaron obsoletos. Las 28 lineas siguen
-  diciendo «falta DOI» cuando el DOI ya esta puesto. Solo la autora puede tocar ese
-  archivo: hay que borrar esas lineas o reescribirlas con lo que de verdad falta.
-- `refs.bib`, campos que siguen ausentes: volumen en `deman2007catsim` (SPIE, puede no
-  tenerlo), numero en `liu2021ctpelvic1k` y `xie2024implantsegmentation`. Verificar si
-  esas revistas usan numero antes de darlos por faltantes.
+- Los tres volumenes LNCS retirados (`jacob2026lgesynthnet` 16459, `ramzan2026claim`
+  16038, `wang2019cochlear` 11769) siguen sin fuente. El exportador de Springer los
+  omite. Si se quieren de vuelta hay que sacarlos de la portada del volumen o de
+  SpringerLink, no del .bib. Valores anotados en `refs/MAPEO.md`.
+- `.gitignore` corrupto: su contenido empieza con `@'` y termina con
+  `'@ | Set-Content -Encoding utf8 .gitignore`. Un here-string de PowerShell que se
+  escribio en vez de ejecutarse. Las reglas funcionan igual (`papers/` y `data/` se
+  ignoran, verificado), pero conviene limpiarlo.
 - Implicancia #1 ABIERTA: `wang2025adaptiveweighting` es nivel 1 y solo hay abstract.
   Al llegar el PDF, releer con `lector-papers` y regenerar la ficha completa.
 - Implicancia #2 ABIERTA (GAP): el multi-ventana publicado es todo de remocion, no
@@ -134,8 +151,9 @@ que es la posible solucion de #7.
   `arand2019pelvicring` y `xie2024implantsegmentation`.
 - `SAP`, `BFC` e `ISC` siguen sin definir en `docs/03-glosario.md`. El nivel de
   `xie2024implantsegmentation` y el de `liu2025pipeline` dependen de esas definiciones.
-- `tesis/main.tex` sigue con la bibliografia en texto plano dentro de `multicols`;
-  migrar a `\bibliography{refs}` es decision de la autora (no se toco).
+- `tesis/main.tex` sigue con la bibliografia en texto plano y el documento no tiene
+  ningun `\cite`. Migrar a `\bibliography{refs}` exigiria citar en el cuerpo o usar
+  `\nocite{*}`: sigue siendo decision de la autora, no se hizo.
 
 ## Pendientes cerrados
 > Lo que ya no requiere accion. Se conserva para no reabrirlo por olvido.
@@ -162,12 +180,41 @@ que es la posible solucion de #7.
 - **Revision 3D de los 178 volumenes: COMPLETA** (`3D completa`, no recorrido de
   cortes). Fusionada con la investigacion de los agentes en `revision.csv`.
 - **Textos «preliminar»** borrados de `metal_0002` y `metal_0003`.
-- **`refs.bib`: los 27 DOIs, PUESTOS.** Las 27 entradas tienen `doi` y se completaron
-  los campos que faltaban: paginas en `jacob2026lgesynthnet` (34--44), `ramzan2026claim`
-  (279--292) y `wang2019cochlear` (121--129); numero en `singhrao2024fiducial`,
-  `smith2006iliosacral`, `vanbosse2011pelvicpositioning` y `yun2026simulationdriven`.
-  El archivo lo escribe la autora; el asistente no lo toco. Queda solo limpiar los
-  comentarios `% VERIFICAR`, ya obsoletos.
+- **`refs.bib`: los 27 DOIs, PUESTOS y VERIFICADOS contra el raw del editor.**
+  Ninguno cambio al reconstruir el archivo, ni se anadio ni se quito ninguna entrada.
+- **Pipeline bibliografico `raw` -> `clean` -> `refs.bib`: MONTADO** el 2026-09-07 por
+  encargo de la autora. `refs/raw/` (27 fuentes del editor, intactas), `refs/clean/`
+  (27 entradas normalizadas a mano), `refs/MAPEO.md` (procedencia y reglas) y
+  `scripts/build_refs.py`, que regenera `refs.bib`. Los `% VERIFICAR` obsoletos
+  desaparecieron; quedan 4 nuevos, reales.
+- **Bug de compilacion corregido: `issue` -> `number`** en `liu2021ctpelvic1k` (16(5)),
+  `xie2024implantsegmentation` (24(1)) y `zhang2026pediclescrew` (34(4)). BibTeX
+  clasico descarta `issue` sin avisar: esos tres fasciculos no se habrian impreso.
+- **`CORR` desambiguado** a *Clinical Orthopaedics and Related Research* en
+  `vanbosse2011pelvicpositioning` y `zwingmann2009navigated`. Se confundia con el
+  repositorio de preprints *CoRR* de arXiv. Igual `IEEE TMI` e `Int J CARS`.
+- **`deman2007catsim` volume 6510**, que faltaba, confirmado por el raw de SPIE.
+- **Autores completos en las 27.** Antes 25 decian `and others`.
+- **Precedencia dictada por la autora (2026-09-07): manda `refs/raw/`,** y en su
+  defecto `refs/clean/`. Un campo que el raw no confirme no se conserva por costumbre.
+  Pendiente que la autora lo copie a `01-decisiones.md`.
+- **`ramadanov2025safezone`: raw RESUELTO** el 2026-09-07. La autora sustituyo el .txt
+  degradado por el .bib real de MDPI y borro el .txt. Confirma 14(10):3567, el DOI que
+  ya estaba, y que el titulo si lleva los dos puntos. Es la fuente de la implicancia #7.
+- **Los 4 campos sin respaldo: CERRADOS** el 2026-09-07 con los .bib oficiales.
+  `wu2022xcist` CONFIRMADO por IOP (`pages = {194002}`, 67(19)). Los tres volumenes
+  LNCS RETIRADOS de `refs.bib` y de `main.tex`: el exportador de Springer no los da.
+  `refs.bib` ya no tiene ningun `% VERIFICAR`.
+- **Decision de precedencia REGISTRADA** en `01-decisiones.md` el 2026-09-07 con orden
+  explicita de la autora.
+- **Regla 9 de `CLAUDE.md` REESCRITA** el 2026-09-07 con orden explicita: describe el
+  flujo `raw` -> `clean` -> `refs.bib` generado, prohibe cualquier campo sin respaldo
+  en el raw y mantiene que la lista de entradas la define la autora.
+- **Marcas eliminadas de `refs.bib`.** Ni `% VERIFICAR` ni `% NOTA`: lo que esta en el
+  archivo tiene respaldo en el raw. Lo retirado queda solo en `refs/MAPEO.md`.
+- **`main.tex`, lista de referencias actualizada** el 2026-09-07 con autorizacion
+  explicita: 15 correcciones (revistas completas, fasciculos, paginas de las tres
+  actas, volumen de SPIE). Sigue en texto plano; no se migro a BibTeX.
 
 
 ## Deudas asumidas

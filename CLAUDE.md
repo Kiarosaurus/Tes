@@ -61,10 +61,19 @@ Baseline fisico de comparacion: XCIST/CatSim.
 - Python + PyTorch. Codigo con type hints y docstrings cortos.
 - Nada de notebooks para logica reutilizable: eso va a `src/`.
 
-9. **refs.bib es autoridad.** La lista de referencias la definio la autora a mano.
-   Nunca agregues, elimines ni sustituyas entradas. Nunca "corrijas" un campo con
-   conocimiento propio. Si detectas un problema, marcalo con
-   `% VERIFICAR: <clave> — <que problema>` y sigue.
+9. **Manda `refs/raw/`.** La bibliografia tiene tres capas y una sola direccion:
+   `refs/raw/` (el archivo tal como lo entrego el editor, NUNCA se edita) ->
+   `refs/clean/` (una entrada por archivo, normalizada a mano) -> `refs.bib`
+   (GENERADO con `python scripts/build_refs.py`, NUNCA se edita a mano).
+   - **Ningun campo sin respaldo en `refs/raw/`.** Si el raw no lo trae, no va. No
+     completes ni "corrijas" un campo con conocimiento propio, nunca.
+   - **La lista de entradas la define la autora.** No agregues, elimines ni sustituyas
+     entradas. Anadir una fuente empieza por pegar su archivo en `refs/raw/`.
+   - Si detectas un problema y no puedes resolverlo con el raw, marcalo con
+     `% VERIFICAR: <clave> — <que problema>` en el archivo de `refs/clean/` y sigue.
+   - Las reglas de normalizacion y la procedencia de cada entrada estan en
+     `refs/MAPEO.md`. Actualizalo cuando cambies una entrada.
+   Decision del 2026-09-07, registrada en `docs/01-decisiones.md`.
 
 10. **Lecturas de literatura siempre via el subagente `lector-papers`.** No leas
     PDFs en la sesion principal.

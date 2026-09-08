@@ -1,0 +1,149 @@
+PMID- 41058545
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20251008
+LR  - 20260104
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Print)
+IS  - 0094-2405 (Linking)
+VI  - 52
+IP  - 10
+DP  - 2025 Oct
+TI  - AAPM CT metal artifact reduction grand challenge.
+PG  - e70050
+LID - 10.1002/mp.70050 [doi]
+AB  - BACKGROUND: Metal artifact reduction (MAR) is a long-standing challenge in CT 
+      imaging. The presence of highly attenuating objects, such as dental fillings, hip 
+      prostheses, spinal screws/rods, and gold fiducial markers, can introduce severe 
+      streak artifacts in CT images, often reducing their diagnostic value. Existing CT 
+      MAR studies typically define their own test cases and evaluation metrics, making 
+      it difficult to objectively and comprehensively compare the performance of 
+      different MAR methods. There is a widespread need for a universal CT MAR image 
+      quality benchmark to evaluate the clinical impact of new MAR methods and compare 
+      them to state-of-the-art techniques. PURPOSE: The goal of the AAPM CT Metal 
+      Artifact Reduction (CT-MAR) grand challenge was to create and distribute a 
+      clinically representative 2D MAR performance benchmark, and to invite 
+      participants to objectively compare the performance of their MAR methods based on 
+      this benchmark. A secondary goal was to facilitate MAR development by 
+      disseminating a MAR training database and tools. After completion of the grand 
+      challenge, the MAR benchmark and the MAR training database will remain publicly 
+      accessible for future MAR developments and benchmarking. METHODS: Grand challenge 
+      participants were invited to submit results for their MAR algorithm. The 
+      challenge organizers provided 14,000 CT training datasets generated using a 
+      hybrid data simulation framework that combined real patient images-including 
+      lung, abdomen, liver, head, and pelvis-with virtual metal objects. Each training 
+      dataset included five types of data: CT sinograms (uncorrected and metal-free), 
+      CT reconstructed images (uncorrected and metal-free), and metal masks. In the 
+      final evaluation phase, 29 clinical uncorrected datasets with metal were provided 
+      in both the sinogram and image domains for participants to process with their MAR 
+      algorithms. Their results were evaluated using eight clinically relevant image 
+      quality metrics. The final ranking was determined and compared to an established 
+      normalized metal artifact reduction (NMAR) reference method. Additionally, we 
+      conducted a survey to better understand the methodologies used by participants. 
+      RESULTS: A total of 106 teams registered for the challenge, with 26 teams 
+      completing all phases of the challenge. 92% of these-including all top ten 
+      teams-used a deep learning (DL) approach, employing a variety of network 
+      architectures such as UNet, ResNet, GAN, diffusion models, and transformers. 
+      Additionally, 22% of the teams-including the top three teams-utilized a 
+      combination of sinogram- and image-domain approaches. The results showed a broad 
+      distribution of the scores. Overall, the competition was marked by diverse 
+      methods and a wide range of results, including some truly exceptional results. 
+      More than 70% of the teams achieved a better overall score than the popular 
+      baseline NMAR method. CONCLUSIONS: The CT-MAR grand challenge provided an 
+      opportunity to benchmark state-of-the-art MAR algorithms. Our hybrid data 
+      generation framework was a powerful tool for simulating large-scale realistic 
+      datasets for MAR algorithm development. A clinically relevant universal MAR 
+      benchmark offered an objective and meaningful way to compare different 
+      approaches. The training data and benchmark were published online to support 
+      future MAR development.
+CI  - © 2025 American Association of Physicists in Medicine.
+FAU - Haneda, Eri
+AU  - Haneda E
+AD  - GE HealthCare Technology and Innovation Center, Niskayuna, New York, USA.
+FAU - Peters, Nils
+AU  - Peters N
+AD  - Department of Radiation Oncology, Massachusetts General Hospital and Harvard 
+      Medical School, Boston, Massachusetts, USA.
+AD  - Department of Radiation Oncology, University of Washington & Fred Hutch Cancer 
+      Center, Seattle, Washington, USA.
+FAU - Zhang, Jiayong
+AU  - Zhang J
+AD  - GE HealthCare Technology and Innovation Center, Niskayuna, New York, USA.
+FAU - Karageorgos, Grigorios
+AU  - Karageorgos G
+AD  - GE HealthCare Technology and Innovation Center, Niskayuna, New York, USA.
+FAU - Xia, Wenjun
+AU  - Xia W
+AD  - Department of Biomedical Engineering, Rensselaer Polytechnic Institute, Troy, New 
+      York, USA.
+FAU - Paganetti, Harald
+AU  - Paganetti H
+AD  - Department of Radiation Oncology, Massachusetts General Hospital and Harvard 
+      Medical School, Boston, Massachusetts, USA.
+FAU - Wang, Ge
+AU  - Wang G
+AD  - Department of Biomedical Engineering, Rensselaer Polytechnic Institute, Troy, New 
+      York, USA.
+FAU - Guo, Yi
+AU  - Guo Y
+AD  - School of Biomedical Engineering, Southern Medical University, Guangdong, China.
+FAU - Ma, Jianhua
+AU  - Ma J
+AD  - School of Biomedical Engineering, Southern Medical University, Guangdong, China.
+AD  - School of Life Science and Technology, Xi'an Jiaotong University, Shaanxi, China.
+FAU - Park, Hyoung Suk
+AU  - Park HS
+AD  - Department of Industrial Mathematics, National Institute for Mathematical 
+      Sciences, Daejeon, South Korea.
+FAU - Jeon, Kiwan
+AU  - Jeon K
+AD  - Department of Industrial Mathematics, National Institute for Mathematical 
+      Sciences, Daejeon, South Korea.
+FAU - Fan, Fuxin
+AU  - Fan F
+AD  - Pattern Recognition Lab, Friedrich-Alexander-Universität Erlangen-Nürnberg, 
+      Erlangen, Germany.
+FAU - Thies, Mareike
+AU  - Thies M
+AD  - Pattern Recognition Lab, Friedrich-Alexander-Universität Erlangen-Nürnberg, 
+      Erlangen, Germany.
+FAU - De Man, Bruno
+AU  - De Man B
+AD  - GE HealthCare Technology and Innovation Center, Niskayuna, New York, USA.
+LA  - eng
+GR  - R01 EB031102/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Artifacts
+MH  - *Metals
+MH  - *Tomography, X-Ray Computed
+MH  - *Image Processing, Computer-Assisted/methods
+MH  - Humans
+MH  - Algorithms
+PMC - PMC12757780
+MID - NIHMS2131617
+OTO - NOTNLM
+OT  - AAPM grand challenge
+OT  - computed tomography
+OT  - deep learning
+OT  - metal artifact reduction
+COIS- CONFLICTS OF INTEREST STATEMENT The authors have no conflicts to disclose.
+EDAT- 2025/10/08 06:29
+MHDA- 2025/10/08 06:30
+PMCR- 2026/01/02
+CRDT- 2025/10/08 04:43
+PHST- 2025/08/12 00:00 [revised]
+PHST- 2025/05/03 00:00 [received]
+PHST- 2025/09/08 00:00 [accepted]
+PHST- 2025/10/08 06:30 [medline]
+PHST- 2025/10/08 06:29 [pubmed]
+PHST- 2025/10/08 04:43 [entrez]
+PHST- 2026/01/02 00:00 [pmc-release]
+AID - 10.1002/mp.70050 [doi]
+PST - ppublish
+SO  - Med Phys. 2025 Oct;52(10):e70050. doi: 10.1002/mp.70050.

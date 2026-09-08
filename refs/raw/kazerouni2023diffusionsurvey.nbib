@@ -1,0 +1,107 @@
+PMID- 37295311
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20231023
+LR  - 20231026
+IS  - 1361-8423 (Electronic)
+IS  - 1361-8415 (Linking)
+VI  - 88
+DP  - 2023 Aug
+TI  - Diffusion models in medical imaging: A comprehensive survey.
+PG  - 102846
+LID - S1361-8415(23)00106-8 [pii]
+LID - 10.1016/j.media.2023.102846 [doi]
+AB  - Denoising diffusion models, a class of generative models, have garnered immense 
+      interest lately in various deep-learning problems. A diffusion probabilistic 
+      model defines a forward diffusion stage where the input data is gradually 
+      perturbed over several steps by adding Gaussian noise and then learns to reverse 
+      the diffusion process to retrieve the desired noise-free data from noisy data 
+      samples. Diffusion models are widely appreciated for their strong mode coverage 
+      and quality of the generated samples in spite of their known computational 
+      burdens. Capitalizing on the advances in computer vision, the field of medical 
+      imaging has also observed a growing interest in diffusion models. With the aim of 
+      helping the researcher navigate this profusion, this survey intends to provide a 
+      comprehensive overview of diffusion models in the discipline of medical imaging. 
+      Specifically, we start with an introduction to the solid theoretical foundation 
+      and fundamental concepts behind diffusion models and the three generic diffusion 
+      modeling frameworks, namely, diffusion probabilistic models, noise-conditioned 
+      score networks, and stochastic differential equations. Then, we provide a 
+      systematic taxonomy of diffusion models in the medical domain and propose a 
+      multi-perspective categorization based on their application, imaging modality, 
+      organ of interest, and algorithms. To this end, we cover extensive applications 
+      of diffusion models in the medical domain, including image-to-image translation, 
+      reconstruction, registration, classification, segmentation, denoising, 2/3D 
+      generation, anomaly detection, and other medically-related challenges. 
+      Furthermore, we emphasize the practical use case of some selected approaches, and 
+      then we discuss the limitations of the diffusion models in the medical domain and 
+      propose several directions to fulfill the demands of this field. Finally, we 
+      gather the overviewed studies with their available open-source implementations at 
+      our GitHub.(1) We aim to update the relevant latest papers within it regularly.
+CI  - Copyright © 2023 Elsevier B.V. All rights reserved.
+FAU - Kazerouni, Amirhossein
+AU  - Kazerouni A
+AD  - School of Electrical Engineering, Iran University of Science and Technology, 
+      Tehran, Iran.
+FAU - Aghdam, Ehsan Khodapanah
+AU  - Aghdam EK
+AD  - Department of Electrical Engineering, Shahid Beheshti University, Tehran, Iran.
+FAU - Heidari, Moein
+AU  - Heidari M
+AD  - School of Electrical Engineering, Iran University of Science and Technology, 
+      Tehran, Iran.
+FAU - Azad, Reza
+AU  - Azad R
+AD  - Faculty of Electrical Engineering and Information Technology, RWTH Aachen 
+      University, Aachen, Germany.
+FAU - Fayyaz, Mohsen
+AU  - Fayyaz M
+AD  - Microsoft, Berlin, Germany.
+FAU - Hacihaliloglu, Ilker
+AU  - Hacihaliloglu I
+AD  - Department of Radiology, University of British Columbia, Vancouver, Canada; 
+      Department of Medicine, University of British Columbia, Vancouver, Canada.
+FAU - Merhof, Dorit
+AU  - Merhof D
+AD  - Faculty of Informatics and Data Science, University of Regensburg, Regensburg, 
+      Germany; Fraunhofer Institute for Digital Medicine MEVIS, Bremen, Germany. 
+      Electronic address: dorit.merhof@ur.de.
+LA  - eng
+PT  - Journal Article
+PT  - Review
+DEP - 20230523
+PL  - Netherlands
+TA  - Med Image Anal
+JT  - Medical image analysis
+JID - 9713490
+SB  - IM
+MH  - Humans
+MH  - *Image Processing, Computer-Assisted/methods
+MH  - *Diagnostic Imaging
+MH  - Algorithms
+MH  - Models, Statistical
+OTO - NOTNLM
+OT  - Denoising diffusion models
+OT  - Diffusion models
+OT  - Generative models
+OT  - Medical applications
+OT  - Medical imaging
+OT  - Noise conditioned score networks
+OT  - Score-based models
+OT  - Survey
+COIS- Declaration of Competing Interest The authors declare that they have no known 
+      competing financial interests or personal relationships that could have appeared 
+      to influence the work reported in this paper.
+EDAT- 2023/06/10 15:13
+MHDA- 2023/10/23 00:44
+CRDT- 2023/06/09 18:10
+PHST- 2022/11/16 00:00 [received]
+PHST- 2023/05/12 00:00 [revised]
+PHST- 2023/05/16 00:00 [accepted]
+PHST- 2023/10/23 00:44 [medline]
+PHST- 2023/06/10 15:13 [pubmed]
+PHST- 2023/06/09 18:10 [entrez]
+AID - S1361-8415(23)00106-8 [pii]
+AID - 10.1016/j.media.2023.102846 [doi]
+PST - ppublish
+SO  - Med Image Anal. 2023 Aug;88:102846. doi: 10.1016/j.media.2023.102846. Epub 2023 
+      May 23.

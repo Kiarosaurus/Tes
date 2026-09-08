@@ -90,3 +90,33 @@ por la misma razón.
 muestreador sea defendible como contribucion independiente.
 
 ---
+
+## 2026-09-07 — Precedencia de `refs/raw` y `refs.bib` como archivo generado
+
+**Decisión:** ante cualquier discrepancia bibliográfica manda `refs/raw/`, el archivo tal
+como lo entregó el editor; en su defecto, `refs/clean/`. Un campo que venía en la versión
+anterior de `refs.bib` y que el raw no confirma no se conserva por costumbre: se marca
+`% VERIFICAR` y se cierra bajando la fuente real. Si la fuente real tampoco lo trae, se
+elimina. `refs.bib` pasa a ser un archivo **generado** por `scripts/build_refs.py`; las
+correcciones se hacen en `refs/clean/`, nunca sobre `refs.bib`. Dictada por la autora y
+registrada por el asistente con orden explícita el 2026-09-07.
+
+**Alternativas descartadas:** mantener `refs.bib` como archivo de edición manual, que era
+la regla 9 original de `CLAUDE.md`; y conservar los campos heredados sin respaldo por ser
+plausibles.
+
+**Por qué:** los 27 DOIs no tenían procedencia verificable. Con `refs/raw/` cada campo es
+auditable contra el editor y ningún dato depende de memoria ni de conocimiento del
+asistente. La regla ya se aplicó y tuvo dos consecuencias opuestas el mismo día: cerró
+`wu2022xcist` (el .bib de IOP confirmó `pages = {194002}`, que el registro de PubMed no
+traía) y obligó a **retirar** los tres volúmenes LNCS de `jacob2026lgesynthnet` (16459),
+`ramzan2026claim` (16038) y `wang2019cochlear` (11769), porque el exportador BibTeX de
+Springer omite serie y volumen en los capítulos de actas. Los valores retirados quedan
+registrados en `refs/MAPEO.md` por si se recuperan de otra fuente.
+
+**Nota sobre `CLAUDE.md`:** esta decisión modifica de hecho la regla 9 («refs.bib es
+autoridad… la definió la autora a mano»). La regla de fondo se mantiene —nadie añade,
+elimina ni corrige una entrada con conocimiento propio— pero el archivo donde se edita
+pasa a ser `refs/clean/`. Actualizar el texto de `CLAUDE.md` queda pendiente de la autora.
+
+---

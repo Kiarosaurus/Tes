@@ -1,0 +1,84 @@
+PMID- 21365336
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20110721
+LR  - 20211020
+IS  - 1528-1132 (Electronic)
+IS  - 0009-921X (Print)
+IS  - 0009-921X (Linking)
+VI  - 469
+IP  - 6
+DP  - 2011 Jun
+TI  - Pelvic positioning creates error in CT acetabular measurements.
+PG  - 1683-91
+LID - 10.1007/s11999-011-1827-9 [doi]
+AB  - BACKGROUND: CT allows for accurate measurement of acetabular orientation and 
+      shape, but malpositioning of the pelvis may lead to measurement variance. 
+      PURPOSE: We therefore sought to determine: (1) whether acetabular anteversion 
+      measurements using the femoral head centers differed from those using the 
+      posterior ischia, and (2) the extent to which changing obliquity, rotation, and 
+      tilt of a pelvis in a CT scanner affected the measurement of acetabular 
+      variables. METHODS: A radiopaque human pelvis model with articulated hips was 
+      suspended from a plastic sheet as part of an adjustable frame. Changes in the 
+      transverse and sagittal planes created rotation and tilt, while rotating the 
+      frame in the coronal plane created obliquity. CT scans were obtained, varying the 
+      combinations of obliquity, rotation, and tilt by intervals of 5°, up to 20°. 
+      Acetabular anteversion (AA), anterior acetabular sector angle (AASA), posterior 
+      acetabular sector angle (PASA), and horizontal acetabular sector angle (HASA) 
+      were measured. RESULTS: The two methods for measuring AA yielded values differing 
+      by 1° to 4° but correlated (r = 0.981) across the spectrum of pelvis positioning. 
+      Pelvic obliquity and tilt were linearly associated with changes in the 
+      measurements. For each 1°-increase in pelvic obliquity, AA changed -0.4°, and 
+      AASA, PASA, and HASA changed 1.93°, 0.99°, and 2.80°, respectively. For each 
+      1°-increase in pelvic tilt, AA changed 0.8°, and AASA, PASA, and HASA changed 
+      -1.07°, 0.52°, and -0.51°, respectively. Rotation had no affect on the variables. 
+      CONCLUSIONS: Small changes in pelvic obliquity and tilt were associated with 
+      variances in acetabular measurements. The measured changes were directly 
+      proportional to the changes in obliquity and tilt, and were additive. Pelvic 
+      rotation created no changes in measurement.
+FAU - van Bosse, Harold J P
+AU  - van Bosse HJ
+AD  - Department of Orthopaedic Surgery, Shriners Hospital for Children, 3551 North 
+      Broad Street, Philadelphia, PA 19140, USA. hvanbosse@shrinenet.org
+FAU - Lee, Duron
+AU  - Lee D
+FAU - Henderson, Eric R
+AU  - Henderson ER
+FAU - Sala, Debra A
+AU  - Sala DA
+FAU - Feldman, David S
+AU  - Feldman DS
+LA  - eng
+PT  - Comparative Study
+PT  - Journal Article
+DEP - 20110302
+PL  - United States
+TA  - Clin Orthop Relat Res
+JT  - Clinical orthopaedics and related research
+JID - 0075674
+SB  - IM
+MH  - Acetabulum/*diagnostic imaging/surgery
+MH  - Arthroplasty, Replacement, Hip/*methods
+MH  - *Hip Prosthesis
+MH  - Humans
+MH  - *Models, Anatomic
+MH  - *Patient Positioning
+MH  - Pelvic Bones/*diagnostic imaging/surgery
+MH  - Rotation
+MH  - *Tomography, X-Ray Computed
+PMC - PMC3094628
+EDAT- 2011/03/03 06:00
+MHDA- 2011/07/22 06:00
+PMCR- 2012/06/01
+CRDT- 2011/03/03 06:00
+PHST- 2010/05/10 00:00 [received]
+PHST- 2011/02/14 00:00 [accepted]
+PHST- 2011/03/03 06:00 [entrez]
+PHST- 2011/03/03 06:00 [pubmed]
+PHST- 2011/07/22 06:00 [medline]
+PHST- 2012/06/01 00:00 [pmc-release]
+AID - 1827 [pii]
+AID - 10.1007/s11999-011-1827-9 [doi]
+PST - ppublish
+SO  - Clin Orthop Relat Res. 2011 Jun;469(6):1683-91. doi: 10.1007/s11999-011-1827-9. 
+      Epub 2011 Mar 2.

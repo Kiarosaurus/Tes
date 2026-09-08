@@ -1,0 +1,120 @@
+PMID- 33864189
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20210707
+LR  - 20210707
+IS  - 1861-6429 (Electronic)
+IS  - 1861-6410 (Linking)
+VI  - 16
+IP  - 5
+DP  - 2021 May
+TI  - Deep learning to segment pelvic bones: large-scale CT datasets and baseline 
+      models.
+PG  - 749-756
+LID - 10.1007/s11548-021-02363-8 [doi]
+AB  - PURPOSE: Pelvic bone segmentation in CT has always been an essential step in 
+      clinical diagnosis and surgery planning of pelvic bone diseases. Existing methods 
+      for pelvic bone segmentation are either hand-crafted or semi-automatic and 
+      achieve limited accuracy when dealing with image appearance variations due to the 
+      multi-site domain shift, the presence of contrasted vessels, coprolith and chyme, 
+      bone fractures, low dose, metal artifacts, etc. Due to the lack of a large-scale 
+      pelvic CT dataset with annotations, deep learning methods are not fully explored. 
+      METHODS: In this paper, we aim to bridge the data gap by curating a large pelvic 
+      CT dataset pooled from multiple sources, including 1184 CT volumes with a variety 
+      of appearance variations. Then, we propose for the first time, to the best of our 
+      knowledge, to learn a deep multi-class network for segmenting lumbar spine, 
+      sacrum, left hip, and right hip, from multiple-domain images simultaneously to 
+      obtain more effective and robust feature representations. Finally, we introduce a 
+      post-processor based on the signed distance function (SDF). RESULTS: Extensive 
+      experiments on our dataset demonstrate the effectiveness of our automatic method, 
+      achieving an average Dice of 0.987 for a metal-free volume. SDF post-processor 
+      yields a decrease of 15.1% in Hausdorff distance compared with traditional 
+      post-processor. CONCLUSION: We believe this large-scale dataset will promote the 
+      development of the whole community and open source the images, annotations, 
+      codes, and trained baseline models at 
+      https://github.com/ICT-MIRACLE-lab/CTPelvic1K .
+FAU - Liu, Pengbo
+AU  - Liu P
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Han, Hu
+AU  - Han H
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Du, Yuanqi
+AU  - Du Y
+AD  - George Mason University, Virginia, USA.
+FAU - Zhu, Heqin
+AU  - Zhu H
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Li, Yinhao
+AU  - Li Y
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Gu, Feng
+AU  - Gu F
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+AD  - Beijing Electronic Science and Technology Institute, Beijing, China.
+FAU - Xiao, Honghu
+AU  - Xiao H
+AD  - Beijing Jishuitan Hospital, Beijing, China.
+FAU - Li, Jun
+AU  - Li J
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Zhao, Chunpeng
+AU  - Zhao C
+AD  - Beijing Jishuitan Hospital, Beijing, China.
+FAU - Xiao, Li
+AU  - Xiao L
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China.
+FAU - Wu, Xinbao
+AU  - Wu X
+AD  - Beijing Jishuitan Hospital, Beijing, China.
+FAU - Zhou, S Kevin
+AU  - Zhou SK
+AD  - Institute of Computing Technology, Chinese Academy of Sciences, Chinese Academy 
+      of Sciences, Beijing, China. s.kevin.zhou@gmail.com.
+AD  - School of Biomedical Engineering & Suzhou Institute for Advanced Research, 
+      University of Science and Technology of China, Suzhou, China. 
+      s.kevin.zhou@gmail.com.
+LA  - eng
+GR  - 2018135/Youth Innovation Promotion Association of the Chinese Academy of 
+      Sciences/
+PT  - Journal Article
+DEP - 20210416
+PL  - Germany
+TA  - Int J Comput Assist Radiol Surg
+JT  - International journal of computer assisted radiology and surgery
+JID - 101499225
+SB  - IM
+MH  - Algorithms
+MH  - *Deep Learning
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*methods
+MH  - Pattern Recognition, Automated
+MH  - Pelvic Bones/*diagnostic imaging
+MH  - Pelvis/*diagnostic imaging/*surgery
+MH  - Reproducibility of Results
+MH  - Tomography, X-Ray Computed/*methods
+OTO - NOTNLM
+OT  - CT dataset
+OT  - Deep learning
+OT  - Pelvic segmentation
+OT  - SDF post-processing
+EDAT- 2021/04/18 06:00
+MHDA- 2021/07/08 06:00
+CRDT- 2021/04/17 06:08
+PHST- 2021/01/19 00:00 [received]
+PHST- 2021/04/01 00:00 [accepted]
+PHST- 2021/04/18 06:00 [pubmed]
+PHST- 2021/07/08 06:00 [medline]
+PHST- 2021/04/17 06:08 [entrez]
+AID - 10.1007/s11548-021-02363-8 [pii]
+AID - 10.1007/s11548-021-02363-8 [doi]
+PST - ppublish
+SO  - Int J Comput Assist Radiol Surg. 2021 May;16(5):749-756. doi: 
+      10.1007/s11548-021-02363-8. Epub 2021 Apr 16.

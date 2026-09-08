@@ -1,0 +1,90 @@
+PMID- 39012731
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20250422
+LR  - 20260103
+IS  - 1558-254X (Electronic)
+IS  - 0278-0062 (Print)
+IS  - 0278-0062 (Linking)
+VI  - 44
+IP  - 1
+DP  - 2025 Jan
+TI  - An End-to-End Geometry-Based Pipeline for Automatic Preoperative Surgical 
+      Planning of Pelvic Fracture Reduction and Fixation.
+PG  - 79-91
+LID - 10.1109/TMI.2024.3429403 [doi]
+AB  - Computer-assisted preoperative planning of pelvic fracture reduction surgery has 
+      the potential to increase the accuracy of the surgery and to reduce 
+      complications. However, the diversity of the pelvic fractures and the disturbance 
+      of small fracture fragments present a great challenge to perform reliable 
+      automatic preoperative planning. In this paper, we present a comprehensive and 
+      automatic preoperative planning pipeline for pelvic fracture surgery. It includes 
+      pelvic fracture labeling, reduction planning of the fracture, and customized 
+      screw implantation. First, automatic bone fracture labeling is performed based on 
+      the separation of the fracture sections. Then, fracture reduction planning is 
+      performed based on automatic extraction and pairing of the fracture surfaces. 
+      Finally, screw implantation is planned using the adjoint fracture surfaces. The 
+      proposed pipeline was tested on different types of pelvic fracture in 14 clinical 
+      cases. Our method achieved a translational and rotational accuracy of 2.56 mm and 
+      3.31° in reduction planning. For fixation planning, a clinical acceptance rate of 
+      86.7% was achieved. The results demonstrate the feasibility of the clinical 
+      application of our method. Our method has shown accuracy and reliability for 
+      complex multi-body bone fractures, which may provide effective clinical 
+      preoperative guidance and may improve the accuracy of pelvic fracture reduction 
+      surgery.
+FAU - Liu, Jiaxuan
+AU  - Liu J
+FAU - Li, Haitao
+AU  - Li H
+FAU - Zeng, Bolun
+AU  - Zeng B
+FAU - Wang, Huixiang
+AU  - Wang H
+FAU - Kikinis, Ron
+AU  - Kikinis R
+FAU - Joskowicz, Leo
+AU  - Joskowicz L
+FAU - Chen, Xiaojun
+AU  - Chen X
+LA  - eng
+GR  - HHSN261201500003C/CA/NCI NIH HHS/United States
+GR  - HHSN261201500003I/CA/NCI NIH HHS/United States
+GR  - R01 CA235589/CA/NCI NIH HHS/United States
+GR  - P41 EB028741/EB/NIBIB NIH HHS/United States
+GR  - P41 EB015902/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20250102
+PL  - United States
+TA  - IEEE Trans Med Imaging
+JT  - IEEE transactions on medical imaging
+JID - 8310780
+SB  - IM
+MH  - Humans
+MH  - *Pelvic Bones/surgery/injuries/diagnostic imaging
+MH  - *Fractures, Bone/surgery/diagnostic imaging
+MH  - *Surgery, Computer-Assisted/methods
+MH  - Tomography, X-Ray Computed/methods
+MH  - Male
+MH  - Female
+MH  - *Fracture Fixation, Internal/methods
+MH  - Algorithms
+MH  - Bone Screws
+MH  - Adult
+MH  - Imaging, Three-Dimensional/methods
+MH  - Middle Aged
+PMC - PMC11893183
+MID - NIHMS2045579
+EDAT- 2024/07/16 18:42
+MHDA- 2025/03/04 00:21
+PMCR- 2026/01/02
+CRDT- 2024/07/16 12:23
+PHST- 2025/03/04 00:21 [medline]
+PHST- 2024/07/16 18:42 [pubmed]
+PHST- 2024/07/16 12:23 [entrez]
+PHST- 2026/01/02 00:00 [pmc-release]
+AID - 10.1109/TMI.2024.3429403 [doi]
+PST - ppublish
+SO  - IEEE Trans Med Imaging. 2025 Jan;44(1):79-91. doi: 10.1109/TMI.2024.3429403. Epub 
+      2025 Jan 2.

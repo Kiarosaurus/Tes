@@ -26,9 +26,17 @@ irrelevantes las fuentes del simulador.
 **Acceso:** COMPLETO (PDF entero) | PARCIAL | ABSTRACT | SIN ACCESO
 **PDF:** si = archivo presente en `papers/` | FALTA = no esta
 
-**35 entradas en `refs.bib`**, tras incorporar `vandenbosch2002` desde su raw
-(2026-09-08). Van den Bosch: N1, texto completo; Moed: N2 confirmado tras auditar
-la comparativa original. Las secciones posteriores conservan el historial de lecturas.
+> **Ronda 2026-09-08 (McLaren-geometria):** 7 fichas nuevas (`grass2016`, `wagner2017`,
+> `lee2014`, `hasenboehler2011`, `zhao2012`, `mendel2011`, `gottschling2009`). Sus PDFs y
+> sus raws estan en el repo, pero **ninguna tiene todavia entrada en `refs/clean/` ni en
+> `refs.bib`**: darlas de alta es decision de la autora (regla 9). Niveles propuestos por
+> el asesor, sin confirmar: N1 `grass2016` y `wagner2017`; N2 `lee2014`, `hasenboehler2011`,
+> `zhao2012`, `mendel2011`; N3 `gottschling2009`.
+
+**36 entradas en `refs.bib`**, tras incorporar `keating1999iliosacral` desde su raw
+(2026-09-08). Keating: N2, texto completo en DOCX sin paginacion. Publica 13% de
+malposicion por paciente; no publica el rango 2%-15% ni una distribucion ordinal.
+Las secciones posteriores conservan el historial de lecturas.
 
 > Estado vigente de Gardner: LEIDO, N1. La busqueda del origen del 10 mm esta
 > cerrada por decision; los pasajes posteriores sobre candidatas vivas son historicos.
@@ -50,10 +58,13 @@ la comparativa original. Las secciones posteriores conservan el historial de lec
 | kaiser2014dysmorphism (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | kaiser2014dysmorphism.md | no | **El umbral de 10 mm NO se establece aqui: se elige y se hereda.** *"was chosen as a conservative size"* (Metodos, p. e120(2), refs. 29 y 37) y *"has been previously established ... by experienced surgeons"* (Discusion, p. e120(7), refs. 4, 29 y 37). La cadena sigue hacia Gardner 2010, Ziran 2007 y Moed 2006 — **Ziran ya se leyo el 2026-09-08 y NO contiene el umbral**; **Moed tambien se leyo el 2026-09-08 y SI contiene "1 cm", pero como separacion interforaminal en 2D, no como diametro de corredor**. Lo que SI aporta y nadie mas tiene: procedimiento de reformateo del CT segun el eje del sacro, definiciones operacionales de los angulos coronal y axial con landmarks oseos, y el sacral dysmorphism score = (coronal S1) + 2(axial S1). Riesgos de citarlo mal: atribuirle el 10 mm; tomar el >70 como umbral validado cuando es descriptivo; confundir sus cifras iliosacras (Tabla II) con las transsacras (score, 41%); ignorar que la cohorte EXCLUYE CT con implantes |
 | gardner2010safezones (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | gardner2010safezones.md | no | **El umbral de 10 mm SI aparece, pero tampoco nace aqui: se declara como criterio y se atribuye a las refs. 17 y 20 de Gardner** --- *"A safe zone dimension of 10 mm was considered the critical threshold"* (M&M, p. 624), con llamada a **Ziran 2003 (JBJS Br 85:411-418)** y **Moed 2006 (JOT 20:378-383)**. **Aviso critico: el Ziran del umbral es el de 2003, NO `ziran2007fluoroscopic`** (ese es su ref. 21 y nunca se usa para el umbral). Lo que SI aporta y nadie mas tiene: geometria de **S1 y S2 por separado y por fenotipo**, y la **aproximacion de areas S1/S2 en dismorficos** (222 y 220.1 mm2; no inversion del orden ni prior clinico de malposicion). Riesgos de citarlo mal: atribuirle el umbral; confundir cifras **iliosacras** (area, longitud, angulos) con **transsacras** (anchos y "transverse screw possible"); citar el abstract, que imprime *"15% versus 4%"* donde el cuerpo dice grados y mezcla inlet con outlet en S2; ignorar que clasifica dismorfismo **por radiografia simple, sin score**, y que mide el lado **no lesionado**. 25 entradas NO ENCONTRADO EN EL PDF |
 
+| grass2016 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | grass2016.md | no | **Publica la geometria en mm que McLaren no da**: S1 12.8 mm (IC95 12.1-13.5), S2 11.6 mm (IC95 11.3-11.9), y por sexo, sobre 280 pelvis. Umbral propio de 9 mm derivado de un tornillo de 7.3 mm. Si el muestreador se calibra contra estos rangos y la magnitud no es la misma (aqui es cilindro inscrito), la validacion anatomica queda mal anclada. **El PDF no menciona a McLaren ni afirma usar su mismo software** |
+| wagner2017 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | wagner2017.md | no | S1cc 11.6 mm (DE 5.4) y S2cc 14.0 mm (DE 2.4): **invierte el orden S1/S2 respecto a Gras porque mide otra magnitud** (diametro limitante craneo-caudal vs cilindro inscrito). Umbrales 12/8 mm tomados de Carlson y del calibre del implante. Sostiene #30b: ninguna jerarquia universal S1/S2 es defendible |
 ## Nivel 2 — afecta la redaccion
 
 | Clave | PDF | Acceso | Nota generada | Leido por mi | Para que lo uso |
 |---|---|---|---|---|---|
+| keating1999iliosacral (leido 2026-09-08) | DOCX | COMPLETO, SIN PAGINACION | keating1999iliosacral.md | no | **SI es una fuente clinica real dentro del conjunto citado por Hinsche:** el cuerpo publica 5 de 38 pacientes (13%) con malposicion. Pero no es cita directa de Zwingmann, no escribe la banda 2%-15% ni sus extremos, y usa posicion binaria radiografica sin escala en mm. No aporta prior por tornillo ni por S1/S2 y no entra al benchmark SAP. |
 | moed2006s2screw (leido 2026-09-08, **N2 CONFIRMADO**) | si | COMPLETO | moed2006s2screw.md | no | **Es la ref. 4 de Kaiser y el primer nodo TERMINAL de la cadena del 10 mm: el numero "1 cm" esta aqui y NO se cita a nadie.** Pero designa OTRA magnitud: *"a minimum of 1 cm between the S1 and S2 neural foramina on 3 sequential preoperative CT 3-mm sections"* (Metodos, p. 379) es separacion interforaminal en cortes axiales 2D, no el *"10-mm-diameter corridor"* perpendicular al eje que le atribuye Kaiser. **NO resuelve la implicancia #12:** no publica ninguna tasa de malposicion; publica 0 de 53 con criterio BINARIO (*"satisfactory screw position"*, Resultados, p. 380), sin definicion operacional y sin observador independiente declarado. Su unica escala en mm es de REDUCCION de la fractura (4 / 5-10 / 11-20 / >20 mm, p. 380), NO de posicion del tornillo: no mezclar con la escala 0-3 de `smith2006iliosacral`. Cifras propias citables: 49 pacientes, 53 tornillos S2, tornillo canulado de 7.0 mm, 6.5 mm como minimo declarado seguro en S2, 2 de 49 revisiones, P=0.008 y RR 15.67 (IC 5.24-46.83). Toda comparacion S1 vs S2 es cita de terceros. 31 entradas NO ENCONTRADO EN EL PDF **Revision tras van den Bosch (2026-09-08): N2 confirmado.** La comparativa es de quejas neurologicas por paciente y se cita desde la fuente primaria; ser intermediario no lo vuelve N1. |
 | wu2022xcist (N1 → N2, 2026-09-07) | si | COMPLETO | wu2022xcist.md | no | Fundamento técnico de XCIST y discusión de límites de validación y reconstrucción. Descartado como respaldo autónomo de validación de metal; conserva uso metodológico. El protocolo adoptado se sustenta en Peters (#8, #17) |
 | chen2024tumorsynthesis (VERIFICADO) | si | COMPLETO | chen2024tumorsynthesis.md | no | DiffTumor confirmado. No modela nada fuera de la mascara y trunca HU a [-175,250]: respaldo de B_delta y de C3. Candidato a N1 |
@@ -75,6 +86,11 @@ la comparativa original. Las secciones posteriores conservan el historial de lec
 > *"we introduce a novel framework, termed DiffTumor"* (Sec. 1, p. 2). La equivalencia
 > difftumor = `chen2024tumorsynthesis` queda confirmada contra el texto.
 
+| lee2014 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | lee2014.md | no | Eslabon auditado del 10 mm: **lo cita de Gardner y lo llama arbitrario**, con lo que las dos atribuciones de McLaren colapsan en un solo nodo. Aporta ademas geometria sobre n=526 y el efecto de la vertebra transicional lumbosacra (S2 sobre umbral: 26% vs 73%). Clave por el raw; el fasciculo impreso es 2015 |
+| hasenboehler2011 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | hasenboehler2011.md | no | Angulos axiales medios (S1 19.27, S2 13.10 grados) y corredores axiales (1.73 cm S1, 1.15 cm S2). **Prevalencia de dismorfismo 14.2%-14.5%, no el 50% que circula por McLaren** (implicancia #33). Adopta la clasificacion tipo 1/2/3 de Carlson y no fija umbral propio. Inconsistencia interna del PDF: 14.5% en abstract, 14.2% en cuerpo |
+| zhao2012 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | zhao2012.md | no | Cubre la mitad de la pose que falta: punto de entrada como distancias a EIPS y a la escotadura ciatica mayor, y longitudes por nivel. **Ningun angulo en ninguna unidad** y las distancias son proyectadas en vista lateral, no coordenadas en el marco del voxel. n=66 pelvis sanas |
+| mendel2011 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | mendel2011.md | no | Regla de decision alternativa a Dmax: triangulo sacro lateral, boundary ratio 1.5, VPP 97% y sensibilidad 94%, calibrado contra tornillo de 7.3 mm. **Solo parcialmente reimplementable**: la alineacion a vista lateral estricta es codigo propio de Amira y la formula del ratio queda ambigua |
+| ebraheim1997 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | ebraheim1997.md | no | Geometria fina del pediculo de S1 en marco de TC: altura anterior 30.2 mm, profundidad 27.8 mm, entrada 3-3.5 cm por delante del borde posterior del ilion, longitud segura hasta 80 mm y **margen de 4-6 mm entre dos tornillos**, cifra que no tiene ninguna otra fuente. **Avisos: su punto de entrada usa otro landmark que `zhao2012` y su longitud es de tornillo pedicular unilateral, no transsacro; no son comparables.** Sin angulos, sin sexo y sin S2 |
 ## Nivel 3 — apoyo
 
 | Clave | PDF | Acceso | Nota generada | Leido por mi | Para que lo uso |
@@ -91,6 +107,7 @@ la comparativa original. Las secciones posteriores conservan el historial de lec
 > hay que leerlos igual, como manual de implementacion. Estan en N3 porque no
 > amenazan el argumento, no porque sobren.
 
+| gottschling2009 (NUEVA FILA, leido 2026-09-08) | si | COMPLETO | gottschling2009.md | no | Citado por McLaren como su metodologia de contorno oseo automatico, pero **trata solo femur y tibia**: no menciona pelvis, sacro, corredor ni tornillo. Tampoco da parametros de implementacion ni nombre del software. Implicancia #32: el procedimiento de Dmax no tiene ancestro publicado sobre el sacro |
 ## Nivel 4 — descartes
 
 Sin entradas actualmente. Al mover un paper aquí, conservar una única fila vigente

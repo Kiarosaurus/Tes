@@ -1,0 +1,127 @@
+PMID- 27392768
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20170221
+LR  - 20220408
+IS  - 1528-1132 (Electronic)
+IS  - 0009-921X (Print)
+IS  - 0009-921X (Linking)
+VI  - 474
+IP  - 10
+DP  - 2016 Oct
+TI  - Transsacral Osseous Corridor Anatomy Is More Amenable To Screw Insertion In 
+      Males: A Biomorphometric Analysis of 280 Pelves.
+PG  - 2304-11
+LID - 10.1007/s11999-016-4954-5 [doi]
+AB  - BACKGROUND: Percutaneous iliosacral screw placement is the standard procedure for 
+      fixation of posterior pelvic ring lesions, although a transsacral screw path is 
+      being used more frequently in recent years owing to increased fracture-fixation 
+      strength and better ability to fix central and bilateral sacral fractures. 
+      However, biomorphometric data for the osseous corridors are limited. Because 
+      placement of these screws in a safe and effective manner is crucial to using 
+      transsacral screws, we sought to address precise sacral anatomy in more detail to 
+      look for anatomic variation in the general population. QUESTIONS/PURPOSES: We 
+      asked: (1) What proportion of healthy pelvis specimens have no transsacral 
+      corridor at the level of the S1 vertebra owing to sacral dysmorphism? (2) If 
+      there is no safe diameter for screw placement in the transsacral S1 corridor, is 
+      an increased and thus safe diameter of the transsacral S2 corridor expected? (3) 
+      Are there sex-specific differences in sacral anatomy and are these correlated 
+      with known anthropometric parameters? METHODS: CT scans of pelves of 280 healthy 
+      patients acquired exclusively for medical indications such as polytrauma (20%), 
+      CT angiography (70%), and other reasons (10%), were segmented manually. Using an 
+      advanced CT-based image analysis system, the mean shape of all segmented pelves 
+      was generated and functioned as a template. On this template, the cylindric 
+      transsacral osseous corridor at the level of the S1 and S2 vertebrae was 
+      determined manually. Each pelvis then was registered to the template using a 
+      free-form registration algorithm to measure the maximum screw corridor diameters 
+      on each specimen semiautomatically. RESULTS: Thirty of 280 pelves (11%) had no 
+      transsacral S1 corridor owing to sacral dysmorphism. The average of maximum 
+      cylindrical diameters of the S1 corridor for the remaining 250 pelves was 12.8 mm 
+      (95% CI, 12.1-13.5 mm). A transverse corridor for S2 was found in 279 of 280 
+      pelves, with an average of maximum cylindrical diameter of 11.6 mm (95% CI, 
+      11.3-11.9 mm). Decreasing transsacral S1 corridor diameters are correlated with 
+      increasing transsacral S2 corridor diameters (R value for females, -0.260, p < 
+      0.01; for males, -0.311, p < 0.001). Female specimens were more likely to have 
+      sacral dysmorphism (defined as a pelvis without a transsacral osseous corridor at 
+      the level of the S1 vertebra) than were male specimens (females, 16%; males, 7%; 
+      p < 0.003). Furthermore female pelves had smaller-corridor diameters than did 
+      male pelves (females versus males for S1: 11.7 mm [95% CI, 10.6-12.8 mm] versus 
+      13.5 mm [95% CI, 12.6-14.4 mm], p < 0.01; and for S2: 10.6 mm [95% CI, 10.1-11.1 
+      mm] versus 12.2 mm [95% CI, 11.8-12.6 mm ], p < 0.0001). CONCLUSIONS: Narrow 
+      corridors and highly individual, sex-dependent variance of morphologic features 
+      of the sacrum make transsacral implant placement technically demanding. 
+      Individual preoperative axial-slice CT scan analyses and orthogonal coronal and 
+      sagittal reformations are recommended to determine the prevalence of 
+      sufficient-sized osseous corridors on both levels for safe screw placements, 
+      especially in female patients, owing to their smaller corridor diameters and 
+      higher rate of sacral dysmorphism.
+FAU - Gras, Florian
+AU  - Gras F
+AD  - University Hospital Jena, Friedrich-Schiller University, Jena, Germany. 
+      florian.gras@med.uni-jena.de.
+FAU - Gottschling, Heiko
+AU  - Gottschling H
+AD  - Clinic of Orthopaedics and Sportsorthopaedics, Klinikum rd Isar, Technische 
+      Universität München, Munich, Germany.
+FAU - Schröder, Manuel
+AU  - Schröder M
+AD  - Clinic of Orthopaedics and Sportsorthopaedics, Klinikum rd Isar, Technische 
+      Universität München, Munich, Germany.
+FAU - Marintschev, Ivan
+AU  - Marintschev I
+AD  - University Hospital Jena, Friedrich-Schiller University, Jena, Germany.
+FAU - Hofmann, Gunther O
+AU  - Hofmann GO
+AD  - University Hospital Jena, Friedrich-Schiller University, Jena, Germany.
+FAU - Burgkart, Rainer
+AU  - Burgkart R
+AD  - Clinic of Orthopaedics and Sportsorthopaedics, Klinikum rd Isar, Technische 
+      Universität München, Munich, Germany.
+LA  - eng
+PT  - Comparative Study
+PT  - Journal Article
+DEP - 20160708
+PL  - United States
+TA  - Clin Orthop Relat Res
+JT  - Clinical orthopaedics and related research
+JID - 0075674
+SB  - IM
+CIN - Clin Orthop Relat Res. 2016 Oct;474(10):2312-4. doi: 10.1007/s11999-016-5017-7. 
+      PMID: 27519577
+MH  - Adult
+MH  - Aged
+MH  - Aged, 80 and over
+MH  - Anatomic Landmarks
+MH  - *Bone Screws
+MH  - Female
+MH  - Healthy Volunteers
+MH  - Humans
+MH  - Ilium/abnormalities/diagnostic imaging/surgery
+MH  - Male
+MH  - Middle Aged
+MH  - Orthopedic Procedures/adverse effects/*instrumentation
+MH  - Pelvic Bones/abnormalities/*diagnostic imaging/*surgery
+MH  - Predictive Value of Tests
+MH  - Radiographic Image Interpretation, Computer-Assisted
+MH  - Sacrum/abnormalities/diagnostic imaging/surgery
+MH  - Sex Characteristics
+MH  - Sex Factors
+MH  - *Tomography, X-Ray Computed
+MH  - Young Adult
+PMC - PMC5014826
+EDAT- 2016/07/10 06:00
+MHDA- 2017/02/22 06:00
+PMCR- 2017/10/01
+CRDT- 2016/07/10 06:00
+PHST- 2016/02/23 00:00 [received]
+PHST- 2016/06/20 00:00 [accepted]
+PHST- 2016/07/10 06:00 [entrez]
+PHST- 2016/07/10 06:00 [pubmed]
+PHST- 2017/02/22 06:00 [medline]
+PHST- 2017/10/01 00:00 [pmc-release]
+AID - 10.1007/s11999-016-4954-5 [pii]
+AID - 4954 [pii]
+AID - 10.1007/s11999-016-4954-5 [doi]
+PST - ppublish
+SO  - Clin Orthop Relat Res. 2016 Oct;474(10):2304-11. doi: 10.1007/s11999-016-4954-5. 
+      Epub 2016 Jul 8.

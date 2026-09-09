@@ -3,6 +3,82 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 ## Ultimo paso completado
+2026-09-09 (cierre): **E6a ejecutado** y **bloqueo declarado por pedido de la autora**.
+E6a mide el tramo `HU -> ventana -> HU` del Objetivo 1 (sin VAE, cota inferior de
+cualquier decodificador). Dos hallazgos: **#38**, las tres ventanas publicadas son
+**redundantes en reconstruccion** (`max |LW - oraculo|` en hueso a float = **0.0 exacto**;
+la unica ganancia es 1.679 HU a 8 bits, o sea cuantizacion, no rango) — no refuta C3, pero
+si refuta que la multi-ventana **preserve mejor los HU**; y **#39**, el Go/No-Go
+**no puede fallar** en pelvis limpia (mediana **0.00 HU**) y **falla en 48 de 75** con
+metal (mediana 46.36, max 274.49), antes del VAE, solo por el techo de 2000 HU de LW.
+En ROI de metal el MAE es **3588.80 HU** de mediana, con HU maximo mediano de 18 822 y
+pico 24 970 contra un techo de 2000: **la representacion no puede codificar lo que la
+tesis debe generar.** `main.tex` no declara sobre que cohorte se evalua el Objetivo 1.
+**Bloqueo declarado:** #15, #22, #34 y #35 detenidas hasta que la autora marque artefactos.
+Afecta solo la cohorte del Objetivo 3; Obj 1 y Obj 2 siguen libres.
+Antes tambien: **#34 corregida por procedencia** (la columna `Artefactos` la llenaron los
+agentes desde laminas, no la autora; sus 20 `no` son afirmaciones de ausencia fragiles),
+**#35** (una cohorte para tres consumidores), **#36** (el VAE del Obj 1 no esta
+especificado en ningun documento) y **#37** (`revision.csv` no declara procedencia por
+campo).
+Siguiente: la autora decide **#37 primero** (procedencia por campo) y luego hace la
+revision visual de estriacion sobre los 33 volumenes de dataset6 con objeto. En paralelo,
+decidir #38/#39 (que hacer con el techo de 2000 HU) y #36 (que VAE). Sigue sin ubicarse el
+banco de 61 geometrias.
+
+## Paso anterior
+2026-09-09: **primer experimento del giro a benchmarks (E1)**. Corrido
+`experiments/exploration-3d/sensibilidad_hu.py` sobre los 178 volumenes locales (solo
+lectura; `revision.csv` intacto). **#22 EJECUTADA**: 1500 HU deja 177 de 178 como
+candidatos y **queda descartado** (entra hueso cortical); 2500 HU da 113 candidatos, 65
+limpios y **cero falsos negativos** contra la revision 3D de la autora; 3500 HU da 104
+candidatos y 74 limpios pero **pierde 5 metales reales**. Cambios de clase: 64 de 1500 a
+2500, 9 de 2500 a 3500. Las 178 clasificaciones a 2500 reproducen exactamente
+`revision.csv`. **#34 nueva**: los 5 que pierde el 3500 son los cinco `accesorio`
+extracorporeos de dataset6, asi que el umbral y la definicion de `Objeto extraño` son la
+misma decision (2500 -> 65 limpios; 3500 -> 74 limpios). Ademas, analisis de prioridad de
+las 34 implicancias y cola de experimentos E1-E6 propuesta.
+Siguiente: **E6, el Go/No-Go del Objetivo 1** (MAE < 25 HU en hueso del round-trip
+multi-ventana), que no tiene ningun bloqueo. Antes de E2 y E3 hacen falta tres decisiones
+de la autora: adoptar o no TotalSegmentator (#29), donde esta el banco de 61 geometrias
+(NO esta en `data/`, que solo tiene dataset6 y dataset7), y si se adopta la formulacion
+parametrica `Dmax >= d_implante + holgura` (#31).
+Aviso de estado del repo: `docs/04-implicancias.md`, `refs.bib` y `tesis/main.pdf` siguen
+modificados sin commitear desde el 2026-09-08, mas 15 `refs/raw/*` sin trackear.
+
+## Paso anterior
+2026-09-08: cerrada la seccion "la geometria que McLaren NO publica" con 7 lecturas
+(`grass2016`, `wagner2017`, `lee2014`, `hasenboehler2011`, `zhao2012`, `mendel2011`,
+`gottschling2009`). La geometria SI existe pero en marcos que no componen (#30); Gras y
+Wagner se invierten el orden S1/S2 por definicion distinta de diametro (#30b, corrobora
+#12 y #27); el umbral es siempre calibre de tornillo mas holgura en 7 fuentes, lo que
+habilita expresarlo como `Dmax >= d_implante + holgura` sobre el banco de 61 (#31);
+Gottschling es de femur y tibia (#32); el "hasta 50%" de dismorfismo no lo sostiene
+ninguna de las tres fuentes citadas (#33). Busqueda de corredor: **cerrada por saturacion**.
+Decision de la autora: cerrar **tras** dos lecturas finales (`carlson2000`, `ebraheim1997`),
+y cierre **reversible** si los experimentos revelan que falta geometria. **Ebraheim leido**
+(pediculo S1 en mm, entrada a 3-3.5 cm del borde posterior del ilion, margen 4-6 mm entre
+dos tornillos; sin angulos, sin S2; septimo marco incompatible, #30 ampliada).
+**Carlson BLOQUEADO: falta el PDF y el raw.** Unica candidata de reapertura anotada:
+Morse 1994, angulos para tornillo sacro sobre TC preoperatoria.
+Siguiente (decidido por la autora): cerrar los tres pendientes de datos — cifra de R1 (#26),
+tabla de sensibilidad HU 1500/2500/3500 (#22) y representante de los 3 grupos duplicados
+(#20, que bloquea el split). Todo sobre datos ya en disco.
+
+## Paso anterior
+2026-09-08: evaluado TotalSegmentator para el Objetivo 2 (#29 ABIERTA). Es util como
+ROI/mascara anatomica inicial (`sacrum`, S1, caderas), no entrega S2, cortical, landmarks
+ni corredor y no esta validado aqui bajo metal. Recomendado piloto 1.5 mm + QC local;
+pendiente decision de adopcion. No cambia SAP ni downstream.
+
+## Paso anterior
+2026-09-08: Keating 1999 leido con `lector-papers` desde DOCX completo sin paginacion.
+SI publica malposicion en 5/38 pacientes (13%): fuente indirecta via Hinsche y punto
+interior, no origen del rango 2%-15% ni de sus extremos. Binario, radiografico, sin
+S1/S2 ni escala SAP; #12 no se reabre. `refs.bib` = 36; tesis recompilada sin citas
+indefinidas. Siguiente: sensibilidad HU y #26.
+
+## Paso anterior
 2026-09-08: Gardner incorporado como respaldo anatomico S1/S2 en `00-tesis.md`,
 `01-decisiones.md` y `main.tex` (Problem Statement y Objetivo 2), por encargo de la autora.
 Se mantiene geometria individual sin fenotipos y benchmark ordinal SAP solo en S1.

@@ -55,6 +55,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `kaiser2014dysmorphism` | `kaiser2014dysmorphism.nbib` | PubMed nbib | — | 25031382 |
 | `karageorgos2024ddpm` | `karageorgos2024ddpm.nbib` | PubMed nbib | — | 38963746 |
 | `kazerouni2023diffusionsurvey` | `kazerouni2023diffusionsurvey.nbib` | PubMed nbib | — | 37295311 |
+| `keating1999iliosacral` | `keating1999iliosacral.nbib` | PubMed nbib | — | 10052785 |
 | `liu2021ctpelvic1k` | `liu2021ctpelvic1k.nbib` | PubMed nbib | — | 33864189 |
 | `liu2025pipeline` | `liu2025pipeline.nbib` | PubMed nbib | — | 39012731 |
 | `mclaren2021corridor` | `mclaren2021corridor.nbib` | PubMed nbib | — | 33649991 |
@@ -163,3 +164,11 @@ nivel 1 sin texto completo y el origen de la implicancia #1.
 integracion de la autora. Autores de FAU; titulo de TI; revista de JT; ano de DP;
 volumen 53 de VI; numero 1 de IP; paginas 44-8 de PG expandidas a 44--48;
 DOI de AID. PDF local completo. Ningun campo completado desde otra fuente.
+
+## Alta de Keating (2026-09-08)
+
+`refs/raw/keating1999iliosacral.nbib` (PMID 10052785) ->
+`refs/clean/keating1999iliosacral.bib` -> `refs.bib`. Autores de FAU; titulo de TI;
+revista de JT; ano de DP; volumen 13 de VI; numero 2 de IP; paginas 107-13 de PG
+expandidas a 107--113; DOI de AID. Texto completo local en DOCX, sin paginacion
+conservada. Ningun campo bibliografico se completo desde el DOCX.

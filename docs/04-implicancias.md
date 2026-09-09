@@ -2175,3 +2175,605 @@ Se explicitan las areas por nivel y morfologia con evidencia en la ficha, y su
 limite: anatomia del lado no lesionado y trayectorias ideales, no prior clinico SAP.
 Impacto: se completa el respaldo anatomico de la redaccion; no cambia el alcance
 ni reabre #27, ni la delimitacion de #12. La medicion individual sigue vigente.
+
+---
+
+## Keating 1999 — lectura cerrada: SI aporta 13%, no el rango 2%-15%
+
+- **Origen:** la autora subio `papers/keating1999iliosacral.docx`. No hay PDF.
+- **Restriccion, y toca la regla 2:** la copia `.docx` disponible no conserva una
+  paginacion impresa estable. El texto se extrajo completo al scratchpad, fuera del repo
+  por la regla 6, y la ficha se genera desde ahi. **Todas sus citas llevan seccion, no pagina**,
+  marcadas `(sin paginacion: fuente .docx)`. Inventar una pagina seria violar la regla 2.
+- **Consecuencia practica:** si alguna cifra de Keating llega a la tesis y el formato de
+  cita exige pagina, **hace falta el PDF real**. Hasta entonces la fuente es citable por
+  seccion.
+- **Nivel de acceso para `_index.md`:** `COMPLETO (.docx, sin paginacion)`. No es acceso
+  limitado por contenido: el texto esta entero.
+- **Aviso de trampa confirmado por la lectura:** el abstract de Keating contiene cuatro
+  porcentajes que **NO son de malposicion** y que
+  caen dentro o cerca de la banda 2-15%: `13%` (embolia pulmonar), `2.6%` (mortalidad
+  hospitalaria), `15%` (pacientes **sin dolor**) y `11%` (fusion sacroiliaca por dolor).
+  Ademas `44%`/`36%` son de **malunion**, no de posicion del tornillo. Cualquiera de las
+  tres primeras podria citarse por error como tasa de malposicion y encajaria en la banda.
+- **Ubicacion en la cadena, para no confundirla:** Keating **no** es fuente directa de
+  `zwingmann2009navigated`. Zwingmann cita a Hinsche y Templeman; `hinsche2002fluoroscopy`
+  no mide el rango y lo cita de Ebraheim 1993, **Keating 1999**, Routt 1997 y
+  Templeman 1996. Keating es una fuente indirecta dentro de la cadena.
+- **Veredicto contra el cuerpo:** **SI**, Keating escribe una tasa propia de malposicion:
+  *"Screw misplacement occurred in five patients (13 percent)"* (Results; sin
+  paginacion: fuente DOCX). El resumen solo escribe cinco pacientes y omite 13%, que
+  explica por que una lectura limitada al abstract llega al veredicto PARCIAL.
+- **Unidad y denominadores:** el resultado es **5 de 38 pacientes**, aunque se usaron
+  85 tornillos. No corresponde calcular 5/85 como tasa por tornillo ni atribuirla al
+  paper. La evaluacion es radiografica y binaria, sin umbrales de brecha en milimetros.
+- **Que sostiene realmente:** un punto clinico interior de **13%**, compatible con la
+  amplitud narrada por Hinsche. No publica el rango 2%-15%, no identifica sus extremos
+  y no demuestra que el 2% o el 15% provengan de una fuente concreta.
+- **Compatibilidad con la tesis:** no entra al benchmark SAP, porque no aporta la escala
+  ordinal 0/<2/2-4/>4 mm, una distribucion por tornillo ni resultados S1/S2. La decision
+  vigente de retirar el rango unico se mantiene.
+- **Estado de #12:** no se reabre. La auditoria de procedencia queda mejor documentada,
+  pero Keating no reemplaza las distribuciones ordinales de Zwingmann. Para reconstruir
+  historicamente los extremos faltaria leer Ebraheim 1993, Routt 1997 y Templeman 1996;
+  ya no es necesario para el alcance vigente.
+- **Ficha:** `docs/literatura/keating1999iliosacral.md`.
+
+**Evaluacion de impacto:** corrige la afirmacion documental de que ninguna fuente real
+de la banda habia sido leida. No obliga a cambiar `main.tex`, `00-tesis.md`, alcance,
+supuestos, baseline ni SAP: el rango 2%-15% ya esta retirado y el nuevo dato es binario
+por paciente. Sin nueva implicancia abierta.
+
+---
+
+## 29 — TotalSegmentator como inicializacion anatomica, no como corredor — ABIERTA
+
+- **Origen:** evaluacion solicitada por la autora el 2026-09-08 contra la documentacion
+  oficial vigente de TotalSegmentator y las necesidades del Objetivo 2.
+- **Aporte util:** la tarea CT `total` produce mascaras separadas de `sacrum`,
+  `vertebrae_S1`, `hip_left` y `hip_right`; tambien incluye arterias y venas iliacas.
+  Puede localizar la pelvis, proponer una ROI y dar una mascara osea inicial para el
+  procesamiento geometrico. El proyecto oficial admite NIfTI y permite limitar clases.
+- **Lo que no entrega:** S2 como clase independiente, cortical frente a trabecular,
+  platillo superior de S1, crestas iliacas, espinas iliacas posteriores, punto de entrada,
+  eje del corredor, diametro libre ni margen cortical. Esas variables siguen requiriendo
+  geometria propia y las definiciones de Kaiser/McLaren/Gardner.
+- **Limite critico:** el paper principal encontrado no documenta validacion especifica
+  sobre osteosintesis pelvica con artefacto metalico. La clase opcional `hip_implant`
+  identifica implantes de cadera, no tornillos o placas del anillo pelvico, y la propia
+  documentacion advierte que las tareas entrenadas en datasets pequenos son menos robustas.
+- **Uso recomendado:** herramienta de preprocesamiento no autoritativa sobre anatomia
+  sin metal, con correccion/QC y version fijada. Para preservar bordes no usar `--fast`
+  (3 mm); evaluar el modelo de 1.5 mm. Sus mascaras no son ground truth, restriccion
+  quirurgica ni contribucion de la tesis.
+- **Validacion minima antes de adoptarlo:** piloto local con casos limpios y con metal;
+  comprobar superficie cerca de S1/S2, separacion correcta de sacro/S1, localizacion de
+  los tres landmarks de Kaiser y fallos bajo streaking. Medir error de superficie en la
+  region del corredor, no solo Dice global. Esto puede ejecutar parte de #26, pero no
+  sustituye la revision de visibilidad de landmarks.
+- **Efecto sobre alcance:** no reabre la evaluacion downstream ni cambia SAP. Puede reducir
+  trabajo de implementacion del muestreador y hacer reproducible su inicializacion.
+- **Pendiente de decision:** adoptar TotalSegmentator como generador de ROI/mascara inicial
+  y correr el piloto; si se adopta, dar de alta y leer su paper antes de citarlo en la tesis.
+
+---
+
+## Ronda "la geometria que McLaren NO publica" — 7 lecturas (2026-09-08)
+
+Fichas nuevas: `gottschling2009`, `grass2016`, `lee2014`, `wagner2017`, `mendel2011`,
+`zhao2012`, `hasenboehler2011`. Kaiser ya estaba leido. Con esto **la seccion queda
+agotada**: no queda ninguna fila PENDIENTE en ella.
+
+La pregunta de la seccion era si alguna de estas fuentes entrega la geometria que
+`mclaren2021corridor` declara haber determinado ("position, alignment and maximum
+diameter") y solo reporta a medias. **Respuesta: si, repartida entre varias, pero
+nunca en un mismo marco de referencia y nunca en la poblacion de interes.**
+
+### 30 — La geometria existe, pero en marcos que no componen — ABIERTA
+
+- **Origen:** las 7 lecturas de esta ronda.
+- **Lo que cada fuente cubre del hueco:**
+
+| Pieza que falta en McLaren | Quien la publica | Valor | Magnitud real que mide |
+|---|---|---|---|
+| Diametro S1/S2 | `grass2016` | S1 12.8 mm (IC95 12.1-13.5); S2 11.6 mm (IC95 11.3-11.9) | cilindro inscrito maximo |
+| Diametro S1/S2 | `wagner2017` | S1cc 11.6 mm (DE 5.4); S2cc 14.0 mm (DE 2.4) | diametro limitante craneo-caudal |
+| Diametro S1/S2 | `lee2014` | S1 14.4 (DE 3.8); S2 10.9 (DE 3.3); n=526 | seccion axial, estratificada por LSTV |
+| Diametro por sexo | `grass2016` | S1 M 11.7 vs H 13.5; S2 M 10.6 vs H 12.2 | idem cilindro inscrito |
+| Punto de entrada | `zhao2012` | S1: 42.21-63.69 mm por delante de la EIPS y 32.77-53.75 mm sobre la escotadura ciatica mayor. S2: 22.68-54.28 y 14.06-33.70 mm | par de distancias proyectadas en vista lateral estandarizada |
+| Longitud | `zhao2012` | S1 136.90-174.34 mm; S2 120.50-149.90 mm | longitud de tornillo |
+| Angulo axial | `hasenboehler2011` | S1 19.27 grados; S2 13.10 grados (medias) | angulo axial sobre CT de 3 mm |
+| Forma del corredor | `wagner2017` | ovalada consistente; modelo PCA sobre 92 superficies homologas | modelo estadistico 3D |
+| Regla de decision | `mendel2011` | boundary ratio 1.5 (BW/BH); VPP 97%, sensibilidad 94% | triangulo sacro lateral en vista lateral estricta |
+
+- **El problema no es falta de numeros: es que no componen.** `grass2016` da un cilindro
+  inscrito, `wagner2017` un diametro limitante en un solo eje y `lee2014` una seccion
+  axial: **tres magnitudes distintas bajo el mismo nombre**. `zhao2012` da punto de
+  entrada como distancias a dos landmarks proyectados, no como coordenadas en el marco
+  del voxel. `hasenboehler2011` da angulos axiales en su propia convencion, no en la de
+  `kaiser2014dysmorphism`. Ninguna terna (posicion, orientacion, diametro) es coherente
+  consigo misma.
+- **Consecuencia para el Objetivo 2:** estas cifras **no se pueden encadenar** para armar
+  una pose. Sirven como **contraste de orden de magnitud** de lo que el muestreador mida
+  en cada volumen; no sustituyen la medicion. Refuerzan la decision vigente en vez de
+  ofrecer una alternativa a ella.
+- **Efecto sobre #7:** no se reabre ni se agrava. Queda **cubierta operacionalmente y
+  ahora ademas calibrada**: hay rangos publicados contra los que contrastar la salida.
+- **Pendiente de decision:** si estos rangos entran en `main.tex` como tabla de contraste
+  anatomico del muestreador, o se quedan como respaldo en las fichas.
+
+### 30b — Wagner invierte el orden S1/S2 respecto a Gras — corrobora #12 y #27
+
+`grass2016` mide S1 (12.8) mas ancho que S2 (11.6). `wagner2017` mide S2 (14.0) mas
+ancho que S1 (11.6). `lee2014` mide S1 mas ancho que S2 y ademas halla que la fraccion
+de pelvis sobre el umbral en S2 pasa de 26% a 73% segun haya o no vertebra transicional
+lumbosacra. **No es discrepancia de datos: es discrepancia de definicion de diametro.**
+Tres cohortes grandes (280, 156 y 526 pelvis) no coinciden en que segmento es mas amplio.
+
+Es **respaldo cuantitativo publicado** para dos decisiones que hasta ahora se sostenian
+solo por argumento: no imponer jerarquia universal S1/S2 (#12, delimitacion del
+benchmark) y no estratificar por fenotipo sino medir volumen a volumen (#27). Se puede
+escribir en la tesis como hallazgo de la revision, no como limitacion propia.
+
+### 31 — El umbral de corredor es SIEMPRE calibre de tornillo mas holgura — ABIERTA
+
+Septima confirmacion del patron de #25, y esta vez con salida constructiva. Ninguna
+fuente mide un umbral de seguridad; cada una lo **deriva del implante**:
+
+| Fuente | Umbral | De donde sale |
+|---|---|---|
+| `gardner2010safezones` | 10 mm | consenso por calibre de tornillo (ya auditado) |
+| `kaiser2014dysmorphism` | 10 mm | elegido, atribuido a terceros |
+| `mclaren2021corridor` | 10 mm | heredado; declara que "has not yet been established" |
+| `lee2014` | 10 mm | citado de Gardner; lo llama "an arbitrary safety threshold", para tornillo de 6.5-8.0 mm |
+| `grass2016` | **9 mm** | propio: "cutoff for placing a 7.3-mm cortical screw" |
+| `wagner2017` | **12 / 8 mm** | 12 mm tomado de Carlson; el rango se deriva de implantes de 6.0-7.3 mm |
+| `mendel2011` | ratio 1.5 | calibrado contra un tornillo canulado de 7.3 mm |
+
+- **Que significa:** el umbral no es una propiedad de la anatomia, es una **funcion del
+  implante**. Siete fuentes lo confirman por convergencia independiente y dos lo dicen en
+  su propio texto.
+- **Salida constructiva:** el muestreador **no tiene por que adoptar un escalar fijo de
+  10 mm**. Puede expresar la restriccion como `Dmax >= d_implante + holgura`, con
+  `d_implante` tomado del banco propio de 61 geometrias y la holgura declarada como
+  parametro. Convierte una convencion heredada y debil en una restriccion **derivada e
+  interna al metodo**, coherente con el insumo propio del proyecto, y hace de la
+  sensibilidad al umbral una ablacion natural en vez de un supuesto oculto.
+- **Efecto sobre #25:** no la reabre, la completa: la cadena era una convencion, y ahora
+  se sabe **de que es funcion** esa convencion.
+- **Pendiente de decision de la autora:** adoptar o no la formulacion parametrica. Toca
+  `main.tex` (Objetivo 2) y `03-glosario.md`. **No aplicado.**
+
+### 26 — CUARTA, QUINTA Y SEXTA CONFIRMACION: nadie ha medido corredores con metal
+
+`grass2016` excluye explicitamente: *"Pelves with fractures, pelvic ring deformity, hip
+dysplasia, or hardware in situ were excluded"* (Materials and Methods, p. 2306).
+`wagner2017` excluye 6 fracturas y 13 patologias oseas, y admite en Limitaciones que una
+fractura desplazada reduciria los corredores **sin cuantificarlo**. `zhao2012` usa 66
+pelvis sanas. Con Kaiser, McLaren y Ziran ya contados, son **seis cohortes consecutivas
+de pelvis intactas**.
+
+El parrafo `Field limitation` de `main.tex` ya afirma esto y ahora tiene tres fuentes mas.
+**No requiere cambio de redaccion**; a lo sumo ampliar la lista de ejemplos. R1 se sigue
+cerrando midiendo en casa, no leyendo.
+
+### 32 — `gottschling2009` no documenta ninguna medicion sacra — ABIERTA
+
+- **Hallazgo:** el paper que `mclaren2021corridor` cita como su metodologia de extraccion
+  automatica de contorno oseo trata **exclusivamente femur y tibia** (1265 femures, 805
+  tibias; mide diametro de cabeza femoral y longitud femoral). Las palabras pelvis, sacro,
+  corredor, cilindro, tornillo e implante **no aparecen en su texto**.
+- **Tampoco es reimplementable tal cual:** da la formulacion (mapeo por deformacion no
+  rigida y funcion de energia sobre transformadas de distancia con signo) pero no los
+  parametros de implementacion ni el nombre del software, y remite a tres referencias
+  externas para las piezas clave.
+- **Consecuencia:** la unica parte de McLaren que la tesis pensaba heredar como ejecutable
+  —el procedimiento de Dmax— **no tiene ancestro publicado que lo describa sobre el
+  sacro**. McLaren queda como fuente del **criterio** (Dmax como escalar de viabilidad),
+  no de una **implementacion** heredada.
+- **Efecto:** no rompe nada, porque la decision vigente ya es medir el corredor con
+  geometria propia sobre cada volumen. Pero cambia **como se cita a McLaren**. Si
+  `main.tex` insinua herencia de implementacion, hay una frase que ajustar.
+- **Pendiente:** que la autora revise con esto en mano la redaccion del Objetivo 2.
+
+### 33 — La cifra de dismorfismo "hasta 50%" no la sostiene la fuente titulada asi — ABIERTA
+
+- **Verificado literalmente en el PDF de McLaren (Discusion, p. 6):** *"Several studies
+  reported a prevalence of sacral dysmorphism as high as 50% [9, 19, 39]."* Es una **cita
+  colectiva a tres fuentes**, sin atribuir el 50% a ninguna en particular. Las tres son
+  `gardner2010safezones` [9], `kaiser2014dysmorphism` [19] y `hasenboehler2011` [39].
+- **Lo que dicen esas fuentes, ya leidas las tres:**
+  - `hasenboehler2011`, el unico estudio de los tres **titulado** "Prevalence of sacral
+    dysmorphia" y el unico prospectivo de prevalencia: **14.2%-14.5%** (49 de 344; el PDF
+    tiene esa inconsistencia interna entre abstract y cuerpo). Maximo por subgrupo 19.2%
+    en mujeres.
+  - `kaiser2014dysmorphism`: *"The dysmorphic phenotype was identified in 41% of the
+    cohort"* (Resultados, p. e120(4)).
+  - `gardner2010safezones`: su muestra es de 28 sacros normales y 22 dismorficos, es decir
+    una composicion **elegida por diseno**, no una prevalencia poblacional.
+- **Conclusion defendible:** ninguna de las tres publica un 50%. La cifra mas alta
+  disponible es el 41% de Kaiser, y **la unica medicion de prevalencia real de las tres es
+  14.2%-14.5%**. HIPOTESIS NO VERIFICADA, no citable: el 50% podria venir de leer la
+  composicion muestral de Gardner (22/50 = 44%) como si fuera prevalencia. No hay frase
+  que lo respalde y no debe escribirse como afirmacion.
+- **Que se puede afirmar en la tesis, y que no.** SI: que la prevalencia publicada de
+  dismorfismo sacro varia entre 14.2% y 41% segun definicion y cohorte, con las tres
+  fuentes citadas. NO: repetir "hasta 50%", ni siquiera citando a McLaren.
+- **Efecto:** no toca el muestreador (los fenotipos ya estan fuera de alcance por #27).
+  Toca la **justificacion epidemiologica** si en algun momento se escribe una cifra de
+  dismorfismo, y suma un caso mas al patron de #25, esta vez de cifra **alterada al alza**
+  y no solo de umbral heredado.
+- **Pendiente de decision:** que la autora confirme que ninguna version de "hasta 50%"
+  entra a `main.tex`.
+
+### Niveles propuestos para las 7 fichas nuevas
+
+`grass2016` N1 (geometria en mm que sustituye el hueco de McLaren, con cohorte de 280),
+`wagner2017` N1 (geometria y modelo de forma, y es quien invierte el orden S1/S2),
+`lee2014` N2 (eslabon auditado del 10 mm, mas geometria y efecto LSTV),
+`hasenboehler2011` N2 (angulos axiales y prevalencia; origen de #33),
+`zhao2012` N2 (punto de entrada y longitudes),
+`mendel2011` N2 (regla de decision alternativa a Dmax),
+`gottschling2009` N3 (contexto metodologico; no aplica al sacro).
+Decision de nivel: de la autora.
+
+### 30 — AMPLIADA con `ebraheim1997`: septimo marco, misma incompatibilidad
+
+Lectura del 2026-09-08 por decision de la autora (una de las dos finales de la linea).
+**Es la fuente con geometria mas fina del pediculo de S1 vista hasta ahora**, y confirma
+#30 en vez de resolverla.
+
+| Pieza | Valor | Frase original | Seccion / pagina |
+|---|---|---|---|
+| Altura pedicular anterior S1 | 30.2 ± 3.4 mm (24-38) | *"anterior pedicular height (30.2 ± 3.4 mm, range 24-38 mm)"* | Results, p. 843 |
+| Altura pedicular posterior S1 | 26.1 ± 3.4 mm (21-35) | *"posterior pedicular height (26.1 ± 3.4 mm, range 21-35 mm)"* | Results, p. 843 |
+| Profundidad del pediculo | 27.8 ± 2.7 mm (24-32) | *"pedicular depth (27.8 ± 2.7 mm, range 24-32 mm)"* | Results, p. 843 |
+| Altura posterior del ala | 28.7 ± 5.1 mm (20-37) | *"posterior alar height (28.7 ± 5.1 mm, range 20-37 mm)"* | Results, p. 844 |
+| Profundidad del ala | 45.8 ± 1.9 mm (43-48) | *"alar depth (45.8 ± 1.9 mm, range 43-48 mm)"* | Results, p. 844 |
+| Punto de entrada | 3-3.5 cm por delante del borde posterior del ilion, plano sagital | *"3 to 3.5 cm anterior to the posterior border of the iliac bone"* | Abstract, p. 841 |
+| Longitud segura | hasta 80 mm | *"The safe length of the iliosacral pedicular screw is up to 80 mm"* | Abstract/Discusion, p. 841/845 |
+| Margen entre dos tornillos | 4-6 mm | *"The safety margin for two closely inserted pedicular screws was only 4 to 6 mm"* | Abstract, p. 841 |
+
+**Dos avisos que hay que respetar al citarla, o se cometen errores de magnitud:**
+
+1. **El punto de entrada NO es comparable con el de `zhao2012`.** Ebraheim mide 3-3.5 cm
+   por delante del **borde posterior del ilion**; Zhao mide 42.21-63.69 mm por delante de
+   la **espina iliaca posterosuperior**. Landmarks distintos: los numeros no se promedian
+   ni se contrastan entre si. Septimo marco de referencia incompatible de la linea.
+2. **Las longitudes tampoco son comparables.** Los 80 mm de Ebraheim son de un tornillo
+   **pedicular unilateral en S1**; los 136.90-174.34 mm de `zhao2012` son de un tornillo
+   **alargado / transsacro**. Son construcciones quirurgicas distintas. Mezclarlas
+   produciria un rango absurdo de 80-174 mm.
+
+**Lo que si aporta y no tenia ninguna otra fuente:** el **margen de 4-6 mm entre dos
+tornillos** en S1. Es la contraparte fina del dato grueso de `mclaren2021corridor` (17 mm
+de corredor para dos tornillos, alcanzado solo por el 19.2%). Si el muestreador llega a
+generar configuraciones de dos tornillos, esta es la unica cifra publicada de separacion
+disponible.
+
+**Lo que no aporta:** ningun angulo en grados contra planos anatomicos (solo
+"perpendicular a la tabla iliaca"), ninguna separacion por sexo, ninguna area, y **nada
+de S2**. El hueco angular de McLaren sigue abierto tras siete fuentes.
+
+**Efecto:** ninguno sobre el alcance. Refuerza #30 y da cifras de contraste mas finas
+para el Objetivo 2. **No aplicado a `main.tex`.**
+
+### Nivel propuesto para `ebraheim1997`
+**N2.** Aporta geometria de contraste util y una cifra unica (4-6 mm), pero no entra al
+muestreador como restriccion ejecutable: sin angulos y sin S2, no cierra una pose.
+Decision de nivel: de la autora.
+
+---
+
+## Ronda 2026-09-09 — primer experimento del giro a benchmarks (E1)
+
+Ejecutado `experiments/exploration-3d/sensibilidad_hu.py` sobre los 178 volumenes
+locales. Solo lectura de `data/`; `revision.csv` intacto. Salidas:
+`sensibilidad_hu.csv`, `sensibilidad_hu.md`, `sensibilidad_hu.log`.
+
+### 22 — EJECUTADA. El recuento existe y el 2500 queda respaldado por medicion
+
+**Lo que pedia la decision del 2026-09-08:** recontar la cohorte a 1500, 2500 y 3500 HU
+y reportar cuantos volumenes cambian de clase. **Hecho.**
+
+| Umbral | candidatos | limpios (no candidatos) | Metal=si y NO candidato |
+|---:|---:|---:|---:|
+| 1500 | 177 de 178 | 1 | 0 |
+| 2500 | 113 de 178 | 65 | 0 |
+| 3500 | 104 de 178 | 74 | **5** |
+
+- **Cambios de clase:** 64 volumenes dejan de ser candidatos al pasar de 1500 a 2500;
+  9 mas al pasar de 2500 a 3500.
+- **Reproducibilidad:** las 178 clasificaciones a 2500 HU coinciden exactamente con la
+  columna `Candidato HU` de `revision.csv`. Cero desacuerdos. El cribado es determinista.
+- **1500 HU no criba:** deja 177 de 178 como candidatos y solo 1 volumen limpio en toda
+  la cohorte. Confirma con medicion que a 1500 HU entra hueso cortical, no solo metal.
+  **Queda descartado como umbral de cribado.**
+- **2500 HU tiene cero falsos negativos** contra la revision 3D completa de la autora:
+  ningun volumen que ella marco `Metal=si` u `Objeto extraño=si` cae del lado limpio.
+  Es la primera validacion medida del umbral que ya se usaba.
+- **3500 HU gana 9 volumenes de entrenamiento y pierde 5 metales reales.**
+
+### 34 — El umbral de cribado y la definicion de `Objeto extraño` son LA MISMA decision — ABIERTA
+
+- **Origen:** E1, 2026-09-09. Hallazgo no previsto por la decision del 2026-09-08.
+- **Hallazgo:** los 5 volumenes que 3500 HU pierde son los cinco `accesorio` de dataset6
+  (`CLINIC_0036`, `0068`, `0078`, `0084`, `0097`; HU maximo entre 2701 y 3395), material
+  **extracorporeo**, no osteosintesis. Ninguno es implante.
+- **Consecuencia:** subir a 3500 no es "perder metal" en general, es **perder exactamente
+  la clase de objeto cuya inclusion #22 dejaba sin definir**. Las dos preguntas abiertas
+  colapsan en una:
+  - Si `Objeto extraño` incluye lo extracorporeo -> el umbral es **2500** y el
+    entrenamiento limpio por HU son **65** volumenes.
+  - Si `Objeto extraño` se restringe a lo intracorporeo -> **3500** no pierde ningun
+    implante y el entrenamiento limpio por HU sube a **74**.
+  Son 9 volumenes de diferencia, todos de dataset6.
+- **Cautela de interpretacion:** estos 65 y 74 son cohortes **por criterio HU puro**, no
+  las cifras de 70 y 97 que salieron de la revision 3D. Las tres definiciones son
+  distintas y no se deben mezclar en la data card.
+- **CORRECCION 2026-09-09 de una afirmacion sin respaldo.** La primera version de esta
+  entrada decia que "un accesorio extracorporeo a 3000 HU produce estrias que atraviesan
+  el campo". **Eso no esta medido ni citado, y como enunciado general es falso.** La
+  amplitud del streaking no es funcion del HU maximo: depende de la seccion que el objeto
+  presenta a los rayos, de su composicion y del recorrido de atenuacion, no de su pico
+  reconstruido. Un piercing de 1 mm y un tornillo de 7.3 mm pueden reconstruirse al mismo
+  HU y producir artefactos de ordenes de magnitud distintos. Ademas el HU pico de un
+  objeto metalico ya viene corrompido por su propio artefacto: es un efecto, no una
+  medida de atenuacion.
+- **Lo que si se puede afirmar:** la clase de objeto que 3500 HU descarta es
+  extracorporea. **Si produce o no artefacto dentro del ROI oseo esta SIN MEDIR.**
+  La pregunta que la autora ya lleva al asesor ("el entrenamiento exige limpio de objeto
+  o limpio de artefacto?") sigue siendo la que decide, pero decidirla por HU es decidirla
+  por la variable equivocada. Requiere un estimador de artefacto sin referencia (ver la
+  cautela de #16 sobre streak amplitude sin par sin metal). Propuesto como E7, no corrido.
+- **Que seccion toca:** criterio de exclusion del entrenamiento; `02-datos.md`;
+  `03-glosario.md` (redaccion de umbral unico).
+- **Tipo:** DEFINICION. **Pendiente de decision de la autora. No aplicado.**
+
+### Nota sobre #19
+
+`CLINIC_0074`, el caso que motivo #19, aparece a 2500 HU con **0.632 mm3** (un solo
+voxel) y desaparece a 3500. Su objeto tubular sigue sin ser detectable por umbral, tal
+como registraba #19. La autora ya lo resolvio como "no es metal"; E1 no lo reabre, solo
+mide por que ningun umbral de este rango lo encuentra.
+
+### 34 — AMPLIADA con la evidencia de la propia revision 3D (2026-09-09)
+
+Cruzada la columna `Artefactos` de `revision.csv` con `sensibilidad_hu.csv` para los 33
+volumenes de dataset6 con objeto. **5 producen artefacto, 20 no, 8 inciertos.**
+
+| Categoria | n | artef=si | no | incierto | mm3>2500 mediana | max |
+|---|---:|---:|---:|---:|---:|---:|
+| DIU (intracorporeo) | 6 | 2 | 3 | 0 | 269 | 368 |
+| accesorio | 10 | 1 | 7 | 2 | 131 | 7801 |
+| electrodo (cutaneo) | 7 | 0 | 3 | 4 | 121 | 456 |
+| ropa (zipper/boton) | 10 | 2 | 6 | 2 | 1181 | 5361 |
+
+Los cinco con artefacto: `CLINIC_0069` (accesorio **extracorporeo**, moderada, 7801 mm3),
+`CLINIC_0007` y `CLINIC_0091` (zipper de ropa, leve, ~3700-4000 mm3), `CLINIC_0067` y
+`CLINIC_0080` (**DIU**, leve, 204-272 mm3).
+
+- **Rompe las dos intuiciones categoricas.** El artefacto **moderado** de toda la cohorte
+  lo produce un objeto **fuera del cuerpo**: extracorporeo no es sinonimo de inocuo. Y un
+  DIU de 204 mm3 produce artefacto mientras un accesorio de tamano parecido no: no es solo
+  el volumen, es el camino de atenuacion acumulado, y el DIU esta profundo.
+- **El umbral HU es ortogonal a la taxonomia.** Los 6 DIU son candidatos a 2500 **y** a
+  3500; los zipper de ropa llegan a 5361 mm3. **Ninguna definicion categorica de
+  `Objeto extraño` se puede implementar con un umbral HU.** Esto cierra la parte
+  instrumental de #22: el umbral sirve para priorizar revision, no para definir cohortes.
+- **Consecuencia practica:** la decision 2500 vs 3500 **no debe tomarse por el umbral**.
+  Los 5 volumenes que 3500 pierde tienen `Artefactos = no` en cuatro casos e `incierto` en
+  uno (`CLINIC_0097`), asi que por criterio de artefacto los cinco serian admisibles. La
+  cohorte se define por la columna `Artefactos`, ya poblada por la autora, no por HU.
+- **Argumento de asimetria, sin medicion adicional:** son 65 vs 74 volumenes, ~12% mas
+  datos sobre una base pequena. Un volumen contaminado ensena al generativo a producir
+  estrias **no pedidas por el condicionamiento**, lo que ataca la afirmacion central
+  (streaking atribuible a la mascara y a B_delta). El costo de incluir supera al de excluir.
+- **Pendiente de decision de la autora. No aplicado.**
+
+### 35 — Una sola cohorte "limpia" para tres consumidores distintos — ABIERTA
+
+- **Origen:** analisis del 2026-09-09 a raiz de las preguntas de la autora sobre DIU,
+  piercing y objetos de ropa.
+- **Hallazgo:** `Objeto extraño` hace hoy dos trabajos incompatibles: **describir** lo que
+  hay y **decidir** que se excluye. Por eso lleva desde el 2026-09-07 sin cerrarse (#22).
+  Y la regla de exclusion no puede ser unica, porque los tres objetivos no necesitan lo
+  mismo:
+
+| Consumidor | Que necesita limpio | Los 6 DIU |
+|---|---|---|
+| Obj 1 (multi-ventana) | nada; es per-voxel, y los volumenes con metal son mas informativos | incluir |
+| Obj 2 (muestreador) | geometria osea sacroiliaca intacta y corredor libre | incluir (sin contacto oseo) |
+| Obj 3 (renderizador) | ninguna fuente de artefacto sin enmascarar | excluir los 2 con artefacto |
+
+- **Propuesta operativa:** separar la columna descriptiva de la regla. Descripcion en tres
+  ejes independientes — **ubicacion** (intracorporeo / superficial / extracorporeo),
+  **naturaleza** (osteosintesis pelvica / otro implante medico / no medico) y **efecto**
+  (artefacto si / no / sin medir). `Objeto extraño` pasa a significar "cualquier material
+  no anatomico presente, sea cual sea su ubicacion", sin juicio. La exclusion se construye
+  sobre el eje **efecto** y se declara **por objetivo**.
+- **Ventaja:** los tres ejes ya se pueden poblar con lo que la autora anoto; no exige
+  revisar nada de nuevo. Y hace auditable en la data card por que un volumen entra en una
+  cohorte y no en otra.
+- **Que seccion toca:** `02-datos.md`, `03-glosario.md`, criterio de split.
+- **Tipo:** DEFINICION. **Pendiente de decision de la autora. No aplicado.**
+
+### 36 — El Objetivo 1 no es ejecutable como esta escrito: falta el VAE — ABIERTA
+
+- **Origen:** montaje de E6 el 2026-09-09.
+- **Hallazgo:** `tesis/main.tex` (Obj 1) define el Go/No-Go como el viaje
+  `HU -> multi-ventana -> VAE -> HU` con MAE < 25 HU en hueso. Las ventanas estan
+  documentadas en `03-glosario.md`. **El VAE no aparece en ningun documento del
+  repositorio**: ni arquitectura, ni factor de compresion, ni pesos, ni si se entrena o se
+  toma preentrenado. Tampoco `00-tesis.md` ni `01-decisiones.md` lo fijan.
+- **Consecuencia:** el Objetivo 1, que es **obligatorio** y esta en el alcance minimo
+  viable, no se puede ejecutar ni reproducir tal como esta enunciado. Es el unico objetivo
+  del minimo con una dependencia tecnica sin declarar.
+- **Mitigacion ya aplicada:** E6a mide solo `HU -> ventana -> HU`, que si esta
+  especificado, y reporta una **cota inferior** valida para cualquier decodificador. Sirve
+  de Go/No-Go parcial sin asumir nada sobre el VAE.
+- **Pendiente:** que la autora fije el VAE. Hasta entonces E6b no corre.
+- **Tipo:** ALCANCE. **No aplicado a `main.tex`.**
+
+### 34 y 35 — CORRECCION DE PROCEDENCIA (2026-09-09). La columna `Artefactos` NO la lleno la autora
+
+La autora advierte que no llenó `Artefactos` y que no tenía claro qué designaba.
+**Verificado contra `revision.csv` y le asiste la razón.** En los tres casos revisados,
+la parte de la autora en `Notas` dice únicamente `Autora: objeto observado en 3D = <tipo>`;
+la descripción de estriación viene siempre del bloque `Agente:`, derivada de las láminas
+PNG. Concuerda con `ESTADO.md`, que registra que la autora anotó **tipo y cantidad**.
+
+**Qué queda invalidado de lo que escribí antes:**
+
+- La frase "tus propias anotaciones lo demuestran" y "columna ya poblada por la autora"
+  en #34 y #35 es **falsa**. La columna es **propuesta de agente sin validar**, del mismo
+  estatus que `propuesta_clasificacion.csv`.
+- La recomendación de #35 de **construir la regla de exclusión sobre el eje `efecto`
+  usando la columna actual queda RETIRADA.** Construir cohortes sobre salida de agente no
+  validada es exactamente lo que `01-decisiones.md` prohíbe para la clasificación de metal.
+- Los 20 `Artefactos = no` son **afirmaciones de ausencia derivadas de unas pocas láminas
+  axiales**, el mismo defecto ya registrado en #19 y #21 ("16 axiales no demuestran
+  ausencia"). Son los menos confiables de toda la columna, y son justo los que sostenían
+  que los 5 casos perdidos por el 3500 HU eran admisibles.
+
+**Qué sobrevive:**
+
+- La tabla de #34 sigue siendo útil, pero **como hipótesis a verificar**, no como
+  evidencia. Reetiquetada: los 5 con artefacto son 5 **propuestas**.
+- El hallazgo instrumental **no depende de esa columna y se mantiene**: los 6 DIU son
+  candidatos a 2500 y a 3500, y los zipper de ropa llegan a 5361 mm3. Eso sale de
+  `sensibilidad_hu.csv`, medido. El umbral HU sigue siendo ortogonal a la taxonomía.
+- El **argumento de asimetría tampoco depende de la columna**, y con esta corrección se
+  refuerza: si no se sabe cuáles de los 9 volúmenes en disputa están contaminados, la
+  incertidumbre empuja a excluir, no a incluir.
+- Los tres ejes propuestos en #35 (ubicación / naturaleza / efecto) siguen en pie como
+  **estructura**. Lo que cambia es que el eje `efecto` **está vacío de evidencia válida**:
+  hoy solo tiene propuestas de agente.
+
+**Consecuencia:** el eje `efecto` necesita una fuente real antes de decidir cohortes. Dos
+vías, no excluyentes: (a) revisión visual de la autora enfocada solo en estriación, o
+(b) un estimador medido sin referencia (E7, no corrido; ver la cautela de #16 sobre
+streak amplitude sin par sin metal). **Ninguna decisión de cohorte debería tomarse antes.**
+
+### 37 — `revision.csv` no distingue por campo quien lo escribio — ABIERTA
+
+- **Origen:** el error de procedencia del 2026-09-09 (ver la correccion de #34 y #35).
+- **Hallazgo estructural:** las 178 filas llevan el mismo valor en `Revisor`
+  (`Kiara (autora, 3D) + agentes clasificador-metal (laminas)`). **Ningun campo declara su
+  autor.** La unica forma de saber si un dato lo puso la autora o un agente es leer el
+  texto libre de `Notas` y buscar el separador `Autora: ... || Agente: ...`. Ese reparto
+  no es uniforme: la autora aporto **tipo y cantidad**; `Artefactos`, `Severidad`,
+  `Ubicación anatómica`, `Lateralidad` y `Confianza` vienen de las laminas.
+- **Por que importa:** ya provoco un error real. Un analisis leyo `Artefactos` como dato
+  verificado por la autora y construyo sobre el una recomendacion de cohorte. Volvera a
+  pasar con cualquier otra columna mientras la procedencia siga solo en prosa.
+- **Riesgo especifico:** las afirmaciones de **ausencia** (`no`) generadas por agente desde
+  laminas axiales son las mas fragiles y las mas faciles de tomar por verificadas. Son
+  tambien las que sostienen cualquier cohorte "limpia".
+- **Salida barata:** una columna por eje con sufijo de procedencia, o un unico campo
+  `Procedencia` con el reparto explicito. No exige revisar ningun volumen de nuevo.
+- **Que seccion toca:** `02-datos.md` (data card, trazabilidad de la cohorte); criterio de
+  split. No toca la tesis directamente, pero si la defendibilidad de las cifras de datos.
+- **Tipo:** RIESGO. **Pendiente de decision de la autora. No aplicado.**
+
+---
+
+## BLOQUEO DECLARADO (2026-09-09) — entradas detenidas hasta que la autora marque artefactos
+
+> Pedido explicito de la autora. Estas entradas **no avanzan** con analisis, lectura ni
+> computo: su siguiente paso exige una observacion visual que solo ella puede firmar.
+> Ver la correccion de procedencia de #34/#35: la columna `Artefactos` de `revision.csv`
+> es propuesta de agente sin validar, y sus 20 `no` son afirmaciones de ausencia sacadas
+> de pocas laminas axiales.
+
+| # | Entrada | Que espera exactamente |
+|---|---|---|
+| 15 | Revision 3D y separacion de cohortes | eje `efecto` poblado antes de aprobar cualquier cohorte |
+| 22 | Umbral de cribado y definicion de exclusion | la parte instrumental quedo cerrada por E1; la parte de cohorte espera artefactos |
+| 34 | Umbral vs definicion de `Objeto extraño` | si los 5 casos que pierde el 3500 HU producen artefacto o no |
+| 35 | Una cohorte para tres consumidores | el eje `efecto`, hoy vacio de evidencia valida |
+
+**Alcance del bloqueo:** afecta la cohorte de entrenamiento del **Objetivo 3**
+(renderizador). **No** bloquea el Objetivo 1 ni el Objetivo 2: el Obj 1 es per-voxel y el
+Obj 2 trabaja sobre geometria osea, y ninguno depende de esta columna.
+
+**Requisito previo, no posterior:** decidir #37 (procedencia por campo) **antes** de que la
+autora empiece la revision. Si anota sobre la estructura actual, su observacion vuelve a
+quedar indistinguible de la del agente y el bloqueo se reproduce.
+
+**Que desbloquea:** la revision (a) de 33 volumenes de dataset6, mirando solo estriacion
+alrededor del objeto ya localizado. No exige revisar los 178 ni recorrer todos los cortes.
+
+## Ronda 2026-09-09 — E6a ejecutado (Objetivo 1, tramo sin VAE)
+
+`experiments/objetivo1/e6a_codificacion.py` sobre los 178 volumenes. Mide solo
+`HU -> ventana -> HU` con LW [-1000, 2000], MW [-320, 480], SW [-160, 240], a float, 16 y
+8 bits, en ROI oseo (HU > 150) y de metal (HU > 2500). Sin VAE: es **cota inferior** de
+cualquier decodificador. Salidas `e6a_codificacion.csv` / `.md` / `.log`.
+
+### 38 — Las tres ventanas publicadas son REDUNDANTES en reconstruccion HU — ABIERTA
+
+- **Medido:** `max |MAE LW - MAE oraculo|` en hueso a float = **0.0 HU exacto** sobre los
+  178 volumenes. MW y SW estan **estrictamente anidadas** dentro de LW, asi que un
+  decodificador que elija el mejor canal por voxel **nunca** prefiere MW ni SW. A 8 bits el
+  oraculo si mejora a LW, pero solo **1.679 HU de mediana**: la unica aportacion medible de
+  la multi-ventana en este eje es **resolucion de cuantizacion**, no rango.
+- **MW y SW por si solas son inservibles en hueso**: MAE mediana 107.63 y 218.19 HU,
+  ambas muy por encima del umbral de 25 HU, porque recortan todo lo que pasa de 480 y 240 HU.
+- **CAUTELA, y es la parte que no se debe sobreinterpretar:** esto mide **fidelidad de
+  reconstruccion HU**, nada mas. El beneficio que la literatura de MAR atribuye a la
+  multi-ventana es de **aprendizaje** (dar al modelo contraste normalizado en varios rangos
+  de tejido para que los gradientes esten bien escalados), y ese beneficio **no se puede
+  observar en una prueba de ida y vuelta**. E6a **no refuta C3**. Lo que refuta es una
+  justificacion concreta de C3: que la multi-ventana **preserve mejor los HU**. No lo hace.
+- **Consecuencia para la redaccion:** si `main.tex` justifica la multi-ventana por
+  preservacion de HU, esa frase no tiene respaldo medido y ahora hay evidencia propia en
+  contra. Si la justifica por condicionamiento del aprendizaje, hace falta la ablacion del
+  Objetivo 4, no el Go/No-Go del Objetivo 1.
+- **Tipo:** RIESGO. **Pendiente de decision de la autora. No aplicado.**
+
+### 39 — El Go/No-Go del Objetivo 1 no puede fallar en su cohorte y no dice nada del metal — ABIERTA
+
+- **Medido, ROI oseo, cota del oraculo a float:**
+
+| Cohorte | mediana | maximo | supera 25 HU |
+|---|---:|---:|---:|
+| dataset6 (sin metal) | **0.00 HU** | 30.81 | 2 de 103 |
+| dataset7 (con metal) | **46.36 HU** | 274.49 | **48 de 75** |
+
+- **En pelvis limpia el criterio pasa por construccion.** El hueso vive en [150, 2000] HU y
+  LW lo cubre entero sin recortar: el error es **cero exacto** en la mediana. Un Go/No-Go
+  que no puede fallar en la cohorte donde se va a evaluar no es una prueba.
+- **En pelvis con metal el mismo criterio falla en 48 de 75**, y falla **antes del VAE**,
+  solo por el techo de 2000 HU de LW. `main.tex` no declara sobre que cohorte se evalua el
+  Objetivo 1, asi que el veredicto depende de una eleccion no escrita.
+- **ROI de metal: MAE mediana 3588.80 HU** (rango 540 a 6844), identica a float, 16 y 8
+  bits porque el error es **recorte puro**, no cuantizacion. El HU maximo mediano de
+  dataset7 es **18 822** y llega a **24 970**, contra un techo de ventana de **2000**.
+- **Colision de diseno:** la tesis debe **generar** metal. Una representacion que trunca a
+  2000 HU no puede representar el objeto que se sintetiza, ni su beam hardening. Si el
+  renderizador genera en espacio multi-ventana y decodifica, el implante sale recortado.
+- **Salidas posibles, ninguna adoptada:** (a) una cuarta ventana de metal con techo
+  suficiente, (b) mover el techo de LW, (c) compresion no lineal del rango alto, (d)
+  declarar que el metal se compone fuera del espacio multi-ventana. **Decision de la autora.**
+- **Que seccion toca:** Objetivo 1 (criterio y cohorte de evaluacion), C3, `03-glosario.md`
+  (las tres ventanas), y el diseno del renderizador.
+- **Tipo:** RIESGO. **Pendiente de decision de la autora. No aplicado.**
+
+### 39 — AMPLIADA: el techo de 2000 HU tambien golpea el BASELINE (2026-09-09)
+
+Consecuencia no registrada al abrir #39. El protocolo adoptado (`peters2025hybrid`, #14)
+define **metal integrity** como el maximo HU dentro del ROI mas 250. Si el renderizador
+genera en espacio multi-ventana y decodifica con el techo de LW en 2000 HU, el maximo HU
+del implante sintetico queda **fijado en 2000 por construccion**, mientras el implante real
+de dataset7 tiene mediana 18 822.
+
+- **Efecto:** la metrica heredada no mediria calidad de sintesis, mediria el recorte de la
+  representacion. Daria el mismo valor para cualquier implante generado, y una separacion
+  artificialmente enorme contra el brazo fisico, que no pasa por esa representacion.
+- **Alcance:** invalida la comparabilidad de **metal integrity** entre el brazo propio y el
+  de `peters2025hybrid` mientras el techo siga en 2000 HU. **No** afecta bone integrity
+  (el hueso limpio cabe en LW) ni SAP (es geometrica, no de intensidad).
+- **Depende enteramente de como se resuelva #39.** Si se adopta una cuarta ventana de metal
+  o se mueve el techo, esta ampliacion se cierra sola.
+- **Tipo:** BASELINE. **Pendiente. No aplicado.**

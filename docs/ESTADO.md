@@ -2,7 +2,97 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## PUNTO DE RETOMA — leer esto primero (2026-09-09)
+
+> Escrito para que una sesion con contexto limpio retome sin releer el historial.
+> Todo lo de abajo esta verificado contra archivos o datos en disco. Lo que es
+> suposicion se dice. Las decisiones son de la autora; Claude no las aplica solo.
+
+### Donde esta el proyecto
+
+La **fase de literatura esta cerrada por saturacion** (41 implicancias, 34 fichas, la
+cadena de citas del umbral de 10 mm auditada hasta agotarse). El proyecto **giro a
+experimentos** el 2026-09-09. `src/` sigue vacio: no hay codigo de tesis todavia, solo
+scripts de exploracion en `experiments/`.
+
+### Lo que se midio (hecho, reproducible, en disco)
+
+| Exp | Script | Resultado |
+|---|---|---|
+| **E1** | `experiments/exploration-3d/sensibilidad_hu.py` | Cribado HU a 1500/2500/3500 sobre 178 volumenes. 1500 no criba (177 de 178 candidatos). 2500 = 113 candidatos, 65 limpios, **cero falsos negativos**. 3500 = 104 candidatos, 74 limpios, pierde 5. Reproduce `revision.csv` exactamente. |
+| **E6a** | `experiments/objetivo1/e6a_codificacion.py` | Ida y vuelta `HU -> ventana -> HU`, sin VAE, cota inferior de cualquier decodificador. En hueso limpio MAE mediana **0.00 HU**; con metal **46.36** (48 de 75 fallan el criterio de 25 HU). En ROI de metal **3588.80 HU**. `max |LW - oraculo|` = **0.0 exacto**. |
+
+### Las 6 decisiones abiertas, en orden de urgencia
+
+1. **#41 — de donde salen las geometrias de implante. BLOQUEO NUMERO UNO.**
+   C1 (`main.tex:54`) no tiene insumo: no hay STL, mallas, CAD ni tabla de diametros en
+   ningun lado. Con eso el Objetivo 2 —unico aporte propio del alcance minimo— no tiene
+   que colocar, #31 colapsa (`d_implante` no existe), `main.tex:111` regula un banco
+   inexistente y `00-tesis.md:114` habla de un CAD propio que no hay.
+   Vias ejecutables hoy: **(a)** extraer geometrias de los implantes de los 75
+   CLINIC-metal en disco — resolver ANTES la tension con la regla de aislamiento de
+   `main.tex:111`; **(c)** geometrias parametricas con los rangos publicados de #30/#31.
+   La via (b), CAD publico o de fabricante, **no esta verificada y no debe afirmarse**.
+2. **#39 — el techo de 2000 HU de la ventana LW.** Decision tecnica mas cara abierta.
+   Toca a la vez el Objetivo 1, C3, el diseno del renderizador y la comparabilidad de
+   *metal integrity* con `peters2025hybrid`. Salidas posibles: cuarta ventana de metal,
+   mover el techo de LW, compresion no lineal del rango alto, o componer el metal fuera
+   del espacio multi-ventana. **Ninguna adoptada.**
+   Relacionado: `main.tex` **no declara sobre que cohorte se evalua el Objetivo 1**, y de
+   eso depende si el Go/No-Go pasa trivialmente o falla en 48 de 75.
+3. **#37 — procedencia por campo en `revision.csv`. Prerrequisito, no consecuencia.**
+   Las 178 filas comparten un unico `Revisor` y ningun campo declara su autor. Debe
+   resolverse **antes** de que la autora anote artefactos, o su observacion vuelve a
+   quedar indistinguible de la del agente.
+4. **Revision de artefactos por la autora.** Bloquea #15, #22, #34 y #35 (bloque
+   `BLOQUEO DECLARADO` en `04-implicancias.md`). Alcance acotado: **33 volumenes de
+   dataset6 con objeto**, mirando solo estriacion alrededor del objeto ya localizado.
+   No son los 178. Afecta solo la cohorte del Objetivo 3.
+5. **#36 — que VAE.** No esta especificado en ningun documento del repositorio. Bloquea
+   E6b y con el el cierre del Objetivo 1, que es obligatorio y del alcance minimo.
+6. **#20 — representante en los 3 grupos duplicados internos de dataset7**
+   (`metal_0012`=`0021`, `metal_0013`=`0043`, `metal_0046`=`0074`). Verificado que son
+   identicos voxel a voxel. Bloquea el split desde el 2026-09-07.
+
+### Avisos para quien retome
+
+- **`CLAUDE.md` tiene mas afirmaciones obsoletas.** La linea 23 se corrigio el 2026-09-09.
+  Siguen sin corregir, y **contradicen decisiones ya tomadas**: la linea 17 cita el rango
+  **"31-60% segun Zwingmann"**, RETIRADO por el punto 5 de `Fuera de alcance` en
+  `00-tesis.md` (#12); y la linea 27 declara **"Baseline fisico: XCIST/CatSim"**,
+  sustituido por `peters2025hybrid` (#8, APLICADA). Correccion pendiente de la autora.
+- **Patron a vigilar, ya visto tres veces:** un enunciado se vuelve verdad por citarse a
+  si mismo. Paso con el umbral de 10 mm (#25), con la columna `Artefactos` (#37) y con el
+  banco de 61 (#40). **Verificar contra el archivo antes de construir sobre un enunciado.**
+- **`docs/04-implicancias.md` es el archivo critico irreemplazable** (regla 17). Al cierre
+  del 2026-09-09 tiene 41 entradas.
+- **Nada de esto se aplica a `tesis/main.tex` ni a `docs/00-tesis.md` sin orden explicita**
+  de la autora en ese turno (reglas 4 y 14). `docs/01-decisiones.md` lo escribe solo ella.
+
 ## Ultimo paso completado
+2026-09-09 (cierre real): **#40 RESUELTA y #41 abierta, y es lo mas grave de la sesion.**
+La autora identifico el origen del "banco de 61": es la cita de `liu2021ctpelvic1k`,
+Data annotation p. 3, *"The remaining 61 metal-affected CTs ... left unannotated"*.
+Confirmado contra la ficha ya verificada y contra la Tabla 1 (`0(61)/0/14`), y contra el
+disco: **61 + 14 = 75 = dataset7**. `CLAUDE.md:23` encadena dos errores de categoria:
+CT de pacientes leidos como geometrias de implante, y dataset publico de terceros leido
+como "insumo propio". **#41: C1 se queda sin insumo.** No existe ninguna fuente de
+geometrias de implante en el repositorio, y con eso el Objetivo 2 (unico aporte propio del
+minimo viable) no tiene que colocar, **#31 colapsa** (`d_implante` no existe), `main.tex:111`
+regula un banco inexistente y `00-tesis.md:114` habla de un CAD propio que no hay.
+Opciones ejecutables con lo que hay en disco: (a) extraer geometrias de los implantes de
+los 75 CLINIC-metal, con la tension de aislamiento que eso implica, o (c) geometrias
+parametricas con los rangos publicados de #30 y #31. Propuesta de correccion de
+`CLAUDE.md:23` redactada en #40, sin aplicar.
+Precision: 1184 y 75 son cifras del propio paper de 2021 (Introduction p. 2 y Tabla 1
+p. 3), no una actualizacion posterior. **#40 CERRADA el 2026-09-09**: la autora retira su
+observacion sobre el dataset y confirma que el estado de ANOTACION de los 61 no ha
+cambiado y que la lectura de la evidencia textual era correcta. Sin efecto sobre #13
+(siguen 14 de 75 anotados) ni sobre #41, que sigue ABIERTA.
+Siguiente: la autora decide #41 (de donde salen las geometrias) — es ahora el bloqueo
+numero uno del alcance minimo, por delante de #37, #39 y #36.
+
+## Paso anterior
 2026-09-09 (cierre): **E6a ejecutado** y **bloqueo declarado por pedido de la autora**.
 E6a mide el tramo `HU -> ventana -> HU` del Objetivo 1 (sin VAE, cota inferior de
 cualquier decodificador). Dos hallazgos: **#38**, las tres ventanas publicadas son
@@ -305,8 +395,9 @@ que es la posible solucion de #7.
   sostiene por escrito la novedad del muestreador. La lectura mas productiva de todas.
 - Falta armonizar el alcance completo de `00-tesis.md` con la adopcion de Peters
   (su frase sobre reimplementacion independiente de XCIST).
-- Dos verificaciones de #13 no son bibliograficas y nadie las bloquea: ver si CLINIC-metal
-  amplio su anotacion desde 2021, y mirar los volumenes para saber que metal contienen.
+- Verificacion de #13 pendiente y no bibliografica: mirar los volumenes para saber que
+  metal contienen. (La otra —si CLINIC-metal amplio su anotacion desde 2021— quedo
+  CERRADA el 2026-09-09 con el cierre de #40: no se amplio.)
 - `wang2025adaptiveweighting`: unico N1 SIN VERIFICAR, tercera ronda bloqueado por el PDF.
 - Faltan por verificar tambien:
   `arand2019pelvicring` y `xie2024implantsegmentation`.

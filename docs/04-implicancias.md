@@ -2777,3 +2777,292 @@ de dataset7 tiene mediana 18 822.
 - **Depende enteramente de como se resuelva #39.** Si se adopta una cuarta ventana de metal
   o se mueve el techo, esta ampliacion se cierra sola.
 - **Tipo:** BASELINE. **Pendiente. No aplicado.**
+
+### 40 — El banco de 61 geometrias: una linea, sin origen, sin formato, sin archivo — CERRADA (2026-09-09; ver cierre definitivo al final del bloque)
+
+- **Origen:** la autora pregunta el 2026-09-09 a que se refiere el banco de 61 y donde
+  descargarlo. La pregunta en si es el hallazgo.
+- **Rastreo completo del repositorio.** La cifra aparece en **un unico lugar original**:
+
+  `CLAUDE.md:23` — *"Insumo propio: un banco de 61 geometrias de implantes."*
+
+  Todas las demas apariciones (`docs/ESTADO.md` lineas 27, 43 y 55) son **derivadas**:
+  las escribio Claude en sesiones anteriores citando esa linea. No hay ninguna mencion en
+  `00-tesis.md`, `01-decisiones.md`, `02-datos.md`, `03-glosario.md`, `05-asesor.md`,
+  ninguna ficha de literatura ni ningun script.
+- **Lo que NO existe en ninguna parte:** origen o proveedor, formato (STL, mallas,
+  voxelizado, tabla de diametros), licencia, fecha de obtencion, ruta en disco, y que
+  tipos de implante contiene. `data/` solo tiene dataset6 y dataset7.
+- **`tesis/main.tex` ya compromete cosas sobre ese banco sin que exista.** La linea 111
+  impone una **regla de aislamiento estricto**: *"Test implant geometries must not enter
+  the bank consumed by the proposed sampler or the physical simulation arm."* Y C1 declara
+  *"Non-biological rigid implant geometries"* como la primera contribucion.
+- **Por que es critico:** sin el banco no hay **C1**, el muestreador (Obj 2) no tiene que
+  colocar, **#31** no se puede formular (`d_implante` no existe), y el ROI de metal del
+  protocolo de Peters no tiene geometria CAD de referencia. Toca el **alcance minimo
+  viable**, no el completo.
+- **Pregunta abierta, no resuelta y no asumida:** si el banco ya existe fuera del
+  repositorio, hace falta su ruta y su procedencia. **Si no existe todavia**, la cifra 61
+  es un plan, no un insumo, y `CLAUDE.md` la enuncia como algo ya disponible. La
+  distincion cambia el cronograma.
+- **Nota de proceso.** Una linea de `CLAUDE.md` se leyo durante varias sesiones como hecho
+  verificado sin que nadie comprobara el archivo. Es el mismo patron de la columna
+  `Artefactos` (#37) y del patron #25 en bibliografia: **un enunciado se propaga por
+  citarse a si mismo.** Aqui el enunciado esta en las instrucciones permanentes, que es el
+  lugar de mayor autoridad y menor verificacion del repositorio.
+- **Que seccion toca:** C1, Objetivo 2, #31, ROI de metal, cronograma.
+- **Tipo:** RIESGO. **Pendiente de la autora. No aplicado.**
+
+### 40 — HIPOTESIS DE LA AUTORA REFUTADA: el 61 no sale de `exploration-3d` (2026-09-09)
+
+La autora propone que el 61 pudiera ser un recuento de la exploracion local (volumenes
+tras quitar duplicados y objetos no ortopedicos). **Refutado por cronologia, que es
+prueba decisiva y no requiere interpretacion:**
+
+| Evento | Commit | Fecha |
+|---|---|---|
+| Linea `banco de 61 geometrias` escrita en `CLAUDE.md` | `6ee6ad5` "scaffold inicial" | **2026-09-06** |
+| Aparece `experiments/exploration-3d` | `3543bdc` "exploration" | 2026-09-07 |
+| Revision 3D de los 178 volumenes | — | 2026-09-07 |
+
+La linea esta en el **primer commit del repositorio**, un dia antes de que existiera
+cualquier recuento local. **No puede derivar de el.** Ademas el banco son geometrias de
+**implante** (insumo a colocar), no volumenes de **CT** (anatomia receptora): son
+poblaciones distintas y contarlas juntas seria error de categoria.
+
+**Aviso metodologico, deliberado.** Al probar la hipotesis se buscaron ~15 recuentos
+plausibles y **uno dio 61** (`dataset7` con `Metal=si`, excluidos los de ubicacion
+extracorporea, deduplicados por SHA256). **Ese 61 es coincidencia de busqueda, no
+evidencia.** Probando suficientes combinaciones, cualquier cifra aparece. Ademas se
+apoyaria en `Ubicación anatómica`, que es columna de agente sin validar (#37). Queda
+anotado aqui precisamente para que nadie lo reencuentre dentro de un mes y lo tome por
+confirmacion. Es el mismo mecanismo de #25.
+
+**#40 sigue ABIERTA sin cambios:** el banco no tiene origen, formato, licencia ni ruta.
+
+### 20 — VERIFICADO: el criterio de duplicados SI es de igualdad exacta
+
+Consulta de la autora sobre si volumenes solo *parecidos* se contaron como copias.
+**Verificado en `revision.csv`: no.** `Grupo duplicado` se llena con SHA256 sobre forma
+mas vóxeles HU escalados; agrupa solo contenido **identico**. Seis grupos vigentes:
+
+- **Cruzados:** `CLINIC_0037`=`metal_0061`, `CLINIC_0048`=`metal_0036`, `CLINIC_0070`=`metal_0064`
+- **Internos de dataset7:** `metal_0012`=`metal_0021`, `metal_0013`=`metal_0043`, `metal_0046`=`metal_0074`
+
+**El error que la autora recuerda existio y ya se corrigio.** El par
+`metal_0059`/`metal_0071` se habia agrupado por **similitud** (mismo spacing y mismo HU
+minimo), no por identidad. Tras su revision 3D se descarto el 2026-09-07 y quedo en
+`01-decisiones.md`. Hoy sus hashes difieren (`c0564a2b6d4e` vs `a6ad7cbae19e`): confirmado
+que no son el mismo contenido.
+
+**Lo que sigue pendiente de #20 no cambia:** elegir representante en los 3 grupos internos
+de dataset7. Eso bloquea el split.
+
+### 40 — RESUELTA (2026-09-09). El 61 es de Liu 2021 y NO es un banco de geometrias
+
+La autora identifica el origen. **Confirmado contra `docs/literatura/liu2021ctpelvic1k.md`**,
+ficha ya verificada contra el PDF el 2026-09-06. Evidencia textual, Data annotation, p. 3:
+
+> *"In total, we have annotations for 1109 metal-free CTs and 14 metal-affected CTs.
+> The remaining 61 metal-affected CTs of image are left unannotated and planned for use
+> in unsupervised learning"*
+
+Corroborado por la Tabla 1, p. 3: `CLINIC-metal | 75 | ... | 0(61)/0/14`. Y por los datos
+en disco: **61 + 14 = 75 = dataset7**, exacto.
+
+**`CLAUDE.md:23` contiene dos errores de categoria encadenados:**
+
+1. **Volumenes de CT leidos como geometrias de implante.** Los 61 son **CT de pacientes**
+   sin anotar, la anatomia receptora. No son modelos de implante.
+2. **Dataset publico de terceros leido como "insumo propio".** Son de `liu2021ctpelvic1k`,
+   y **ya estan en disco**: son la mayor parte de dataset7.
+
+**Efecto colateral util:** confirma #13 por segunda via y explica la composicion local
+(103 CLINIC + 75 CLINIC-metal = 178).
+
+**Correccion propuesta para `CLAUDE.md:23`** (la autora decide; no se edita por cuenta propia):
+
+    Insumo de implantes: PENDIENTE DE DEFINIR. No existe banco de geometrias en el
+    repositorio. (Los 61 CT sin anotar de CLINIC-metal son anatomia receptora de
+    liu2021ctpelvic1k, no geometrias de implante.)
+
+### 41 — C1 se queda SIN INSUMO: no existe ninguna fuente de geometrias de implante — ABIERTA
+
+- **Origen:** resolucion de #40 el 2026-09-09.
+- **Hallazgo:** la primera contribucion declarada de la tesis, **C1** en `main.tex:54`
+  (*"Non-biological rigid implant geometries"*), **no tiene ninguna fuente**. El unico
+  insumo que el repositorio nombraba resulto ser un recuento de CT ajenos. No hay STL, ni
+  mallas, ni CAD, ni tabla de diametros, ni proveedor, ni paper de la bibliografia leida
+  registrado como fuente de geometrias.
+- **Lo que cae con esto, en cadena:**
+  - **C1** no tiene insumo. Es la primera de las tres contribuciones del gap.
+  - **Objetivo 2** (muestreador) es el **unico aporte propio del alcance minimo viable** y
+    no tiene **que** colocar. Su salida es una pose; una pose sin objeto no es nada.
+  - **#31 colapsa.** La formulacion `Dmax >= d_implante + holgura` tomaba `d_implante`
+    "del banco de 61". Sin banco no hay `d_implante`, y la restriccion vuelve a depender
+    del escalar heredado de 10 mm que #25 dejo desacreditado.
+  - **`main.tex:111`** impone una regla de aislamiento estricto sobre "the bank": hoy
+    regula un conjunto que no existe.
+  - **`00-tesis.md:114`** habla de medir metal integrity "sobre geometria CAD propia".
+    No hay CAD propio.
+  - **Objetivo 3** (renderizador) se condiciona sobre la mascara del implante. Sin
+    geometrias no hay mascara de condicionamiento ni B_delta que la rodee.
+- **Gravedad:** es el **unico hallazgo de la sesion que toca el alcance minimo viable en su
+  parte propia**. #38 y #39 tocan el Objetivo 1 y son corregibles moviendo un techo de
+  ventana; esto no se corrige escribiendo, hay que conseguir o construir el insumo.
+- **Opciones, ninguna adoptada y ninguna verificada por mi:** (a) banco propio construido a
+  partir de los implantes segmentados en los 75 CLINIC-metal en disco — es la unica fuente
+  que se sabe disponible, y tiene la ventaja de dar geometrias reales del dominio; (b)
+  modelos CAD de fabricante o de repositorio publico, cuya existencia y licencia **no
+  verifique y no debo afirmar**; (c) geometrias parametricas sinteticas (cilindros
+  roscados, placas) con dimensiones tomadas de los rangos publicados que ya estan en #30 y
+  #31. **La (a) y la (c) son ejecutables con lo que hay en disco hoy.**
+- **Nota:** la opcion (a) tiene una tension que hay que declarar: extraer geometrias de los
+  mismos volumenes que luego sirven de prueba viola la regla de aislamiento de
+  `main.tex:111`. Si se adopta, el reparto entre banco y test debe fijarse antes.
+- **Que seccion toca:** C1, `main.tex:54` y `:111`, Objetivo 2, Objetivo 3, #31,
+  `00-tesis.md`, cronograma.
+- **Tipo:** RIESGO. **Pendiente de decision de la autora. No aplicado.**
+
+### 40 — PRECISION tras la observacion de la autora (2026-09-09)
+
+La autora señala que el dataset se actualizo y que hoy son 1184 volumenes, de los cuales
+75 son CLINIC-metal. **Hay que separar dos afirmaciones, porque solo una esta abierta:**
+
+1. **1184 y 75 NO son una actualizacion: son cifras del propio paper de 2021.** Evidencia
+   textual ya verificada en la ficha: *"including 1, 184 CT volumes of diverse appearance
+   variations"* (Introduction, contribuciones, p. 2) y Tabla 1, p. 3:
+   `CLINIC-metal | 75 | (0.83, 0.83, 0.80) | (512, 512, 334) | 0(61)/0/14 | Collected 2020`.
+   El 61 y el 14 son el reparto **de anotacion dentro de esos mismos 75**, no un conteo
+   anterior que 75 haya sustituido. Los tres numeros conviven en la misma tabla.
+2. **Lo que si puede haber cambiado desde 2021 es el estado de ANOTACION de esos 61.**
+   Eso no se puede verificar sin consultar el repositorio publico
+   (`github.com/ICT-MIRACLE-lab/CTPelvic1K`) y **no esta verificado aqui**. Ya figuraba
+   como pendiente en `ESTADO.md` ("ver si CLINIC-metal amplio su anotacion desde 2021").
+   Si se amplio, **afecta a #13** (hoy 14 de 75 anotados) y podria reabrir la evaluacion
+   downstream que se declaro fuera de alcance por esa misma razon.
+
+**Lo que NO cambia en ningun escenario: #41.** Esten anotados o no, los 61 son **volumenes
+CT de pacientes**, anatomia receptora. No son geometrias de implante. El error de categoria
+de `CLAUDE.md:23` y la falta de insumo para C1 son independientes del estado de anotacion.
+
+### 40 — CERRADA en su parte de versionado (2026-09-09)
+
+La autora confirma que la exploracion local se hizo sobre la **version mas reciente** de
+CTPelvic1K, asi que no hay anotacion nueva que perseguir. **La duda sobre el estado de
+anotacion queda cerrada por declaracion de la autora, no por verificacion tecnica.**
+
+- **Efecto sobre #13: ninguno.** Los 14 de 75 anotados siguen siendo la cifra vigente, y
+  la evaluacion downstream sigue **fuera de alcance** por el punto 1 de `Fuera de alcance`
+  en `00-tesis.md`. No se reabre el Objetivo 5.
+- **Cautela unica, para el registro:** `revision.csv` reporta **0 mascaras locales
+  vinculadas por nombre** en los 178 volumenes, asi que la disponibilidad de anotacion no
+  se pudo comprobar contra el disco. Se toma la declaracion de la autora como fuente.
+- **`CLAUDE.md:23` CORREGIDA** el 2026-09-09 con autorizacion explicita de la autora, con
+  el texto propuesto en esta implicancia. **#40 CERRADA.** #41 sigue ABIERTA y no se ve
+  afectada.
+
+### 40 — CIERRE DEFINITIVO (2026-09-09). La autora retira su observacion
+
+La autora declara que **se equivoco en su observacion** sobre el dataset: no hubo
+actualizacion posterior a 2021 y **el estado de anotacion de los 61 volumenes no ha
+cambiado**. Confirma ademas que **la lectura de la evidencia textual era correcta**.
+
+- **Que queda en firme (sin cambios respecto a la ficha de `liu2021ctpelvic1k`):**
+  1184 CT en total; `CLINIC-metal` = 75 volumenes; reparto de anotacion `0(61)/0/14`
+  dentro de esos mismos 75. Los tres numeros son del paper de 2021 y conviven en su
+  Tabla 1. No son cifras sucesivas ni sustituidas.
+- **Efecto sobre #13: ninguno.** Los 14 de 75 anotados siguen vigentes. La evaluacion
+  downstream sigue FUERA DE ALCANCE por el punto 1 de `Fuera de alcance` en
+  `00-tesis.md`. El Objetivo 5 **no se reabre**.
+- **Pendiente eliminado:** "ver si CLINIC-metal amplio su anotacion desde 2021" queda
+  **cerrado**; ya no hay que consultar el repositorio publico por esta via.
+- **Base del cierre:** declaracion de la autora, no verificacion tecnica contra el
+  repositorio publico. Se deja constancia igual que en el bloque anterior.
+- **#41 sigue ABIERTA y no se ve afectada.** Anotados o no, los 61 son volumenes CT de
+  pacientes (anatomia receptora), no geometrias de implante. El insumo de implantes
+  sigue PENDIENTE DE DEFINIR.
+
+**#40 CERRADA en todas sus partes.**
+
+### 42 — `CLAUDE.md` conserva dos afirmaciones que contradicen decisiones ya tomadas — ABIERTA
+
+Detectadas al corregir la linea 23. Mismo patron de #40: el archivo de **mayor autoridad y
+menor verificacion** del repositorio conserva enunciados que el proyecto ya descarto.
+
+| Linea | Dice | Estado real |
+|---|---|---|
+| 17 | *"muestrea de la distribucion clinica real de malposiciones (31-60% segun Zwingmann et al. 2009)"* | **RETIRADO.** Punto 5 de `Fuera de alcance` en `00-tesis.md`: el rango no existe en el PDF, son dos complementos de brazos distintos (#12, #25). Se usan las dos distribuciones ordinales, solo en S1 |
+| 27 | *"Baseline fisico de comparacion: XCIST/CatSim"* | **SUSTITUIDO.** #8 APLICADA: el brazo es el protocolo de `peters2025hybrid`. El punto 3 de `Fuera de alcance` declara la reimplementacion de XCIST FUERA |
+
+- **Por que importa:** toda sesion nueva lee `CLAUDE.md` como contexto permanente y
+  reintroduce lo que diga. Las dos afirmaciones estan **explicitamente descartadas** en
+  `00-tesis.md`, asi que hoy el repositorio se contradice consigo mismo.
+- **Correccion propuesta** (la autora decide; solo autorizo la linea 23 el 2026-09-09):
+  en la linea 17, sustituir el rango por "muestrea de las distribuciones ordinales medidas
+  por tecnica quirurgica, solo en S1 (ver `00-tesis.md`)"; en la linea 27, sustituir por
+  "Baseline de comparacion: protocolo hibrido de `peters2025hybrid` (XCIST/CatSim queda
+  como fundamento tecnico, no como brazo)".
+- **Tipo:** REDACCION. **Pendiente de la autora. No aplicado.**
+
+### 42 — APLICADA en las lineas 17 y 27 (2026-09-09), y AMPLIADA con dos hallazgos mas
+
+**Aplicado con autorizacion explicita de la autora**, con el texto propuesto en esta
+implicancia:
+
+- **Linea 17:** el rango "31-60%" sustituido por "las distribuciones ordinales de
+  malposicion medidas por `zwingmann2009navigated`, condicionadas por tecnica quirurgica y
+  **solo en S1**", con la nota de que el rango unico quedo RETIRADO por no aparecer en el
+  PDF (#12, #25).
+- **Linea 27:** "Baseline fisico de comparacion: XCIST/CatSim" sustituido por el protocolo
+  hibrido de `peters2025hybrid` (#8 APLICADA), dejando XCIST como fundamento tecnico y
+  fuente de limites, **no** como brazo.
+
+Con la linea 23 del turno anterior, son **tres** correcciones a `CLAUDE.md` el 2026-09-09.
+
+**Barrido del resto del archivo. Dos hallazgos mas, NO aplicados:**
+
+1. **`CLAUDE.md` se contradice a si mismo entre sus propias reglas 16 y 18.** La regla 16
+   ordena registrar toda fuente procesada en `docs/literatura/_acceso.md` (linea 109); la
+   regla 18 dice que `_index.md` absorbio ese registro y **prohibe crear `_acceso.md`**
+   (linea 118). Una sesion que lea de arriba abajo obedece la 16 antes de llegar a la 18 y
+   crea el archivo prohibido. **Correccion propuesta:** reescribir la regla 16 para que
+   apunte a la columna de acceso de `_index.md`, y eliminar la mencion a `_acceso.md`.
+2. **La linea 9 promete lo que el alcance excluye.** Dice que los implantes sinteticos son
+   *"para usarlos como aumentacion de datos y mejorar la robustez de redes de segmentacion
+   osea en la zona peri-implante"*. La **evaluacion downstream de segmentacion esta FUERA
+   DE ALCANCE** (punto 1 de `Fuera de alcance` en `00-tesis.md`; `main.tex` dice
+   *"Downstream segmentation impact is deliberately excluded"*). Como **motivacion** la
+   frase es legitima; como esta escrita se lee como **entregable**. **Correccion
+   propuesta:** anadir "La evaluacion downstream de segmentacion esta fuera de alcance
+   (ver `docs/00-tesis.md`); la mejora de robustez es la motivacion, no un resultado que
+   esta tesis mida." **Decision de la autora.**
+
+**Nota de proceso:** cuatro afirmaciones obsoletas o contradictorias en un archivo de 120
+lineas que toda sesion lee como verdad permanente. Conviene una revision periodica de
+`CLAUDE.md` contra `00-tesis.md` cada vez que se cierre una implicancia con efecto de
+alcance.
+
+### 42 — CERRADA. Las cinco correcciones de `CLAUDE.md` aplicadas (2026-09-09)
+
+Con autorizacion explicita de la autora, en tres turnos del mismo dia:
+
+| Ubicacion | Antes | Ahora |
+|---|---|---|
+| Linea 23 | "Insumo propio: un banco de 61 geometrias de implantes" | "PENDIENTE DE DEFINIR. No existe banco... Ver #40 y #41" |
+| Linea 17 | "malposiciones (31-60% segun Zwingmann et al. 2009)" | distribuciones ordinales por tecnica, **solo en S1**; rango RETIRADO (#12, #25) |
+| Linea 27 | "Baseline fisico de comparacion: XCIST/CatSim" | protocolo hibrido de `peters2025hybrid` (#8); XCIST como fundamento tecnico, no brazo |
+| Linea 9 | "para usarlos como aumentacion de datos y mejorar la robustez..." | la mejora se declara **motivacion, no resultado medido**; downstream FUERA DE ALCANCE |
+| Reglas 16 y 18 | la 16 ordenaba crear `_acceso.md`, la 18 lo prohibia | ambas apuntan a la columna de acceso de `_index.md`; la contradiccion se nombra en la 18 |
+
+**Verificado tras aplicar:** `docs/literatura/_acceso.md` **no existe** en disco, asi que
+la regla 16 nunca llego a ejecutarse; la contradiccion se corrigio antes de causar dano.
+
+**Barrido final del resto de `CLAUDE.md`:** revisadas las menciones restantes de B_delta
+(~12 mm), difusion latente 2.5D con ControlNet, `_plantilla.md` y el pipeline de `refs/`.
+**Todas siguen vigentes** contra `00-tesis.md` y `01-decisiones.md`. No quedan
+contradicciones detectadas. **#42 CERRADA.**
+
+**Recomendacion de proceso, no aplicada:** revisar `CLAUDE.md` contra `00-tesis.md` cada
+vez que se cierre una implicancia con efecto de alcance. Cinco defectos en 120 lineas de un
+archivo que toda sesion lee como verdad permanente no es una anomalia puntual.

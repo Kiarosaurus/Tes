@@ -5,24 +5,34 @@ Instrucciones permanentes para cualquier sesion de Claude Code en este repositor
 ## Que es este proyecto
 
 Tesis de pregrado en imagen medica. Objetivo: sintetizar implantes de osteosintesis
-(tornillos, placas) y sus artefactos metalicos locales en volumenes de CT pelvica,
-para usarlos como aumentacion de datos y mejorar la robustez de redes de segmentacion
-osea en la zona peri-implante.
+(tornillos, placas) y sus artefactos metalicos locales en volumenes de CT pelvica.
+La motivacion de fondo es usarlos como aumentacion de datos para mejorar la robustez de
+redes de segmentacion osea peri-implante, pero **esa mejora NO es un resultado que esta
+tesis mida**: la evaluacion downstream de segmentacion (Dice, HD95) esta declarada FUERA
+DE ALCANCE (punto 1 de `Fuera de alcance` en `docs/00-tesis.md`; `main.tex` dice
+"Downstream segmentation impact is deliberately excluded"). Lo que esta tesis evalua es la
+coherencia fisica y quirurgica de lo sintetizado.
 
 El pipeline tiene DOS componentes que se disenan y evaluan por separado:
 
 1. **Muestreador**: decide donde y con que pose 3D va el implante, respetando la
    anatomia. Restringido por mapas de densidad osea, contencion cortical y zonas
-   seguras. No optimiza una trayectoria "perfecta": muestrea de la distribucion
-   clinica real de malposiciones (31-60% segun Zwingmann et al. 2009).
+   seguras. No optimiza una trayectoria "perfecta": muestrea de las distribuciones
+   ordinales de malposicion medidas por `zwingmann2009navigated`, condicionadas por
+   tecnica quirurgica y **solo en S1** (ver `docs/00-tesis.md`). El rango unico
+   "31-60%" quedo RETIRADO: no aparece en el PDF (implicancias #12 y #25).
 2. **Renderizador**: genera la apariencia. Modelo de difusion latente 2.5D guiado por
    ControlNet, con codificacion multi-ventana en HU y una banda de generacion
    extendida (B_delta, ~12mm) mas alla de la mascara del implante, para que el
    streaking y el beam hardening puedan manifestarse fuera del metal.
 
-Insumo propio: un banco de 61 geometrias de implantes.
+Insumo de implantes: PENDIENTE DE DEFINIR. No existe banco de geometrias en el
+repositorio. (Los 61 CT sin anotar de CLINIC-metal son anatomia receptora de
+liu2021ctpelvic1k, no geometrias de implante. Ver implicancias #40 y #41.)
 Dataset primario: CTPelvic1K (Liu et al. 2021), subconjunto CLINIC-metal.
-Baseline fisico de comparacion: XCIST/CatSim.
+Baseline de comparacion: protocolo hibrido de `peters2025hybrid` (implicancia #8,
+APLICADA). XCIST/CatSim queda como fundamento tecnico y fuente de limites, NO como
+brazo de comparacion: su reimplementacion validada esta declarada fuera de alcance.
 
 ## Estructura y donde escribir
 
@@ -99,14 +109,16 @@ Baseline fisico de comparacion: XCIST/CatSim.
     reglas de `docs/literatura/_candidatos.md`, agregala ahi como PENDIENTE. No
     la busques, no la descargues, no la agregues a refs.bib.
 
-16. **Accesibilidad.** Toda fuente procesada se registra en
-    `docs/literatura/_acceso.md` con su nivel de acceso. Si una ficha se genero
-    solo desde el abstract, escribe "Profundidad: solo abstract" al inicio de la
-    nota y no llenes la tabla de Evidencia textual con cifras del cuerpo.
+16. **Accesibilidad.** Toda fuente procesada se registra en `docs/literatura/_index.md`,
+    en su columna de nivel de acceso. **No existe `_acceso.md` y no debe crearse**
+    (ver regla 18). Si una ficha se genero solo desde el abstract, escribe
+    "Profundidad: solo abstract" al inicio de la nota y no llenes la tabla de
+    Evidencia textual con cifras del cuerpo.
 
 17. **`docs/04-implicancias.md` es el archivo critico irreemplazable.** Registra
     hallazgos que tocan el argumento de la tesis y que no se pueden reconstruir
     despues. Si dudas entre registrar o no, registra.
 
 18. **`docs/literatura/_index.md` absorbio el registro de accesibilidad.** No crees
-    `_acceso.md`. El nivel de acceso va como columna en `_index.md`.
+    `_acceso.md` bajo ninguna circunstancia. El nivel de acceso va como columna en
+    `_index.md`. Esta regla y la 16 dicen lo mismo a proposito: antes se contradecian.

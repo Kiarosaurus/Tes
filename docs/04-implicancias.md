@@ -3896,3 +3896,88 @@ crestas y EIPS no tienen revision clinica. Compila: 4 paginas, 0 citas indefinid
   un `Dmax` valido), #14 y #17 (bone integrity), `main.tex` (metodo del muestreador).
 - **Tipo:** RIESGO / BLOQUEO. **Pendiente de la autora:** via de segmentacion (TotalSegmentator
   en Khipu, segmentacion cortical propia o semi-manual) y como declarar bone integrity.
+
+### 49 — TotalSegmentator: la version y el modelo de recorte son parte del metodo, y existe `total_v3` sin evaluar — ABIERTA
+
+- **Origen:** preparacion de los comandos para correr TotalSegmentator en Khipu (#48 punto 1),
+  2026-09-12, contra PyPI y el codigo fuente de la rama `master` del repositorio oficial. No es
+  una lectura del paper.
+- **Hallazgo 1, version:** PyPI da `2.18.0` (subida el 2026-08-12). #29 pide "version fijada";
+  hasta hoy no habia numero. Sin fijarla, un `pip install` posterior cambia el modelo sin aviso.
+- **Hallazgo 2, `total_v3`:** `totalseg_download_weights.py` lista una tarea `total_v3`
+  (ids `831-835, 837`) ademas de `total` (`291-295, 298`). #29 se escribio sobre `total`. No se
+  verifico si `total_v3` trae `sacrum`, `vertebrae_S1`, `hip_left`, `hip_right`, ni que cambia.
+- **Hallazgo 3, recorte:** con `--roi_subset`, el codigo corre primero un modelo de recorte de
+  **6 mm** (`crop_model_task = 298`), o de 3 mm (`297`) con `--robust_crop`. Frase del codigo:
+  "use the more robust 3mm model instead of the default and faster 6mm model". En volumenes con
+  streaking, un recorte grueso que falle deja fuera parte de la pelvis antes del modelo de 1.5 mm.
+  `-t total` descarga el 298, pero no el 297 (este viene en `total_fast`).
+- **Operativo (no toca la tesis, se anota para no repetirlo):** segun la documentacion de Khipu,
+  solo el nodo `ds001` (particion `data-science`) tiene internet. Los pesos se bajan en el nodo de
+  acceso antes de lanzar el job.
+- **Que seccion toca:** #29 (validacion minima y version fijada), #48 (via de segmentacion), y el
+  metodo del muestreador en `main.tex` si se adopta (version, tarea y modelo de recorte declarados).
+- **Tipo:** SUPUESTO / REPRODUCIBILIDAD. **Pendiente de la autora:** `total` o `total_v3`, y recorte
+  por defecto (6 mm) o `--robust_crop` (3 mm). Recomendacion: `total` 2.18.0 con `--robust_crop`
+  en el piloto, y guardar la version en el log del job. **No aplicado.**
+- **Actualizacion 2026-09-12, piloto ejecutado** (job 51300, Khipu ag001, MIG A100 `3g.20gb`,
+  torch 2.14.0+cu130; `metal_0008` y `CLINIC_0002`, cada uno con 3 mm y 6 mm; QC con
+  `experiments/objetivo2/ts_piloto_qc.py`, tablas `ts_piloto_qc*.csv`):
+  - **Sin truncamiento visible:** ninguna de las 16 mascaras toca el borde del FOV, y las cajas
+    de cada estructura difieren <= 1.6 mm entre recortes. 59-76 s por corrida.
+  - **Pero el recorte cambia la mascara final:** Dice 3 mm vs 6 mm de **0.930** (`sacrum`,
+    `metal_0008`) a 0.972 (`hip_right`, `CLINIC_0002`); 2.6-7.4% de voxeles exclusivos por
+    estructura. En las laminas se concentran en bordes, **articulacion sacroiliaca y ala**, justo
+    la region del corredor (un corte coronal de `metal_0008`: 1200 voxeles solo en 3 mm, 627 solo
+    en 6 mm). A lo largo del tornillo `comp 1` de `metal_0008`, el eje queda fuera de toda
+    mascara en **17.5% (3 mm) frente a 5.8% (6 mm)**.
+  - **Lectura:** el modelo de recorte no es solo un riesgo de truncamiento: cambia el encuadre de
+    entrada del modelo de 1.5 mm y, con eso, la etiqueta en la zona que mide E9. Esa diferencia
+    es una cota de reproducibilidad de cualquier `Dmax` medido sobre TS. Causa no verificada.
+    Con 2 casos no hay base para preferir 3 mm por robustez.
+  - **Metal:** 95-98% de los voxeles > 2500 HU del cilindro de 4 mm de cada tornillo quedan
+    dentro de alguna mascara (TS etiqueta el tornillo existente como hueso).
+  - **Pendiente de la autora (ampliado):** elegir recorte y declararlo, o medir `Dmax` con ambos y
+    reportar la diferencia como incertidumbre del metodo.
+
+### 50 — E9b: un error de nivel de S1 produce "ala < 150 HU" midiendo tejido blando; el brazo sin metal de #48 (43%) no respalda que sea "propiedad del hueso" — ABIERTA
+
+- **Origen:** QC del piloto de TotalSegmentator (`experiments/objetivo2/ts_piloto_qc.py`,
+  `ts_piloto_qc_esferas.csv`, laminas en `outputs/ts_piloto_qc/`), 2026-09-12.
+- **Hallazgo 1, `CLINIC_0002`** (calibracion, S1 de R1 **sin auditar**, `s1_discordante = True`):
+  - las tres esferas de E9b quedan **100% fuera** de `sacrum`, `vertebrae_S1` y caderas, con
+    ambos recortes;
+  - alas con mediana **17 y 34 HU**, identicas a `e9b_densidad_s1.csv` (control de marco ok):
+    rango de tejido blando, no de esponjoso;
+  - el techo de `vertebrae_S1` de TS en la linea media queda **24.6 mm** (3 mm) / 23.8 mm (6 mm)
+    **bajo** el platillo de R1, cerca de un nivel vertebral. En la lamina sagital la esfera del
+    cuerpo cae en la vertebra inmediatamente craneal a la S1 de TS.
+  - R1 o TS se equivoca de nivel; sin auditoria no se decide cual. En cualquier caso, las alas
+    medidas no son hueso.
+- **Contraste, `metal_0008`** (S1 `ok` por el revisor clinico): esferas dentro de sacro/S1 en
+  100%, 92-93% y 70-71%; HU 319/270/442; techo de S1 de TS 6.2 mm sobre el platillo de R1.
+- **Hallazgo 2, cohorte** (cruce de `e9b_densidad_s1.csv` con `r1_estados.csv`):
+
+| Grupo | n | alguna ala < 150 HU |
+|---|---|---|
+| Evaluacion, S1 `+1` segun el clinico | 6 | **6** |
+| Evaluacion, S1 `ok` segun el clinico | 53 | 20 |
+| Calibracion (sin auditar), `s1_discordante` | 24 | 8 |
+| Calibracion (sin auditar), no discordante | 36 | 18 |
+
+- **Lectura:** un S1 un nivel arriba pone las esferas del ala junto al cuerpo lumbar, en tejido
+  blando, y produce "ala < 150 HU" de forma mecanica (6 de 6 en los `+1` auditados). El 43%
+  del brazo sin metal de #48 incluye un numero **desconocido** de esferas fuera de hueso, asi
+  que la frase de #48 "es una propiedad del hueso de estos pacientes ... La cohorte sin metal
+  esta igual o peor" pierde su control. Los 20 de 53 con S1 `ok` tampoco estan verificados como
+  hueso (foramen o fuera del ala; limitacion ya declarada en #48).
+- **Lo que NO cambia:** el Hallazgo 1 de #48 (HU 0-100 a lo largo del tornillo de `metal_0008`)
+  se midio sobre el eje del tornillo, no con esferas; E9 sigue NO VALIDO y la necesidad de una
+  segmentacion rellena se mantiene.
+- **Que seccion toca:** #48 (tabla y lectura de E9b), #14/#17 (bone integrity, si se cita el
+  43%), #26 (S1 de calibracion no auditado), `e9b_densidad_s1.md`.
+- **Opciones:** (a) auditar S1 de la calibracion (`r1_mosaico.py --cohorte calibracion`);
+  (b) tras correr TS en la cohorte, usar `vertebrae_S1` de TS como segundo detector de nivel y
+  medir densidad solo dentro de la mascara del ala; (c) retirar el brazo sin metal de la lectura
+  de #48 hasta auditar.
+- **Tipo:** RIESGO / SUPUESTO. **Pendiente de la autora. No aplicado.**

@@ -1,0 +1,5 @@
+Caso,comp,modo,L_mm,n_puntos_eje,frac_eje_metal,frac_eje_metal_r2mm,frac_vol_E8_en_cilindro,frac_eje_en_sacro_S1,frac_eje_en_cadera,frac_eje_fuera,n_vox_metal_cilindro,frac_metal_en_mascaras
+dataset7_CLINIC_metal_0008_data,1,robust3mm,102.0,103,0.049,0.893,0.755,0.544,0.282,0.175,1877,0.952
+dataset7_CLINIC_metal_0008_data,1,default6mm,102.0,103,0.049,0.893,0.755,0.641,0.301,0.058,1877,0.984
+dataset7_CLINIC_metal_0008_data,2,robust3mm,87.2,88,0.0,0.943,0.842,0.614,0.33,0.057,2582,0.983
+dataset7_CLINIC_metal_0008_data,2,default6mm,87.2,88,0.0,0.943,0.842,0.58,0.341,0.08,2582,0.977

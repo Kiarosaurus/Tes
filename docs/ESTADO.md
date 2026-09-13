@@ -2,74 +2,145 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-09)
+## PUNTO DE RETOMA — leer esto primero (2026-09-11)
 
-> Escrito para que una sesion con contexto limpio retome sin releer el historial.
-> Todo lo de abajo esta verificado contra archivos o datos en disco. Lo que es
-> suposicion se dice. Las decisiones son de la autora; Claude no las aplica solo.
+> Escrito para que una sesion nueva, sin historial, retome sin releer nada mas. Todo lo de
+> abajo esta verificado contra archivos en disco. Las decisiones son de la autora: Claude no
+> las aplica sin orden explicita (reglas 3, 4 y 14 de `CLAUDE.md`).
 
 ### Donde esta el proyecto
 
-La **fase de literatura esta cerrada por saturacion** (41 implicancias, 34 fichas, la
-cadena de citas del umbral de 10 mm auditada hasta agotarse). El proyecto **giro a
-experimentos** el 2026-09-09. `src/` sigue vacio: no hay codigo de tesis todavia, solo
-scripts de exploracion en `experiments/`.
+- **Literatura cerrada por saturacion; el proyecto esta en fase experimental.** `src/` sigue
+  **vacio**: todo lo ejecutable esta en `experiments/`. Segun #23, la entrega queda a unas 12
+  semanas.
+- **Cohorte por paciente (decision del 2026-09-10):**
+  - 178 volumenes = 168 pacientes (`Grupo paciente` en `revision.csv`).
+  - Volumenes fuera de uso: `experiments/exploration-3d/exclusiones.csv` (11; ningun archivo
+    borrado).
+  - Particion por objetivo: `grupos.csv` (grupo 1 con material ortopedico = 65, grupo 2 = 37,
+    grupo 3 limpio = 66).
+  - `metal_0059` y `metal_0071` estan unidos sin perdida en `data/derivados/`.
+- **`tesis/main.tex` compila** (4 paginas, 40 referencias, 0 citas indefinidas). Cambios
+  recientes:
+  - C1 reescrita;
+  - parrafo `Implant geometry source` (geometria parametrica);
+  - regla de aislamiento;
+  - cifra de R1 en `Field limitation`.
 
-### Lo que se midio (hecho, reproducible, en disco)
+### Lo que se midio (reproducible, en disco)
 
-| Exp | Script | Resultado |
+| Exp | Donde | Resultado vigente |
 |---|---|---|
-| **E1** | `experiments/exploration-3d/sensibilidad_hu.py` | Cribado HU a 1500/2500/3500 sobre 178 volumenes. 1500 no criba (177 de 178 candidatos). 2500 = 113 candidatos, 65 limpios, **cero falsos negativos**. 3500 = 104 candidatos, 74 limpios, pierde 5. Reproduce `revision.csv` exactamente. |
-| **E6a** | `experiments/objetivo1/e6a_codificacion.py` | Ida y vuelta `HU -> ventana -> HU`, sin VAE, cota inferior de cualquier decodificador. En hueso limpio MAE mediana **0.00 HU**; con metal **46.36** (48 de 75 fallan el criterio de 25 HU). En ROI de metal **3588.80 HU**. `max |LW - oraculo|` = **0.0 exacto**. |
+| E1 | `exploration-3d/sensibilidad_hu.py` | 2500 HU criba con 0 falsos negativos (113 candidatos) |
+| Dup. | `exploration-3d/duplicados_parciales.py` | 6 grupos por SHA256 + 3 por cortes compartidos; todos resueltos por paciente |
+| E6a / E6c | `objetivo1/` | Techo de 2000 HU de LW: 48 de 75 con metal fallan el Go/No-Go. `pub+MTW` (4a ventana) domina (#39) |
+| R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **49**, sin contaminacion **30**. Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.80 |
+| E8 | `objetivo2/e8_*.py` | >= 17 de 65 con tornillo iliosacro; a 2500 HU los tornillos salen fragmentados (9/57) y con fuste de 5.1 mm (#46). Test-retest `0065`/`0066` |
+| E9b | `objetivo2/e9b_*.py` | Alguna esfera de S1 con mediana < 150 HU en **38% con metal y 43% sin metal** (#48) |
+| E9 | `objetivo2/e9_corredor.py` | **NO VALIDO**, no correr: el umbral HU no captura el esponjoso sacro (#48) |
 
-### Las 6 decisiones abiertas, en orden de urgencia
+### Decisiones tomadas en esta ronda (todas en `01-decisiones.md`)
 
-1. **#41 — de donde salen las geometrias de implante. BLOQUEO NUMERO UNO.**
-   C1 (`main.tex:54`) no tiene insumo: no hay STL, mallas, CAD ni tabla de diametros en
-   ningun lado. Con eso el Objetivo 2 —unico aporte propio del alcance minimo— no tiene
-   que colocar, #31 colapsa (`d_implante` no existe), `main.tex:111` regula un banco
-   inexistente y `00-tesis.md:114` habla de un CAD propio que no hay.
-   Vias ejecutables hoy: **(a)** extraer geometrias de los implantes de los 75
-   CLINIC-metal en disco — resolver ANTES la tension con la regla de aislamiento de
-   `main.tex:111`; **(c)** geometrias parametricas con los rangos publicados de #30/#31.
-   La via (b), CAD publico o de fabricante, **no esta verificada y no debe afirmarse**.
-2. **#39 — el techo de 2000 HU de la ventana LW.** Decision tecnica mas cara abierta.
-   Toca a la vez el Objetivo 1, C3, el diseno del renderizador y la comparabilidad de
-   *metal integrity* con `peters2025hybrid`. Salidas posibles: cuarta ventana de metal,
-   mover el techo de LW, compresion no lineal del rango alto, o componer el metal fuera
-   del espacio multi-ventana. **Ninguna adoptada.**
-   Relacionado: `main.tex` **no declara sobre que cohorte se evalua el Objetivo 1**, y de
-   eso depende si el Go/No-Go pasa trivialmente o falla en 48 de 75.
-3. **#37 — procedencia por campo en `revision.csv`. Prerrequisito, no consecuencia.**
-   Las 178 filas comparten un unico `Revisor` y ningun campo declara su autor. Debe
-   resolverse **antes** de que la autora anote artefactos, o su observacion vuelve a
-   quedar indistinguible de la del agente.
-4. **Revision de artefactos por la autora.** Bloquea #15, #22, #34 y #35 (bloque
-   `BLOQUEO DECLARADO` en `04-implicancias.md`). Alcance acotado: **33 volumenes de
-   dataset6 con objeto**, mirando solo estriacion alrededor del objeto ya localizado.
-   No son los 178. Afecta solo la cohorte del Objetivo 3.
-5. **#36 — que VAE.** No esta especificado en ningun documento del repositorio. Bloquea
-   E6b y con el el cierre del Objetivo 1, que es obligatorio y del alcance minimo.
-6. **#20 — representante en los 3 grupos duplicados internos de dataset7**
-   (`metal_0012`=`0021`, `metal_0013`=`0043`, `metal_0046`=`0074`). Verificado que son
-   identicos voxel a voxel. Bloquea el split desde el 2026-09-07.
+1. **Unidad = paciente:** duplicados parciales, union, `metal_0068` sin material ortopedico,
+   ningun `.nii.gz` se borra.
+2. **#20:** indice menor en las copias exactas.
+3. **#41 via (c):** geometria parametrica, calibre de 6.5-8.0 mm, cilindro liso. **Contingencia
+   abierta:** via (a), extraer de CLINIC-metal, **solo** si a futuro falta por completo
+   bibliografia de calibres y longitudes. La falta de rosca o cabeza no la dispara.
+4. **#31:** `Dmax >= d_implante + 2c`, `c` = 1-2 mm radiales (operacionalizacion declarada de
+   Kaiser).
+5. **#22:** 2500 HU solo para cribado; metal integrity con la regla adaptativa de Peters.
+
+### PENDIENTES PARA LA PROXIMA SESION, por urgencia
+
+1. **#48: segmentacion osea para medir el corredor. Bloquea el Objetivo 2**, el unico aporte
+   propio del minimo.
+   - La autora elige via: TotalSegmentator (#29; necesita **Khipu**: la PC no tiene GPU y
+     tiene ~2 GB de RAM libres), segmentacion cortical propia o semi-manual en un subconjunto.
+   - Despues, rehacer E9 reutilizando la logica de `e9_corredor.py` (trayectorias, EDT,
+     salida por el ilion, restriccion #31) sobre la mascara nueva, **con y sin los 7 de FOV
+     cortado** (pedido de la autora, aun sin decidir).
+2. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
+   - `main.tex` sugiere SD 1.5, cuyo VAE es de 3 canales; la mejor salida de E6c usa 4.
+   - Opciones en #36/#39. E6b se corre en Khipu.
+3. **Textos propuestos y no aplicados a `main.tex`:**
+   - restriccion #31 en el Objetivo 2 (texto en #31, ronda 2026-09-11 tarde);
+   - declaracion de que bone integrity (HU > 150) no captura el esponjoso sacro (#48, #17).
+4. **Decisiones pequenas de la autora:**
+   - los 7 de FOV cortado (cuando E9 sea valido);
+   - tercera regla de umbral (semimaximo local para implantes reales, #22).
+5. **Opcional, para blindar R1:** segundo revisor (radiologo o traumatologo) solo en los 17
+   casos senalados en #26; revision clinica de crestas y EIPS.
+6. **No urgente:**
+   - revision de artefactos por la autora (#34, #35, #37; solo Objetivo 3);
+   - candidatos PENDIENTE de `_candidatos.md`;
+   - deuda: leer a fondo Zwingmann 2009 y Smith 2006 antes de la sustentacion.
 
 ### Avisos para quien retome
 
-- **`CLAUDE.md` tiene mas afirmaciones obsoletas.** La linea 23 se corrigio el 2026-09-09.
-  Siguen sin corregir, y **contradicen decisiones ya tomadas**: la linea 17 cita el rango
-  **"31-60% segun Zwingmann"**, RETIRADO por el punto 5 de `Fuera de alcance` en
-  `00-tesis.md` (#12); y la linea 27 declara **"Baseline fisico: XCIST/CatSim"**,
-  sustituido por `peters2025hybrid` (#8, APLICADA). Correccion pendiente de la autora.
-- **Patron a vigilar, ya visto tres veces:** un enunciado se vuelve verdad por citarse a
-  si mismo. Paso con el umbral de 10 mm (#25), con la columna `Artefactos` (#37) y con el
-  banco de 61 (#40). **Verificar contra el archivo antes de construir sobre un enunciado.**
-- **`docs/04-implicancias.md` es el archivo critico irreemplazable** (regla 17). Al cierre
-  del 2026-09-09 tiene 41 entradas.
-- **Nada de esto se aplica a `tesis/main.tex` ni a `docs/00-tesis.md` sin orden explicita**
-  de la autora en ese turno (reglas 4 y 14). `docs/01-decisiones.md` lo escribe solo ella.
+- **Memoria.** La PC tiene 11.8 GB y suele quedar con ~1.5-2 GB libres. Los scripts pesados
+  corren por lotes reanudables (`--max`), en primer plano o con procesos nuevos por lote: dos
+  corridas de fondo murieron por RAM. Lo que necesite GPU o modelos grandes va a **Khipu**
+  (comandos de transferencia en el chat del 2026-09-10; host y usuario sin documentar).
+- **Procedencia.**
+  - `objetivo2/r1_auditoria_s1_clinico.csv`: medico ORL, **no la autora**.
+  - `r1_auditoria_s1_agente.csv`: agente.
+  - `revision.csv` solo se toca con scripts que verifican y respaldan (`procedencia.py`,
+    `grupo_paciente.py`, `correcciones_autora.py`).
+- **Historicos que no se usan:** `r1_landmarks.v1-parcial.csv`, `r1_landmarks.v2a.*`,
+  `revision.pre-*.csv`.
+- **Bibliografia:** `refs/raw` -> `refs/clean` -> `python scripts/build_refs.py` (regla 9). No
+  editar `refs.bib` a mano.
+- **Patron a vigilar (visto 5 veces):** un enunciado se vuelve verdad por citarse a si mismo, o
+  un control que no puede fallar se toma por verificacion (#25, #37, #40, #45, #47). Verificar
+  contra el archivo o el dato antes de construir encima.
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #48.
 
 ## Ultimo paso completado
+2026-09-11 (cierre): #31 y #22 decididas y registradas; cifra de R1 escrita en `main.tex`; E9
+(corredor) pilotado y **declarado no valido** por segmentacion (#48); E9b mide esponjoso de S1 bajo
+150 HU en ~40% de los pacientes, con o sin metal; con y sin los 7 de FOV da lo mismo en densidad.
+Siguiente: decidir la via de segmentacion (#48/#29, Khipu) y #36+#39. Detalle en PUNTO DE RETOMA.
+
+## Paso anterior (2026-09-10 / 11, detalle)
+2026-09-10: **R1 y E8 ejecutados enteros, y barrido de duplicados parciales.** #26 con cifra
+provisional (52/69 marco computable con S1 correcto, 33 sin contaminacion; FOV y heuristica
+pesan mas que el metal). #45 nueva: `metal_0059`/`0071` son el mismo estudio (contradice la
+decision del 2026-09-07), mas `0011`/`0034` y `CLINIC_0038`/`0090`. #46 nueva: la via (a) de
+#41 no produce geometria por umbral. #21: `metal_0068` sin osteosintesis densa.
+Cierre del 2026-09-10: la autora **confirma** mismo paciente en los tres pares de #45, que
+`0065`/`0066` son la misma persona y que `metal_0068` no tiene material ortopedico. Queda en
+#45 una propuesta por par: contenedor, union sin perdida o par de reproducibilidad. Con
+ella, dataset7 con osteosintesis pasa a 71 volumenes y 65 pacientes. Tambien hay texto
+propuesto para `01-decisiones.md`, sin aplicar.
+**Aplicado por orden de la autora:** union sin perdida de `0059`/`0071` en `data/derivados/`
+y `Grupo paciente` lleno: 178 volumenes, 168 pacientes; dataset7 con osteosintesis 71/65,
+dataset6 sin objeto 70/69.
+**Cierre final del 2026-09-10 (orden de la autora):** decision por paciente escrita en
+`01-decisiones.md`; `exclusiones.csv` creado (11 volumenes, ningun archivo borrado);
+`metal_0068` corregido; `grupos.csv` regenerado (65/37/66); R1 y E8 recontados por paciente:
+marco computable con S1 correcto 51/65, sin contaminacion 32/65; >= 17 con tornillo
+iliosacro; fuste 5.08 mm.
+#20 CERRADA por la autora (indice menor). Mosaicos regenerados sobre 65 pacientes y
+plantilla ciega `experiments/objetivo2/r1_auditoria_s1_clinico.csv`.
+2026-09-11: la plantilla de S1 la lleno un **medico cirujano ORL** (revisor clinico externo,
+no la autora). Con el como referencia: **49/65** marco computable con S1 correcto, **30/65**
+ademas sin contaminacion; acuerdo con el agente kappa 0.80. #20 escrita en `01-decisiones.md`.
+2026-09-11 (2): **#41 via (c) APLICADA** en `01-decisiones.md` y `main.tex` (Objetivo 2,
+regla de aislamiento, parrafo `Implant geometry source`; compila). **Contingencia (a)
+ABIERTA:** extraer geometrias de CLINIC-metal si a futuro falta por completo bibliografia
+con calibres y longitudes (no la disparan rosca, canulacion ni cabeza). Plantilla renombrada
+por la autora a `r1_auditoria_s1_clinico.csv`. Lectura de `xie2024` (#47) lanzada.
+Xie leido (#47): cita de C1 PARCIALMENTE respaldada (sobrecobertura solo en cortes simulados;
+direccion dependiente del umbral); redaccion alternativa de C1 propuesta, sin aplicar.
+Por orden de la autora: `grass2016`, `lee2014`, `wagner2017` y `zhao2012` anadidas a `refs.bib`
+(36 -> 40, MAPEO actualizado; tesis compila: 4 paginas, 0 citas indefinidas, 2 avisos ya
+conocidos) y `00-tesis.md:114` pasa de 'CAD propia' a geometria parametrica.
+C1 reescrita en `main.tex:54` por orden de la autora; **#47 CERRADA**.
+Siguiente: FOV del Obj 2 (7 pacientes sin crestas); cifra de R1 (49/65, revisor clinico) en
+`main.tex:115`.
+
+## Paso anterior
 2026-09-09 (cierre real): **#40 RESUELTA y #41 abierta, y es lo mas grave de la sesion.**
 La autora identifico el origen del "banco de 61": es la cita de `liu2021ctpelvic1k`,
 Data annotation p. 3, *"The remaining 61 metal-affected CTs ... left unannotated"*.

@@ -1,0 +1,13 @@
+Caso,esfera,modo,n_vox,hu_p50,hu_p50_e9b,control_marco_ok,frac_sobre150,frac_en_sacro_S1,frac_en_cadera,frac_fuera_mascaras,frac_bajo150_recuperada_sacro_S1
+dataset7_CLINIC_metal_0008_data,cuerpo,robust3mm,2079,319.0,319.0,True,0.989,1.0,0.0,0.0,1.0
+dataset7_CLINIC_metal_0008_data,cuerpo,default6mm,2079,319.0,319.0,True,0.989,1.0,0.0,0.0,1.0
+dataset7_CLINIC_metal_0008_data,ala_izq,robust3mm,2068,270.0,270.0,True,0.782,0.921,0.0,0.079,0.741
+dataset7_CLINIC_metal_0008_data,ala_izq,default6mm,2068,270.0,270.0,True,0.782,0.929,0.0,0.071,0.752
+dataset7_CLINIC_metal_0008_data,ala_der,robust3mm,2055,442.0,442.0,True,0.772,0.697,0.0,0.303,0.032
+dataset7_CLINIC_metal_0008_data,ala_der,default6mm,2055,442.0,442.0,True,0.772,0.707,0.0,0.293,0.041
+dataset6_CLINIC_0002_data,cuerpo,robust3mm,1834,177.0,177.0,True,0.726,0.0,0.0,1.0,0.0
+dataset6_CLINIC_0002_data,cuerpo,default6mm,1834,177.0,177.0,True,0.726,0.0,0.0,1.0,0.0
+dataset6_CLINIC_0002_data,ala_izq,robust3mm,1834,17.0,17.0,True,0.309,0.0,0.0,1.0,0.0
+dataset6_CLINIC_0002_data,ala_izq,default6mm,1834,17.0,17.0,True,0.309,0.0,0.0,1.0,0.0
+dataset6_CLINIC_0002_data,ala_der,robust3mm,1834,34.0,34.0,True,0.196,0.0,0.0,1.0,0.0
+dataset6_CLINIC_0002_data,ala_der,default6mm,1834,34.0,34.0,True,0.196,0.0,0.0,1.0,0.0

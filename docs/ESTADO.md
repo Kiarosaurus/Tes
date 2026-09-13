@@ -2,7 +2,7 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-11)
+## PUNTO DE RETOMA — leer esto primero (2026-09-12)
 
 > Escrito para que una sesion nueva, sin historial, retome sin releer nada mas. Todo lo de
 > abajo esta verificado contra archivos en disco. Las decisiones son de la autora: Claude no
@@ -36,8 +36,10 @@
 | E6a / E6c | `objetivo1/` | Techo de 2000 HU de LW: 48 de 75 con metal fallan el Go/No-Go. `pub+MTW` (4a ventana) domina (#39) |
 | R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **49**, sin contaminacion **30**. Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.80 |
 | E8 | `objetivo2/e8_*.py` | >= 17 de 65 con tornillo iliosacro; a 2500 HU los tornillos salen fragmentados (9/57) y con fuste de 5.1 mm (#46). Test-retest `0065`/`0066` |
-| E9b | `objetivo2/e9b_*.py` | Alguna esfera de S1 con mediana < 150 HU en **38% con metal y 43% sin metal** (#48) |
+| E9b | `objetivo2/e9b_*.py` | Alguna esfera de S1 con mediana < 150 HU en **38% con metal y 43% sin metal** (#48). **El brazo sin metal queda cuestionado por #50** |
 | E9 | `objetivo2/e9_corredor.py` | **NO VALIDO**, no correr: el umbral HU no captura el esponjoso sacro (#48) |
+| TS piloto | `objetivo2/ts_piloto.sbatch`, `ts_piloto_qc.py` | Job 51300, 2 casos x 2 recortes. Sin truncamiento; entre recortes Dice 0.93-0.97 con diferencias en SI/ala (#49). En `CLINIC_0002` las esferas de E9b caen un nivel arriba de la S1 de TS y las alas en tejido blando (#50) |
+| TS cohorte | `objetivo2/ts_cohorte.sbatch` -> `ts_qc_cohorte.sbatch` (`ts_qc.py`) | **Listos y NO lanzados** (2026-09-12). `ts_qc.py` probado en local: reproduce exacto las CSV del piloto y reanuda sin duplicar. Manual: `objetivo2/KHIPU.md` |
 
 ### Decisiones tomadas en esta ronda (todas en `01-decisiones.md`)
 
@@ -53,13 +55,26 @@
 
 ### PENDIENTES PARA LA PROXIMA SESION, por urgencia
 
-1. **#48: segmentacion osea para medir el corredor. Bloquea el Objetivo 2**, el unico aporte
-   propio del minimo.
-   - La autora elige via: TotalSegmentator (#29; necesita **Khipu**: la PC no tiene GPU y
-     tiene ~2 GB de RAM libres), segmentacion cortical propia o semi-manual en un subconjunto.
-   - Despues, rehacer E9 reutilizando la logica de `e9_corredor.py` (trayectorias, EDT,
-     salida por el ilion, restriccion #31) sobre la mascara nueva, **con y sin los 7 de FOV
-     cortado** (pedido de la autora, aun sin decidir).
+1. **#48 / #49 / #50: TotalSegmentator para medir el corredor. Bloquea el Objetivo 2**, el
+   unico aporte propio del minimo.
+   - **Ahora (la autora, en Khipu):** correr la cohorte con `experiments/objetivo2/KHIPU.md`,
+     pasos 1-6. Primero TS en los 179 volumenes con los dos recortes (~6-8 h estimadas con el
+     piloto) y despues el QC en CPU. Traer `ts_total_qc/` y `_procedencia/`.
+   - **Sesion siguiente (manual, autora + Claude), en este orden:**
+     1. `repetibilidad_piloto_*.txt`: ¿mascaras identicas al piloto? Si no lo son, eso tambien
+        es incertidumbre del metodo (#49). Revisar tambien `ts_qc_errores.csv` y los fallos de
+        `ts_tiempos.csv`.
+     2. Laminas `ts_total_qc/laminas/`: separacion sacro/S1, ala dentro de la mascara, fallos bajo
+        metal. En `CLINIC_0002`, ¿la esfera esta en L5 o en S1? (#50).
+     3. `ts_qc.csv`: `techo_linea_media_dz_mm` de `vertebrae_S1` como segundo detector de nivel
+        frente a R1 (#50 opcion b); `dice_3v6` y `solo_este_modo_vox` por caso (#49).
+        `ts_qc_esferas.csv`: cuantas esferas de E9b caen fuera de hueso (#50).
+     4. Decisiones de la autora: adoptar TS (#48); recorte de 3 mm, 6 mm o ambos (#49); `total`
+        frente a `total_v3` (#49, sin evaluar); auditar S1 de calibracion o retirar el brazo sin
+        metal (#50).
+   - **Despues:** rehacer E9 sobre `sacrum` + `vertebrae_S1` + caderas de TS, reutilizando
+     `e9_corredor.py` (trayectorias, EDT, salida por el ilion, restriccion #31), **con y sin los
+     7 de FOV cortado**. Puede correr en la CPU de Khipu (`big-mem`).
 2. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
    - `main.tex` sugiere SD 1.5, cuyo VAE es de 3 canales; la mejor salida de E6c usa 4.
    - Opciones en #36/#39. E6b se corre en Khipu.
@@ -80,8 +95,9 @@
 
 - **Memoria.** La PC tiene 11.8 GB y suele quedar con ~1.5-2 GB libres. Los scripts pesados
   corren por lotes reanudables (`--max`), en primer plano o con procesos nuevos por lote: dos
-  corridas de fondo murieron por RAM. Lo que necesite GPU o modelos grandes va a **Khipu**
-  (comandos de transferencia en el chat del 2026-09-10; host y usuario sin documentar).
+  corridas de fondo murieron por RAM. Lo que necesite GPU o modelos grandes va a **Khipu**.
+  Host, carpetas, entorno, colas, limites, errores ya vistos y comandos estan en
+  `experiments/objetivo2/KHIPU.md`: leerlo antes de escribir cualquier `.sbatch`.
 - **Procedencia.**
   - `objetivo2/r1_auditoria_s1_clinico.csv`: medico ORL, **no la autora**.
   - `r1_auditoria_s1_agente.csv`: agente.
@@ -91,12 +107,36 @@
   `revision.pre-*.csv`.
 - **Bibliografia:** `refs/raw` -> `refs/clean` -> `python scripts/build_refs.py` (regla 9). No
   editar `refs.bib` a mano.
-- **Patron a vigilar (visto 5 veces):** un enunciado se vuelve verdad por citarse a si mismo, o
-  un control que no puede fallar se toma por verificacion (#25, #37, #40, #45, #47). Verificar
-  contra el archivo o el dato antes de construir encima.
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #48.
+- **Patron a vigilar (visto 6 veces):** un enunciado se vuelve verdad por citarse a si mismo, o
+  un control que no puede fallar se toma por verificacion (#25, #37, #40, #45, #47, #50). En #50,
+  el control de marco de E9b validaba el CT, no el nivel de S1. Verificar contra el archivo o el
+  dato antes de construir encima.
+- **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
+  se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
+  `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #50.
 
 ## Ultimo paso completado
+2026-09-12 (cierre): **piloto de TotalSegmentator ejecutado y analizado; scripts de la cohorte listos.**
+- Piloto: job 51300 (ag001, MIG A100 `3g.20gb`; TS 2.18.0; torch 2.14.0+cu130), 2 casos x {3 mm, 6 mm},
+  59-76 s por corrida. Antes fallaron 3 jobs, por la cola y por un bug del script; los dos
+  problemas estan documentados en `KHIPU.md`.
+- QC (`ts_piloto_qc.py`, `ts_piloto_qc*.csv`, laminas en `outputs/ts_piloto_qc/`): #49 ampliada con
+  evidencia; **#50 nueva** (error de nivel de S1 -> "ala < 150 HU" en tejido blando; 6 de 6 casos +1).
+- Cohorte: `ts_cohorte.sbatch` (179 volumenes x 2 recortes, reanudable, control de repetibilidad
+  contra el piloto) y `ts_qc_cohorte.sbatch` + `ts_qc.py`. Manual en `experiments/objetivo2/KHIPU.md`.
+  **No lanzados.**
+Siguiente: la autora lanza la cohorte (KHIPU.md). Luego, sesion manual de QC y decisiones #48/#49/#50
+(PENDIENTE 1).
+
+## Paso anterior
+2026-09-12: preparados (no ejecutados) los comandos para correr TotalSegmentator 2.18.0 en Khipu
+(`khipu.utec.edu.pe`, particiones `debug-gpu`/`gpu`, `--gres=shard:1`; pesos en el nodo de acceso,
+porque los nodos GPU no tienen internet). Solo falta subir `data/derivados/...union.nii.gz`: los 178
+originales ya estan en Khipu. #49 nueva (version, `total_v3`, modelo de recorte).
+Siguiente: la autora corre el piloto (`metal_0008` + `CLINIC_0002`), valida y decide #48/#49.
+
+## Paso anterior
 2026-09-11 (cierre): #31 y #22 decididas y registradas; cifra de R1 escrita en `main.tex`; E9
 (corredor) pilotado y **declarado no valido** por segmentacion (#48); E9b mide esponjoso de S1 bajo
 150 HU en ~40% de los pacientes, con o sin metal; con y sin los 7 de FOV da lo mismo en densidad.

@@ -49,6 +49,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `arand2019pelvicring` | `arand2019pelvicring.nbib` | PubMed nbib | — | 30575034 |
 | `chen2024tumorsynthesis` | `chen2024tumorsynthesis.bib` | BibTeX IEEE | `10656868` | — |
 | `deman2007catsim` | `deman2007catsim.bib` | BibTeX SPIE | `10.1117/12.710713` | — |
+| `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
 | `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
 | `jacob2026lgesynthnet` | `jacob2026lgesynthnet.bib` | BibTeX Springer | `10.1007/978-3-032-17734-6_4` | — |
@@ -56,6 +57,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `karageorgos2024ddpm` | `karageorgos2024ddpm.nbib` | PubMed nbib | — | 38963746 |
 | `kazerouni2023diffusionsurvey` | `kazerouni2023diffusionsurvey.nbib` | PubMed nbib | — | 37295311 |
 | `keating1999iliosacral` | `keating1999iliosacral.nbib` | PubMed nbib | — | 10052785 |
+| `lee2014` | `lee2014.nbib` | PubMed nbib | — | 25231682 |
 | `liu2021ctpelvic1k` | `liu2021ctpelvic1k.nbib` | PubMed nbib | — | 33864189 |
 | `liu2025pipeline` | `liu2025pipeline.nbib` | PubMed nbib | — | 39012731 |
 | `mclaren2021corridor` | `mclaren2021corridor.nbib` | PubMed nbib | — | 33649991 |
@@ -69,11 +71,13 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `smith2006iliosacral` | `smith2006iliosacral.nbib` | PubMed nbib | — | 16418646 |
 | `templeman1996proximity` | `templeman1996proximity.nbib` | PubMed nbib | — | 8769451 |
 | `vanbosse2011pelvicpositioning` | `vanbosse2011pelvicpositioning.nbib` | PubMed nbib | — | 21365336 |
+| `wagner2017` | `wagner2017.bibtex` | BibTeX Wiley | `https://doi.org/10.1002/jor.23554` | — |
 | `wang2019cochlear` | `wang2019cochlear.bib` | BibTeX Springer | `10.1007/978-3-030-32226-7_14` | — |
 | `wang2025adaptiveweighting` | `wang2025adaptiveweighting.bib` | BibTeX IEEE | `10887049` | — |
 | `wu2022xcist` | `wu2022xcist.bib` | BibTeX IOP | `Wu_2022` | 36096127 |
 | `xie2024implantsegmentation` | `xie2024implantsegmentation.nbib` | PubMed nbib | — | 39107679 |
 | `yun2026simulationdriven` | `yun2026simulationdriven.nbib` | PubMed nbib | — | 41699969 |
+| `zhao2012` | `zhao2012.nbib` | PubMed nbib | — | 22610442 |
 | `zhang2023controlnet` | `zhang2023controlnet.bib` | BibTeX IEEE | `10377881` | — |
 | `zhang2025diffboost` | `zhang2025diffboost.nbib` | PubMed nbib | — | 40030730 |
 | `zhang2026pediclescrew` | `zhang2026pediclescrew.bib` | BibTeX SAGE | `doi:10.1177/08953996261443500` | 42141954 |
@@ -172,3 +176,34 @@ DOI de AID. PDF local completo. Ningun campo completado desde otra fuente.
 revista de JT; ano de DP; volumen 13 de VI; numero 2 de IP; paginas 107-13 de PG
 expandidas a 107--113; DOI de AID. Texto completo local en DOCX, sin paginacion
 conservada. Ningun campo bibliografico se completo desde el DOCX.
+
+## Alta de cuatro fuentes de geometria sacra (2026-09-11)
+
+Orden explicita de la autora: anadir a `refs.bib` las cuatro fuentes cuyo raw ya estaba en
+`refs/raw/` y cuya ficha se leyo el 2026-09-08. `refs.bib` pasa de 36 a 40 entradas; el
+diff solo anade estas cuatro. Motivo: la decision #41 (geometria parametrica) usa calibres
+y longitudes que estas fuentes publican.
+
+- `refs/raw/grass2016.nbib` (PMID 27392768) -> `refs/clean/grass2016.bib`. Autores de FAU
+  (`Schröder` como `Schr\"{o}der`), titulo de TI sin punto final, revista de JT en nombre
+  oficial (`Clinical Orthopaedics and Related Research`, regla 4), ano de DP, volumen 474,
+  numero 10, paginas 2304-11 -> 2304--2311, DOI de LID. **Aviso de clave:** la clave de la
+  autora es `grass2016` (doble s), pero el primer autor en el raw es **Gras**, Florian. Se
+  conserva la clave (regla 1: la define la autora y la usan la ficha y `_index.md`); el
+  campo `author` sale del raw, que es lo que se imprime.
+- `refs/raw/lee2014.nbib` (PMID 25231682) -> `refs/clean/lee2014.bib`. **Aviso de ano:** el
+  raw da `DP - 2015 Feb` y `DEP - 20140917` (publicacion electronica en 2014). El campo
+  `year` es **2015** (fecha del fasciculo); la clave `lee2014` se conserva por la regla 1 y
+  corresponde a la fecha electronica. Revista de JT recortada a `Journal of Orthopaedic
+  Research` (se descarta el subtitulo de NLM, como en `mclaren2021corridor`). Paginas
+  277-82 -> 277--282.
+- `refs/raw/wagner2017.bibtex` (Wiley) -> `refs/clean/wagner2017.bib`. El `doi` del raw
+  viene como URL (`https://doi.org/10.1002/jor.23554`); se guarda el identificador sin
+  prefijo, igual que en el resto. Paginas 2577-2584 -> 2577--2584. Se descartan
+  `keywords`, `url`, `eprint` y `abstract` (regla 7).
+- `refs/raw/zhao2012.nbib` (PMID 22610442) -> `refs/clean/zhao2012.bib`. Revista de JT
+  recortada a `European Spine Journal` (subtitulo de NLM descartado). Paginas 1807-14 ->
+  1807--1814. DOI de AID (el raw no trae `LID`).
+
+Titulos pasados a Title Case entre dobles llaves (regla 3). **Ningun campo se completo
+desde otra fuente.**

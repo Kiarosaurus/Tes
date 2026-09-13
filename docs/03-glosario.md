@@ -55,6 +55,14 @@
   cortical. Procedimiento: contornos corticales mapeados, recta de tabla externa iliaca a
   la contralateral, diametro creciente *"until it contacted and breached the thickness of
   the cortex... in at least three locations"* (`mclaren2021corridor`).
+- **Viabilidad de corredor (#31, decidido 2026-09-11):** `Dmax >= d_implante + 2c`.
+  `d_implante`: calibre del tornillo parametrico (6.5-8.0 mm, `gardner2010safezones`;
+  7.3 mm, `grass2016`). `c`: holgura radial de 1 a 2 mm por lado. Es una
+  **operacionalizacion propia** de *"1 to 2 mm of circumference around a 6.3 to
+  8-mm-diameter screw"* (`kaiser2014dysmorphism`, p. e120(7)): el paper no publica la
+  cuenta y no debe citarse como resultado suyo. Se reportan ambos extremos de `c`.
+  Sustituye al escalar fijo de 10 mm como restriccion del muestreador; el 10 mm queda
+  como convencion heredada de comparacion.
 - **Zona segura (safe zone):** corredor con `Dmax >= 10 mm`. **Umbral heredado y no
   establecido:** `mclaren2021corridor` lo adopta de trabajo previo y declara que el
   corredor minimo *"has not yet been established"*, con valores previos entre 8 y 12 mm
@@ -97,7 +105,10 @@
 
 ## Datos
 
-- **Umbral de mascara metalica en CLINIC-metal:** 2500 HU. *"clinical metals for
+- **Umbral de mascara metalica en CLINIC-metal:** 2500 HU. **Uso restringido a cribado de
+  cohorte** (decision del 2026-09-11, #22): no se usa para medir metal integrity (regla
+  adaptativa de Peters) ni para extraer la forma de un implante real (E8: fragmenta y
+  adelgaza los tornillos; propuesta de semimaximo local, #46). *"clinical metals for
   CLINIC-metal and SpineWeb are segmented with the thresholding of 2,500HU"*
   (`wang2025adaptiveweighting`, Sec. V-A-2, p. 2413). Es el unico umbral publicado sobre
   este mismo subconjunto y sirve de definicion operativa para separar metal de otros

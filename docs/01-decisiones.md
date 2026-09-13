@@ -490,3 +490,142 @@ por configuracion. Son respaldos distintos para considerar el nivel sacro.
 seguridad, importar medias como reglas universales, reintroducir fenotipos o score,
 y usar geometria ideal como prior ordinal de malposicion. Se mantiene #27 cerrada y
 el benchmark SAP de Zwingmann solo en S1 por tecnica; S2 conserva reporte descriptivo.
+
+---
+
+## 2026-09-10 — La unidad de independencia es el paciente; tratamiento de duplicados parciales
+
+**Decisión:** mismo paciente = mismo `Grupo paciente` = mismo lado del split, y una sola
+unidad en las estadísticas de cohorte. Por tipo de relación:
+
+- **Subconjunto exacto:** se conserva el contenedor. Se retiran `metal_0034` (subconjunto
+  de `metal_0011`) y `CLINIC_0038` (subconjunto de `CLINIC_0090`); los cortes de diferencia
+  no aportan información significativa.
+- **FOV solapados del mismo escaneo:** se unen sin interpolar en un volumen derivado.
+  `metal_0071` (cortes 0-349) + `metal_0059` (cortes 216-287) =
+  `data/derivados/dataset7_CLINIC_metal_0059u0071_union.nii.gz`, 422 cortes. `0059` aporta
+  los cortes superiores y `0071` los inferiores; ambos muestran el implante.
+- **Adquisiciones distintas del mismo paciente:** se conservan con el mismo
+  `Grupo paciente`. Una es primaria por una regla fijada a priori (menor spacing en plano;
+  empate, más cortes) y la otra es par de reproducibilidad, fuera de las cohortes.
+  `metal_0065`/`metal_0066`: primario `metal_0066` (0.770 frente a 0.835 mm). La regla la
+  propuso el asistente y se aplica por orden de la autora; **nunca se elige por cómo se ve
+  el metal**.
+- **`metal_0068` no tiene material ortopédico.** Excepción observada a la regla «fila vacía
+  en dataset7 = material ortopédico»; su metal es una cremallera extracorpórea.
+- **Ningún `.nii.gz` se borra ni se mueve.** Los volúmenes fuera de uso se declaran con
+  motivo, evidencia y decisión en `experiments/exploration-3d/exclusiones.csv`, y las
+  cohortes se construyen leyendo ese archivo.
+
+**Corrige la entrada del 2026-09-07:** `metal_0059` y `metal_0071` **sí** son el mismo
+paciente. La revisión de ese día los separó por aspecto; la medición muestra 216 cortes
+idénticos bit a bit con desfase coherente con el affine.
+
+**Alternativas descartadas:** criterio de duplicado solo por hash SHA256 del volumen (no
+ve subconjuntos ni FOV solapados); conservar como independientes dos volúmenes del mismo
+escaneo; fusionar por registro dos adquisiciones distintas (interpola y destruye la
+diferencia que las hace útiles como control); borrar los archivos redundantes.
+
+**Por qué:** el hash por corte (implicancia #45) mostró tres pares del mismo estudio que el
+SHA256 no detectaba. Contar volúmenes en vez de pacientes mete fuga entre entrenamiento y
+prueba y duplica vóxeles en las estadísticas. El par `0065`/`0066` muestra, con el mismo
+implante, que la geometría sobre 2500 HU cambia con la adquisición (#46). Resultado: 178
+volúmenes = 168 pacientes; dataset7 con material ortopédico 71 volúmenes = **65
+pacientes**; dataset6 sin objeto 70 volúmenes = **69 pacientes**. Registrada por el
+asistente con orden explícita de la autora el 2026-09-10.
+
+**Queda pendiente:** el representante en las tres copias exactas internas de dataset7
+(#20). Se usa el índice menor por regla determinista; como el contenido es idéntico, la
+elección no cambia ningún vóxel. *(Resuelto en la entrada siguiente, 2026-09-10 (2).)*
+
+---
+
+## 2026-09-10 (2) — #20: copias exactas internas de dataset7, se conserva el índice menor
+
+**Decisión:** en los tres pares de copias exactas internas de dataset7 se conservan
+`metal_0012`, `metal_0013` y `metal_0046`; se retiran `metal_0021`, `metal_0043` y
+`metal_0074` (declarados en `exclusiones.csv`, sin borrar archivos).
+
+**Alternativas descartadas:** elegir el representante por inspección visual de cada par.
+
+**Por qué:** el contenido es idéntico vóxel a vóxel, así que la elección no altera ninguna
+cifra, y una regla determinista es reproducible. Cierra la implicancia #20. Registrada por
+el asistente con orden explícita de la autora (2026-09-11).
+
+---
+
+## 2026-09-11 — #41: geometrías de implante paramétricas; extracción real solo como contingencia
+
+**Decisión:** el insumo de geometrías de implante del muestreador y de ambos brazos de
+síntesis es **paramétrico**: tornillos rígidos modelados con dimensiones que tengan evidencia
+textual. El calibre se toma de los rangos ya citados en la tesis (6.5–8.0 mm,
+`gardner2010safezones`; 6.3–8 mm, `kaiser2014dysmorphism`). La longitud no sale de un rango
+publicado fijo: la acota en cada volumen el corredor medido, con la regla de longitud útil de
+Kaiser (≥ 5 mm de holgura cortical). Los detalles finos sin fuente (rosca, canulación,
+cabeza, arandela) se simplifican a un cilindro liso declarado. Los implantes reales de
+CLINIC-metal **no forman el banco**: se usan como contraste descriptivo de poses, como
+referencia de apariencia para el sintetizador y como control test-retest
+(`metal_0065`/`metal_0066`). Aplicada a `tesis/main.tex` (Objetivo 2 y Datasets).
+
+**Contingencia, abierta:** si a futuro faltara **por completo** bibliografía con calibres y
+longitudes utilizables, se reconsidera extraer geometrías de los implantes de CLINIC-metal
+(vía a). En ese caso la regla de aislamiento pasa a ser vinculante a nivel de paciente y hay
+que declarar las limitaciones medidas en E8 (#46). La falta de detalles finos **no** dispara
+la contingencia.
+
+**Alternativas descartadas por ahora:** extraer geometrías por umbral de CLINIC-metal (E8:
+fragmentación, fuste por debajo del calibre publicado y dependencia de la adquisición, #46);
+CAD de fabricante o de repositorio público (existencia y licencia no verificadas).
+
+**Por qué:** es ejecutable hoy, da dimensiones conocidas para SAP y para el ROI de metal
+integrity, hace utilizable `Dmax >= d_implante + holgura` (#31), cumple la regla de
+aislamiento por construcción y encaja con C1 tal como está escrita. La justificación de C1
+cita a `xie2024implantsegmentation`, en lectura (#47); su redacción puede ajustarse al leerla.
+Registrada por el asistente con orden explícita de la autora (2026-09-11).
+
+---
+
+## 2026-09-11 (2) — #31: viabilidad de corredor como calibre más holgura
+
+**Decisión:** el muestreador acepta un corredor cuando `Dmax >= d_implante + 2c`.
+`d_implante` es el calibre del tornillo paramétrico (6.5–8.0 mm, `gardner2010safezones`;
+7.3 mm, `grass2016`). `c` es la **holgura de Kaiser**: 1 a 2 mm radiales por lado. Se
+reportan ambos extremos. El escalar fijo de 10 mm deja de ser la restricción y queda como
+convención heredada de comparación.
+
+**Aviso de interpretación:** Kaiser escribe *"1 to 2 mm of circumference around a 6.3 to
+8-mm-diameter screw"* y no publica la cuenta. Leerlo como holgura radial por lado es una
+**operacionalización propia**, declarada, y no se cita como resultado de Kaiser. Es
+coherente con su propio par (8 mm + 2 × 1 mm = 10 mm). Con los calibres usados, el umbral
+va de 8.5 a 12 mm, dentro de los valores previos de 8 a 12 mm que recoge
+`mclaren2021corridor`.
+
+**Alternativas descartadas:** mantener el escalar de 10 mm (convención sin medición, #25);
+usar como holgura los 5 mm de la regla de longitud útil de Kaiser (son el radio del propio
+corredor de 10 mm, no una holgura añadida al tornillo).
+
+**Por qué:** las siete fuentes auditadas derivan el umbral del calibre del implante (#31).
+Con geometría paramétrica (#41) el calibre es un parámetro conocido, así que la
+restricción deja de ser heredada y la sensibilidad a `c` se vuelve una ablación natural.
+Registrada por el asistente con orden explícita de la autora (2026-09-11).
+
+---
+
+## 2026-09-11 (3) — #22: el umbral de 2500 HU queda solo para cribado
+
+**Decisión:** 2500 HU se usa **únicamente** para cribar la cohorte (E1: cero falsos
+negativos contra la revisión 3D). La **metal integrity** se mide con la regla adaptativa por
+ROI de `peters2025hybrid` sobre la geometría paramétrica conocida. Ningún umbral fijo define
+la forma de un implante.
+
+**Propuesta abierta, no decidida:** para extraer la máscara de un implante **real** (usos
+descriptivos y de apariencia, #41), usar un umbral de semimáximo local por objeto en lugar
+de 2500 HU. Motivo, E8 (#46): a 2500 HU los tornillos salen fragmentados y más finos, y el
+semimáximo local varía entre objetos (p10 1991, p90 6587 HU).
+
+**Alternativas descartadas:** un único umbral fijo para cribado, medida y forma.
+
+**Por qué:** cada uso necesita algo distinto. El cribado necesita sensibilidad y 2500 HU la
+tiene. La medida necesita adaptarse al ROI, que es lo que hace Peters. La forma necesita
+seguir a cada objeto. Registrada por el asistente con orden explícita de la autora
+(2026-09-11).

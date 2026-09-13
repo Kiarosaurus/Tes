@@ -22,7 +22,9 @@ artifacts in pelvic CT scan volumes using Multi-Window Latent Diffusion.
   marco de referencia de `kaiser2014dysmorphism` (reformateo por el eje sacro perpendicular
   al platillo superior de S1; angulo coronal contra la linea de crestas iliacas; angulo
   axial contra la linea de espinas iliacas posteriores; holgura cortical de 5 mm), con
-  viabilidad de corredor segun `mclaren2021corridor`
+  viabilidad de corredor segun `mclaren2021corridor` expresada como
+  `Dmax >= d_implante + 2c` (#31, decision del 2026-09-11): `d_implante` del tornillo
+  parametrico (6.5-8.0 mm) y holgura radial `c` de 1-2 mm por lado, derivada de Kaiser
 - Metrica SAP + comparacion contra las DOS distribuciones ordinales de cuatro grados de
   `zwingmann2009navigated`, condicionadas por tecnica quirurgica **solo en S1**.
   S1/S2 se conserva como variable geometrica del muestreador; S2 se evalua
@@ -89,8 +91,10 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   CT con implantes que oscurecen la union lumbosacra, que es justo donde estan los tres
   landmarks y donde pega el streaking. **Se cierra midiendo en casa**, no leyendo:
   cuantificar en cuantos volumenes locales con metal se pueden ubicar los tres landmarks.
-  **Contingencia ya escrita en `main.tex`:** calcular el marco solo sobre anatomia sin
-  metal y declarar la limitacion para el conjunto de evaluacion. Implicancia #26.
+  **MEDIDO el 2026-09-11 y escrito en `main.tex`:** de 65 pacientes con material
+  ortopedico, marco computable con S1 confirmado por revisor clinico en 49 y sin
+  contaminacion en 30. La perdida la explican mas el FOV (7) y la localizacion que el
+  artefacto. El tratamiento de los 7 con FOV cortado sigue sin decidir. Implicancia #26.
 - **R2 — RESUELTO el 2026-09-08 por la via corta: no se avanza.** Se adopta de Kaiser solo
   lo operacional (marco de referencia, definiciones angulares, margen de 5 mm). El score,
   el `>70` y los fenotipos quedan fuera, asi que ya no hay nada que decidir. Las tres
@@ -100,19 +104,18 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
 
 ## Pendiente de ejecucion (decidido, falta correrlo)
 
-- **Tabla de sensibilidad del cribado (implicancia #22).** DECIDIDO el 2026-09-08: el
-  cribado no se compromete con un umbral unico. Se recuenta la cohorte a **1500, 2500 y
-  3500 HU** y se reporta cuantos volumenes cambian de clase. Los tres valores ya existen
-  como superficies en la exploracion local. **Falta correr el recuento.**
-- **Cifra de R1 (implicancia #26).** En cuantos volumenes locales con metal se ubican los
-  tres landmarks del marco de referencia. Datos ya en disco.
+- ~~Tabla de sensibilidad del cribado (#22)~~ **HECHA** el 2026-09-09 (E1).
+- ~~Cifra de R1 (#26)~~ **HECHA** el 2026-09-11 y escrita en `main.tex` (49 de 65 con
+  marco computable y S1 confirmado por revisor clinico; 30 sin contaminacion).
+- **Medicion del corredor por volumen (E9, #31).** Bloqueada por segmentacion: un umbral
+  HU no representa el hueso esponjoso del sacro (implicancia #48).
 
 ## Pendiente de decision de la autora
 
-- **Reparto del umbral en dos reglas (implicancia #22).** Si el 2500 fijo se usa solo para
-  **cribado** y la regla adaptativa por ROI de `peters2025hybrid` para **medir** metal
-  integrity sobre geometria CAD propia. `03-glosario.md` sigue con la redaccion de umbral
-  unico.
+- ~~Reparto del umbral en dos reglas (#22)~~ **DECIDIDO el 2026-09-11**: 2500 HU solo para
+  cribado; metal integrity con la regla adaptativa por ROI de `peters2025hybrid`. Queda
+  **propuesta** (no decidida) una tercera regla para extraer mascaras de implantes reales:
+  umbral de semimaximo local (E8, #46).
 - **`templeman1996proximity` sigue en `refs.bib` sin PDF.** Su prioridad bajo: su papel en
   la cadena del 2-15% ya no es decisivo.
 

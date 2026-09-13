@@ -3066,3 +3066,833 @@ contradicciones detectadas. **#42 CERRADA.**
 **Recomendacion de proceso, no aplicada:** revisar `CLAUDE.md` contra `00-tesis.md` cada
 vez que se cierre una implicancia con efecto de alcance. Cinco defectos en 120 lineas de un
 archivo que toda sesion lee como verdad permanente no es una anomalia puntual.
+
+---
+
+## Ronda 2026-09-09 (tarde) — #37 aplicada, grupos propuestos, R1 y E6c ejecutados
+
+### 37 — APLICADA a `revision.csv`, y AMPLIADA con una tercera clase de procedencia
+
+`experiments/exploration-3d/procedencia.py` anade seis columnas a `revision.csv` derivadas
+**solo** de lo que ya estaba escrito en `Notas`, fila por fila. No revisa ningun volumen,
+no modifica ninguna columna existente (verificado: 0 celdas alteradas contra
+`revision.csv.bak`) y es idempotente.
+
+**Hallazgo que #37 no habia nombrado: la procedencia no tiene dos clases, tiene tres.**
+Ademas de `autora-3D` y `agente-laminas` existe **`autora-regla`**: valores que no salen de
+mirar el volumen sino de aplicar una regla general que la autora enuncio. Son decisiones
+validas, pero **no son observaciones**, y hasta hoy eran indistinguibles de las que si lo
+son.
+
+Reparto medido sobre las 178 filas:
+
+| Columna | Valores |
+|---|---|
+| `Procedencia metal` | `autora-3D` 99, `autora-regla` **79** |
+| `Procedencia observación` | `autora-3D` 108, `autora-regla` 3, `sin dato` 67 |
+| `Procedencia artefacto` | `agente-laminas` 113, `sin dato` 65 |
+| `Procedencia localización` | `agente-laminas` 113, `sin dato` 65 |
+| `Procedencia instrumental` | `script` 178 |
+| `Validado por autora (artefacto)` | `no` 178 |
+
+Las dos lineas que importan:
+
+1. **En los 75 volumenes de dataset7, `Metal = si` no es una observacion per-volumen.**
+   Sale de la regla *"fila en blanco en dataset7 = hay material ortopedico"*. Los otros 4
+   `autora-regla` son los `borde FOV` de dataset6 resueltos por la regla del 2026-09-07.
+   No hay **ni una sola** fila de dataset7 donde la presencia de metal se haya verificado
+   mirando ese volumen. Para la data card esto no invalida nada —el dataset se llama
+   CLINIC-metal— pero **no puede escribirse como hallazgo propio**.
+2. **El eje de artefacto sigue sin una sola celda de la autora.** 113 de agente, 65 vacias,
+   cero validadas. Confirma el bloqueo declarado, ahora legible por columna y no por prosa.
+
+**Riesgo residual detectado, NO resuelto:** tres filas de dataset7 (`metal_0036`,
+`metal_0061`, `metal_0064`) llevan `Metal = si` mientras su propia `Notas` dice *"SIN
+material ortopedico"* por la regla de duplicados. La columna y la nota se contradicen. No
+se toco ninguna de las dos: corregirlo es decision de la autora, y afecta a que cohorte
+entran esos tres.
+
+- **Tipo:** RIESGO. **APLICADA** en su parte instrumental; la contradiccion de las 3 filas
+  y el destino de `02-datos.md` siguen pendientes de la autora.
+
+### 43 — La particion unica por objetivo contradice a #35, y se entrega marcada — ABIERTA
+
+- **Origen:** encargo de la autora del 2026-09-09 (un CSV con un grupo por imagen).
+- **Producto:** `experiments/exploration-3d/grupos.csv`, generado por `grupos.py`.
+- **Conflicto declarado:** #35 concluye que **una cohorte sirve a tres consumidores** y que
+  la exclusion se declara *por objetivo*. Un volumen con metal es a la vez el mejor insumo
+  del Obj 1 (per-voxel) y no apto para el Obj 3. Forzar un grupo unico por imagen
+  **contradice esa conclusion**. Por eso el CSV trae las dos lecturas: `Elegible Obj1/2/3`
+  (no excluyentes, que es lo correcto segun #35) y `Grupo` (la particion pedida).
+- **Recuento de la particion propuesta:** `grupo 1` = 69, `grupo 2` = 36, `grupo 3` = 67,
+  `excluido` = 6. Elegibles: Obj1 172, Obj2 103, Obj3 67.
+- **Control aritmetico que sale exacto:** los 69 del `grupo 1` coinciden con los *"69 de
+  contenido unico"* que la decision del 2026-09-07 ya habia calculado por otra via
+  (75 - 3 cruzados - 3 internos). Es una verificacion independiente, no una coincidencia.
+- **Lo que va marcado PROVISIONAL y por que:**
+  - Los 3 duplicados internos de dataset7 se resuelven por indice menor. **#20 sigue
+    ABIERTA**: es una regla determinista y reversible, no una decision.
+  - El reparto por objetivo aplica la logica de **#35, que sigue ABIERTA**, y su eje de
+    artefacto viene de agente bajo bloqueo (#34/#37). `Elegible Obj3` es el mas fragil.
+- **Dos filas que la autora debe adjudicar a mano:** `dataset6_CLINIC_0058_data` y
+  `dataset6_CLINIC_0074_data` caen en `grupo 3` (anatomia limpia para el renderizador)
+  aunque en `0074` la autora **si vio** una estructura en lazo, registrada como no metal y
+  por eso con `Tipo` vacio. La regla las deja limpias; su observacion dice que hay algo.
+- **Tipo:** DEFINICION. **PROPUESTA. No aplicada, no adoptada.**
+
+### 39 — EJECUTADA con E6c. Hay salida, y no es mover el techo — sigue ABIERTA la decision
+
+`experiments/objetivo1/e6c_techo_lw.py` sobre los 178 volumenes, 0 errores. Ocho
+configuraciones x cuatro profundidades. Mide **solo** recorte y cuantizacion, sin VAE
+(#36 sigue abierta): es cota inferior de cualquier decodificador.
+
+**Control de reproduccion:** con `pub` (las tres ventanas publicadas), dataset7 da mediana
+**46.35 HU** y **48 de 75** fallando el umbral de 25 HU. E6a habia dado 46.36 y 48 de 75
+por otro camino. Reproduccion independiente; la cifra de E6a queda confirmada.
+
+MAE oraculo en hueso, mediana sobre los 178 (HU):
+
+| Config | float | 16b | 12b | 8b | fallan 25 HU (float) |
+|---|---|---|---|---|---|
+| `pub` (techo 2000) | 0.94 | 0.95 | 1.02 | 2.18 | **50/178** |
+| `LW4000` | 0.20 | 0.21 | 0.31 | 2.17 | 40/178 |
+| `LW10000` | 0.00 | 0.02 | 0.25 | 3.72 | 3/178 |
+| `LW20000` | 0.00 | 0.03 | 0.40 | 6.24 | **0/178** |
+| `pub+MTW` (4a ventana) | 0.00 | 0.01 | **0.08** | **1.31** | **0/178** |
+| `pub+asinh` | 0.00 | 0.01 | 0.13 | 2.07 | **0/178** |
+
+En ROI de metal, mediana: `pub` 3588.80 HU; `LW20000` 0.00 / 20.62 (float / 8b);
+`pub+MTW` 0.00 / 17.72; `pub+asinh` 0.00 / 32.02.
+
+**Lo que decide esto y lo que no.** Tres configuraciones llevan el Go/No-Go a 0 de 178, asi
+que el problema **tiene salida**. Pero no son equivalentes, y la diferencia esta donde #39
+no la habia buscado:
+
+- **Mover el techo de LW es la peor de las tres salidas.** `LW20000` resuelve el metal
+  estirando la misma ventana sobre 21 000 HU, y paga esa cobertura en el rango
+  diagnostico: **6.24 HU a 8 bits contra 2.18 de `pub`**. Empeora el hueso para arreglar
+  el metal.
+- **Anadir una CUARTA ventana de metal no tiene ese intercambio: es dominante.**
+  `pub+MTW` gana a `pub` en **todas** las profundidades y en los dos ROI a la vez
+  (hueso 8b: 1.31 contra 2.18). No es un compromiso mejor, es estrictamente mejor, porque
+  anade un canal en vez de estirar uno existente.
+- **La profundidad de bits no es un detalle de implementacion.** A float las tres salidas
+  empatan en 0.00; solo se separan con precision finita. La columna de bits es el
+  **sustituto medible de la precision efectiva del VAE**, que sigue sin especificar.
+  Corolario de proceso: **decidir #39 antes que #36 es decidir en el orden equivocado.**
+  Si el VAE tiene precision efectiva alta, las tres salidas empatan y la decision da igual.
+
+**Precision sobre lo que E6a habia afirmado:** E6a dijo que el Go/No-Go *"no puede fallar
+en pelvis limpia"*. Con la cohorte entera eso es cierto para la mediana pero **no para
+todos**: `pub` falla tambien en **2 de 103** de dataset6.
+
+- **Tipo:** RIESGO / DISENO. **EJECUTADA.** La eleccion entre `pub+MTW`, `pub+asinh` y
+  `LW20000` sigue **pendiente de la autora**. No aplicada a `main.tex`.
+
+### 44 — Los objetos "no ortopedicos" tambien rompen la codificacion — ABIERTA
+
+- **Origen:** desglose de E6c por volumen, 2026-09-09.
+- **Hallazgo:** los 2 volumenes de dataset6 que fallan el umbral de 25 HU con `pub` son
+  `CLINIC_0005` (*"electrodos y zipper (cursor)"*, HU max **22 185**) y `CLINIC_0069`
+  (*"accesorio"*, HU max **21 457**). Ambos estan en `grupo 2` de `grupos.csv`, es decir
+  clasificados como objeto **no ortopedico** y por tanto tolerables para el Obj 2.
+- **Por que importa:** un cursor de cremallera alcanza HU comparables a los de un implante.
+  Radiologicamente **es metal**. La distincion "ortopedico / no ortopedico" es
+  **quirurgicamente** valida y **radiologicamente** irrelevante: para la codificacion en
+  HU, el eje que manda es la densidad, no la naturaleza del objeto.
+- **A que afecta:** conecta #34 y #35 (la definicion de `Objeto extraño` y el reparto por
+  objetivo) con #39 (la codificacion). Hasta ahora se trataban como decisiones separadas.
+  Un volumen puede ser apto para el Obj 2 y a la vez romper la representacion del Obj 1.
+- **Consecuencia para #43:** `Elegible Obj2 = si` no implica que el volumen sea inocuo para
+  el resto del pipeline. La elegibilidad debe declararse **por eje** (densidad maxima
+  presente), no solo por naturaleza del objeto.
+- **Tipo:** DEFINICION. **Pendiente de decision de la autora. No aplicado.**
+
+---
+
+## Ronda 2026-09-10 — R1 corrido entero, duplicados parciales, E8 montado
+
+### 45 — Hay DUPLICADOS PARCIALES que el SHA256 no ve, y uno contradice una decision ya registrada — ABIERTA
+
+- **Origen:** R1 (2026-09-10). `metal_0011` y `metal_0034` dieron cresta, S1 por sagital y
+  S1 por ala **identicos al 0.1 mm**. Tres medidas independientes no coinciden por azar.
+- **Instrumento:** `experiments/exploration-3d/duplicados_parciales.py` hashea (blake2b)
+  cada corte axial no constante de los 178 volumenes y lista los pares que comparten cortes.
+  Salida `duplicados_parciales.csv`. **Control:** recupera los 6 grupos ya conocidos con
+  todos sus cortes compartidos. Verificacion adicional voxel a voxel y contra el affine.
+- **Hallazgo — tres pares nuevos, los tres del mismo estudio:**
+
+| Par | Cortes | Compartidos | Relacion verificada |
+|---|---|---|---|
+| `metal_0011` / `metal_0034` | 351 / 350 | 350 | `0034` = `0011` sin su ultimo corte; mismo origen en el affine |
+| `CLINIC_0038` / `CLINIC_0090` | 331 / 350 | 331 | `0038` = primeros 331 cortes de `0090`; mismo origen |
+| `metal_0059` / `metal_0071` | 288 / 350 | **216** | cortes 0-215 de `0059` = cortes 134-349 de `0071`; desfase constante de 134 cortes = 107.2 mm, exactamente la diferencia de origen z del affine (1358.207 vs 1251.0) |
+
+  Los cortes compartidos de `0059`/`0071` **no son triviales**: ~32% de voxeles de cuerpo
+  (HU > -500) y metal de hasta 8218 HU. Son dos ventanas de FOV solapadas de **una misma
+  adquisicion**: `0059` sigue 72 cortes mas arriba y `0071` 134 mas abajo.
+- **CONTRADICE UNA DECISION REGISTRADA.** `01-decisiones.md` (2026-09-07) dice que
+  `metal_0059` y `metal_0071` **"no son el mismo paciente"**, y `ESTADO.md` lo lista en
+  Pendientes cerrados como DESCARTADO. La medicion dice lo contrario: comparten 216 cortes
+  identicos bit a bit con geometria coherente. **No se edita `01-decisiones.md`** (regla 3).
+- **Error propio que tambien queda corregido.** La entrada "#20 — VERIFICADO" de esta
+  misma ronda del 2026-09-09 afirmaba: *"Hoy sus hashes difieren: confirmado que no son el
+  mismo contenido."* **Esa inferencia era invalida**: un SHA256 sobre forma + voxeles
+  distingue *forma*, no contenido; dos volumenes de distinta longitud nunca comparten hash
+  aunque uno contenga al otro. Es de nuevo el patron de #25/#37/#40: un control que no
+  podia fallar se tomo por verificacion.
+- **Por que importa:**
+  - **Fuga train/test y doble conteo** en el mismo sentido que #20. Ningun split puede
+    tratar estos pares como independientes.
+  - **Cifras que cambian** (si la autora adopta el criterio por estudio): dataset7 de
+    "contenido unico" pasa de **69 a 67** (se pierden `0034` por copia y `0071` o `0059` por
+    mismo estudio); dataset6 sin objeto pasa de **70 a 69** (`0038` ⊂ `0090`). `grupos.csv`
+    (#43) tiene los 4 de dataset7 en `grupo 1` y los 2 de dataset6 en `grupo 3`.
+  - **Medianas ya reportadas sobre 178** (E1, E6a, E6c, R1) cuentan dos veces estos
+    volumenes. El efecto sobre medianas de 178 es pequeno, pero las cifras "de 75" y "de 103"
+    no son de volumenes independientes.
+  - **Limite del instrumento:** detecta solo cortes **bit a bit identicos**. Dos
+    reconstrucciones distintas del mismo paciente (otro kernel, otro espesor) no comparten
+    ningun corte y seguirian invisibles. `Grupo paciente` sigue vacio en las 178 filas.
+- **Pendiente de la autora:** (1) revisar su decision sobre `0059`/`0071` con esta
+  evidencia; (2) si el criterio de duplicado pasa de "contenido identico" a "mismo estudio";
+  (3) representante en los grupos nuevos. **No aplicado a `revision.csv` ni a `grupos.csv`.**
+- **Que seccion toca:** #20 (reabre su parte de criterio), #43, `02-datos.md`, split, y la
+  cifra de test con metal (hoy "72 / 69").
+- **Tipo:** DATOS / RIESGO.
+- **Sospecha adicional, NO verificada (agente, mosaico de R1):** `metal_0065` y `metal_0066`
+  se ven anatomicamente identicos (mismo tornillo, misma forma sacra) con distinto spacing
+  (0.835 vs 0.770 mm), numero de cortes (332 vs 344) y HU maximo (18 816 vs 19 684). Encaja
+  con dos reconstrucciones del mismo estudio: justo el caso que el hash por corte no puede
+  detectar. Verificarlo exige registro rigido entre ambos, no hash.
+
+### 45 — RESPUESTA DE LA AUTORA (2026-09-10) y propuesta de tratamiento por par
+
+**Confirmado por la autora:** `metal_0059`/`0071`, `metal_0011`/`0034` y
+`CLINIC_0038`/`0090` son el mismo paciente. En `0011`/`0034` y `0038`/`0090` los cortes de
+diferencia no aportan informacion significativa. `metal_0059` aporta cortes superiores y
+`metal_0071` inferiores, y los dos muestran el implante. `metal_0065`/`0066` le parecen la
+misma persona escaneada dos veces: misma anatomia y artefactos, un hueso ligeramente rotado,
+y distinta cantidad de segmentos del tornillo sobre 2500 HU.
+
+**Mediciones de apoyo (2026-09-10):**
+
+- `0059`/`0071`: el solape es bit a bit identico (216 cortes, desfase exacto de 134) y el
+  affine en x/y coincide. **Se pueden unir sin interpolar**: `0071[:, :, 0:350]` seguido de
+  `0059[:, :, 216:288]`, 422 cortes, origen z el de `0071`. Ademas son complementarios en
+  R1: `0071` tiene **las dos crestas fuera del FOV** (marco no computable) y `0059` las
+  tiene dentro.
+- `0065`/`0066`: **no comparten ningun voxel** (spacing 0.835 vs 0.770 mm, 332 vs 344
+  cortes) y sus origenes de coordenadas no tienen relacion: z = -1709.8 frente a +1322.1,
+  y x/y distintos. Dos reconstrucciones del mismo dato crudo suelen conservar el marco de
+  la mesa; con eso y la rotacion osea que ve la autora, **lo mas probable son dos
+  adquisiciones**. No es demostrable sin DICOM (el NIfTI no trae serie ni hora).
+- **E8 da en ese par una prueba test-retest del mismo implante.** El tornillo que cruza el
+  sacro sale sobre 2500 HU como tres objetos (209 + 110 con 3 fragmentos + 272 mm3; tramos
+  de 22-33 mm) en `0065`, y como dos piezas de 149 y 155 mm3 de **7.4 mm** en `0066`. Los
+  pines del fijador salen estables (~15 000 mm3 en ambos). **Mismo tornillo, misma
+  persona: el volumen segmentado cambia ~2x y la longitud visible de 33 a 7 mm segun la
+  adquisicion.** Es evidencia directa para #46: la geometria por umbral depende del
+  escaneo, no solo del implante. R1 es estable en el par (S1 bajo cresta 32.5 vs 34.5 mm;
+  ancho de crestas 175.0 vs 172.3 mm; ambos marcos legibles).
+
+**Propuesta (decide la autora):**
+
+| Par | Relacion | Tratamiento propuesto | Unidad de conteo |
+|---|---|---|---|
+| `0011` ⊃ `0034` | subconjunto exacto | conservar `0011`, retirar `0034` | 1 paciente, 1 volumen |
+| `0090` ⊃ `0038` | subconjunto exacto | conservar `0090`, retirar `0038` | 1 paciente, 1 volumen |
+| `0059` ∪ `0071` | mismo escaneo, FOV solapados | **unir sin perdida** en un volumen derivado (script, no se toca `data/` original) | 1 paciente, 1 volumen |
+| `0065` ~ `0066` | mismo paciente, casi seguro dos adquisiciones | **conservar ambos con el mismo `Grupo paciente`**; uno primario por regla fijada a priori; el otro solo como par de reproducibilidad | 1 paciente |
+
+Regla general propuesta: **la unidad de independencia es el paciente, no el volumen.**
+Mismo paciente, mismo lado del split, siempre. Las estadisticas de cohorte cuentan pacientes.
+Si hay copia exacta o subconjunto, se conserva el contenedor; si hay FOV solapados del mismo
+escaneo, se unen; si hay adquisiciones distintas, se conservan agrupadas y se declaran.
+
+**Cifras si se adopta todo (con `metal_0068` sin osteosintesis, confirmado):** dataset7 con
+osteosintesis **71 volumenes -> 65 pacientes** (75 - 3 cruzados - `0068` = 71; - 3 copias
+SHA - `0034` - union `0059`/`0071` - par `0065`/`0066` = 65). dataset6 sin objeto
+**70 -> 69**. **No aplicado** a `revision.csv`, `grupos.csv` ni `02-datos.md`.
+
+### 45 — APLICADA en dos partes por orden de la autora (2026-09-10)
+
+1. **Union `metal_0059` + `metal_0071`:** `experiments/exploration-3d/union_0059_0071.py`.
+   Comprueba dtype, affine, desfase, los 216 cortes del solape, la ida y vuelta a ambos
+   originales y la relectura desde disco, y aborta si algo falla. Resultado: 422 cortes en
+   `data/derivados/dataset7_CLINIC_metal_0059u0071_union.nii.gz`, no versionado y con un
+   nombre que no encaja con `*_data.nii*`, asi que los scripts siguen viendo 178. Hashes en
+   `union_0059_0071.md`. Originales intactos.
+2. **`Grupo paciente` lleno:** `experiments/exploration-3d/grupo_paciente.py`, con respaldo
+   `revision.pre-paciente.csv` y la columna nueva `Procedencia paciente`. **178 volumenes =
+   168 pacientes**; 10 grupos: 6 `hash-volumen`, 3 `hash-corte + autora`, 1
+   `autora-visual + agente`. Verificado: 0 celdas ajenas alteradas, idempotente. El script
+   **aborta** si aparece un par con cortes compartidos no confirmado por la autora.
+   dataset7 con osteosintesis: **71 volumenes / 65 pacientes**; dataset6 sin objeto:
+   **70 / 69**. `02-datos.md` actualizado.
+
+**Sigue pendiente:** la regla a priori del volumen primario de `0065`/`0066`, la
+correccion de la fila de `metal_0068` y el registro en `01-decisiones.md`. `grupos.csv`
+(#43) no se regenero: sigue contando volumenes.
+
+### 21 — `metal_0068` CONFIRMADO sin material ortopedico por la autora (2026-09-10)
+
+Confirmado por la autora. CLINIC-metal sin osteosintesis: **4 de 75** (`0036`, `0061`,
+`0064` por duplicado cruzado; `0068` por observacion). La regla "fila vacia en dataset7 =
+material ortopedico" tiene al menos una excepcion observada: es un argumento mas para que
+#37 distinga regla de observacion. **Falta que la autora corrija la fila en `revision.csv`
+y lo registre en `01-decisiones.md`.**
+
+### 26 — R1 EJECUTADO sobre los 178. El marco sobrevive al metal mas de lo temido; la heuristica, menos — sigue ABIERTA
+
+`experiments/objetivo2/r1_landmarks.py` (v2b), `r1_resumen.py`, `r1_mosaico.py`. Salidas
+`r1_landmarks.csv`/`.md`, `r1_estados.csv`, `r1_auditoria_s1.md`. 178 volumenes, 0 errores.
+La v1 habia muerto por memoria en 17/178 sin registrarse; la v2 inicial, en 51/178.
+
+**Diseno.** Cinco puntos del marco de Kaiser (S1, dos crestas, dos EIPS) localizados por
+heuristica; en una esfera de 12 mm se mide fraccion de HU < -200 (estria oscura) y de
+HU > 2500. El criterio de "contaminado" **no se invento**: es el maximo observado en 70
+volumenes de dataset6 sin objeto (envolvente nula). Cohorte de evaluacion: 69 de dataset7
+(regla provisional de #20; **antes de #45**, asi que incluye dos pares del mismo estudio).
+
+**Resultado (evaluacion, n = 69):**
+
+| | n |
+|---|---|
+| Marco computable (5 puntos hallados y dentro del FOV) | 60 |
+| ... y con S1 en el nivel correcto segun auditoria visual (agente) | **52** |
+| ... y ademas sin ningun punto contaminado | **33** |
+| Crestas fuera del FOV (algun lado) | 8 |
+| S1 no hallado | 4 |
+| S1 en nivel equivocado (5 un nivel arriba, 3 grosero) o ambiguo (2) | 10 |
+
+Contaminados por punto: S1 10, cresta der 5, cresta izq 3, EIPS 3 y 3. En calibracion, el
+marco es computable en 57 de 70 **sin metal**: el FOV y la heuristica pierden casi tantos
+volumenes como el artefacto.
+
+**Tres lecturas, en orden de importancia:**
+
+1. **El artefacto no es la causa principal de perdida del marco.** De 69, el FOV (crestas
+   cortadas) y la localizacion fallida o erronea de S1 explican 17 perdidas (69 - 52); la
+   contaminacion, 19 de las 52 restantes. En los 18 volumenes con candidato a tornillo
+   iliosacro (E8, #46) S1 esta en el nivel correcto en los 18 y contaminado solo en **3**:
+   el tornillo pasa entre 5 y 36 mm por debajo del platillo, fuera de la esfera. **La
+   contingencia de `main.tex:115` ("computed on metal-free anatomy only") no parece
+   necesaria para la mayoria**, pero la cifra aun no es citable (punto 3).
+2. **El FOV es un limite no declarado.** 8 de 69 (y 4 de 70 en calibracion) no incluyen
+   las crestas enteras. El marco de Kaiser **no se puede calcular** en esos volumenes con o
+   sin metal. `main.tex` no lo contempla.
+3. **La heuristica no es un instrumento validado.** Dos detectores independientes de S1
+   fallan por un nivel vertebral (~30 mm, mas que la esfera) en casos distintos. La
+   auditoria visual (agente, no autora) da 55 correctos, 8 errores, 2 ambiguos y 4 no
+   hallados. Los 8 errores salen todos "limpios", o sea que **el error sesga la
+   contaminacion hacia abajo**. Tambien se corrigio en la corrida un fallo de crestas
+   (costillas en CT que llegan al torax, `metal_0063`).
+
+- **Sensibilidad no medida:** "oscuro" (HU < -200) solo capta estria oscura severa; las
+  estrias moderadas en hueso (de 150 a -200 HU) no cuentan. Es una cota **optimista** de
+  legibilidad. Contaminado tampoco significa irrecuperable.
+- **Lo que falta para cerrar #26:** (a) que la autora revise los 4 mosaicos
+  (`outputs/r1_mosaico/`, 69 tejas, ~15 min) y firme el nivel de S1; (b) recontar con #45
+  aplicado; (c) decidir si el FOV se declara criterio de exclusion del Objetivo 2.
+- **Que seccion toca:** `main.tex:115` (Field limitation, contingencia), Objetivo 2, #29
+  (TotalSegmentator da `vertebrae_S1` y resolveria el error de nivel, pero no es ejecutable
+  en esta maquina: ~2 GB de RAM libres).
+- **Tipo:** RIESGO (en proceso de cierre). **No aplicado a `main.tex`.**
+
+### 46 — E8: los implantes de CLINIC-metal NO dan geometria utilizable por umbral — ABIERTA
+
+`experiments/objetivo2/e8_censo_implantes.py` y `e8_resumen.py`; salidas
+`e8_componentes.csv`/`.md`, laminas en `outputs/e8_qc/`. 75 volumenes, 0 errores. Objetos =
+componentes de HU > 2500 con fragmentos colineales fusionados. **Clases morfologicas
+propuestas por script, no tipos de implante.**
+
+**Que contiene dataset7 (responde a la opcion 3 de #13, pendiente desde el 2026-09-06).**
+Cohorte de evaluacion (69): objetos dentro del cuerpo alargados en 38 volumenes, masivos
+(>= 15 cm3) en 19, laminares en 1, "otro" en 61. **Al menos 18 de 69** tienen un candidato
+a tornillo iliosacro o transsacro (alargado, eje izquierda-derecha, 5-36 mm bajo el
+platillo de S1). Las laminas revisadas (agente) muestran mezcla de tornillos iliosacros y
+transsacros, fijadores externos con pines en las crestas, clavos y placas femorales, y
+placas del anillo anterior. **CLINIC-metal es osteosintesis heterogenea, no una cohorte de
+tornillos sacros.** 18 es cota inferior: la fusion no recupera tornillos con huecos > 20 mm
+bajo 2500 HU (`metal_0000`, `metal_0024` en S2).
+
+**Lo que decide sobre la via (a) de #41.** Sobre 62 objetos alargados:
+
+- **10 de 62 salen partidos** a HU > 2500, y la fusion no alcanza a todos. Un tornillo
+  transsacro de `metal_0065` queda en tres piezas y el candidato es solo su tramo central
+  de 33 mm.
+- **Diametro exterior del fuste: mediana 5.00 mm a HU > 2500 y 5.14 mm a semimaximo
+  local** (p10 3.05, p90 7.19). Con 51 de 62 por debajo de 6.0 mm, **quedan bajo la
+  envolvente de calibres de tornillo iliosacro recogida en #31 (6.0-8.0 mm)**. No se sabe
+  el calibre real de estos implantes; lo que si se sabe es que la geometria extraida no
+  coincide con la publicada.
+- **El umbral de semimaximo local tiene mediana 2770 HU (p10 1736, p90 6548)** y el HU p50
+  de estos objetos es 3266. Para la mayoria de los alargados, **2500 HU no infla por
+  blooming: esta cerca del semimaximo y recorta la periferia**. La hipotesis de partida de
+  E8 (blooming que engorda el implante) **no se sostiene** como efecto dominante.
+- **Consecuencia:** la via (a) no se puede ejecutar como "segmentar por umbral y guardar la
+  malla". Exigiria ajustar un modelo parametrico (cilindro + cabeza) a cada implante, y
+  entonces sigue necesitando calibres publicados. Eso **acerca la via (a) a la (c)**: la
+  geometria parametrica con rangos de #30/#31 es el insumo y los implantes reales sirven para
+  **poses y contraste**, no para mallas.
+- **Efecto sobre #39/E6c:** el HU tipico de estos tornillos (p50 ~3300) queda muy por debajo
+  del pico de 18 822 que motivo la ventana de metal; el rango que el renderizador tiene que
+  representar en tornillos sacros es mas bajo de lo que sugiere el maximo por volumen.
+  Descriptivo, sin cambiar la tabla de E6c.
+- **Que seccion toca:** #41 (vias a/c), #31 (`d_implante`), C1, #13, `02-datos.md`.
+- **Tipo:** RIESGO / DATOS. **Pendiente de la autora. No aplicado.**
+
+### 21 — `metal_0068` NO tiene material ortopedico denso (medido)
+
+E8 no encuentra en `metal_0068` ningun objeto de HU > 2500 dentro del cuerpo. Su unico metal
+es un componente de 2309 mm3 con fraccion dentro del cuerpo 0.0 (cremallera/accesorio en el
+flanco; la MIP muestra una pelvis sin implantes; lamina en `outputs/e8_qc/`). En
+`revision.csv` la fila dice *"Material ortopedico presente (regla de la autora para
+dataset7)"* con `Procedencia metal = autora-regla`, y el `Tipo` anotado es solo
+*"zipper (cursor) y accesorios"*. **Es la regla por defecto, no una observacion, la que le
+asigna osteosintesis** (#37). Si se confirma, CLINIC-metal sin osteosintesis pasa de **3 a 4
+de 75**. Material ortopedico de baja densidad (< 2500 HU) no queda descartado por esta
+medicion. **Pendiente de la autora. No aplicado.**
+
+---
+
+## Cierre 2026-09-10 — decision por paciente APLICADA y recuentos rehechos
+
+Orden explicita de la autora: registrar la decision, regenerar `grupos.csv`, recontar R1
+por paciente y aplicar las correcciones pendientes. **Decision registrada en
+`01-decisiones.md` (2026-09-10).**
+
+### 45 y 21 — APLICADAS
+
+- **`exclusiones.csv`** (`exclusiones.py`, nuevo): manifiesto de volumenes fuera de uso,
+  **sin borrar ningun archivo**. 11 volumenes de 10 pacientes: 8 `retirado` (3 duplicados
+  cruzados, 3 copias internas #20, `metal_0034`, `CLINIC_0038`), 2 `fusionado` (`0059`,
+  `0071`) y 1 `secundario` (`metal_0065`, primario `0066` por spacing). Cada fila lleva
+  motivo, evidencia, decision y estado de la decision.
+- **`metal_0068` corregido en `revision.csv`** (`correcciones_autora.py`: comprueba el valor
+  previo, idempotente, respaldo `revision.pre-correcciones.csv`). Cambia el bloque de la
+  autora en `Notas` y `Procedencia metal` pasa de `autora-regla` a `autora-3D`. `Metal`
+  sigue en `sí`: tiene metal (cremallera), lo que no tiene es material ortopedico.
+
+### 37 — La "contradiccion" de tres filas no era tal
+
+#37 registraba como riesgo que `metal_0036`/`0061`/`0064` llevan `Metal = sí` con una nota
+de "SIN material ortopedico". **No hay contradiccion.** `Metal` significa presencia de
+metal, sea cual sea: en dataset6 una cremallera o un electrodo tambien valen `sí` (las 33
+filas con objeto), y los tres tienen cremallera, electrodos o DIU. El material ortopedico
+no tiene columna propia: vive en `Tipo` y `Notas`, y en `grupos.py` como regla. Queda
+cerrado el riesgo residual de #37. **El hueco de fondo sigue:** no hay columna explicita
+de "material ortopedico".
+
+### 43 — `grupos.csv` REGENERADO por paciente
+
+`grupos.py` reescrito: lee `exclusiones.csv`, trata `metal_0068` como sin material
+ortopedico, anade la union como unidad y **aborta si un paciente tiene mas de una unidad en
+uso**. Resultado: **179 unidades** (178 + union) y **168 pacientes con exactamente una
+unidad en uso**.
+
+| Grupo | unidades = pacientes | antes (por volumen) |
+|---|---|---|
+| grupo 1 (material ortopedico) | **65** | 69 |
+| grupo 2 (objeto no ortopedico) | **37** | 36 |
+| grupo 3 (sin metal ni objeto) | **66** | 67 |
+| excluido | 10 | 6 |
+| reproducibilidad | 1 | — |
+
+Solo cambian 7 filas: `CLINIC_0038`, `metal_0034`, `0059`, `0071` a excluido; `0065` a
+reproducibilidad; `metal_0068` de grupo 1 a grupo 2; y la union nueva en grupo 1. **#35
+sigue ABIERTA** (el reparto por objetivo es propuesta).
+
+### 26 — R1 RECONTADO POR PACIENTE (sustituye las cifras sobre 69 volumenes)
+
+R1 y E8 se corrieron tambien sobre la union; su lamina de QC muestra la costura continua,
+las crestas dentro del FOV y S1 en su nivel (auditoria agente: `ok`). Cohorte de
+evaluacion = `grupo 1` (65 pacientes); calibracion = 69 pacientes.
+
+| Evaluacion (n = 65 pacientes) | n |
+|---|---|
+| Marco computable (5 puntos, en FOV) | 57 |
+| ... con S1 auditado en el nivel correcto | **51** |
+| ... y sin ningun punto contaminado | **32** |
+| Crestas fuera del FOV | 7 |
+| Auditoria de S1: ok / +1 nivel / grosero / ambiguo / no hallado | 53 / 4 / 2 / 2 / 4 |
+
+Contaminados por punto: S1 10, cresta der 5, izq 3, EIPS 3 y 3. Calibracion: marco
+computable en 56 de 69. Pacientes con candidato iliosacro: **17**, todos con S1 correcto y
+**3** con S1 contaminado. **Las tres lecturas de la entrada anterior se mantienen** (el FOV
+y la heuristica pesan mas que el metal; el FOV es un limite no declarado; la heuristica no
+esta validada). Siguen faltando la firma de la autora sobre los mosaicos y la decision
+sobre el FOV.
+
+### 46 — E8 RECONTADO POR PACIENTE
+
+Sobre 65 pacientes: objetos alargados en 36, masivos en 17, laminar en 1; **al menos 17**
+con candidato iliosacro o transsacro (21 objetos). Alargados: 57, de ellos **9
+fragmentados**. `d_ext_semimax` con mediana **5.08 mm** (p10 2.99, p90 6.11), y **49 de
+57 por debajo de 6.0 mm**. Umbral de semimaximo con mediana 2818 HU; HU p50 3296. **Las
+conclusiones de #46 no cambian.**
+
+### 20 — CERRADA (2026-09-10)
+
+La autora decide conservar el **indice menor** en las tres copias exactas internas de
+dataset7 (`0012`, `0013`, `0046`; se retiran `0021`, `0043`, `0074`). Como el contenido es
+identico voxel a voxel, la eleccion no cambia ninguna cifra. `exclusiones.csv` y
+`grupos.csv` pasan esas filas de `PROVISIONAL #20` a `decidida`. Con #45 aplicada, **#20
+queda cerrada en todas sus partes**: criterio (paciente), representantes y `Grupo paciente`.
+**Falta que figure en `01-decisiones.md`** (la entrada del 2026-09-10 aun dice "queda
+pendiente"; texto propuesto en el chat).
+
+**Material de revision para la autora (sin implicancia nueva):** mosaicos de S1
+regenerados sobre los 65 pacientes vigentes (`outputs/r1_mosaico/`) y plantilla en blanco
+`experiments/objetivo2/r1_auditoria_s1_clinico.csv`. Esta **deliberadamente sin los juicios
+del agente**, para que la revision no se ancle en ellos; al terminar se compara con
+`r1_auditoria_s1_agente.csv` (acuerdo entre revisores).
+
+---
+
+## Ronda 2026-09-11 — revision clinica del nivel de S1 (R1)
+
+### 26 — R1 con REVISOR CLINICO como referencia: 49 de 65 con marco y S1 correctos — sigue ABIERTA solo en lo que no depende de medir
+
+**Procedencia (declararla asi siempre):** `experiments/objetivo2/r1_auditoria_s1_clinico.csv`
+lo lleno **un medico cirujano otorrinolaringologo**, revisor clinico externo, segun informo la
+autora el 2026-09-11. **No es juicio de la autora**, aunque el nombre del archivo diga
+"autora" (mismo riesgo de #37: el nombre no es la procedencia). Revision **ciega** a los
+juicios del agente sobre los 4 mosaicos de 65 pacientes. Integrado en `r1_resumen.py`
+(`auditoria_S1_clinico`). Normalizacion unica: `otro` con comentario "no hay circulo rojo"
+se cuenta como `no hallado` (4 casos); el CSV original no se toco.
+
+**Juicio clinico:** ok 53, un nivel arriba (L5) 6 (`0010`, `0011`, `0014`, `0026`, `0038`,
+`0067`), otro sitio 2 (`0046` y `0058`, cruz sobre los ligamentos sacroiliacos
+posteriores), no hallado 4.
+
+| Evaluacion, 65 pacientes | referencia clinica | agente |
+|---|---|---|
+| Marco computable con S1 correcto | **49** | 51 |
+| ... y sin ningun punto contaminado | **30** | 32 |
+| Con tornillo iliosacro (E8) y S1 correcto | 17 de 17 | 17 de 17 |
+| ... con S1 contaminado | 3 | 3 |
+
+**Acuerdo agente frente a clinico:** categoria exacta 92.3%; ok / no-ok 93.8%, **kappa de
+Cohen 0.80**. Discrepancias (5): `0003` y `0015` (agente dudoso o error, clinico ok),
+`0026` y `0038` (clinico +1), `0046` (clinico otro). **El agente se equivoco en las dos
+direcciones.** La cifra citable es la de la referencia clinica.
+
+**Lo que aporta la revision clinica, mas alla de la cifra:**
+
+- **Errores que ningun control automatico detecta:** en `0026` y `0038` los dos detectores
+  coinciden (discrepancia 5.8 y -2.3 mm) y los dos estan en L5. La concordancia entre metodos
+  **no garantiza** el nivel; la regla candidata de "tomar el z menor" no los habria arreglado.
+- **La regla candidata arreglaria 4 de los 6 "+1"** (`0010`, `0011`, `0014`, `0067`: el ala
+  da un z entre 18 y 32 mm menor). Sigue siendo hipotesis: se evaluo sobre los mismos casos.
+- **El metodo del ala sirve de respaldo:** en `0016` y `0023`, donde el sagital no halla S1,
+  el clinico anota que la linea amarilla (ala) **esta bien posicionada**.
+- **`0035`:** la cruz esta en S1 pero en su parte **lateral** mas que superior. Apunta a que el
+  corte sagital en `x_mid` no siempre es el medio del sacro. Lo marca ok.
+
+**Limites de la referencia (declararlos en la tesis):**
+
+1. **Un solo revisor**, y su especialidad es otorrinolaringologia, no columna ni
+   radiologia musculoesqueletica. La identificacion del nivel vertebral es anatomia basica
+   de su formacion, pero un tribunal puede preguntarlo. **Mitigacion barata:** que un segundo
+   revisor (radiologo o traumatologo) mire solo los 12 no-ok y las 5 discrepancias.
+2. **Se reviso el nivel de S1, no las crestas ni las EIPS.** Esos puntos siguen con
+   auditoria solo del agente (sin errores vistos en los mosaicos de QC, pero sin revision
+   clinica).
+3. **"Contaminado"** sigue midiendo estria oscura severa (HU < -200) y metal en la esfera:
+   cota optimista de legibilidad.
+
+**Que cambia para `main.tex:115`:** la cifra prometida ya existe con respaldo clinico. **49
+de 65 pacientes con metal tienen el marco de Kaiser computable con S1 bien localizado, y 30
+lo tienen ademas sin contaminacion**. La perdida se explica mas por el FOV (7) y la
+localizacion (12 no-ok) que por el artefacto (19 de 49). La contingencia "computed on
+metal-free anatomy only" no parece necesaria para la mayoria. **No aplicado a `main.tex`.**
+
+**Pendiente de la autora:** (1) si la cifra entra en `main.tex` y con que redaccion del
+revisor; (2) si el FOV incompleto es criterio de exclusion del Obj 2; (3) si se renombra el
+archivo a `r1_auditoria_s1_clinico.csv` para que el nombre no mienta sobre la procedencia;
+(4) segundo revisor opcional para los 17 casos senalados.
+
+### 41 — DECISION DE LA AUTORA (2026-09-11): via (c), con (a) como contingencia — ABIERTA hasta registrarla y aplicarla
+
+La autora decide avanzar por la **via (c)**: geometrias parametricas con dimensiones
+publicadas. No descarta la **via (a)** (extraer implantes de CLINIC-metal) si la busqueda de
+papers no da las dimensiones necesarias. **No aplicado** a `main.tex`, `00-tesis.md` ni
+`01-decisiones.md`; texto propuesto en el chat.
+
+**Contrastado contra el texto actual de `main.tex` (2026-09-11), la via (c) cambia poco:**
+
+- **RQ (l. 60), hipotesis (l. 66), Objetivos 1-4, SAP, C2, C3 y el protocolo de Peters: sin
+  cambios.** Hablan de "rigid implant geometries" sin fijar su origen.
+- **C1 (l. 54)** dice *"Non-biological rigid implant geometries (compensating for
+  thresholding over-coverage bias)"*. Una geometria parametrica **es** una geometria rigida
+  no derivada de umbral: (c) encaja con C1 **tal como esta escrita**, mejor que (a).
+- **Regla de aislamiento (l. 111):** con un banco sintetico se cumple por construccion;
+  basta una frase que diga de donde sale el banco.
+- **Lo que falta de verdad:** `main.tex` **no dice en ningun sitio de donde salen las
+  geometrias**. Hay que anadir un parrafo de metodo (fuente de dimensiones, nivel de detalle
+  del modelo, simplificaciones) y una limitacion.
+- **`00-tesis.md:114`** ("geometria CAD propia") pasa a "geometria parametrica propia".
+- **#31** queda utilizable: `d_implante` pasa a ser un parametro conocido.
+
+**La contingencia (a) cambiaria MUCHO mas que (c):**
+
+- La regla de l. 111 pasa a ser **vinculante**: hay que repartir pacientes entre banco y
+  evaluacion (65 con osteosintesis, >= 17 con tornillo iliosacro), y la cohorte de prueba
+  se reduce.
+- **C1 se contradiria:** reclama compensar el sesgo del umbral mientras extrae geometria por
+  umbral. Habria que reescribirla.
+- Hay que declarar lo que E8 midio: fragmentacion (9 de 57), fuste bajo el calibre publicado
+  (49 de 57 < 6.0 mm) y dependencia de la adquisicion (`0065`/`0066`).
+
+**Criterio de disparo de la contingencia, a precisar por la autora.** Las dimensiones
+basicas **ya tienen evidencia textual**: calibres 6.0-8.0 mm (#31) y longitudes S1/S2
+(`zhao2012`, #30). Lo que puede no aparecer son los detalles (paso de rosca, canulacion,
+cabeza o arandela). **Para eso (a) no sirve de rescate:** E8 no recupero ni el diametro
+exterior de forma consistente, asi que es improbable que resuelva detalles mas finos. La
+contingencia natural ante esa falta es **cilindro liso declarado como simplificacion**, no
+(a). (a) solo tendria sentido si faltaran incluso calibres y longitudes, que no es el caso.
+
+### 47 — La justificacion de C1 cita una fuente NO leida, y E8 no confirma su direccion — ABIERTA
+
+- **Hallazgo:** C1 (`main.tex:54`) se justifica con *"compensating for thresholding
+  over-coverage bias, \citealp{xie2024implantsegmentation}"*. **`xie2024implantsegmentation`
+  no tiene ficha en `docs/literatura/`**: en `_index.md` figura sin verificar, y `ESTADO.md`
+  la lista entre las que faltan. La afirmacion de que el umbral **sobrecubre** el implante no
+  tiene evidencia textual extraida (reglas 1 y 2).
+- **Tension con E8:** en los tornillos de CLINIC-metal, el umbral de 2500 HU esta cerca del
+  semimaximo local (mediana 2818 HU) y el efecto dominante es **fragmentacion y fuste bajo el
+  calibre publicado**, no sobrecobertura (`d_ext_2500 - d_ext_semimax` con mediana +0.24 mm).
+  La direccion del sesgo **depende del implante y del umbral**. No refuta a Xie, que puede
+  medir otro material, otro umbral u otra anatomia, pero impide escribir "over-coverage"
+  como hecho general sin leerlo.
+- **Que seccion toca:** C1 (redaccion de su justificacion). Con la via (c) la contribucion se
+  sostiene igual; lo que cambia es **por que** se prefiere geometria rigida: porque el umbral
+  deforma (hacia arriba o hacia abajo segun el caso), no porque siempre sobrecubra.
+- **Salida:** leer `xie2024implantsegmentation` con `lector-papers` (el PDF figura en
+  `_index.md`) antes de fijar la redaccion de C1.
+- **Tipo:** REDACCION / RIESGO. **Pendiente de la autora. No aplicado.**
+
+### 41 — APLICADA a `01-decisiones.md` y `main.tex` (2026-09-11). CONTINGENCIA (a) ABIERTA
+
+Orden explicita de la autora. **Decision registrada** en `01-decisiones.md`: geometrias
+parametricas.
+
+**Cambios en `main.tex` (compila: 4 paginas, 0 citas indefinidas):**
+
+1. **Objetivo 2:** "3D pose **of a parametric rigid screw model** constrained by...".
+2. **Regla de aislamiento (Datasets):** la frase sobre el banco pasa a *"The implant
+   geometries consumed by the proposed sampler and by the physical simulation arm are
+   parametric and are not derived from any evaluation volume."*
+3. **Parrafo nuevo `Implant geometry source`:**
+   - calibre de 6.5-8.0 mm (`gardner2010safezones`) y de 6.3-8 mm (`kaiser2014dysmorphism`),
+     las dos ya en `refs.bib`;
+   - longitud acotada en cada volumen por el corredor medido con la regla de longitud util de
+     Kaiser (sin rango publicado fijo);
+   - rosca, canulacion, cabeza y arandela simplificadas a cilindro liso, declarado como
+     limitacion;
+   - implantes reales de CLINIC-metal fuera del banco, usados como contraste de poses,
+     referencia de apariencia y control test-retest;
+   - motivacion por la auditoria local (fragmentacion, fuste bajo el calibre publicado,
+     cambio entre adquisiciones), **sin cifras**.
+
+**No se toco:** C1 (su justificacion depende de #47, lectura de `xie2024` en curso) ni
+`00-tesis.md:114` ("geometria CAD propia"), que pide orden aparte (regla 14).
+
+**Bibliografia disponible y no citable hoy:** `grass2016`, `lee2014`, `wagner2017` y
+`zhao2012` tienen archivo en `refs/raw/` y ficha leida, pero **no estan en `refs.bib`**. Por
+eso la longitud no se cita de `zhao2012` y el calibre de 7.3 mm de `grass2016` no aparece.
+Anadirlas a `refs.bib` es decision de la autora (regla 9).
+
+**CONTINGENCIA ABIERTA (decision de la autora, 2026-09-11):** si a futuro faltara **por
+completo** bibliografia con calibres y longitudes utilizables, se reconsidera la **via (a)**:
+extraer geometrias de los implantes reales de CLINIC-metal. Si se activa:
+
+- la regla de aislamiento pasa a ser vinculante a nivel de paciente (`Grupo paciente` ya
+  existe);
+- C1 debe reescribirse;
+- hay que declarar las limitaciones de E8 (#46);
+- el parrafo `Implant geometry source` de `main.tex` se sustituye.
+
+**La falta de detalles finos (rosca, canulacion, cabeza) NO la dispara.** Hoy la
+contingencia **no aplica**: hay calibres en dos fuentes citadas y la longitud sale del
+corredor.
+
+### 47 — LECTURA HECHA (2026-09-11): la cita de C1 esta PARCIALMENTE respaldada — sigue ABIERTA solo la redaccion
+
+`xie2024implantsegmentation` leido entero con `lector-papers`; ficha en
+`docs/literatura/xie2024implantsegmentation.md` (31 `NO ENCONTRADO EN EL PDF`). Queda en
+**N2, con el rol corregido**: no es insumo de ISC, sino fuente del fallo del umbral fijo.
+Filas de `_index.md` y `_candidatos.md` integradas por la sesion principal.
+
+- **Lo que SI respalda:** el umbral fijo sobrecubrio el metal **en cortes 2D simulados**.
+  *"the segmentation outcomes completely contain the ground truth"* (Resultados, p. 6). A
+  2500 y 3000 HU, SE 100% con DSC 82.92% y 84.19% (Tabla 2, p. 11). La palabra
+  "over-coverage" no aparece en el texto.
+- **Lo que NO respalda:**
+  - **Generalidad:** la propia Discusion dice que la direccion depende del umbral
+    (*"larger thresholds may misidentify metal implants as tissue"*, p. 10).
+  - **Contexto:** no mide tornillos pelvicos ni tamanos en mm; en titanio la comparacion es
+    solo visual y en CT clinica no hay referencia.
+  - **Relacion con C1:** su remedio es una red de segmentacion, no geometria rigida. Que la
+    geometria rigida "compense" el sesgo es inferencia de la tesis.
+- **Coherencia con E8:** Xie documenta sobrecobertura en su simulador; E8 documenta
+  fragmentacion y fuste fino en tornillos reales a 2500 HU. **Las dos cosas son compatibles**
+  con "el umbral deforma el tamano en una direccion que depende del umbral y del caso". Xie
+  atribuye la fragmentacion del caso de CLINIC-metal a las CNN, no al umbral (p. 6).
+- **Discrepancia interna de Xie:** 95.81% y 85.33% en contribuciones (p. 2) frente a 97.89% y
+  95.45% en abstract, Tabla 1 y conclusiones. **No citar esas cifras.**
+- **Redaccion propuesta para C1 (NO aplicada; `main.tex:54`):** sustituir *"(compensating
+  for thresholding over-coverage bias, \citealp{xie2024implantsegmentation})"* por *"which
+  avoid the threshold-dependent size distortion of fixed-HU metal segmentation (over-coverage
+  in simulated slices, \citealp{xie2024implantsegmentation}; fragmentation of pelvic screws in
+  the local audit)"*. Cada tramo tiene respaldo: p. 6 y Tabla 2 (sobrecobertura simulada),
+  p. 10 (dependencia del umbral), E8 (#46).
+- **Snowballing con prioridad:** `Yu 2020, Deep sinogram completion` es el simulador con el
+  que Xie fabrica su ground truth. Si la sobrecobertura depende de ese simulador, no se
+  traslada a CT clinica. Anotado PENDIENTE en `_candidatos.md`.
+- **Pendiente de la autora:** aprobar o ajustar la redaccion de C1.
+
+### 41 — Complemento (2026-09-11): bibliografia y alcance alineados
+
+Por orden de la autora:
+
+- **`refs.bib` 36 -> 40:** `grass2016`, `lee2014`, `wagner2017` y `zhao2012` entran por el
+  flujo raw -> clean -> build (MAPEO actualizado). Dos avisos de clave:
+  - `grass2016`: el primer autor es **Gras**, con una s.
+  - `lee2014`: el ano del fasciculo es **2015**; 2014 es la fecha electronica.
+
+  Se mantienen las claves (regla 1). Entran por `\nocite{*}`: `main.tex` todavia no las
+  cita en el cuerpo. Quedan disponibles para el calibre de 7.3 mm (`grass2016`) y las
+  longitudes de `zhao2012` si la autora quiere reforzar el parrafo `Implant geometry source`.
+- **`00-tesis.md:114`:** "geometria CAD propia" pasa a "geometria parametrica propia de
+  implante".
+- **Tesis:** compila con 40 referencias, 4 paginas, 0 citas indefinidas y los 2 avisos de
+  BibTeX ya documentados (Hinsche, Templeman).
+
+### 47 — CERRADA (2026-09-11): nueva redaccion de C1 APLICADA
+
+Por orden explicita de la autora, `main.tex:54` pasa de *"(compensating for thresholding
+over-coverage bias, \citealp{xie2024implantsegmentation})"* a *"which avoid the
+threshold-dependent size distortion of fixed-HU metal segmentation (over-coverage in simulated
+slices, \citealp{xie2024implantsegmentation}; fragmentation of pelvic screws in the local
+audit)"*. Respaldo de cada tramo:
+
+- Xie, p. 6 y Tabla 2 (sobrecobertura en cortes simulados);
+- Xie, p. 10 (la direccion del error depende del umbral);
+- E8, #46 (fragmentacion en tornillos pelvicos).
+
+Compila: 4 paginas, 0 citas indefinidas. **#47 CERRADA.** Queda PENDIENTE en
+`_candidatos.md` el simulador de Xie (Yu 2020): solo haria falta si se quisiera trasladar la
+sobrecobertura simulada a CT clinica, cosa que la nueva redaccion ya no afirma.
+
+### 36 y 39 — Deben decidirse JUNTAS: la cuarta ventana no cabe en el VAE que sugiere `main.tex` (2026-09-11) — ABIERTA
+
+- **Hallazgo:** el Objetivo 3 de `main.tex` dice *"Stable Diffusion 1.5 backbone"*. Eso
+  apunta al autoencoder de SD 1.5 como el VAE que #36 da por no especificado. Es una
+  inferencia, **no una decision escrita**. Ese autoencoder recibe imagenes de **3 canales**.
+- **Choque con E6c (#39):** la unica salida que domina en las dos ROI es `pub+MTW`, las tres
+  ventanas publicadas **mas una cuarta ventana de metal**. Cuatro canales no entran en un VAE
+  de tres sin modificarlo. `pub+asinh` (tres canales, con compresion no lineal en la ventana
+  ancha) si cabe, pero E6c la deja por detras de `pub+MTW` a 8 bits en hueso (2.07 frente a
+  1.31 HU) y en metal (32.02 frente a 17.72 HU).
+- **Consecuencia:** decidir #39 sin #36 es decidir a ciegas. Las combinaciones posibles son
+  cuatro, ninguna adoptada:
+  1. SD 1.5 con tres ventanas y `asinh`;
+  2. SD 1.5 con primera capa del encoder adaptada a cuatro canales (reentrenamiento parcial);
+  3. otro VAE de cuatro canales;
+  4. metal compuesto fuera del espacio latente.
+- **Ejecucion:** E6b (`HU -> ventanas -> VAE -> HU`) no corre en la maquina local (torch solo
+  CPU, sin `diffusers`, RAM justa). Es candidato natural para Khipu cuando se fije la
+  combinacion.
+- **Que seccion toca:** Objetivo 1 (Go/No-Go), Objetivo 3 (backbone), C3, `03-glosario.md`.
+- **Tipo:** DISENO / RIESGO. **Pendiente de la autora. No aplicado.**
+
+---
+
+## Ronda 2026-09-11 (tarde) — #31 y #22 decididas, R1 en `main.tex`, E9 bloqueado por segmentacion
+
+### 31 — APLICADA (decision de la autora, 2026-09-11)
+
+`Dmax >= d_implante + 2c`, con `c` = 1-2 mm radiales por lado, la "holgura de Kaiser"
+**operacionalizada** a partir de su frase (que no publica la cuenta). Registrada en
+`01-decisiones.md`; aplicada a `00-tesis.md` y `03-glosario.md`.
+
+- **No aplicada a `main.tex`**: el Objetivo 2 y `Problem Statement` siguen hablando del
+  criterio de 10 mm como convencion.
+- **Texto propuesto para el Objetivo 2**, a continuacion de "osseous-corridor viability":
+  *"expressed as $D_{\max} \ge d_{\text{implant}} + 2c$, with $d_{\text{implant}}$ the
+  calibre of the parametric screw and a radial clearance $c$ of 1--2~mm derived from the
+  clearance \citet{kaiser2014dysmorphism} describe around a 6.3--8~mm screw"*.
+
+### 22 — DECIDIDA (2026-09-11)
+
+- **2500 HU:** solo cribado.
+- **Metal integrity:** con la regla adaptativa por ROI de Peters.
+- **Propuesta abierta:** semimaximo local para mascaras de implantes reales (E8).
+
+Registrada en `01-decisiones.md`, `00-tesis.md` y `03-glosario.md`.
+
+### 26 — Cifra de R1 ESCRITA en `main.tex` (2026-09-11)
+
+Por orden de la autora, el parrafo `Field limitation` sustituye la promesa ("will be
+quantified...") por el resultado: 57/65 con los cinco landmarks en FOV; 49 con marco
+computable y S1 confirmado por el revisor clinico (una sola persona, otorrinolaringologia,
+ciega a la auditoria automatica); 30 sin contaminacion. Declara que la perdida la explican
+mas el FOV (7) y la localizacion que el artefacto, que los 17 con tornillo iliosacro tienen
+S1 correcto y 3 contaminados, que el tratamiento de los FOV cortados se evalua aparte, y que
+crestas y EIPS no tienen revision clinica. Compila: 4 paginas, 0 citas indefinidas.
+
+### 48 — El corredor oseo NO se puede medir con un umbral HU: el esponjoso sacro cae bajo 150 HU en ~40% de los pacientes — ABIERTA
+
+- **Origen:** piloto de E9 (`experiments/objetivo2/e9_corredor.py`), 2026-09-11.
+- **Hallazgo 1, el piloto:** en 6 volumenes el cilindro transsacro maximo salio de **1.6 a
+  7.8 mm**, incluido `metal_0008`, que **tiene tornillos transsacros reales de ~7 mm en S1**.
+  Imposible. A lo largo del tornillo S1 de `metal_0008`, el ala sacra mide **HU 0-100**, bajo
+  el umbral de 150, en tramos de 13 a 33 mm. Ni el cierre morfologico de 2 mm ni el relleno 3D
+  de cavidades lo arreglan: la cortical a 150 HU no forma una envolvente cerrada. Antes se
+  corrigieron dos fallos del propio metodo (un foramen sacro tomado como salida; tramos que no
+  llegaban al ilion). **E9 queda marcado NO VALIDO en su codigo y no se corrio sobre la
+  cohorte.**
+- **Hallazgo 2, E9b** (`e9b_densidad_s1.py`, `e9b_densidad_s1.md`; mediana HU en esferas de
+  6 mm en el cuerpo de S1 y en las alas a 25 mm del plano medio, 12 mm bajo el platillo):
+
+| Cohorte | n | alguna esfera con mediana < 150 HU |
+|---|---|---|
+| Con metal, S1 confirmado por el clinico (**con** los 7) | 53 | 20 (38%) |
+| Con metal, **sin** los 7 de FOV cortado | 49 | 18 (37%) |
+| Sin metal (calibracion; S1 no auditado) | 60 | **26 (43%)** |
+
+  El cuerpo de S1 queda sobre 150 HU casi siempre (0 de 53; 5 de 60). **Las alas no:** 12-24
+  esferas bajo 150 por lado y cohorte.
+- **Lectura:** es una propiedad del **hueso de estos pacientes**, no del artefacto. La cohorte
+  sin metal esta igual o peor. Cualquier medida basada en "HU > 150" subestima el hueso en el
+  ala sacra de cerca de 4 de cada 10 pacientes. Eso afecta a E9 y tambien a **bone integrity**
+  de Peters (Dice sobre voxeles > 150 HU): en un ala de HU 0-100, el hueso no entra en la
+  metrica.
+- **Limitacion de la sonda:** las esferas del ala estan a una distancia fija del plano medio y
+  pueden incluir parte del foramen de S1. El piloto de `metal_0008` (HU 0-100 a lo largo de un
+  tornillo real) confirma el fenomeno sin esa ambiguedad.
+- **Consecuencias:**
+  1. **E9 necesita una segmentacion osea rellena** (interior de la envolvente cortical). Es
+     exactamente lo que #29 recomendaba evaluar con TotalSegmentator (`sacrum`,
+     `vertebrae_S1`, `hip_left/right`). No es ejecutable en la maquina local (CPU, poca RAM):
+     es candidato a **Khipu**. Alternativas: segmentacion cortical propia (contornos, estilo
+     McLaren) o semi-manual en un subconjunto.
+  2. **#29 sube de prioridad:** pasa de "inicializacion util" a **bloqueo del Objetivo 2**.
+  3. **Bone integrity (Peters, #14)** usa un umbral que no representa el esponjoso sacro de
+     esta cohorte. Hay que declararlo o adaptarlo al trasladar el protocolo (#17).
+- **Los 7 de FOV cortado (pedido de la autora: con y sin):**
+  - **Densidad:** con y sin ellos sale casi lo mismo (38% frente a 37%), asi que excluirlos no
+    cambia este resultado.
+  - **Los 7 en si:** 3 no tienen S1 localizable. Los otros 4 tienen S1 correcto, pero sin
+    crestas no se puede expresar el angulo coronal en el marco de Kaiser.
+  - **Cambio neto:** 53 frente a 49 pacientes con S1 confirmado.
+  - **El experimento que realmente decide** (corredor y angulos con y sin ellos) queda
+    **bloqueado por el punto 1**. `e9_corredor.py` ya trae la comparacion prevista: angulos en
+    el marco de Kaiser solo con crestas, y diametros en el marco nativo para todos.
+- **Que seccion toca:** Objetivo 2 (medicion del corredor), #29, #31 (la restriccion necesita
+  un `Dmax` valido), #14 y #17 (bone integrity), `main.tex` (metodo del muestreador).
+- **Tipo:** RIESGO / BLOQUEO. **Pendiente de la autora:** via de segmentacion (TotalSegmentator
+  en Khipu, segmentacion cortical propia o semi-manual) y como declarar bone integrity.

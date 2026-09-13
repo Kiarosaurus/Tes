@@ -114,8 +114,30 @@ y las cifras resultantes están en `04-implicancias.md`, sección del 2026-09-07
 | ...con DIU | 6 |
 | dataset6 sin objeto, candidatos a entrenamiento limpio | 70 |
 
+**Actualización 2026-09-10 (#45, #21; confirmado por la autora).** La unidad de
+independencia es el paciente. `Grupo paciente` está lleno en las 178 filas (script
+`experiments/exploration-3d/grupo_paciente.py`), con su fuente en `Procedencia paciente`:
+**178 volúmenes = 168 pacientes**, 10 grupos con más de un volumen (6 copias exactas por
+SHA256, 3 por cortes compartidos confirmados por la autora y `metal_0065`/`0066` por
+observación visual). `metal_0068` no tiene material ortopédico. Con eso:
+
+| Recuento por paciente | Volúmenes | Pacientes |
+|---|---:|---:|
+| dataset7 con material ortopédico | 71 | 65 |
+| dataset6 sin objeto | 70 | 69 |
+
+`sin vinculo detectado` no prueba que dos filas sean pacientes distintos: solo que ningún
+hash las vincula. `metal_0059` y `metal_0071` tienen además una unión sin pérdida en
+`data/derivados/` (`union_0059_0071.md`). La fila de `metal_0068` quedó corregida
+(`correcciones_autora.py`).
+
+**Volúmenes fuera de uso:** `experiments/exploration-3d/exclusiones.csv` (11 volúmenes,
+ningún archivo borrado; decisión del 2026-09-10 en `01-decisiones.md`). **Particion por
+objetivo:** `grupos.csv`, 179 unidades (178 + unión) y 168 pacientes con una unidad en uso:
+grupo 1 = 65, grupo 2 = 37, grupo 3 = 66, excluido = 10, reproducibilidad = 1.
+
 `Revisión 3D y cortes` vale `3D completa`, no `completa`: falta el recorrido de cortes.
-Ninguna cohorte se asigna todavía; `Grupo paciente` sigue vacío en las 178 filas.
+Ninguna cohorte se asigna todavía.
 Copia previa a la fusión: `experiments/exploration-3d/revision.previo-merge.csv`.
 
 ## Cohortes y anotaciones

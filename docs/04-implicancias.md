@@ -3939,6 +3939,23 @@ crestas y EIPS no tienen revision clinica. Compila: 4 paginas, 0 citas indefinid
     dentro de alguna mascara (TS etiqueta el tornillo existente como hueso).
   - **Pendiente de la autora (ampliado):** elegir recorte y declararlo, o medir `Dmax` con ambos y
     reportar la diferencia como incertidumbre del metodo.
+- **Actualizacion 2026-09-13: cohorte ejecutada; la repetibilidad NO es exacta.** Job 51315,
+  ag001, el mismo `--gres=shard:a100_3g.20gb:1` que el piloto, TS 2.18.0, torch 2.14.0+cu130.
+  179 volumenes x 2 recortes, 358/358 `ok`. Resumen en `experiments/objetivo2/ts_cohorte.md`.
+  - **Hallazgo:** se re-segmentaron los 2 casos del piloto con el mismo nodo, tipo de GPU,
+    version, clases y recorte (`repetibilidad_piloto_51315.txt`). Resultado: 14 de 16 mascaras
+    identicas. Las otras 2 son de `metal_0008`, default6mm: `sacrum` con **16 voxeles** distintos
+    (Dice 0.99998) y `hip_left` con **8** (Dice 0.99999). El resto del QC del piloto se
+    reproduce exacto, incluidas esferas y tornillos.
+  - **Lectura:** en esta configuracion TS no es determinista bit a bit, asi que "misma
+    configuracion = misma mascara" no se puede declarar. La magnitud es varios ordenes menor que
+    el efecto del recorte (Dice 0.930-0.972) y no compite con el. Solo aparecio con 6 mm y en el
+    caso con metal, pero con n = 2 eso no es un patron. **Causa no verificada.**
+  - **Que seccion toca:** la declaracion de reproducibilidad del metodo del muestreador en
+    `main.tex`, si se adopta TS (#48).
+  - **Opciones:** (a) declarar la cota observada (<= 16 voxeles por mascara en 2 casos);
+    (b) medir la repetibilidad en mas casos antes de declararla; (c) comprobar si TS/torch
+    admiten un modo determinista (no verificado). **Pendiente de la autora. No aplicado.**
 
 ### 50 — E9b: un error de nivel de S1 produce "ala < 150 HU" midiendo tejido blando; el brazo sin metal de #48 (43%) no respalda que sea "propiedad del hueso" — ABIERTA
 
@@ -3981,3 +3998,382 @@ crestas y EIPS no tienen revision clinica. Compila: 4 paginas, 0 citas indefinid
   medir densidad solo dentro de la mascara del ala; (c) retirar el brazo sin metal de la lectura
   de #48 hasta auditar.
 - **Tipo:** RIESGO / SUPUESTO. **Pendiente de la autora. No aplicado.**
+
+## Ronda 2026-09-13 — analisis de la cohorte de TotalSegmentator (PENDIENTE 1, pasos 2 y 3)
+
+- **Origen:** `experiments/objetivo2/ts_analisis.py`, que genera `ts_analisis.md` y `ts_nivel_s1.csv`
+  (versionados) a partir de la QC del job 51316. Cuenta 168 volumenes = 168 pacientes, sin los 11
+  de `exclusiones.csv`.
+- **Procedencia de las laminas:** las revisaron agentes, no la autora ni el clinico, a 80 dpi. Casos
+  revisados: `CLINIC_0002`, `0022`, `0043`; `metal_0010`, `0012`, `0015`, `0017`, `0024` (tornillos),
+  `0026`, `0030`, `0053`, `0058`. **No** es la revision completa de las 197 laminas.
+
+### 50 — Opcion (b) EJECUTADA: TS como segundo detector de nivel. La tabla rehecha deja el "~40%" de #48 en 8-17% — sigue ABIERTA
+
+- **Detector:** `dz` = techo de `vertebrae_S1` de TS en la columna media del platillo de R1, menos el
+  platillo. Estado `R1 arriba de TS` si `dz < -10 mm` con los dos recortes.
+- **Hallazgo 1, concordancia con el clinico: 56 de 57** casos `ok`/`+1` con techo.
+  - Los 5 `+1` dan `dz` de -34.3 a -32.0 mm.
+  - De los `ok`, 51 dan +3.7 a +15.7 mm y 1 da -24.3 mm (`metal_0012`, ver #51).
+  - El estado no cambia con el recorte en ningun caso: `dz` difiere <= 1.6 mm entre recortes.
+  - **Circularidad declarada:** el umbral de -10 mm se fijo mirando esta misma distribucion. La
+    concordancia sale igual con cualquier umbral mayor que -24.3 mm y de hasta +3.7 mm. La
+    referencia es un solo revisor.
+- **Hallazgo 2, casos sin auditar:**
+  - Calibracion: `R1 arriba de TS` en **7 de 60** (6 de 24 con `s1_discordante`, 1 de 36 sin el).
+  - `otro` (grupo 2): 11 de 31.
+  - `CLINIC_0002`: `dz` = -24.6 / -23.8 mm. En la lamina sagital, la esfera del cuerpo esta en la
+    vertebra craneal a la S1 de TS, con un disco entre ambas. Lectura del agente: R1 en L5, salvo
+    transicion lumbosacra, que la lamina no permite evaluar. Responde la pregunta de #50.
+- **Hallazgo 3, tabla de #50 rehecha** (recorte 3 mm; con 6 mm cambia poco):
+
+| Grupo | n | alguna esfera < 150 HU (E9b) | ala < 150 con esfera >= 90% en `sacrum`/S1 | ala < 150 con esfera > 50% fuera de mascaras |
+|---|---|---|---|---|
+| Evaluacion, clinico `ok` | 53 | 20 (38%) | 4 (8%) | 16 (30%) |
+| ... con TS concordante | 51 | 18 (35%) | 4 (8%) | 14 (27%) |
+| Evaluacion, clinico `+1` | 6 | 6 | 0 | 6 |
+| Calibracion (sin auditar) | 60 | 26 (43%) | 9 (15%) | 16 (27%) |
+| ... con TS concordante | 53 | 19 (36%) | 9 (17%) | 9 (17%) |
+| ... con `R1 arriba de TS` | 7 | 7 | 0 | 7 |
+
+  En los 25 casos `R1 arriba de TS` (todas las cohortes), las 75 esferas quedan 100% fuera de las
+  cuatro mascaras.
+- **Hallazgo 4, geometria de la sonda.** Casos concordantes con ala < 150 HU y esfera mayormente fuera
+  (`metal_0017`, `metal_0030`, `CLINIC_0043`): en las laminas, la esfera del ala queda anterolateral
+  al cuerpo de S1, sobre el borde del contorno y en tejido blando presacro. El ala osea esta detras.
+  Cae ahi porque la esfera se pone a 25 mm lateral **a la altura del centro del platillo**, no porque
+  TS deje hueso fuera. Algunas medianas son negativas (`metal_0003` -161 HU, `CLINIC_0033` -54 HU).
+  **No se descarta** que TS excluya esponjoso muy hipodenso: con 3 laminas a 80 dpi no se puede
+  afirmar.
+- **Lectura:**
+  - El "38% / 43% con alguna esfera < 150 HU" de #48 lo dominan esferas fuera del hueso, por error de
+    nivel o por la geometria de la sonda.
+  - Con esfera >= 90% dentro de `sacrum`/S1 quedan **4 de 53 (8%) con metal** y **9 de 60 (15%;
+    17% entre concordantes) sin metal**. Ejemplo: `CLINIC_0012`, ala izquierda, mediana 0 HU con
+    99.8% de la esfera dentro.
+  - El fenomeno existe, pero en un orden de magnitud menor. Que el brazo sin metal quede por encima
+    ya no se explica por error de nivel; con n pequenos y cohortes no emparejadas no es un contraste.
+- **Aparte:** `techo_linea_media_dz_mm` de `sacrum` **no** sirve como detector de nivel.
+  - De los 16 casos con S1 en R1 y sin techo de sacro, 12 son casos con R1 un nivel arriba: la columna
+    cae sobre L5, anterior al sacro.
+  - Quedan 4 sin explicar (`CLINIC_0045`, `CLINIC_0066`, `metal_0007`, `metal_0054`; 5 filas). No
+    se usa.
+- **Que seccion toca:** #48 (tabla y lectura), `e9b_densidad_s1.md`, #14/#17 (bone integrity), y el
+  texto propuesto de ESTADO sobre bone integrity (pendiente 3, no aplicado).
+- **Opciones:**
+  - (a) sustituir la cifra de #48 por la del criterio en mascara (8% / 15%), con la sonda declarada;
+  - (b) retirar E9b como evidencia de densidad y medir HU directamente dentro de `sacrum` +
+    `vertebrae_S1` en el E9 rehecho (hacen falta las mascaras de Khipu);
+  - (c) auditar igualmente la S1 de calibracion, porque TS no es referencia clinica.
+- **Pendiente de la autora. No aplicado.**
+
+### 48 — ACTUALIZACION 2026-09-13: la cifra "~40%" no sobrevive al control de mascara; el fenomeno y la necesidad de TS, si
+
+- **Sigue en pie:**
+  - el Hallazgo 1 de #48 (HU 0-100 a lo largo del tornillo real de `metal_0008`);
+  - 4 pacientes con metal y 9 sin metal con esfera de ala dentro de TS y mediana < 150 HU (#50).
+- **Dentro de las mascaras** (`ts_analisis.md`, seccion 5), mediana de la fraccion <= 150 HU:
+
+  | Mascara | grupo 1 | grupo 2 | grupo 3 |
+  |---|---|---|---|
+  | `sacrum` | 0.32 | 0.38 | 0.43 |
+  | `vertebrae_S1` | 0.10 | 0.11 | 0.13 |
+
+  - Incluye el borde (volumen parcial) y los segmentos sacros distales: no es especifico del ala.
+  - Lo que si dice: una mascara "HU > 150" perderia un tercio o mas del `sacrum` en cualquier grupo,
+    y la de TS lo contiene por construccion.
+  - Grupos no emparejados; en grupo 1 entran voxeles de metal y estriacion.
+- **Para la adopcion de TS:**
+  - En las laminas revisadas no aparecio ningun fallo de segmentacion osea bajo metal.
+  - Metal de E8 dentro de alguna mascara: mediana 98% (recorte 6 mm) / 98% (3 mm), minimo 68-70%.
+  - Eje del tornillo fuera de toda mascara: mediana 5-6%, maximo **35%** en `metal_0024` comp 3. En
+    su lamina, el tramo sin mascara es la articulacion sacroiliaca con estriacion, donde `hip_right`
+    no sigue al ilion junto al tornillo. Es exactamente el tramo de salida del corredor de E9.
+- **Pendiente de la autora:** adoptar TS, y que cifra queda en #48 (ver opciones de #50).
+
+### 49 — ACTUALIZACION 2026-09-13 (analisis): el recorte cambia ~5% de cada mascara en toda la cohorte, y en 10 casos la caja se desplaza 14-98 mm
+
+- **Dice 3 mm frente a 6 mm** (168 pacientes; mediana, con osteosintesis / sin osteosintesis):
+
+  | Estructura | con osteosintesis | sin osteosintesis |
+  |---|---|---|
+  | `sacrum` | 0.940 | 0.950 |
+  | `vertebrae_S1` | 0.946 | 0.952 |
+  | caderas | 0.956-0.957 | 0.963-0.966 |
+
+  - Percentil 5: 0.918-0.949. Minimo: **0.848** (`CLINIC_0022`, `vertebrae_S1`).
+  - Voxeles exclusivos de un recorte: 3.4-5.9% de mediana.
+  - Con osteosintesis el Dice baja ~0.01 en las cuatro estructuras.
+  - Confirma el piloto a escala de cohorte.
+- **Nuevo:** en 10 casos la caja de alguna estructura cambia **13.6-98.3 mm** entre recortes (11
+  estructuras). La afirmacion del piloto (<= 1.6 mm) no generaliza.
+  - Tres son del corredor: `CLINIC_0022` `sacrum` 78 mm, `CLINIC_0029` S1 16 mm y `CLINIC_0032` S1
+    14 mm.
+  - En la lamina de `CLINIC_0022` hay un fragmento `sacrum` suelto junto a la articulacion
+    sacroiliaca derecha, y una region posterior de S1 que solo aparece con 6 mm.
+  - Causa no verificada: islas de voxeles o extension distinta.
+- **Lo que el recorte NO cambia:** el estado de nivel de #50 (0 casos).
+- **Consecuencia para E9:** antes de medir `Dmax` hace falta una regla de limpieza (p. ej. componente
+  conexa principal), y hay que declararla como parte del metodo junto a la version y el recorte.
+- **Opciones anadidas a las de la autora:**
+  - (d) medir E9 con los dos recortes y reportar la diferencia de `Dmax` como incertidumbre (ya
+    propuesto el 2026-09-12);
+  - (e) regla de limpieza de componentes, declarada.
+- **Pendiente de la autora. No aplicado.**
+
+### 51 — TS contradice al revisor clinico en el nivel de S1 de `metal_0012`, que cuenta en la cifra de R1 ya escrita en `main.tex` (49 y 30) — ABIERTA
+
+- **Origen:** `ts_analisis.md`, seccion 1, y laminas de `ts_total_qc/laminas/`, 2026-09-13.
+- **Hallazgo 1, `metal_0012`:**
+  - El clinico y el agente dicen `ok`.
+  - TS da `dz = -24.3 mm` con los dos recortes. Es el unico `ok` con `dz` menor que +3.7 mm.
+  - En la lamina (coronal y sagital), las esferas estan en un cuerpo vertebral craneal a la S1 de TS,
+    con un disco entre ambos.
+  - Tiene marco computable y legible, y S1 `limpio`: **cuenta en los 49 y en los 30** del parrafo
+    `Field limitation` de `main.tex`.
+- **Hallazgo 2, `metal_0015`** (uno de los 7 de FOV cortado; no entra en los 49):
+  - Clinico `ok`; agente `error grosero` ("teja sin cuerpo vertebral").
+  - En TS, S1 esta cortada por el FOV (`z+`, 15 726 voxeles, ~20% de la mediana de la cohorte). La
+    caja de S1 de TS (z 188.8-200.0; y 153.3-201.8) queda entera **craneal (19 mm) y anterior
+    (16 mm)** al punto de R1 (z 169.8; y 137.2).
+  - En la lamina, las esferas caen dentro de `sacrum`, hacia la cara dorsal.
+  - Dos de tres fuentes dicen que ese punto no es el platillo de S1. Si fuera asi, "los otros 4 [de
+    los 7] tienen S1 correcto" (#48) pasaria a 3.
+- **Casos que TS apoya:**
+  - `metal_0026`: clinico `+1`, agente `ok`. TS no tiene techo porque la columna cae 20 mm anterior
+    a la caja de S1. En la lamina, la esfera esta en el cuerpo craneal a la S1 de TS: apoya al
+    clinico.
+  - `metal_0058`: clinico `otro`, agente "arco posterior". TS da -14.3 / -12.7 mm. En la lamina, la
+    esfera esta sobre el arco posterior, craneal y dorsal al cuerpo de S1 de TS.
+- **Lectura:**
+  - TS no es referencia: no esta validado para el nivel, y una transicion lumbosacra puede cambiar
+    que se llama S1.
+  - Pero la cifra escrita descansa en un solo revisor, y en `metal_0012` la contradicen TS y la
+    imagen. Si `metal_0012` fuera `+1`, quedaria **48 de 65** con marco computable y S1 correcto, y
+    **29** sin contaminacion.
+  - La frase de los 17 con tornillo iliosacro no cambia: ni `metal_0012` ni `metal_0015` estan en
+    `ts_qc_tornillos.csv`.
+- **Que seccion toca:** `main.tex`, `Field limitation` (49, 30); #26; `r1_landmarks.md`; #48 (53 con S1
+  `ok` y "los otros 4" de los 7).
+- **Opciones:**
+  - (a) llevar `metal_0012` y `metal_0015` al segundo revisor opcional (pendiente 5 de ESTADO).
+    Verificado el 2026-09-13 contra `r1_estados.csv`:
+    - `metal_0015` es discrepancia clinico/agente (`ok` frente a `error grosero`), asi que entra en
+      cualquier lista de discrepancias.
+    - `metal_0012` **no** entra: clinico y agente dicen `ok`, y solo lo senala TS.
+    - Los "17" de #26 (12 no-ok + 5 discrepancias) no se reconstruyen desde el CSV: salen 12 no-ok
+      y 4 discrepancias ok/no-ok (`0003`, `0015`, `0026`, `0046`), de las cuales `0026` y `0046` ya
+      estan entre los 12. Union: 14.
+  - (b) mantener 49/30 declarando que la referencia es un revisor unico (ya lo dice) y reportar la
+    discordancia con TS.
+  - (c) adoptar TS como segundo lector y recontar.
+- **Tipo:** RIESGO (cifra escrita). **Pendiente de la autora. No aplicado.**
+
+### 52 — TS etiqueta el implante existente como hueso: `Dmax` en volumenes con tornillo mediria a traves del metal — ABIERTA
+
+- **Origen:** `ts_analisis.md`, seccion 7 (y piloto de #49). Surgio en la asesoria del 2026-09-13.
+- **Hallazgo:** la mediana del metal de E8 (> 2500 HU, cilindro de 4 mm) que queda dentro de alguna
+  mascara de TS es 98% con los dos recortes. Si E9 se rehace sobre esas mascaras, en los pacientes
+  con tornillo iliosacro el corredor incluye el implante como hueso.
+- **Que seccion toca:** Objetivo 2 (medicion del corredor), la restriccion #31 (`Dmax`), la cohorte
+  sobre la que se mide (grupo 1 frente a grupo 3), y #26/`Field limitation` si el corredor se mide en
+  volumenes con metal.
+- **Opciones:**
+  - (a) medir el corredor solo en pelvis sin osteosintesis;
+  - (b) tratar los voxeles > 2500 HU (o la mascara de E8) como ocupados al calcular `Dmax`;
+  - (c) medir con y sin (b) y reportar la diferencia.
+- **Tipo:** SUPUESTO / METODO. **Pendiente de la autora. No aplicado.**
+
+### 53 — La referencia de nivel de R1 no puede ver vertebras de transicion, y la lista de los "17" de #26 no se reconstruye — ABIERTA
+
+- **Origen:** preparacion del segundo revisor (#51), 2026-09-13, contra `r1_mosaico.py` y
+  `r1_estados.csv`.
+- **Hallazgo 1:** el mosaico que vio el revisor clinico es un sagital medio de +-60 mm alrededor de la
+  cruz. No muestra la columna lumbar entera, asi que no permite contar niveles ni detectar una
+  vertebra de transicion lumbosacra. `metal_0012` (#51) es candidato a ese caso. El juicio `ok`/`+1`
+  es "la cruz esta en el platillo del primer segmento sacro visible", no un nivel contado.
+- **Hallazgo 2:** #26 habla de "12 no-ok + 5 discrepancias = 17". Desde `r1_estados.csv` salen 12
+  no-ok y 4 discrepancias ok/no-ok (`0003`, `0015`, `0026`, `0046`), con union de 14. La lista de 17
+  no esta en ningun archivo.
+- **Que seccion toca:** `main.tex`, `Field limitation` ("confirmed the S1 level"), #26, #51 y el
+  diseno del segundo revisor.
+- **Opciones:**
+  - (a) mosaico ciego nuevo con L1-L5 visibles y coronal, casos dudosos mezclados con controles `ok`
+    (requiere anadir seleccion de casos y campo ampliado a `r1_mosaico.py`);
+  - (b) declarar en la tesis que la revision no evalua anomalias de transicion;
+  - (c) fijar la lista del segundo revisor en un archivo (14 + `metal_0012`).
+- **Tipo:** SUPUESTO / RIESGO. **Pendiente de la autora. No aplicado.**
+
+## Ronda 2026-09-14 — transcripcion de R1 corregida, #48-#50 decididas, E10 preparado
+
+### 51 — CERRADA (2026-09-14): era un error de transcripcion, y TS lo detecto
+
+- **Lo que informa la autora:**
+  - `metal_0012`: el revisor dijo `+1`; se transcribio `ok` por error. Lo corrigio ella en
+    `r1_auditoria_s1_clinico.csv`.
+  - `metal_0015`: el propio revisor dudo, "`?` tirando a otro". El asistente lo registro como `?`,
+    con ese comentario, a partir de lo que informo la autora.
+- **Recuento** (`r1_resumen.py` regenerado; `r1_landmarks.md`, `r1_estados.csv`):
+  - Clinico: `ok` 51, `+1` 7, no hallado 4, `otro` 2, `?` 1.
+  - **Marco computable con S1 correcto: 48 de 65. Ademas sin contaminacion: 29 de 65.**
+  - Acuerdo con el agente: categoria exacta 0.908; ok/no-ok 0.938, kappa 0.81.
+- **TS** (`ts_analisis.md` regenerado): **concordancia 57 de 57**.
+  - `+1` con techo (6): `dz` de -34.3 a -24.3 mm.
+  - `ok` (51): +3.7 a +14.9 mm. Los rangos no se solapan.
+  - Sin techo: `metal_0026` (`+1`) y `metal_0015` (`?`).
+- **Lectura:** la contradiccion de #51 venia de la transcripcion, no del revisor. TS la detecto sin
+  conocer la correccion, lo que respalda usar TS como control de nivel (decision del 2026-09-14).
+- **Lo que queda abierto (redaccion):**
+  - `main.tex`, `Field limitation`, dice **49** y **30**. Con la transcripcion corregida son
+    **48** y **29**.
+  - En #48, "los otros 4 [de los 7] tienen S1 correcto" pasa a **3** (`0002`, `0003`, `0054`).
+  - La frase de los 17 con tornillo no cambia.
+  - `e9b_densidad_s1.md` regenerado: clinico `ok` con los 7 = 51, con alguna esfera < 150 HU 18
+    (35%); sin los 7 = 48, 17 (35%). E9b ya esta retirado como evidencia por la decision del
+    2026-09-14.
+  - **No aplicado a `main.tex`** (regla 4): requiere orden explicita de la autora.
+
+### 53 — ACTUALIZACION 2026-09-14: la lista de los "17" SI se reconstruye (era una suma con solapamiento)
+
+- **Que eran los 17:** 12 no-ok del clinico mas 5 discrepancias de categoria exacta con el agente
+  (`0003`, `0015`, `0026`, `0038`, `0046`). `0026`, `0038` y `0046` estaban en los dos grupos: son
+  **14 casos distintos**.
+- El Hallazgo 2 de #53 ("no se reconstruye") queda corregido: el cruce anterior usaba ok/no-ok y
+  dejaba fuera `0038` (`+1` frente a `ambiguo`).
+- **Con la transcripcion corregida:** no-ok del clinico 14; discrepancias exactas 6 (`0003`, `0012`,
+  `0015`, `0026`, `0038`, `0046`). Union, **15**: `0003`, `0010`, `0011`, `0012`, `0014`, `0015`,
+  `0016`, `0022`, `0023`, `0026`, `0038`, `0046`, `0053`, `0058`, `0067`.
+- El Hallazgo 1 (el mosaico de +-60 mm no permite contar niveles) sigue **ABIERTO**.
+
+### 48, 49, 50 — DECIDIDAS (2026-09-14): registradas en `01-decisiones.md`
+
+- La autora adopto literal la asesoria del 2026-09-13: TS 2.18.0 `total`; recorte de 6 mm principal
+  y 3 mm como sensibilidad; limpieza por fraccion de componente; `total_v3` como trabajo futuro;
+  repetibilidad con la cota observada; E9b retirado; sin contraste con/sin metal.
+- **Siguen abiertos:**
+  - la fraccion de la regla de limpieza: se mide con **E10** (`ts_componentes.py` +
+    `ts_componentes.sbatch`, manual en `KHIPU.md`). Probado en local sobre `metal_0008` del piloto:
+    `sacrum` tiene 6-8 componentes, el mayor con 99.9% de los voxeles; la union `sacrum+vertebrae_S1`
+    tiene **1** componente.
+  - #52 (implante existente al medir `Dmax`);
+  - bone integrity (#17).
+- **No aplicado** a `main.tex` ni a `00-tesis.md` (reglas 4 y 14).
+
+## Ronda 2026-09-14 (2) — 48/29 en `main.tex`, recomendaciones de redaccion, E9-TS preparado
+
+### 51 — Redaccion APLICADA (2026-09-14)
+
+- Por orden explicita de la autora, `main.tex` (`Field limitation`) pasa de "computable in 49 ...
+  in 30" a **"computable in 48 ... in 29"**.
+- Compila: 4 paginas, 0 citas indefinidas.
+
+### 53 — ACTUALIZACION: "confirmed the S1 level on every patient" ya no es literal
+
+- **Hallazgo:** con `metal_0015` = `?`, el revisor **no** confirmo el nivel en todos los pacientes: en
+  uno no pudo decidir. Ademas, el Hallazgo 1 de #53 sigue en pie: juzgo sobre un sagital de +-60 mm.
+- **Texto propuesto (no aplicado; requiere orden):** *"After a clinician reviewer (one surgeon,
+  otorhinolaryngology), blinded to the automatic audit, judged the S1 level on a mid-sagittal view in
+  every patient (undecidable in one), the frame was computable in 48 patients ..."*.
+- **Frase opcional:** *"The S1 level implied by TotalSegmentator vertebral labels agreed with the
+  reviewer in all 57 patients with a definite judgment and a computable check."*
+  - Esta frase se apoya en 57/57 con los rangos de `dz` separados (-34.3 a -24.3 frente a +3.7 a
+    +14.9 mm).
+  - El detector se definio sobre estos mismos datos, y hay que declararlo si se cita.
+- **Que seccion toca:** `main.tex`, `Field limitation`.
+- **Pendiente de la autora.**
+
+### 52 — Recomendacion registrada (asistente, 2026-09-14), no decidida: opcion (a), atada a #35
+
+- **Por que (a):**
+  - `grupos.csv` ya propone `Elegible Obj2 = si` solo para los grupos 2 y 3 (#35, PROPUESTA): el
+    muestreador necesita "geometria osea sacroiliaca intacta y corredor libre".
+  - Medir el corredor solo en pelvis sin osteosintesis lo hace comparable con la literatura, toda
+    medida en pelvis intactas (`Field limitation`).
+  - Evita definir la ocupacion del implante con 2500 HU, que la decision #22 reserva al cribado.
+  - Los volumenes con metal quedan para la computabilidad del marco, ya medida y escrita (48/29).
+- **Recomendacion de proceso:** decidir antes de leer los resultados de E9-TS. E9-TS calcula todos
+  los grupos, asi que la opcion elegida no obliga a volver a correr.
+- **Pendiente de la autora:** decidir #52 y #35 juntas.
+
+### E9-TS — preparado y probado en un caso; un hallazgo a vigilar en la cohorte
+
+- **Scripts:** `e9ts_corredor.py` (`.sbatch`), `e9ts_resumen.py` y `noche_e9ts.sh`. Manual en
+  `KHIPU.md`.
+- **Diseno:** calcula todas las variantes que las decisiones pendientes pueden elegir (recorte x
+  fraccion de limpieza, todos los grupos); no decide nada.
+- **Prueba** (`metal_0008` del piloto, local, 35 s; tabla en `outputs/e9ts_prueba/`, ignorada por git):
+  - `D_TS` = **11.3 mm con 6 mm** y **9.5 mm con 3 mm**. El recorte cambia 1.8 mm y **cruza la
+    convencion de 10 mm** (viable si/no).
+  - La limpieza no cambia `D` (quita 144 / 212 voxeles lejos del corredor).
+  - El eje del mejor corredor (6 mm) va casi paralelo (4.5 grados) al tornillo real `comp 1`, a
+    5.9-13.6 mm de su eje, y a >= 2.2 mm del voxel de metal mas cercano. **El cilindro de 11.3 mm
+    (radio 5.65 mm) si alcanza el tornillo**, que TS cuenta como hueso: en este caso `Dmax` incluye el
+    implante existente. Es #52 en concreto. La lamina coronal lo hacia parecer "sobre el tornillo"
+    porque proyecta el eje e ignora su inclinacion en y.
+  - `frac_metal_eje` (metal exactamente en el voxel del eje) dio 0 otra vez: no sirve, como en el
+    piloto. Se anadieron `frac_eje_metal_r2mm`, `dist_eje_metal_min_mm` y `cilindro_toca_metal`.
+  - Densidad: el eje cae 71% (6 mm) / 56% (3 mm) en voxeles <= 150 HU dentro de la mascara, con
+    mediana 111 / 118 HU.
+- **Lectura:**
+  - Con n = 1 no hay resultado.
+  - Si en la cohorte el recorte cambia la viabilidad binaria en una fraccion apreciable, la
+    incertidumbre de #49 deja de ser un matiz y pasa a la conclusion del Objetivo 2.
+  - La densidad del eje dentro de la mascara es la medida que decidio el 2026-09-14 en lugar de E9b.
+- **Que seccion toca:** #49 (el recorte como incertidumbre de la viabilidad), #31 y el Objetivo 2.
+- **Pendiente:** correr la cohorte y leer `e9ts_resumen.md`, seccion 3.
+
+## Ronda 2026-09-14 (3) — #52 decidida (a + c), #35 cerrada, ITK-SNAP para el revisor
+
+### 52 — DECIDIDA por la autora (2026-09-14): opciones (a) y (c)
+
+- **(a):** el corredor del Objetivo 2 se mide en pelvis **sin osteosintesis** (grupos 2 y 3).
+- **(c):** en los volumenes con implante se mide **con y sin el implante como espacio ocupado**, y se
+  reporta la diferencia.
+- **Como se implemento (c) sin decidir la forma del implante:** la decision #22 no deja definirla con
+  2500 HU. `e9ts_corredor.py` calcula dos politicas de ocupacion, ademas de `hueso` (TS tal cual):
+  - `ocupado_2500`: 2500 HU adelgaza el implante (#46), asi que da una **cota superior** del corredor
+    ocupado;
+  - `ocupado_semimax`: semimaximo local por objeto, con el casquete de E8. Es la propuesta abierta de
+    #22; difiere de E8 en que no fusiona fragmentos.
+- **Pendiente de la autora:** cual de las dos es la principal. No hace falta volver a correr.
+- **Prueba** (`metal_0008`, F = 0): con 6 mm, `D_TS` da **11.3 mm como hueso y 10.0 mm con cualquiera
+  de las dos ocupaciones**. Con 3 mm, 9.5 mm en las tres politicas.
+- **Lectura (n = 1):** en este caso el implante existente agranda el corredor medido 1.3 mm y lo pone
+  sobre la convencion de 10 mm. Con 3 mm el mejor corredor no toca el tornillo y no cambia.
+- **Registrada en `01-decisiones.md`** (2026-09-14 (2)) por el asistente, con orden explicita de la
+  autora.
+
+### 35 — CERRADA por la autora (2026-09-14)
+
+- **Se adopta el reparto por objetivo** de `grupos.csv`: Obj 1 = grupos 1-3 (168); **Obj 2 = grupos 2
+  y 3 (103), coherente con #52 (a)**; Obj 3 = grupo 3 (66).
+- `grupos.py` regenerado: solo cambian `Regla` y `Estado regla` (168 filas, de `PROPUESTA #35` a
+  `decidida #35`). Grupos y elegibilidades, identicos.
+- **Lo que no cierra:** la **evidencia** de `Elegible Obj3` (eje de artefacto de agente, #34/#37,
+  bloqueo declarado), la definicion en tres ejes de `Objeto extraño` que proponia #35 (no aplicada a
+  `02-datos.md` ni a `03-glosario.md`), y #43 (particion unica frente a elegibilidad), que sigue
+  ABIERTA.
+- **Registrada en `01-decisiones.md`** (2026-09-14 (2)) por el asistente, con orden explicita de la
+  autora.
+
+### 53 — ACTUALIZACION 2026-09-14: el revisor pide ver cada punto en ITK-SNAP; tabla generada
+
+- **Pedido:** el revisor clinico quiere el corte exacto de cada punto de S1 para mirarlo en el volumen
+  completo. Eso responde al Hallazgo 1: en el volumen completo si se pueden contar niveles.
+- **Hecho:** `experiments/objetivo2/r1_cortes_itksnap.py` genera `r1_cortes_itksnap.csv`
+  (versionable), con los 65 casos de evaluacion:
+  - 61 con punto: corte sagital, coronal y axial en el **archivo original**, contados desde 0 y
+    desde 1; voxel (i, j, k); mundo RAS y LPS; HU del voxel y mediana 3x3x3; corte axial de la linea
+    del ala.
+  - 4 sin punto: `0016`, `0022`, `0023`, `0053`.
+  - Ciega: sin juicios de clinico, agente ni TS.
+- **Comprobacion interna superada:** en los 61 casos, el HU en el indice calculado sobre el archivo
+  original coincide con el HU del punto en el marco RAS de R1. En los 61, los ejes del archivo ya
+  estan en orden sagital/coronal/axial (0/1/2).
+- **No verificado:** si ITK-SNAP numera los cortes desde 0 o desde 1, y si muestra coordenadas RAS o
+  LPS. Por eso la tabla trae ambas y el HU. El revisor debe comprobar que el cursor marca ese HU.
+- **Pendiente de la autora:**
+  - si el revisor mira los 15 casos de la lista o los 61. Si solo los 15, conviene mezclarlos con
+    controles `ok` para no revelarle cuales son dudosos;
+  - que el nuevo juicio se guarde en un archivo aparte, sin sobrescribir
+    `r1_auditoria_s1_clinico.csv`.

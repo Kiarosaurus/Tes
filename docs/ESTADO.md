@@ -34,12 +34,13 @@
 | E1 | `exploration-3d/sensibilidad_hu.py` | 2500 HU criba con 0 falsos negativos (113 candidatos) |
 | Dup. | `exploration-3d/duplicados_parciales.py` | 6 grupos por SHA256 + 3 por cortes compartidos; todos resueltos por paciente |
 | E6a / E6c | `objetivo1/` | Techo de 2000 HU de LW: 48 de 75 con metal fallan el Go/No-Go. `pub+MTW` (4a ventana) domina (#39) |
-| R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **49**, sin contaminacion **30**. Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.80 |
+| R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **48**, sin contaminacion **29** (transcripcion corregida el 2026-09-14; `main.tex` sigue en 49/30). Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.81 |
 | E8 | `objetivo2/e8_*.py` | >= 17 de 65 con tornillo iliosacro; a 2500 HU los tornillos salen fragmentados (9/57) y con fuste de 5.1 mm (#46). Test-retest `0065`/`0066` |
 | E9b | `objetivo2/e9b_*.py` | Alguna esfera de S1 con mediana < 150 HU en **38% con metal y 43% sin metal** (#48). **El brazo sin metal queda cuestionado por #50** |
 | E9 | `objetivo2/e9_corredor.py` | **NO VALIDO**, no correr: el umbral HU no captura el esponjoso sacro (#48) |
 | TS piloto | `objetivo2/ts_piloto.sbatch`, `ts_piloto_qc.py` | Job 51300, 2 casos x 2 recortes. Sin truncamiento; entre recortes Dice 0.93-0.97 con diferencias en SI/ala (#49). En `CLINIC_0002` las esferas de E9b caen un nivel arriba de la S1 de TS y las alas en tejido blando (#50) |
-| TS cohorte | `objetivo2/ts_cohorte.sbatch` -> `ts_qc_cohorte.sbatch` (`ts_qc.py`) | **Listos y NO lanzados** (2026-09-12). `ts_qc.py` probado en local: reproduce exacto las CSV del piloto y reanuda sin duplicar. Manual: `objetivo2/KHIPU.md` |
+| TS cohorte | `objetivo2/ts_cohorte.sbatch` -> `ts_qc_cohorte.sbatch` (`ts_qc.py`) | **Completa y traida a la PC** (2026-09-13): jobs 51315 (358/358 ok) y 51316 (179 casos, 0 errores). Integridad verificada. Repetibilidad contra el piloto no exacta: 16 y 8 voxeles en `metal_0008` 6 mm (#49). Entrada: **`objetivo2/ts_cohorte.md`** |
+| TS analisis | `objetivo2/ts_analisis.py` -> `ts_analisis.md`, `ts_nivel_s1.csv` | Nivel S1 de TS concuerda con el clinico en 57/57 (tras corregir la transcripcion de `metal_0012`); R1 falla el nivel en 7/60 de calibracion (#50). "Ala < 150 HU dentro de sacro/S1": 8% con metal, 15% sin metal (#48 decia 38/43%). Recorte ~5% de voxeles; 10 casos con cajas desplazadas 14-98 mm (#49). #51 cerrada: era transcripcion. Laminas: 12/197, revisadas por agentes |
 
 ### Decisiones tomadas en esta ronda (todas en `01-decisiones.md`)
 
@@ -57,24 +58,25 @@
 
 1. **#48 / #49 / #50: TotalSegmentator para medir el corredor. Bloquea el Objetivo 2**, el
    unico aporte propio del minimo.
-   - **Ahora (la autora, en Khipu):** correr la cohorte con `experiments/objetivo2/KHIPU.md`,
-     pasos 1-6. Primero TS en los 179 volumenes con los dos recortes (~6-8 h estimadas con el
-     piloto) y despues el QC en CPU. Traer `ts_total_qc/` y `_procedencia/`.
-   - **Sesion siguiente (manual, autora + Claude), en este orden:**
-     1. `repetibilidad_piloto_*.txt`: ¿mascaras identicas al piloto? Si no lo son, eso tambien
-        es incertidumbre del metodo (#49). Revisar tambien `ts_qc_errores.csv` y los fallos de
-        `ts_tiempos.csv`.
-     2. Laminas `ts_total_qc/laminas/`: separacion sacro/S1, ala dentro de la mascara, fallos bajo
-        metal. En `CLINIC_0002`, ¿la esfera esta en L5 o en S1? (#50).
-     3. `ts_qc.csv`: `techo_linea_media_dz_mm` de `vertebrae_S1` como segundo detector de nivel
-        frente a R1 (#50 opcion b); `dice_3v6` y `solo_este_modo_vox` por caso (#49).
-        `ts_qc_esferas.csv`: cuantas esferas de E9b caen fuera de hueso (#50).
-     4. Decisiones de la autora: adoptar TS (#48); recorte de 3 mm, 6 mm o ambos (#49); `total`
-        frente a `total_v3` (#49, sin evaluar); auditar S1 de calibracion o retirar el brazo sin
-        metal (#50).
+   - **HECHO (2026-09-13):** cohorte corrida (6 h 27 min) y traida a
+     `experiments/objetivo2/outputs/ts_total_qc/` y `outputs/ts_total_procedencia/`. Las mascaras
+     siguen en Khipu. **Leer primero `experiments/objetivo2/ts_cohorte.md`**: integridad, 7
+     hechos previos al conteo y la lista del analisis.
+   - **Pasos 1-3: HECHOS (2026-09-13)** con `ts_analisis.py`. Resumen en la seccion `Analisis` de
+     `ts_cohorte.md`. Laminas: solo 12 de 197 revisadas por agentes; la revision manual de la autora
+     sigue pendiente (lista en `ts_cohorte.md`).
+   - **Paso 4: DECIDIDO (2026-09-14)** en `01-decisiones.md`: TS `total` 2.18.0; recorte de 6 mm principal y
+     3 mm como sensibilidad; limpieza por fraccion; E9b retirado. #51 cerrada (error de transcripcion).
+   - **Abierto antes de E9:**
+     - **E10 en Khipu** (`KHIPU.md`, seccion E10), para fijar la fraccion de limpieza;
+     - **#52**, decision de la autora: pelvis sin osteosintesis, metal como ocupado, o las dos;
+     - orden para cambiar 49/30 -> 48/29 en `main.tex` (#51);
+     - diseno del segundo revisor (#53: 15 casos, mosaico ampliado y ciego).
    - **Despues:** rehacer E9 sobre `sacrum` + `vertebrae_S1` + caderas de TS, reutilizando
      `e9_corredor.py` (trayectorias, EDT, salida por el ilion, restriccion #31), **con y sin los
-     7 de FOV cortado**. Puede correr en la CPU de Khipu (`big-mem`).
+     7 de FOV cortado**, con limpieza de componentes y midiendo HU dentro de las mascaras (#50 b).
+     Hay que traer o usar en Khipu las mascaras (`~/metalsynth/data/ts_total/`). Puede correr en la
+     CPU de Khipu (`big-mem`).
 2. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
    - `main.tex` sugiere SD 1.5, cuyo VAE es de 3 canales; la mejor salida de E6c usa 4.
    - Opciones en #36/#39. E6b se corre en Khipu.
@@ -114,9 +116,55 @@
 - **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #50.
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #53.
 
 ## Ultimo paso completado
+2026-09-14 (3):
+- **#52 decidida (a + c)** y **#35 cerrada** por la autora. `grupos.py` regenerado: solo cambian `Regla` y
+  `Estado regla`. Registradas en `01-decisiones.md` (2026-09-14 (2)) con orden de la autora.
+- **E9-TS ahora calcula #52 (c):** politicas `hueso`, `ocupado_2500` (cota) y `ocupado_semimax` (propuesta #22).
+  `metal_0008`, 6 mm: 11.3 -> 10.0 mm ocupado; 3 mm: 9.5 sin cambio. El resumen pone primero la cohorte del
+  Objetivo 2 (grupos 2 y 3).
+- **#53:** `r1_cortes_itksnap.py` -> `r1_cortes_itksnap.csv`, corte exacto del punto de S1 en el archivo original,
+  para que el revisor lo abra en ITK-SNAP. Ciego, con comprobacion por HU.
+
+Siguiente: la autora sube y lanza la noche (`KHIPU.md`; los archivos a subir no cambian) y manda la tabla al
+revisor. Decide la politica de ocupacion principal y la F tras leer `e9ts_resumen.md`.
+
+## Paso anterior
+2026-09-14 (2):
+- **`main.tex` pasa a 48/29** por orden de la autora; compila, 4 paginas.
+- **E9-TS listo para la noche:** `e9ts_corredor.py` + `.sbatch`, `e9ts_resumen.py` y `noche_e9ts.sh`, que lanza
+  E10, E9-TS y el resumen con dependencias. Calcula recorte x limpieza para los 152 casos con S1 y no decide nada.
+  Probado en `metal_0008`: 35 s; D_TS 11.3 (6 mm) / 9.5 (3 mm).
+- Recomendaciones registradas en #52 (opcion a, con #35) y #53 (texto de "confirmed").
+
+Siguiente: la autora sube y lanza (`KHIPU.md`, "Noche automatica"). Por la manana, `data/e9ts/e9ts_resumen.md`; luego
+decidir F, #52/#35 y el texto de #53.
+
+## Paso anterior
+2026-09-14: **#48, #49 y #50 decididas y registradas** en `01-decisiones.md` (asesoria del 2026-09-13, literal, por
+orden de la autora). **Transcripcion de R1 corregida:** `metal_0012` = `+1` (lo corrigio la autora) y `metal_0015` = `?`.
+Con eso R1 queda en **48/29** (`main.tex` sigue diciendo 49/30, sin aplicar), TS/clinico 57/57 y **#51 cerrada**. La
+lista del segundo revisor tiene 15 casos (#53). **E10 preparado y probado en local** (`ts_componentes.py` + `.sbatch`,
+manual en `KHIPU.md`).
+Siguiente: lanzar E10 en Khipu; la autora decide #52 y la orden para 48/29 en `main.tex`; despues, E9 sobre TS.
+
+## Paso anterior
+2026-09-13 (2): **cohorte TS analizada** con `experiments/objetivo2/ts_analisis.py`, que genera `ts_analisis.md` y
+`ts_nivel_s1.csv`. TS como detector de nivel: concuerda con el clinico en 56 de 57; R1 falla el nivel en 7 de 60 de
+calibracion. Tabla de #50 rehecha: "ala < 150 HU dentro de sacro/S1" da 8% con metal y 15% sin metal (antes 38/43%).
+Recorte: ~5% de voxeles y 10 casos con fragmentos desplazados. #48, #49 y #50 actualizadas; **#51 nueva**
+(`metal_0012` contradice la cifra 49/30 de `main.tex`). Laminas: 12 de 197, revisadas por agentes.
+Siguiente: decisiones de la autora (#48, #49, #50, #51), luego rehacer E9 sobre las mascaras de TS con limpieza de componentes.
+
+## Paso anterior
+2026-09-13: **cohorte de TotalSegmentator completa, en la PC y verificada; sin analizar.** 358/358 corridas TS y
+QC de 179 casos sin errores; la QC reproduce el piloto. Repetibilidad no exacta (#49, actualizada).
+Entrega para el analisis en `experiments/objetivo2/ts_cohorte.md`.
+Pendiente que surgio: 32 filas de `sacrum` sin techo (resuelto en parte el 2026-09-13 (2): 12 de 16 casos explicados).
+
+## Paso anterior
 2026-09-12 (cierre): **piloto de TotalSegmentator ejecutado y analizado; scripts de la cohorte listos.**
 - Piloto: job 51300 (ag001, MIG A100 `3g.20gb`; TS 2.18.0; torch 2.14.0+cu130), 2 casos x {3 mm, 6 mm},
   59-76 s por corrida. Antes fallaron 3 jobs, por la cola y por un bug del script; los dos
@@ -125,8 +173,8 @@
   evidencia; **#50 nueva** (error de nivel de S1 -> "ala < 150 HU" en tejido blando; 6 de 6 casos +1).
 - Cohorte: `ts_cohorte.sbatch` (179 volumenes x 2 recortes, reanudable, control de repetibilidad
   contra el piloto) y `ts_qc_cohorte.sbatch` + `ts_qc.py`. Manual en `experiments/objetivo2/KHIPU.md`.
-  **No lanzados.**
-Siguiente: la autora lanza la cohorte (KHIPU.md). Luego, sesion manual de QC y decisiones #48/#49/#50
+  **Lanzados el 2026-09-12:** TS = job 51315 (ag001, `R`); QC = job 51316 (`big-mem`, espera a 51315).
+Siguiente: cierre de 51315/51316 (KHIPU.md, pasos 5-6). Luego, sesion manual de QC y decisiones #48/#49/#50
 (PENDIENTE 1).
 
 ## Paso anterior

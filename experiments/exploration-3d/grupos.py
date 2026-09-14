@@ -20,8 +20,10 @@ Lo que SI esta decidido y se aplica tal cual
 
 Lo que NO esta decidido y va marcado
 ------------------------------------
-- **#35, reparto por objetivo**: sigue ABIERTA. El eje de artefacto viene de agente bajo
-  bloqueo declarado (#34/#37): `Elegible Obj3` es la columna mas fragil.
+- **#35, reparto por objetivo**: CERRADA por la autora el 2026-09-14, junto con #52 (a). Cada
+  objetivo tiene su elegibilidad; el Objetivo 2 usa pelvis sin osteosintesis (grupos 2 y 3).
+  Sigue fragil la **evidencia** de `Elegible Obj3`: el eje de artefacto viene de agente bajo
+  bloqueo declarado (#34/#37). Cerrar #35 fija la regla, no esa evidencia.
 
 Regla de la particion unica (cada unidad a su consumidor mas escaso), en orden:
 - `excluido` / `reproducibilidad`  segun `exclusiones.csv`.
@@ -70,7 +72,7 @@ def clasificar(fila: dict[str, str]) -> dict[str, str]:
         eleg = ('si', 'si', 'no')
     return {'Grupo': grupo, 'Elegible Obj1': eleg[0], 'Elegible Obj2': eleg[1],
             'Elegible Obj3': eleg[2], 'Motivo': motivo,
-            'Regla': 'reparto por objetivo (#35 ABIERTA)', 'Estado regla': 'PROPUESTA #35'}
+            'Regla': 'reparto por objetivo (#35 CERRADA 2026-09-14)', 'Estado regla': 'decidida #35'}
 
 
 def generar(csv_in: Path, excl: Path, csv_out: Path) -> None:

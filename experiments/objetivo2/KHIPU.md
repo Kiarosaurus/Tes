@@ -132,5 +132,116 @@ scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/ts_*_*.log" experiments\objet
 # scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/ts_total data\derivados\
 ```
 
+**Corrida real (2026-09-13):** TS 51315, 358/358 ok, 45-96 s por corrida, 6 h 27 min en total.
+QC 51316, 28 min, 0 errores. Resultados y controles en `ts_cohorte.md`.
+
+## E10: componentes conexas de las máscaras (regla de limpieza, decisión del 2026-09-14)
+
+Solo CPU (`big-mem`) y sin GPU. Lee las 358 máscaras de `data/ts_total/`, que no hace falta traer
+a la PC. Tiempo sin medir.
+
+**Paso 1: subir** (PowerShell local):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo2
+scp ts_componentes.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp ts_componentes.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+**Paso 2: comprobar y lanzar** (Khipu):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' *.sbatch
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate totalseg && python -c "import nibabel, numpy, scipy; print('ok')"
+find data/ts_total -name .ok | wc -l                  # 358
+sbatch --test-only ts_componentes.sbatch
+E=$(sbatch --parsable ts_componentes.sbatch); echo "E10=$E"
+```
+
+**Paso 3: seguimiento y cierre:**
+
+```bash
+squeue -u $USER -o "%.8i %.14j %.9P %.2t %.10M %.8N %R"
+tail -f ts_componentes_$E.log                          # una linea "ok" por caso
+wc -l data/ts_componentes/ts_componentes_resumen.csv   # meta: 1 + 179*2*5 = 1791
+cat data/ts_componentes/ts_componentes_errores.csv     # solo cabecera
+sacct -j $E --format=JobID,JobName,State,ExitCode,Elapsed,MaxRSS
+```
+
+Si se corta, relanza el mismo `sbatch`: salta los casos ya escritos.
+
+**Paso 4: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/ts_componentes experiments\objetivo2\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/ts_componentes_*.log" experiments\objetivo2\outputs\ts_componentes\
+```
+
+## Noche automatica: E10 + E9-TS + resumen, con una sola orden (2026-09-14)
+
+`noche_e9ts.sh` comprueba los archivos y lanza tres jobs: E10 y E9-TS en paralelo, y el resumen cuando
+terminan los dos (`afterany`). Sumando los tres, 21 CPU y 96G, dentro de `a-tesis` (32 CPU, 98G,
+3 jobs). **No elige nada:** E9-TS calcula recorte (6 y 3 mm) x limpieza (F = 0, 0.001, 0.01, 0.05)
+x politica de metal (`hueso`; y, si hay metal en el recorte, `ocupado_2500` y `ocupado_semimax`, #52 c)
+para los 152 casos con S1 en R1, y la fraccion y #52 se deciden despues filtrando filas.
+Si E10 se lanzo antes por separado, no uses este script: lanza solo `e9ts_corredor.sbatch` y el
+resumen a mano (paso 4).
+
+Prueba local (2026-09-14, `metal_0008` del piloto, 1 proceso): 35 s por caso con las 8 variantes. En
+Khipu no esta medido; con 16 procesos se espera bastante menos de una hora.
+
+**Paso 1: subir** (PowerShell local):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo2
+scp ts_componentes.sbatch e9ts_corredor.sbatch noche_e9ts.sh kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp ts_componentes.py e9ts_corredor.py e9_corredor.py e9ts_resumen.py r1_landmarks.py ts_piloto_qc.py e9b_densidad_s1.py r1_landmarks.csv r1_estados.csv ts_nivel_s1.csv kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+`r1_estados.csv` y `ts_nivel_s1.csv` **deben** ser los del 2026-09-14 (transcripcion corregida).
+
+**Paso 2: lanzar** (Khipu):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' noche_e9ts.sh
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate totalseg && python -c "import nibabel, numpy, pandas, scipy, matplotlib; print('ok')"
+bash noche_e9ts.sh            # imprime E10=... E9TS=... RESUMEN=... y los guarda en noche_e9ts_jobs.txt
+```
+
+**Paso 3: por la manana:**
+
+```bash
+cd ~/metalsynth
+cat noche_e9ts_jobs.txt
+sacct -j <E10>,<E9TS>,<RESUMEN> --format=JobID,JobName,State,ExitCode,Elapsed,MaxRSS
+wc -l data/e9ts/e9ts_corredor.csv                  # 8 filas por caso sin metal en el recorte, 24 con metal
+grep -c "," data/e9ts/e9ts_corredor.csv            # el recuento exacto por caso lo da e9ts_resumen.md, seccion 1
+wc -l data/ts_componentes/ts_componentes_resumen.csv   # meta: 1791
+cat data/e9ts/e9ts_resumen.md
+```
+
+**Paso 4: si algo se corto:** relanza el `sbatch` que fallo (los dos son reanudables) y despues el
+resumen:
+
+```bash
+cd ~/metalsynth/qc && python e9ts_resumen.py --e9-dir ~/metalsynth/data/e9ts --e10-dir ~/metalsynth/data/ts_componentes
+```
+
+**Paso 5: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e9ts experiments\objetivo2\outputs\
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/ts_componentes experiments\objetivo2\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/*e9ts*_*.log" "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/ts_componentes_*.log" experiments\objetivo2\outputs\e9ts\
+```
+
 `experiments/**/outputs/` está ignorado por git. Si alguna tabla se va a citar, se copia aparte a
 `experiments/objetivo2/` y se versiona, igual que las de E8 y E9b.

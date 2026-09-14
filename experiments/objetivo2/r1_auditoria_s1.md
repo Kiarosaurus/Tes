@@ -37,3 +37,8 @@ hallado 4. La tabla de abajo es la de los 69 volumenes.
 clinico externo), a ciegas de esta auditoria. Es la **referencia** vigente: ok 53, +1 6,
 otro 2, no hallado 4. Acuerdo con este documento: 92.3% exacto, kappa 0.80 (ok / no-ok).
 Detalle en `r1_landmarks.md` y en #26 de `docs/04-implicancias.md`.
+
+**Correccion de transcripcion (2026-09-14, informada por la autora):** `metal_0012` es `+1`, no `ok`;
+`metal_0015` es `?` (el revisor dudo, "tirando a otro"). Referencia vigente: ok 51, +1 7, otro 2,
+no hallado 4, ? 1. Acuerdo con este documento: 90.8% exacto; ok/no-ok 93.8%, kappa 0.81. Marco
+computable con S1 correcto: 48 de 65; ademas sin contaminacion: 29 (#51 cerrada).

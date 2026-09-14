@@ -629,3 +629,107 @@ semimáximo local varía entre objetos (p10 1991, p90 6587 HU).
 tiene. La medida necesita adaptarse al ROI, que es lo que hace Peters. La forma necesita
 seguir a cada objeto. Registrada por el asistente con orden explícita de la autora
 (2026-09-11).
+
+---
+
+## 2026-09-14 — #48, #49, #50: TotalSegmentator como máscara anatómica del Objetivo 2
+
+**Decisión** (texto propuesto por el asistente el 2026-09-13 y adoptado sin cambios por la autora):
+
+```
+2026-09-13 — Segmentacion para el Objetivo 2 (#48, #49, #50)
+- Se adopta TotalSegmentator 2.18.0, tarea `total`, como mascara anatomica (no referencia).
+  QC por caso con exclusion: nivel TS/R1 discordante, S1 cortada por FOV o vacia.
+- Recorte principal: default 6 mm; robust 3 mm como analisis de sensibilidad de Dmax.
+- Limpieza: eliminar componentes menores que una fraccion (a fijar) del volumen de su estructura;
+  no "componente mayor" (fracturas).
+- total_v3 no se evalua: trabajo futuro. Repetibilidad: se declara la cota observada.
+- E9b se retira como evidencia de densidad; la densidad se mide dentro de las mascaras en E9.
+  No se afirma contraste con/sin metal.
+- Pendiente: tratamiento de los voxeles de implante existentes al medir Dmax.
+```
+
+**Fundamento** (asesoría del asistente del 2026-09-13, copiada literal por orden de la autora; solo
+cambia el nivel de los encabezados):
+
+Principio que ordena todo: **el Objetivo 2 necesita un `Dmax` que se pueda defender, no una
+segmentación perfecta.** Cada decisión se juzga por si lo protege frente a un tribunal y cabe en el
+tiempo.
+
+### #48 — Adoptar TS: **sí, con condiciones**
+
+**Por qué:**
+- Es la única vía con una máscara de hueso rellena que ya corrió sobre toda la cohorte.
+- Las alternativas (segmentación cortical propia o semimanual) no caben en 12 semanas y serían otra tesis.
+- La cohorte no mostró un fallo que lo descarte: el nivel coincide con el clínico en 56 de 57, el metal queda dentro de las máscaras y ningún corte del FOV lo trunca, fuera de los ya conocidos.
+
+**Condiciones, que en la tesis se escriben como parte del método:**
+1. **TS es herramienta, no referencia.** Nada de "ground truth"; decir: "anatomical masks from TotalSegmentator 2.18.0, quality-controlled per case".
+2. **Control de calidad por caso con criterio de exclusión explícito.** Se excluye o se revisa:
+   - el caso donde TS y R1 no coinciden en el nivel;
+   - la S1 cortada por el FOV (`z+`);
+   - la S1 vacía.
+3. **El metal existente.** TS etiqueta el tornillo como hueso: en un volumen con tornillo, `Dmax` mediría a través del implante. Hay que decidir si el corredor se mide solo en pelvis sin osteosíntesis o si los vóxeles > 2500 HU cuentan como ocupados. **Es una decisión nueva, anótala.**
+
+### #49 — Recorte, limpieza y versión
+
+**Recorte: el de 6 mm como principal y el de 3 mm como análisis de sensibilidad.**
+- El nivel no cambia en ningún caso, así que el recorte no afecta la selección de pacientes.
+- En tornillos, 6 mm va algo mejor: mediana del eje fuera 5.2% frente a 5.7%, y en `metal_0008` 5.8% frente a 17.5%.
+- El de 3 mm protege contra truncamientos que no aparecieron.
+- 6 mm es lo que corre TS por defecto: lo que otro grupo reproduciría sin configurar nada.
+- Las dos máscaras ya existen, así que medir `Dmax` con ambas cuesta cómputo, no trabajo. La diferencia se reporta como incertidumbre del método. Eso convierte un punto débil (#49) en rigor.
+
+**Limpieza de fragmentos: quitar componentes pequeños, no quedarse solo con el más grande.**
+- En CLINIC-metal hay fracturas pélvicas. Un sacro fracturado puede ser dos componentes grandes y legítimos, y "el más grande" borraría uno.
+- Regla propuesta: por estructura, conectividad 26, eliminar componentes por debajo de una fracción del volumen de esa estructura. El umbral hay que fijarlo y declararlo; no tengo cifra con respaldo.
+- Reportar cuántos vóxeles se quitaron y comprobar que desaparecen los 10 desplazamientos de caja.
+
+**Versión: quedarse con `total`.**
+- `total` ya está corrido (358 corridas), controlado y analizado.
+- `total_v3` no está evaluado: ni siquiera se verificó si trae las cuatro clases. Cambiar ahora obliga a repetir cómputo, control y análisis sin ninguna evidencia de mejora.
+- Se declara como trabajo futuro. Solo se reabre si `total` falla algo imprescindible.
+
+**Repetibilidad: opción (a).** Declarar la cota observada (≤ 16 vóxeles por máscara en 2 casos) y no invertir más tiempo: es cuatro órdenes de magnitud menor que el efecto del recorte.
+
+### #50 — La cifra de #48 y el brazo sin metal
+
+**Cifra: opción (b).** Retirar E9b como evidencia de densidad y no citar ni 38/43% ni 8/15% en la tesis.
+- El 38/43% ya está refutado por dos mecanismos: el error de nivel y la geometría de la sonda.
+- El 8/15% sale de la misma sonda con un filtro que yo fijé mirando los datos, sobre muestras pequeñas: sería repetir el error con otro número.
+- La medida correcta sale gratis del E9 rehecho: HU dentro de `sacrum` + `vertebrae_S1` a lo largo de las trayectorias candidatas. Es la región que importa para el corredor y para bone integrity.
+- Mientras tanto, lo defendible es cualitativo, con dos apoyos:
+  1. el tornillo real de `metal_0008` atraviesa ala a 0–100 HU;
+  2. un umbral de 150 HU dejaría fuera una fracción grande de la máscara del sacro en los tres grupos.
+
+**Brazo sin metal: no usarlo como contraste.**
+- Servía para afirmar "es el hueso, no el artefacto". Para eso haría falta comparar grupos emparejados por edad y sexo, con nivel auditado, y no los tienes.
+- La conclusión que el Objetivo 2 necesita ("hace falta segmentación rellena, no umbral") **no depende** de ese contraste. Retira la afirmación causal y quédate con la operativa.
+- No hace falta auditar la calibración a mano: el control de nivel de TS ya excluye los 7 casos con error si alguna vez se usan.
+
+**Consecuencia para bone integrity (Peters):** declarar que la regla de 150 HU no representa el esponjoso sacro hipodenso, o calcularla dentro de la máscara de TS. Decídelo al trasladar el protocolo (#17).
+
+**Nota del 2026-09-14 (el asistente, al registrar):** el "56 de 57" del fundamento se calculó antes de
+que la autora corrigiera la transcripción de `metal_0012` (`ok` -> `+1`), que era el caso discordante.
+La cifra vigente está en `experiments/objetivo2/ts_analisis.md`. La decisión no depende de ella.
+
+**Sigue abierto:** la fracción de la regla de limpieza (se mide con E10, `ts_componentes.py`) y el
+tratamiento del implante existente al medir `Dmax` (#52). Registrada por el asistente con orden
+explícita de la autora (2026-09-14).
+
+---
+
+## 2026-09-14 (2) — #52: corredor en pelvis sin osteosíntesis, con diferencia por implante; #35 cerrada
+
+**Decisión:** (a) el corredor del Objetivo 2 se mide en pelvis sin osteosíntesis (grupos 2 y 3).
+(c) En los volúmenes con implante se mide con el implante como hueso y como espacio ocupado, y se
+reporta la diferencia. La ocupación se calcula con 2500 HU (cota superior del corredor ocupado) y con
+semimáximo local por objeto (propuesta abierta de #22); cuál es la principal queda pendiente.
+#35 se cierra: se adopta el reparto por objetivo de `grupos.csv` (Obj 1 = grupos 1-3; Obj 2 =
+grupos 2 y 3; Obj 3 = grupo 3). No cierra la evidencia de artefacto de Obj 3 (#34) ni #43.
+
+**Por qué:** el Objetivo 2 necesita geometría ósea intacta y corredor libre (#35); la literatura
+mide en pelvis intactas, así que (a) hace comparables las cifras; (c) cuantifica cuánto cambia el
+corredor medido cuando TS etiqueta el implante como hueso (`metal_0008`: 11.3 frente a 10.0 mm).
+
+Registrada por el asistente con orden explícita de la autora (2026-09-14).

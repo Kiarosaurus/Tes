@@ -42,9 +42,9 @@ Cohorte de evaluacion (`grupo 1` de grupos.csv, una unidad por paciente): 65.
 - Marco de Kaiser **computable** (5 puntos hallados y en FOV): **57 de 65**.
 - Marco **computable y sin contaminacion** en los 5 puntos: **37 de 65**.
 - S1 con discrepancia > 10 mm entre metodo sagital y metodo del ala: 16 de 54 con ambos metodos.
-- **Nivel de S1 segun revisor clinico (medico ORL, referencia):** ok 53, +1 6, no hallado 4, otro 2; sin revisar 0.
-- Marco computable **con S1 correcto segun revisor clinico**: **49 de 65**; ademas sin contaminacion: **30 de 65**.
-- Acuerdo agente vs revisor clinico (65 casos): categoria exacta 0.923; ok/no-ok 0.938, kappa de Cohen 0.80.
+- **Nivel de S1 segun revisor clinico (medico ORL, referencia):** ok 51, +1 7, no hallado 4, otro 2, ? 1; sin revisar 0.
+- Marco computable **con S1 correcto segun revisor clinico**: **48 de 65**; ademas sin contaminacion: **29 de 65**.
+- Acuerdo agente vs revisor clinico (65 casos): categoria exacta 0.908; ok/no-ok 0.938, kappa de Cohen 0.81.
 - Auditoria visual del nivel de S1 (agente): ok 53, +1 nivel 4, no hallado 4, ambiguo 2, error grosero 2; sin auditar 0.
 - Marco computable **con S1 auditado ok**: **51 de 65**; ademas sin contaminacion: **32 de 65**.
 - S1 bajo la cresta (mm): mediana 35.5, rango 4.2 a 57.2.

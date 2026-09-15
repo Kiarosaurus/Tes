@@ -365,3 +365,99 @@ cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
 scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/ts_cajas_limpias experiments\objetivo2\outputs\
 scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/ts_cajas_limpias_*.log" experiments\objetivo2\outputs\ts_cajas_limpias\
 ```
+
+**Corrida real (2026-09-14):** job 51527, n006, 8 min, rc = 0; control 715 de 716 (la S1 vacia de `metal_0053`).
+Lectura en `docs/04-implicancias.md` (#49, E10b LEIDO).
+
+## E6b: VAE de SD 1.5 sobre los 178 CT (#36, #39; orden de la autora, 2026-09-15)
+
+GPU (RTX A6000, particion `gpu`). Mide `HU -> ventanas -> VAE -> HU` con el VAE de Stable Diffusion 1.5
+preentrenado y **sin reentrenar**, para `pub`, `LW20000` y `pub+asinh` (3 canales). `pub+MTW` no entra (4 canales).
+Diseno y controles en el docstring de `experiments/objetivo1/e6b_vae_sd15.py`.
+
+**Prueba local (2026-09-15, sin modelo: la PC no tiene `diffusers` ni GPU):**
+- `--vae identidad` sobre `CLINIC_0001` y `metal_0000`: control **12 de 12** frente a `e6c_techo_lw.csv`.
+- Con un valor de E6c alterado en 0.5 HU: **11 de 12**, y senala el valor cambiado. El control puede fallar.
+- `--vae eco` (tuberia de torch sin modelo): **12 de 12** frente a identidad.
+- Relleno de lados no multiplos de 8: el encoder recibe 512 y la salida vuelve a 510 x 507.
+- **El VAE real no se probo en local.** Su primer uso es la prueba corta del paso 3.
+
+**Paso 1: subir** (PowerShell local):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo1
+ssh kiara.balcazar@khipu.utec.edu.pe "mkdir -p ~/metalsynth/qc ~/metalsynth/modelos ~/metalsynth/data/e6b"
+scp e6b_vae_sd15.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp e6b_vae_sd15.py e6c_techo_lw.py e6c_techo_lw.csv kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+**Paso 2: entorno y pesos** (Khipu, **nodo de acceso**, que tiene internet; una sola vez):
+
+```bash
+cd ~/metalsynth
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda create -y -n e6b --clone totalseg          # no se toca el entorno de TS
+conda activate e6b
+pip install diffusers
+python -c "import torch, diffusers; print('torch', torch.__version__, 'diffusers', diffusers.__version__)"
+python -c "import os; from huggingface_hub import snapshot_download; print(snapshot_download('stable-diffusion-v1-5/stable-diffusion-v1-5', allow_patterns=['vae/config.json', 'vae/diffusion_pytorch_model.safetensors'], local_dir=os.path.expanduser('~/metalsynth/modelos/sd15')))"
+ls -l modelos/sd15/vae                          # config.json y diffusion_pytorch_model.safetensors
+HF_HUB_OFFLINE=1 python -c "from diffusers import AutoencoderKL; v = AutoencoderKL.from_pretrained('$HOME/metalsynth/modelos/sd15', subfolder='vae'); print('parametros', sum(p.numel() for p in v.parameters()))"
+```
+
+**Hecho (2026-09-15):** el VAE carga sin internet con **83 653 863 parametros**. El aviso
+`Cannot initialize model with low cpu memory usage because accelerate was not found` no cambia los pesos ni
+los resultados: solo carga el modelo con mas RAM, y en un job de 48G sobra. `accelerate` no se instalo.
+
+El repositorio `stable-diffusion-v1-5/stable-diffusion-v1-5` es publico y no restringido (API de Hugging Face,
+consultada el 2026-09-14), con licencia `creativeml-openrail-m`.
+
+**Paso 3: comprobar y prueba corta de 1 caso** (Khipu):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' e6b_vae_sd15.sbatch
+find data/extracted -name '*_data.nii*' | wc -l          # 178
+squeue -u $USER -o "%.8i %.14j %.9P %.2t %.10M %.8N %R"
+sbatch --test-only e6b_vae_sd15.sbatch
+P=$(sbatch --parsable --time=02:00:00 e6b_vae_sd15.sbatch --casos dataset7_CLINIC_metal_0000_data --out $HOME/metalsynth/data/e6b_prueba); echo "E6b_prueba=$P" | tee -a e6b_jobs.txt
+tail -f e6b_vae_$P.log                                    # Ctrl+C para salir
+```
+
+Si `--test-only` rechaza `--gres=gpu:rtxa6000:1` o da un inicio lejano, no cambies nada a ciegas: copia el
+mensaje (lecciones 1 y 2). En el log de la prueba, lee:
+- `nvidia-smi` y la linea de `torch`: que diga RTX A6000 y `cuda True`;
+- `...metal_0000_data: ok N s`: **segundos por volumen**. Con N x 178 por encima de ~20 h, lanza la cohorte con
+  `--lote 8` o en dos tandas (el script es reanudable);
+- `CONTROL identidad frente a E6c float: 6 de 6`. Si no es 6 de 6, **no lances la cohorte**;
+- `pub hueso ... vae oraculo X regla Y`: primera cifra real del VAE.
+
+**Prueba corta hecha (2026-09-15):** job 51539, nodo **ds001** (RTX A6000, 49 140 MiB), torch 2.14.0+cu130, diffusers
+0.40.0, rc = 0. `metal_0000` (350 cortes): 182.8 s; control **6 de 6**. Con 60 595 cortes axiales en los 178 volumenes
+(mediana 350, rango 187-388), la cohorte se estima en **~8.8 h** con `--lote 4`, sin cambiar nada. `--gres=gpu:rtxa6000:1`
+funciona y puede caer en g002 o en ds001 (las dos son RTX A6000).
+
+**Paso 4: cohorte completa** (Khipu):
+
+```bash
+cd ~/metalsynth
+B=$(sbatch --parsable e6b_vae_sd15.sbatch); echo "E6b=$B" | tee -a e6b_jobs.txt
+B=$(grep '^E6b=' e6b_jobs.txt | tail -1 | cut -d= -f2); echo $B     # recupera el id si reconectaste
+tail -f e6b_vae_$B.log                                     # una linea "ok" por volumen
+sacct -j $B --format=JobID,State,ExitCode,Elapsed,MaxRSS
+wc -l data/e6b/e6b_vae_sd15.csv                            # meta: 179 (178 + cabecera)
+cat data/e6b/e6b_vae_sd15_errores.csv                      # solo cabecera
+tail -30 e6b_vae_$B.log                                    # CONTROL (N de N) y ruta del .md
+```
+
+Si se corta (tiempo, nodo), relanza el mismo `sbatch`: salta los volumenes ya escritos y rehace control e informe.
+
+**Paso 5: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e6b experiments\objetivo1\outputs\
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e6b_prueba experiments\objetivo1\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/e6b_vae_*.log" experiments\objetivo1\outputs\e6b\
+```

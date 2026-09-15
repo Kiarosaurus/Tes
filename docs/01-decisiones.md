@@ -754,3 +754,57 @@ semimáximo es coherente con #22 (2500 HU solo para cribado); recentrar con el n
 la entrada de S1 y queda como sensibilidad.
 
 Registrada por el asistente con orden explícita de la autora (2026-09-14).
+
+---
+
+## 2026-09-14 (4) — #49: recorte principal de 6 mm; se retira la preferencia por 3 mm
+
+**Decisión** (recomendación del asistente del 2026-09-14, aceptada por la autora):
+- Se mantiene el recorte por defecto de TotalSegmentator (6 mm) como principal. Se fijó el 2026-09-14, antes
+  de correr E9-TS y de ver `D_TS`. El recorte robusto (3 mm, `--robust_crop`) queda como análisis de
+  sensibilidad.
+- Se retira la preferencia por 3 mm, que se apoyaba solo en el README de TotalSegmentator (no citable).
+- Se reabre solo si la revisión de láminas muestra un fallo del recorte de 6 mm.
+
+**Por qué:** cambiar el principal después de ver las cifras sería una decisión post hoc, y los datos no lo
+piden. En la cohorte del Objetivo 2 (72 pacientes), la mediana de `D(6) − D(3)` es 0.0 mm y los viables a
+10 mm son 29 con 6 mm frente a 27 con 3 mm. E10b (job 51527) no muestra un fallo sistemático de ninguno de
+los dos recortes. De las 11 estructuras con la caja desplazada más de 10 mm, 5 se deben a islas del recorte
+de 3 mm, 4 a islas del de 6 mm y 2 a los dos.
+
+Registrada por el asistente con orden explícita de la autora (2026-09-14).
+
+---
+
+## 2026-09-14 (5) — Corrección de la justificación de F (decisión 2026-09-14 (3))
+
+**Decisión** (recomendación del asistente del 2026-09-14, opción (a) de #49, aceptada por la autora):
+- Se mantiene F = 0.001.
+- Queda refutada la frase de la decisión 2026-09-14 (3) "0.001 es la menor probada que quita las islas de los
+  10 desplazamientos de caja". Lo mostró E10b (job 51527): con F = 0.001 quedan 4 estructuras con la caja
+  desplazada más de 10 mm entre recortes, 1 original y 3 creadas por la limpieza, y ninguna F probada las
+  elimina todas.
+- Justificación vigente: la limpieza es higiene de máscara, y `D_TS` y la viabilidad son idénticas para F en
+  {0, 0.001, 0.01, 0.05}. Los desplazamientos de caja entre recortes se declaran.
+
+**Por qué:** pasar a F = 0.01, que deja 1 residual, sería la segunda elección post hoc del mismo parámetro y no
+cambia ningún resultado del corredor. La frase de `main.tex` sobre la limpieza sigue siendo cierta.
+
+Registrada por el asistente con orden explícita de la autora (2026-09-14).
+
+---
+
+## 2026-09-15 — #53: segundo juicio del nivel de S1 en ITK-SNAP
+
+**Decisión** (de la autora, 2026-09-15):
+- El revisor clínico revisa los **61 casos** con punto de S1, no solo los 15 dudosos, sobre el volumen completo
+  en ITK-SNAP. Usa la planilla ciega `experiments/objetivo2/r1_revision_itksnap_revisor.csv` y sus instrucciones
+  `r1_revision_itksnap_revisor.md`.
+- Las categorías son las mismas del juicio sobre el mosaico (`ok`, `+1`, `otro`, `?`), más un campo de vértebra
+  de transición lumbosacra.
+- El juicio nuevo se guarda aparte y no sobrescribe `r1_auditoria_s1_clinico.csv`.
+
+**Por qué:** el mosaico sagital de ±60 mm no permite contar niveles ni ver una vértebra de transición (#53,
+Hallazgo 1). Revisar los 61 evita tener que mezclar controles para no revelarle al revisor cuáles son los dudosos.
+
+Registrada por el asistente con orden explícita de la autora (2026-09-15).

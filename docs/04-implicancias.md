@@ -2226,6 +2226,34 @@ por paciente. Sin nueva implicancia abierta.
 
 ---
 
+### 12 — ACTUALIZACION tras leer ebraheim1993 (2026-09-14)
+
+- **Veredicto:** Ebraheim 1993 **no publica ninguna tasa de malposicion**. Es un reporte de un caso: 1 paciente,
+  2 tornillos canulados de titanio y 0 malposiciones reales (encabezado "Case Reports", p. 617). La unica
+  frecuencia es cualitativa: *"while a rare occurrence, can result in significant morbidity"* (Discussion, p. 617).
+  No es fuente del 2%, del 15% ni de la banda.
+- **Cadena:** de las cuatro refs. de Hinsche (5, 11, 20, 24) quedan leidas Keating 1999 (5/38 pacientes, 13%) y
+  Ebraheim 1993 (sin tasa). Sin leer: Routt 1997 y Templeman 1996 (este sin PDF). Ninguna fuente leida escribe los
+  extremos de la banda.
+- **El "pitfall":** error de proyeccion en la radiografia AP. Por *"superimposition of the posterior S1 foramen over
+  the sacral ala"* (p. 617), un tornillo en hueso parece entrar al foramen S1; la CT intraoperatoria lo mostraba en
+  hueso. Conclusion: *"an intraoperative or postoperative AP radiograph alone is insufficient"* (p. 617). Criterio
+  binario y cualitativo, sin mm.
+- **Lectura interpretativa (no es cifra del paper):** las tasas historicas medidas solo con radiografia, como el 13%
+  de Keating, podrian incluir falsos positivos foraminales. El paper no cuantifica ese sesgo.
+- **Compatibilidad con la tesis:** SAP se mide sobre CT y el benchmark usa las distribuciones de
+  `zwingmann2009navigated`, medidas por TC postoperatoria. El paper no discute grosor de corte, volumen parcial ni
+  artefacto metalico (NO ENCONTRADO EN EL PDF). El rango ya esta retirado. No cambia `main.tex`, `00-tesis.md`,
+  alcance, supuestos, baseline ni SAP.
+- **Opcional, lo decide la autora:** si algun dia se relata la historia del 2%-15%, o se menciona el sesgo de la
+  evaluacion solo radiografica como limitacion de las tasas historicas, Ebraheim 1993 sirve solo como fuente
+  cualitativa. No esta en `refs.bib` (decision de la autora del 2026-09-14: solo ficha).
+- **Ficha:** `docs/literatura/ebraheim1993.md`, nivel propuesto N3.
+
+**Evaluacion de impacto:** sin implicancia nueva abierta; #12 no se reabre.
+
+---
+
 ## 29 — TotalSegmentator como inicializacion anatomica, no como corredor — ABIERTA
 
 - **Origen:** evaluacion solicitada por la autora el 2026-09-08 contra la documentacion
@@ -4747,6 +4775,174 @@ E9-TS: 152 casos, 0 errores, 2352 filas.
   (2) las fuentes de la autora en `refs/raw/` y `papers/`; (3) orden explicita para escribir la decision en
   `01-decisiones.md` y cambiar `main.tex` (Objetivo 2 y cifras del parrafo).
 - **Tipo:** METODO / REDACCION. **Pendiente de la autora.**
+
+### 49 — ACTUALIZACION 2026-09-14 (9): la preferencia por 3 mm se apoya solo en el README, y cambiar el principal ahora seria post hoc
+
+- **Dato de la autora (2026-09-14):** eligio `robust3mm` basandose solo en el README de TotalSegmentator, que no es
+  citable sin alta (#55).
+- **Orden temporal:** "Recorte principal: default 6 mm" se decidio (`01-decisiones.md`, 2026-09-14) **antes** de correr
+  E9-TS (51505) y de ver `D_TS`. Pasar a 3 mm despues de ver las cifras cambia el analisis principal post hoc: habria que
+  declararlo, como ya se hizo con F y `ocupado_semimax`.
+- **Los datos no piden el cambio:** mediana de `D(6) - D(3)` 0.0 mm; viables 27 (3 mm) frente a 29 (6 mm) de 72; 2 casos
+  cruzan 10 mm. La propia decision dice que el de 3 mm "protege contra truncamientos que no aparecieron".
+- **Buscar papers no se recomienda.** El modelo de recorte es un detalle de implementacion de una version del software.
+  La unica fuente leida con un "modelo de 3 mm" (`wasserthal2023`) habla de otro modelo y le da peor Dice (0.840), y la
+  literatura esta cerrada por saturacion.
+- **Opciones:**
+  - (a) mantener 6 mm como principal (pre-especificado, ya escrito en `main.tex`) y 3 mm como sensibilidad; se cierra la
+    preferencia;
+  - (b) pasar a 3 mm y declarar el cambio como post hoc, con su motivo;
+  - (c) pasar a 3 mm solo si E10b o la revision de laminas muestran un fallo del recorte de 6 mm; el cambio lo motiva
+    entonces un fallo observado.
+- **Recomendacion del asistente:** (a), con (c) como condicion de reapertura. **Pendiente de la autora. No aplicado.**
+- **DECIDIDA 2026-09-14 (4):** la autora elige (a). Registrada en `01-decisiones.md` por el asistente con orden
+  explicita. `main.tex` ya decia "default crop; robust crop as sensitivity analysis": sin cambios.
+
+### 49 — E10b LEIDO (2026-09-14, job 51527): F = 0.001 no elimina todos los desplazamientos de caja; cae la justificacion escrita de F, no el resultado del corredor — ABIERTA
+
+- **Corrida:** n006, 8 min 5 s, rc = 0; 179 casos; 2864 filas + cabecera (meta 2865); el CSV de errores solo
+  trae la cabecera. En `experiments/objetivo2/outputs/ts_cajas_limpias/`.
+- **Control F = 0 frente a `ts_qc.csv`: 715 de 716.** La unica diferencia es `metal_0053` `vertebrae_S1`,
+  vacia con los dos recortes (NaN en las dos columnas; ya documentada en `ts_cohorte.md`). El control vale.
+  F = 0 reproduce exactamente los 10 casos / 11 estructuras de `ts_analisis.md`.
+- **Estructuras con caja desplazada entre recortes, por F** (0 / 0.001 / 0.01 / 0.05):
+  - > 10 mm: **11 / 4 / 1 / 1**;
+  - > 5 mm: 17 / 10 / 9 / 9;
+  - > 2 mm: 79 / 63 / 59 / 59;
+  - mediana: 1.0 mm con toda F.
+- **Con F = 0.001:**
+  - 10 de las 11 originales bajan a <= 2.1 mm.
+  - Queda `CLINIC_0022` sacro en 20.8 mm (78.2 con F = 0). Sus componentes de 596, 764 y 486 voxeles (fraccion
+    0.00195-0.00307) solo se quitan con F = 0.01, que lo deja en 0.0.
+  - **Aparecen 3 desplazamientos nuevos, creados por la propia limpieza:**
+    - `metal_0015` S1: 0.8 -> 18.8 mm;
+    - `metal_0025` S1: 1.6 -> 36.4 mm;
+    - `CLINIC_0043` sacro: 1.6 -> 11.7 mm.
+  - **Mecanismo de los nuevos:** un fragmento con fraccion cercana a F se quita en un recorte y no en el otro.
+    - En `metal_0025`, con 3 mm se quitan 94 voxeles (componente de 70, fraccion 0.00095); con 6 mm, 148 voxeles,
+      pero solo con F = 0.01.
+    - En `metal_0015`, con 6 mm se quitan 8 voxeles; con 3 mm, un componente de 49 voxeles (fraccion 0.00312),
+      pero solo con F = 0.01.
+    - `CLINIC_0043` sigue en 11.7 mm con F = 0.05. Con 6 mm se quitan 248 voxeles y la caja pierde 10.7 mm en y;
+      con 3 mm se quitan 150 y la caja no cambia. **Inferido, sin verificar en mascara:** esa region, que con 6 mm
+      es un componente aparte, con 3 mm esta dentro del componente principal.
+- **Que recorte origina las 11 originales** (el recorte cuya caja cambia al limpiar): 3 mm en 5, 6 mm en 4 y los dos
+  en 2. No hay patron de fallo de un recorte ni de truncamiento.
+- **Efecto sobre el corredor: ninguno.** En los 4 residuales, `D_TS` es identico para F en {0, 0.001, 0.01, 0.05},
+  con los dos recortes y todas las politicas:
+  - `CLINIC_0022`: 4.7 mm;
+  - `CLINIC_0043`: 11.7 mm;
+  - `metal_0015`: 7.4 / 8.3 mm (6 / 3 mm); `sin techo`, S1 en el borde del FOV;
+  - `metal_0025`: 9.3 / 10.0 mm con `hueso`.
+  `CLINIC_0022` y `CLINIC_0043` son del grupo 3 y concordantes de nivel. Coincide con lo que ya habia medido E9-TS.
+- **Que cae:** la justificacion de la decision 2026-09-14 (3): *"0.001 es la menor probada que quita las islas de los
+  10 desplazamientos de caja"*. Verificado: quita 10 de 11 estructuras, deja 1 y crea 3; ninguna F probada deja 0.
+- **Que no cae:** la frase de `main.tex` *"Component cleaning changed no measurement in this cohort at any tested
+  fraction up to 5%"* sigue siendo cierta y no afirma nada sobre cajas.
+- **Opciones:**
+  - (a) mantener F = 0.001 y reescribir la justificacion. La limpieza es higiene de mascara; `D_TS` y la viabilidad
+    no dependen de F; los desplazamientos de caja entre recortes no desaparecen con ninguna F probada y se declaran.
+  - (b) pasar a F = 0.01, que deja 1 residual. Seria la segunda eleccion post hoc del mismo parametro, y sin efecto
+    sobre el resultado.
+- **Recomendacion del asistente:** (a).
+- **DECIDIDA 2026-09-14 (5):** la autora elige (a). Correccion escrita en `01-decisiones.md` por el asistente con
+  orden explicita. `main.tex` sin cambios. Seccion CERRADA.
+- **Relacion con el recorte:** E10b no muestra un fallo del recorte de 6 mm. La condicion de reapertura de la decision
+  2026-09-14 (4) queda solo en la revision de laminas.
+
+### 49 — Tablas versionadas y recalculo de `main.tex` (2026-09-15): 11 de 12 cifras coinciden; "changed no measurement" dice mas de lo medido — ABIERTA
+
+- **Tablas copiadas** a `experiments/objetivo2/` por orden de la autora, con SHA256 identico al de `outputs/`:
+  `e9ts_corredor.csv`, `e9ts_resumen.md`, `ts_cajas_limpias.csv` y `ts_cajas_limpias_control.csv`. Cierra el pendiente
+  "Tablas citadas sin version" (ronda (5)) para el parrafo `Corridor measurement on the local cohort`.
+- **`maintex_cifras.py`** rehace las 12 cifras de ese parrafo solo desde tablas versionadas (`e9ts_corredor.csv` y
+  `grupos.csv`) y busca cada frase literal en `main.tex`. Escribe `maintex_cifras.md`. **11 de 12 coinciden**:
+  103, 91, 72, 11 de 34, 7 de 57, 1 por FOV, 9.5 (7.4-11.7), 29 y 27 de 72, 0.42, 53.8 -> 40.4% en 52 y la misma
+  proporcion con 2500 HU.
+- **DIFIERE:** *"Component cleaning changed no measurement in this cohort at any tested fraction up to 5%"*.
+  - En `CLINIC_0012` (grupo 3, 6 mm), `D_IS_izq_max_mm` pasa de 11.4 mm (F = 0) a 11.2 mm (F >= 0.001; 165 voxeles
+    quitados).
+  - `D_TS` (9.6 mm) y la viabilidad no cambian.
+  - `main.tex` no reporta los corredores iliosacros.
+- **Origen:** la frase se escribio en la ronda (6) desde la seccion 3 de `e9ts_resumen.md`, que solo compara `D_TS`. Es el
+  patron vigilado: un enunciado mas amplio que el control que lo respalda. La decision 2026-09-14 (5) dice "`D_TS` y la
+  viabilidad", y eso si es cierto.
+- **Texto propuesto** (no aplicado, regla 4): *"Component cleaning changed neither the transsacral corridor diameter nor
+  its 10~mm viability in this cohort at any tested fraction up to 5\%;"*. Si se aplica, hay que cambiar la frase 9 de
+  `maintex_cifras.py` para que compruebe solo `D_TS` y la viabilidad.
+- **Tipo:** REDACCION. **Pendiente de la autora.**
+
+### 49 — Revision dirigida de laminas: plantilla lista (2026-09-15)
+
+- `experiments/objetivo2/e9ts_revision_laminas_autora.csv` (16 casos: 14 con |D(6) - D(3)| >= 1 mm, mas `CLINIC_0022` y
+  `CLINIC_0043` por E10b) y la guia `e9ts_revision_laminas.md`. Las columnas `veredicto` y `nota` las llena solo la autora.
+- Un `fallo_6mm` activa la condicion de reapertura de la decision 2026-09-14 (4).
+
+### 36 y 39 — E6b PREPARADO (2026-09-15): VAE de SD 1.5 sin reentrenar sobre los 178 CT; probado en local sin modelo — ABIERTA
+
+- **Orden de la autora:** preparar E6b con los 178 volumenes (diseno minimo: solo 3 canales, sin reentrenar).
+- **Scripts:** `experiments/objetivo1/e6b_vae_sd15.py` + `.sbatch`; comandos en `KHIPU.md`, seccion E6b.
+- **Mide** `pub`, `LW20000` y `pub+asinh`. `pub+MTW` no se mide, porque sus 4 canales no entran en el VAE sin modificarlo.
+- **Elecciones de medicion, declaradas en el script** (no son decisiones de la tesis):
+  - pesos `stable-diffusion-v1-5/stable-diffusion-v1-5`, subcarpeta `vae` (repositorio publico, no restringido; API de
+    Hugging Face consultada el 2026-09-14);
+  - cortes axiales 2D a tamano nativo, latente = media de la posterior;
+  - ROI y submuestreo de E6c;
+  - dos decodificadores: `oraculo` (mejor canal con el HU verdadero, comparable con E6c) y `regla` (sin verdad: el canal
+    mas estrecho no saturado, EPS = 0.01).
+- **Supuesto a vigilar:** que "Stable Diffusion 1.5 backbone" implique este VAE es una inferencia (#36/#39). E6b mide ese
+  candidato; no lo adopta.
+- **Pruebas locales:**
+  - identidad 12 de 12 frente a E6c; con un valor alterado da 11 de 12 (el control puede fallar);
+  - `eco` 12 de 12 (tuberia de torch sin modelo);
+  - relleno de lados no multiplos de 8 correcto.
+  - **El VAE real no se probo en local** (sin `diffusers`): su primer uso es la prueba corta de 1 caso en Khipu.
+- **Criterio de lectura, fijado antes de ver resultados:**
+  - Si `vae regla` en hueso falla el umbral de 25 HU en una parte sustancial de los volumenes con las tres
+    configuraciones, el VAE de SD 1.5 sin ajustar no pasa el Go/No-Go con ninguna ventana. La decision pasa a las
+    opciones 2-4 de #36/#39.
+  - Si pasa con `pub+asinh`, esa configuracion es viable con SD 1.5 tal cual, y queda por decidir si la ventaja de
+    `pub+MTW` en E6c justifica adaptar el encoder.
+- **Pendiente:** correr en Khipu. **Sin decision de la autora sobre #36/#39.**
+
+### 49 — Texto de la limpieza APLICADO a `main.tex` (2026-09-15, orden explicita de la autora)
+
+- `Corridor measurement on the local cohort`: "changed no measurement" pasa a *"changed neither the transsacral corridor
+  diameter nor its 10~mm viability in this cohort at any tested fraction up to 5\%"*.
+- `maintex_cifras.py`: la frase 9 ahora comprueba solo `D_TS` y la viabilidad, y el informe lista aparte las medidas que si
+  cambian (`D_IS_izq_max_mm` en `CLINIC_0012`). Resultado: **12 de 12 cifras coinciden**.
+- Compila: 4 paginas, 42 referencias, 0 citas indefinidas, los 2 avisos de BibTeX ya conocidos.
+- La seccion "Tablas versionadas y recalculo" de #49 queda **CERRADA**.
+
+### 53 — La autora decide: el revisor mira los 61 casos en ITK-SNAP (2026-09-15)
+
+- **Decision (en el chat):** revision de los **61** casos con punto de S1, no solo de los 15. Asi no hace falta mezclar
+  controles para no revelar los dudosos. Falta escribirla en `01-decisiones.md` (regla 3; texto propuesto en el chat).
+- **Preparado:**
+  - `experiments/objetivo2/r1_revision_itksnap_revisor.csv`: 61 filas desde `r1_cortes_itksnap.csv`; solo cortes desde 0
+    y desde 1, mundo RAS/LPS y HU; columnas vacias `convencion_indices`, `HU_cursor`, `juicio_nivel`,
+    `vertebra_transicion` y `comentario`;
+  - `r1_revision_itksnap_revisor.md`: instrucciones. Las categorias son las del juicio sobre el mosaico (`ok`, `+1`,
+    `otro`, `?`), para poder compararlas, y hay un campo nuevo de vertebra de transicion que responde al Hallazgo 1.
+- **Ciega:** sin juicios del clinico, del agente ni de TS. El juicio nuevo va a una planilla aparte y no sobrescribe
+  `r1_auditoria_s1_clinico.csv`.
+- **Al volver:** comparar con el juicio sobre el mosaico y con TS, por categoria. Si cambia algun `ok`/`+1` de los 65,
+  cambian las cifras 48/29 de `Field limitation` y el 57/57 de TS: revisar `main.tex` entonces.
+- **Estado:** #53 sigue **ABIERTA** hasta recibir la planilla.
+- **Decision escrita** en `01-decisiones.md` (2026-09-15) por el asistente, con orden explicita de la autora.
+- **Frase "confirmed the S1 level on every patient" (2026-09-15):** la autora elige esperar el juicio en ITK-SNAP
+  antes de aplicar el texto propuesto ("judged ... (undecidable in one)"). La frase sigue sin ser literal en
+  `main.tex` hasta entonces. Se reescribe una sola vez junto con 48/29 y 57/57. **Pendiente.**
+
+### 36 y 39 — E6b: prueba corta en Khipu (2026-09-15, job 51539) — primer uso del VAE real
+
+- **Corrida:** ds001, RTX A6000; `metal_0000`; 182.8 s; control identidad frente a E6c **6 de 6**; rc = 0.
+- **Unica cifra vista** (log; `pub`, hueso): identidad **156.57** HU, `vae oraculo` **222.67**, `vae regla` **291.16**.
+  - Es un solo volumen, con metal, y con `pub`, que ya falla por el techo de LW. **No se interpreta** y no cambia el
+    criterio de lectura fijado antes.
+  - Solo confirma que el VAE agrega error medible sobre la cota de la ventana. Las configuraciones que importan
+    (`LW20000`, `pub+asinh`) estan en el `.md` de la prueba, que no se ha leido.
+- **Tiempo:** la cohorte se estima en ~8.8 h (60 595 cortes). Siguiente: lanzar la cohorte.
 
 ### Infraestructura — sin implicancia sobre la tesis
 

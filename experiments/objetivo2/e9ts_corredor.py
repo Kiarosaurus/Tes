@@ -49,7 +49,7 @@ en el sagital del S1 de R1, 81 direcciones, tramo que sale por el ilion al menos
 4. Densidad sobre el eje del mejor corredor (sin 8 mm por extremo): mediana HU y fraccion <= 150 HU de
    los puntos del eje dentro de la union sin cierre y sin voxeles ocupados.
 
-La lamina (6 mm, F = 0, `hueso`) muestra un corte coronal: **proyecta el eje e ignora su inclinacion en
+La lamina (recorte de `--modo-laminas`, por defecto `default6mm`; F = 0, `hueso`) muestra un corte coronal: **proyecta el eje e ignora su inclinacion en
 y**. Para saber si el corredor pasa por el implante hay que mirar las columnas, no la lamina.
 
 Lee `r1_landmarks.csv`, `r1_estados.csv`, `ts_nivel_s1.csv`, las mascaras `<ts-dir>/<caso>/<modo>/` y
@@ -61,6 +61,8 @@ USO
 Khipu (ver `KHIPU.md`, "Noche automatica"):
     python e9ts_corredor.py --ts-dir ~/metalsynth/data/ts_total --ct-dir ~/metalsynth/data/ts_input \
         --refs-dir . --out-dir ~/metalsynth/data/e9ts --workers 16 --laminas
+Khipu, laminas con el recorte de 3 mm (preferencia de la autora, 2026-09-14; ver `KHIPU.md`, E9-TS 3 mm):
+    python e9ts_corredor.py ... --out-dir ~/metalsynth/data/e9ts_3mm --laminas --modo-laminas robust3mm
 Local, prueba sobre el piloto:
     python e9ts_corredor.py --ts-dir ../../data/derivados/ts_piloto --ct-dir ../../data \
         --out-dir outputs/e9ts_prueba --casos metal_0008 --laminas
@@ -248,7 +250,7 @@ def buscar(hu: np.ndarray, hueso: np.ndarray, densidad: np.ndarray, origen: np.n
 
 
 def procesar(caso: str, ruta_ct: Path, ts_dir: Path, r1: pd.Series, meta: dict,
-             dir_laminas: Path | None) -> tuple[list[dict], list[dict]]:
+             dir_laminas: Path | None, modo_laminas: str = 'default6mm') -> tuple[list[dict], list[dict]]:
     """Todas las variantes (recorte x F x politica de metal) de un caso."""
     filas, perfiles = [], []
     ct, zoom = cargar(ruta_ct)
@@ -302,7 +304,7 @@ def procesar(caso: str, ruta_ct: Path, ts_dir: Path, r1: pd.Series, meta: dict,
                     perfiles += [{'Caso': caso, 'modo': modo, 'F_limpieza': frac, 'politica_metal': politica,
                                   'z_rel_S1_mm': round(float(z - s1[2]), 1), 'D_TS_mejor_mm': round(float(d), 1)}
                                  for z, d in zip(zs, perfil)]
-                    if dir_laminas is not None and modo == 'default6mm' and frac == 0.0 and politica == 'hueso':
+                    if dir_laminas is not None and modo == modo_laminas and frac == 0.0 and politica == 'hueso':
                         lamina(hu, zoom, origen, mejor, zs, perfil, float(s1[2]), dir_laminas / f'{caso}.png',
                                f'{caso} (TS {modo}, F=0, metal como hueso): D_TS max {res["D_TS_max_mm"]} mm; '
                                f'IS izq {res["D_IS_izq_max_mm"]} / der {res["D_IS_der_max_mm"]} mm '
@@ -320,9 +322,9 @@ def procesar(caso: str, ruta_ct: Path, ts_dir: Path, r1: pd.Series, meta: dict,
 
 def trabajo(args: tuple) -> tuple[str, list[dict], list[dict]]:
     """Envoltura para el pool: un caso roto devuelve una fila de error."""
-    caso, ruta, ts_dir, r1, meta, dir_laminas = args
+    caso, ruta, ts_dir, r1, meta, dir_laminas, modo_laminas = args
     try:
-        filas, perfiles = procesar(caso, ruta, ts_dir, r1, meta, dir_laminas)
+        filas, perfiles = procesar(caso, ruta, ts_dir, r1, meta, dir_laminas, modo_laminas)
         return caso, filas, perfiles
     except Exception as exc:  # noqa: BLE001
         traceback.print_exc()
@@ -342,6 +344,8 @@ def main() -> None:
     parser.add_argument('--workers', type=int, default=1)
     parser.add_argument('--max', type=int, default=None)
     parser.add_argument('--laminas', action='store_true')
+    parser.add_argument('--modo-laminas', choices=MODOS, default='default6mm',
+                        help='recorte de la lamina por caso (F = 0, hueso); no cambia el CSV')
     args = parser.parse_args()
 
     refs, out = args.refs_dir.expanduser(), args.out_dir.expanduser()
@@ -372,7 +376,7 @@ def main() -> None:
                 'clinico': niv.loc[c, 'auditoria_S1_clinico'], 'estado_TS': niv.loc[c, 'estado_TS'],
                 'fov7': bool((cresta == 'fuera de FOV').any()) and niv.loc[c, 'cohorte'] == 'evaluacion',
                 'S1_toca_fov': niv.loc[c, 'S1_toca_fov']}
-        pendientes.append((c, rutas[c], ts_dir, r1.loc[c], meta, dir_laminas))
+        pendientes.append((c, rutas[c], ts_dir, r1.loc[c], meta, dir_laminas, args.modo_laminas))
     if args.max is not None:
         pendientes = pendientes[:args.max]
     print(f'{len(casos)} casos con S1; {len(hechos)} ya hechos; {len(pendientes)} en esta corrida; '

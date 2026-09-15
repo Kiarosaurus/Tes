@@ -50,6 +50,16 @@ Si al QC le falta alguna dependencia, instálala en el nodo de acceso con el ent
 `a-tesis` pone topes **por usuario**, sumando todos sus jobs: 32 CPU, 98G, 40 shards y 3 jobs.
 Cuenta: `--account=tesis`.
 
+**Actualizacion 2026-09-14 (`sinfo`, `scontrol show node`, `sacctmgr`):**
+- ag001 declara ademas una **A100 entera** (`gpu:a100:1`, `shard:a100:16`) junto a las MIG (`3g.20gb`,
+  `2g.10gb`, `1g.5gb` x2); `gres/gpu=5`, `gres/shard=80`.
+- g001 `tesla` = 1 GPU, `shard:16`; modelo y memoria sin verificar (`nvidia-smi` dentro de un job).
+- `a-tesis` muestra `MaxTRESPU=cpu=32,gres/shard=40,mem=98G`, `MaxJobsPU=3`, `MaxWall=1-00:00:00`: **no pone
+  tope a `gres/gpu`**. Pedir `--gres=gpu:rtxa6000:1` no descuenta shards; confirmar con `sbatch --test-only`
+  antes del primer uso.
+- Foto de ocupacion ese dia: g002 (A6000) y g001 (tesla) `IDLE`; ds001 con su A6000 tomada por 24 h;
+  la A100 entera de ag001 tomada por 2 dias y un shard de ag001 por 4 h.
+
 ## Lecciones (cada una ya costó un job)
 
 1. **`--time` mayor que el MaxWall de la partición** deja el job en `PD` con
@@ -245,3 +255,113 @@ scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/*e9ts*_*.log" "kiara.balcazar
 
 `experiments/**/outputs/` está ignorado por git. Si alguna tabla se va a citar, se copia aparte a
 `experiments/objetivo2/` y se versiona, igual que las de E8 y E9b.
+
+**Corrida real (2026-09-14):** E9-TS 51505 completo (152 casos, 0 errores). E10 51504 murio por SIGKILL
+externo (`ExitCode 0:9`, 6:47, MaxRSS 908 MB) mientras E9-TS corria en el mismo n006; relanzado solo como
+51522: 179 casos, 0 errores, 16 min. Resumen 51523. Antes de relanzar hubo que reponer a mano la cabecera
+del CSV de errores (el proceso muerto no la vuelca).
+
+## E9-TS con 3 mm: laminas, repetibilidad y resumen (preferencia de la autora, 2026-09-14)
+
+**Las cifras con `robust3mm` ya existen** en `data/e9ts/e9ts_corredor.csv` (51505 calculo los dos recortes para
+los 152 casos), igual que E10 y E10b. Pasar el principal a 3 mm no exige recalcular nada. Esta corrida hace lo
+que falta: laminas de QC con 3 mm (51505 solo las hizo con 6 mm), resumen con la seccion 5 en 3 mm y un
+**control de repetibilidad** (el CSV nuevo debe ser identico al de 51505; si difiere, el log dice `DIFIERE`).
+51505 tardo 6 min 39 s con 16 CPU. No lances esto a la vez que E10b en n006 (el primer E10 murio con E9-TS al lado).
+
+**Paso 1: subir** (PowerShell local):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo2
+scp e9ts_3mm.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp e9ts_corredor.py e9ts_resumen.py e9ts_repetibilidad.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+**Paso 2: comprobar y lanzar** (Khipu):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' e9ts_3mm.sbatch
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate totalseg
+cd qc && python e9ts_corredor.py --help | grep -A1 modo-laminas && cd ..   # debe listar la opcion nueva
+ls qc/e9_corredor.py qc/r1_landmarks.py qc/ts_piloto_qc.py qc/e9b_densidad_s1.py qc/r1_landmarks.csv qc/r1_estados.csv qc/ts_nivel_s1.csv
+ls -l data/e9ts/e9ts_corredor.csv                        # la corrida 51505, contra la que se compara
+squeue -u $USER -o "%.8i %.14j %.9P %.2t %.10M %.8N %R"   # nada corriendo en n006
+sbatch --test-only e9ts_3mm.sbatch
+T=$(sbatch --parsable e9ts_3mm.sbatch); echo "E9TS_3mm=$T" | tee -a noche_e9ts_jobs.txt
+```
+
+**Paso 3: seguimiento y cierre:**
+
+```bash
+tail -f e9ts_3mm_$T.log                                  # Ctrl+C para salir
+sacct -j $T --format=JobID,State,ExitCode,Elapsed,MaxRSS
+grep -A12 "== REPETIBILIDAD" e9ts_3mm_$T.log             # debe decir IDENTICO
+ls data/e9ts_3mm/laminas | wc -l                         # 152
+grep -A6 "^## 5" data/e9ts_3mm/e9ts_resumen.md
+```
+
+**Paso 4: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e9ts_3mm experiments\objetivo2\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/e9ts_3mm_*.log" experiments\objetivo2\outputs\e9ts_3mm\
+```
+
+**Corrida real (2026-09-14):** job 51529, n006, 16 CPU, 6 min 41 s (18:03:34-18:10:15), rc=0. 152 casos, 152 laminas
+con 3 mm. **Repetibilidad frente a 51505: IDENTICO, 2352 filas x 43 columnas, tolerancia 0.** Resumen con la seccion 5
+en `robust3mm`. Traido a `experiments/objetivo2/outputs/e9ts_3mm/`.
+
+## E10b: cajas tras la limpieza (verifica la decision 2026-09-14 (3))
+
+Solo CPU (`big-mem`). Recalcula las cajas de las 358 mascaras con F = 0, 0.001, 0.01 y 0.05 y la
+diferencia de caja entre recortes. **Control:** con F = 0 debe reproducir `dif_caja_3v6_max_mm` de
+`ts_qc.csv`; si no, el resto no vale. Si no encuentra filas en comun imprime `CONTROL NO EJECUTADO`.
+Prueba local (2026-09-14, piloto `CLINIC_0002` + `metal_0008`): 10.8 s los 2 casos; control 8 de 8 contra
+`ts_piloto_qc.csv`. En Khipu se espera del orden de E10 (16 min).
+
+**Paso 1: subir** (PowerShell local):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo2
+scp ts_cajas_limpias.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp ts_cajas_limpias.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+**Paso 2: comprobar y lanzar** (Khipu):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' ts_cajas_limpias.sbatch
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate totalseg && python -c "import nibabel, numpy, scipy, pandas; print('ok')"
+find data/ts_total -name .ok | wc -l                   # 358
+ls -l data/ts_total_qc/ts_qc.csv                       # debe existir
+squeue -u $USER -o "%.8i %.14j %.9P %.2t %.10M %.8N %R"   # que no quede nada corriendo en n006
+sbatch --test-only ts_cajas_limpias.sbatch
+B=$(sbatch --parsable ts_cajas_limpias.sbatch); echo "E10b=$B" | tee -a noche_e9ts_jobs.txt
+```
+
+**Paso 3: seguimiento y cierre:**
+
+```bash
+tail -f ts_cajas_limpias_$B.log                        # una linea "ok" por caso; Ctrl+C para salir
+sacct -j $B --format=JobID,State,ExitCode,Elapsed,MaxRSS
+wc -l data/ts_cajas_limpias/ts_cajas_limpias.csv       # meta: 1 + 179*4*4 = 2865
+cat data/ts_cajas_limpias/ts_cajas_limpias_errores.csv # solo cabecera
+tail -40 ts_cajas_limpias_$B.log                       # CONTROL y desplazamientos > 10 mm por F
+```
+
+Si se corta, relanza el mismo `sbatch`: salta los casos ya escritos y repite el control al final.
+
+**Paso 4: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/ts_cajas_limpias experiments\objetivo2\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/ts_cajas_limpias_*.log" experiments\objetivo2\outputs\ts_cajas_limpias\
+```

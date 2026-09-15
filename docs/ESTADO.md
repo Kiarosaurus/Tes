@@ -116,7 +116,8 @@
 - **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #53.
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #55 (ultima ronda:
+  2026-09-14 (5)).
 
 ## Ultimo paso completado
 2026-09-14 (3):
@@ -128,7 +129,49 @@
 - **#53:** `r1_cortes_itksnap.py` -> `r1_cortes_itksnap.csv`, corte exacto del punto de S1 en el archivo original,
   para que el revisor lo abra en ITK-SNAP. Ciego, con comprobacion por HU.
 
-Siguiente: la autora sube y lanza la noche (`KHIPU.md`; los archivos a subir no cambian) y manda la tabla al
+**Lanzados en Khipu (2026-09-14, n006):** E10 = job 51504, E9-TS = 51505 (los dos en `R`), resumen = 51506
+(espera a los dos). Cierre: `KHIPU.md`, "Noche automatica", pasos 3-5.
+**Revision del cierre (2026-09-14, tarde):** E9-TS integro (152 casos, 0 errores, 2352 filas). **E10 INCOMPLETO:**
+42/179 casos (`CLINIC_0001`-`0042`, solo dataset6), `ts_componentes_errores.csv` vacio (0 bytes: proceso matado sin
+`finally`). Seccion 6 de `e9ts_resumen.md` NO sirve para fijar F. `sacct`: FAILED, ExitCode `0:9` (SIGKILL externo)
+a los 6:47, MaxRSS 908 MB de 32G; no es tiempo ni memoria del job, y `CLINIC_0043` tiene tamano normal. Causa sin
+confirmar (sospecha: E9-TS con 16 procesos en el mismo n006). Siguiente: `sacct`/`seff` de 51504 y 51505, cabecera
+`Caso,Error` a mano en el CSV de errores, relanzar E10 solo (~10 s/caso) y regenerar el resumen.
+**Relanzado:** E10 = 51522 (`R` en n006, sin E9-TS al lado), resumen = 51523 (`afterok`). GPUs revisadas: g002
+(RTX A6000 48 GB) libre; `a-tesis` no limita `gres/gpu` (detalle en `KHIPU.md`, Colas y limites).
+**2026-09-14 (4): E10 completo** (179 casos, 0 errores, rc=0, 16 min) y **E9-TS + E10 analizados**, traidos a
+`outputs/e9ts/` y `outputs/ts_componentes/`. Implicancias: #49, #52 y #48 actualizadas; **#54 nueva** (la QC de nivel
+excluye 18/91 del Objetivo 2, desigual entre grupos). Textos de decision y de `main.tex` propuestos en el chat, NO
+aplicados. Siguiente: la autora decide F, politica de ocupacion principal y #54; luego, aplicar con orden explicita.
+**2026-09-14 (5), con orden explicita de la autora:** decision 2026-09-14 (3) escrita en `01-decisiones.md` (F = 0.001,
+`ocupado_semimax` principal, #54 opcion a). `main.tex`: TS en el Objetivo 2 y parrafo `Corridor measurement on the local
+cohort`; compila, 4 paginas, 41 referencias, 0 indefinidas. `wasserthal2023` dado de alta (raw -> clean -> refs.bib,
+MAPEO, `_index.md` N2 propuesto, ficha por `lector-papers`). **#55 nueva:** el paper no valida S1 ni metal. E10b listo
+(`ts_cajas_limpias.py` + `.sbatch`, probado en local: control 8/8); comandos en `KHIPU.md`, seccion E10b.
+Siguiente: correr E10b en Khipu y confirmar que F = 0.001 elimina los 10 desplazamientos; revisar laminas (36
+componentes >= 1%, `CLINIC_0091`/`0078`); despues, Objetivo 1 (#36/#39, E6b en g002).
+**2026-09-14 (6):** #55 actualizada con el README del repositorio TS que pego la autora: el paper es de la v1 (literal de
+los autores); `vertebrae_S1` existe en `total`; Apache-2.0; piden citar nnU-Net; el recorte robusto es "better" segun
+ellos (toca #49) y reconocen confusion de vertebras vecinas (toca #54). Opciones (a)-(d) en #55, sin aplicar.
+**2026-09-14 (7), orden de la autora:** `main.tex` con los cuatro pendientes (post hoc, cota 2500 HU, desfase de la
+publicacion de TS, cita nnU-Net `isensee2021`); compila, 4 paginas, 42 referencias. **La autora prefiere 3 mm como
+recorte principal: PENDIENTE** (#49, ronda (6)); las cifras con 3 mm ya existen. Preparado y probado en local
+`e9ts_3mm.sbatch` (laminas 3 mm + repetibilidad + resumen); comandos en `KHIPU.md`, "E9-TS con 3 mm". Falta: fila de
+`isensee2021` en `_index.md` (ficha en curso), fuentes de la autora sobre 3 mm, correr E10b y E9-TS 3 mm en Khipu.
+**Ficha de `isensee2021` hecha:** el PDF local es el **preprint arXiv 2020**, no el Nature Methods 2021 del raw (#55,
+actualizacion). La cita de `main.tex` no depende de su contenido; falta el PDF publicado o decidir (#55 opciones a-c).
+nnU-Net usa "componente mayor", no fraccion: la regla F no tiene respaldo bibliografico (se declara como propia).
+**Detenido (2026-09-14):** la autora subio `falk2019` como el nnU-Net de Nature Methods 2021, pero el raw es Falk et al.
+2019, "U-Net: deep learning for cell counting..." (otro articulo). No se proceso ni se corrigio nada; esperando el PDF
+correcto como `papers/isensee2021.pdf` (#55, seguimiento).
+**Resuelto:** la autora subio el PDF de Nature Methods y retiro `falk2019`. Ficha de `isensee2021` rehecha y verificada;
+se mantiene que nnU-Net solo usa "componente mayor" (sin fraccion) y no tiene CT oseo ni metal. `main.tex` sin cambios.
+LiTS y KiTS19 en `_candidatos.md` como posibles precedentes de F.
+**E9-TS 3 mm corrido (51529):** repetibilidad IDENTICO frente a 51505 (2352 x 43); 152 laminas con 3 mm en
+`outputs/e9ts_3mm/`. Objetivo 2 con 3 mm y F = 0.001: 9.35 mm (IQR 7.75-11.7), 27/72 viables. **E10b no llego a la PC**
+(sin `outputs/ts_cajas_limpias/`). Siguiente: traer o correr E10b; la autora revisa laminas 3 mm y aporta la fuente
+citable del recorte; luego, con orden, decision y `main.tex` a 3 mm.
+Siguiente: cierre de 51504-51506 y lectura de `data/e9ts/e9ts_resumen.md`. Mandar la tabla de ITK-SNAP al
 revisor. Decide la politica de ocupacion principal y la F tras leer `e9ts_resumen.md`.
 
 ## Paso anterior

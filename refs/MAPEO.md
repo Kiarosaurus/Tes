@@ -52,6 +52,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
 | `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
+| `isensee2021` | `isensee2021.nbib` | PubMed nbib | — | 33288961 |
 | `jacob2026lgesynthnet` | `jacob2026lgesynthnet.bib` | BibTeX Springer | `10.1007/978-3-032-17734-6_4` | — |
 | `kaiser2014dysmorphism` | `kaiser2014dysmorphism.nbib` | PubMed nbib | — | 25031382 |
 | `karageorgos2024ddpm` | `karageorgos2024ddpm.nbib` | PubMed nbib | — | 38963746 |
@@ -74,6 +75,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `wagner2017` | `wagner2017.bibtex` | BibTeX Wiley | `https://doi.org/10.1002/jor.23554` | — |
 | `wang2019cochlear` | `wang2019cochlear.bib` | BibTeX Springer | `10.1007/978-3-030-32226-7_14` | — |
 | `wang2025adaptiveweighting` | `wang2025adaptiveweighting.bib` | BibTeX IEEE | `10887049` | — |
+| `wasserthal2023` | `wasserthal2023.bib` | BibTeX RSNA | `doi:10.1148/ryai.230024` | — |
 | `wu2022xcist` | `wu2022xcist.bib` | BibTeX IOP | `Wu_2022` | 36096127 |
 | `xie2024implantsegmentation` | `xie2024implantsegmentation.nbib` | PubMed nbib | — | 39107679 |
 | `yun2026simulationdriven` | `yun2026simulationdriven.nbib` | PubMed nbib | — | 41699969 |
@@ -207,3 +209,29 @@ y longitudes que estas fuentes publican.
 
 Titulos pasados a Title Case entre dobles llaves (regla 3). **Ningun campo se completo
 desde otra fuente.**
+
+## Alta de TotalSegmentator (2026-09-14)
+
+Orden explicita de la autora: la autora pego `refs/raw/wasserthal2023.bib` y `papers/wasserthal2023.pdf`
+para citar la herramienta de mascaras del Objetivo 2 (decision 2026-09-14, #48-#50). `refs.bib` pasa de
+40 a 41 entradas; el diff solo anade esta.
+
+- `refs/raw/wasserthal2023.bib` (exportador RSNA, clave del editor `doi:10.1148/ryai.230024`) ->
+  `refs/clean/wasserthal2023.bib`. Clave `wasserthal2023` = nombre de archivo que puso la autora (regla 1).
+  Autores, titulo, revista (`Radiology: Artificial Intelligence`), volumen 5, numero 5, `pages = {e230024}`
+  y DOI tal como vienen en el raw. Titulo entre dobles llaves (regla 3; ya venia en Title Case). Se
+  descartan `URL`, `eprint` y `abstract` (regla 7). **Ningun campo se completo desde otra fuente.**
+- Compilacion de `tesis/main.tex` tras el alta: 4 paginas, 41 `\bibitem`, 0 citas indefinidas; los dos
+  avisos de BibTeX son los ya conocidos (`hinsche2002fluoroscopy`, `templeman1996proximity`).
+
+## Alta de nnU-Net (2026-09-14)
+
+La autora pego `refs/raw/isensee2021.nbib` y `papers/isensee2021.pdf` y ordeno aplicarlo a `main.tex`: el
+README de TotalSegmentator pide citar nnU-Net (#55). `refs.bib` pasa de 41 a 42 entradas.
+
+- `refs/raw/isensee2021.nbib` (PMID 33288961) -> `refs/clean/isensee2021.bib`. Clave = nombre de archivo de la
+  autora (regla 1). Autores de FAU con punto en las iniciales (`Kohl, Simon A A` -> `Kohl, Simon A. A.`); titulo
+  de TI sin punto final y en Title Case entre dobles llaves, conservando `nnU-Net` (regla 3); revista de JT
+  (`Nature methods`) en nombre oficial `Nature Methods` (regla 4); ano de DP (2021; `DEP` 20201207 es la fecha
+  electronica); volumen 18 de VI; numero 2 de IP; paginas 203-211 -> 203--211; DOI de LID. **Ningun campo se
+  completo desde otra fuente.**

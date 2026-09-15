@@ -4377,3 +4377,379 @@ crestas y EIPS no tienen revision clinica. Compila: 4 paginas, 0 citas indefinid
     controles `ok` para no revelarle cuales son dudosos;
   - que el nuevo juicio se guarde en un archivo aparte, sin sobrescribir
     `r1_auditoria_s1_clinico.csv`.
+
+## Ronda 2026-09-14 (4) — E9-TS y E10 completos en la cohorte
+
+Fuente: `experiments/objetivo2/outputs/e9ts/e9ts_resumen.md` (jobs 51505, 51522, 51523) y consultas del
+asistente sobre `e9ts_corredor.csv`, `ts_componentes*.csv` (outputs ignorados por git). E10: 179 casos,
+1790 estructuras, 0 errores (el primer intento, 51504, murio por SIGKILL externo a los 42 casos).
+E9-TS: 152 casos, 0 errores, 2352 filas.
+
+### 49 — ACTUALIZACION 2026-09-14 (4): la limpieza no mueve el corredor; el recorte si cruza los 10 mm
+
+- **E10, tamanos:** 1239 componentes no principales con >= 10 voxeles; fraccion de su estructura con
+  mediana 0.00009 y p90 0.00095. Solo 36 filas (caso x recorte x estructura) tienen un componente no
+  principal >= 1%; casi todos contiguos al mayor (`dist_caja_mayor_mm = 0`), p. ej. `CLINIC_0022`
+  S1 44%, `CLINIC_0032` sacro 30%, `CLINIC_0061` cadera 8.8%: candidatos a fractura o a particion de
+  etiqueta, **sin revisar en lamina**.
+- **Que quita cada F:** 0.001 -> componentes de hasta 0.38 mL; 0.01 -> 2.08 mL; 0.05 -> 12.41 mL (este
+  ultimo podria borrar fragmentos de fractura).
+- **Los 10 desplazamientos de caja (11 estructuras):** en 8 los explica una isla de 1-8 voxeles
+  presente en un solo recorte (`vox_fuera_mayor` 2-8, `n_comp` > `n_comp_min10`); en `CLINIC_0022`
+  sacro, un componente de 68 voxeles a 80 mm; en `CLINIC_0029` S1, uno de 24 voxeles a 14 mm; en
+  `CLINIC_0032` S1, componentes de fraccion 0.0005 contiguos. **Todos tienen fraccion < 0.001**, asi
+  que F = 0.001 los quitaria. **No verificado:** las cajas no se recalcularon tras limpiar (hacen falta
+  las mascaras, en Khipu); es inferencia desde los componentes.
+- **E9-TS, efecto de F sobre `D_TS`** (QC de nivel, 124 casos): cambia en **1 caso por recorte**, ambos del
+  grupo 1 (`metal_0002` 6 mm 13.8 -> 13.4; `metal_0041` 3 mm 12.0 -> 11.1), identico para F = 0.001,
+  0.01 y 0.05. **En la cohorte del Objetivo 2 (72), cero cambios** y ninguna viabilidad cambia.
+- **Recorte:** en la cohorte del Objetivo 2, `D(6) - D(3)` tiene mediana 0.0 mm, p10/p90 -0.89/+0.89,
+  |dif| >= 1 mm en 14 de 72; viable a 10 mm con los dos recortes 27, con alguno 29 (37.5-40.3%). Cruzan
+  10 mm 2 casos del Objetivo 2 (`CLINIC_0090`, `CLINIC_0101`) y 10 del grupo 1.
+- **Lectura:** la eleccion de F es de higiene de mascara, no de resultado; el recorte es la
+  incertidumbre que si llega a la conclusion binaria, y ya esta decidido reportarla (decision
+  2026-09-14). Cualquier F se eligio despues de mirar los datos: declararlo y reportar la invarianza.
+- **Tipo:** METODO. **Pendiente de la autora:** fijar F. No aplicado.
+
+### 52 — ACTUALIZACION 2026-09-14 (4): la ocupacion importa en el grupo 1; 2500 y semimaximo no se distinguen en viabilidad
+
+- Grupo 1, QC de nivel, 52 casos, F = 0: la ocupacion cambia `D_TS` en 21-23; viable a 10 mm pasa de
+  53.8% a 40.4% (6 mm) y de 57.7% a 40.4% (3 mm): se pierden 7 (6 mm) y 9 (3 mm). Diferencia mediana en
+  los casos con cambio: 2.0 mm; maxima 6.0 mm.
+- **`ocupado_2500` y `ocupado_semimax` difieren en 6 de 118** filas caso x recorte (maximo 1.0 mm,
+  `metal_0062`) y **en ninguna cambia la viabilidad a 10 mm**. Elegir la politica principal no cambia
+  ningun resultado binario.
+- Grupos 2 y 3: 7 casos con voxeles > 2500 HU en el recorte (5 y 2; en grupo 3 son `CLINIC_0058`, HU max
+  2641, y `CLINIC_0074`, 2540, el lazo de #19); cero cambios.
+- **No se interpreta** que grupo 1 ocupado (40.4%) y Objetivo 2 (40.3%) coincidan: grupos no
+  emparejados (decision 2026-09-14).
+- **Pendiente de la autora:** politica principal. No aplicado.
+
+### 48 — ACTUALIZACION 2026-09-14 (4): la densidad medida dentro de la mascara, la que se decidio en lugar de E9b
+
+- Cohorte del Objetivo 2, QC de nivel, 72 casos, eje del mejor corredor dentro de `sacrum` +
+  `vertebrae_S1`: mediana de `hu_p50_eje` **171.5 HU** (IQR 119.6-216.5) con 6 mm y 160.3 con 3 mm;
+  fraccion del eje <= 150 HU con mediana **0.42** (6 mm) / 0.46 (3 mm); **28 de 72** con mas de la mitad
+  del eje <= 150 HU.
+- Confirma, ahora con la medida decidida, que una regla de hueso > 150 HU dejaria fuera buena parte del
+  trayecto del corredor en pelvis sin osteosintesis. Toca bone integrity (#17) y el texto propuesto de
+  #48 aun no aplicado a `main.tex`.
+- **Pendiente de la autora:** si se cita la cifra y como se resuelve bone integrity (#17). No aplicado.
+
+### 54 — La QC de nivel excluye 18 de 91 casos del Objetivo 2, y excluye mas en el grupo 2 (32%) que en el grupo 3 (12%) — ABIERTA
+
+- **Hallazgo:** la cohorte del Objetivo 2 son 103 pacientes; 91 tienen punto de S1 en R1; la QC deja 72
+  (72 pacientes unicos). Motivos: `R1 arriba de TS` en **18** y S1 tocando el FOV en 1. Los 12 sin fila no
+  tienen S1 en R1 (criterio de `e9ts_corredor.py`).
+  - Por cohorte de R1: `calibracion` (60; 3 del grupo 2 y 57 del grupo 3) **7 discordantes**, que son los
+    7/60 ya conocidos de `ts_analisis.md`; `otro` (31, todos del grupo 2) **11 discordantes (35%)**.
+  - Por grupo: grupo 2, 11 de 34 (32%); grupo 3, 7 de 57 (12%).
+  - Contraste: en el grupo 1 (`evaluacion`) los 7 `R1 arriba de TS` coinciden en numero con los 7 `+1`
+    del revisor clinico.
+- **Por que importa:**
+  - En el grupo 1, TS concordo con el revisor clinico (#51, `ts_analisis.md`) y la discordancia es error
+    de R1. **En los grupos 2 y 3 no hay juicio clinico**: atribuirla a R1 es inferencia por analogia.
+  - El conjunto `otro` nunca se uso para calibrar ni evaluar R1, y ahi se concentra la discordancia.
+  - La exclusion es desigual entre grupos, y el grupo 2 ya tiene el corredor mas estrecho (mediana 8.9
+    frente a 9.8 mm). La cifra del Objetivo 2 podria sesgarse hacia el grupo 3.
+- **Que seccion toca:** cohorte y tamano del Objetivo 2; criterio de QC de la decision 2026-09-14
+  ("nivel TS/R1 discordante: se excluye o se revisa").
+- **Opciones:**
+  - (a) mantener la exclusion (72) y declarar el embudo y el desbalance;
+  - (b) en los 18, usar el nivel de TS para centrar el recorte y relanzar E9-TS solo en ellos (hay que
+    modificar la entrada de S1; no esta implementado);
+  - (c) revisar los 18 a mano (la decision ya permitia "se revisa").
+- **Tipo:** COHORTE / SESGO. **Pendiente de la autora. No aplicado.**
+
+### 49, 52, 54, 48 — DECIDIDAS Y APLICADAS (2026-09-14): la autora acepta las recomendaciones
+
+- **Decision** registrada en `01-decisiones.md` (2026-09-14 (3)) por el asistente con orden explicita:
+  F = 0.001; `ocupado_semimax` principal y `ocupado_2500` como cota; #54 opcion (a), exclusion mantenida
+  con embudo declarado.
+- **Aplicado a `tesis/main.tex`** con orden explicita:
+  - Objetivo 2: mascaras de TotalSegmentator 2.18.0 (`\citep{wasserthal2023}`), recorte por defecto con el
+    robusto como sensibilidad, QC por caso y limpieza < 0.1%.
+  - Parrafo nuevo `Corridor measurement on the local cohort`: embudo 103 -> 91 -> 72 (con la exclusion por
+    FOV, corregida respecto del borrador del chat), 9.5 mm (IQR 7.4-11.7), 29 y 27 de 72, fraccion 0.42
+    <= 150 HU (#48), y 53.8% -> 40.4% en 52 pacientes con metal.
+  - Compila: 4 paginas, 41 referencias, 0 citas indefinidas.
+- **Alta bibliografica:** `wasserthal2023` (raw pegado por la autora; `MAPEO.md` actualizado). Ficha en
+  curso con `lector-papers`.
+- **Sigue abierto:**
+  - #49: la afirmacion "F = 0.001 elimina los 10 desplazamientos" es inferencia hasta correr E10b
+    (`ts_cajas_limpias.py`, `KHIPU.md`); `main.tex` no la afirma.
+  - #48/#17: bone integrity sigue sin resolverse; `main.tex` solo dice que una definicion por HU excluiria
+    buena parte del corredor.
+  - #54 (b) queda como sensibilidad no implementada.
+  - Los 36 componentes >= 1% y los minimos (`CLINIC_0091`, `CLINIC_0078`) siguen sin revisar en lamina.
+
+### 55 — El paper citado de TotalSegmentator no valida la version usada: sin clase S1, sin Dice por clase y sin metal — ABIERTA
+
+- **Origen:** ficha `docs/literatura/wasserthal2023.md` (`lector-papers`, 2026-09-14); PDF de 9 paginas sin
+  suplemento.
+- **Hallazgo:**
+  - Describe un nnU-Net de 104 estructuras con modelos de 1.5 y 3 mm; Dice global 0.943 (p. 4). No da numero
+    de version, tarea `total`, modelo "fast" ni recorte de 6 mm.
+  - La Figura 2 (p. 4) nombra `sacrum`, `hip` y vertebras C1-L5: **S1 no aparece** y tampoco la lateralidad
+    de cadera. Los Dice por clase estan en el suplemento, que no esta en el PDF.
+  - **Ninguna mencion de implantes, metal ni artefactos**; excluyeron del entrenamiento estructuras "highly
+    distorted" (n = 40, p. 2).
+  - Inconsistencia interna: 0.932 vs 0.871 figura como "separate dataset" en el abstract y como "our test set"
+    en resultados (p. 5).
+- **Que toca:** `main.tex` cita `\citep{wasserthal2023}` solo como fuente de las mascaras: **eso si lo
+  respalda**. No podria respaldar ninguna frase sobre la calidad de `vertebrae_S1` o de la segmentacion junto
+  a metal. Refuerza la condicion ya decidida "TS es herramienta, no referencia" y la QC por caso
+  (decision 2026-09-14): la unica validacion local de nivel es la concordancia con el revisor en el grupo 1.
+- **Opciones:** (a) dejar la cita como esta y no afirmar calidad (estado actual); (b) conseguir el suplemento
+  o una fuente de la version con `vertebrae_S1` si alguna frase de la tesis llegara a necesitarlo.
+- **Tipo:** REDACCION / SUPUESTO. **Pendiente de la autora. No aplicado.**
+
+### Valores extremos del Objetivo 2 — sin implicancia, anotado para QC
+
+- `CLINIC_0091` (`D_TS` 2.0 mm) y `CLINIC_0078` (2.2 mm): en lamina coronal no se ve un fallo grosero de
+  mascara; el perfil es 0 en casi todos los niveles con IS izq/der 8.5/9.6 y 8.9/3.5 mm. Compatible con
+  corredor transsacro ausente, **sin verificar**. Revisar antes de citar minimos.
+
+## Ronda 2026-09-14 (5) — cierre de la sesion: verificaciones, E10b preparado y pendientes de redaccion
+
+### Cifras de pacientes de `main.tex` — VERIFICADAS (sin implicancia)
+
+- `grupos.csv` (179 filas, 168 pacientes): grupos 2 y 3 = **103 filas = 103 pacientes** (37 + 66).
+- E9-TS, `default6mm`, F = 0, `hueso`: Objetivo 2 con S1 = **91 filas = 91 pacientes**; tras la QC =
+  **72 = 72**; grupo 1 tras la QC = **52 = 52**. Ninguna fila sin `Grupo paciente`.
+- La exclusion por FOV del Objetivo 2 es `CLINIC_0010` (grupo 3). Cuadra: grupo 3, 57 - 7 - 1 = 49;
+  grupo 2, 34 - 11 = 23. (El otro caso con S1 en el FOV es `metal_0015`, del grupo 1.)
+- Las frases "103 patients", "91", "72 passed" y "52 patients" del parrafo `Corridor measurement on the
+  local cohort` quedan respaldadas en unidad paciente.
+
+### 49 — E10b PREPARADO y probado en local; falta la corrida en Khipu
+
+- **Scripts:** `experiments/objetivo2/ts_cajas_limpias.py` + `.sbatch`. Manual en `KHIPU.md`, seccion E10b.
+- **Que hace:** recalcula la caja de las 4 estructuras en los dos recortes con F = 0, 0.001, 0.01 y 0.05,
+  con la misma formula que `ts_qc.py` (`dif_caja_3v6_max_mm`, RAS+).
+- **Control que puede fallar:** con F = 0 debe reproducir `ts_qc.csv`.
+- **Prueba local** (piloto `CLINIC_0002` + `metal_0008`, copia en el scratchpad con `.ok` creados a mano):
+  10.8 s los 2 casos; control **8 de 8** contra `ts_piloto_qc.csv`; 0 desplazamientos > 10 mm con toda F
+  (esperado: el piloto no tenia desplazamientos). Prueba sintetica: una isla de 1 voxel se quita con F > 0.
+- **Criterio de lectura en Khipu:** F = 0 debe dar los 10 casos / 11 estructuras de `ts_analisis.md`; F = 0.001
+  deberia dar 0. Si quedan desplazamientos, la frase "cleaned of connected components below 0.1%" de
+  `main.tex` sigue siendo cierta como regla, pero la justificacion de la decision 2026-09-14 (3) ("quita las
+  islas de los 10 desplazamientos") cae y hay que revisarla.
+- **Estado:** ABIERTA hasta leer la corrida.
+
+### Patron vigilado (#25, #37, #40, #45, #47, #50) — un caso evitado en E10b
+
+- La primera version de `control()` imprimia "0 de 0 estructuras coinciden" cuando no habia filas en comun:
+  **un control que no puede fallar**, justo el patron que `ESTADO.md` pide vigilar. Salio en la prueba local
+  (las mascaras del piloto no tenian `.ok`). Corregido: ahora imprime `CONTROL NO EJECUTADO` y no valida.
+- Tambien en E10 (`ts_componentes.py`): la cabecera del CSV de errores no se volcaba al abrir y un SIGKILL la
+  dejo en 0 bytes. `ts_cajas_limpias.py` ya la vuelca; `ts_componentes.py` no se modifico (corrida cerrada).
+
+### Pendientes de redaccion derivados de lo aplicado — ABIERTOS
+
+- **Post hoc no declarado en `main.tex`:** F = 0.001 y `ocupado_semimax` se eligieron tras ver E9-TS/E10. Lo
+  dice `01-decisiones.md`, no `main.tex`. Hoy el parrafo solo afirma que la limpieza no cambio ninguna medida,
+  lo que hace la eleccion inocua para la cifra; declararlo o no es decision de la autora.
+- **`ocupado_2500` como cota no aparece en `main.tex`:** el parrafo reporta solo semimaximo. La decision dice
+  "se reporta como cota"; hoy el reporte vive solo en `e9ts_resumen.md` (ignorado por git).
+- **Tablas citadas sin version:** `e9ts_resumen.md`, `e9ts_corredor.csv` y `ts_componentes*.csv` estan en
+  `outputs/` (ignorado). `KHIPU.md` pide copiar a `experiments/objetivo2/` lo que se cite; aun no se hizo.
+- **Nivel N2 de `wasserthal2023`** en `_index.md`: propuesto por el asistente, sin confirmar.
+
+### 55 — ACTUALIZACION 2026-09-14: el README del repositorio confirma el desfase de version y toca #49 y #54
+
+- **Fuente:** README de `https://github.com/wasserth/totalsegmentator`, rama principal, pegado por la autora en el
+  chat el 2026-09-14. No es un PDF de `papers/` ni tiene raw en `refs/raw/`: sirve como evidencia interna, **no
+  es citable en `main.tex`** sin alta bibliografica (regla 9). No fija version: describe la rama actual, no
+  necesariamente la 2.18.0 usada.
+- **Lo que resuelve de #55:**
+  - **El paper es de la v1, dicho por los autores:** *"Our Radiology AI publication refers to TotalSegmentator v1."*
+    (seccion "Running v1"). La cohorte uso 2.18.0 (v2). El desfase deja de ser inferencia de la ficha.
+  - **La clase existe en la tarea usada:** *"total: default task containing 117 main classes"*; la tabla de clases
+    lista `sacrum` (25), `vertebrae_S1` (26), `hip_left` (77) y `hip_right` (78). Coincide con las mascaras que
+    produjo la cohorte. **Existencia no es validacion**: el README no da cifras por clase.
+  - **Citar el paper es la practica que piden los autores**, tambien para v2: *"If you use it please cite our
+    Radiology AI paper"*. La cita actual de `main.tex` es correcta como fuente del software.
+  - **Licencia:** *"Openly available for any usage (Apache-2.0 license)"*, con `total` en esa lista. Cierra el punto
+    6 de la ficha (en el PDF: `NO ENCONTRADO`).
+  - **Datos de entrenamiento distintos del paper:** el README ofrece *"CT dataset (1228 subjects)"*; el paper
+    describe 1204 examenes (ficha). Otro indicio de que el modelo en uso no es el validado.
+- **Lo que abre o precisa:**
+  - **nnU-Net:** *"Please also cite nnUNet since TotalSegmentator is heavily based on it."* No hay entrada de nnU-Net
+    en `refs.bib`. Anadirla es decision de la autora y empieza por pegar su raw (regla 9).
+  - **Resultados por clase:** el README remite a un archivo con las cifras del modelo de 1.5 mm y dice *"The paper shows
+    these numbers in the supplementary materials Figure 11."* La ficha registro el suplemento como "Figure S1"
+    (desde el PDF). **Discrepancia de nombre sin verificar**; el enlace no vino en el texto pegado, y no consta a
+    que version corresponden esas cifras.
+  - **#49, recorte:** el README describe `--robust_crop`: el recorte de 6 mm *"Sometimes this model is incorrect,
+    which leads to artifacts like segmentations being cut off."* y el de 3 mm es *"a better but slower 3mm model"*.
+    La decision 2026-09-14 eligio 6 mm como principal por ser el defecto (reproducibilidad) y por ir algo mejor en
+    tornillos locales; los desarrolladores llaman "better" al de 3 mm. En la cohorte local no hubo truncamiento
+    (#49) y `D(6) - D(3)` tiene mediana 0.0 mm, pero **un tribunal puede preguntar por que el principal no es el
+    recomendado**: la justificacion hay que poder decirla, y hoy `main.tex` no la dice.
+  - **#54, atribucion de la discordancia de nivel:** el README anuncia `vertebrae_pp` con *"less mixup of neighboring
+    vertebrae"*, es decir, los desarrolladores reconocen confusiones de vertebras vecinas en `total`. En los grupos 2
+    y 3 (sin juicio clinico) eso debilita aun mas atribuir los 18 casos a R1. `vertebrae_pp` cubre *"vertebral bodies
+    C1-L5"*: **no incluye S1**, asi que no sustituye a `vertebrae_S1`; podria servir, sin implementar, para
+    comprobar que L5 esta bien etiquetada justo encima.
+  - **#52, implante:** existe la tarea `hip_implant`, marcada con asterisco (*"not trained on the full totalsegmentator
+    dataset"*). Es de protesis de cadera, no de tornillos iliosacros: no resuelve la ocupacion de #52.
+  - **Reproducibilidad:** `--report` escribe *"a machine-readable JSON run manifest"* con versiones de software y
+    modelo. La cohorte no lo uso; su version quedo registrada por otra via (`ts_total_procedencia`). No consta
+    desde que version existe la opcion.
+- **Opciones (no aplicadas):**
+  - (a) en `main.tex`, junto a la cita: declarar que la publicacion describe la v1 y que la version usada es 2.18.0
+    (la afirmacion literal de los autores lo respalda, pero el README no es citable sin alta);
+  - (b) alta de nnU-Net (la autora pega el raw);
+  - (c) conseguir las cifras por clase (`sacrum`, `vertebrae_S1`, `hip_*`) del archivo que enlaza el README y la
+    version a la que corresponden; solo si alguna frase de la tesis necesita calidad de mascara;
+  - (d) justificar en `main.tex` el recorte por defecto como principal frente al robusto que recomiendan los
+    desarrolladores, apoyado en la invarianza medida (mediana 0.0 mm; 2 de 72 cruzan 10 mm).
+- **Estado:** #55 sigue **ABIERTA**; ahora con evidencia de los propios autores. Toca tambien #49 (recorte) y #54
+  (atribucion). **Pendiente de la autora.**
+
+## Ronda 2026-09-14 (6) — cuatro pendientes de redaccion aplicados; la autora prefiere el recorte de 3 mm
+
+### 55 y pendientes de la ronda (5) — APLICADOS a `main.tex` (orden explicita de la autora)
+
+- **Interpretacion de la orden** ("los cuatro pendientes de redaccion"): los cuatro que tocan `main.tex`. (1) declarar
+  que la fraccion y la regla de ocupacion son post hoc; (2) reportar la cota de 2500 HU; (3) #55 (a), el desfase
+  entre la publicacion citada y la version usada; (4) #55 (b), citar nnU-Net. Los otros dos de la ronda (5), tablas
+  sin versionar y nivel N2 de `wasserthal2023`, no son de `main.tex` y siguen ABIERTOS.
+- **Textos aplicados:**
+  - Objetivo 2: "TotalSegmentator 2.18.0 \citep{wasserthal2023}, which is built on nnU-Net \citep{isensee2021}" y "The
+    cited publication evaluates a 104-structure model and reports no accuracy for the S1 label used here, so its
+    reported accuracy is not assumed for the version and classes used in this work."
+  - `Corridor measurement`: la limpieza no cambio ninguna medida "at any tested fraction up to 5%; the fraction, like the
+    occupancy rule below, was fixed after inspecting these results"; y la cota: "a fixed 2500 HU threshold, which thins
+    the screws and therefore bounds the occupied corridor from above, gave the same proportion".
+- **Respaldo de cada frase:**
+  - "104-structure model" y "reports no accuracy for the S1 label": ficha de `wasserthal2023` (titulo; sin Dice por
+    clase en el PDF). **No** se escribio "v1" ni "without an S1 label": lo primero esta solo en el README (no
+    citable) y lo segundo no se puede afirmar sin el Appendix S1 (la lista completa de clases no esta en el PDF).
+    Una primera version decia "without a separate S1 label" y se corrigio antes de compilar.
+  - "built on nnU-Net": lo dice la propia publicacion citada, *"The authors trained an nnU-Net segmentation algorithm"*
+    (abstract en `refs/raw/wasserthal2023.bib`; la ficha tambien lo registra, Model, p. 2). El README lo repite
+    ("heavily based on it"), pero no hace falta. La ficha de `isensee2021` esta en curso (`lector-papers`).
+  - "same proportion": grupo 1, 6 mm, se pierden 7 de 52 con las dos politicas (53.8% -> 40.4%).
+  - "thins the screws": E8 (#46), ya dicho en `Implant geometry source`.
+- **Alta bibliografica:** `isensee2021` (raw PubMed pegado por la autora; `MAPEO.md`). `refs.bib` 41 -> 42.
+- **Compila:** 4 paginas, 42 referencias, 0 citas indefinidas, los 2 avisos conocidos.
+- **#55:** (a) y (b) APLICADAS. (c), cifras por clase, sigue ABIERTA. (d), justificar el recorte de 6 mm, queda
+  **superada** por la preferencia de la autora (abajo).
+
+### 55 — ACTUALIZACION 2026-09-14 (ficha de `isensee2021`): el PDF no es el articulo citado, y nnU-Net no respalda la limpieza F — ABIERTA
+
+- **Desfase PDF / raw:** `papers/isensee2021.pdf` es el preprint arXiv:1904.08128v2 (2020), *"Automated Design of Deep
+  Learning Methods for Biomedical Image Segmentation"*, 19 datasets. `refs/raw/isensee2021.nbib` y `refs.bib` describen
+  Nature Methods 18(2):203-211 (2021), *"nnU-Net: a self-configuring method..."*, "23 public datasets". La ficha se hizo
+  sobre el preprint.
+- **Efecto sobre `main.tex`, hoy acotado:** la cita solo identifica el metodo en "built on nnU-Net", y esa afirmacion
+  la respalda `wasserthal2023` (abstract: "trained an nnU-Net"). No se toma ninguna cifra ni frase del articulo. La
+  referencia impresa coincide con su raw (regla 9). Lo que falta es tener en `papers/` el PDF que se cita.
+- **nnU-Net no es precedente de la limpieza por fraccion:** su postprocesado es *"non-largest component suppression"*
+  (p. 3), aplicado solo si no baja el Dice de ninguna clase en validacion cruzada (p. 20), con una instancia por
+  estructura como supuesto (B.3, p. 26). No usa fraccion ni tamano. La decision 2026-09-14 descarto "componente mayor"
+  por las fracturas: **coherente**, pero **sin respaldo bibliografico** para F. Hay que decirlo como regla propia si
+  alguien pregunta.
+- **Sin CT oseo ni metal:** los 10 datasets CT del preprint son de abdomen, pulmon y torax (Table A.1, p. 23). No aporta
+  nada sobre robustez con metal; coincide con lo que #55 ya registra para TotalSegmentator.
+- **Snowballing:** la fila de nnU-Net (arXiv:1904.08128) de `_candidatos.md`, que salio de `liu2021ctpelvic1k`, es este
+  preprint: se marca LEIDO.
+- **Opciones:** (a) conseguir el PDF de Nature Methods y releerlo con `lector-papers`; (b) dejarlo como esta y declarar
+  en `_index.md` que el PDF local es el preprint (hecho); (c) retirar la cita de nnU-Net si la autora prefiere no citar
+  sin el PDF publicado (el README pide citarla, pero no es obligatorio).
+- **Tipo:** REFERENCIA / SUPUESTO. **Pendiente de la autora. No aplicado.**
+- **Seguimiento 2026-09-14 — el archivo subido como "Nature Methods 2021" es otro articulo:** la autora pego
+  `refs/raw/falk2019.nbib` y `papers/falk2019.pdf` como el nnU-Net publicado. El raw describe **Falk T et al., "U-Net:
+  deep learning for cell counting, detection, and morphometry", Nat Methods 16(1):67-70, 2019** (PMID 30559429): plugin
+  de ImageJ para celulas, no nnU-Net (Isensee et al., Nat Methods 18(2):203-211, 2021, PMID 33288961).
+  - **No se hizo nada con el:** ni `refs/clean/`, ni `refs.bib`, ni ficha. No se abrio el PDF (regla 10), asi que no
+    consta si `falk2019.pdf` es el Falk 2019 del raw o el nnU-Net mal nombrado.
+  - **`papers/isensee2021.pdf` sigue siendo el preprint** (mismo tamano, 9.3 MB).
+  - **Redaccion a revisar cuando llegue el articulo correcto** (hoy descrita como del preprint, no como del articulo
+    publicado): "nnU-Net no respalda la regla F" (postprocesado, pp. 3 y 20 del preprint), "sin CT oseo ni metal"
+    (Table A.1 del preprint: 10 CT; el publicado declara 23 datasets) y "self-configuring NO ENCONTRADO" (ficha 1m).
+    `main.tex` no depende de ninguna: su unica frase ("built on nnU-Net") la respalda `wasserthal2023`.
+  - **Pendiente de la autora:** confirmar que se queria el nnU-Net de 2021 y reemplazar `papers/isensee2021.pdf` por el
+    PDF publicado; decidir que hacer con `refs/raw/falk2019.nbib` y `papers/falk2019.pdf` (no se borran sin orden).
+- **RESUELTO 2026-09-14:** la autora reemplazo `papers/isensee2021.pdf` por el articulo de Nature Methods (6.9 MB) y
+  retiro `falk2019` de `papers/` y `refs/raw/`. Ficha rehecha con `lector-papers`; identidad verificada contra el raw
+  (titulo, cinco autores, DOI). El PDF trae 12 pp. de articulo + Reporting Summary, **sin** Extended Data ni
+  Supplementary Notes; volumen y paginas no estan impresos.
+  - **(a) Se mantiene:** unico postprocesado *"non-largest component suppression"* (p. 4), aplicado si mejora el Dice
+    medio y no baja ninguna clase (Methods, p. 11); **sin umbral de tamano ni fraccion**. nnU-Net sigue sin ser
+    precedente de la regla F. El supuesto "una instancia por estructura" era del suplemento del preprint: no verificable.
+  - **(b) Se mantiene:** 23 datasets, 53 tareas; los CT son higado, pulmon, pancreas, vasos hepaticos, bazo, colon,
+    organos abdominales, rinon y torax; los 4 nuevos (D20-D23) son microscopia. **Sin CT oseo, pelvis, vertebras ni
+    metal.**
+  - **(c) Cambia:** "self-configuring" esta en el titulo, no en el cuerpo.
+  - **(d) Se mantiene:** tres configuraciones por defecto (p. 4) frente a cuatro seleccionables (Methods, p. 11).
+  - **Cifras del preprint superadas** (19 datasets / 49 tareas -> 23 / 53); ninguna estaba en `main.tex`.
+  - **Posible precedente de F:** el articulo cita LiTS (ref. 18) y KiTS19 (ref. 25) junto al postprocesado por
+    componentes. Anadidos a `_candidatos.md` como PENDIENTE (prioridad 3), sin cita completa copiada.
+- **Estado del subpunto "PDF / raw":** CERRADO. **#55 sigue ABIERTA** por (c), las cifras por clase de TotalSegmentator,
+  y la regla F queda declarada como propia (sin precedente bibliografico hasta revisar LiTS/KiTS19).
+  `main.tex` no cambia.
+
+### 49 — La autora prefiere el recorte de 3 mm como principal — PENDIENTE (no aplicado)
+
+- **Que dijo la autora (2026-09-14):** esta de acuerdo con las decisiones de la ronda, pero prefiere `robust3mm` como
+  principal porque tiene fuentes que lo respaldan. Pide dejarlo pendiente y preparar los experimentos.
+- **Estado de los documentos, hoy inconsistente con esa preferencia:**
+  - `01-decisiones.md` (2026-09-14) dice "Recorte principal: default 6 mm; robust 3 mm como analisis de
+    sensibilidad". No se edito: falta orden explicita (regla 3).
+  - `main.tex` dice "default crop; robust crop as sensitivity analysis", y el parrafo `Corridor measurement` usa
+    las cifras de 6 mm.
+- **Las fuentes de la autora no estan en el repositorio.** Para citarlas hace falta su raw en `refs/raw/` y su PDF en
+  `papers/` (reglas 9 y 10). El README de TotalSegmentator llama "better" al modelo de 3 mm (#55), pero no es citable.
+- **No hay que recalcular cifras:** E9-TS (51505), E10 y E10b ya calculan los dos recortes. Con `robust3mm`
+  como principal, desde `e9ts_resumen.md` y las consultas del 2026-09-14 (4):
+  - Objetivo 2 (72): mediana 9.4 mm (IQR 7.8-11.7); viable a 10 mm **27 de 72 (37.5%)**; 6 mm como sensibilidad 29 de
+    72. Cruzan 10 mm los mismos 2 casos.
+  - Densidad en el eje: fraccion <= 150 HU mediana **0.46** (6 mm: 0.42); `hu_p50` mediana 160.3 HU.
+  - Grupo 1 (52): viable 57.7% -> **40.4%** con semimaximo; 2500 HU, la misma proporcion (se pierden 9 con las dos).
+- **Lo que si falta, preparado:** laminas de QC con 3 mm (51505 solo las hizo con 6 mm) y resumen con la seccion 5
+  en 3 mm. `e9ts_corredor.py --modo-laminas`, `e9ts_resumen.py --modo-principal`, `e9ts_repetibilidad.py` y
+  `e9ts_3mm.sbatch`; manual en `KHIPU.md`, "E9-TS con 3 mm".
+  - **Prueba local** (`metal_0008` del piloto): lamina con 3 mm generada; seccion 5 del resumen en `robust3mm`;
+    repetibilidad **IDENTICO** (24 x 43) frente a `outputs/e9ts_prueba` y **DIFIERE** (rc = 1) frente a una copia con
+    un valor numerico y uno booleano alterados. El control puede fallar.
+  - Se corrigio un fallo del control con columnas booleanas antes de darlo por bueno.
+- **Riesgo de cita equivocada (aclarado a la autora, 2026-09-14):** la unica fuente que llama "better" al recorte de
+  3 mm es el README (no citable sin alta). `wasserthal2023` **no** menciona un recorte de 6 mm (ficha, 1g) y su "modelo
+  de 3 mm" es otro: segmenta a 3 mm isotropicos y da **peor** Dice, *"The 3-mm model showed a lower Dice score of 0.840"*
+  (Segmentation Evaluation, p. 4), frente a 0.943. `isensee2021` tampoco trata el recorte. **Citar cualquiera de los dos
+  papers para "3 mm es mejor" seria un error de atribucion**, y con `wasserthal2023` diria lo contrario. Via posible:
+  dar de alta la documentacion o cita del software (raw aportado por la autora) con version o fecha de consulta.
+- **ACTUALIZACION 2026-09-14 — E9-TS con 3 mm CORRIDO (job 51529):** 152 casos, rc=0, 6 min 41 s.
+  - **Repetibilidad frente a 51505: IDENTICO, 2352 filas x 43 columnas, tolerancia 0.** Las cifras con `robust3mm`
+    de la ronda (4) quedan confirmadas por una segunda ejecucion completa.
+  - **Cifras con 3 mm y F = 0.001** (la F decidida; en el Objetivo 2 identicas a F = 0), QC de nivel, 72 casos: mediana
+    **9.35 mm** (IQR 7.75-11.7); el resumen redondea a 9.4. Viable a 10 mm **27 de 72**. `main.tex` debe usar la misma
+    regla de redondeo en todas las cifras cuando se aplique el cambio.
+  - **Densidad, seccion 5 del resumen** (3 mm, F = 0, todos los casos, sin QC): fraccion del eje <= 150 HU, mediana
+    0.354 / 0.37 / 0.488 (grupos 1 / 2 / 3). Con QC en el Objetivo 2: 0.46 (ronda 4). Cilindro que toca metal en el
+    grupo 1: 30 casos con 3 mm frente a 27 con 6 mm.
+  - **Diferencias entre recortes en los corredores iliosacros** (Objetivo 2, F = 0.001): mediana 0.00 mm; |dif| >= 2 mm
+    en 3 casos (izquierdo) y 1 (derecho); maximos `CLINIC_0001` derecho 4.7 mm y `CLINIC_0091` izquierdo 3.5 mm
+    (8.5 -> 5.0 mm). En `D_TS` el maximo es 1.8 mm. `main.tex` no reporta corredores iliosacros; si llegara a hacerlo,
+    esa incertidumbre es mayor que la de `D_TS`.
+  - **Laminas revisadas por el asistente (3 de 152):** `CLINIC_0090` (9.6 mm) y `CLINIC_0101` (9.5 mm), los dos que
+    cruzan 10 mm, y `CLINIC_0091` (2.5 mm; con 6 mm, 2.0). Sin fallo grosero visible en el corte coronal, que proyecta el
+    eje y no permite juzgar la mascara. **149 laminas sin revisar.**
+  - **Perfil con huecos:** en 20 de 72 casos, algun nivel da `D = 0` entre dos niveles con corredor (p. ej.
+    `CLINIC_0090`, a -24 y -42 mm). Compatible con forámenes sacros que interrumpen el corredor; **sin verificar**. No
+    cambia `D_TS` (maximo del perfil).
+  - **E10b NO esta en la PC:** no hay `outputs/ts_cajas_limpias/`. Sigue sin verificarse que F = 0.001 elimine los 10
+    desplazamientos de caja.
+- **Para aplicar el cambio hace falta:** (1) ~~la corrida en Khipu con `IDENTICO`~~ (hecho, 51529) y revisar las laminas de 3 mm;
+  (2) las fuentes de la autora en `refs/raw/` y `papers/`; (3) orden explicita para escribir la decision en
+  `01-decisiones.md` y cambiar `main.tex` (Objetivo 2 y cifras del parrafo).
+- **Tipo:** METODO / REDACCION. **Pendiente de la autora.**
+
+### Infraestructura — sin implicancia sobre la tesis
+
+- Khipu (2026-09-14): g002 con RTX A6000 48 GB libre; `a-tesis` no limita `gres/gpu` (sin probar con
+  `--test-only`); ag001 tiene ademas una A100 entera. E10 no usa GPU. Detalle en `KHIPU.md`. Relevante solo para
+  E6b (#36/#39).

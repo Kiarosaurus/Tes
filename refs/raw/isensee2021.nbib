@@ -1,0 +1,84 @@
+PMID- 33288961
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20210331
+LR  - 20220417
+IS  - 1548-7105 (Electronic)
+IS  - 1548-7091 (Linking)
+VI  - 18
+IP  - 2
+DP  - 2021 Feb
+TI  - nnU-Net: a self-configuring method for deep learning-based biomedical image 
+      segmentation.
+PG  - 203-211
+LID - 10.1038/s41592-020-01008-z [doi]
+AB  - Biomedical imaging is a driver of scientific discovery and a core component of 
+      medical care and is being stimulated by the field of deep learning. While 
+      semantic segmentation algorithms enable image analysis and quantification in many 
+      applications, the design of respective specialized solutions is non-trivial and 
+      highly dependent on dataset properties and hardware conditions. We developed 
+      nnU-Net, a deep learning-based segmentation method that automatically configures 
+      itself, including preprocessing, network architecture, training and 
+      post-processing for any new task. The key design choices in this process are 
+      modeled as a set of fixed parameters, interdependent rules and empirical 
+      decisions. Without manual intervention, nnU-Net surpasses most existing 
+      approaches, including highly specialized solutions on 23 public datasets used in 
+      international biomedical segmentation competitions. We make nnU-Net publicly 
+      available as an out-of-the-box tool, rendering state-of-the-art segmentation 
+      accessible to a broad audience by requiring neither expert knowledge nor 
+      computing resources beyond standard network training.
+FAU - Isensee, Fabian
+AU  - Isensee F
+AD  - Division of Medical Image Computing, German Cancer Research Center, Heidelberg, 
+      Germany.
+AD  - Faculty of Biosciences, University of Heidelberg, Heidelberg, Germany.
+FAU - Jaeger, Paul F
+AU  - Jaeger PF
+AD  - Division of Medical Image Computing, German Cancer Research Center, Heidelberg, 
+      Germany.
+FAU - Kohl, Simon A A
+AU  - Kohl SAA
+AD  - Division of Medical Image Computing, German Cancer Research Center, Heidelberg, 
+      Germany.
+AD  - DeepMind, London, UK.
+FAU - Petersen, Jens
+AU  - Petersen J
+AD  - Division of Medical Image Computing, German Cancer Research Center, Heidelberg, 
+      Germany.
+AD  - Faculty of Physics & Astronomy, University of Heidelberg, Heidelberg, Germany.
+FAU - Maier-Hein, Klaus H
+AU  - Maier-Hein KH
+AUID- ORCID: 0000-0002-6626-2463
+AD  - Division of Medical Image Computing, German Cancer Research Center, Heidelberg, 
+      Germany. k.maier-hein@dkfz.de.
+AD  - Pattern Analysis and Learning Group, Department of Radiation Oncology, Heidelberg 
+      University Hospital, Heidelberg, Germany. k.maier-hein@dkfz.de.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20201207
+PL  - United States
+TA  - Nat Methods
+JT  - Nature methods
+JID - 101215604
+SB  - IM
+CIN - Radiol Imaging Cancer. 2021 Jan 29;3(1):e209039. doi: 10.1148/rycan.2021209039. 
+      PMID: 33778763
+MH  - Algorithms
+MH  - *Deep Learning
+MH  - Image Processing, Computer-Assisted/methods
+MH  - Neural Networks, Computer
+EDAT- 2020/12/09 06:00
+MHDA- 2021/04/01 06:00
+CRDT- 2020/12/08 05:45
+PHST- 2020/04/01 00:00 [received]
+PHST- 2020/10/29 00:00 [accepted]
+PHST- 2020/10/17 00:00 [revised]
+PHST- 2020/12/09 06:00 [pubmed]
+PHST- 2021/04/01 06:00 [medline]
+PHST- 2020/12/08 05:45 [entrez]
+AID - 10.1038/s41592-020-01008-z [pii]
+AID - 10.1038/s41592-020-01008-z [doi]
+PST - ppublish
+SO  - Nat Methods. 2021 Feb;18(2):203-211. doi: 10.1038/s41592-020-01008-z. Epub 2020 
+      Dec 7.

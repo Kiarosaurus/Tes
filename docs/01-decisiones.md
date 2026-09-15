@@ -733,3 +733,24 @@ mide en pelvis intactas, así que (a) hace comparables las cifras; (c) cuantific
 corredor medido cuando TS etiqueta el implante como hueso (`metal_0008`: 11.3 frente a 10.0 mm).
 
 Registrada por el asistente con orden explícita de la autora (2026-09-14).
+
+---
+
+## 2026-09-14 (3) — Fracción de limpieza, política de ocupación principal y exclusión por nivel (#49, #52, #54)
+
+**Decisión** (recomendación del asistente del 2026-09-14, aceptada por la autora):
+- Limpieza de máscaras TS: F = 0.001 por estructura, conectividad 26. Elegida tras E10 y E9-TS; se
+  declara como post hoc y se reporta que `D_TS` y la viabilidad son idénticas para F en
+  {0, 0.001, 0.01, 0.05} en la cohorte del Objetivo 2.
+- Implante existente como espacio ocupado: política principal `ocupado_semimax`; `ocupado_2500` se
+  reporta como cota. Difieren en 6 de 118 filas y en ninguna cambia la viabilidad a 10 mm.
+- QC de nivel (#54, opción a): se mantiene la exclusión (72 de 91) y se declara el embudo
+  103 -> 91 -> 72: discordancia de nivel TS/R1 en 18 (grupo 2: 11 de 34; grupo 3: 7 de 57) y S1 en
+  el borde del FOV en 1.
+
+**Por qué:** F no cambia el resultado y 0.001 es la menor probada que quita las islas de los 10
+desplazamientos de caja (inferido desde componentes; se verifica con el recálculo de cajas en Khipu);
+semimáximo es coherente con #22 (2500 HU solo para cribado); recentrar con el nivel de TS exige cambiar
+la entrada de S1 y queda como sensibilidad.
+
+Registrada por el asistente con orden explícita de la autora (2026-09-14).

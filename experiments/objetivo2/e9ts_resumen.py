@@ -57,6 +57,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--e9-dir', type=Path, required=True)
     parser.add_argument('--e10-dir', type=Path, default=None)
+    parser.add_argument('--modo-principal', choices=['default6mm', 'robust3mm'], default='default6mm',
+                        help='recorte de la seccion 5 (densidad); las demas secciones muestran los dos')
     args = parser.parse_args()
     e9_dir = args.e9_dir.expanduser()
     L = ['# E9-TS y E10 — resumen automatico (generado por `e9ts_resumen.py`; no elige nada)', '']
@@ -135,12 +137,13 @@ def main() -> None:
                               'viable_10mm_se_pierde': int(((s['D_TS_max_mm'] >= 10) & (s['D_TS_max_mm_ocup'] < 10)).sum())})
     L += [md(pd.DataFrame(filas), index=False) if filas else '(sin casos con metal en el recorte)', '']
 
-    b0 = hueso[(hueso['modo'] == 'default6mm') & (hueso['F_limpieza'] == 0.0)]
+    b0 = hueso[(hueso['modo'] == args.modo_principal) & (hueso['F_limpieza'] == 0.0)]
     dens = b0.groupby('Grupo').agg(
         n=('Caso', 'count'), hu_p50_eje=('hu_p50_eje', 'median'), frac_bajo150_eje=('frac_bajo150_eje', 'median'),
         casos_eje_a_2mm_de_metal=('frac_eje_metal_r2mm', lambda x: int((x > 0).sum())),
         casos_cilindro_toca_metal=('cilindro_toca_metal', lambda x: int(verdad(x).sum()))).round(3)
-    L += ['## 5. Densidad en el eje del mejor corredor y metal existente (6 mm, F = 0, implante como hueso, todos)', '',
+    L += [f'## 5. Densidad en el eje del mejor corredor y metal existente ({args.modo_principal}, F = 0, implante como '
+          'hueso, todos)', '',
           'Grupos no emparejados; sin contraste causal con/sin metal (decision 2026-09-14). '
           '`casos_cilindro_toca_metal`: el cilindro de diametro D_TS alcanza voxeles > 2500 HU (#52).', '', md(dens), '']
 

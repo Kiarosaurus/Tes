@@ -2,7 +2,7 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-12)
+## PUNTO DE RETOMA — leer esto primero (2026-09-15)
 
 > Escrito para que una sesion nueva, sin historial, retome sin releer nada mas. Todo lo de
 > abajo esta verificado contra archivos en disco. Las decisiones son de la autora: Claude no
@@ -20,12 +20,12 @@
   - Particion por objetivo: `grupos.csv` (grupo 1 con material ortopedico = 65, grupo 2 = 37,
     grupo 3 limpio = 66).
   - `metal_0059` y `metal_0071` estan unidos sin perdida en `data/derivados/`.
-- **`tesis/main.tex` compila** (4 paginas, 40 referencias, 0 citas indefinidas). Cambios
+- **`tesis/main.tex` compila** (4 paginas, 42 referencias, 0 citas indefinidas). Cambios
   recientes:
-  - C1 reescrita;
-  - parrafo `Implant geometry source` (geometria parametrica);
-  - regla de aislamiento;
-  - cifra de R1 en `Field limitation`.
+  - R1 en 48/29 (`Field limitation`);
+  - TS en el Objetivo 2, holgura #31 (1-2 mm) y parrafo `Corridor measurement on the local cohort`;
+  - limpieza: "changed neither the transsacral corridor diameter nor its 10~mm viability";
+  - `maintex_cifras.py` recalcula ese parrafo desde tablas versionadas: **12 de 12**.
 
 ### Lo que se midio (reproducible, en disco)
 
@@ -34,13 +34,16 @@
 | E1 | `exploration-3d/sensibilidad_hu.py` | 2500 HU criba con 0 falsos negativos (113 candidatos) |
 | Dup. | `exploration-3d/duplicados_parciales.py` | 6 grupos por SHA256 + 3 por cortes compartidos; todos resueltos por paciente |
 | E6a / E6c | `objetivo1/` | Techo de 2000 HU de LW: 48 de 75 con metal fallan el Go/No-Go. `pub+MTW` (4a ventana) domina (#39) |
-| R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **48**, sin contaminacion **29** (transcripcion corregida el 2026-09-14; `main.tex` sigue en 49/30). Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.81 |
+| R1 | `objetivo2/r1_*.py` | 65 pacientes: marco computable con S1 confirmado por revisor clinico **48**, sin contaminacion **29** (transcripcion corregida el 2026-09-14; ya en `main.tex`). Revisor: medico ORL, ciego; acuerdo con el agente kappa 0.81. Segundo juicio en ITK-SNAP (#53): planilla de 61 casos lista, **0 de 61 llenos** |
 | E8 | `objetivo2/e8_*.py` | >= 17 de 65 con tornillo iliosacro; a 2500 HU los tornillos salen fragmentados (9/57) y con fuste de 5.1 mm (#46). Test-retest `0065`/`0066` |
 | E9b | `objetivo2/e9b_*.py` | Alguna esfera de S1 con mediana < 150 HU en **38% con metal y 43% sin metal** (#48). **El brazo sin metal queda cuestionado por #50** |
 | E9 | `objetivo2/e9_corredor.py` | **NO VALIDO**, no correr: el umbral HU no captura el esponjoso sacro (#48) |
 | TS piloto | `objetivo2/ts_piloto.sbatch`, `ts_piloto_qc.py` | Job 51300, 2 casos x 2 recortes. Sin truncamiento; entre recortes Dice 0.93-0.97 con diferencias en SI/ala (#49). En `CLINIC_0002` las esferas de E9b caen un nivel arriba de la S1 de TS y las alas en tejido blando (#50) |
 | TS cohorte | `objetivo2/ts_cohorte.sbatch` -> `ts_qc_cohorte.sbatch` (`ts_qc.py`) | **Completa y traida a la PC** (2026-09-13): jobs 51315 (358/358 ok) y 51316 (179 casos, 0 errores). Integridad verificada. Repetibilidad contra el piloto no exacta: 16 y 8 voxeles en `metal_0008` 6 mm (#49). Entrada: **`objetivo2/ts_cohorte.md`** |
 | TS analisis | `objetivo2/ts_analisis.py` -> `ts_analisis.md`, `ts_nivel_s1.csv` | Nivel S1 de TS concuerda con el clinico en 57/57 (tras corregir la transcripcion de `metal_0012`); R1 falla el nivel en 7/60 de calibracion (#50). "Ala < 150 HU dentro de sacro/S1": 8% con metal, 15% sin metal (#48 decia 38/43%). Recorte ~5% de voxeles; 10 casos con cajas desplazadas 14-98 mm (#49). #51 cerrada: era transcripcion. Laminas: 12/197, revisadas por agentes |
+| E9-TS | `objetivo2/e9ts_corredor.py` (51505; 3 mm: 51529) | 152 casos, 0 errores. Objetivo 2 (72 tras QC de nivel, #54): `D_TS` mediana 9.5 mm (IQR 7.4-11.7); viables a 10 mm 29/72 (6 mm) y 27/72 (3 mm). Grupo 1 con `ocupado_semimax`: 53.8% -> 40.4% en 52. Tablas versionadas en `objetivo2/` |
+| E10 / E10b | `ts_componentes.py` (51522), `ts_cajas_limpias.py` (51527) | F = 0.001: `D_TS` y viabilidad invariantes para F hasta 0.05; quedan 4 cajas desplazadas > 10 mm (1 original, 3 creadas por la limpieza), declaradas (#49) |
+| E6b | `objetivo1/e6b_vae_sd15.py` + `.sbatch` | VAE de SD 1.5 sin reentrenar, `pub`/`LW20000`/`pub+asinh`. Prueba corta 51539 (ds001): control 6/6, 182.8 s/volumen, cohorte ~8.8 h. **Cohorte sin traer a la PC** (no existe `objetivo1/outputs/e6b/`) |
 
 ### Decisiones tomadas en esta ronda (todas en `01-decisiones.md`)
 
@@ -53,41 +56,29 @@
 4. **#31:** `Dmax >= d_implante + 2c`, `c` = 1-2 mm radiales (operacionalizacion declarada de
    Kaiser).
 5. **#22:** 2500 HU solo para cribado; metal integrity con la regla adaptativa de Peters.
+6. **#48/#49/#50 (2026-09-14):** TS `total` 2.18.0; recorte de 6 mm principal y 3 mm como sensibilidad (se
+   reabre solo si las laminas muestran un fallo de 6 mm); E9b retirado.
+7. **#52 (a + c), #35 cerrada, #54 opcion (a):** `ocupado_semimax` principal; F = 0.001 justificada por la
+   invarianza de `D_TS` (decision 2026-09-14 (5)).
+8. **#53 (2026-09-15):** el revisor clinico juzga los 61 casos con S1 en ITK-SNAP, ciego y en planilla aparte.
 
 ### PENDIENTES PARA LA PROXIMA SESION, por urgencia
 
-1. **#48 / #49 / #50: TotalSegmentator para medir el corredor. Bloquea el Objetivo 2**, el
-   unico aporte propio del minimo.
-   - **HECHO (2026-09-13):** cohorte corrida (6 h 27 min) y traida a
-     `experiments/objetivo2/outputs/ts_total_qc/` y `outputs/ts_total_procedencia/`. Las mascaras
-     siguen en Khipu. **Leer primero `experiments/objetivo2/ts_cohorte.md`**: integridad, 7
-     hechos previos al conteo y la lista del analisis.
-   - **Pasos 1-3: HECHOS (2026-09-13)** con `ts_analisis.py`. Resumen en la seccion `Analisis` de
-     `ts_cohorte.md`. Laminas: solo 12 de 197 revisadas por agentes; la revision manual de la autora
-     sigue pendiente (lista en `ts_cohorte.md`).
-   - **Paso 4: DECIDIDO (2026-09-14)** en `01-decisiones.md`: TS `total` 2.18.0; recorte de 6 mm principal y
-     3 mm como sensibilidad; limpieza por fraccion; E9b retirado. #51 cerrada (error de transcripcion).
-   - **Abierto antes de E9:**
-     - **E10 en Khipu** (`KHIPU.md`, seccion E10), para fijar la fraccion de limpieza;
-     - **#52**, decision de la autora: pelvis sin osteosintesis, metal como ocupado, o las dos;
-     - orden para cambiar 49/30 -> 48/29 en `main.tex` (#51);
-     - diseno del segundo revisor (#53: 15 casos, mosaico ampliado y ciego).
-   - **Despues:** rehacer E9 sobre `sacrum` + `vertebrae_S1` + caderas de TS, reutilizando
-     `e9_corredor.py` (trayectorias, EDT, salida por el ilion, restriccion #31), **con y sin los
-     7 de FOV cortado**, con limpieza de componentes y midiendo HU dentro de las mascaras (#50 b).
-     Hay que traer o usar en Khipu las mascaras (`~/metalsynth/data/ts_total/`). Puede correr en la
-     CPU de Khipu (`big-mem`).
-2. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
-   - `main.tex` sugiere SD 1.5, cuyo VAE es de 3 canales; la mejor salida de E6c usa 4.
-   - Opciones en #36/#39. E6b se corre en Khipu.
-3. **Textos propuestos y no aplicados a `main.tex`:**
-   - restriccion #31 en el Objetivo 2 (texto en #31, ronda 2026-09-11 tarde);
-   - declaracion de que bone integrity (HU > 150) no captura el esponjoso sacro (#48, #17).
-4. **Decisiones pequenas de la autora:**
-   - los 7 de FOV cortado (cuando E9 sea valido);
-   - tercera regla de umbral (semimaximo local para implantes reales, #22).
-5. **Opcional, para blindar R1:** segundo revisor (radiologo o traumatologo) solo en los 17
-   casos senalados en #26; revision clinica de crestas y EIPS.
+1. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
+   - E6b: lanzar la cohorte si no se lanzo (`KHIPU.md`, E6b, paso 4; `e6b_jobs.txt` en Khipu guarda el id) y
+     traerla (paso 5). Meta: 179 filas en `e6b_vae_sd15.csv`, errores solo cabecera, CONTROL N de N.
+   - Analizar con el criterio de lectura fijado **antes** de ver resultados (#36/#39, "E6b PREPARADO").
+     `pub+MTW` (4 canales) no se mide: si SD 1.5 falla, la decision pasa a las opciones 2-4 de #36/#39.
+2. **Objetivo 2, cierre (sin decisiones de metodo pendientes):**
+   - mandar al revisor `r1_revision_itksnap_revisor.csv` + `.md` + 61 CT (#53). Al volver: comparar con el
+     mosaico y con TS; si cambia algun `ok`/`+1`, cambian 48/29 y 57/57 en `main.tex`;
+   - revision de laminas de la autora: `e9ts_revision_laminas_autora.csv`, **0 de 16**. Un `fallo_6mm` reabre
+     la decision 2026-09-14 (4).
+3. **ABIERTAS de referencia:** #55 (cifras por clase de TS; regla F sin precedente, LiTS/KiTS19 en
+   `_candidatos.md`) y #54 (discordancia de nivel sin juicio clinico en grupos 2 y 3; ya decidida la opcion a).
+4. **Decisiones pequenas de la autora:** tercera regla de umbral para implantes reales (#22).
+5. **Opcional, para blindar R1:** revision clinica de crestas y EIPS (heuristica sin revisar, declarado en
+   `main.tex`).
 6. **No urgente:**
    - revision de artefactos por la autora (#34, #35, #37; solo Objetivo 3);
    - candidatos PENDIENTE de `_candidatos.md`;
@@ -117,7 +108,7 @@
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
 - `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #55 (ultima ronda:
-  2026-09-14 (5)).
+  2026-09-15, E6b prueba corta).
 
 ## Ultimo paso completado
 2026-09-14 (3):
@@ -171,8 +162,55 @@ LiTS y KiTS19 en `_candidatos.md` como posibles precedentes de F.
 `outputs/e9ts_3mm/`. Objetivo 2 con 3 mm y F = 0.001: 9.35 mm (IQR 7.75-11.7), 27/72 viables. **E10b no llego a la PC**
 (sin `outputs/ts_cajas_limpias/`). Siguiente: traer o correr E10b; la autora revisa laminas 3 mm y aporta la fuente
 citable del recorte; luego, con orden, decision y `main.tex` a 3 mm.
-Siguiente: cierre de 51504-51506 y lectura de `data/e9ts/e9ts_resumen.md`. Mandar la tabla de ITK-SNAP al
-revisor. Decide la politica de ocupacion principal y la F tras leer `e9ts_resumen.md`.
+**2026-09-14 (8): `ebraheim1993` leido** con `lector-papers`. Por decision de la autora, solo ficha: el raw queda sin
+`clean/` y `refs.bib` sigue con 42 entradas. Es un reporte de un caso sin tasa, asi que no es fuente del 2%-15%; su
+pitfall es la superposicion en la AP y no afecta SAP. Registrado en `_index.md` (N3 propuesto), `_candidatos.md` y #12,
+sin implicancia nueva. De las 4 refs. de Hinsche faltan Routt 1997 y Templeman 1996, que no hacen falta para el alcance.
+**2026-09-14 (9):** comandos de E10b entregados a la autora (sin cambios en `KHIPU.md`; meta de filas 2865 verificada
+contra el script). La autora confirma que eligio 3 mm solo por el README: #49 actualizada, porque cambiar el principal
+ahora seria post hoc. Recomendacion: mantener 6 mm y reabrir solo si E10b o las laminas muestran un fallo del recorte de 6 mm. Siguiente: correr
+E10b, la autora decide #49 y despues el Objetivo 1.
+**2026-09-14 (10):** decision 2026-09-14 (4) escrita en `01-decisiones.md` por orden de la autora: 6 mm principal y
+3 mm como sensibilidad; `main.tex` sin cambios. **E10b analizado** (job 51527, rc=0, control 715/716 por la S1 vacia de
+`metal_0053`). Con F = 0.001 quedan 4 desplazamientos: 1 original y 3 nuevos creados por la limpieza. Ningun cambio en
+`D_TS`. Cae la justificacion escrita de F en la decision (3); #49 actualizada con opciones y recomendacion (a). Siguiente:
+la autora decide la justificacion de F; revision de laminas; Objetivo 1.
+**2026-09-14 (11):** decision 2026-09-14 (5) escrita por orden de la autora: se mantiene F = 0.001 y su justificacion
+queda en la invarianza de `D_TS`; la seccion E10b de #49 queda CERRADA. Objetivo 2 sin decisiones pendientes de metodo.
+Siguiente propuesto: cierre corto del Objetivo 2 (versionar tablas citadas, revision dirigida de laminas, #53) y despues
+el Objetivo 1: E6b sin reentrenar (VAE de SD 1.5 sobre configuraciones de 3 canales) para decidir #36 + #39 juntas.
+**2026-09-15:** por orden de la autora:
+- **Tablas versionadas** en `experiments/objetivo2/` (e9ts_corredor, e9ts_resumen, ts_cajas_limpias y su control; hash
+  identico). `maintex_cifras.py` las recalcula: **11 de 12** cifras de `main.tex` coinciden. La que no es "changed no
+  measurement": en `CLINIC_0012` el corredor iliosacro izquierdo cambia 0.2 mm; texto propuesto en #49, sin aplicar.
+- **Plantilla de revision de laminas** (16 casos) y su guia, `e9ts_revision_laminas.md`.
+- **E6b preparado y probado en local sin modelo** (identidad 12/12 frente a E6c; con E6c alterado da 11/12; eco 12/12).
+  Comandos en `KHIPU.md`, seccion E6b.
+
+Siguiente: prueba corta y cohorte de E6b en Khipu; revision de laminas (autora); tabla de ITK-SNAP al revisor (#53);
+decidir el texto de #49.
+**2026-09-15 (2), orden de la autora:**
+- **`main.tex`**: la limpieza "changed neither the transsacral corridor diameter nor its 10~mm viability"; compila, 4
+  paginas, 42 referencias, 0 indefinidas. `maintex_cifras.py` da **12 de 12**.
+- **#53**: el revisor mira los 61 casos; planilla ciega `r1_revision_itksnap_revisor.csv` (61 filas) e instrucciones
+  en `.md`. La decision falta escribirla en `01-decisiones.md` (texto propuesto en el chat).
+
+Siguiente: mandar la planilla, los .md y los 61 CT al revisor; E6b en Khipu; revision de laminas.
+**2026-09-15 (3):**
+- **Decision de #53 (61 casos)** escrita en `01-decisiones.md` por orden de la autora.
+- **Prueba corta de E6b OK:** job 51539, ds001 (A6000), control 6/6, 182.8 s por volumen; cohorte estimada en ~8.8 h.
+  Unica cifra vista, sin interpretar (n = 1): `pub`, hueso, `metal_0000`: identidad 156.6, VAE oraculo 222.7, regla 291.2 HU.
+
+Siguiente: lanzar la cohorte de E6b (`KHIPU.md`, E6b, paso 4) y traerla; despues, analizar #36/#39.
+**2026-09-15 (4):** `ESTADO.md` consolidado. PUNTO DE RETOMA puesto al dia (tabla con E9-TS, E10/E10b y E6b;
+decisiones 6-8; pendientes rehechos) y borrado un "Siguiente" obsoleto de 51504-51506. Verificado en disco: sin
+salidas de E6b en la PC, laminas 0/16 y planilla del revisor 0/61. Sin trabajo experimental nuevo.
+`01-decisiones.md` sin cambios (no hubo decision nueva). **La autora decide esperar ITK-SNAP** para la frase
+"confirmed the S1 level on every patient" de `Field limitation` (#53): se reescribe una sola vez, con el juicio
+nuevo. `main.tex` sin cambios. Commit bloqueado por `ESTADO.md` sin stage: `git add docs/ESTADO.md`.
+
+Siguiente: cohorte de E6b (lanzar o traer) y analisis de #36/#39; enviar la planilla al revisor; laminas. Al volver
+la planilla: 48/29, 57/57 y la frase "confirmed" de `main.tex`.
 
 ## Paso anterior
 2026-09-14 (2):

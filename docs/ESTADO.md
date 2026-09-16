@@ -107,10 +107,33 @@
 - **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #57 (ultima ronda:
-  2026-09-15 (6), DiffBoost/LGESynthNet y tension global/local de B_delta).
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #68 (ultima ronda:
+  2026-09-16 (13), Mirza/Fan/Routt/Machacek).
 
 ## Ultimo paso completado
+2026-09-16 (ronda 13) — **4 lecturas mas con `lector-papers`**: `mirza2003`, `fan2022`, `routt1997`, `macháček2023`
+(fichas, filas en `_index.md`, `_candidatos.md` actualizado). **#68 NUEVA** (escala de 4 grados literal en Mirza, que la
+declara heredada; `main.tex:52` dice "lettered" y omite ese eslabon; SAP sin regla de borde para 4.0 mm). #67
+actualizada. `fan2022`, `routt1997` y `macháček2023` sin implicancia ABIERTA (registrado).
+
+**Siguiente:** decision de la autora sobre #64-#68. Vaccaro 1995 Part II sube a N1 en `_candidatos.md` (unico nodo sin
+leer de la escala). Verificacion menor: proyeccion conjunta paciente+metal en `peters2025hybrid`.
+**Pendientes que surgieron:** quedan 11 PDF sin ficha, ninguno con riesgo alto (surveys, arquitecturas, MAR puros,
+DukeSim, Polyp-DDPM, hu2023, singhrao2024).
+
+## Paso anterior
+2026-09-16 (ronda 12) — **4 lecturas con `lector-papers`**: `arand2019pelvicring`, `chen2026foundationvae`, `tejwani2014`,
+`zhang2018` (fichas, filas en `_index.md`, candidatos en `_candidatos.md`). **#64-#67 NUEVAS** y #63 actualizada.
+`main.tex`, `00-tesis.md` y `01-decisiones.md` sin tocar. #64: Arand citado como "bone density maps" sin mapa utilizable.
+#65: Chen no refuta E6b. #66: E6b no mide la banda B_delta. #67: grosor de corte del CT vs benchmark Zwingmann.
+
+**Siguiente:** decision de la autora sobre #64 (redaccion `main.tex:78`), #65 (frase en Related Work), #66 (ROI de banda
+en E6b) y #67 (verificar protocolo CT de Zwingmann 2009). Mas urgente sigue siendo #36/#39 (VAE); MAISI entra como
+candidata N1 para la opcion 3.
+**Pendientes que surgieron:** protocolo de CT de `zwingmann2009navigated` no esta en su ficha (releer ese punto);
+Wagner 2014 queda condicionada a #64.
+
+## Paso anterior
 2026-09-15 (ronda 11) — **2 lecturas mas, correcciones APLICADAS a `main.tex` y bibliografia regenerada**,
 todo por orden explicita de la autora en el mismo turno.
 - **`zwingmann2013.md` (N2 propuesto) y `lin2019.md` (N1 propuesto).** Fichas y filas en `_index.md`.

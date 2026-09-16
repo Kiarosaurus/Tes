@@ -5668,3 +5668,217 @@ como precedentes de ControlNet en imagen medica, para adelantarse a la pregunta.
   - **`tejwani2014` es la unica de las 21 sin DOI**: su raw no trae `AID` ni `LID`, y no se busco en otra fuente (regla 9). `gottschling2009` tampoco lleva `doi`, porque el de Springer solo aparece dentro de la clave del editor y una clave no es un campo.
   - **`herman2016` apunta hoy a dos versiones distintas:** el raw confirma la version de revista (J Orthop Res 35(7):1478-1484, 2017) y es la que entro a `refs.bib`, pero el PDF de `papers/` es el *Accepted Article* sin paginacion, que es sobre el que se hizo la ficha. Mismo patron que `isensee2021`.
 - Las dos unicas advertencias de BibTeX siguen siendo las de siempre y son correctas: `hinsche2002fluoroscopy` y `templeman1996proximity` tienen numero de fasciculo y no volumen, porque *CORR* de esa epoca numeraba asi.
+
+## Ronda 2026-09-16 — 4 lecturas: `arand2019pelvicring`, `chen2026foundationvae`, `tejwani2014`, `zhang2018`
+
+Elegidas entre los 19 PDF de `papers/` sin ficha por riesgo sobre el argumento: una cita impresa sin leer
+(`arand2019pelvicring`), la objecion externa a E6b (`chen2026foundationvae`, prioridad 1 desde el 2026-09-15), la
+fuente de simulacion que `lin2019` omite (`zhang2018`) y la unica "safe zone" iliosacra sobre CT postoperatorio sin
+leer (`tejwani2014`). Fichas de `lector-papers`; las afirmaciones de los lectores se contrastaron contra `main.tex`,
+`peters2025hybrid.md`, `e6b_vae_sd15.py` y `_candidatos.md`, y **tres se corrigieron** (ver #64, #67 y la
+actualizacion de #63). `main.tex`, `00-tesis.md` y `01-decisiones.md` sin tocar (reglas 3, 4 y 14).
+
+### 64 — `arand2019pelvicring` esta citado en `main.tex` como fuente de "bone density maps" y NO publica un mapa utilizable — ABIERTA
+
+- **Origen:** ficha `arand2019pelvicring.md`, 2026-09-16, PDF completo. **Estaba citado dos veces en `main.tex` sin
+  haberse leido nunca** (patron vigilado: una cita que se vuelve verdad por estar impresa).
+- **Frases afectadas:**
+  - `main.tex:78` (Objetivo 2): *"constrained by bone density maps \citep{arand2019pelvicring}"*.
+  - `main.tex:52`: *"bounded by pelvic density representations \citep{arand2019pelvicring}"*.
+- **Lo que SI hay:** *"A separate statistical model of the grey value distribution"* (Abstract, p. 376);
+  *"The mean HU value for each voxel was calculated"* (Methods, p. 377). Es un **promedio poblacional de HU**,
+  mostrado como figura y descrito por regiones (ala sacra baja, *"so-called alar void"*; cuerpo de S1 intermedio).
+  Dice que sirve para *"preoperative planning and screw positioning"* (Discussion, p. 382).
+- **Lo que NO hay:** valores numericos de HU, calibracion a densidad mineral, dispersion, disponibilidad publica del
+  modelo, ni ningun uso del mapa para restringir un tornillo. Cohorte: 50 CT **post mortem**, japoneses, edad media
+  74.9, sin lesion; implantes: NO ENCONTRADO EN EL PDF.
+- **Veredicto:** `main.tex:52` ("representations") es defendible como motivacion cualitativa. `main.tex:78` ("maps")
+  **sugiere que la tesis toma los mapas de Arand**, y el muestreador en realidad lee el HU de cada volumen.
+- **Correccion al lector:** su informe dice que la regla de 5 mm y la viabilidad de corredor "no salen de este paper".
+  Es cierto pero **no es un problema de `main.tex`**: en `main.tex:78` la regla de 5 mm cae bajo Kaiser y la
+  viabilidad bajo `mclaren2021corridor`. No hay mala atribucion ahi.
+- **Lo que si respalda:** el rol de `_index.md` ("el corredor no es fijo"). Componentes 3 y 4 cambian *"the size and
+  availability"* del corredor transsacro S1 (Results, p. 379), sin cifra en mm. Varianza de las 5 primeras componentes
+  61.7% (Results) frente a 61.64% (Conclusion): inconsistencia menor del paper.
+- **Supuesto nuevo sin documentar:** transferir un patron de densidad de pelvis ancianas post mortem sin lesion a
+  CLINIC-metal (fractura + implante) no esta justificado. Solo importa si la tesis usa el patron, no si usa HU propio.
+- **Opciones para la autora:**
+  - (a) Reescribir `main.tex:78` como *"constrained by per-volume HU (bone density), motivated by the heterogeneous
+    sacral bone mass reported by \citet{arand2019pelvicring}"*, sin afirmar que se usan sus mapas.
+  - (b) (a) + usar Arand tambien en la frase de `main.tex:52` sobre variacion anatomica (*no canonical pose*), que es
+    el uso mejor respaldado.
+  - (c) Retirar la cita de densidad y leer Wagner 2014 (*bone mass distribution and trans-sacral corridors*, ya en
+    `_candidatos.md`) como fuente alternativa.
+- **Tipo:** REDACCION / SUPUESTO. **Nivel propuesto: N2.**
+
+### 65 — `chen2026foundationvae` NO contradice E6b: no mide error en HU, no evalua hueso ni metal, y su unico recorte declarado es [-1000, 1000] HU — ABIERTA
+
+- **Origen:** ficha `chen2026foundationvae.md`, 2026-09-16, PDF completo. Cierra en evidencia la accion de la entrada
+  "36 y 39 — Busqueda web autorizada" (2026-09-15), que lo marco como prioridad 1.
+- **Hipotesis del recorte: confirmada solo en parte.**
+  - Generacion (CT-RATE / ReXGroundingCT): *"intensities are clipped to [−1000, 1000] HU"* (§4.1, p. 5).
+  - **Reconstruccion y aumentacion** (MSD Task06/07, LiTS, KiTS19; Tablas 1-2, p. 3), que es donde se apoya
+    *"without medical fine-tuning"*: rango y normalizacion **NO ENCONTRADO EN EL PDF**. No se puede afirmar que ahi
+    tambien recorten.
+- **Por que igual no refuta E6b (evidencia, no inferencia):** metricas PSNR/SSIM/MSE **sin unidad declarada**; **ningun
+  error en HU** ni MAE; **ningun ROI por tejido** (hueso, metal); anatomia torax y abdomen, **sin pelvis ni metal**;
+  **ningun VAE 2D tipo Stable Diffusion** (solo 7 VAE de video congelados, con MedVAE y MAISI como referencia). E6b mide
+  MAE en HU dentro de hueso > 150 HU con SD 1.5: otra pregunta.
+- **Lo que NO se puede escribir:** que Chen "recorta todo a [-1000, 1000]" (solo esta declarado para generacion), ni que
+  un VAE de video congelado fallaria en hueso (no se probo).
+- **Riesgo de sustentacion:** sigue siendo repregunta probable (ICML 2026, titulo contrario a la conclusion de E6b). Hoy
+  `main.tex` no lo cita.
+- **Inconsistencias internas del paper** (para no citarlo mal): MedVAE PSNR 20.34 / MSE ">600" en Introduccion frente a
+  30.06 / 88.36 en Tabla 1; WAN2.1 y WAN2.2 identicos en Lung; 124 frente a 126 clases de mascara.
+- **Opciones para la autora:**
+  - (a) Frase en Related Work / Objetivo 1 que lo cite y lo acote con las diferencias de arriba. Recomendada.
+  - (b) (a) + anadir un VAE de video congelado (WAN2.x o IVVAE) como configuracion extra de E6b, para responder con dato
+    propio. Coste: otra corrida de cohorte en Khipu (E6b completo tardo 8.74 h).
+  - (c) No citarlo y preparar solo la respuesta oral.
+- **Tipo:** REDACCION / RIESGO. **Nivel propuesto: N2.** Snowballing: MAISI y MedVAE a `_candidatos.md` (utiles para la
+  opcion 3 de #36/#39).
+
+### 66 — El Go/No-Go del Objetivo 1 solo mide hueso y metal: nada comprueba que el autoencoder conserve el streaking de B_delta — ABIERTA (GAP)
+
+- **Origen:** `chen2026foundationvae`, Fig. 2, p. 2: *"Errors are dominated by high-frequency noise and mild streak
+  artifacts"*. Contrastado contra `experiments/objetivo1/e6b_vae_sd15.py`: `ROIS = ('hueso', 'metal')` (linea 79),
+  hueso > 150 HU, metal > 2500 HU. **No hay ROI de banda peri-implante ni de estrias.**
+- **Por que importa:** el streaking de baja amplitud y alta frecuencia **es la senal que el Objetivo 3 debe sintetizar**
+  dentro de B_delta. Un VAE que suprima (o introduzca) estrias leves puede pasar el Go/No-Go en hueso y aun asi
+  **limitar lo que el renderizador puede expresar**, o contaminar la evaluacion con estrias propias.
+- **Cautela:** la frase de Chen es sobre su error de reconstruccion en datos sin metal y posiblemente recortados; **no
+  distingue si el VAE quita o pone estrias** y no da cifra. Es una senal para medir, no evidencia de fallo.
+- **Opciones para la autora:**
+  - (a) Anadir a E6b (o al VAE que se elija por la opcion 3 de #36/#39) un tercer ROI: la banda B_delta alrededor del
+    metal (> 2500 HU dilatado ~12 mm, menos metal), con MAE/RMSE y, si se quiere, error en alta frecuencia. No cambia
+    el Go/No-Go; se reporta como descriptivo. Barato: la mascara de metal ya se calcula.
+  - (b) Declarar la limitacion en el Objetivo 3 sin medir.
+  - (c) Nada (solo aceptable si el Objetivo 3 se cae del alcance).
+- **Tipo:** GAP metodologico, afecta Objetivo 1 (diseno del control) y Objetivo 3.
+
+### 67 — `tejwani2014`: la brecha detectada podria depender del grosor de corte del CT, y el benchmark compara contra CT de protocolo no registrado — ABIERTA
+
+- **Origen:** ficha `tejwani2014.md`, 2026-09-16, PDF completo (Am J Orthop 43(11):513-516).
+- **Hallazgo 1 (SUPUESTO del benchmark):** CT de *"either a 5.0-mm or a 2.5-mm sequential axial image"* (Materials and
+  Methods, p. 514); la penetracion detectada es mayor con 2.5 mm (20 de 32 pacientes), **con P = .3, no
+  significativo**. Es solo una tendencia, pero plantea un supuesto que la tesis no declara: los grados de
+  `zwingmann2009navigated` salen de CT postoperatorios cuyo grosor de corte **no esta registrado en su ficha**, y SAP se
+  medira sobre volumenes con espaciado z submilimetrico (`02-datos.md`). `herman2016` usa cortes de 2 mm. Si la
+  sensibilidad a brechas de 2 mm depende del grosor de corte, **comparar la distribucion del muestreador (voxel
+  submilimetrico) con la clinica (corte posiblemente mas grueso) no es neutral**.
+  - Accion posible: verificar en el PDF de Zwingmann 2009 el protocolo de CT (via `lector-papers`); si es >= 2.5 mm,
+    declarar la asimetria como limitacion o evaluar SAP tambien re-muestreando a ese grosor como sensibilidad.
+- **Hallazgo 2 (#7, sin cambio de decision):** la "safe zone" es foraminal y cualitativa (penetracion pequena en el
+  tercio superior del foramen S1 en axial), con limite en mm **inconsistente en el propio paper** (2, 2.1, 2.7, 3 mm
+  segun seccion). No compite con Kaiser/McLaren ni sirve de fuente operacional.
+- **Hallazgo 3 (amplia #58):** escala propia de 3 categorias (intraoseo / *"skived"* < 2 mm en foramen S1 / extruido),
+  **sin fuente y sin conteos por categoria**. Otro uso del corte de 2 mm en iliosacro sin justificacion. No aporta prior
+  ordinal y no reabre #12/#28: solo mide S1 y llama "S1 screws" a los 51 tornillos aunque 3 casos llevaron S2.
+- **Hallazgo 4 (cadena 2%-15%, cerrada):** repite *"reported in 2% to 15% of patients"* (p. 514) sin numero de
+  referencia. **Correccion al lector:** no puede ser el origen del rango (2014, posterior a Hinsche 2002 y a Zwingmann
+  2009/2013, #62); es un repetidor mas. Sin efecto: el rango ya esta RETIRADO.
+- **Cifras que NO se deben citar** sin aclarar discrepancia: pacientes sin cambio neurologico (4 frente a 2), deficit
+  nuevo (6 frente a 8), iatrogenico (1 frente a 2), penetracion 45% frente a 43%, suma de tornillos que no da 51. Solo la
+  tabla (46 pacientes, 51 tornillos, 23 con penetracion) es consistente.
+- **Tipo:** SUPUESTO (hallazgo 1) / REDACCION (2-3). **Nivel propuesto: N2.**
+
+### 63 — ACTUALIZACION tras leer `zhang2018` (2026-09-16): protocolo recuperado, y `lin2019` le atribuye algo que no tiene
+
+- **Origen:** ficha `zhang2018.md`, 2026-09-16, PDF completo (12 pp., version aceptada).
+- **Lo que `lin2019` omitia, ahora con fuente:** metales Ti, Fe, Cu y Au; coeficientes de XCOM (valores NO ENCONTRADO
+  EN EL PDF); fuente policromatica 120 kVp, 2x10^7 fotones, ruido de Poisson; fan-beam 2D, 984 vistas, 920 detectores,
+  59.5 cm fuente-isocentro; 512x512; 74 CT, 15 formas de metal segmentadas a mano, 100 casos. Metrica: RMSE en HU
+  excluyendo pixeles de metal, y SSIM.
+- **Discrepancia:** `lin2019` dice simular volumen parcial igual que su ref. [33]; **este PDF no menciona volumen
+  parcial ni dispersion**. Lo que `main.tex:56` dice de `lin2019` no depende de ese detalle: sin cambio de texto.
+- **Sobre #61:** el artefacto se fabrica en proyeccion **reproyectando CT ya reconstruidos** (HU -> atenuacion,
+  separacion agua/hueso), sin datos crudos. **Correccion al lector:** propuso que esto obliga a repensar el brazo
+  fisico. No: `main.tex:56` no argumenta falta de datos crudos, y `peters2025hybrid` (protocolo adoptado) ya hace
+  proyeccion y reconstruccion sobre CT. Sin implicancia nueva sobre baseline.
+- **Sobre #57 / B_delta:** extension espacial del artefacto **NO ENCONTRADO EN EL PDF** (solo cualitativo: hueso borroso
+  *"near the metals"*). Tercera fuente de simulacion leida sin cifra de alcance (tras `deman1999` y `lin2019`): el
+  *"remains unmeasured in the literature"* de `main.tex` sigue en pie.
+- **Dato util para el Objetivo 3:** caso 1 es un corte pelvico con **protesis bilaterales de cadera** (visto en figura;
+  el texto solo dice *"hip prostheses"*). Precedente de metal simulado en pelvis, no de tornillo iliosacro.
+- **#63 sigue ABIERTA** en decision; la evidencia nueva no cambia su veredicto. **Nivel propuesto: N2.**
+
+## Ronda 2026-09-16 (2) — 4 lecturas: `mirza2003`, `fan2022`, `routt1997`, `macháček2023`
+
+Elegidas entre los 15 PDF sin ficha: la tercera fuente de la escala del benchmark (`mirza2003`), la validacion que
+`karageorgos2024ddpm` y `haneda2025aapm` atribuyen a `fan2022`, la fuente de Moed para "S2 es menor" (`routt1997`) y el
+LDM condicionado por mascara mas cercano al renderizador (`macháček2023`). Informes de `lector-papers` contrastados
+contra `main.tex:48`, `main.tex:50`, `main.tex:52`, `peters2025hybrid.md`, `smith2006iliosacral.md` y
+`zwingmann2009navigated.md`. `main.tex`, `00-tesis.md` y `01-decisiones.md` sin tocar.
+**Resultado: una implicancia nueva (#68), una actualizacion (#67) y tres lecturas sin implicancia ABIERTA.**
+
+### 68 — La escala de cuatro grados del benchmark aparece literal en `mirza2003`, que la declara heredada; `main.tex:52` salta de los seis tramos de Gertzbein a los cuatro grados sin ese eslabon, y los llama "lettered" — ABIERTA
+
+- **Origen:** ficha `mirza2003.md`, 2026-09-16, PDF completo (Spine 28(4):402-413). Es la ref. 8 de
+  `smith2006iliosacral`, que cita tres fuentes para su escala: Vaccaro 1995 (ref. 6), Gertzbein 1990 (ref. 7) y Mirza
+  2003 (ref. 8).
+- **Hallazgo 1 — primera fuente leida con la forma exacta del benchmark.** Grado 0 = 0 mm, 1 = >0 y <2 mm, 2 = >2 y
+  <4 mm, 3 = >4 mm (p. 405); leyenda de la Fig. 5: *"0: no perforation, 1: <2mm, 2: 2-4mm, 3: >4mm"* (p. 407).
+  Grados **numerados**, no letras (las letras A/B/C de su Tabla 3 son grupos de Tukey).
+- **Hallazgo 2 — tampoco es el origen.** *"The thresholds reported in prior studies were used"* (p. 405), con las
+  refs. Gertzbein & Robbins 1990 y **Vaccaro 1995 Part II**. Como Gertzbein publica seis tramos, **Vaccaro 1995 es el
+  unico nodo sin leer** que podria contener los cuatro grados antes de 2003.
+- **Hallazgo 3 — los propios autores niegan validez a los cortes, y eso REFUERZA la decision vigente.** Dicen que esos
+  umbrales *"do not apply to the thoracic spine"* y *"are likely different for different directions"*, y que en
+  cadaver no se pueden definir umbrales de lesion (p. 411). Es la frase mas fuerte leida a favor de tratar el ancho de
+  2 mm como convencion geometrica, y es de una fuente de la propia cadena.
+- **Que toca en `main.tex:52`** (hoy: *"\citet{gertzbein1990} tabulate canal encroachment ... in six 2~mm bins rather
+  than four lettered grades"*):
+  - La frase **no es falsa** sobre Gertzbein, pero deja sin nombrar donde aparecen los cuatro grados.
+  - **"lettered" es inexacto** para la escala del benchmark: Zwingmann (*"Grade 0 ... Grade 1 ..."*, p. 1835) y Mirza
+    usan numeros. La escala con letras es la de `zhang2026pediclescrew` (Grade A), que no esta en esta cadena.
+- **Hallazgo 4 — regla de borde no definida.** Mirza no dice a que grado van exactamente 2 y 4 mm (usa >2 y <4).
+  Zwingmann escribe *"less than 2 mm"*, *"between 2 and 4 mm"*, *"greater than 4 mm"*: 2.0 cae en grado 2, pero 4.0
+  queda ambiguo. **SAP necesita una regla explicita** (p. ej. `[0,2) / [2,4] / (4,inf)`), declarada como convencion.
+- **No usar como prior:** sus distribuciones (fluoroscopia estandar 80/9/5/6%, StealthStation 95/0/1/4%; Tabla 3,
+  p. 410) son de tornillos **toracicos en cadaver**, medidos con calibrador en diseccion. No compiten con Zwingmann.
+- **Inconsistencias internas** (no citar sin aclarar): cirujano A *"31 (91%)"* sobre 35; rango inferolateral 1-5.1 mm en
+  texto frente a 1.7-5.1 mm en Tabla 4; perforacion inferolateral 15% en Discusion frente a 14% en Tabla 3.
+- **Opciones para la autora:**
+  - (a) Corregir `main.tex:52`: "four lettered grades" -> "four numbered grades", y anadir que la version de cuatro
+    grados aparece en \citet{mirza2003}, que declara los cortes heredados y *"likely different for different
+    directions"*. Recomendada: refuerza la frase de convencion geometrica con la fuente de la propia cadena.
+  - (b) (a) + leer Vaccaro 1995 Part II para cerrar la cadena. **Aviso:** el punto 9 de Fuera de alcance cierra la
+    cadena del **10 mm**, no la de la escala; pero la escala ya esta declarada como convencion, asi que leer Vaccaro solo
+    mejora la atribucion, no cambia el metodo.
+  - (c) Solo corregir "lettered" y no nombrar a Mirza.
+  - En todos los casos: fijar la regla de borde de SAP (hallazgo 4) y escribirla en la definicion de la metrica.
+- **Tipo:** REDACCION (benchmark) + decision de implementacion menor. Amplia #58. **Nivel propuesto: N1** (es el
+  eslabon donde aparece la forma exacta del benchmark ordinal).
+
+### 67 — ACTUALIZACION tras leer `mirza2003` (2026-09-16): las fuentes de la escala miden a resoluciones distintas
+
+- `mirza2003` mide la perforacion **con calibrador en diseccion**, con minimo medible de 0.2 mm; la unica CT con
+  parametros es la preoperatoria de navegacion (cortes de 2 mm cada 1.3 mm). `herman2016` mide en CT de 2 mm y
+  `tejwani2014` en CT de 2.5 o 5.0 mm. Protocolo de CT de `zwingmann2009navigated`: sigue sin registrar en su ficha.
+- **Precision del hallazgo, para no inflarlo:** Mirza **no calibra** los cortes (los hereda), asi que esto no dice que
+  los cortes se derivaron por diseccion. Lo que muestra es que **una misma escala se aplica con instrumentos de
+  resolucion muy distinta** entre estudios, lo que sostiene la cautela de #67 sobre comparar SAP en voxel submilimetrico
+  con grados clinicos. #67 sigue ABIERTA; su accion (verificar el protocolo de CT de Zwingmann 2009) no cambia.
+
+### Sin implicancia ABIERTA — `fan2022`, `routt1997`, `macháček2023` (registro por regla 13)
+
+- **`fan2022`:** sin cambio sobre `main.tex` ni sobre el baseline.
+  - `karageorgos2024ddpm` le atribuye validar que CatSim produce artefactos realistas; **el PDF no compara con datos
+    reales** (solo re-simulacion sin calcio frente a la original, Fig. 2). `main.tex:50` no usa esa atribucion: se apoya
+    en la validacion con fantoma de `peters2025hybrid`. Anotado en la fila de `_index.md`.
+  - "Freq. Boost" sin parametros en `fan2022`, pero `peters2025hybrid` describe su construccion (filtro 1D asignado
+    radialmente en Fourier, 2.3, p. 3). No bloquea la adopcion del protocolo.
+  - **#57:** mide blooming de calcio como aumento del volumen umbralizado (36% a 140 kVp, 68% a 80 kVp, p. 1230415-4),
+    **no extension en mm**, y los autores advierten dependencia del umbral. Cuarta fuente de simulacion sin cifra de
+    alcance espacial; el *"remains unmeasured in the literature"* de `main.tex` sigue en pie.
+  - **Verificacion pendiente, baja prioridad:** `fan2022` suma sinogramas de paciente y calcio de forma lineal,
+    justificado por *"minimal beam hardening impact"* del calcio, lo que no vale para metal. Conviene confirmar en el PDF
+    de `peters2025hybrid` que paciente y metal se proyectan juntos con el espectro de 12 energias (su ficha registra el
+    espectro, no si la proyeccion es conjunta).
+- **`routt1997`:** opinion experta sin datos. *"The second sacral 'safe zone' is smaller"* (leyenda Fig. 2, p. 207) es
+  compatible con `main.tex`, que ya evita una jerarquia universal S1/S2 y mide el corredor por volumen. No da `c`, ni
+  escala, ni tasas, ni protocolo de CT. Nota de fidelidad: `moed2006s2screw` lo cita bien para S2 y para las vistas, y
+  solo en parte para "el dismorfismo limita el espacio en S1".
+- **`macháček2023`:** encaja en la familia "Globally conditioned" de `main.tex:48` (genera la imagen completa desde
+  ruido), confirma la delimitacion y no reduce la novedad de B_delta. Si se cita junto a DiffBoost, *"using the mask
+  only as an edge constraint"* debe quedar solo para DiffBoost (Machacek condiciona por region).

@@ -211,6 +211,9 @@ condicionar el muestreador por nivel (S1 vs S2). Ver implicancias #7 y #12.
 | Choi, D.; Yun, S.; Hyun, S.; Cho, S. Metal artifact reduction algorithm with conditional latent diffusion model for dental cone-beam CT. J. Appl. Clin. Med. Phys. 2025, 26, e70317 | yun2026simulationdriven | LDM **condicional** aplicado a artefactos metalicos, del mismo grupo. Precedente metodologico directo del renderizador; toca el reclamo de novedad (implicancia #9) | 2 | PENDIENTE |
 | Fan, F.; Ritschl, L.; Beister, M.; et al. Simulation-driven training of vision transformers enables metal artifact reduction of highly truncated CBCT scans. Med. Phys. 2021, 51(5), 3360-3375 | haneda2025aapm | Otro caso de entrenamiento guiado por simulacion de artefacto metalico. Suma a la implicancia #9 | 3 | PENDIENTE |
 | Hu, Q.; Chen, Y.; Xiao, J.; et al. Label-free liver tumor segmentation. CVPR 2023 | chen2024tumorsynthesis | Sintesis basada en modelo, no aprendida: es la alternativa analitica dentro del paradigma de sintesis de lesiones, y el unico baseline generativo de DiffTumor. Util para encuadrar "generativo vs analitico" | 2 | PENDIENTE |
+| R. Machacek, L. Mozaffari, Z. Sepasdar, S. Parasa, P. Halvorsen, M. A. Riegler, and V. Thambawita, "Mask-conditioned latent diffusion for generating gastrointestinal polyp images," arXiv preprint arXiv:2304.05233, 2023 | zhang2025diffboost (ref. [24]) | LDM condicionado por mascara para datos de segmentacion. Sirve para comprobar si la familia "inpainting acotado" de `main.tex:48` esta bien delimitada (#56): hay que ver si genera solo dentro de la mascara o la imagen completa | 3 | PENDIENTE (2026-09-15) |
+| Z. Dorjsembe, H.-K. Pao, and F. Xiao, "Polyp-DDPM: Diffusion-based semantic polyp synthesis for enhanced segmentation," arXiv preprint arXiv:2402.04031, 2024 | zhang2025diffboost (ref. [41]) | Sintesis semantica condicionada para aumentar datos de segmentacion; misma comprobacion de la frase de `main.tex:48` (#56) | 3 | PENDIENTE (2026-09-15) |
+| Z. Dorjsembe, H.-K. Pao, S. Odonchimed, and F. Xiao, "Conditional diffusion models..." (ref. [35] de `zhang2025diffboost`, Refs., p. 3682; titulo completo por copiar del PDF) | zhang2025diffboost (ref. [35], version IEEE TMI) | Med-DDPM: sintesis semantica **3D** condicionada por mascara. DiffBoost le atribuye *"improving segmentation accuracy from 65.31% to 66.75% in terms of Dice score"* (§II-B, p. 3672); esa es una cifra ajena, no citable desde aqui. Es el unico de la familia que trabaja en 3D, como el renderizador (2.5D). Sirve para la misma comprobacion de #56: ver si genera solo dentro de la mascara o el volumen entero. La primera lectura de DiffBoost lo habia descartado en bloque ([20]-[40]); se rehabilita por la regla "ya intento algo parecido" | 3 | PENDIENTE (2026-09-15) |
 | Lin, W.-A.; et al. DuDoNet: dual domain network for CT metal artifact reduction. CVPR 2019 | ren2022metalinsertion, wang2025adaptiveweighting (ref. 1) | Consumidor tipico de datos sinteticos de metal; util para definir el protocolo de datos de la tarea aguas abajo. `wang2025adaptiveweighting` lo cita ademas como una de las dos fuentes del umbral de 2500 HU con que segmenta la mascara metalica | 3 | PENDIENTE |
 
 | Lee PY, Lai JY, Hu YS, et al. Virtual 3D planning of pelvic fracture reduction and implant placement. Biomed Eng Appl Basis Commun 2012;24(03):245-262 | liu2021ctpelvic1k | Planificacion virtual 3D de colocacion de implante en fractura pelvica: tercer competidor directo del muestreador, junto a `liu2025pipeline` y Goerres | 2 | PENDIENTE |
@@ -424,3 +427,48 @@ Jeong 2009, Prell 2010, Wang 2010, Zhang 2007, Arabi 2021, Agrawal 2023, Wang 20
 DAN-Net 2021), arquitecturas y muestreadores genericos (DDPM, LDM, MedSegDiff, U-Net,
 Attention U-Net, R2U-Net, DeepLab, DPM-Solver, SegDiff/ensembles/Guo 2023, TriDo-Former) y el
 bloque de refs. 19-34 y 57-62 (aplicaciones de DL ajenas a CT de metal).
+
+### Descartes de la lectura de zhang2025diffboost (2026-09-15, version IEEE TMI)
+
+De sus 56 referencias se proponen solo Machacek [24], Med-DDPM [35] y Polyp-DDPM [41] (tabla
+"compiten con un componente"). **DiffuseExpand (S. Shao, X. Yuan et al., ref. [36])** se descarta
+por la regla de "contexto general": es expansion generica de datasets 2D para segmentacion, sin
+mascara acotada ni condicionamiento que ponga a prueba la frase de #56, y sin CT de metal. ControlNet
+(`zhang2023controlnet`) y LDM (`rombach2022latentdiffusion`) ya estan en `refs.bib`. El resto del bloque
+[20]-[40] y las fuentes metodologicas genericas quedan descartadas como se indica en la ficha.
+
+### Candidatos de AUTOENCODER, abiertos por el resultado de E6b (2026-09-15, ronda (7))
+
+E6b midio que el VAE de SD 1.5 sin reentrenar falla el Go/No-Go de hueso en 178/178 (#36/#39).
+El autoencoder deja de ser "contexto general" y pasa a ser la decision que bloquea el Objetivo 1.
+Estas dos filas salen de PDFs ya leidos; no se busco nada fuera.
+
+| Referencia | De donde sale | Por que puede importar | Prio | Estado |
+|---|---|---|---|---|
+| Zheng C, Vedaldi A. Online clustered codebook. IEEE Int. Conf. Comput. Vis. pp. 22741-22750, 2023 | `yun2026simulationdriven` (ref. 23) | **Es el CVQ-VAE que usa MLD-MAR**, el unico modelo latente del corpus con cifra de HU medida: RMSE 12.74 (σ=5.36) en sintetico (Tabla 1, p.10) y 21.01 en ROI clinico libre de artefacto (Tabla 3, p.11). Su latente es *"× 4 down-sampled"* (Sec. 2.3.1, p.4), frente al factor 8 de SD 1.5: razon mecanica concreta para esperar menos perdida. **Candidato principal de la opcion 3 de #36/#39** | 1 | PENDIENTE (2026-09-15) |
+| Esser P, Rombach R, Ommer B. Taming transformers for high-resolution image synthesis. CVPR 2021 | `chen2024tumorsynthesis` (ref. 22) | VQGAN que DiffTumor adapta a 3D y entrena en 9.262 CT (§3.1, p.4), con latente a 1/4 en alto, ancho y profundidad (Apendice E.2, p.21). **Estaba DESCARTADO** como "fuente metodologica generica" en el filtrado de las 10 lecturas; E6b lo rehabilita, igual que la excepcion de NMAR. Aviso: la ficha de DiffTumor ya advierte que ese autoencoder **nunca vio el rango del metal** y que no publica cifra de fidelidad en HU | 2 | PENDIENTE (2026-09-15) |
+
+Ya estaba en la tabla y sube de prioridad por el mismo motivo: **Choi et al. 2025** (LDM condicional
+para CBCT dental, del grupo de `yun2026simulationdriven`).
+
+**Lo que NINGUNA fuente del corpus reporta:** el error de ida y vuelta de un autoencoder solo,
+en HU, sobre CT oseo. Todas las cifras de arriba son de tuberia completa contra ground truth.
+Es exactamente lo que mide E6b, y por eso no hay con que compararlo de frente.
+
+### Busqueda WEB de benchmarks de autoencoders en CT (2026-09-15, orden explicita de la autora)
+
+**Excepcion declarada al flujo normal.** Estas filas NO salen de un PDF ya leido: salen de una busqueda web
+autorizada por la autora para resolver la opcion 3 de #36/#39. **Ninguna entro a `refs.bib`** (regla 9: la
+lista la define la autora y empieza por pegar el archivo en `refs/raw/`). Los datos de abajo vienen del
+abstract o de la version HTML, no de una lectura con `lector-papers`: **estan SIN VERIFICAR** y ninguna cifra
+de aqui puede ir a la tesis todavia.
+
+| Referencia | De donde sale | Por que puede importar | Prio | Estado |
+|---|---|---|---|---|
+| Chen Q, Ding S, Gu Y, Liu N, Bian J, Yuille A, Zhou Z, Fu J. "Foundation VAEs for 3D CT Reconstruction, Augmentation, and Generation". ICML 2026. arXiv:2605.30893 | Busqueda web 2026-09-15 | **El paper mas cercano a E6b que existe.** Prueba **siete VAE de video genericos congelados** (WAN2.1, WAN2.2, VideoVAE+, IVVAE, CVVAE, WFVAE, LeanVAE) como interfaz de CT *"without medical fine-tuning"*. Es la pregunta de E6b con respuesta contraria. **Diferencia critica que hay que auditar:** recortan la intensidad a **[-1000, 1000] HU**, rango que **excluye el hueso denso y todo el metal**; el Objetivo 1 vive justo fuera de ese recorte. Reportan PSNR 30.93 (pulmon) y 39.18 (pancreas) y MSE 77.97 / 8.58, con la unidad sin confirmar. Compresion 8x8x4 o 16x16x4 | 1 | PENDIENTE (2026-09-15) |
+| Shi J, Pelt DM, Batenburg KJ. "DM4CT: Benchmarking Diffusion Models for Computed Tomography Reconstruction". arXiv:2602.18589, 2026 | Busqueda web 2026-09-15 | Benchmark de modelos de difusion para CT. **Valor principal: confirma el hueco de #36/#39 por la negativa.** No separa la calidad del autoencoder de primera etapa de la tuberia completa, y declara *"we do not use Hounsfield Unit for display, as the benchmark is not intended for clinical analysis"*. Es decir, el benchmark de referencia del campo **no mide lo que mide E6b** | 2 | PENDIENTE (2026-09-15) |
+| Literatura de sCT en radioterapia MR-only (MAE en HU por tejido; varios articulos, sin clave asignada) | Busqueda web 2026-09-15 | Es el **unico subcampo que publica MAE en HU con ROI de hueso separado**, que es exactamente la metrica de E6b. Las magnitudes que aparecen en los resumenes de busqueda son de **cientos de HU en hueso**, pero la tarea es sintesis MR -> CT, mucho mas dificil que una ida y vuelta: **no sirven como ancla del umbral** y por eso NO se usaron en `main.tex`. Valor real: de ahi puede salir la convencion de *como se reporta* MAE en HU por tejido. **Sin verificar, sin articulo concreto elegido** | 3 | PENDIENTE (2026-09-15) |
+
+**Conclusion de la busqueda:** no aparecio ningun trabajo que publique el **error de ida y vuelta de un
+autoencoder solo, en HU, sobre CT oseo con rango de metal**. El hueco de #36/#39 se confirma tras buscar
+fuera del corpus, no solo dentro.

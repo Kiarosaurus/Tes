@@ -48,6 +48,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 |---|---|---|---|---|
 | `arand2019pelvicring` | `arand2019pelvicring.nbib` | PubMed nbib | — | 30575034 |
 | `chen2024tumorsynthesis` | `chen2024tumorsynthesis.bib` | BibTeX IEEE | `10656868` | — |
+| `chen2026foundationvae` | `chen2026foundationvae.bib` | BibTeX arXiv | `chen2026foundationvaes3dct` | — |
 | `deman2007catsim` | `deman2007catsim.bib` | BibTeX SPIE | `10.1117/12.710713` | — |
 | `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
@@ -81,7 +82,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `yun2026simulationdriven` | `yun2026simulationdriven.nbib` | PubMed nbib | — | 41699969 |
 | `zhao2012` | `zhao2012.nbib` | PubMed nbib | — | 22610442 |
 | `zhang2023controlnet` | `zhang2023controlnet.bib` | BibTeX IEEE | `10377881` | — |
-| `zhang2025diffboost` | `zhang2025diffboost.nbib` | PubMed nbib | — | 40030730 |
+| `zhang2025diffboost` | `zhang2025diffboost.bib` | BibTeX IEEE | `10804854` | — (ver "Cambio de raw de DiffBoost") |
 | `zhang2026pediclescrew` | `zhang2026pediclescrew.bib` | BibTeX SAGE | `doi:10.1177/08953996261443500` | 42141954 |
 | `zwingmann2009navigated` | `zwingmann2009navigated.nbib` | PubMed nbib | — | 19034594 |
 
@@ -235,3 +236,46 @@ README de TotalSegmentator pide citar nnU-Net (#55). `refs.bib` pasa de 41 a 42 
   (`Nature methods`) en nombre oficial `Nature Methods` (regla 4); ano de DP (2021; `DEP` 20201207 es la fecha
   electronica); volumen 18 de VI; numero 2 de IP; paginas 203-211 -> 203--211; DOI de LID. **Ningun campo se
   completo desde otra fuente.**
+
+## Cambio de raw de DiffBoost (2026-09-15)
+
+La autora sustituyo `refs/raw/zhang2025diffboost.nbib` (PubMed, PMID 40030730) por
+`refs/raw/zhang2025diffboost.bib` (exportador IEEE, clave del editor `10804854`), junto con el PDF de la
+version publicada en IEEE TMI. **`refs/clean/zhang2025diffboost.bib` no cambia:** el raw nuevo confirma los
+8 autores, el titulo, `IEEE Transactions on Medical Imaging`, 2025, volumen 44, numero 9, paginas
+3670-3682 (-> `3670--3682`) y el DOI `10.1109/TMI.2024.3519307`. Se descarta `keywords` (regla 7). El raw
+IEEE no trae PMID, asi que la columna PMID queda en `—`: 40030730 solo consta en el `.nbib` retirado, que
+sigue en el historial de git. `refs.bib` regenerado sin diferencias.
+
+## Nota sobre `chen2026foundationvae` (alta del 2026-09-15)
+
+Primera entrada del repositorio que **no es un articulo ni unas actas**: es un preprint de arXiv,
+y por eso es la unica con tipo `@misc`. Tres cosas quedan registradas aqui y no en `refs.bib`:
+
+1. **`url` descartado por la regla 7**, que ya lo descartaba para todas las entradas. Conviene saber
+   que ademas venia roto en el raw (`httpsarxiv.orgabs2605.30893`, sin `://` ni `/`), artefacto de
+   copiar del cuadro de citacion de arXiv. No se corrigio: `raw/` no se edita y el campo no se usa.
+2. **`eprint`, `archivePrefix` y `primaryClass` SI se conservan**, como excepcion declarada a la
+   regla 7. En las demas entradas el `eprint` sobraba porque habia DOI o revista; aqui es el unico
+   localizador que trae el raw. Sin el, la entrada no se puede encontrar.
+3. **El paper fue aceptado en ICML 2026**, pero el raw solo respalda el preprint de arXiv, asi que por
+   la regla de precedencia la entrada cita el preprint. La evidencia de la aceptacion es el pie de la
+   primera pagina del PDF, literal: *"Proceedings of the 43 rd International Conference on Machine
+   Learning, Seoul, South Korea. PMLR 306, 2026."* **Ese pie es la unica fuente del numero de volumen
+   que hay en disco**: la pagina de PMLR no se encontro al buscar (2026-09-15), asi que `PMLR 306` no
+   esta confirmado contra el editor. Para citar la version publicada hay que pegar su raw en
+   `refs/raw/`.
+
+   **DECIDIDO (2026-09-15, decision 2026-09-15 (3) en `docs/01-decisiones.md`):** se cita el preprint, como
+   excepcion declarada, porque es la unica version en `refs/raw/`. Se reabre si el paper llega a citarse en
+   `main.tex`: entonces se consigue el raw de las actas antes de escribir la frase. El numero `PMLR 306` **no
+   se usa en ninguna parte** hasta confirmarlo contra el editor.
+
+   **Correccion (2026-09-15):** una version anterior de esta nota decia que era "el mismo caso que
+   `isensee2021`". Es el **caso espejo**, no el mismo. En `isensee2021` el raw y `refs.bib` traian ya la
+   version publicada (Nature Methods 18(2):203-211, PMID 33288961) y lo que estaba desalineado era el
+   **PDF**, que era el preprint de arXiv; se resolvio consiguiendo el PDF publicado. Aqui pasa al reves:
+   el PDF es el que lleva el pie de ICML y el **raw** es el de arXiv. Lo unico comun es la leccion: un
+   mismo trabajo con dos versiones, y `raw/`, `papers/` y `refs.bib` tienen que apuntar a la misma.
+
+La clave del editor (`chen2026foundationvaes3dct`) se descarta por la regla 1, como siempre.

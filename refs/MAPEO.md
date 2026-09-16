@@ -279,3 +279,98 @@ y por eso es la unica con tipo `@misc`. Tres cosas quedan registradas aqui y no 
    mismo trabajo con dos versiones, y `raw/`, `papers/` y `refs.bib` tienen que apuntar a la misma.
 
 La clave del editor (`chen2026foundationvaes3dct`) se descarta por la regla 1, como siempre.
+
+## Alta masiva de 21 fuentes (2026-09-15)
+
+**Orden explicita de la autora:** *"Sobre los archivos que tienen refs/raw pero no refs/clean,
+es natural porque necesitan ser regenerados a partir del raw (hazlo)"*. Se genero un
+`refs/clean/<clave>.bib` por cada raw que no tenia uno. **`refs/raw/` no se toco.**
+Tras regenerar, `refs.bib` pasa de **43 a 64 entradas**. Ya no queda ningun raw sin clean
+ni ningun clean sin raw.
+
+**Correccion de un error del asistente (2026-09-15).** En el inventario de esa misma sesion
+se reporto que `deman1999` *"no tiene raw"*. Es **falso**: `refs/raw/deman1999.bib` existe
+desde el inicio. El error vino de un filtro que buscaba `^title` y no acierta en los `.bib`
+de IEEE, donde el campo va con sangria (`  title={...}`). Lo corrigio la autora.
+
+| Clave (autora) | Archivo raw | Formato | Clave o id del editor | PMID |
+|---|---|---|---|---|
+| `abadi2019` | `abadi2019.bib` | BibTeX IEEE | `8573883` | — |
+| `deman1999` | `deman1999.bib` | BibTeX IEEE | `775600` | — |
+| `dorjsembe2024` | `dorjsembe2024.bib` | BibTeX IEEE | `10782077` | — |
+| `ebraheim1993` | `ebraheim1993.nbib` | PubMed nbib | — | 8327389 |
+| `ebraheim1997` | `ebraheim1997.nbib` | PubMed nbib | — | 9127914 |
+| `fan2022` | `fan2022.bib` | BibTeX ADS/SPIE | `2022SPIE12304E..15F` | — |
+| `gertzbein1990` | `gertzbein1990.nbib` | PubMed nbib | — | 2326693 |
+| `gottschling2009` | `gottschling2009.bib` | BibTeX Springer | `10.1007/978-3-642-03882-2_243` | — |
+| `hasenboehler2011` | `hasenboehler2011.nbib` | PubMed nbib | — | 21569232 |
+| `herman2016` | `herman2016.nbib` | PubMed nbib | — | 27552712 |
+| `hu2023` | `hu2023.bib` | BibTeX IEEE | `10203067` | — |
+| `li2024` | `li2024.bib` | BibTeX IEEE | `10385220` | — |
+| `lin2019` | `lin2019.bib` | BibTeX IEEE | `8953298` | — |
+| `macháček2023` | `macháček2023.bib` | BibTeX ACM | `10.1145/3592571.3592978` | — |
+| `mendel2011` | `mendel2011.bib` | BibTeX Elsevier | `MENDEL20111164` | — |
+| `mirza2003` | `mirza2003.nbib` | PubMed nbib | — | 12590219 |
+| `routt1997` | `routt1997.bib` | BibTeX Elsevier | `ROUTT1997206` | — |
+| `tejwani2014` | `tejwani2014.nbib` | PubMed nbib | — | 25379748 |
+| `yu2021` | `yu2021.bib` | BibTeX IEEE | `9201079` | — |
+| `zhang2018` | `zhang2018.nbib` | PubMed nbib | — | 29870366 |
+| `zwingmann2013` | `zwingmann2013.nbib` | PubMed nbib | — | 23748798 |
+
+### Decisiones de normalizacion que conviene poder auditar
+
+- **Anos que no coinciden con la clave, conservados igual que en `lee2014`** (regla 1: la clave
+  la define la autora; `year` es la fecha del fasciculo que da el raw):
+  - `herman2016` -> `year = {2017}`. El raw da `DP - 2017 Jul` y `DEP - 20160919`.
+    **Ademas el raw confirma la version de revista: J Orthop Res 35(7):1478-1484.** El PDF de
+    `papers/` es el *Accepted Article* sin paginacion, asi que **la ficha y `refs.bib` apuntan hoy
+    a versiones distintas**. Mismo patron que `isensee2021` y `chen2026foundationvae`.
+  - `gottschling2009` -> `year = {2010}`. El congreso fue en septiembre de 2009 y las actas
+    salieron en 2010; el raw solo respalda 2010.
+- **Revistas recortadas por la regla 4** (nombre oficial, se descarta el titulo paralelo de NLM):
+  - `herman2016`: `Journal of orthopaedic research : official publication of the Orthopaedic
+    Research Society` -> `Journal of Orthopaedic Research`. Igual que se hizo con `lee2014`.
+  - `tejwani2014`: `American journal of orthopedics (Belle Mead, N.J.)` ->
+    `American Journal of Orthopedics`. El parentesis es el desambiguador de NLM, no parte del
+    nombre de la revista.
+- **`tejwani2014` va SIN `doi`:** su raw **no trae ninguna linea `AID` ni `LID`**. No se busco en
+  otra fuente (regla 9). Es el unico de los 21 sin DOI.
+- **`gottschling2009` va SIN `doi`:** el raw de Springer no trae campo `doi`. El identificador
+  aparece solo dentro de la clave del editor, y una clave no es un campo: no se promueve.
+- **`routt1997` conserva `note = {Pelvic Trauma: An update}`**, que es el titulo del numero
+  especial y viene del raw. La regla 7 descarta el `note` que solo lleva un PMID; este no lo es.
+- **Titulos con comillas dobles del raw**, pasados a comillas de LaTeX (` `` ` y `''`), sin cambiar
+  ninguna palabra: `hasenboehler2011` (*"Safe"* Surgical Corridor) y `tejwani2014` (*"Safe Zone"*).
+- **`mendel2011`: el guion largo Unicode del titulo** (`triangle—A decision`) se escribe `---`.
+  Misma clase de sustitucion que la regla 6 aplica a los rangos de paginas.
+- **`herman2016`: el titulo del raw dice `safe-zone-Easy`, con guion simple.** Casi seguro es un
+  guion largo perdido por el exportador, pero **se conserva tal cual**: corregirlo seria completar
+  un campo sin respaldo en el raw.
+- **Paginas expandidas** desde la abreviatura de PubMed: `11-4` -> `11--14` (`gertzbein1990`),
+  `616-8` -> `616--618`, `841-6` -> `841--846`, `402-13` -> `402--413`, `513-6` -> `513--516`,
+  `1257-65` -> `1257--1265`. `hasenboehler2011` lleva `pages = {8}`: es numero de articulo, no rango.
+- **`fan2022`:** se conservan `series` y `volume` (regla 8); se descartan `adsurl`, `adsnote`,
+  `month` y `eid`, este ultimo porque duplica `pages = {1230415}`.
+- **Volumenes y numeros vacios de IEEE descartados** en `dorjsembe2024`, `hu2023` y `lin2019`
+  (`volume={}`, `number={}`), por la regla 7.
+- **`macháček2023`: AVISO, la clave lleva caracteres no ASCII** (`á`, `č`). Se conserva porque la
+  clave la define la autora (regla 1) y es el nombre del archivo que ella pego. **Si BibTeX o
+  LaTeX fallan al compilar por esa clave, la decision de renombrarla es suya**, no del asistente.
+- **Autores con diacriticos**, escapados sin alterar el nombre: `Zwingmann, J\"{o}rn`,
+  `S\"{u}dkamp`, `Schr\"{o}der`, `Mach\'{a}\v{c}ek`, `Halvorsen, P\r{a}l`, `D\"{o}ssel` (editor).
+- **Autores con iniciales solas** (`Gertzbein, S. D.`, `Ebraheim, N. A.`, `De Man, B.`,
+  `Mendel, T.`): el raw **no trae el nombre de pila completo** y no se completa. Mismo criterio ya
+  aplicado en `hinsche2002fluoroscopy` y `templeman1996proximity`.
+- **`mirza2003`: el raw imprime `Kuntz, Charles 4th`** (sufijo generacional de NLM) y
+  **`Knonodi, Mark A`**, que parece una errata del editor por *Konodi*. **Los dos se conservan**:
+  el sufijo se omite por ser marca de NLM y no parte del nombre, la posible errata **no se corrige**
+  porque corregirla seria escribir un campo sin respaldo en el raw. Marcado aqui para que la autora
+  decida si vale un `% VERIFICAR`.
+
+### Efecto sobre el PDF, y hay que tenerlo presente
+
+`main.tex:139` tiene **`\nocite{*}`**: toda entrada de `refs.bib` entra en la bibliografia aunque
+ninguna frase la cite. Esta alta sube el documento de **43 a 64 referencias** de una vez. Es el
+comportamiento declarado en `main.tex:137`, pero el salto es grande y el conteo de referencias se
+usa como control de compilacion en `ESTADO.md`. **Si se prefiere que la bibliografia liste solo lo
+citado, hay que quitar `\nocite{*}`; no se toca sin orden (regla 14).**

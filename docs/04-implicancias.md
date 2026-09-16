@@ -5379,3 +5379,292 @@ como precedentes de ControlNet en imagen medica, para adelantarse a la pregunta.
 - **Sin implicancia sobre el argumento de la tesis.** `main.tex` no cita esta entrada.
 - **Pendiente de la autora:** elegir version de referencia **antes** de mandar el paper a `lector-papers`, para que
   la ficha cite paginas de la version que se va a citar.
+
+## Ronda 2026-09-15 (10) — 4 lecturas nuevas: `gertzbein1990`, `ramzan2026claim`, `herman2016`, `deman1999`
+
+> Seleccion del asistente sobre los 24 PDF de `papers/` sin ficha, por probabilidad de mover el
+> argumento. Las cuatro fichas las hizo `lector-papers` (regla 10), cada una con PDF completo.
+> `main.tex`, `00-tesis.md` y `01-decisiones.md` sin tocar (reglas 4 y 14).
+
+### 56 — CERRADA EN EVIDENCIA por la lectura de CLAIM: la fila que faltaba ya esta, y el veredicto cambia de "dos de cuatro" a "el atributo del medio no lo dice NADIE" — sigue ABIERTA en decision
+
+- **Origen:** ficha `ramzan2026claim.md`, `lector-papers`, 2026-09-15, PDF completo. Completa la tabla de #56,
+  cuya ultima fila decia *"sin ficha: no verificado"*.
+- **CLAIM, por atributo:**
+
+  | Atributo | Veredicto | Evidencia textual |
+  |---|---|---|
+  | Inpainting acotado | **RESPALDA**, y es el caso mas fuerte de los cuatro | perdida enmascarada, Ec. 1, p. 4: *"to ensure that the diffusion model operates only on manipulating the specified scar regions"* |
+  | Cambios solo dentro de la mascara | **RESPALDA, con formula literal** | Sec. 2.1, p. 5: `x^_{N_{t-1}} = o_{N_{t-1}} (.) M_f + x_{N_{t-1}} (.) (1-M_f)`, mas *"The background mask (1-Mf) is applied ... to preserve the non-lesion regions."* Es exactamente `m*generado + (1-m)*original` |
+  | No-rigidez | **NO RESPALDA. NO ENCONTRADO EN EL PDF** | *"non-rigid"* aparece solo como metodo de REGISTRO dentro de SMILE (p. 6: *"non-rigid registration (i.e. fast symmetric forces demons method)"*), para warpear mascaras plantilla<->sujeto. Es el muestreador, no el renderizador |
+
+- **Tabla consolidada de #56, ya con las cuatro fuentes leidas:**
+
+  | Atributo de la frase | Lo respalda | No lo respalda |
+  |---|---|---|
+  | *"bounded inpainting"* | DiffTumor, LGESynthNet, CLAIM (**3 de 4**) | DiffBoost |
+  | *"strictly ... inside the mask"* | DiffTumor, CLAIM (**2 de 4**) | DiffBoost (mezcla parches de fuera), LGESynthNet (la imagen entera pasa por el latente) |
+  | *"implicitly assume non-rigidity"* | **NINGUNO (0 de 4)** | los cuatro: NO ENCONTRADO EN EL PDF |
+
+- **Hallazgo que obliga a cambiar la recomendacion anterior:** la palabra *"implicitly"* no salva la frase. Atribuir
+  un supuesto que **ningun** PDF enuncia es exactamente el patron de #25, #37, #40, #45, #47 y #50: un enunciado que
+  se vuelve verdad por repetirse. La opcion (a) de #56 ya proponia quitar "implicitly assume non-rigidity"; la lectura
+  de CLAIM la convierte de preferencia en **correccion obligada**, porque ahora el recuento es 0 de 4, no 2 de 4.
+- **Lo que la lectura REFUERZA:** CLAIM recompone el fondo con pixeles originales. Con esa construccion el streaking
+  peri-implante es **imposible por construccion**, no solo no modelado. Es el respaldo mas limpio que tiene B_delta
+  en toda la bibliografia leida, y conviene que la frase reescrita lo diga asi, con la formula.
+- **Aviso de arquitectura, corrige un supuesto implicito de la ronda:** CLAIM es **DDPM en espacio de imagen**, no
+  latente, **sin ControlNet y sin Stable Diffusion** (UNet denoiser, adaptado de LeFusion). Agruparlo con DiffBoost y
+  LGESynthNet como "LDM + ControlNet" seria inexacto. Dimensionalidad del generador (2D/2.5D/3D): NO ENCONTRADO EN EL PDF.
+- **Alcance de CLAIM frente a la tesis:** metal, implantes, Hounsfield, MAR, streaking y beam hardening son **todos**
+  NO ENCONTRADO EN EL PDF. CT solo aparece en trabajo relacionado. Su rol es analogo metodologico, nada mas.
+- **Discrepancia interna del PDF, para no citarla mal:** las contribuciones (p. 3) afirman *"showing its improved
+  robustness against domain shift"*, pero Sec. 3.5 (p. 9-10) dice que el rendimiento fuera de dominio *"increased
+  initially and then dropped"* y que el entrenamiento conjunto *"did not always produce better results on
+  out-of-domain-data"*. Ese experimento **solo existe como grafico de barras, sin tabla**. Mismo tipo de hallazgo que
+  en `xie2024implantsegmentation` y `zhang2025diffboost`.
+- **Cifras citables:** EMIDEC 100 casos (67 patologicos / 33 normales), privado 80; Dice baseline 58.89 frente a
+  CLAIM(J) 63.53 (maximo, Tabla 2, p. 11). **Sin FID, SSIM ni PSNR**, y **sin ninguna medida cuantitativa de
+  degradacion fuera de la mascara**: solo la afirmacion cualitativa *"the background regions remain preserved in all
+  methods"* (p. 8).
+- **Gap nuevo, pequeno pero util para el Objetivo 3:** los cuatro analogos validan la sintesis **por Dice downstream**.
+  Ninguno publica una metrica directa de coherencia fisica de lo generado. Como esta tesis excluye el downstream por
+  alcance, esa ausencia es a la vez su hueco y su justificacion.
+- **Pendiente de:** decision de la autora sobre la opcion (a) de #56, ahora con las cuatro fuentes verificadas.
+
+### 58 — La escala ordinal del benchmark SAP/BFC se atribuye a una fuente que NO la contiene: `gertzbein1990` publica SEIS tramos, no cuatro grados — ABIERTA
+
+- **Origen:** ficha `gertzbein1990.md`, `lector-papers`, 2026-09-15, PDF completo. La lectura se pidio porque
+  `_index.md` ya registraba que `smith2006iliosacral` es **fuente SECUNDARIA** (*"la escala viene de la literatura de
+  tornillos pediculares"*). Este es el nodo primario de esa cadena.
+- **Frase en riesgo** (`main.tex:48`): *"Grading iliosacral screws on the four-level cortical-breach scale of
+  \citet{smith2006iliosacral}"*.
+- **Lo que el PDF publica** (Tabla 1, p. 13): **seis** categorias, en tramos de 2 mm —
+  `In pedicle` / `0-2 mm` / `2.1-4.0 mm` / `4.1-6.0 mm` / `6.1-8.0 mm` / `Lateral to Pedicle`,
+  con 71.9 / 9.6 / 9.0 / 4.8 / 1.8 / 3.6 %.
+- **Grados A/B/C/D: NO ENCONTRADO EN EL PDF.** La "escala de Gertzbein-Robbins" con grados con letra es codificacion
+  **posterior de la comunidad**, no de este articulo. Es decir: ninguno de los dos eslabones de la cadena respalda la
+  formula "four-level ... scale of Smith".
+- **Auditoria de la cadena, igual que se hizo con el umbral de 10 mm:**
+  - **TERMINAL para el esquema de tramos:** no cita a nadie por los cortes de 4, 6 ni 8 mm.
+  - **NO terminal para el ancla de 2 mm:** *"anatomical dissections have shown that there is 2 mm of epidural space"*,
+    con llamada a su ref. 4 (Roy-Camille, Saillant, Mazel, Clin Orthop 203:7-17, 1988).
+  - **El corte de 4 mm es extrapolacion propia desde UN SOLO mielo-TC:** *"we would extrapolate that 4 mm of canal
+    encroachment could be tolerated"*.
+  - **Los cortes de 6 y 8 mm no tienen ninguna justificacion declarada.**
+- **Cambio de estructura de referencia, y es el problema de fondo:** los umbrales de Gertzbein estan anclados al
+  **canal espinal y al borde medial del pediculo**. El benchmark de esta tesis mide brecha sobre el **corredor
+  iliosacro**. Cohorte: 40 pacientes, 167 tornillos, T8-S1, TC postoperatoria en todos los casos. Incluye S1, pero con
+  **2 tornillos**, y son **pediculares sacros, no iliosacros**. Iliosacro, ala sacra y pelvis: **cero menciones**.
+- **Sin fiabilidad:** observador unico que ademas es coautor — *"All measurements were recorded by one author (SR) to
+  reduce the interobserver error."* Sin cegamiento, sin kappa ni ICC. Grosor de corte: NO ENCONTRADO EN EL PDF.
+- **Toca directamente la medicion con metal:** *"The CT 'window' was adjusted to reduce metal artifact"* y
+  *"measurements corrected to reflect actual size"*, sin validar esa correccion. Volumen parcial: NO ENCONTRADO EN EL
+  PDF. Esta tesis mide brecha justo sobre imagenes con metal, asi que hereda el problema sin heredar la solucion.
+- **Por que importa:** SAP/BFC es la metrica central. Que su escala se atribuya mal, que los tramos de 6 y 8 mm no
+  tengan justificacion y que la fuente primaria no mida el corredor iliosacro son tres repreguntas distintas en la
+  sustentacion. Toca ademas #4, que ya senalaba que BFC se apoya solo en `smith2006iliosacral`.
+- **Opciones:**
+  - **(a) Corregir solo la atribucion.** Mantener la escala de 4 niveles citando a `smith2006iliosacral` como quien la
+    **usa en tornillos iliosacros**, sin llamarla "de Smith" ni "de Gertzbein". Es el cambio minimo y es solo texto.
+  - **(b) Citar la cadena completa.** Declarar que la escala de tramos de 2 mm viene de la literatura de tornillos
+    pediculares (`gertzbein1990`), que los cortes superiores no estan validados, y que `smith2006iliosacral` la
+    traslada al corredor iliosacro. Mas honesto y mas largo.
+  - **(c) Declarar los tramos como convencion geometrica**, igual que se hizo con el umbral de 10 mm tras la auditoria
+    de Kaiser/Gardner/Moed/Ziran. Es el precedente mas coherente con lo ya decidido en este repositorio.
+  - **(d) No cambiar nada** y asumir la repregunta.
+- **Recomendacion del asistente:** **(b) + (c)**, porque reproducen la decision ya tomada para el 10 mm y porque el
+  hallazgo de los cortes de 6/8 mm sin justificacion no aparece en ninguna otra fuente del repositorio.
+- **Pendiente de:** decision de la autora. **Sin entrada en `refs.bib`**: hay `refs/raw/gertzbein1990.nbib`, pero el
+  alta la decide la autora (regla 9).
+
+### 59 — `herman2016` publica prevalencias de malposicion por nivel y le da MAS brechas a S1 que a S2, lo que tensiona el encuadre S1/S2 de `main.tex` — ABIERTA
+
+- **Origen:** ficha `herman2016.md`, `lector-papers`, 2026-09-15, PDF completo (version **"Accepted Article"**).
+- **Cifras propias, con definicion estricta de malposicion** (cualquier porcion del tornillo cruza la cortical),
+  medidas con **TC postoperatoria**:
+  - **32 %** por tornillo; **45.7 %** por paciente.
+  - **S1 36.5 % frente a S2 14.8 % (p=0.035).**
+  - Trans-sacro 38.2 % frente a iliosacro 30.3 % (p=0.038).
+  - **Ningun tornillo quedo integramente fuera del hueso.**
+  - Dismorfismo (37.2 % de pacientes) **NO** se asocio a brecha.
+  - Validacion del modelo: sens 97.1 %, esp 84.0 %, VPP 92.7 %, VPN 93.3 %, exactitud 92.9 % frente a lateral 70.0 %
+    (p=0.004).
+- **La tension, con texto literal.** `main.tex:48` usa `vandenbosch2002` (6/31 con el tornillo bajo en S2 frente a 1/49
+  con ambos en S1, p=0.01) para sostener *"This clinical association supports retaining S1/S2 as a sampler variable"*.
+  Herman mide **lo contrario en la variable que la tesis modela**: mas brecha cortical en **S1**. No es contradiccion
+  real — van den Bosch mide **quejas neurologicas por paciente y por configuracion**, Herman mide **brecha por
+  tornillo y por nivel** — pero el parrafo actual no distingue esas dos magnitudes para el lector, y una repregunta
+  del tipo "entonces que nivel es mas riesgoso" no tiene hoy respuesta escrita.
+- **Toca #12, que esta CERRADA POR DELIMITACION** (benchmark ordinal solo en S1, S2 descriptivo). Herman **no la
+  reabre**: su criterio es **binario**, sin escala en mm y sin distribucion ordinal, asi que no sirve como prior SAP.
+  Pero si es la **primera fuente del repositorio con tasa de malposicion por nivel medida sobre TC**, y el "ningun
+  tornillo integramente fuera del hueso" **acota el rango de malposiciones plausibles que el muestreador debe generar**.
+  Eso es directamente utilizable como control de cordura del Objetivo 2.
+- **Lo que NO resuelve: la implicancia #32 sigue abierta.** El titulo promete un modelo *"easy to implement"*, pero:
+  - Es un **clasificador binario 2D de una pose ya existente**, no un generador: no define punto de entrada, eje,
+    angulo ni longitud.
+  - **Marco = proyeccion fluoroscopica inlet/outlet**, no voxel ni reformateo segun el eje sacro. Mismo defecto de
+    transferencia que ya se documento en `ziran2007fluoroscopic`.
+  - **Renuncia a los milimetros:** *"it is a ratio of anatomic landmarks and therefore scale invariant"*. No mide Dmax
+    ni publica ninguna dimension propia en mm, ni define contorno oseo sobre el sacro.
+  - Faltan piezas **en el PDF**: el **Appendix A** con la derivacion (*"as described in Apppendix A"*, solo remite a
+    Supporting Information online) y la **Figure 3** de la definicion de brecha. El **+/-20 %** aparece como dato dado,
+    sin origen ni analisis de sensibilidad.
+- **El modelo, para el registro:** zona segura = banda de **+/-20 %** alrededor de la recta `Y = (b/a)*X` en coordenadas
+  normalizadas por dos landmarks oseos, uno por vista. `a` = ancho antero-posterior del ala sacra en su porcion mas
+  estrecha (inlet); `b` = altura del borde superior del foramen neural a la cortical superior del ala (outlet). Regla:
+  `APPP = SIPP +/- 20 %`. Primitiva unica: una recta.
+- **Desplaza la cadena del 10 mm sin reabrirla:** aqui el umbral se atribuye a **Gardner 2010 y Lee 2015**; Ziran y
+  Moed **no estan** en su bibliografia. Coherente con la cadena ya auditada, y sin efecto sobre el cierre por decision.
+- **Caveats de cohorte, importantes:** **TC postoperatoria con metal y con fracturas** como criterio de inclusion, no
+  anatomia virgen, y **sin mencion de MAR**. Inconsistencias internas del PDF: 97.1 % frente a 97.2 %, especificidad
+  lateral 61.5 % frente a 64.2 %, e IC95 % impreso como *"85.1 %-1.01 %"*. Es version "Accepted Article", 25 pp. sin
+  paginacion de revista: **citar paginas de aqui repite el patron de `isensee2021`**.
+- **Opciones:**
+  - **(a) Solo cohorte.** Usar el "ningun tornillo integramente fuera del hueso" y el 32 % por tornillo como control de
+    cordura del muestreador, sin tocar `main.tex`.
+  - **(b) Anadir una frase al parrafo S1/S2** que separe explicitamente "quejas neurologicas por configuracion"
+    (van den Bosch) de "brecha cortical por nivel" (Herman), y que registre que la segunda favorece a S2.
+  - **(c) (a) + (b).**
+- **Recomendacion del asistente:** **(c)**. (b) es barato y desactiva una repregunta; (a) da un control de cordura que
+  hoy no existe.
+- **Pendiente de:** decision de la autora. **Sin entrada en `refs.bib`**: hay `refs/raw/herman2016.nbib`; el alta la
+  decide la autora (regla 9). Si se da de alta, decidir antes si se cita el "Accepted Article" o la version de revista.
+
+### 60 — `deman1999` NO mide la extension espacial del streak: el reclamo de novedad de B_delta sobrevive, y #57 sigue sin evidencia externa — ABIERTA
+
+- **Origen:** ficha `deman1999.md`, `lector-papers`, 2026-09-15, PDF completo (6 pp., 691-696). Se leyo expresamente
+  para intentar **refutar** la frase de `main.tex:54`: *"for which no published precedent quantifying a peri-implant
+  band was found"*. Es el estudio de simulacion clasico del streak metalico.
+- **Resultado, inequivoco: NO mide extension.** Ni mm, ni cm, ni pixeles, ni perfil radial, ni ley de decaimiento, ni
+  region de interes peri-metal. Revisadas las 6 paginas, abstract, metodos, resultados, conclusiones y pies de las
+  figuras 1-15. Toda localizacion es **cualitativa y direccional**: *"dark streaks in the directions of highest
+  attenuation"* (III-B, p. 693), *"a number of streaks can be seen radiating from the metals"* (III-D, p. 694). La
+  unica frase con "distance" — *"streaks starting at a certain distance from the center"* (III-G, p. 694) — **no trae
+  cifra** y se refiere al centro de rotacion en submuestreo de vistas, no al borde del metal.
+- **Efecto sobre el argumento: refuerza, no amenaza.** El reclamo de novedad de B_delta queda en pie, y ahora con un
+  intento de refutacion documentado sobre la fuente mas probable. Ademas respalda **cualitativamente** el
+  *"propagate globally"* de `main.tex:48`.
+- **Pero NO resuelve #57.** La contradiccion interna sigue igual: `main.tex:48` dice *"globally far beyond"*, B_delta
+  es de ~12 mm y el titulo dice *"local"*. Este paper confirma que las estrias se propagan, y **confirma tambien que
+  nadie publico cuanto**. O sea: la opcion (b) de #57 (medicion propia de perfil de HU frente a distancia al metal
+  sobre CLINIC-metal) pasa de "deseable" a **la unica via que puede justificar el ~12 mm con una cifra**. No hay
+  fuente que citar.
+- **No aporta umbrales en HU: cero HU en todo el PDF.** Las ventanas van en mu ([0.1;0.3] cm^-1 y [-0.05;0.05] cm^-1).
+  Para umbrales de artefacto sigue mandando `ren2022metalinsertion` (-75/75/500 HU).
+- **Causas que separa:** beam hardening, scatter, ruido, EEGE, movimiento y aliasing de detector/vistas. **Sin pesos
+  numericos**; el ranking es una sola frase: *"Beam hardening, scatter, noise and EEGE are the most important causes of
+  metal streak artifacts"* (Conclusiones, p. 695). El **volumen parcial no lineal queda explicitamente fuera de
+  alcance** — justo el mecanismo que mas pesa en el borde metal/hueso que esta tesis sintetiza.
+- **Caveats de transferencia, y son fuertes:** fantoma de **hierro** (*"a cylindrical iron rod (diam. 11.6mm) positioned
+  eccentrically in the water"*, II-B-2, p. 692) y amalgama dental. **Ni titanio, ni acero quirurgico, ni implante
+  ortopedico.** Fan-beam **2D**. Reimplementable solo en parte: faltan kVp, mAs, filtracion, distancias, numero de
+  detectores, matriz, kernel y el numero de vistas explicito; sin codigo. Lo que si publica: *"focal spot width (0.6mm)
+  and detector element width (1.2mm)"*, muestreo 0.1 mm, sobre *"Siemens Somatom Plus 4"* (II-A, p. 691); scatter
+  *"The scatter-to-primary ratio was arbitrarily chosen to be 0.0001"* (II-D, p. 693) con *"Even a very small
+  scatter-to-primary ratio causes significant streaks"* (III-C, p. 694); ruido *"an unattenuated flux of 10^5 or
+  2 x 10^5 photons per detector"* (II-D, p. 693).
+- **Opciones:**
+  - **(a) Citarlo como respaldo cualitativo** del *"propagate globally"* y como evidencia de que la cuantificacion
+    peri-implante no esta publicada. Refuerza C3 sin prometer nada.
+  - **(b) (a) + declarar el caveat de material** (hierro/amalgama dental, 2D, sin volumen parcial) al citarlo.
+  - **(c) No citarlo.** No hay raw en `refs/raw/`, asi que hoy no es citable de todos modos.
+- **Recomendacion del asistente:** **(b)** si la autora decide dar de alta la entrada; **(c)** mientras no haya raw.
+- **Pendiente de:** decision de la autora. **Sin `refs/raw/deman1999.*`**: por regla 9 no se puede dar de alta hasta
+  que la autora pegue el archivo del editor.
+
+### 61 — El renderizador trabaja en el dominio imagen, pero TODOS los mecanismos del streak que describe `deman1999` son no lineales y se manipulan en proyeccion — ABIERTA
+
+- **Origen:** ficha `deman1999.md`, 2026-09-15. Es un hallazgo lateral de esa lectura, separado de #60 porque no toca
+  la redaccion sino el **supuesto de viabilidad del Objetivo 3**.
+- **El hueco:** el renderizador de esta tesis es un LDM 2.5D con ControlNet que genera **en imagen**, sin sinograma.
+  De Man separa beam hardening, scatter, ruido/photon starvation, EEGE y aliasing, y los manipula **todos en el
+  dominio de proyeccion**, con no linealidades explicitas (el ruido *"strongly depends on ... the total integrated
+  attenuation"*, III-E, p. 694).
+- **Lo que el PDF dice sobre reproducir eso sin sinograma: NO ENCONTRADO EN EL PDF.** No lo afirma ni lo niega. Es
+  decir, **no hay en la bibliografia leida ninguna frase que autorice ni que prohiba** el atajo en imagen.
+- **Por que importa:** el argumento actual de `main.tex` contra los simuladores fisicos es que **no escalan la
+  colocacion anatomica** (*"physical simulators do not supply scalable anatomically constrained placement"*), no que
+  el dominio imagen sea equivalente. La equivalencia nunca se afirma, pero tampoco se discute, y es la pregunta
+  natural de un jurado con formacion en fisica de la imagen: *por que un modelo generativo en imagen puede producir un
+  efecto cuyo mecanismo es de proyeccion y no lineal*.
+- **Relacion con lo ya decidido:** es el mismo eje de #6 (`ren2022metalinsertion` exige datos crudos de fabricante que
+  CTPelvic1K no tiene) y de la eleccion de `peters2025hybrid` como brazo fisico. La respuesta defendible probablemente
+  ya existe — el brazo fisico cubre el mecanismo, el brazo generativo cubre la escala — pero **no esta escrita**.
+- **Opciones:**
+  - **(a) Una frase en Limitations:** el renderizador aprende la **apariencia** del artefacto, no su mecanismo de
+    formacion; el mecanismo lo cubre el brazo fisico de `peters2025hybrid`.
+  - **(b) Ademas, convertirlo en hipotesis evaluable:** es justamente lo que mide la coherencia fisica distribucional
+    del Objetivo 3, asi que puede enunciarse como lo que la tesis pone a prueba en vez de como limitacion.
+  - **(c) No escribir nada** y responderlo solo si lo preguntan.
+- **Recomendacion del asistente:** **(b)**, con (a) como respaldo. Convierte una debilidad silenciosa en el enunciado
+  de lo que la tesis efectivamente mide, y no cuesta ningun experimento nuevo.
+- **Pendiente de:** decision de la autora. `main.tex` y `00-tesis.md` sin cambios (regla 14).
+
+## Ronda 2026-09-15 (11) — `zwingmann2013` y `lin2019` leidos, correcciones APLICADAS a `main.tex` por orden de la autora, `refs.bib` 43 -> 64
+
+> **Orden explicita de la autora en este turno:** leer Zwingmann 2013 y otro paper sin ficha,
+> **aplicar en `main.tex` las correcciones recomendadas**, y generar los `refs/clean/` que faltaban
+> a partir de `refs/raw/`. Las ediciones de `main.tex` de abajo se hicieron bajo esa orden, no por
+> iniciativa del asistente (reglas 4 y 14). `docs/01-decisiones.md` **sigue sin tocarse** (regla 3):
+> copiar alli la decision definitiva le corresponde a la autora.
+
+### 56, 58, 59, 60, 61 — APLICADAS en `main.tex` el 2026-09-15
+
+`tesis/main.tex` compila: **5 paginas** (antes 4), **64 referencias**, **0 citas indefinidas**, 0 errores.
+
+| # | Que se escribio | Estado |
+|---|---|---|
+| 56 | La frase de las cuatro fuentes se reescribio **por familias**. Se **retiro** *"implicitly assume non-rigidity"* (0 de 4 lo enuncian) y *"strictly restrict ... to the inside of the object's mask"*. Ahora CLAIM aparece como el que recompone el fondo, DiffTumor como el que no modela nada fuera, LGESynthNet como inpainting cuyo latente perturba el corte *"incidentally rather than by design"*, y DiffBoost como sintesis global con la mascara solo de borde. El enunciado comun quedo en lo unico que las cuatro fichas sostienen: ninguna tiene mecanismo ni senal de entrenamiento para cambios de intensidad fuera de la mascara | **APLICADA** |
+| 58 | Se retiro *"the four-level cortical-breach scale of \citet{smith2006iliosacral}"*. Ahora Smith aparece como quien **aplica** la escala en tornillos iliosacros, y `gertzbein1990` como el origen pedicular con **seis tramos de 2 mm**, ancla de 2 mm en el espacio epidural, corte de 4 mm extrapolado de un solo mielo-TC y **sin justificacion para 6 y 8 mm**. El ancho de 2 mm queda declarado **convencion geometrica**, igual que el criterio de 10 mm, y el traslado del canal espinal al corredor iliosacro queda escrito como **supuesto explicito de este trabajo** | **APLICADA** |
+| 59 | Frase nueva en el parrafo S1/S2 con las cifras de `herman2016` (36.5% en S1 frente a 14.8% en S2, p=0.035; 32% global; ningun tornillo integramente fuera del hueso) y la aclaracion de que **no contradice** a van den Bosch porque miden magnitudes distintas. El "ningun tornillo fuera del hueso" queda escrito como cota del rango que el muestreador debe producir | **APLICADA** |
+| 60 | `deman1999` citado como respaldo cualitativo del streak, **con su caveat de transferencia escrito en el texto**: varilla de hierro y amalgama dental, geometria fan-beam 2D, volumen parcial no lineal excluido, y **sin extension espacial**, de donde la banda peri-implante *"remains unmeasured in the literature"* | **APLICADA** |
+| 61 | Parrafo nuevo tras el Recognized Gap. La generabilidad en dominio imagen queda **declarada como supuesto y como objeto de la evaluacion**, no como premisa, con `peters2025hybrid` de referencia fiel al mecanismo. Ver #63 para la evidencia que lo sostiene | **APLICADA** |
+
+**Pendiente de la autora:** copiar estas cinco a `docs/01-decisiones.md` si las da por definitivas, y **verificar contra los PDF** las citas que ahora estan impresas en el documento. Las verifico un agente.
+
+### 62 — `zwingmann2013` y `zwingmann2009navigated` NO son independientes, y la cohorte del prior ordinal entra al metaanalisis con CERO eventos — ABIERTA
+
+- **Origen:** ficha `zwingmann2013.md`, `lector-papers`, 2026-09-15, PDF completo (9 pp., 1257-1265). Se leyo porque era la candidata mas fuerte de la ronda anterior para tocar el prior ordinal del benchmark.
+- **Hallazgo decisivo, y es el que hay que entender bien.** `zwingmann2009navigated` es la **ref. 10** de este metaanalisis **y ademas entra como estudio primario numero 19**, con los tamanos exactos de esa cohorte: *"19 Zwingmann J (convent.) 2009 0 35"* y *"19 Zwingmann J (3d nav.) 2009 0 26"* (Fig. 2, p. 1261). La cohorte de 2010 en *J Trauma* es el estudio numero 9.
+  - **La misma cohorte que aporta el prior ordinal del benchmark SAP (grado 0 en 69% y en 40%, es decir 31% y 60% de brecha no nula) figura aqui con CERO malposiciones en los dos brazos.**
+  - No es un error: es que *"malposicion"* agregada designa **otro constructo, mucho mas estricto**. El propio paper lo dice dos veces: *"no clear definition about screw malposition and no comparable grading systems are given"* (Discusion, p. 1263) y *"Most authors use the term 'malposition' only when a screw revision was performed."* (Discusion, p. 1264).
+  - **El paper no declara el solapamiento ni hace analisis de sensibilidad sin los autoestudios.**
+- **Efecto sobre la tesis: refuerza la decision ya tomada.** Es la prueba mas limpia de por que el muestreador apunta a **distribuciones ordinales** y no a una tasa agregada. Ya esta escrito en `main.tex` (ver #58 arriba). **Pero obliga a no citar las dos fuentes Zwingmann como si fueran independientes**, y eso tambien quedo escrito.
+- **Cifras citables** (todas **por tornillo**; tasa por paciente: NO ENCONTRADO EN EL PDF): malposicion convencional **2.6%** (1832 tornillos, IC95 `[0.014; 0.043]`), navegacion 2D/3D **1.3%** (445, `[0.002; 0.033]`), navegacion TC **0.1%** (262, `[0.001; 0.008]`), global `0.018 [0.010; 0.029]` (Fig. 2, p. 1261). Revision: 2.7% / 1.3% / 0.8% (Fig. 3, p. 1262). TC frente a convencional *"significantly lower (p < 0.0001)"*; convencional frente a 2D/3D no significativo. Heterogeneidad con I2 y tau2: 70.8% / 52.2% / 0% / 65.7% global.
+- **Es BINARIO, de forma inequivoca.** Datos agregados como `Events / Total`, sin ningun umbral en mm para el tornillo. **No aporta prior ordinal y no reabre #12**, que sigue cerrada por delimitacion: **no desagrega por nivel sacro** (S1, S2, transacro y dismorfismo con cifra: todos NO ENCONTRADO EN EL PDF).
+- **TRAMPA que hay que dejar anotada:** su unica escala en mm (Tabla 2, p. 1263: <5 / 5-10 / 10-15 / >15 mm) es **desplazamiento rotacional secundario del anillo pelvico en radiografia de seguimiento**, no brecha cortical. No mezclarla con la escala 0/<2/2-4/>4 mm. Es el mismo tipo de confusion que ya ocurrio con la escala de REDUCCION de `moed2006s2screw`.
+- **CIERRA la cadena del 2%-15%, y la cierra mal para quien la cite.** El rango aparece **dos veces en el mismo articulo y con valores distintos**: *"reported to range from 2 to 15 % [19, 25]"* (Introduccion, p. 1258) frente a *"range from 0 to 15 % [19, 25]"* (Discusion, p. 1263), **con las mismas dos referencias** (19 = Hinsche 2002, 25 = Templeman 1996). Ya se sabia que Hinsche lo hereda y no lo mide. Con esto la banda queda como **cita circular e internamente inestable**: no debe usarse en la tesis bajo ninguna forma. *"31%"*, *"60%"* y *"31-60%"* como tasa de malposicion: **NO ENCONTRADO EN EL PDF** (el 60.6% de la Tabla 2 es desplazamiento <5 mm). Confirma por tercera via el retiro del rango unico (#12, #25).
+- **Discrepancias internas, para no citarlo mal:** la Discusion (p. 1264) escribe *"compared to 2.3 %"* para el brazo convencional, contra **2.6%** en abstract y resultados; y el bosque totaliza **2539** tornillos frente a los *"2,353"* del texto. Modalidad de verificacion de los estudios incluidos, cegamiento, PROSPERO/PRISMA, sesgo de publicacion y escala de calidad: todos NO ENCONTRADO EN EL PDF.
+- **Nivel propuesto: 2.** Acceso COMPLETO, 9 pp.
+- **Pendiente de la autora:** decidir si quiere ademas una frase explicita que declare la no-independencia de las dos fuentes Zwingmann. Hoy `main.tex` la deja implicita al escribir *"by the same first author"* y *"the 2009 cohort enters that pool with zero events"*.
+
+### 63 — `lin2019` NO prohibe el renderizador en dominio imagen, pero deja el supuesto sin precedente: la asimetria remocion/generacion es lo unico que lo sostiene — ABIERTA
+
+- **Origen:** ficha `lin2019.md` (DuDoNet, CVPR 2019), `lector-papers`, 2026-09-15, PDF completo. Se leyo expresamente contra #61, por ser el paper cuya tesis central es que un solo dominio no basta.
+- **Veredicto sobre #61: la debilita sin prohibirla, y por dos razones distintas.**
+  1. **Es rendimiento, no imposibilidad.** *"image domain enhancement is not sufficient for mitigating intense metal shadows"* (Sec. 2.3, p. 10506), pero justo antes concede *"The metal artifacts considered in these works are mild and thus can be effectively reduced by a CNN"*, y en la Fig. 7b admite *"image domain methods reduce most of the artifacts"*. **No hay ninguna frase con "cannot" ni "impossible" sobre el dominio imagen.** La unica palabra fuerte del paper, *"inevitably"*, se aplica al **sinograma solo**.
+  2. **Asimetria de tarea.** DuDoNet hace **remocion** y enuncia su problema como mal planteado (*"ill-posed problem since both terms contribute to the region of metal trace"*, p. 10506). En generacion no hay informacion destruida que recuperar. **Trasladar "no se puede quitar desde imagen" a "no se puede poner desde imagen" es una inferencia que el paper no autoriza**, y asi quedo escrito en `main.tex`.
+- **La ablacion, que es lo mas valioso de la lectura** (Tabla 1, p. 10509): variante de solo imagen (IE-Net) **31.45 dB / 0.9269** frente a dual-domain completo **33.51 dB / 0.9379**. Solo sinograma queda mucho peor: 26.71 / 0.8337. Una red de imagen muy profunda (RDN-CT, ~80 capas) llega a 31.74 / 0.9156 (Tabla 2). **Aviso: el delta en dB NO lo enuncia el paper**; en `main.tex` se imprimieron los dos valores absolutos, no la resta.
+- **Caveat que cambia la lectura y tambien quedo escrito:** la variante de solo imagen **no es ciega al sinograma**, porque recibe `X_LI`, reconstruida de un sinograma **ya interpolado**. Esos 2 dB miden el valor de **refinar el sinograma con una red**, no el de **tener acceso a la proyeccion**.
+- **Supuesto nuevo, ahora explicito en el documento:** que la **apariencia** del artefacto es generable en imagen sin operador de proyeccion. **No esta respaldado por ninguna fuente leida**, y tampoco refutado. #61 queda como **falta de precedente**, no como prohibicion demostrada. Contrapeso honesto: el propio DuDoNet **fabrica sus artefactos en el sinograma** y no discute alternativa.
+- **Gap nuevo:** no se encontro trabajo que **sintetice** artefacto metalico trabajando solo en imagen y valide su coherencia fisica. Es exactamente el hueco que el Objetivo 3 ocupa.
+- **No sirve para C3 ni para B_delta.** Ventanas en HU: **NO ENCONTRADO EN EL PDF** (ni *"HU"* ni *"Hounsfield"*), asi que no es precedente del multi-ventana. Extension espacial del artefacto: **NO ENCONTRADO EN EL PDF** — la unica mascara formal es la traza de metal **en coordenadas de sinograma**. Refuerza el "sin precedente" que ya dejo `deman1999` (#60).
+- **Como simula el metal, que es un precedente directo de insercion sintetica:** DeepLesion, 4000 imagenes / 320 pacientes (train), 200 / 12 (test), 416x416; **100 mascaras de metal** (90 train + 10 test) y 360 000 combinaciones; tamanos 16-4967 px (train) y 32-2054 px (test); *"polychromatic X-ray, partial volume effect, and Poisson noise"* con 2x10^7 fotones incidentes; D = 39.7 cm, 320 vistas de 0 a 360 grados, sinograma 321x320. **Materiales, geometrias, tipo de implante y scatter: NO ENCONTRADO EN EL PDF**; *"beam hardening"* no aparece como termino, solo *"polychromatic"*.
+- **Pista accionable:** ese protocolo se hereda de su ref. [33], **Zhang & Yu, IEEE TMI 2018**, que es `zhang2018` y **acaba de entrar a `refs.bib` en esta misma sesion**. Ahi estarian los materiales, coeficientes y geometrias que DuDoNet omite. Es la lectura siguiente mas rentable para el brazo fisico.
+- **Anatomia:** no declarada en el texto (las figuras muestran torax y abdomen). **CTPelvic1K, CLINIC-metal, pelvis y tornillo: NO ENCONTRADO EN EL PDF.**
+- **Nivel propuesto: 1.** Es la objecion central al diseno del renderizador y la unica ablacion leida que cuantifica el costo de trabajar en un solo dominio.
+- **Pendiente de la autora:** validar el nivel 1 y decidir si `zhang2018` entra a la cola de lectura.
+
+### Bibliografia — 21 altas de una vez: `refs.bib` pasa de 43 a 64 y el PDF de 4 a 5 paginas (2026-09-15)
+
+- **Orden de la autora:** *"Sobre los archivos que tienen refs/raw pero no refs/clean, es natural porque necesitan ser regenerados a partir del raw (hazlo)"*. Hecho: 21 `refs/clean/*.bib` generados desde su raw, `python scripts/build_refs.py` -> **64 entradas**. `refs/raw/` intacto. Procedencia y decisiones de normalizacion, una por una, en `refs/MAPEO.md`. **Ya no queda ningun raw sin clean ni ningun clean sin raw.**
+- **Correccion de un error del asistente:** en la ronda anterior se reporto que `deman1999` no tenia raw. **Es falso**, `refs/raw/deman1999.bib` existia. El fallo fue un filtro que buscaba `^title` y no acierta en los `.bib` de IEEE, donde el campo va con sangria. Lo detecto la autora. Afecta a lo que se dijo en #60: `deman1999` **si es citable**, y de hecho ya se cito.
+- **Efecto medido, y conviene tenerlo presente:** con `\nocite{*}` en `main.tex:139`, las 21 altas entran a la bibliografia **sin que ninguna frase las cite**. El documento paso de **4 a 5 paginas** y de 43 a **64 referencias**. De las 21, solo tres se citan hoy en el texto: `deman1999`, `gertzbein1990`, `herman2016`, `lin2019` y `zwingmann2013` (cinco). Las otras dieciseis se imprimen sin uso.
+  - **Decision pendiente de la autora:** si la bibliografia debe listar solo lo citado, hay que quitar `\nocite{*}`. **No se toca sin orden** (regla 14).
+- **Dos avisos que quedaron registrados en `MAPEO.md` y merecen su ojo:**
+  - **`macháček2023` tiene una clave con caracteres no ASCII** (`á`, `č`). Se conservo por la regla 1. **Verificado: BibTeX y pdfLaTeX compilan sin error con ella**, pero si alguna vez falla, renombrarla es decision suya.
+  - **`tejwani2014` es la unica de las 21 sin DOI**: su raw no trae `AID` ni `LID`, y no se busco en otra fuente (regla 9). `gottschling2009` tampoco lleva `doi`, porque el de Springer solo aparece dentro de la clave del editor y una clave no es un campo.
+  - **`herman2016` apunta hoy a dos versiones distintas:** el raw confirma la version de revista (J Orthop Res 35(7):1478-1484, 2017) y es la que entro a `refs.bib`, pero el PDF de `papers/` es el *Accepted Article* sin paginacion, que es sobre el que se hizo la ficha. Mismo patron que `isensee2021`.
+- Las dos unicas advertencias de BibTeX siguen siendo las de siempre y son correctas: `hinsche2002fluoroscopy` y `templeman1996proximity` tienen numero de fasciculo y no volumen, porque *CORR* de esa epoca numeraba asi.

@@ -111,6 +111,54 @@
   2026-09-15 (6), DiffBoost/LGESynthNet y tension global/local de B_delta).
 
 ## Ultimo paso completado
+2026-09-15 (ronda 11) — **2 lecturas mas, correcciones APLICADAS a `main.tex` y bibliografia regenerada**,
+todo por orden explicita de la autora en el mismo turno.
+- **`zwingmann2013.md` (N2 propuesto) y `lin2019.md` (N1 propuesto).** Fichas y filas en `_index.md`.
+- **#62 NUEVA:** `zwingmann2009navigated` **no es independiente** de `zwingmann2013` — es su ref. 10 **y** su
+  estudio primario n.o 19, y **entra con cero eventos en ambos brazos**, porque ahi "malposicion" significa
+  revision. Prueba limpia de que tasa agregada y grado ordinal son constructos distintos. **Cierra la cadena
+  del 2%-15%**, que el propio paper imprime como "2 to 15 %" y "0 to 15 %" con las mismas dos referencias.
+- **#63 NUEVA:** `lin2019` (DuDoNet) **no prohibe** el renderizador en dominio imagen — es rendimiento, no
+  imposibilidad, y ademas es REMOCION, que el paper llama *ill-posed*. #61 queda como falta de precedente.
+- **`main.tex`: #56, #58, #59, #60 y #61 APLICADAS.** Compila: **5 paginas** (antes 4), **64 referencias**,
+  0 citas indefinidas, 0 errores.
+- **`refs.bib` 43 -> 64.** Se generaron los **21 `refs/clean/` que faltaban** desde su raw; `refs/raw/` intacto.
+  Procedencia y decisiones, una por una, en `refs/MAPEO.md`. Ya no queda raw sin clean ni clean sin raw.
+- **Correccion:** el reporte previo dijo que `deman1999` no tenia raw. Era falso (filtro `^title` que falla en
+  los `.bib` de IEEE). Si es citable, y ya se cito.
+
+**Siguiente:** decision de la autora sobre #62 y #63, y copiar a `01-decisiones.md` las cinco aplicadas si las
+da por definitivas. **Lectura siguiente mas rentable: `zhang2018`** — es la fuente del protocolo de simulacion
+de metal que `lin2019` reutiliza y omite, y **ya tiene PDF, raw y entrada en `refs.bib`**.
+**Pendientes que surgieron:** (1) con `\nocite{*}` en `main.tex:139` las 21 altas entran a la bibliografia sin
+citarse — solo 5 de las 21 se citan hoy; si debe listar solo lo citado, hay que quitar `\nocite{*}` (regla 14).
+(2) `herman2016` apunta a dos versiones: `refs.bib` a la de revista (2017, 35(7):1478-1484), la ficha al
+*Accepted Article*. (3) `tejwani2014` y `gottschling2009` van sin DOI: su raw no lo trae. (4) `macháček2023`
+tiene clave no ASCII; compila, pero renombrarla es decision de la autora.
+
+## Paso anterior
+2026-09-15 (ronda 10) — **4 lecturas nuevas con `lector-papers`**, elegidas entre los 24 PDF de `papers/`
+sin ficha. Fichas: `gertzbein1990.md`, `ramzan2026claim.md`, `herman2016.md`, `deman1999.md`.
+Filas anadidas a `_index.md` (N1 Gertzbein; N2 los otros tres) y candidatos de snowballing a `_candidatos.md`.
+- **#56 CERRADA EN EVIDENCIA** (sigue ABIERTA en decision): CLAIM era la cuarta fuente sin leer.
+  Recuento final de la frase de `main.tex:48`: *"bounded inpainting"* 3/4, *"strictly inside the mask"* 2/4,
+  **"implicitly assume non-rigidity" 0/4** — no lo enuncia ninguno de los cuatro PDF.
+- **#58 NUEVA:** `gertzbein1990` publica **SEIS** tramos de 2 mm, no cuatro grados; los cortes de 6 y 8 mm no
+  tienen justificacion declarada y su referencia anatomica es el pediculo, no el corredor iliosacro.
+  Toca la atribucion de la escala del benchmark SAP/BFC en `main.tex:48` y amplia #4.
+- **#59 NUEVA:** `herman2016` da 32% de malposicion por tornillo y **S1 36.5% frente a S2 14.8%**; tensiona el
+  parrafo S1/S2. **No resuelve #32** (es 2D fluoroscopico, scale-invariant, sin Dmax).
+- **#60 y #61 NUEVAS:** `deman1999` **no mide extension espacial del streak**, asi que el reclamo de novedad de
+  B_delta sobrevive y **#57 sigue sin fuente externa**; abre el hueco del dominio imagen frente a proyeccion.
+
+**Siguiente:** decision de la autora sobre #56 (opcion a), #58 (b+c), #59 (c), #60 (b o c) y #61 (b).
+`main.tex`, `00-tesis.md` y `01-decisiones.md` sin tocar (reglas 4 y 14).
+**Pendientes que surgieron:** `gertzbein1990` y `herman2016` tienen `.nbib` en `refs/raw/` pero **no estan en
+`refs.bib`**; `deman1999` **no tiene raw** y hoy no es citable (regla 9). `herman2016` es version
+"Accepted Article" sin paginacion de revista: elegir version antes de citar paginas (patron `isensee2021`).
+Candidata mas fuerte de la ronda para leer: **Zwingmann 2013**, metaanalisis de malposicion por modalidad.
+
+## Paso anterior
 2026-09-14 (3):
 - **#52 decidida (a + c)** y **#35 cerrada** por la autora. `grupos.py` regenerado: solo cambian `Regla` y
   `Estado regla`. Registradas en `01-decisiones.md` (2026-09-14 (2)) con orden de la autora.

@@ -375,6 +375,13 @@ GPU (RTX A6000, particion `gpu`). Mide `HU -> ventanas -> VAE -> HU` con el VAE 
 preentrenado y **sin reentrenar**, para `pub`, `LW20000` y `pub+asinh` (3 canales). `pub+MTW` no entra (4 canales).
 Diseno y controles en el docstring de `experiments/objetivo1/e6b_vae_sd15.py`.
 
+**Version del 2026-09-15 (RMSE):** el script reporta ahora MAE **y** RMSE sobre el mismo vector de errores
+(decision 2026-09-15 (2)). La columna de MAE mantiene su nombre sin sufijo, asi que **el control contra E6c y
+los comandos de abajo no cambian**; lo que cambia es que el CSV pasa de 32 a **56 columnas** y el `.md` trae
+tablas de las dos metricas. La corrida de la cohorte hay que **rehacerla entera** (~8.8 h): el CSV anterior no
+tiene las columnas `rmse` y el script no las puede reconstruir sin volver a pasar los volumenes por el VAE.
+Con `--solo-resumen` sobre un CSV viejo el informe sale solo con MAE y lo avisa en una linea.
+
 **Prueba local (2026-09-15, sin modelo: la PC no tiene `diffusers` ni GPU):**
 - `--vae identidad` sobre `CLINIC_0001` y `metal_0000`: control **12 de 12** frente a `e6c_techo_lw.csv`.
 - Con un valor de E6c alterado en 0.5 HU: **11 de 12**, y senala el valor cambiado. El control puede fallar.
@@ -438,6 +445,49 @@ mensaje (lecciones 1 y 2). En el log de la prueba, lee:
 (mediana 350, rango 187-388), la cohorte se estima en **~8.8 h** con `--lote 4`, sin cambiar nada. `--gres=gpu:rtxa6000:1`
 funciona y puede caer en g002 o en ds001 (las dos son RTX A6000).
 
+### Relanzar la cohorte con la version de RMSE (2026-09-15)
+
+**El paso 0 no es opcional.** El script es **reanudable**: lee los `Caso` ya escritos en
+`data/e6b/e6b_vae_sd15.csv` y los salta. Si se relanza con el CSV viejo en su sitio, **salta los 178
+volumenes, no mide nada y rehace el informe solo con MAE**, con rc = 0 y sin ningun error visible. Hay que
+apartar la salida vieja antes de lanzar. No se borra: se mueve.
+
+El entorno y los pesos (paso 2) ya estan hechos y no se repiten. El `.sbatch` y los archivos de E6c
+**no cambiaron**: solo se vuelve a subir `e6b_vae_sd15.py`.
+
+```powershell
+# Local (PowerShell): subir solo el script nuevo
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo1
+scp e6b_vae_sd15.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+```bash
+# Khipu: comprobar que llego la version nueva y APARTAR la salida vieja
+cd ~/metalsynth
+grep -c SUF_RMSE qc/e6b_vae_sd15.py            # meta: > 0 (si da 0, no se subio la version nueva)
+mv data/e6b data/e6b_mae_20260915              # se guarda, no se borra
+mkdir -p data/e6b
+```
+
+Prueba corta antes de las 8.8 h (recomendada; `--out` nuevo para no chocar con `e6b_prueba` viejo):
+
+```bash
+P=$(sbatch --parsable --time=02:00:00 e6b_vae_sd15.sbatch --casos dataset7_CLINIC_metal_0000_data --out $HOME/metalsynth/data/e6b_prueba_rmse); echo "E6b_prueba_rmse=$P" | tee -a e6b_jobs.txt
+squeue -j $P -o "%.8i %.2t %.10M %.8N %R"       # PD = en cola (mira la ultima columna); R = corriendo
+until [ -f e6b_vae_$P.log ]; do sleep 20; done  # SLURM crea el log al ARRANCAR, no al encolar
+tail -f e6b_vae_$P.log
+```
+
+**`tail: cannot open 'e6b_vae_<id>.log'` no es un fallo.** SLURM escribe el log (`--output=%x_%j.log`, en el
+directorio desde el que se lanzo) **cuando el job arranca**, no cuando se encola. Si el `tail -f` se lanza con el
+job todavia en `PD`, el archivo no existe. Se comprueba con `squeue -j $P`: si aparece con estado `PD`, solo hay
+que esperar, y la ultima columna dice por que (`Resources`, `Priority`, limite de QOS...). Si **no** aparece en
+`squeue` y tampoco hay log, el job ya termino o murio al arrancar: entonces `sacct -j $P
+--format=JobID,State,ExitCode,Elapsed,Start,NodeList` lo dice.
+
+En el log de la prueba, lee: `CONTROL identidad frente a E6c float: 6 de 6` y que la linea del volumen
+termine en `| RMSE regla <cifra>`. Si no aparece el tramo de RMSE, esta corriendo el script viejo.
+
 **Paso 4: cohorte completa** (Khipu):
 
 ```bash
@@ -447,6 +497,8 @@ B=$(grep '^E6b=' e6b_jobs.txt | tail -1 | cut -d= -f2); echo $B     # recupera e
 tail -f e6b_vae_$B.log                                     # una linea "ok" por volumen
 sacct -j $B --format=JobID,State,ExitCode,Elapsed,MaxRSS
 wc -l data/e6b/e6b_vae_sd15.csv                            # meta: 179 (178 + cabecera)
+head -1 data/e6b/e6b_vae_sd15.csv | tr ',' '
+' | wc -l    # meta: 56 columnas (version con RMSE)
 cat data/e6b/e6b_vae_sd15_errores.csv                      # solo cabecera
 tail -30 e6b_vae_$B.log                                    # CONTROL (N de N) y ruta del .md
 ```
@@ -461,3 +513,26 @@ scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e6b experiments\objeti
 scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e6b_prueba experiments\objetivo1\outputs\
 scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/e6b_vae_*.log" experiments\objetivo1\outputs\e6b\
 ```
+
+**Al traer la corrida de RMSE (2026-09-15):** apartar antes la salida MAE que ya esta en la PC, para no
+pisarla y poder comparar las dos. Las cifras de MAE tienen que salir **identicas**; si cambia alguna, algo
+se movio y hay que pararse a mirar.
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo1\outputs
+mkdir e6b_mae_20260915
+move e6b_vae_sd15*.csv e6b_mae_20260915\
+move e6b_vae_sd15.md  e6b_mae_20260915\
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/e6b experiments\objetivo1\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/e6b_vae_*.log" experiments\objetivo1\outputs\e6b\
+```
+
+Comprobaciones en la PC, antes de analizar nada:
+
+```powershell
+python -c "import csv; r=list(csv.DictReader(open(r'experiments\objetivo1\outputs\e6b\e6b_vae_sd15.csv'))); print(len(r),'filas |',len(r[0]),'columnas')"
+```
+
+Meta: **178 filas y 56 columnas**. Y que las medianas de MAE del `.md` nuevo coincidan con las de
+`e6b_mae_20260915\e6b_vae_sd15.md` (hueso: 152.05 / 212.00 / 162.95 en `vae regla`).

@@ -38,6 +38,19 @@ CONTROLES QUE PUEDEN FALLAR
 - `--vae eco` pasa los canales por la misma tuberia de torch sin modelo: sus columnas `vae` deben
   igualar a las de `identidad` (prueba del script, no resultado).
 
+METRICAS (anadido 2026-09-15, decision 2026-09-15 (2))
+------------------------------------------------------
+Cada combinacion de configuracion, decodificador y ROI se reporta con DOS metricas sobre el mismo
+vector de errores absolutos por voxel:
+- **MAE**, que es el criterio del Go/No-Go (`main.tex`, Objetivo 1): columna `{cfg} {dec} {roi}`.
+- **RMSE**, que es lo que publica el campo (`peters2025hybrid` 2.5 p. 5 y `haneda2025aapm` Sec. 2.3
+  p. 6 definen *CT number accuracy* como RMSE): columna `{cfg} {dec} {roi} rmse`.
+La columna de MAE se deja SIN sufijo a proposito: asi no se rompe el control contra `e6c_techo_lw.csv`
+ni la lectura de las corridas anteriores.
+El oraculo elige canal por **menor error absoluto por voxel**, igual que antes, y las dos metricas se
+calculan despues sobre ese mismo vector. El oraculo NO se re-optimiza para RMSE; si se re-optimizara,
+su RMSE seria menor. Queda declarado, no corregido.
+
 SALIDA (`--out`)
 ----------------
 `e6b_vae_sd15.csv` (una fila por volumen), `e6b_vae_sd15_errores.csv`, `e6b_vae_sd15_control.csv` y
@@ -56,7 +69,7 @@ from typing import Callable
 import nibabel as nib
 import numpy as np
 
-from e6c_techo_lw import BONE_HU, MAX_VOX, METAL_HU, configuraciones, mae_oraculo, submuestrea
+from e6c_techo_lw import BONE_HU, MAX_VOX, METAL_HU, configuraciones, submuestrea
 
 CONFIGS = ('pub', 'LW20000', 'pub+asinh')
 EPS = 0.01
@@ -64,6 +77,7 @@ UMBRAL_GO = 25.0
 TOLERANCIA_CONTROL = 0.01
 DECODIFICADORES = ('identidad oraculo', 'identidad regla', 'vae oraculo', 'vae regla')
 ROIS = ('hueso', 'metal')
+SUF_RMSE = ' rmse'
 REPO_VAE = 'stable-diffusion-v1-5/stable-diffusion-v1-5'
 CSV_RES, CSV_ERR = 'e6b_vae_sd15.csv', 'e6b_vae_sd15_errores.csv'
 
@@ -73,7 +87,8 @@ IdaVuelta = Callable[[np.ndarray], np.ndarray]
 def campos() -> list[str]:
     """Columnas de la tabla por volumen."""
     base = ['Caso', 'Dataset', 'forma', 'eje_axial', 'n hueso', 'n metal', 'vae', 'segundos']
-    return base + [f'{c} {d} {r}' for c in CONFIGS for d in DECODIFICADORES for r in ROIS]
+    return base + [f'{c} {d} {r}{suf}' for c in CONFIGS for d in DECODIFICADORES
+                   for r in ROIS for suf in ('', SUF_RMSE)]
 
 
 def eje_axial(img: nib.Nifti1Image) -> int:
@@ -103,15 +118,28 @@ def regla(us: dict[str, np.ndarray], canales: dict) -> np.ndarray:
     return hu
 
 
-def maes(vals: np.ndarray, us: dict[str, np.ndarray], canales: dict) -> tuple[float, float]:
-    """MAE oraculo (mejor canal por voxel) y MAE de la regla, con codigos `us` ya extraidos del ROI."""
-    if vals.size == 0:
+def mae_rmse(err: np.ndarray | None) -> tuple[float, float]:
+    """Las dos metricas sobre un mismo vector de errores absolutos por voxel."""
+    if err is None or err.size == 0:
         return math.nan, math.nan
+    return float(err.mean()), float(np.sqrt(np.mean(np.square(err, dtype=np.float64))))
+
+
+def err_oraculo(vals: np.ndarray, us: dict[str, np.ndarray], canales: dict) -> np.ndarray | None:
+    """Error absoluto por voxel del oraculo: el menor entre los canales. Codigos `us` ya del ROI."""
     err = None
     for nombre, (_, vuelta) in canales.items():
         e = np.abs(vuelta(us[nombre]) - vals)
         err = e if err is None else np.minimum(err, e)
-    return float(err.mean()), float(np.abs(regla(us, canales) - vals).mean())
+    return err
+
+
+def errores(vals: np.ndarray, us: dict[str, np.ndarray],
+            canales: dict) -> tuple[np.ndarray | None, np.ndarray | None]:
+    """Errores absolutos por voxel del oraculo y de la regla."""
+    if vals.size == 0:
+        return None, None
+    return err_oraculo(vals, us, canales), np.abs(regla(us, canales) - vals)
 
 
 def ida_vuelta_torch(modelo, dispositivo: str) -> IdaVuelta:
@@ -163,9 +191,12 @@ def analizar(path: Path, cfgs: dict, f: IdaVuelta | None, lote: int, etiqueta: s
         canales = cfgs[cfg]
         for r in ROIS:
             if vals[r].size:
-                fila[f'{cfg} identidad oraculo {r}'] = round(mae_oraculo(vals[r], canales, None), 4)
                 us = {n: ida(vals[r]) for n, (ida, _) in canales.items()}
-                fila[f'{cfg} identidad regla {r}'] = round(maes(vals[r], us, canales)[1], 4)
+                e_o, e_g = errores(vals[r], us, canales)
+                for dec, e in (('identidad oraculo', e_o), ('identidad regla', e_g)):
+                    m, q = mae_rmse(e)
+                    fila[f'{cfg} {dec} {r}'] = round(m, 4)
+                    fila[f'{cfg} {dec} {r}{SUF_RMSE}'] = round(q, 4)
         if f is None:
             continue
         nombres = list(canales)
@@ -183,9 +214,11 @@ def analizar(path: Path, cfgs: dict, f: IdaVuelta | None, lote: int, etiqueta: s
         del dec
         for r in ROIS:
             if vals[r].size:
-                o, g = maes(vals[r], us_roi[r], canales)
-                fila[f'{cfg} vae oraculo {r}'] = round(o, 4)
-                fila[f'{cfg} vae regla {r}'] = round(g, 4)
+                e_o, e_g = errores(vals[r], us_roi[r], canales)
+                for dec, e in (('vae oraculo', e_o), ('vae regla', e_g)):
+                    m, q = mae_rmse(e)
+                    fila[f'{cfg} {dec} {r}'] = round(m, 4)
+                    fila[f'{cfg} {dec} {r}{SUF_RMSE}'] = round(q, 4)
     fila['segundos'] = round(time.time() - t0, 1)
     return fila
 
@@ -255,26 +288,42 @@ def resumen(out: Path, e6c: Path | None) -> None:
          f'ROI y submuestreo de E6c (hueso HU > {BONE_HU:.0f}, metal HU > {METAL_HU:.0f}). `oraculo` usa el HU '
          'verdadero para elegir canal (cota); `regla` no lo usa (pipeline real).',
          '`pub+MTW` no se mide: 4 canales no entran en el VAE de SD 1.5 sin modificarlo. Generado por '
-         '`e6b_vae_sd15.py`; no decide nada.', '']
-    for r in ROIS:
-        cab = '| Configuracion | ' + ' | '.join(DECODIFICADORES) + (' | E6c float | E6c 8b |' if ref is not None else ' |')
-        L += [f'## MAE en ROI de {r}: mediana sobre los volumenes (HU)', '', cab,
-              '|---|' + '---|' * (len(DECODIFICADORES) + (2 if ref is not None else 0))]
-        for cfg in CONFIGS:
-            celdas = [f'{d[f"{cfg} {dec} {r}"].median():.2f}' if d[f'{cfg} {dec} {r}'].notna().any() else '-'
-                      for dec in DECODIFICADORES]
-            if ref is not None:
-                celdas += [f'{ref[f"{cfg} {b} {r}"].median():.2f}' for b in ('float', '8b')]
-            L.append(f'| `{cfg}` | ' + ' | '.join(celdas) + ' |')
-        L.append('')
+         '`e6b_vae_sd15.py`; no decide nada.',
+         'Se reportan **MAE** (criterio del Go/No-Go) y **RMSE** (metrica de `peters2025hybrid` y '
+         '`haneda2025aapm`) sobre el mismo vector de errores. El oraculo elige canal por error absoluto '
+         'en los dos casos.', '']
+    hay_rmse = all(f'{c} {dec} {r}{SUF_RMSE}' in d.columns
+                   for c in CONFIGS for dec in DECODIFICADORES for r in ROIS)
+    if not hay_rmse:
+        L += ['> Corrida anterior al 2026-09-15: solo trae MAE. Las columnas `rmse` faltan y sus tablas se omiten.', '']
+    metricas = [('MAE', ''), ('RMSE', SUF_RMSE)] if hay_rmse else [('MAE', '')]
+    for nombre, suf in metricas:
+        # E6c solo tiene MAE: la comparacion lateral solo se imprime en la tabla de MAE
+        lado = ref is not None and suf == ''
+        for r in ROIS:
+            cab = '| Configuracion | ' + ' | '.join(DECODIFICADORES) + (' | E6c float | E6c 8b |' if lado else ' |')
+            L += [f'## {nombre} en ROI de {r}: mediana sobre los volumenes (HU)', '', cab,
+                  '|---|' + '---|' * (len(DECODIFICADORES) + (2 if lado else 0))]
+            for cfg in CONFIGS:
+                celdas = [f'{d[f"{cfg} {dec} {r}{suf}"].median():.2f}'
+                          if d[f'{cfg} {dec} {r}{suf}'].notna().any() else '-'
+                          for dec in DECODIFICADORES]
+                if lado:
+                    celdas += [f'{ref[f"{cfg} {b} {r}"].median():.2f}' for b in ('float', '8b')]
+                L.append(f'| `{cfg}` | ' + ' | '.join(celdas) + ' |')
+            L.append('')
     L += [f'## Go/No-Go del Objetivo 1: volumenes que FALLAN (MAE >= {UMBRAL_GO:.0f} HU en hueso)', '',
-          '| Configuracion | ' + ' | '.join(DECODIFICADORES) + ' |', '|---|' + '---|' * len(DECODIFICADORES)]
+          'El criterio de la tesis es **MAE**. La fila de RMSE es contraste con la metrica que publica el '
+          'campo, NO el Go/No-Go.', '',
+          '| Configuracion | Metrica | ' + ' | '.join(DECODIFICADORES) + ' |',
+          '|---|---|' + '---|' * len(DECODIFICADORES)]
     for cfg in CONFIGS:
-        celdas = []
-        for dec in DECODIFICADORES:
-            v = d[f'{cfg} {dec} hueso'].dropna()
-            celdas.append(f'{int((v >= UMBRAL_GO).sum())}/{len(v)}' if len(v) else '-')
-        L.append(f'| `{cfg}` | ' + ' | '.join(celdas) + ' |')
+        for nombre, suf in metricas:
+            celdas = []
+            for dec in DECODIFICADORES:
+                v = d[f'{cfg} {dec} hueso{suf}'].dropna()
+                celdas.append(f'{int((v >= UMBRAL_GO).sum())}/{len(v)}' if len(v) else '-')
+            L.append(f'| `{cfg}` | {nombre} | ' + ' | '.join(celdas) + ' |')
     L += ['', '## Hueso por dataset: mediana con VAE (oraculo / regla), HU', '',
           '| Configuracion | Dataset | n | vae oraculo | vae regla |', '|---|---|---|---|---|']
     for cfg in CONFIGS:
@@ -357,8 +406,10 @@ def main() -> None:
                     continue
                 s_res[1].writerow(fila)
                 s_res[0].flush()
-                print(f'{caso}: ok {fila["segundos"]} s | pub hueso identidad {fila.get("pub identidad oraculo hueso")} '
-                      f'vae oraculo {fila.get("pub vae oraculo hueso", "-")} regla {fila.get("pub vae regla hueso", "-")}',
+                print(f'{caso}: ok {fila["segundos"]} s | pub hueso MAE identidad '
+                      f'{fila.get("pub identidad oraculo hueso")} vae oraculo '
+                      f'{fila.get("pub vae oraculo hueso", "-")} regla {fila.get("pub vae regla hueso", "-")} '
+                      f'| RMSE regla {fila.get("pub vae regla hueso" + SUF_RMSE, "-")}',
                       flush=True)
         finally:
             for h, _ in (s_res, s_err):

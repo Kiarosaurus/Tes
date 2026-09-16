@@ -4949,3 +4949,433 @@ E9-TS: 152 casos, 0 errores, 2352 filas.
 - Khipu (2026-09-14): g002 con RTX A6000 48 GB libre; `a-tesis` no limita `gres/gpu` (sin probar con
   `--test-only`); ag001 tiene ademas una A100 entera. E10 no usa GPU. Detalle en `KHIPU.md`. Relevante solo para
   E6b (#36/#39).
+
+## Ronda 2026-09-15 (5) — lecturas de `zhang2025diffboost` y `jacob2026lgesynthnet`
+
+### 56 — La frase de `main.tex:48` sobre los modelos de sintesis de lesiones no es fiel para DiffBoost, y para LGESynthNet solo en parte — ABIERTA
+
+- **Origen:** fichas `zhang2025diffboost.md` y `jacob2026lgesynthnet.md`, hechas por `lector-papers` el 2026-09-15,
+  ambas con PDF completo. **DiffBoost se releyo el mismo dia sobre la version publicada** (IEEE TMI
+  44(9):3670-3682), porque la primera lectura se hizo sobre el preprint arXiv:2310.12868v2. Las citas se
+  sostienen igual; abajo van las paginas de la revista.
+- **Frase en riesgo** (`main.tex:48`): DiffTumor, DiffBoost, CLAIM y LGESynthNet *"are designed around bounded
+  inpainting for deformable biological tissues. They implicitly assume non-rigidity and strictly restrict intensity
+  alterations to the inside of the object's mask."*
+- **Contraste por fuente** (evidencia textual en cada ficha):
+
+  | Fuente | Inpainting acotado | No-rigidez | Cambios solo dentro de la mascara |
+  |---|---|---|---|
+  | `chen2024tumorsynthesis` | si (ficha previa) | no verificada en esta ronda | si: no modela nada fuera de la mascara (`_index.md`) |
+  | `zhang2025diffboost` | **no**: genera la imagen entera desde ruido (Alg. 1, p. 3676); la mascara solo entra como borde (§III-C, p. 3674) | NO ENCONTRADO EN EL PDF; los bordes fijan la geometria y lo declara limitacion (§VI, p. 3680) | **no**: *"m · x_0 + (1 − m) · x_i"* (Alg. 1, p. 3676) |
+  | `jacob2026lgesynthnet` | si: *"Formulated as inpainting using a ControlNet-based architecture"* (Abstract, p. 1) | NO ENCONTRADO EN EL PDF | sin respaldo: la imagen completa pasa por el latente, *"resulting in lower SSIM"* (Sec. 5, p. 8); no se describe reinsercion de pixeles |
+  | `ramzan2026claim` | **sin ficha: no verificado** | — | — |
+
+- **Por que importa:** esa frase es el argumento de que los modelos de lesiones *"structurally fail"* con metal, y es
+  la motivacion de B_delta. Dos de las cuatro citas no dicen lo que se les atribuye, y una esta sin leer. Es una
+  repregunta directa en la sustentacion y repite el patron de #25: un enunciado atribuido sin abrir el PDF.
+- **Segundo hallazgo, sobre novedad (toca #6 y #9):** DiffBoost ya publica ControlNet sobre Stable Diffusion en imagen
+  medica, y LGESynthNet combina LDM, ControlNet y mascara. "LDM + ControlNet sobre CT" no se sostiene como novedad
+  si alguna frase lo presenta asi. La novedad queda en B_delta, en la codificacion multi-ventana en HU y en el metal.
+- **Refuerzo, sin entrada nueva:** LGESynthNet atribuye a la compresion latente la perdida de SSIM en la imagen
+  completa. Eso respalda medir la no-degradacion fuera de B_delta.
+- **Opciones:**
+  - **(a) Reescribir por familias.** Inpainting acotado (DiffTumor, LGESynthNet) frente a sintesis global condicionada
+    (DiffBoost). Quitar "implicitly assume non-rigidity" y "strictly ... inside the mask" donde no haya cita.
+    Borrador en ingles: *"condition generation on a bounded lesion mask and neither model nor supervise
+    intensity changes beyond it, or synthesize the whole image under edge conditioning with no notion of
+    object-induced artifacts"*.
+  - **(b) Quitar DiffBoost de la lista** y leer CLAIM antes de mantenerlo en ella.
+  - **(c) Pasar a una afirmacion cualitativa comun:** ninguno modela efectos inducidos por el objeto fuera de el.
+    Las tres fichas leidas lo sostienen, pero hay que confirmarlo para CLAIM.
+- **Recomendacion del asistente:** (a), leyendo antes `ramzan2026claim` con `lector-papers`, porque se cita en la
+  misma frase.
+- **Pendiente de:** decision de la autora. `main.tex` sin cambios (reglas 4 y 14).
+
+**Pendiente de la autora (2026-09-15): verificar las citas contra el PDF.** De DiffBoost: Alg. 1 p. 3676, §III-C p. 3674
+y §VI p. 3680. De LGESynthNet: Abstract p. 1 y Sec. 5 p. 8. Solo las verifico un agente, y son las que desmienten la frase.
+
+**Correccion del segundo hallazgo (2026-09-15).** `main.tex:54` ya pone la novedad solo en C3 (multi-ventana para
+*generacion* + B_delta) y dice *"The multi-window framework is not claimed as novel here"*. **No reclama ControlNet.** La
+novedad no esta en riesgo y no hace falta cambiar texto por ese motivo. Mejora opcional: citar DiffBoost y LGESynthNet
+como precedentes de ControlNet en imagen medica, para adelantarse a la pregunta.
+
+**Recomendacion del asistente como asesor (2026-09-15), sustituye a la de arriba:**
+
+1. **Leer `ramzan2026claim` antes de tocar el texto.** Cuesta una corrida de `lector-papers`, y evita reescribir dos
+   veces una frase con cuatro citas. Reescribirla con una cita sin abrir repetiria el patron de #25.
+2. **Elegir un hibrido: (c) como afirmacion central y una clausula de (a). Descartar (b).**
+   - **La afirmacion tiene que ser causal, no espacial.** "Todo cambio queda dentro de la mascara" cae con un
+     contraejemplo (DiffBoost ya lo es). "Ninguno condiciona sobre un objeto ajeno ni modela los efectos que ese objeto
+     induce fuera de si" se sostiene en las tres fichas leidas. Ese es el gap real que motiva B_delta.
+   - **Quitar "non-rigidity" del renderizador.** Ninguna fuente lo respalda, y la rigidez ya es argumento de C1, no del
+     renderizador. Mezclarlos da una superficie de ataque sin ganar nada.
+   - **No quitar DiffBoost (b).** Sacar el contraejemplo es seleccion a conveniencia, y es IEEE TMI 2025: el tribunal
+     puede conocerlo. Citado bien, fortalece el argumento: aunque genera la imagen entera, no produce artefactos
+     inducidos por un objeto, porque nada en su condicionamiento los describe.
+   - **Una clausula de (a)** ("either by inpainting a bounded region ... or by synthesizing the whole image") basta para
+     mostrar que se leyeron. No hace falta una taxonomia completa.
+3. **Bajar los verbos que nada mide.** "structurally fail" (`main.tex:48`) y "cannot generate rigid global streaks"
+   (`main.tex:54`) afirman un fracaso que ningun experimento de la tesis prueba: no se corrio ninguno de estos modelos
+   sobre metal. Pasar a "are not designed to" / "do not model".
+4. **Presentar B_delta como punto intermedio.** El inpainting acotado no llega fuera de la mascara, y la generacion
+   global altera anatomia lejana (LGESynthNet atribuye al latente la perdida de SSIM en la imagen completa). B_delta
+   extiende la region de forma acotada. **Este encuadre depende de #57.**
+5. **Borrador en ingles, condicionado a CLAIM y a #57:** *"Diffusion-based lesion synthesis models such as DiffTumor,
+   DiffBoost, CLAIM and LGESynthNet generate biological findings under mask, edge or text conditioning, either by
+   inpainting a bounded region or by synthesizing the whole image. None of them conditions generation on a foreign
+   object or models the effects such an object induces beyond its own boundary."*
+6. **Prioridad:** por debajo de E6b (#36/#39 bloquea el Objetivo 1, que es obligatorio). Es texto, de una sola pasada
+   una vez leido CLAIM.
+
+### 57 — `main.tex` dice que los artefactos se propagan "globally far beyond" el implante, pero B_delta (~12 mm) y el titulo son locales — ABIERTA
+
+- **Origen:** revision de `main.tex:48` y `main.tex:54` al asesorar #56 (2026-09-15). Sin lectura nueva.
+- **Tension, con texto literal:**
+  - `main.tex:48`: artefactos *"that propagate globally far beyond the implant's boundaries, destroying the signal of the
+    surrounding soft tissue"*.
+  - `main.tex:54`, C3: B_delta *"so that global streaking and beam hardening are modelled outside the metal itself"*.
+  - `main.tex:77`: B_delta es una banda de *"$\sim$12mm"*.
+  - `00-tesis.md:7`: el titulo habla de *"local metal artifacts"*. `CLAUDE.md` tambien dice "artefactos metalicos locales".
+- **Por que importa:** si las estrias son globales, una banda de 12 mm no las contiene, y C3 promete modelar algo que su
+  propio mecanismo recorta. Es contradiccion interna del documento, detectable sin leer ningun paper. Ademas, el valor de
+  ~12 mm no tiene fuente: `01-decisiones.md` registra que B_delta no tiene precedente publicado. Este caso es mas grave
+  que "sin precedente", porque tampoco hay una medicion propia que lo justifique.
+- **Opciones:**
+  - **(a) Declarar el alcance local.** Las estrias pueden extenderse lejos. La tesis modela solo la parte peri-implante,
+    dentro de B_delta, y declara el campo lejano como limitacion. Cambia "global" en C3 por "peri-implant".
+  - **(b) Justificar delta con una medicion.** Perfil de desviacion de HU frente a distancia al metal en CLINIC-metal. Ya
+    hay heuristicas en disco sobre esferas de 12 mm (ver la revision de artefactos de #34). Solo seria util si el
+    Objetivo 3 se ejecuta.
+  - **(c) Tratar delta como parametro** con sensibilidad (p. ej. 6/12/24 mm) en el Objetivo 3.
+  - **(d) Generar el corte entero.** Contradice el titulo local, se acerca a DiffBoost y arriesga degradar anatomia lejana.
+- **Recomendacion del asistente:** (a) ya, porque es solo texto y cierra la contradiccion. Anadir (b) o (c) solo si el
+  Objetivo 3 pasa de demostrativo a evaluado. No (d).
+- **Pendiente de:** decision de la autora. `main.tex` y `00-tesis.md` sin cambios (regla 14).
+
+## Ronda 2026-09-15 (7) — cohorte de E6b: el VAE de SD 1.5 sin reentrenar NO pasa el Go/No-Go
+
+### 36 y 39 — E6b EJECUTADO en cohorte (job 51540): las tres configuraciones fallan en 178 de 178 volumenes — ABIERTA
+
+- **Corrida:** job 51540, 178 volumenes, **0 errores** (`e6b_vae_sd15_errores.csv` solo cabecera), `rc = 0`,
+  **control de identidad frente a E6c 873 de 873** (tolerancia 0.01 HU), mediana 180 s/volumen, 8.74 h.
+  `e6b_vae_sd15.csv` tiene 179 filas (178 + cabecera). La integridad pedida en `ESTADO.md` se cumple entera.
+  Salidas en `experiments/objetivo1/outputs/` y logs en `outputs/e6b/`.
+- **Criterio de lectura fijado ANTES de ver resultados** (bloque "E6b PREPARADO", 2026-09-15): si `vae regla` en
+  hueso falla el umbral de 25 HU en una parte sustancial de los volumenes con las tres configuraciones, el VAE de
+  SD 1.5 sin ajustar no pasa el Go/No-Go con ninguna ventana, y la decision pasa a las opciones 2-4.
+- **Resultado, contra ese criterio:** no es "una parte sustancial", es **todo**. Go/No-Go en hueso (MAE >= 25 HU):
+
+  | Configuracion | identidad oraculo | identidad regla | vae oraculo | vae regla |
+  |---|---|---|---|---|
+  | `pub` | 50/178 | 50/178 | **178/178** | **178/178** |
+  | `LW20000` | 0/178 | 0/178 | **178/178** | **178/178** |
+  | `pub+asinh` | 0/178 | 0/178 | **178/178** | **178/178** |
+
+- **Margen:** el mejor volumen de la mejor combinacion (`pub`, `vae oraculo`) da **52.85 HU**, mas del doble del
+  umbral. `pub+asinh` con `vae regla`, que es la tuberia real, va de **99.10** (min) a **368.85** (max), mediana
+  **162.95** HU. No hay ningun volumen que pase con ninguna ventana y ningun decodificador.
+- **Medianas en hueso (HU), sobre los 178:**
+
+  | Configuracion | identidad regla | vae oraculo | vae regla | E6c 8b (referencia) |
+  |---|---|---|---|---|
+  | `pub` | 0.94 | 84.86 | 152.05 | 2.18 |
+  | `LW20000` | 0.00 | 122.22 | 212.00 | 6.24 |
+  | `pub+asinh` | 0.00 | 100.20 | 162.95 | 2.07 |
+
+- **Lo que esto separa, y es el hallazgo de fondo:** la **codificacion en ventanas** (#39) y el **autoencoder** (#36)
+  son dos perdidas de escala distinta. `LW20000` y `pub+asinh` tienen identidad **0.00 HU**: como codificacion son
+  exactas. El VAE de SD 1.5 les agrega **162-212 HU** de mediana. El error de la ventana, que era el tema de E6c
+  (1-6 HU a 8 bits), es **dos ordenes de magnitud menor** que el del autoencoder. **Elegir ventana no arregla el
+  Objetivo 1 mientras el VAE sea este.**
+- **Inversion respecto de E6c, a vigilar:** en E6c `LW20000` era la peor a 8 bits (6.24 HU) y `pub` la mejor tras
+  `pub+MTW`; con el VAE el orden se mantiene pero las distancias cambian de signo practico: `pub` tiene el **menor**
+  error de VAE (84.86 oraculo) pese a ser la unica que falla la identidad (50/178, techo de 2000 HU, #39). Lectura
+  plausible, **no verificada**: las ventanas que preservan HU exactos estiran un rango dinamico mucho mayor sobre el
+  mismo soporte normalizado, asi que cada unidad de error del latente cuesta mas HU. No hay medicion que lo pruebe:
+  si la decision se apoya en esto, hay que medirlo.
+- **Metal:** ninguna configuracion se acerca. `LW20000` es la menos mala (2695 HU con oraculo, 4145 con regla) frente
+  a identidad 0.00. `pub` parte ya de 3588.80 HU por el techo. El metal no es el criterio del Go/No-Go, pero confirma
+  que el latente de SD 1.5 no transporta el rango del implante.
+- **`oraculo` frente a `regla`:** el oraculo usa el HU verdadero para elegir canal y es una **cota inferior**, no una
+  tuberia. Aun asi falla 178/178. Que la cota falle cierra la discusion: no es un problema de la regla de seleccion.
+- **`pub+MTW` sigue sin medirse:** sus 4 canales no entran en el VAE de SD 1.5 sin modificarlo. E6b no dice nada
+  sobre la opcion 2 (encoder adaptado a 4 canales) mas alla de que el VAE base, con 3 canales, ya falla.
+- **Consecuencia para las opciones de #36/#39:**
+  - **Opcion 1 (SD 1.5 con tres ventanas y `asinh`): queda descartada por evidencia propia**, con el criterio
+    preinscrito. Es el resultado mas fuerte de la sesion.
+  - **Opcion 2 (primera capa a 4 canales, reentrenamiento parcial):** no la rescata por si sola. El error medido no
+    viene del numero de canales sino del latente; adaptar la entrada sin tocar el resto tiene poca razon para bajar
+    de 160 HU a menos de 25.
+  - **Opcion 3 (otro VAE):** pasa a ser la via principal, y ahora con un requisito numerico: reconstruccion de hueso
+    por debajo de 25 HU de MAE. Candidatos tipicos son VAE de CT entrenados en HU o autoencoders con factor de
+    compresion menor. **Ninguno leido ni verificado.**
+  - **Opcion 4 (metal fuera del espacio latente):** no la toca este experimento, porque el fallo esta en el **hueso**,
+    fuera de la mascara de metal. Componer el metal aparte deja el problema intacto.
+  - **Opcion 5, nueva:** revisar el propio umbral de 25 HU del Go/No-Go. Ningun modelo latente publicado reporta
+    fidelidad de HU a ese nivel, y el umbral lo fijo la tesis sin fuente. **No es una salida por resultado adverso
+    si se justifica con bibliografia**; si se baja solo para aprobar, repite el patron #25/#37/#45/#47/#50 que
+    `ESTADO.md` manda vigilar.
+- **Lo que este experimento NO dice:** no mide calidad perceptual ni utilidad para difusion. Un VAE puede fallar una
+  MAE de HU y aun servir para generar imagenes plausibles. El Go/No-Go de la tesis, tal como esta escrito, es de
+  fidelidad en HU; si esa es la pregunta correcta es una decision, no un dato.
+- **Que seccion toca:** Objetivo 1 (Go/No-Go y su umbral), Objetivo 3 (`Stable Diffusion 1.5 backbone` en
+  `main.tex`), C3 (codificacion multi-ventana), `03-glosario.md`.
+- **Tipo:** DISENO / RIESGO. **Pendiente de la autora. `main.tex` y `00-tesis.md` sin cambios (regla 14).**
+
+### 36 y 39 — El umbral de 25 HU SI tiene con que anclarse, pero la metrica de E6b no es la que publica el campo (MAE frente a RMSE) — ABIERTA
+
+- **Origen:** busqueda de respaldo bibliografico para la opcion 5 (revisar el umbral) y para la opcion 3 (otro VAE),
+  hecha el 2026-09-15 **solo sobre fichas ya escritas**. No se leyo ningun PDF nuevo ni se busco fuera del corpus.
+
+**Hallazgo 1 — la metrica tiene precedente directo, incluido el baseline de la tesis.**
+
+| Fuente | Definicion literal | Donde |
+|---|---|---|
+| `peters2025hybrid` (baseline, #8) | *"assessed as the voxel-wise root-mean square error (RMSE) between the ground truth and the MAR image"* | 2.5, p. 5 |
+| `haneda2025aapm` | *"defined as the root-mean-square error (RMSE) between the ground truth and the MAR image"* | Sec. 2.3, p. 6 |
+
+  Las dos llaman a eso *CT number accuracy* y las dos umbralizan hueso en 150 HU (*"all voxels with a CT number
+  above 150 HU ... were considered bone"*, Peters 2.5 p. 5; Haneda Sec. 2.3 p. 7), que es el mismo umbral de hueso
+  que ya usa E6b/E6c. **La familia de metrica y el ROI de hueso estan respaldados.**
+
+- **Pero E6b reporta MAE, no RMSE.** Son metricas distintas y RMSE >= MAE siempre. Citar 12.74 o 20.2 HU de la
+  literatura al lado de los 162.95 HU de E6b **no es comparacion valida de frente**. En este caso no cambia la
+  conclusion (el margen es de un orden de magnitud), pero **si la autora quiere citar esas cifras, E6b tiene que
+  reportar RMSE**. El CSV actual solo guarda MAE: hace falta rehacer la corrida (~8.7 h) o guardar las dos.
+
+**Hallazgo 2 — no existe en el corpus un umbral absoluto publicado de "pasa/no pasa" en HU.** Lo que hay es una
+  escala normalizada 0-4 *"calibrated by assigning a score of 2 to the popular NMAR algorithm"* (`haneda2025aapm`,
+  Sec. 2.3, p. 6). El campo ancla en un metodo de referencia, no en un numero de HU. **El 25 HU de la tesis sigue
+  sin fuente directa**, como dice la opcion 5.
+
+**Hallazgo 3 — hay magnitudes publicadas que encuadran el 25 HU, y lo dejan en un lugar razonable.**
+
+| Metodo | Cifra en HU | Fuente |
+|---|---|---|
+| NMAR (ancla de la escala AAPM) | RMSE 20.2 (σ=19.7) | `karageorgos2024ddpm`, Tabla I, p. 28 |
+| DDPM en imagen | RMSE 12.3 (σ=10.4) | `karageorgos2024ddpm`, Tabla I, p. 28 |
+| DDPM, pelvis (Paciente 1) | RMSE_INT 11, RMSE_ROI 20 | `karageorgos2024ddpm`, Tabla II, p. 29 |
+| DDPM, protesis total de cadera (Paciente 4) | RMSE_INT 147 | `karageorgos2024ddpm`, Tabla II, p. 29 |
+| MLD-MAR (**latente**, CVQ-VAE x4) | RMSE 12.74 (σ=5.36) sintetico | `yun2026simulationdriven`, Tabla 1, p. 10 |
+| MLD-MAR, ROI clinico libre de artefacto | RMSE 21.01; sesgo HU medio 0.82 | `yun2026simulationdriven`, Tablas 3 y 4, p. 11 |
+
+  **Lectura:** 25 HU cae justo por encima de donde aterriza NMAR (20.2), el metodo que el campo usa como ancla, y a
+  unas dos veces el mejor latente publicado (12.74). **No es un umbral arbitrario ni inalcanzable**, y se puede
+  defender por comparacion con fuentes que la autora ya tiene leidas. Esto **desactiva en gran parte la opcion 5**:
+  el umbral no necesita bajarse, necesita justificarse.
+  - **Aviso de honestidad:** todas esas cifras son de **MAR** (quitar artefacto), no de ida y vuelta de un
+    autoencoder, y son RMSE sobre tuberia completa. Sirven como **orden de magnitud citable**, no como equivalencia.
+    Presentarlas como si midieran lo mismo que E6b repetiria el patron #25/#47/#50.
+
+**Hallazgo 4 — alternativa de formulacion, tambien del baseline.** `peters2025hybrid` valida con un criterio
+  **relativo**: *"the mean CT number deviation between simulation and real data was less than 2%"* (Abstract, p. 1).
+  Un umbral relativo en vez de absoluto es una opcion de diseno abierta para el Go/No-Go, y viene del mismo paper
+  que la tesis ya adopto como baseline.
+
+**Hallazgo 5 — candidato de VAE con cifra de HU medida: uno solo, y es indirecto.** `yun2026simulationdriven`
+  (MLD-MAR) es LDM sobre CT con metal y usa *"× 4 down-sampled latent representations"* (Sec. 2.3.1, p. 4) de un
+  **CVQ-VAE** (Zheng y Vedaldi 2023, ref. 23). Factor de compresion 4 frente al 8 de SD 1.5: razon mecanica para
+  esperar menos perdida, coherente con lo que midio E6b.
+  - **No es fidelidad de autoencoder verificada:** 12.74 HU es la tuberia entera contra ground truth. Que el error
+    de ida y vuelta del CVQ-VAE sea menor que eso es **inferencia del asistente, no una medicion publicada**. La
+    unica forma de saberlo es correr E6b con ese autoencoder.
+  - `chen2024tumorsynthesis` (VQGAN 3D, 9.262 CT, latente 1/4 en las tres dimensiones) es el otro candidato de
+    arquitectura, pero **no publica cifra de fidelidad en HU** y su ficha ya advierte que el autoencoder nunca vio
+    el rango del metal.
+  - Los tres candidatos estan en `_candidatos.md`, seccion "Candidatos de AUTOENCODER" (2026-09-15).
+
+**Hallazgo 6 — el hueco real.** Ninguna fuente del corpus mide el error de ida y vuelta de un autoencoder solo, en
+  HU, sobre CT oseo. E6b si lo hace. Eso es a la vez el motivo de que no haya con que compararlo **y** una
+  contribucion metodologica menor que la tesis puede reclamar, si la autora quiere.
+
+- **Que seccion toca:** Objetivo 1 (definicion y umbral del Go/No-Go), Related Work, `03-glosario.md`.
+- **Tipo:** RIESGO / GAP. **Pendiente de la autora. Nada aplicado (reglas 3 y 14).**
+- **Recomendacion del asistente:** (i) mantener 25 HU y justificarlo contra NMAR = 20.2 y MLD-MAR = 12.74, no
+  bajarlo; (ii) antes de citar esas cifras, hacer que E6b reporte **RMSE ademas de MAE**; (iii) para la opcion 3,
+  el candidato a probar primero es el CVQ-VAE de MLD-MAR, reusando E6b tal cual.
+
+### 36 y 39 — Busqueda web autorizada: el hueco se confirma, y aparece un paper que responde lo contrario que E6b — ABIERTA
+
+- **Origen:** busqueda web del 2026-09-15, **con orden explicita de la autora**. Es una excepcion declarada al flujo
+  `refs/raw` -> `clean` -> `refs.bib`. Nada entro a `refs.bib`; las tres filas estan en `_candidatos.md`, seccion
+  "Busqueda WEB", marcadas SIN VERIFICAR. Ninguna cifra de esta busqueda se uso en `main.tex`.
+
+- **Hallazgo 1 — el hueco es real, y ahora esta comprobado por fuera.** No aparecio ningun trabajo que publique el
+  error de ida y vuelta de un autoencoder **solo**, en HU, sobre CT oseo con rango de metal. Lo confirma por la
+  negativa el benchmark del campo, DM4CT (arXiv:2602.18589): no separa la primera etapa de la tuberia y declara
+  *"we do not use Hounsfield Unit for display, as the benchmark is not intended for clinical analysis"*. **El
+  benchmark de referencia no mide lo que mide E6b.** Refuerza que E6b es contribucion metodologica menor propia.
+
+- **Hallazgo 2, el importante — hay un paper que hace la pregunta de E6b y le da la respuesta CONTRARIA.**
+  *Foundation VAEs for 3D CT Reconstruction, Augmentation, and Generation* (ICML 2026, arXiv:2605.30893) transfiere
+  **siete VAE de video genericos y congelados** a CT *"without medical fine-tuning"*, y lo presenta como resultado
+  positivo. E6b concluye que un VAE generico sin reentrenar no sirve. **Las dos cosas pueden ser ciertas a la vez**,
+  y la razon esta en el rango: ellos recortan a **[-1000, 1000] HU**, que **deja fuera el hueso denso y todo el
+  metal**; el Objetivo 1 vive justo en el rango que ellos descartan. Si esa lectura se confirma al leer el PDF, deja
+  de ser una contradiccion y pasa a ser **el mejor argumento disponible a favor del encuadre de la tesis**: el
+  problema no es el CT, es el rango extendido que exige el metal.
+  - **Riesgo simetrico:** si NO se confirma, es un paper de ICML 2026 que contradice de frente la conclusion de E6b,
+    y la tesis tiene que responderlo. Es repregunta segura en la sustentacion.
+  - **Sin verificar.** Las cifras vistas (PSNR 30.93 pulmon / 39.18 pancreas; MSE 77.97 / 8.58, unidad sin
+    confirmar; compresion 8x8x4 y 16x16x4) vienen del HTML, no de una lectura con `lector-papers`.
+  - **Accion recomendada:** es la lectura de prioridad 1. Lo que hay que verificar es solo el rango de recorte y si
+    alguna cifra esta en HU.
+
+- **Hallazgo 3 — donde si se publica MAE en HU por tejido.** El subcampo de sCT en radioterapia MR-only reporta MAE
+  en HU con ROI de hueso separado, que es exactamente la metrica de E6b. **No se uso como ancla y no debe usarse:**
+  la tarea es sintesis MR -> CT, mucho mas dificil que una ida y vuelta, y las magnitudes que se ven en los
+  resumenes son de cientos de HU en hueso. Usarlas para decir que "25 HU es exigente" seria inflar el argumento con
+  una tarea ajena. Valor legitimo: la **convencion de reporte** (MAE en HU, desglosado por tejido).
+
+- **Que seccion toca:** Objetivo 1, Related Work (el paper de ICML obliga a posicionarse), `_candidatos.md`.
+- **Tipo:** GAP / RIESGO. **Pendiente de la autora. Nada aplicado a `main.tex` por esta busqueda.**
+
+### 36 y 39 — El umbral de 25 HU queda ANCLADO Y CITADO en `main.tex` (2026-09-15, orden explicita de la autora)
+
+- **Decision de la autora:** mantener 25 HU y hacer que el texto cite las fuentes que lo sostienen. Escrita en
+  `01-decisiones.md` (2026-09-15 (2)) por el asistente, con orden explicita.
+- **Aplicado a `main.tex`**, en los dos sitios donde vivia la cifra:
+  - **Objetivo 1 (l. 75):** el ROI de hueso queda declarado sobre el mismo umbral de 150 HU del protocolo adoptado
+    (`peters2025hybrid`, `haneda2025aapm`); se declara que **no existe umbral publicado de pasa/no-pasa**; y el 25 HU
+    se ancla en NMAR 20.2 HU, difusion en imagen 12.3 HU (`karageorgos2024ddpm`) y difusion latente 12.74 HU
+    (`yun2026simulationdriven`).
+  - **Tabla de metricas, fila `Representation Viability` (l. 98):** misma ancla en version corta.
+- **La discrepancia de metrica se declara en el propio texto**, no se esconde: las cifras citadas son RMSE, el
+  criterio es MAE, y RMSE nunca queda por debajo de MAE para los mismos residuos, asi que la comparacion fija el
+  orden de magnitud y no una equivalencia. Esto era el riesgo principal de la edicion y queda visible en el PDF.
+- **Compila:** 4 paginas, 42 referencias, 0 citas indefinidas. **`refs.bib` sin cambios**: las cuatro claves ya
+  estaban (regla 9 respetada, no se anadio ninguna entrada).
+- **Pendiente tecnico que queda abierto:** hacer que E6b reporte **RMSE ademas de MAE** para que la comparacion deje
+  de ser de orden de magnitud. Exige rehacer la corrida (~8.7 h); el CSV actual solo guarda MAE.
+- **Efecto sobre la opcion 5 de #36/#39:** queda **cerrada en la practica**. El umbral no se baja; se justifica.
+
+## Ronda 2026-09-15 (9) — verificacion de `chen2023foundation` y E6b con RMSE
+
+### Bibliografia — `papers/chen2023foundation.pdf` ES el paper correcto; lo que esta mal es la clave — sin implicancia sobre el argumento
+
+- **Duda de la autora:** que el PDF subido como `chen2023foundation` fuera en realidad el mismo que
+  `chen2024tumorsynthesis` ("Towards Generalizable Tumor Synthesis").
+- **Verificado el 2026-09-15** por metadatos y primera pagina (`pdfinfo` y `pdftotext`, sin lectura de contenido;
+  la lectura de literatura sigue pendiente y va por `lector-papers`, regla 10):
+
+  | Archivo | Titulo real | Identificador | Venue |
+  |---|---|---|---|
+  | `papers/chen2023foundation.pdf` | *Foundation VAEs for 3D CT Reconstruction, Augmentation, and Generation* | arXiv:2605.30893v1, 29 May 2026 | ICML 2026, PMLR 306, Seul |
+  | `papers/chen2024tumorsynthesis.pdf` | *Towards Generalizable Tumor Synthesis* | arXiv:2402.19470v2, 28 Mar 2024 | CVPR 2024, pp. 11147-11158 |
+
+- **Conclusion: son dos papers distintos y el subido es el correcto.** La confusion es razonable porque comparten
+  autores (Qi Chen, Alan Yuille, Zongwei Zhou en los dos) y porque los dos abren con la formula *"makes a
+  progressive stride toward ..."*.
+- **Lo que si esta mal es la clave:** `chen2023foundation` dice **2023** y el paper es de **2026**. Ademas no hay
+  `refs/raw/chen2023foundation.*`, asi que la entrada no existe en `refs.bib` (regla 9: empieza por pegar el archivo
+  en `refs/raw/`). **Pendiente de la autora:** renombrar el PDF a la clave definitiva y pegar el raw. Sugerencia de
+  clave, no aplicada: `chen2026foundationvae`.
+- **Sin implicancia sobre el argumento de la tesis.** La relevancia del paper ya esta registrada en la ronda (8).
+  Lo que hay que verificar al leerlo sigue siendo el recorte de intensidad a [-1000, 1000] HU.
+
+### 36 y 39 — E6b reporta ahora RMSE ademas de MAE, y la diferencia NO es cosmetica — ABIERTA
+
+- **Orden de la autora (2026-09-15):** cerrar el pendiente tecnico de la decision 2026-09-15 (2).
+- **Implementado** en `experiments/objetivo1/e6b_vae_sd15.py`:
+  - las dos metricas se calculan sobre **el mismo vector de errores absolutos por voxel**;
+  - la columna de MAE **conserva su nombre sin sufijo** y la de RMSE anade ` rmse`. Asi el control contra
+    `e6c_techo_lw.csv` y las corridas anteriores siguen leyendose;
+  - el oraculo sigue eligiendo canal por **menor error absoluto**; no se re-optimiza para RMSE. Si se
+    re-optimizara, su RMSE seria menor. Declarado en el docstring, no corregido;
+  - el `.md` trae tablas de las dos metricas y una fila de Go/No-Go por metrica, con aviso de que **el criterio de
+    la tesis sigue siendo MAE**;
+  - `--solo-resumen` sobre un CSV viejo sale solo con MAE y lo avisa.
+- **Verificacion local** (`--vae identidad`, sin torch, 2 volumenes): control frente a E6c **12 de 12**; RMSE >= MAE
+  en los **24** pares comparados, 0 violaciones; el CSV pasa de 32 a **56** columnas. Regenerado el informe de la
+  cohorte vieja: control **873 de 873** y tablas de MAE **identicas** a las publicadas. No hay regresion.
+- **Hallazgo que aparece solo: para `pub`, cambiar de MAE a RMSE cambia el resultado.** En los 2 volumenes de
+  prueba, `pub` identidad en hueso da **MAE 2.02 frente a RMSE 53.30** de mediana (en `metal_0008`, 3.88 frente a
+  90.34). El techo de 2000 HU satura unos pocos voxeles con error enorme: **MAE lo diluye y RMSE lo expone.**
+  - `LW20000` y `pub+asinh` dan **0.00 en las dos metricas**, porque su identidad es exacta. Ahi no cambia nada.
+  - **Consecuencia:** si la tesis pasara el Go/No-Go a RMSE, `pub` empeoraria mucho (hoy falla 50/178 por MAE) y las
+    otras dos configuraciones no se moverian. Es decir, **la eleccion de metrica no es neutral: penaliza justo a la
+    configuracion con techo**, que es el tema de #39.
+  - **Cautela:** son **2 volumenes**, no la cohorte, y solo identidad (sin VAE). No se interpreta mas alla de esto.
+    La cifra buena sale de la corrida completa.
+- **Lo que NO cambia:** el criterio del Go/No-Go sigue siendo MAE < 25 HU, como quedo escrito en `main.tex` y en la
+  decision 2026-09-15 (2). Este cambio solo **anade** la metrica que permite comparar con la literatura.
+- **Falta correr la cohorte de nuevo** (~8.8 h en Khipu): el CSV anterior no tiene las columnas `rmse` y no se
+  pueden reconstruir sin volver a pasar los volumenes por el VAE. Comandos sin cambio en `KHIPU.md`, seccion E6b,
+  donde ya esta anotada la version nueva.
+- **Que seccion toca:** Objetivo 1. **Tipo:** DISENO. **Pendiente:** correr la cohorte; despues, la autora decide si
+  la comparacion con la literatura se hace en RMSE.
+
+### Proceso — relanzar E6b con el CSV viejo en su sitio produce un falso exito (2026-09-15)
+
+- **Riesgo detectado al preparar la relanzada**, no en una corrida real. `e6b_vae_sd15.py` es reanudable: lee los
+  `Caso` ya escritos y los salta. Con el CSV de la corrida MAE en `data/e6b/`, un `sbatch` nuevo **salta los 178
+  volumenes, no mide nada, rehace el informe solo con MAE y termina con `rc = 0`**. El control de identidad contra
+  E6c seguiria dando **873 de 873**, porque valida el CSV viejo.
+- **Es el patron que `ESTADO.md` manda vigilar** (#25, #37, #40, #45, #47, #50): un control que no puede fallar
+  tomado por verificacion. Aqui el control pasa justamente porque no se midio nada nuevo.
+- **Mitigacion escrita en `KHIPU.md`** (seccion "Relanzar la cohorte con la version de RMSE"): apartar
+  `data/e6b` antes de lanzar, comprobar `grep -c SUF_RMSE` en el script subido, exigir **56 columnas** en el CSV y
+  que la linea de log traiga el tramo `| RMSE regla`. El numero de columnas es el unico control que distingue las
+  dos versiones: el de identidad no.
+- **Sin implicancia sobre el argumento de la tesis.** Se registra por la regla 17 y porque el mismo patron ya costo
+  caro cinco veces.
+
+### Bibliografia — `chen2026foundationvae`: el raw tiene tres defectos, ninguno bloqueante (2026-09-15)
+
+- La autora renombro el PDF y pego el raw. Verificado contra el archivo:
+  1. **URL rota:** `url={httpsarxiv.orgabs2605.30893}`, sin `://` ni `/`. Artefacto de copiar de arXiv. **No se
+     toca el raw** (regla 9); se resuelve en `refs/clean/`, omitiendo el campo o marcando `% VERIFICAR`.
+  2. **Clave distinta del nombre de archivo:** el raw declara `chen2026foundationvaes3dct`, el archivo es
+     `chen2026foundationvae.bib`. Hay que elegir una.
+  3. **`@misc` de arXiv, pero el paper esta publicado** en ICML 2026 (PMLR 306), segun su primera pagina. El raw
+     solo respalda el preprint. **Mismo caso que `isensee2021`.**
+- **No bloquea nada:** la entrada no esta en `refs.bib` (0 ocurrencias) y `main.tex` no la cita.
+- **Pendiente de la autora:** elegir clave y decidir si se cita el preprint (con lo que hay) o se consigue el raw
+  de PMLR para citar la version publicada.
+
+### Bibliografia — `chen2026foundationvae` DADA DE ALTA, y `\nocite{*}` la mete en la bibliografia sin citarla (2026-09-15)
+
+- **Orden de la autora:** dar de alta el `clean/` y regenerar `refs.bib`. Hecho:
+  `refs/clean/chen2026foundationvae.bib` -> `python scripts/build_refs.py` -> **43 entradas**. `MAPEO.md` con
+  su fila de procedencia y una nota propia.
+- **Normalizacion aplicada:** clave de la autora (la del editor, `chen2026foundationvaes3dct`, se descarta por la
+  regla 1); autores en `Apellido, Nombre`; titulo en `{{...}}`; `url` descartado por la regla 7 **y ademas venia
+  roto** en el raw. `eprint`, `archivePrefix` y `primaryClass` **se conservan como excepcion declarada** a la regla
+  7: en las demas entradas sobraban porque habia DOI o revista, aqui son el unico localizador del raw.
+- **Es la primera entrada `@misc` del repositorio.** Las 42 anteriores son 35 `@article` y 7 `@inproceedings`. Es
+  tambien la primera que cita un preprint teniendo version publicada (ICML 2026, PMLR 306), igual que paso con
+  `isensee2021`. Se cita el preprint porque es lo unico que respalda el raw. **Pendiente de la autora:** si quiere
+  la version publicada, hay que pegar el raw de PMLR.
+- **Efecto no obvio, y por eso se registra:** `main.tex:139` tiene **`\nocite{*}`**, asi que **toda** entrada de
+  `refs.bib` entra en la bibliografia del PDF aunque no se cite en el texto. Dar de alta esta entrada subio el
+  documento de **42 a 43 referencias** sin que ninguna frase la cite. Compila: 4 paginas, 0 citas indefinidas.
+  - Es el comportamiento buscado (el comentario de `main.tex:137` lo declara), pero conviene tenerlo presente:
+    **cada alta en `refs.bib` cambia el conteo de referencias del PDF**, y ese conteo se usa como control de
+    compilacion en `ESTADO.md`. `ESTADO.md` actualizado a 43.
+  - Si en la revision final se prefiere que la bibliografia liste solo lo citado, hay que quitar `\nocite{*}`.
+    **No se toca sin orden** (regla 14).
+- **Sin implicancia sobre el argumento.** El paper sigue sin leerse; su relevancia esta en la ronda (8).
+
+### Correccion — `chen2026foundationvae` frente a `isensee2021`: es el caso ESPEJO, no el mismo (2026-09-15)
+
+- **Corrige** dos entradas de hoy (ronda (9) y el alta de la referencia), donde el asistente escribio "mismo caso
+  que `isensee2021`". Es inexacto y se corrige aqui y en `MAPEO.md`.
+
+  | | `isensee2021` | `chen2026foundationvae` |
+  |---|---|---|
+  | `refs/raw/` | Nature Methods 2021, PMID 33288961 → **publicada** | arXiv 2605.30893 → **preprint** |
+  | `papers/*.pdf` | era el **preprint** arXiv 2020 | lleva el pie de ICML 2026 |
+  | Estado | resuelto (la autora subio el PDF de Nature Methods) | **sin resolver** |
+
+- En nnU-Net el riesgo era **citar paginas de una version leyendo otra**, que es lo que rompe las fichas. Aqui el
+  riesgo es **citar como preprint algo revisado por pares**. Lo comun es la leccion: `raw/`, `papers/` y `refs.bib`
+  tienen que apuntar a la misma version.
+- **Aviso de evidencia:** el numero de volumen **`PMLR 306` sale unicamente del pie de la primera pagina del PDF**
+  (*"Proceedings of the 43 rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026."*).
+  La pagina de PMLR no se encontro al buscar el 2026-09-15. La aceptacion en ICML 2026 si tiene dos respaldos
+  independientes (pagina de poster de `icml.cc` y el repositorio de los autores), **el volumen no**. Si esa cifra se
+  usa alguna vez, hay que confirmarla contra el editor: es justo el patron #25/#37/#45/#47/#50, un dato que se
+  vuelve verdad por repetirse.
+- **Sin implicancia sobre el argumento de la tesis.** `main.tex` no cita esta entrada.
+- **Pendiente de la autora:** elegir version de referencia **antes** de mandar el paper a `lector-papers`, para que
+  la ficha cite paginas de la version que se va a citar.

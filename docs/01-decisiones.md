@@ -808,3 +808,86 @@ Registrada por el asistente con orden explícita de la autora (2026-09-14).
 Hallazgo 1). Revisar los 61 evita tener que mezclar controles para no revelarle al revisor cuáles son los dudosos.
 
 Registrada por el asistente con orden explícita de la autora (2026-09-15).
+
+---
+
+## 2026-09-15 (2) — El umbral de 25 HU del Go/No-Go se ancla en la literatura y se declara su limitacion de metrica
+
+**Decision** (de la autora, 2026-09-15):
+- El umbral del Objetivo 1 **se mantiene en 25 HU**. No se baja ni se sube.
+- Deja de presentarse como cifra propia sin respaldo. En `main.tex` se declara que **no existe un umbral
+  publicado de pasa/no-pasa** en exactitud de numero CT, y se ancla el valor en el nivel de error que
+  alcanzan hoy los metodos de artefacto metalico:
+  - NMAR, el algoritmo con que se calibra la escala 0-4 del reto AAPM: **RMSE 20.2 HU**
+    (`karageorgos2024ddpm`, Tabla I, p. 28);
+  - difusion en imagen: **RMSE 12.3 HU** (misma tabla);
+  - difusion latente (MLD-MAR): **RMSE 12.74 HU** (`yun2026simulationdriven`, Tabla 1, p. 10).
+- El ROI de hueso se declara delimitado por el **mismo umbral de 150 HU** que usa el protocolo adoptado
+  (`peters2025hybrid`, 2.5, p. 5; `haneda2025aapm`, Sec. 2.3, p. 7).
+- **Se declara en el texto** que las cifras citadas son RMSE y el criterio de la tesis es MAE, y que RMSE
+  nunca queda por debajo de MAE para los mismos residuos. La comparacion fija el **orden de magnitud**, no
+  una equivalencia. Se declara, no se resuelve.
+
+**Alternativas descartadas:**
+- **Bajar el umbral** para que alguna configuracion de E6b pase. Descartada: seria mover el criterio despues
+  de ver el resultado, que es el patron que este proyecto vigila (#25, #37, #45, #47, #50).
+- **Dejar el 25 HU sin cita**, como estaba. Descartada: es una repregunta segura en la sustentacion y el
+  respaldo existe.
+- **Cambiar la metrica de MAE a RMSE** para igualarla a la literatura. No descartada, **aplazada**: exige
+  rehacer la corrida de E6b (~8.7 h) porque el CSV solo guarda MAE. Queda como pendiente tecnico.
+- **Usar el criterio relativo de Peters** (*"the mean CT number deviation ... was less than 2%"*, Abstract,
+  p. 1) en vez de un umbral absoluto. Queda abierta como opcion de formulacion, no adoptada.
+
+**Por que:** E6b midio que el VAE de SD 1.5 sin reentrenar falla el umbral en 178 de 178 volumenes con las
+tres configuraciones, y tambien con el decodificador oraculo, que es cota inferior (#36/#39, ronda (7)).
+Eso obligaba a responder si el umbral era el correcto antes de cambiar de VAE. La revision de las fichas ya
+escritas mostro que **la familia de metrica si tiene precedente** y que **25 HU cae justo por encima de
+donde aterriza NMAR**, el ancla del campo. El umbral no necesitaba bajarse: necesitaba citarse.
+
+**Aplicado a `main.tex`** el 2026-09-15 (Objetivo 1 y la fila `Representation Viability` de la tabla de
+metricas). Compila: 4 paginas, 42 referencias, 0 citas indefinidas. `refs.bib` sin cambios: las cuatro
+claves ya estaban.
+
+Registrada por el asistente con orden explicita de la autora (2026-09-15).
+
+---
+
+## 2026-09-15 (3) — `chen2026foundationvae` se cita como preprint de arXiv, con dos excepciones declaradas
+
+**Decision** (de la autora, 2026-09-15):
+- La entrada **cita el preprint de arXiv** (`arXiv:2605.30893`, 29 may 2026), que es la unica version que hay
+  en `refs/raw/`. Es la primera entrada `@misc` del repositorio: las otras 42 son 35 `@article` y
+  7 `@inproceedings`.
+- **Excepcion 1, de normalizacion:** se conservan `eprint`, `archivePrefix` y `primaryClass`, que la regla 7
+  de `refs/MAPEO.md` descarta. En las demas entradas sobraban porque habia DOI o revista; aqui son el unico
+  localizador que trae el raw. Sin ellos la entrada no se puede encontrar.
+- **Excepcion 2, de version:** el paper fue aceptado en **ICML 2026**, asi que se esta citando como preprint
+  un trabajo revisado por pares. Se acepta **por ahora**, porque no hay raw de las actas.
+- El campo `url` del raw venia roto (`httpsarxiv.orgabs2605.30893`). **No se corrigio ni se toco el raw**
+  (regla 9): la regla 7 ya descartaba `url` para todas las entradas, asi que el defecto no llega a `refs.bib`.
+
+**Alternativas descartadas o aplazadas:**
+- **Conseguir el raw de PMLR y citar las actas.** No descartada, **aplazada**: es lo correcto y se hara si el
+  paper llega a citarse en `main.tex` como apoyo de un argumento. Hoy no se cita.
+- **Aplicar la regla 7 al pie de la letra** y quitar `eprint`. Descartada: dejaria una entrada sin ningun
+  identificador.
+- **Dejar el PDF fuera de la bibliografia** hasta tener las actas. Descartada: la autora quiere la fuente
+  registrada ya, y `MAPEO.md` deja constancia de que es un preprint.
+
+**Por que:** el paper es la lectura de prioridad 1 del Objetivo 1 (#36/#39, ronda (8)): hace la misma pregunta
+que E6b y da la respuesta contraria. Tenerlo dado de alta permite trabajarlo sin bloquear nada, y la
+diferencia entre preprint y actas no cambia su contenido tecnico.
+
+**Lo que NO se escribe en ninguna parte:** el numero de volumen **`PMLR 306`**. Sale unicamente del pie de la
+primera pagina del PDF y la pagina del editor no se encontro al buscar (2026-09-15). La aceptacion en ICML 2026
+si tiene dos respaldos independientes; el volumen no. No se cita esa cifra hasta confirmarla.
+
+**Condicion de reapertura:** si el paper pasa a citarse en `main.tex`, se consigue el raw de las actas antes de
+escribir la frase que lo cite.
+
+**Efecto colateral declarado:** `main.tex:139` tiene `
+ocite{*}`, asi que la entrada **aparece en la
+bibliografia del PDF aunque ningun texto la cite**. El documento paso de 42 a 43 referencias por esto.
+`main.tex` **no se edito**: no hacia falta.
+
+Registrada por el asistente con orden explicita de la autora (2026-09-15).

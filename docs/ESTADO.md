@@ -20,7 +20,7 @@
   - Particion por objetivo: `grupos.csv` (grupo 1 con material ortopedico = 65, grupo 2 = 37,
     grupo 3 limpio = 66).
   - `metal_0059` y `metal_0071` estan unidos sin perdida en `data/derivados/`.
-- **`tesis/main.tex` compila** (4 paginas, 42 referencias, 0 citas indefinidas). Cambios
+- **`tesis/main.tex` compila** (4 paginas, **43** referencias, 0 citas indefinidas). Cambios
   recientes:
   - R1 en 48/29 (`Field limitation`);
   - TS en el Objetivo 2, holgura #31 (1-2 mm) y parrafo `Corridor measurement on the local cohort`;
@@ -43,7 +43,7 @@
 | TS analisis | `objetivo2/ts_analisis.py` -> `ts_analisis.md`, `ts_nivel_s1.csv` | Nivel S1 de TS concuerda con el clinico en 57/57 (tras corregir la transcripcion de `metal_0012`); R1 falla el nivel en 7/60 de calibracion (#50). "Ala < 150 HU dentro de sacro/S1": 8% con metal, 15% sin metal (#48 decia 38/43%). Recorte ~5% de voxeles; 10 casos con cajas desplazadas 14-98 mm (#49). #51 cerrada: era transcripcion. Laminas: 12/197, revisadas por agentes |
 | E9-TS | `objetivo2/e9ts_corredor.py` (51505; 3 mm: 51529) | 152 casos, 0 errores. Objetivo 2 (72 tras QC de nivel, #54): `D_TS` mediana 9.5 mm (IQR 7.4-11.7); viables a 10 mm 29/72 (6 mm) y 27/72 (3 mm). Grupo 1 con `ocupado_semimax`: 53.8% -> 40.4% en 52. Tablas versionadas en `objetivo2/` |
 | E10 / E10b | `ts_componentes.py` (51522), `ts_cajas_limpias.py` (51527) | F = 0.001: `D_TS` y viabilidad invariantes para F hasta 0.05; quedan 4 cajas desplazadas > 10 mm (1 original, 3 creadas por la limpieza), declaradas (#49) |
-| E6b | `objetivo1/e6b_vae_sd15.py` + `.sbatch` | VAE de SD 1.5 sin reentrenar, `pub`/`LW20000`/`pub+asinh`. Prueba corta 51539 (ds001): control 6/6, 182.8 s/volumen, cohorte ~8.8 h. **Cohorte sin traer a la PC** (no existe `objetivo1/outputs/e6b/`) |
+| E6b | `objetivo1/e6b_vae_sd15.py` + `.sbatch` | **Cohorte completa y en la PC** (job 51540): 178 volumenes, 0 errores, control de identidad 873/873, 8.74 h. **Las tres configuraciones fallan el Go/No-Go de hueso en 178/178**, tambien con el decodificador oraculo (cota). El VAE de SD 1.5 sin reentrenar agrega 163-212 HU sobre codificaciones cuya identidad es 0.00 HU (#36/#39, ronda (7)) |
 
 ### Decisiones tomadas en esta ronda (todas en `01-decisiones.md`)
 
@@ -65,10 +65,10 @@
 ### PENDIENTES PARA LA PROXIMA SESION, por urgencia
 
 1. **#36 + #39: VAE y ventanas, juntas. Bloquean el Objetivo 1**, que es obligatorio.
-   - E6b: lanzar la cohorte si no se lanzo (`KHIPU.md`, E6b, paso 4; `e6b_jobs.txt` en Khipu guarda el id) y
-     traerla (paso 5). Meta: 179 filas en `e6b_vae_sd15.csv`, errores solo cabecera, CONTROL N de N.
-   - Analizar con el criterio de lectura fijado **antes** de ver resultados (#36/#39, "E6b PREPARADO").
-     `pub+MTW` (4 canales) no se mide: si SD 1.5 falla, la decision pasa a las opciones 2-4 de #36/#39.
+   - **E6b ya corrio y ya se analizo** con el criterio preinscrito: **SD 1.5 sin reentrenar no pasa**. La opcion 1
+     de #36/#39 queda descartada por evidencia propia. Ver la ronda (7) de `04-implicancias.md`.
+   - **Decision de la autora, pendiente:** opciones 2-5 de #36/#39. La 3 (otro VAE, con requisito de MAE de hueso
+     < 25 HU) es la via principal; la 5 (revisar el umbral de 25 HU, solo con fuente) es nueva. Ninguna aplicada.
 2. **Objetivo 2, cierre (sin decisiones de metodo pendientes):**
    - mandar al revisor `r1_revision_itksnap_revisor.csv` + `.md` + 61 CT (#53). Al volver: comparar con el
      mosaico y con TS; si cambia algun `ok`/`+1`, cambian 48/29 y 57/57 en `main.tex`;
@@ -107,8 +107,8 @@
 - **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #55 (ultima ronda:
-  2026-09-15, E6b prueba corta).
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #57 (ultima ronda:
+  2026-09-15 (6), DiffBoost/LGESynthNet y tension global/local de B_delta).
 
 ## Ultimo paso completado
 2026-09-14 (3):
@@ -211,6 +211,87 @@ nuevo. `main.tex` sin cambios. Commit bloqueado por `ESTADO.md` sin stage: `git 
 
 Siguiente: cohorte de E6b (lanzar o traer) y analisis de #36/#39; enviar la planilla al revisor; laminas. Al volver
 la planilla: 48/29, 57/57 y la frase "confirmed" de `main.tex`.
+**2026-09-15 (5):**
+- **Fichas nuevas** (`lector-papers`) de `zhang2025diffboost` y `jacob2026lgesynthnet`. DiffBoost se **releyo sobre
+  la version IEEE TMI** que subio la autora (raw `.nbib` -> `.bib` de IEEE; `clean/` y `refs.bib` sin cambios;
+  `MAPEO.md` actualizado). Las otras 5 pedidas ya tenian ficha y no se releyeron. `_index.md` al dia (N2 propuesto);
+  2 candidatos N3 en `_candidatos.md`.
+- **#56 nueva:** la frase de `main.tex:48` ("bounded inpainting... non-rigidity... strictly inside the mask") no es fiel
+  para DiffBoost y solo en parte para LGESynthNet; `ramzan2026claim`, citado en la misma frase, no tiene ficha.
+  `main.tex` sin cambios.
+
+**2026-09-15 (6):** candidatos de DiffBoost: Med-DDPM [35] agregado (N3); DiffuseExpand [36] a descartados. #56 con
+recomendacion de asesor (leer CLAIM, afirmacion causal y no espacial, conservar DiffBoost, bajar "structurally fail") y
+correccion: `main.tex:54` no reclama ControlNet. **#57 nueva:** "globally far beyond" frente a B_delta ~12 mm y titulo
+"local". Pendiente de la autora: verificar las citas de DiffBoost y LGESynthNet contra el PDF (#56).
+
+Siguiente: la autora decide #56 y #57 (recomendado: leer `ramzan2026claim`, luego una sola reescritura de `main.tex:48/54`);
+prioridad por debajo de E6b.
+
+**2026-09-15 (7): cohorte de E6b traida y analizada.** Job 51540: 178 volumenes, 0 errores, rc = 0, control de identidad
+frente a E6c **873 de 873**, mediana 180 s/volumen, 8.74 h. Integridad completa. Contra el criterio fijado antes de ver
+resultados, el VAE de SD 1.5 sin reentrenar **falla el Go/No-Go de hueso (25 HU) en 178/178 con las tres
+configuraciones**, y tambien con el decodificador `oraculo`, que es cota inferior: el mejor volumen de la mejor
+combinacion da 52.85 HU. Hallazgo de fondo: `LW20000` y `pub+asinh` tienen identidad **0.00 HU** y el VAE les agrega
+**212.00** y **162.95** HU de mediana, dos ordenes de magnitud por encima del error de ventana de E6c (1-6 HU a 8 bits).
+Elegir ventana no arregla el Objetivo 1 mientras el VAE sea este. **#36/#39 actualizada** (ronda (7)) con el efecto sobre
+las cuatro opciones y una quinta nueva (revisar el umbral de 25 HU, solo si se justifica con bibliografia).
+`main.tex`, `00-tesis.md` y `01-decisiones.md` sin cambios (reglas 3 y 14).
+
+**Busqueda de respaldo para #36/#39, solo sobre fichas ya escritas (sin PDFs nuevos, sin buscar fuera):** el umbral de
+25 HU **si tiene con que anclarse**. `peters2025hybrid` (2.5, p.5) y `haneda2025aapm` (Sec. 2.3, p.6) definen *CT number
+accuracy* como RMSE contra ground truth, con el mismo umbral de hueso de 150 HU; NMAR, el ancla de la escala AAPM, da
+RMSE 20.2 (karageorgos, Tabla I, p.28) y el mejor latente publicado 12.74 (yun, Tabla 1, p.10). 25 HU queda justo encima
+de NMAR: se justifica, no hace falta bajarlo (desactiva en gran parte la opcion 5). **Problema nuevo: E6b reporta MAE y el
+campo publica RMSE**; no son comparables de frente, y el CSV solo guarda MAE. Candidato de VAE con cifra de HU: uno,
+indirecto, el **CVQ-VAE x4 de MLD-MAR** (`yun2026simulationdriven`, ref. 23 = Zheng y Vedaldi 2023). Registrado en
+`04-implicancias.md` (#36/#39, hallazgos 1-6) y en `_candidatos.md`, seccion "Candidatos de AUTOENCODER" (3 filas; Esser
+VQGAN rehabilitado tras estar descartado).
+
+**2026-09-15 (8), orden explicita de la autora:**
+- **Umbral de 25 HU anclado y citado.** Decision escrita en `01-decisiones.md` (2026-09-15 (2)): se **mantiene** 25 HU y
+  se cita. `main.tex` editado en los dos sitios donde vivia la cifra (Objetivo 1 y fila `Representation Viability`):
+  ROI de hueso sobre el umbral de 150 HU del protocolo adoptado, declaracion de que **no existe umbral publicado de
+  pasa/no-pasa**, y ancla en NMAR 20.2 HU / imagen 12.3 HU (`karageorgos2024ddpm`) / latente 12.74 HU
+  (`yun2026simulationdriven`). **La discrepancia RMSE vs MAE se declara en el texto.** Compila: 4 paginas, 42
+  referencias, 0 citas indefinidas. `refs.bib` SIN CAMBIOS (las 4 claves ya estaban; regla 9 respetada).
+- **Busqueda web autorizada** (excepcion declarada al flujo de bibliografia; nada entro a `refs.bib`). Resultado:
+  el hueco se **confirma** desde fuera (DM4CT no separa la primera etapa y no usa HU), y aparece
+  **`Foundation VAEs for 3D CT` (ICML 2026, arXiv:2605.30893)**, que hace la pregunta de E6b y da la respuesta
+  contraria con siete VAE de video congelados. Diferencia probable: recortan a **[-1000, 1000] HU**, fuera del rango
+  de hueso denso y metal. **Sin verificar.** Es la lectura de prioridad 1. Tres filas en `_candidatos.md`.
+- **Opcion 5 de #36/#39 cerrada en la practica**: el umbral no se baja, se justifica.
+
+**2026-09-15 (9), orden de la autora:**
+- **`papers/chen2023foundation.pdf` VERIFICADO: es el correcto.** Es *Foundation VAEs for 3D CT...* (arXiv:2605.30893v1,
+  ICML 2026), **no** *Towards Generalizable Tumor Synthesis* (que es `chen2024tumorsynthesis`, CVPR 2024). Comparten
+  autores (Qi Chen, Yuille, Zhou), de ahi la confusion. **Lo que si esta mal es la clave: dice 2023 y el paper es 2026**,
+  y no hay `refs/raw/` para el. Pendiente de la autora: renombrar y pegar el raw (sugerencia `chen2026foundationvae`).
+- **E6b reporta ahora MAE y RMSE** (`e6b_vae_sd15.py`). Columna de MAE sin sufijo (no rompe el control ni las corridas
+  viejas); RMSE con sufijo ` rmse`; CSV de 32 a **56 columnas**; informe con tablas de las dos metricas y Go/No-Go por
+  metrica. Probado en local con `--vae identidad`: control **12/12**, RMSE >= MAE en 24 de 24 pares, y el informe de la
+  cohorte vieja se regenera con control **873/873** y MAE identico. Sin regresion. `KHIPU.md` actualizado; comandos sin
+  cambio.
+- **Hallazgo:** para `pub`, MAE y RMSE no dan lo mismo (2 volumenes de prueba: MAE 2.02 frente a RMSE 53.30 en hueso).
+  El techo de 2000 HU satura pocos voxeles con error enorme y MAE lo diluye. `LW20000` y `pub+asinh` dan 0.00 en las
+  dos. La metrica **no es neutral: penaliza a la configuracion con techo**, que es el tema de #39. Solo 2 volumenes,
+  sin VAE: no se interpreta mas.
+
+**2026-09-15 (10), orden de la autora:** `chen2026foundationvae` **dado de alta y cerrado**. `refs/clean/` +
+`build_refs.py` -> **43 entradas**; `MAPEO.md` con fila de procedencia y nota. Decision 2026-09-15 (3) escrita en
+`01-decisiones.md`: se cita **el preprint de arXiv** con dos excepciones declaradas (se conservan `eprint`,
+`archivePrefix` y `primaryClass` contra la regla 7 de MAPEO, porque son el unico localizador; y se cita como
+preprint un trabajo aceptado en ICML 2026). Se reabre solo si el paper llega a citarse en `main.tex`. **`PMLR 306`
+no se usa en ninguna parte:** sale solo del pie del PDF y no se confirmo contra el editor. `main.tex` **sin editar**
+(no lo cita); el PDF pasa de 42 a 43 referencias por `
+ocite{*}`. **E6b RMSE corriendo en Khipu** (prueba corta
+51591; el `tail` fallaba solo porque el job estaba en cola, ya documentado en `KHIPU.md`).
+
+Siguiente: **rehacer la cohorte de E6b en Khipu** (~8.8 h; el CSV viejo no tiene las columnas `rmse` y no se pueden
+reconstruir). Leer `Foundation VAEs` con `lector-papers` para confirmar el recorte a [-1000, 1000] HU: si se confirma,
+es el mejor argumento a favor del encuadre de la tesis; si no, contradice a E6b y hay que responderlo. Despues, probar
+el CVQ-VAE reusando E6b. En paralelo, sin bloqueo: planilla de ITK-SNAP al revisor (#53), revision de laminas (0/16),
+y #56/#57.
 
 ## Paso anterior
 2026-09-14 (2):

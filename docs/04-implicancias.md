@@ -5882,3 +5882,237 @@ contra `main.tex:48`, `main.tex:50`, `main.tex:52`, `peters2025hybrid.md`, `smit
 - **`macháček2023`:** encaja en la familia "Globally conditioned" de `main.tex:48` (genera la imagen completa desde
   ruido), confirma la delimitacion y no reduce la novedad de B_delta. Si se cita junto a DiffBoost, *"using the mask
   only as an edge constraint"* debe quedar solo para DiffBoost (Machacek condiciona por region).
+
+## Ronda 2026-09-16 (3) — adopcion de recomendaciones por orden de la autora y re-verificaciones
+
+### 69 — `zwingmann2009navigated`: el brazo NAVEGADO no nombra S1, y "one screw in all patients" contradice los conteos 26/24 y 35/32 — ABIERTA
+
+- **Origen:** re-verificacion dirigida con `lector-papers` (2026-09-16), seccion "Verificacion 2026-09-16" al final de
+  `zwingmann2009navigated.md`. Se pidio para #67 (protocolo de CT) y trajo esto ademas.
+- **Hallazgo 1 — nivel sacro por brazo.** Convencional: S1 explicito, *"a guide wire was placed across the ileum into the
+  S1 vertebra"* (p. 1835). Navegado: **nivel NO ENCONTRADO EN EL PDF**; el criterio habla de *"respective sacral end
+  plate"*. S2: NO ENCONTRADO.
+  - **Toca la delimitacion vigente** (00-tesis.md, #12/#28): *"comparacion contra las DOS distribuciones ... solo en
+    S1"*, y `main.tex:52` y `:78` (*"applies to S1"*, *"conditioned on surgical technique within S1"*). Para el brazo
+    convencional esta respaldado; para el navegado es una **inferencia** (de la ficha original: *"un tornillo por
+    paciente, en S1"*), no una frase del PDF.
+- **Hallazgo 2 — contradiccion interna.** *"we used only one screw in all patients"* (Discussion, p. 1837) frente a 26
+  tornillos en 24 pacientes y 35 en 32 (Abstract, p. 1833). Algunos pacientes recibieron mas de un tornillo y el paper no
+  lo explica. Las distribuciones son **por tornillo**; no son independientes por paciente.
+- **Opciones para la autora:**
+  - (a) Mantener "S1" para ambos brazos declarando en `main.tex` que el nivel del brazo navegado no se reporta y se asume
+    S1 por el algoritmo de tratamiento descrito.
+  - (b) Restringir la afirmacion textual de S1 al brazo convencional y describir el navegado como "sacral level not
+    reported".
+  - (c) (a) o (b) + declarar que los grados son por tornillo con pacientes con mas de un tornillo.
+- **No aplicado** a `main.tex` (regla 14): es hallazgo nuevo, no parte de las recomendaciones adoptadas.
+- **Tipo:** SUPUESTO del benchmark. **Nivel:** toca fuente N1.
+
+### 67 — APLICADA en `main.tex` (2026-09-16) — y el grosor de corte de Zwingmann es NO ENCONTRADO
+
+- Re-verificacion: escaner, grosor de corte, intervalo, kernel, plano y herramienta de medida: **NO ENCONTRADO EN EL PDF**.
+  Un solo radiologo coautor (*"one independent radiologist (EK) not involved in the treatment"*, p. 1835), sin acuerdo
+  interobservador. La opcion de re-muestrear a su grosor queda **imposible**; se aplica la de declarar la limitacion.
+- **Escrito en `main.tex:52`:** radiologo unico, protocolo no reportado, bordes 2/4 mm no definidos, tendencia de
+  `tejwani2014` con *P* = .3 declarada como tal, y lectura del benchmark como acuerdo entre distribuciones a resolucion de
+  referencia desconocida.
+
+### 68 — APLICADA en `main.tex` (2026-09-16), opcion (a) + regla de borde
+
+- `main.tex:52`: "lettered" -> "numbered"; frase nueva con `mirza2003` (forma de 4 grados literal, cortes heredados,
+  medido en cadaver toracico, umbrales *"do not apply to the thoracic spine"* y *"likely different for different
+  directions"*).
+- Fila SAP de la tabla: grado 0 sin perforacion, 1 `(0,2)`, 2 `[2,4]`, 3 `(4,inf)` mm, **declarado como convencion**.
+  La re-verificacion confirma que Zwingmann no define los bordes (NO ENCONTRADO EN EL PDF).
+- Vaccaro 1995 Part II sigue PENDIENTE en `_candidatos.md`.
+
+### 64 y 66 — APLICADAS en `main.tex` (2026-09-16), opcion (a) en ambas
+
+- **#64:** Objetivo 2 dice ahora densidad leida del HU de cada volumen, motivada por la heterogeneidad de masa osea del
+  modelo poblacional de `arand2019pelvicring` (parafrasis del *"so-called alar void"*; no es cita textual). `main.tex:52` sin cambio.
+- **#66:** Objetivo 1 y fila `Representation Viability`: error de ida y vuelta tambien dentro de `B_delta` en volumenes con
+  metal, descriptivo y fuera del Go/No-Go. **Pendiente de ejecucion:** anadir el ROI a `e6b_vae_sd15.py` y correr en Khipu.
+
+### 65 — NO aplicada, por decision de la autora (2026-09-16): se espera el raw de las actas
+
+- La decision 2026-09-15 (3) exige el raw de PMLR antes de citar `chen2026foundationvae` en `main.tex`. La autora eligio
+  esperarlo. Frase preparada en `01-decisiones.md`.
+
+### 70 — `peters2025hybrid` no dice si paciente y metal se proyectan juntos, y su validacion con fantoma no cubre el paso hibrido ni la geometria usada para generar datos — ABIERTA
+
+- **Origen:** re-verificacion dirigida con `lector-papers` por orden de la autora (2026-09-16), seccion "Verificacion
+  2026-09-16" de `peters2025hybrid.md`. Motivo: `fan2022` (origen del filtro de Peters, ref. 45) suma sinogramas de
+  paciente y calcio de forma lineal, justificado solo para calcio.
+- **Proyeccion conjunta: NO ENCONTRADO EN EL PDF**, en ningun sentido. Lo que hay: el metal se inserta en la imagen
+  clinica (*"virtual metal objects were then inserted in random soft tissue or bone positions"*, 2.3, p. 4), esas imagenes
+  son la entrada de la simulacion, espectro de 12 energias (2.1, p. 3), y cada caso trae *"a sinogram with and without
+  metal"*. Insertar en imagen **sugiere** proyeccion conjunta; es inferencia. Conversion HU -> materiales: NO ENCONTRADO
+  (solo *"water beam hardening correction"*). Volumen parcial: NO ENCONTRADO.
+- **Filtro:** cociente empirico original/simulado en Fourier promediado en polar sobre 64 cortes, citando `fan2022`;
+  curva, frecuencias y ganancias no publicadas.
+- **Validacion:** fantoma fisico CIRS de torax con varillas, escaneado en Lightspeed VCT contra su simulacion, 4
+  configuraciones; numero CT medio < 2%, ruido < 10% sin artefacto y hasta 13.3% con artefacto; *"Strong streak artifacts
+  ... well-replicated"* (3.1, p. 6). **No cubre** el paso hibrido (imagen clinica + filtro) ni la geometria generica
+  (vendor-neutral) de los datos de entrenamiento; el paper limita: *"for the specific CT scanner setup used here"*
+  (Discussion, p. 9). Geometria 2D, *"1 detector row with 900 columns"*.
+- **Que toca en `main.tex`:**
+  - `main.tex:50`: *"Their phantom validation supports the evaluated simulation settings"* es **generoso**: soporta la
+    simulacion del escaner del fantoma, no el protocolo hibrido tal como se usa.
+  - `main.tex:117` ya es prudente (*"two-dimensional"*, *"does not inherit its validation automatically"*, *"artifact
+    realism ... requires separate evaluation"*): sin cambio necesario.
+- **Opciones para la autora:**
+  - (a) Reescribir `main.tex:50`: *"Their phantom validation covers the simulated scanner geometry against a physical
+    scan; it does not cover the hybrid step (clinical image input with frequency compensation), does not report whether
+    patient and metal are projected jointly, and does not establish ... "*. Recomendada.
+  - (b) (a) + verificar la proyeccion conjunta en el codigo de XCIST o en los Supplements de Peters antes de reproducir.
+    Es condicion practica de la reproduccion que ya promete `main.tex:117`.
+  - (c) Sin cambio.
+- **Resuelve** la "verificacion pendiente, baja prioridad" registrada con `fan2022` (ronda 2026-09-16 (2)): no se puede
+  confirmar con el PDF.
+- **Tipo:** REDACCION / SUPUESTO del baseline fisico. Fuente N1.
+
+### 71 — `li2024` (Quad-Net) debilita la primera salvedad de `main.tex:56`, describe el artefacto como "global" y usa multi-ventana solo en la perdida — ABIERTA (actualiza #61/#63, #57, #24)
+
+- **Origen:** ficha `li2024.md`, 2026-09-16, PDF completo. **Aviso del lector:** cifras de tablas leidas de imagen poco
+  nitida; varias cuadran con diferencias que el texto si enuncia (0.31, 0.49, 0.64 dB). Verificar antes de citar.
+- **#61/#63 — la salvedad 1 de `main.tex:56` pierde fuerza.** `main.tex:56` relativiza `lin2019` porque su variante de
+  imagen *"is fed a reconstruction of an already-interpolated sinogram"*. En Quad-Net el brazo solo-imagen (LU-Net) parte
+  de la reconstruccion del sinograma **corrupto**: *"The second group works only in the image domain with metal-corrupted
+  images as input"* (Sec. IV-B, p. 1871). Tabla I (media): LU-Net 38.59 dB frente a Quad-Net 41.78 dB; metal grande 33.87
+  frente a 39.42 dB (diferencias calculadas por el lector, no enunciadas). Frase mas fuerte que la de `lin2019`: *"Working
+  in a single domain cannot effectively recover the true tissues from corrupted data."* (Sec. I, p. 1866). **Sigue siendo
+  REMOCION** y "cannot effectively" es rendimiento: la salvedad 2 (asimetria remocion/generacion) queda intacta y pasa a
+  ser el unico sosten.
+- **#57 — tension cualitativa con B_delta.** *"the metal artifacts on the reconstructed images are present globally"*
+  (Sec. I, p. 1866). Sin cifra. Refuerza que una banda de ~12 mm **trunca** el streaking lejano por diseno; hay que
+  declararlo como eleccion o justificar el radio. (`main.tex:48` ya dice *"propagate globally far beyond"*, que es la
+  tension original de #57.)
+- **#24 — precision sobre el precedente multi-ventana.** Quad-Net usa 3 ventanas (WL/WW 500/3000, -600/800, 50/500) **solo
+  en la perdida y la evaluacion**; entrada normalizada a un rango unico [-1000, 2000] HU; ablacion +0.64 dB. Coincide con
+  `wang2025adaptiveweighting` (lo propio de AdaW es el peso de la perdida por ventana). Umbral de 2500 HU sin fuente.
+  **Efecto:** los precedentes leidos usan multi-ventana en supervision/reconstruccion por ventana, no como codificacion de
+  entrada para un autoencoder. Puede afinar la formulacion de la novedad (punto 4 de Fuera de alcance), sin reclamarla de
+  nuevo.
+- **Snowballing:** cita Niu, Li y Wang, SPIE 11840, 2021, que ya esta PENDIENTE en `_candidatos.md`; discrepancia de cita
+  (titulo "Multi-window" vs "Multiple window", autores, mes) frente a `wang2025adaptiveweighting`.
+- **Opciones para la autora:**
+  - (a) Anadir `li2024` a `main.tex:56` como evidencia sin el sesgo de interpolacion y dejar la asimetria
+    remocion/generacion como unica salvedad. Recomendada (fidelidad).
+  - (b) Declarar en Objetivo 3 que `B_delta` trunca por diseno el streaking lejano.
+  - (c) Precisar en la formulacion de novedad que el multi-ventana previo es de supervision, no de codificacion de entrada.
+- **No aplicado** (regla 14). **Tipo:** REDACCION / GAP (#61). **Nivel propuesto: N2** (N1 defendible por #61).
+
+### Sin implicancia ABIERTA (ronda 2026-09-16 (3)) — registro por regla 13
+
+- `templeman1996proximity` (solo abstract): sin % de malposicion en el abstract; confirma que el 2%-15% no es citable desde
+  ahi. Rango ya RETIRADO.
+- `abadi2019` (DukeSim): no simula ni valida metal; `main.tex` no lo cita.
+- `singhrao2024fiducial`: fiduciales en CT sintetica de densidad asignada, sin HU de error; N3. Candidato Szalkowski 2021.
+- `yu2021`: sin brazo solo-imagen aislado; umbral de 2000 HU (ya decidido #22); preservacion fuera de `B_delta` ya medida.
+- `kazerouni2023diffusionsurvey`: ningun trabajo de metal o MAR con difusion; corte oct 2022; PDF es preprint v3.
+- `dorjsembe2024`: familia "Globally conditioned", condiciona por region; confirma `main.tex:48`.
+
+### 72 — `hu2023` es una tercera familia (analitica) que SI modifica voxeles fuera de la lesion: la frase de "dos familias" de `main.tex:48` debe acotarse a difusion — ABIERTA
+
+- **Origen:** ficha `hu2023.md` (Label-Free Liver Tumor Segmentation, CVPR 2023), 2026-09-16, PDF completo.
+- **Hallazgo:** sintesis **analitica**, sin aprendizaje (textura gaussiana, mezcla con fondo, recorte a [-21, 189] HU).
+  Fuera del tumor modela **efecto de masa**: desplazamiento de tejido hasta 1.3r (Tabla 1), aunque segun la Fig. 3 algunos
+  pasos *"are only used for Visual Turing Test (not for training)"*. Es un cambio geometrico, no un artefacto de
+  adquisicion, pero **si cambia intensidades fuera del objeto por diseno**.
+- **Que toca:** `main.tex:48`: *"State-of-the-art lesion synthesis models fall into two families, and neither represents
+  the intensity changes that the synthesized object induces outside itself."* El parrafo abre hablando de difusion, pero
+  la frase es general. Con `hu2023` como contraejemplo la afirmacion universal no se sostiene literalmente.
+- **Opciones para la autora:**
+  - (a) Acotar: *"State-of-the-art diffusion-based lesion synthesis models fall into two families ..."* y, si se quiere,
+    precisar *"acquisition-induced intensity changes"*. Recomendada: cambio de pocas palabras.
+  - (b) (a) + mencionar el polo analitico con `hu2023` y su efecto de masa como cambio geometrico, no fisico.
+- **Precedente de evaluacion sin downstream:** Visual Turing Test debil (2 lectores, 50 CT, "unsure" excluido, sin
+  criterio preinscrito, inconsistencias en Tabla 2). Si la tesis usa lectores, preinscribir trato de "unsure" y umbral.
+- **Muestreador:** colocacion por propuesta uniforme + rechazo por vasos; analogia util, sin datos clinicos de ubicacion.
+- **No aplicado** (regla 14). **Tipo:** REDACCION. **Nivel propuesto: N2.**
+
+### 73 — La apariencia del artefacto real depende de la reconstruccion (MAR del fabricante, monoE, kernel), y el protocolo de CLINIC-metal no esta documentado — ABIERTA
+
+- **Origen:** ficha `selles2024marreview.md` (Eur J Radiol 2024), 2026-09-16, PDF completo.
+- **Hallazgo:** los MAR de fabricante y las imagenes monoenergeticas cambian el artefacto y anaden artefactos secundarios:
+  *"found secondary artifacts in 82 % of the images with O-MAR"* (Sec. 3.2.2, p. 3); el efecto *"varies by vendor"*
+  (Sec. 3.5, p. 6). Tabla 1: osteosintesis como *"Medium artifacts"*, protesis grandes de alta densidad como *"Severe"*
+  (clasificacion cualitativa).
+- **Cruce con el repo:** `liu2021ctpelvic1k.md`: kVp, mAs, algoritmo de reconstruccion y fabricante concreto **NO
+  ENCONTRADO EN EL PDF**; `02-datos.md` no registra reconstruccion ni MAR.
+- **Por que importa:** el renderizador aprende la apariencia del artefacto de CT reales de CLINIC-metal, y la evaluacion
+  de coherencia fisica la compara contra el brazo de Peters (FBP/FDK sin MAR de fabricante). Si parte de los CT reales
+  vienen con MAR o monoE, **el objetivo de apariencia mezcla artefacto fisico con artefacto de post-proceso**, y la
+  comparacion con el brazo fisico no es homogenea.
+- **Opciones para la autora:**
+  - (a) Revisar si los volumenes o la documentacion del dataset conservan metadatos (DICOM originales, pagina del
+    dataset) y anotar en `02-datos.md` lo que haya o "no documentado". Recomendada: barata.
+  - (b) (a) + declarar en `main.tex` (Datasets) que la reconstruccion de los CT con metal no esta documentada y puede
+    incluir MAR de fabricante.
+  - (c) Sin accion.
+- **#57 y #2:** el survey no resuelve ninguna (sin extension espacial en mm, sin multi-ventana ni sintesis).
+- **Tipo:** SUPUESTO (datos del Objetivo 3). **Nivel propuesto:** N3 para el paper; la implicancia toca fuente N1
+  (`liu2021ctpelvic1k`).
+
+### 74 — ControlNet presupone el modelo base y su VAE congelados: si #36/#39 obliga a cambiar el VAE, la justificacion de ControlNet con "Stable Diffusion 1.5 backbone" pierde su fuente — ABIERTA (liga con #36/#39)
+
+- **Origen:** ficha `zhang2023controlnet.md`, 2026-09-16, PDF arXiv v3 (sin suplementario; version ICCV no verificada).
+- **Hallazgo:** el valor de ControlNet es reutilizar un base congelado preentrenado a gran escala; las zero convolutions
+  hacen que el modelo parta sin cambios (*"evaluate to zero"*, §3.1, p. 4), y todo opera sobre el latente 64x64 del VAE de
+  SD (§3.2, p. 5). **Cambio de VAE o reentrenamiento del U-Net base: NO ENCONTRADO EN EL PDF.** Datos limitados: *"small
+  (<50k)"* (Abstract) y *"limited 1k images"* (§4.5, p. 8), esta ultima con una sola figura cualitativa en imagen natural
+  con el base intacto. *"All models are trained with general-domain data"* (Fig. 7, p. 6). Coste: *"200k training samples,
+  one single NVIDIA RTX 3090Ti, and 5 days"* (§4.3, p. 7).
+- **Cruce con el repo:** `main.tex:79` fija *"2.5D ControlNet-guided Latent Diffusion Model (Stable Diffusion 1.5
+  backbone)"*. E6b mostro que el VAE de SD 1.5 congelado falla el Go/No-Go en 178/178 (#36/#39) y la via principal pendiente
+  es la opcion 3 (otro VAE). **Inferencia, no frase del paper:** con otro latente, el U-Net de SD 1.5 ya no es reutilizable
+  sin reentrenar, y la premisa de ControlNet (base preentrenado congelado) deja de sostenerse con esta fuente; las cifras de
+  "<50k / 1k" tampoco respaldan 65 pacientes con cortes 2.5D correlacionados.
+- **Localidad:** *"spatially localized"* (§1, p. 2) no se define ni se mide; la senal de control se suma en toda la imagen.
+  Ya cubierto por la fila *Preservation outside B_delta* de `main.tex` (sin accion nueva).
+- **Opciones para la autora (decidir junto con #36/#39):**
+  - (a) Si se elige un VAE distinto: decidir entre reentrenar base + ControlNet o condicionar directamente (concatenacion
+    de mascara en un LDM entrenado desde el nuevo latente), y actualizar `main.tex:79` quitando *"Stable Diffusion 1.5
+    backbone"*.
+  - (b) Si se elige un base preentrenado cuyo VAE pase el Go/No-Go: ControlNet se conserva tal cual.
+  - (c) No citar las cifras de "<50k / 1k" como respaldo de viabilidad con la cohorte local.
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / arquitectura del Objetivo 3. **Nivel propuesto: N2** (sube desde N3).
+
+### 75 — `rombach2022latentdiffusion` respalda E6b y #66 con frase propia, apoya la opcion 3 de #36/#39 solo en tendencia, y NO nombra Stable Diffusion ni el rango [-1,1] — ABIERTA (actualiza #36/#39/#66)
+
+- **Origen:** ficha `rombach2022latentdiffusion.md`, 2026-09-16, PDF completo (45 pp., arXiv v2).
+- **Respaldo de E6b:** el autoencoder *"can become a bottleneck for tasks that require fine-grained accuracy in pixel
+  space"* (§5, p. 9); entrenado con perdida perceptual + adversarial sobre RGB natural (OpenImages, Tabla 8). Sin HU ni
+  error absoluto de intensidad: coherente con 178/178, sin medirlo.
+- **Respaldo de #66 (ya aplicada):** la primera etapa *"removes high-frequency details"* (§1, p. 2), y PSNR/SSIM *"favor
+  blurriness over imperfectly aligned high frequency details"* (§4.4, p. 8). **Es la cita que le falta a la frase de #66**
+  en `main.tex:77`, hoy sin fuente.
+- **Opcion 3 de #36/#39, solo tendencia:** Tabla 8 (KL): f=8/4 canales 24.19, f=4/3c 27.53, f=2/2c 32.47 dB PSNR; con f
+  fijo, mas canales ayudan. RGB natural, sin HU; f=1-2 difunde lento (§4.1). No dice si algun f alcanza 25 HU.
+- **Riesgo de cita:** **Stable Diffusion 1.5: NO ENCONTRADO EN EL PDF**; la fila f=8/KL/4c coincide con su VAE, pero la
+  identidad no se verifica aqui. **Rango [-1,1]: NO ENCONTRADO.** `main.tex:79` nombra *"Stable Diffusion 1.5 backbone"*
+  sin cita; si se cita, no puede ser a `rombach2022` para el nombre del modelo.
+- **Opciones para la autora:**
+  - (a) Citar `rombach2022latentdiffusion` en la frase de #66 (`main.tex:77`) con §1/§5. Recomendada: una cita, cero riesgo.
+  - (b) Usar la Tabla 8 como motivacion cualitativa de la opcion 3 (menor f / mas canales), sin cifras en HU.
+  - (c) No atribuir a este paper ni SD 1.5 ni el rango de entrada.
+- **No aplicado** (regla 14). **Tipo:** REDACCION / respaldo de metodo. **Nivel propuesto: N2** (sube desde N3).
+
+## Ronda 2026-09-17 — decisiones delegadas al asistente (rol de asesor)
+
+Detalle completo en `01-decisiones.md`, entrada 2026-09-17. La autora rechazo recortar el renderizador; todo se decidio
+dentro de esa restriccion. Estado resultante:
+
+| # | Estado |
+|---|---|
+| 36, 39, 74 | DECIDIDA via: decodificador adaptado con encoder congelado; **pendiente de P1** (compuerta del Objetivo 1, regla preinscrita: si no pasa, no hay Objetivo 3) |
+| 57, 61, 63, 65, 66, 69, 70, 71, 72, 73, 75 | **APLICADAS** en `main.tex` (2026-09-16/17) |
+| 62 | CERRADA sin cambio |
+| 55 | CERRADA como declarada |
+| 70 | Aplicada en redaccion; **pendiente P2** (proyeccion conjunta en el codigo de XCIST) |
+| 53 | Plazo de 2 semanas; si no vuelve el revisor, se declara |
+
+**Efecto medido:** `main.tex` compila con 0 errores, 0 citas indefinidas y 64 referencias, pero **pasa de 5 a 6 paginas**.
+Si hay limite de paginas, el recorte natural es el parrafo del supuesto de dominio imagen (`main.tex:56`) y la frase de
+Mirza. Sin implicancia nueva sobre el argumento.
+

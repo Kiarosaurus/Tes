@@ -429,3 +429,59 @@ citar solo el ancla NMAR = 2.
 | 56. Bhadra S, Kelkar VA, Brooks FJ, Anastasio MA. On hallucinations in tomographic image reconstruction. IEEE Trans Med Imaging. 2021;40(11):3249-3260 | Riesgo de alucinacion de features en regiones peri-metal generadas por deep learning. Ataca de frente la validez del renderizador; puede obligar a un control explicito en la evaluacion. |
 | 58. Zhang Y, Mao Y, Lu X, et al. From single to universal: tiny lesion detection in medical imaging. Artif Intell Rev. 2024;57(8):192 | Citado como el sustituto algoritmico de la inspeccion visual para features pequenos. Podria aportar una metrica que cubra el hueco que Peters declara abierto. |
 | 59. Ho J, Salimans T. Classifier-Free Diffusion Guidance. 2022. http://arxiv.org/abs/2207.12598 | El paper lo propone explicitamente como via para condicionar la generacion por region corporal. Compite o complementa el condicionamiento por ControlNet de la tesis. |
+
+## Verificacion 2026-09-16
+
+| Pregunta | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| 1a. Paciente y metal proyectados JUNTOS en una sola simulacion polienergetica | NO ENCONTRADO EN EL PDF. No hay frase que diga que el haz atraviesa paciente y metal en la misma proyeccion. | NO ENCONTRADO EN EL PDF | — |
+| 1b. Sinogramas o imagenes de paciente y metal simulados por separado y sumados | NO ENCONTRADO EN EL PDF. Tampoco se describe suma de sinogramas ni de imagenes. | NO ENCONTRADO EN EL PDF | — |
+| 1c. Que SI dice sobre la combinacion: el metal se inserta en la imagen CT clinica (dominio imagen) | Insercion en posiciones de la CT; no dice el paso de proyeccion posterior | "virtual metal objects were then inserted in random soft tissue or bone positions" | 2.3, p. 4 |
+| 1c (cont.) | Marco hibrido = CT clinica + objetos virtuales | "combining clinical CT scans with virtual metal objects" | 2.3, p. 3 |
+| 1c (cont.) | Las imagenes clinicas son entrada de la simulacion | "which was applied to all images used as input to the simulations" | 2.3, pp. 3-4 |
+| 1d. Espectro de 12 energias | Si, en la geometria vendor-neutral de generacion; no dice explicitamente si paciente y metal comparten esa proyeccion | "The source spectrum was sampled at 12 energies." | 2.1, p. 3 |
+| 1e. Salidas por caso | Se generan sinograma con y sin metal; no se dice como se obtiene cada uno | "each containing a sinogram with and without metal, the respective reconstructions" | 2.3, p. 4 |
+| 1f. Correccion de beam hardening | Solo correccion de agua, aplicada a todos los sinogramas | "water beam hardening correction was applied to all sinograms" | 2.1, p. 3 |
+| 2a. Conversion HU -> atenuacion/material de la imagen clinica | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 2b. Descomposicion agua/hueso o material unico | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 2c. Materiales de los metales virtuales | Si: amalgama, titanio o cobalto, acero inoxidable, oro (Tabla 2) | Tabla 2, "Spinal implant (40%) / Stainless steel / 2.5-10 mm / 2-4" | Tabla 2, p. 4 |
+| 3a. Motivo del filtro de frequency boosting | Compensar el doble emborronamiento (imagen clinica ya reconstruida + simulacion) | "would duplicate blurring already present in the clinical input CT images" | 2.3, p. 3 |
+| 3b. Como se estima | Cociente empirico de espectros de Fourier (promedio polar) entre imagenes originales y simuladas | "the polar average of the absolute value of the Fourier transform was computed" | 2.3, p. 3 |
+| 3b (cont.) | Cociente entre original y simulada | "The ratio of this frequency response was computed between original and simulated images" | 2.3, p. 3 |
+| 3b (cont.) | Promediado en 64 cortes | "then averaged over 64 slices in the volume" | 2.3, p. 3 |
+| 3b (cont.) | Filtro 1D asignado radialmente -> filtro 2D en Fourier | "assigned radially across all Fourier angles" | 2.3, p. 3 |
+| 3c. Numero de "typical CT images" usadas | NO ENCONTRADO EN EL PDF (solo "a number of") | "For a number of typical CT images and their simulated counterparts" | 2.3, p. 3 |
+| 3d. Frecuencias concretas, ganancia o curva publicada del filtro | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 3e. Estimacion via MTF | NO ENCONTRADO EN EL PDF. El termino MTF no aparece; la estimacion es el cociente de espectros descrito en 3b. | NO ENCONTRADO EN EL PDF | — |
+| 3f. Cita a Fan 2022 como origen | Si: la frase del filtro lleva la ref. 45, que es Fan, Pack, De Man 2022 (doi 10.1117/12.2646407, mismo DOI que docs/literatura/fan2022.md) | "applying a frequency boosting filter prior to the CT simulation.45" | 2.3, p. 3; ref. 45, p. 11 |
+| 3f (cont.) | Texto de la ref. 45 | "Fan Y, Pack J, De Man B. A virtual imaging trial framework" | Referencias, p. 11 |
+| 4a. Objeto de validacion | Fantoma fisico CIRS de torax con varillas metalicas, no imagenes hibridas | "Simulation accuracy was assessed in a CIRS tissue equivalent thorax phantom" | 2.2, p. 3 |
+| 4b. Escaner real y modelo comparado | Lightspeed VCT (64 filas), no la geometria vendor-neutral usada para los 14 000 casos | "experimental validation of the metal artifact physics models, we used a 64-row CT scanner" | 2.1, p. 2 |
+| 4b (cont.) | Geometria de entrenamiento distinta a la validada | "For all training data simulations, a nominal vendor-neutral CT geometry was used" | 2.1, p. 2 |
+| 4c. Configuraciones | 4 configuraciones (Tabla 1: 0 = solo solid water; 1-3 con acero, aluminio, cobre, TZM) | "Four different metal configurations were scanned" | 2.2, p. 3 |
+| 4d. Metrica 1: media CT en ROIs con y sin artefacto | < 2% | "with and without artifacts—the simulated mean deviated by less than 2%" | 3.1, p. 6 |
+| 4e. Metrica 2: ruido (2SD) sin artefacto | < 10% | "the noise level (defined as 2SD) deviated by less than 10%" | 3.1, p. 6 |
+| 4f. Ruido en ROIs con artefacto | hasta 13.3% | "larger discrepancies in noise were observed (up to 13.3% in Exp 4" | 3.1, p. 6 |
+| 4g. Streaking por metal | Evaluado cualitativamente (Figura 3) y dentro de las ROIs con artefacto | "Strong streak artifacts resulting from the metal inserts are well-replicated across all cases" | 3.1, p. 6 |
+| 4h. Discrepancias residuales | Streaks y sesgo leve en imagenes de diferencia | "show some remaining discrepancies in streaks and a slight bias" | 3.1, p. 6 |
+| 4i. Metales grandes | Desviaciones mayores; detalle en Supplement S2, no incluido en el PDF | "For larger metal objects, the observed deviations were more prominent" | 3.1, p. 6 |
+| 4j. Fantoma cardiaco adicional | Se menciona el experimento; resultados numericos NO ENCONTRADO EN EL PDF | "Additional experiments were performed with solid metal rods" | 2.2, p. 3 |
+| 4k. Beam hardening como metrica propia de esta validacion | NO ENCONTRADO EN EL PDF. Solo se remite a evaluacion previa (ref. 37). | "evaluated the modeling accuracy of CatSim regarding the X-ray spectrum and beam hardening" | 2.1, p. 2 |
+| 4l. Validacion de imagenes hibridas (CT clinica + metal virtual) contra paciente real con metal | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 4m. Alcance declarado de la validacion | Limitado al setup de escaner usado | "cylindrical metal implants for the specific CT scanner setup used here" | 4 Discussion, p. 9 |
+| 5a. 2D o 3D | 2D para todos los datasets | "Since most MAR research is performed in 2D, all datasets are simulated in 2D" | Abstract, p. 1 |
+| 5b. Detector de generacion | Una sola fila de detector (el termino "fan-beam" NO ENCONTRADO EN EL PDF) | "1 detector row with 900 columns was simulated, with a total of 1000 views" | 2.1, p. 3 |
+| 5c. Reconstruccion | FDK | "filtered back projection by Feldkamp, Davis & Kress algorithm (FDK) was used" | 2.1, p. 3 |
+| 5d. Scatter | Si, convolucional; calculado en una fila y escalado a 64 filas | "The scattering process in CatSim is simulated using a modified convolution-based approach" | 2.1, p. 2 |
+| 5d (cont.) | Escalado de scatter | "computed for a single detector row and scaled to mimic scatter for 64 detector rows" | 2.1, p. 3 |
+| 5d (cont.) | Parametros no listados heredados del modelo Lightspeed | "All other parameters were the same as for the Lightspeed VCT model" | 2.1, p. 3 |
+| 5e. Submuestras | 8 submuestras (foco ancho x foco largo x rotacion) | "for a total of eight subsamples (2 × 2 × 2)" | 2.1, p. 3 |
+| 5f. Celda de detector finita | Proyector distance-driven, sin submuestreo de detector | "A distance-driven projector was used to model the finite detector cell size" | 2.1, p. 3 |
+| 5g. Volumen parcial (termino explicito o modelado no lineal) | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 5h. Extension a 3D | Requiere repetir y ampliar el modelado | "the presented modelling steps within XCIST need to be repeated and expanded" | 4 Discussion, p. 9 |
+| 6a. Limitacion de hibridacion declarada: doble blur | Unica inconsistencia imagen clinica/simulacion explicitada; se compensa con el filtro | "would duplicate blurring already present in the clinical input CT images" | 2.3, p. 3 |
+| 6b. Ruido o artefactos ya presentes en la imagen clinica de entrada re-proyectados | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 6c. Error de la conversion HU -> atenuacion como limitacion | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| 6d. Solo insercion de metal | Sin cambios anatomicos quirurgicos | "all simulations are limited to the insertion of metal objects" | 4 Discussion, p. 9 |
+| 6e. Sesgo de geometria vendor-neutral | Declarado | "vendor-neutral geometry was used for the metal simulation, potentially introducing a bias" | 4 Discussion, p. 9 |
+| 6f. Imperfecciones del modelo fisico | Declaradas como secundarias para entrenamiento/evaluacion MAR | "play a secondary role for the purpose of AI-based MAR training" | 4 Discussion, p. 9 |

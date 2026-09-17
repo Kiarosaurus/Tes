@@ -891,3 +891,150 @@ bibliografia del PDF aunque ningun texto la cite**. El documento paso de 42 a 43
 `main.tex` **no se edito**: no hacia falta.
 
 Registrada por el asistente con orden explicita de la autora (2026-09-15).
+
+---
+
+## 2026-09-16 — Se adoptan las recomendaciones de #64, #66, #67 y #68; #65 espera el raw de las actas
+
+**Decision** (de la autora, 2026-09-16: *"Adopta tus recomendaciones, redacta main.tex y 01-decisiones.md"*):
+
+1. **#64, opcion (a) — densidad osea del muestreador.** El Objetivo 2 deja de decir que el muestreador se restringe con
+   *"bone density maps \citep{arand2019pelvicring}"*. Ahora la densidad se **lee del HU de cada volumen**, y
+   `arand2019pelvicring` queda como motivacion: su modelo estadistico **medio poblacional** muestra heterogeneidad
+   sistematica de masa osea (valores bajos en el ala sacra, el *"so-called alar void"*; la frase de `main.tex` es
+   parafrasis, no cita). `main.tex:52` (*"pelvic density
+   representations"*) no cambia.
+2. **#66, opcion (a) — error del autoencoder dentro de `B_delta`.** En volumenes con metal, el error de ida y vuelta
+   (HU -> multi-ventana -> VAE -> HU) se reporta **tambien dentro de la banda `B_delta` alrededor del metal**,
+   **descriptivo y fuera del Go/No-Go**. El criterio de 25 HU en hueso no cambia. Escrito en el Objetivo 1 y en la
+   fila `Representation Viability`.
+3. **#67 — limitacion del benchmark por resolucion de referencia.** La re-verificacion de `zwingmann2009navigated`
+   (2026-09-16) dio grosor de corte, intervalo, kernel y acuerdo interobservador **NO ENCONTRADO EN EL PDF**, y un solo
+   radiologo evaluador. La opcion de re-muestrear a su grosor es **imposible**; se aplica la de declarar. `main.tex`
+   dice ahora que el emparejamiento se lee como **acuerdo entre distribuciones de grados medidas a una resolucion de
+   referencia desconocida**, no como equivalencia a nivel de voxel, citando la tendencia de `tejwani2014` con su
+   *P* = .3.
+4. **#68, opcion (a) + regla de borde — escala del benchmark.**
+   - `main.tex:52`: *"four lettered grades"* -> *"four numbered grades"* (Zwingmann y Mirza numeran 0-3).
+   - Frase nueva: la forma de cuatro grados (0, <2, 2-4, >4 mm) **aparece literal en `mirza2003`**, que declara los
+     cortes tomados de estudios previos, mide en columna toracica cadaverica y advierte que esos umbrales *"do not apply
+     to the thoracic spine"* y son *"likely different for different directions"*.
+   - **Regla de borde de SAP, declarada como convencion:** grado 0 = sin perforacion; 1 = (0, 2) mm; 2 = [2, 4] mm;
+     3 = (4, inf) mm. Zwingmann no define a que grado van 2.0 y 4.0 mm (NO ENCONTRADO EN EL PDF); la regla sigue la
+     lectura literal de *"less than 2 mm"* y *"greater than 4 mm"* y cierra el grado 2 por ambos lados.
+5. **#65 — NO se cita `chen2026foundationvae` todavia.** La decision 2026-09-15 (3) exige el raw de las **actas**
+   (ICML 2026 / PMLR) antes de citarlo; el raw actual es el preprint de arXiv. La autora elige esperar. Frase preparada,
+   **no insertada**, para el Objetivo 1 o Related Work:
+   > *A concurrent study reports that frozen video autoencoders transfer to CT without medical fine-tuning
+   > \citep{chen2026foundationvae}; it reports PSNR, SSIM and MSE without declared units and no HU error, evaluates no
+   > bone or metal region, uses no pelvic or metal-bearing volumes, and declares intensity clipping to [-1000, 1000]~HU
+   > for its generation experiments, so it does not address the dense-bone and metal range this criterion targets.*
+
+**Alternativas descartadas:**
+- #64 (b)/(c): mover Arand a la frase de *no canonical pose* o sustituirlo por Wagner 2014. Aplazadas: (a) basta para
+  que la cita sea fiel.
+- #66 (b): declarar la limitacion sin medir. Descartada: la medida es barata porque la mascara de metal ya se calcula.
+- #68 (b): leer Vaccaro 1995 Part II antes de escribir. Aplazada: solo mejora la atribucion; la escala ya es convencion.
+- #65 (b): anadir un VAE de video congelado a E6b. No adoptada en esta ronda.
+
+**Por que:** las cuatro correcciones salen de lecturas del 2026-09-16 que mostraron citas mas fuertes que su fuente
+(#64), un control que no puede ver la senal del Objetivo 3 (#66), un benchmark cuyo protocolo de medida no esta
+publicado (#67) y un eslabon de la cadena de la escala que el texto omitia (#68).
+
+**Pendiente de ejecucion (decidido, falta correrlo):** anadir el ROI `B_delta` a
+`experiments/objetivo1/e6b_vae_sd15.py` sin romper el control de identidad, y correrlo en Khipu con el VAE que se elija
+por #36/#39.
+
+**Aplicado a `main.tex`** el 2026-09-16. Ver compilacion en `ESTADO.md`. `refs.bib` sin cambios: `arand2019pelvicring`,
+`mirza2003` y `tejwani2014` ya estaban.
+
+**Fuera de esta decision (registradas ABIERTAS, sin aplicar):** #69 (nivel S1 del brazo navegado y un tornillo por
+paciente), #70 (validacion de Peters y proyeccion conjunta), #71 (Quad-Net y `main.tex:56`), #72 (frase de "dos
+familias"), #73 (reconstruccion de CLINIC-metal), #74 (ControlNet y cambio de VAE), #75 (Rombach como cita de #66).
+
+Registrada por el asistente con orden explicita de la autora (2026-09-16).
+
+---
+
+## 2026-09-17 — Decisiones delegadas al asistente en rol de asesor: se mantiene el renderizador, con compuerta dura y alcance recortado
+
+**Delegacion** (de la autora, 2026-09-17): *"necesito que te pongas en la postura de un asesor de tesis profesional y
+empieces a decidir, porque necesito sacar la tesis lo antes posible y solo tengo para hacer pruebas ya ... o acortar mi
+alcance"*. El asistente propuso recortar al alcance minimo (Obj 1 + Obj 2, renderizador a trabajo futuro); **la autora lo
+rechazo y eligio mantener el renderizador**. Todo lo que sigue se decide dentro de esa restriccion.
+
+### A. Cita de Chen (reabre la decision 2026-09-15 (3))
+- `chen2026foundationvae` **se cita como preprint de arXiv** en el Objetivo 1, porque aun no tiene version publicada con
+  raw disponible. Se levanta la condicion de reapertura de 2026-09-15 (3). Frase: la preparada el 2026-09-16 (#65),
+  presentada como *"A concurrent preprint"*.
+
+### B. Alcance
+1. **Ablaciones por restriccion: FUERA, a trabajo futuro.** Salen de la hipotesis y de la tabla de resultados.
+2. **Brazo fisico de Peters: se conserva, sobre un subconjunto reducido de pacientes.** El ground truth sin metal que
+   exigen sus metricas existe en sintesis (es el CT limpio de origen), asi que el brazo sigue siendo viable; lo caro es
+   simular, y se acota el numero de casos.
+3. **Renderizador condicionado a la compuerta del Objetivo 1 (regla escrita en `main.tex`).** La compuerta se evalua en
+   pacientes separados para (i) el autoencoder preentrenado y (ii) una variante con **decodificador adaptado y encoder
+   congelado**. **Si ninguna pasa, el Objetivo 3 no se ejecuta y el No-Go se reporta como resultado.** Esta regla se fija
+   ANTES de correr la prueba.
+
+### C. Implicancias decididas
+| # | Decision | Aplicado |
+|---|---|---|
+| 36/39/74 | Via: **adaptar solo el decodificador** del VAE de SD 1.5 con el encoder congelado. Mantiene el espacio latente, asi que el U-Net preentrenado y ControlNet siguen siendo validos (resuelve #74). Es la prueba que decide el Objetivo 1 (ver D). Otro VAE (MAISI) queda como contingencia solo si el decodificador adaptado no pasa y queda tiempo | `main.tex` Obj 1 y Obj 3 |
+| 66/75 | Se mantiene el ROI `B_delta` (descriptivo) y se cita `rombach2022latentdiffusion` como respaldo (*"removes high-frequency details"*) | `main.tex` Obj 1 |
+| 69 | (a)+(c): S1 explicito solo en el brazo convencional; en el navegado **se declara supuesto**; grados por tornillo con pacientes con mas de uno | `main.tex:52` |
+| 70 | (a)+(b): se acota lo que cubre la validacion de Peters y se compromete verificar en el codigo del simulador si paciente y metal se proyectan juntos antes de reproducir | `main.tex:50` |
+| 71 | (a)+(c): `li2024` refuerza la penalizacion solo-imagen sin el sesgo de interpolacion; queda una sola salvedad (remocion vs sintesis). El multi-ventana previo se precisa como de reconstruccion por ventana o de perdida, no de codificacion de entrada. **Sin cifras de `li2024`** (tabla poco nitida) | `main.tex:54`, `:56` |
+| 72 | (a): *"diffusion-based lesion synthesis models"* | `main.tex:48` |
+| 57 | Se retira *"propagate globally far beyond"*; el caracter global se atribuye a `li2024`; `B_delta` se declara **parametro de diseno que trunca por diseno el streaking lejano** | `main.tex:48`, `:54`, Obj 3 |
+| 73 | (b): reconstruccion de CLINIC-metal no reportada; los artefactos reales son referencia de apariencia de reconstruccion desconocida, no ground truth fisico. No se buscan metadatos (no hay DICOM) | `main.tex` Datasets |
+| 62 | Sin cambio: `main.tex` ya dice *"by the same first author"* y *"enters that pool with zero events"*. **CERRADA** | — |
+| 61/63 | Cerradas en redaccion por #71: generabilidad en imagen queda como supuesto evaluado | — |
+
+### D. Pruebas que se corren ya (para fundamentar, en orden)
+1. **P1 — Compuerta del Objetivo 1 con decodificador adaptado (bloqueante).** Afinar solo el decodificador del VAE de SD
+   1.5 con cortes multi-ventana de pacientes de entrenamiento; evaluar con el pipeline de E6b (MAE y RMSE en hueso, metal y
+   `B_delta`) en pacientes separados. Criterio: el ya escrito (MAE en hueso < 25 HU). Presupuesto: 1 semana. Resultado
+   decide si hay Objetivo 3.
+2. **P2 — Proyeccion conjunta en XCIST (#70).** Lectura del codigo o ejemplos del simulador; 1 dia. Si no es conjunta,
+   se declara como limitacion del brazo fisico.
+3. **P3 — Muestreador + SAP (Objetivo 2).** Implementar en `src/muestreador/` y comparar con Wasserstein-1 contra
+   Zwingmann en S1 con la regla de borde de 2026-09-16. Corre en paralelo a P1 (CPU).
+
+### E. Pendientes previos de `ESTADO.md`, decididos
+- **#53 (segundo juicio en ITK-SNAP):** se mantiene con **plazo de 2 semanas**. Si el revisor no devuelve, se reporta la
+  cifra vigente (48/29) con el acuerdo agente-clinico (kappa 0.81) y se declara el segundo juicio como no realizado.
+- **Laminas de la autora (`e9ts_revision_laminas_autora.csv`, 0/16):** obligatorio, ~1 h. Sin eso la decision
+  2026-09-14 (4) queda sin verificar.
+- **#55:** cerrada como declarada (`main.tex` ya dice que no se asume la precision del paper). No se leen LiTS/KiTS19.
+- **#22, tercera regla de umbral:** no se formaliza aparte; el semimaximo ya es la politica principal de E9-TS (#52).
+- **Revision clinica de crestas y EIPS:** no se hace; queda declarada como heuristica.
+- **#34, #35, #37 (revision de artefactos por la autora):** no se hace; el Objetivo 3 usa el cribado automatico.
+- **Vaccaro 1995, Szalkowski 2021, Selles 2023 y MAISI:** no se leen salvo que P1 falle (MAISI) o sobre tiempo.
+
+**Por que:** con ~11 semanas, el camino critico es el VAE. Adaptar solo el decodificador es la prueba mas barata que
+decide si el renderizador existe sin romper ControlNet, y fijar la regla antes de correrla evita mover el criterio
+despues (#25, #37, #45, #47, #50). Todo lo demas se resolvio en redaccion, sin corridas.
+
+Registrada por el asistente en rol de asesor con delegacion explicita de la autora (2026-09-17). La autora puede revertir
+cualquier punto.
+
+---
+
+## 2026-09-17 (2) — No se relanza la cohorte de E6b con RMSE; MAE y RMSE se reportan dentro de P1
+
+**Decision** (delegada al asistente en rol de asesor, 2026-09-17):
+- La cohorte de E6b con columnas RMSE **no se corrio** (verificado por la autora en Khipu: solo los jobs 51539, 51540 y
+  51591; `~/metalsynth/data/e6b/` vacio). **No se relanza por separado.**
+- El script de P1 reporta **MAE y RMSE** en hueso, metal y `B_delta` para el VAE preentrenado y para el de decodificador
+  adaptado, en pacientes separados.
+
+**Por que:** RMSE nunca es menor que MAE para los mismos residuos, y la cohorte MAE ya dio 152-212 HU en hueso frente al
+umbral de 25 HU. Rehacerla (~8.8 h) no puede cambiar el No-Go del VAE preentrenado; solo aporta la cifra comparable con la
+literatura, que P1 produce igual.
+
+**Alternativa descartada:** relanzar la cohorte RMSE antes de P1. Cuesta una corrida y una sesion sin poder cambiar
+ninguna decision.
+
+Registrada por el asistente en rol de asesor con delegacion explicita de la autora (2026-09-17).

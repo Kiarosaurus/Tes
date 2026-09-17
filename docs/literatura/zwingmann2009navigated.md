@@ -258,3 +258,50 @@ rango no aparece en el texto y porque une dos poblaciones tecnicamente distintas
 | 16. Matta JM, Saucedo T. Internal fixation of pelvic ring fractures. Clin Orthop Relat Res. 1989;242:83–97. | Define la tecnica fluoroscopica de referencia (vistas inlet/outlet) sobre la que se juzga la posicion "correcta". |
 | 31. Tonetti J, Carrat L, Lavallee S, Pittet L, Merloz P, Chirossel JP. Percutaneous iliosacral screw placement using image guided techniques. Clin Orthop Relat Res. 1998;354:103–110. | Colocacion guiada por imagen; metodo competidor y posible fuente de precision geometrica. |
 | 11. Gautier E, Bachler R, Heini PF, Nolte LP. Accuracy of computer-guided screw fixation of the sacroiliac joint. Clin Orthop Relat Res. 2001;393:310–317. | Estudio de exactitud (accuracy) en articulacion sacroiliaca; metrica candidata para validar SAP. |
+
+## Verificacion 2026-09-16 (protocolo CT y bordes de la escala)
+
+Re-lectura dirigida del PDF completo (pp. 1833–1838) para implicancias #67 (grosor de corte) y #68 (regla de borde).
+Todo lo marcado "Lectura literal" o "Derivado" es observacion del extractor, no texto del paper.
+
+| Pregunta | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| 1. Modalidad de evaluacion de la posicion | CT postoperatoria; es TODO lo que el paper dice del protocolo | "A postoperative CT-based analysis of localization of the transiliosacral screw was evaluated" | Materials and Methods, p. 1835 |
+| 1. Modalidad (abstract) | Confirma CT, sin parametros | "We determined screw positions by computed tomography" | Abstract, p. 1833 |
+| 1. Escaner del CT postoperatorio (marca/modelo) | NO ENCONTRADO EN EL PDF | — | — |
+| 1. Grosor de corte | NO ENCONTRADO EN EL PDF | — | — |
+| 1. Intervalo de reconstruccion | NO ENCONTRADO EN EL PDF | — | — |
+| 1. Reconstrucciones multiplanares del CT postoperatorio | NO ENCONTRADO EN EL PDF. Las unicas MPR citadas son del Iso-C3D intraoperatorio del brazo navegado, usadas para planificar | "multiplanar reconstructions were generated during one automated rotating scanning procedure" | Materials and Methods, p. 1834 |
+| 1. Kernel de reconstruccion | NO ENCONTRADO EN EL PDF | — | — |
+| 1. Ventana (WL/WW) | NO ENCONTRADO EN EL PDF | — | — |
+| 1. Parametros Iso-C3D (contexto) | Solo rotacion y duracion; voxel/corte del Iso-C3D NO ENCONTRADO EN EL PDF | "which rotates 190° around the operative field" | Materials and Methods, p. 1834 |
+| 2. Quien evaluo y cuantos | Un radiologo, independiente, no involucrado en el tratamiento | "by one independent radiologist (EK) not involved in the treatment" | Materials and Methods, p. 1835 |
+| 2. Identidad de EK | Coautor del paper, Departamento de Radiologia | "E. Kotter Department of Radiology, University of Freiburg" | Afiliaciones, p. 1833 |
+| 2. Ciego al brazo (navegado vs convencional) | NO ENCONTRADO EN EL PDF ("not involved in the treatment" no equivale a ciego al grupo) | — | — |
+| 2. Acuerdo inter/intraobservador (kappa, ICC, lecturas repetidas) | NO ENCONTRADO EN EL PDF (un solo observador; no se reporta ninguna medida de acuerdo) | — | — |
+| 2. Participacion de cirujanos en la evaluacion | NO ENCONTRADO EN EL PDF | — | — |
+| 3. Plano en que se midio la perforacion (axial, MPR, oblicuo) | NO ENCONTRADO EN EL PDF | — | — |
+| 3. Herramienta o software de medicion | NO ENCONTRADO EN EL PDF | — | — |
+| 3. Referencia de la medida en mm (desde que borde cortical) | NO ENCONTRADO EN EL PDF | — | — |
+| 3. Direccion/localizacion de la perforacion (foramen, anterior, canal) | NO ENCONTRADO EN EL PDF | — | — |
+| 4. Definicion Grado 0 y Grado 1 | Grado 0 = sin perforacion; Grado 1 = < 2 mm | "Grade 0, no perforation; Grade 1, perforation less than 2 mm" | Materials and Methods, p. 1835 |
+| 4. Definicion Grado 2 | Entre 2 y 4 mm | "Grade 2, perforation between 2 and 4 mm" | Materials and Methods, p. 1835 |
+| 4. Definicion Grado 3 | > 4 mm | "and Grade 3, perforation greater than 4 mm" | Materials and Methods, p. 1835 |
+| 4. Origen declarado de la escala | Clasificacion "de tornillos pediculares", ref [23] | "graded according to an established classification method used for correct pedicle screw placement [23]" | Materials and Methods, p. 1835 |
+| 4. Discrepancia en ref [23] | El titulo de [23] trata de tornillos iliosacros, no pediculares; el texto la llama de pediculares | "An evaluation of image-guided technologies in the placement of percutaneous iliosacral screws" | References, p. 1838 |
+| 4. A que grado va exactamente 2.0 mm | NO ENCONTRADO EN EL PDF. Lectura literal: "less than 2 mm" (estricto) excluye 2.0 del Grado 1; si "between 2 and 4" incluye extremos no se declara | "Grade 1, perforation less than 2 mm; Grade 2, perforation between 2 and 4 mm" | Materials and Methods, p. 1835 |
+| 4. A que grado va exactamente 4.0 mm | NO ENCONTRADO EN EL PDF. Lectura literal: "greater than 4 mm" (estricto) excluye 4.0 del Grado 3; inclusividad de "between" no declarada | "Grade 3, perforation greater than 4 mm" | Materials and Methods, p. 1835 |
+| 4. Profundidad minima que cuenta como "perforation" (borde Grado 0/1) | NO ENCONTRADO EN EL PDF | — | — |
+| 4. Redondeo/precision de la medida en mm | NO ENCONTRADO EN EL PDF | — | — |
+| 5. CT postoperatorio: Iso-C3D o CT convencional | NO ENCONTRADO EN EL PDF. Solo se la llama "postoperative"; no se nombra equipo | "The postoperative computed tomography scan showed better screw position" | Abstract, p. 1833 |
+| 5. Momento del Iso-C3D en el brazo navegado | Adquirido ANTES de insertar, para planificar la trayectoria | "The screw position was planned using the three-dimensional data set." | Materials and Methods, p. 1834 |
+| 5. Iso-C3D de control tras insercion | NO ENCONTRADO EN EL PDF como practica del estudio; solo aparece como recomendacion final | "correct placement of the screws should be controlled intraoperatively using the three-dimensional image intensifier" | Discussion, p. 1838 |
+| 5. Disponibilidad de navegacion en el periodo convencional | Brazo convencional previo a disponer del sistema de navegacion; disponibilidad del Iso-C3D en ese periodo NO ENCONTRADO EN EL PDF | "before the navigation system was available in our department" | Materials and Methods, p. 1834 |
+| 6. Nivel S1, brazo convencional | S1 explicito | "a guide wire was placed across the ileum into the S1 vertebra" | Materials and Methods, p. 1835 |
+| 6. Nivel S1, brazo navegado | NO ENCONTRADO EN EL PDF de forma explicita: la tecnica navegada no nombra nivel; el criterio de evaluacion dice "respective sacral end plate" | "parallel to the respective sacral end plate and the S1 neuroforamina" | Materials and Methods, p. 1835 |
+| 6. Tornillos en S2 | NO ENCONTRADO EN EL PDF | — | — |
+| 6. Numero de tornillos por paciente (declarado) | Uno | "In our treatment algorithm, we used only one screw in all patients" | Discussion, p. 1837 |
+| 6. Inconsistencia interna con el conteo | Derivado: 26 tornillos/24 pacientes y 35/32 implican >= 2 y >= 3 pacientes con mas de un tornillo, contra "only one screw"; explicacion (bilateral, otro nivel) NO ENCONTRADO EN EL PDF | "We inserted 26 screws in 24 patients using the navigation system" | Abstract, p. 1833 |
+| 6. Dos tornillos, solo como literatura | Mencion citada, sin datos propios ni nivel | "whereas others recommended placement of two screws [5, 8, 28]" | Discussion, p. 1837 |
+
+**Grosor de corte del CT postoperatorio: NO ENCONTRADO EN EL PDF** (ni >= 2.5 mm ni < 2.5 mm pueden afirmarse).

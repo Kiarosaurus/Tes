@@ -374,3 +374,5 @@ ninguna frase la cite. Esta alta sube el documento de **43 a 64 referencias** de
 comportamiento declarado en `main.tex:137`, pero el salto es grande y el conteo de referencias se
 usa como control de compilacion en `ESTADO.md`. **Si se prefiere que la bibliografia liste solo lo
 citado, hay que quitar `\nocite{*}`; no se toca sin orden (regla 14).**
+
+- **2026-09-17 — `chen2026foundationvae` pasa a citarse en `main.tex` (Objetivo 1) como preprint de arXiv**, por decision de la autora: aun no hay version publicada con raw. Se levanta la condicion de reapertura de la decision 2026-09-15 (3). La entrada de `refs/clean/` no cambia.

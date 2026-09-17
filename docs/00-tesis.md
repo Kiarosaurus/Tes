@@ -36,9 +36,11 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
 ## Alcance COMPLETO (si el tiempo alcanza)
 
 - Objetivo 3: renderizador (LDM 2.5D + ControlNet + banda B_delta), demostrativo
+  **condicionado a la compuerta del Objetivo 1** (decision 2026-09-17): se prueba el VAE preentrenado y uno con
+  decodificador adaptado y encoder congelado; si ninguno pasa, el Objetivo 3 no se ejecuta y el No-Go es el resultado
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
-- Ablaciones por restriccion
+- ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`
 
 ## Fuera de alcance (explicito)
 
@@ -80,6 +82,10 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
 9. **Subir mas por la cadena de citas del umbral de 10 mm. FUERA.** Cuatro eslabones
    auditados, ninguno lo mide: es una convencion profesional derivada del calibre del
    tornillo, y las fuentes que la enuncian lo dicen en su texto (implicancia #25).
+
+10. **Ablaciones por restriccion. FUERA** (2026-09-17, decision delegada al asistente). Se declaran trabajo futuro
+    para liberar tiempo del camino critico (VAE y muestreador). El brazo fisico de Peters se conserva sobre un
+    subconjunto reducido de pacientes.
 
 ## Riesgos asumidos (2026-09-08)
 

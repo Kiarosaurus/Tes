@@ -2,7 +2,41 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-15)
+## PUNTO DE RETOMA — leer esto primero (2026-09-17)
+
+> Sustituye como entrada al bloque del 2026-09-15 que sigue abajo (queda como historico; sus pendientes sobre
+> #36/#39 y la lectura de Chen ya estan resueltos). Verificado contra disco el 2026-09-17.
+
+**Donde esta el proyecto.**
+- `main.tex` compila: **6 paginas**, 64 referencias, 0 errores, 0 citas indefinidas. `src/` sigue **vacio**.
+- Literatura: **toda entrada de `refs/raw/` tiene ficha** (ronda 2026-09-16). Implicancias hasta **#75**.
+- **Decisiones del 2026-09-17, delegadas al asistente como asesor** (`01-decisiones.md`, entrada 2026-09-17):
+  - se mantiene el renderizador (la autora rechazo recortarlo);
+  - ablaciones FUERA; brazo fisico de Peters sobre un subconjunto reducido;
+  - Chen citado como preprint.
+- **Regla preinscrita en `main.tex`:** el Go/No-Go del Objetivo 1 (MAE en hueso < 25 HU, pacientes separados) se
+  prueba con el VAE de SD 1.5 preentrenado y con una variante de **decodificador adaptado y encoder congelado**. Si
+  ninguno pasa, **no hay Objetivo 3** y el No-Go es el resultado.
+
+**E6b con RMSE — NO SE CORRIO (confirmado en Khipu por la autora, 2026-09-17).** `sacct` desde 2026-09-15 solo
+muestra 51539 (prueba), 51540 (cohorte MAE, 08:44:58) y 51591 (prueba RMSE de 1 volumen); `~/metalsynth/data/e6b/` esta
+vacio. En la PC: `outputs/e6b_vae_sd15.csv` = cohorte MAE vieja (178 filas, 32 columnas, sin `rmse`), logs en
+`outputs/e6b/`. **Decision 2026-09-17 (2):** no se relanza la cohorte RMSE sola; MAE y RMSE se reportan dentro de P1.
+
+**Siguiente, en orden:**
+1. **P1 — script nuevo (no modificar la corrida vieja):** afinar solo el decodificador del VAE de SD 1.5 (encoder
+   congelado) con cortes multi-ventana de pacientes de entrenamiento, y evaluar en pacientes separados **el VAE
+   preentrenado y el afinado** con MAE **y** RMSE en ROI hueso (> 150 HU), metal (> 2500 HU) y `B_delta` (metal dilatado
+   ~12 mm menos metal). Reutilizar de `e6b_vae_sd15.py` la codificacion, el ROI y el control de identidad. Particion
+   por paciente (`Grupo paciente` de `experiments/exploration-3d/revision.csv`, exclusiones de
+   `experiments/exploration-3d/exclusiones.csv`). Leer `experiments/objetivo2/KHIPU.md`
+   antes de escribir el `.sbatch`. Criterio preinscrito en `main.tex`: MAE en hueso < 25 HU; si ninguno pasa, no hay
+   Objetivo 3.
+2. **P2:** verificar en el codigo de XCIST si paciente y metal se proyectan juntos (#70).
+3. **P3:** muestreador + SAP en `src/muestreador/` (en paralelo a P1).
+Autora: laminas `e9ts_revision_laminas_autora.csv` 0/16; plazo de 2 semanas al revisor de #53.
+
+## PUNTO DE RETOMA anterior (2026-09-15, historico)
 
 > Escrito para que una sesion nueva, sin historial, retome sin releer nada mas. Todo lo de
 > abajo esta verificado contra archivos en disco. Las decisiones son de la autora: Claude no
@@ -107,10 +141,43 @@
 - **TS:** `ts_piloto_qc.py` y sus CSV estan congelados como evidencia de #49/#50; para la cohorte
   se usa `ts_qc.py`, que reutiliza sus funciones. No cambiar `--task` ni `--roi_subset` en
   `ts_cohorte.sbatch` sin decision: el recorte depende de las clases pedidas (#49).
-- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #68 (ultima ronda:
-  2026-09-16 (13), Mirza/Fan/Routt/Machacek).
+- `04-implicancias.md` es el archivo critico irreemplazable (regla 17). Llega hasta la #75 (ultima ronda:
+  2026-09-16 (14), recomendaciones aplicadas y 11 fichas faltantes).
 
 ## Ultimo paso completado
+2026-09-17 (ronda 15) — **la autora delega las decisiones al asistente en rol de asesor**; rechaza recortar el renderizador.
+- Chen citado como preprint (Obj 1). Aplicadas en `main.tex` #57, #69-#75; ablaciones FUERA (`00-tesis.md` punto 10);
+  brazo fisico sobre subconjunto reducido; **regla preinscrita**: si el VAE (preentrenado o con decodificador adaptado y
+  encoder congelado) no pasa el Obj 1, no hay Obj 3. Compila: **6 paginas** (antes 5), 64 refs, 0 errores.
+- Decision completa en `01-decisiones.md` (2026-09-17), incluidos los pendientes previos de este archivo.
+
+**Siguiente (en orden):** P1 = afinar solo el decodificador del VAE de SD 1.5 en Khipu y evaluar con E6b (hueso, metal y
+`B_delta`) en pacientes separados; P2 = verificar proyeccion conjunta en el codigo de XCIST; P3 = implementar el
+muestreador + SAP en `src/muestreador/` (en paralelo a P1). Autora: laminas 0/16 (~1 h) y plazo de 2 semanas a #53.
+**Pendientes que surgieron:** limite de paginas (6 pp.); `src/` sigue vacio.
+
+## Paso anterior
+2026-09-16 (ronda 14), **orden de la autora** — recomendaciones adoptadas y 11 fichas faltantes generadas.
+- **`main.tex` APLICADAS #64 (a), #66 (a), #67 (limitacion) y #68 (a) + regla de borde SAP** `0 / (0,2) / [2,4] / (4,inf)`.
+  Compila: 5 pp., 64 refs, 0 errores, 0 citas indefinidas. Decision 2026-09-16 escrita en `01-decisiones.md`.
+- **#65 NO aplicada:** la autora espera el raw de las ACTAS de Chen (el de `refs/raw/` es el preprint arXiv); frase
+  preparada en `01-decisiones.md`.
+- **Re-verificaciones:** `zwingmann2009navigated` (grosor de corte NO ENCONTRADO; un radiologo; nivel del brazo navegado
+  NO ENCONTRADO -> **#69**) y `peters2025hybrid` (proyeccion conjunta NO ENCONTRADO; fantoma no cubre el paso hibrido ->
+  **#70**). Secciones "Verificacion 2026-09-16" al final de ambas fichas.
+- **11 fichas nuevas** (todo raw sin ficha): abadi2019, dorjsembe2024, hu2023, kazerouni2023diffusionsurvey, li2024,
+  rombach2022latentdiffusion, selles2024marreview, singhrao2024fiducial, yu2021, zhang2023controlnet y
+  templeman1996proximity (solo abstract). **Ya no queda raw sin ficha.** `ziran2003` tiene PDF pero no raw (cadena del
+  10 mm cerrada; no se leyo).
+- **ABIERTAS nuevas #69-#75**, ninguna aplicada.
+
+**Siguiente:** decision de la autora sobre #69 (S1 en brazo navegado; toca `main.tex:52` y `:78`), #70 (`main.tex:50`),
+#71 (`main.tex:56`), #72 (`main.tex:48`, pocas palabras), #73, #74 (junto con #36/#39) y #75 (citar Rombach en la frase de
+#66). Ejecucion pendiente: ROI `B_delta` en `e6b_vae_sd15.py` + Khipu.
+**Pendientes que surgieron:** candidatos Szalkowski 2021 y Selles 2023 [140] (posible extension espacial, #57); verificar
+cifras de Tabla I de `li2024` (imagen poco nitida); `kazerouni2023` y `zhang2023controlnet` leidos sobre preprint.
+
+## Paso anterior
 2026-09-16 (ronda 13) — **4 lecturas mas con `lector-papers`**: `mirza2003`, `fan2022`, `routt1997`, `macháček2023`
 (fichas, filas en `_index.md`, `_candidatos.md` actualizado). **#68 NUEVA** (escala de 4 grados literal en Mirza, que la
 declara heredada; `main.tex:52` dice "lettered" y omite ese eslabon; SAP sin regla de borde para 4.0 mm). #67

@@ -376,3 +376,101 @@ usa como control de compilacion en `ESTADO.md`. **Si se prefiere que la bibliogr
 citado, hay que quitar `\nocite{*}`; no se toca sin orden (regla 14).**
 
 - **2026-09-17 — `chen2026foundationvae` pasa a citarse en `main.tex` (Objetivo 1) como preprint de arXiv**, por decision de la autora: aun no hay version publicada con raw. Se levanta la condicion de reapertura de la decision 2026-09-15 (3). La entrada de `refs/clean/` no cambia.
+
+## Alta de la ronda 2026-09-17 (8 raw nuevos de la autora)
+
+La autora pego ocho `.nbib` de PubMed en `refs/raw/` junto con sus PDF. **Seis entran como
+entradas nuevas y dos son duplicados exactos** de entradas que ya existian.
+
+| Clave (autora) | Archivo raw | Formato | Clave o id del editor | PMID |
+|---|---|---|---|---|
+| `matta1996internal` | `matta1996internal.nbib` | PubMed nbib | — | 8769444 |
+| `noojin2000cross` | `noojin2000cross.nbib` | PubMed nbib | — | 10630800 |
+| `routt1997early` | `routt1997early.nbib` | PubMed nbib | — | 9415865 |
+| `vaccaro1995part1` | `vaccaro1995part1.nbib` | PubMed nbib | — | 7642664 |
+| `vaccaro1995part2` | `vaccaro1995part2.nbib` | PubMed nbib | — | 7642665 |
+| `zhu2023sinogram` | `zhu2023sinogram.nbib` | PubMed nbib | — | 36842222 |
+
+Normalizacion aplicada, con las mismas reglas que las altas previas:
+- Autores de `FAU`, **con iniciales cuando el raw solo trae iniciales**; no se completan nombres de pila.
+- **Sufijos generacionales del raw conservados en posicion BibTeX `Apellido, Sufijo, Nombre`:**
+  `Tornetta, 3rd, P.` (`matta1996internal`, raw `Tornetta, P 3rd`) y `Routt, Jr., M. L.`
+  (`routt1997early`, raw `Routt, M L Jr`), como ya estaba `Routt, Jr.` en `kaiser2014dysmorphism`.
+- Titulos de `TI` en Title Case, sin el punto final de PubMed; revistas de `JT` con nombre oficial.
+  JBJS se escribe igual que en `kaiser2014dysmorphism`: `The Journal of Bone and Joint Surgery. American Volume`.
+- Paginas expandidas: `129-40` -> `129--140`, `31-5` -> `31--35`, `584-9` -> `584--589`,
+  `1193-9` -> `1193--1199`, `1200-6` -> `1200--1206`. `zhu2023sinogram` lleva `pages = {106710}`:
+  es numero de articulo (`PG - 106710`), no rango.
+- `matta1996internal`: el raw trae `IP - 329` y **no trae `VI`**, igual que `templeman1996proximity`
+  (*CORR* de esa epoca). Va sin volumen; BibTeX avisara `there's a number but no volume`, correcto.
+- `zhu2023sinogram`: el raw no trae `IP`; va sin `number`. DOI tomado de `LID`/`AID`.
+
+### Duplicados: no se crea entrada nueva
+
+| Raw nuevo | Duplica a | Comprobacion | PDF nuevo |
+|---|---|---|---|
+| `gertzbein1990pedicularscrew.nbib` | `gertzbein1990` | `diff` sin diferencias, PMID 2326693 | `papers/gertzbein1990pedicularscrew.pdf`, segunda copia (escaneo distinto) del mismo articulo; verificada contra la ficha |
+| `templeman1996iliosacralscrews.nbib` | `templeman1996proximity` | `diff` sin diferencias, PMID 8769451 | `papers/templeman1996iliosacralscrews.pdf`: **primer PDF de esta entrada** |
+
+Crear dos claves para el mismo articulo duplicaria la referencia en la bibliografia (`\nocite{*}`).
+Se conservan las claves que ya estaban (una de ellas, `gertzbein1990`, ya se cita en `main.tex`). **Ningun
+raw se toco ni se borro** (regla 9). Si la autora prefiere, puede borrar los dos raw duplicados o
+renombrar los PDF a la clave; nada de eso cambia `refs.bib`.
+
+**Actualiza la seccion "Fuentes que siguen sin PDF":** `templeman1996proximity` **ya tiene PDF**
+(con otro nombre de archivo) y su ficha paso de abstract a texto completo. Queda solo `zhang2026pediclescrew`.
+
+**Efecto sobre el PDF de la tesis:** con `\nocite{*}` la bibliografia pasa de 64 a **70** referencias
+aunque `main.tex` no cite ninguna de las seis altas. Ver implicancia #82.
+
+## Alta de la ronda 2026-09-18 (13 raw nuevos de la autora) y limpieza de duplicados
+
+| Clave (autora) | Archivo raw | Formato | Clave o id del editor | PMID |
+|---|---|---|---|---|
+| `ebraheim2000lumbosacral` | `ebraheim2000lumbosacral.nbib` | PubMed nbib | — | 10741369 |
+| `gardner2011transiliac-transsacral` | `gardner2011transiliac-transsacral.nbib` | PubMed nbib | — | 21577075 |
+| `griffin2003vertically` | `griffin2003vertically.nbib` | PubMed nbib | — | 16385205 |
+| `lyu2020dudonet` | `lyu2020dudonet.bib` | BibTeX Springer (Crossref) | `Lyu_2020` | — |
+| `miller2012variations` | `miller2012variations.nbib` | PubMed nbib | — | 22207514 |
+| `mostafavi1996radiologic` | `mostafavi1996radiologic.nbib` | PubMed nbib | — | 8769431 |
+| `reilly2003effect` | `reilly2003effect.nbib` | PubMed nbib | — | 12571496 |
+| `song2024bmar` | `song2024bmar.bib` | BibTeX IOP | `Song_2024` | — |
+| `wang2022adaptativeconv` | `wang2022adaptativeconv.bib` | BibTeX IJCAI (Crossref) | `Wang_2022` | — |
+| `wu2009variable` | `wu2009variable.nbib` | PubMed nbib | — | 19484801 |
+| `xu1996projection` | `xu1996projection.nbib` | PubMed nbib | — | 8779008 |
+| `yazdi2011opposite` | `yazdi2011opposite.nbib` | PubMed nbib | — | 21626962 |
+| `ziran2003` | `ziran2003.nbib` | PubMed nbib | — | 12729120 |
+
+Normalizacion (mismas reglas que las altas previas):
+- **`griffin2003vertically` -> `year = {2006}`, `number = {1 Suppl}`, `pages = {S30--S36}`.** El raw es la **reimpresion**
+  (J Orthop Trauma 2006;20(1 Suppl), PMID 16385205), no el original de 2003 (17(6):399-405, dato que solo aparece en la
+  portada del PDF). Se aplica el precedente de `herman2016`: la clave es de la autora y `year` sale del raw. El raw **no
+  trae DOI**: va sin `doi`. Si la autora quiere citar el original de 2003, tiene que pegar su raw.
+- **Paginas con discusion:** `xu1996projection` (`790-4; discussion 795`) va como `790--794`; `griffin2003vertically`
+  (`S30-6; discussion S36`) como `S30--S36`. La pagina de discusion no se agrega al rango del articulo.
+- **Sufijos:** `Tornetta, 3rd, P.` (`mostafavi1996radiologic`), `Routt, Jr., M. L. Chip` (`gardner2011transiliac-transsacral`),
+  `Routt, Jr., Milton L. Chip` (`miller2012variations`): el raw imprime `Routt, M L Chip Jr` y `Routt, Milton L Chip Jr`.
+- Revistas: `Clinical anatomy (New York, N.Y.)` -> `Clinical Anatomy` (desambiguador de NLM, como `tejwani2014`);
+  JBJS Br -> `The Journal of Bone and Joint Surgery. British Volume`.
+- `mostafavi1996radiologic`: *CORR* sin volumen, igual que `matta1996internal` (aviso de BibTeX esperado).
+- **Crossref (`lyu2020dudonet`, `wang2022adaptativeconv`):** se descartan `url`, `ISSN`, `month` y `collection`; se
+  conservan `publisher`, `isbn` (Lyu) y `series` (IJCAI), regla 8. Guion largo Unicode de `pages` y de `booktitle` -> `--`/`---`.
+  **Ninguno trae `editor` ni `address`**: no se completan.
+- **Versiones distintas PDF/raw:** `lyu2020dudonet` y `wang2022adaptativeconv` tienen en `papers/` el **preprint de arXiv**
+  (el de Lyu sin Liao entre los autores); `refs.bib` apunta a la version publicada. Mismo patron que `herman2016` e `isensee2021`.
+- `song2024bmar`: sin PDF; ficha solo desde el abstract del raw.
+
+### Duplicados BORRADOS por orden de la autora (2026-09-18)
+
+La autora autorizo borrar duplicados verificados. Criterio: mismo PMID y raw identico (`diff` vacio), y para PDF, mismo
+articulo confirmado por lectura o hash identico.
+
+| Borrado | Se conserva | Comprobacion |
+|---|---|---|
+| `refs/raw/miller2012sacralmorphology.nbib` + `papers/miller2012sacralmorphology.pdf` | `miller2012variations` | raw y PDF **identicos byte a byte** (md5), PMID 22207514 |
+| `refs/raw/gertzbein1990pedicularscrew.nbib` + `papers/gertzbein1990pedicularscrew.pdf` | `gertzbein1990` | raw identico, PMID 2326693; PDF = mismo articulo (escaneo distinto), verificado cifra a cifra el 2026-09-17 |
+| `refs/raw/templeman1996iliosacralscrews.nbib` | `templeman1996proximity` | raw identico, PMID 8769451 |
+
+`papers/templeman1996iliosacralscrews.pdf` **no se borro**: era el unico PDF de la entrada. Se **renombro** a
+`papers/templeman1996proximity.pdf`. Queda solo `zhang2026pediclescrew` sin PDF entre las entradas con raw de articulo
+(`song2024bmar` tambien, por acceso).

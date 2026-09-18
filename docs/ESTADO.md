@@ -7,6 +7,12 @@
 > Sustituye como entrada al bloque del 2026-09-15 que sigue abajo (queda como historico; sus pendientes sobre
 > #36/#39 y la lectura de Chen ya estan resueltos). Verificado contra disco el 2026-09-17.
 
+**Sesion 2026-09-18 — 13 fuentes mas + duplicados.** 13 altas (`refs.bib` = 83; compila 6 pp., 0 indefinidas); ningun PDF queda sin ficha; duplicados borrados con autorizacion (Miller, Gertzbein, raw de Templeman; PDF de Templeman renombrado). Implicancias **#83-#88** (ninguna abierta); `main.tex:117` decia falsamente que ningun corredor se midio con fractura (Reilly 2003 lo hace) -> **APLICADA (a) en `main.tex:117`** por orden de la autora (compila 6 pp., 83 refs, 0 indefinidas). Pendiente: `
+ocite{*}` (#82/#88); PDF + raw de MWLNet y Choi (prioridades 1-2 de `_candidatos.md`); entrada 2026-09-18 para `01-decisiones.md`. Siguiente: evaluacion de P1 en Khipu.
+
+**Sesion 2026-09-17 (2) — literatura nueva.** 8 raw nuevos: 6 altas en `refs/clean/` (`refs.bib` = 70; compila 6 pp., 0 indefinidas) y 2 duplicados exactos (`gertzbein1990`, `templeman1996proximity`, que ya tiene PDF). Fichas escritas. Implicancias **#77-#82**: ninguna cambia alcance, Obj 1/P1 ni renderizador; 2-15% y escala de 4 grados cerradas. Pendiente de la autora: quitar `
+ocite{*}` (#82, recomendado), linea obsoleta de Templeman en `00-tesis.md` y entrada propuesta para `01-decisiones.md`. Siguiente: sigue P1 en Khipu (evaluacion tras 51670/51671).
+
 **Donde esta el proyecto.**
 - `main.tex` compila: **6 paginas**, 64 referencias, 0 errores, 0 citas indefinidas. `src/` sigue **vacio**.
 - Literatura: **toda entrada de `refs/raw/` tiene ficha** (ronda 2026-09-16). Implicancias hasta **#76**.

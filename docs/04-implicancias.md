@@ -6152,3 +6152,287 @@ Mirza. Sin implicancia nueva sobre el argumento.
   implementa (b) y (c) (`ORDEN_OBJ3`); probado con CSV sinteticos de 34 pacientes: NO-GO, GO con eleccion por orden (elige
   `pub+asinh` aunque `pub` tenga menor error) y GO MARGINAL (media 24.56, IC95 [20.00, 33.68]).
 
+
+---
+
+## Ronda 2026-09-17 (2) — lectura de las 8 fuentes nuevas de `refs/raw/` (asistente en rol de asesor, delegacion explicita)
+
+**Encargo de la autora (2026-09-17):** leer la literatura nueva, pasar los raw a `clean`, evaluar si cambia la tesis y,
+si hay que tomar decisiones cruciales, tomarlas registrando aqui las alternativas. Objetivo declarado: terminar la tesis
+lo antes posible, conservando el renderizado.
+
+**Fuentes:** `routt1997early`, `templeman1996proximity` (PDF nuevo, antes solo abstract), `noojin2000cross`,
+`matta1996internal`, `vaccaro1995part1`, `vaccaro1995part2`, `zhu2023sinogram`, y una segunda copia de `gertzbein1990`.
+Ocho lectores `lector-papers` en paralelo, cada uno escribio solo su ficha; `_index.md` y `_candidatos.md` los integro la
+sesion principal.
+
+**Veredicto global: ninguna de las ocho lecturas cambia el alcance, la hipotesis, los objetivos, el baseline, la compuerta
+del Objetivo 1 ni el renderizador.** Todas caen en el Objetivo 2 (cadenas de citas del benchmark) o en el Related Work, y
+confirman decisiones ya tomadas. `00-tesis.md`, `01-decisiones.md` y `02-datos.md` no necesitan cambios de fondo (ver el
+final de esta ronda).
+
+### 77 — Origen del "2%-15%" RESUELTO: el 2% es Routt 1997 y el 15% es la cita de Routt a una presentacion de Keating; Templeman no publica ningun porcentaje — CERRADA (sin cambio en `main.tex`)
+
+- **Routt 1997** (`routt1997early.md`): 5 de 244 tornillos mal colocados, *"2.05 percent"* (p. 587). Criterio binario,
+  sin mm ni grados; 240 tornillos en S1 y 4 en S2; fluoroscopia convencional.
+- **El 15% es del mismo parrafo de Routt, pero no es de Routt:** lo atribuye a Keating (ref. 5, presentacion en la OTA
+  de 1994, 6 errores en 40 pacientes). El articulo publicado de Keating (`keating1999iliosacral`) da **13% (5 de 38
+  pacientes)**. El extremo superior de la banda sale de una cifra de congreso que no coincide con la version publicada.
+- **Templeman 1996:** no trae ningun porcentaje de malposicion (ni 2, ni 15, ni 0-15). Da conteos: 5 de 57 tornillos
+  entraban al foramen S1 **o tenian demasiado scatter para decidirlo**, y 1 perforacion anterior (p. 196). **La
+  atribucion de `zwingmann2013` (*"2 to 15 %"*, *"0 to 15 %"*) no se sostiene en su fuente primaria.**
+- **Que dice esto:** la banda junta una tasa binaria por tornillo (2.05%) con una cifra de congreso por paciente (15%).
+  Son dos unidades y dos criterios distintos. Esto confirma el retiro del punto 5 de `Fuera de alcance` y cierra la
+  auditoria historica que #12 y #25 habian dejado abierta.
+- **Decision (asistente, delegada):** (c) sin cambios en `main.tex`.
+  - (a) *Descartada:* una frase en `main.tex` con el origen de la banda. Documenta un rango que la tesis ya no usa y
+    ocupa espacio en una propuesta de 6 paginas.
+  - (b) *Descartada por ahora:* usar el 2.05% de Routt como contraste en *"Aggregate malposition rates and ordinal
+    cortical-breach grades therefore measure different constructs"* (`main.tex:52`). Seria un buen ejemplo: la misma
+    tecnica, fluoroscopia convencional casi toda en S1, da 2.05% "misplaced" contra 60% con algun grado >= 1 en el brazo
+    convencional de Zwingmann. Pero `zwingmann2013` (2.6% contra 0.1%) ya sostiene el argumento. **Reabrir solo si un
+    revisor lo discute.**
+  - (d) *Descartada:* usar Routt como prior del brazo convencional. Es binario y mezcla S1 con S2, asi que no da los
+    cuatro grados de SAP.
+- **Tipo:** auditoria de procedencia. **Nivel:** N3.
+
+### 78 — Vaccaro 1995 (Partes I y II) NO contiene la escala de cuatro grados: la cadena de #68 queda cerrada — CERRADA (sin cambio en `main.tex`)
+
+- **Part II** (`vaccaro1995part2.md`): 90 tornillos toracicos en cadaver, 37 perforaron (21 medial, 16 lateral), CT de 5 mm
+  y una sola lectora. Cada tornillo va a una de tres clases: medial, lateral o correcto (Tabla I, p. 1201). No hay cortes
+  en mm. El unico umbral es el >4 mm de Gertzbein, citado (p. 1203). Su postura es *"any breach ... is unacceptable"*
+  (p. 1205).
+- **Part I** (`vaccaro1995part1.md`): morfometria de pediculos toracicos, sin escala. N4, fuera de alcance.
+- **Consecuencia:** de las dos fuentes que `mirza2003` cita para *"The thresholds reported in prior studies were used"*,
+  una (Gertzbein) tiene los cortes de 2 y 4 mm entre seis tramos, y la otra (Vaccaro II) no tiene ningun corte. **La forma
+  de cuatro grados aparece por primera vez, entre lo leido, en Mirza 2003.** Que Mirza la construyera a partir de
+  Gertzbein es una inferencia: el PDF no lo dice.
+- **`main.tex:52` ya es correcto.** Atribuye la forma literal a Mirza, dice que declara los cortes heredados y adopta el
+  ancho de 2 mm como convencion geometrica. Nada que corregir.
+- **Decision (asistente, delegada):** sin cambios. #68 cerrada del todo.
+  - (a) *Descartada:* anadir *"neither of the two sources Mirza cites publishes four grades"*. Refuerza la frase de
+    convencion, pero no cambia el metodo y la frase ya esta blindada.
+  - (b) *Descartada:* citar Vaccaro en `main.tex`. No aporta a ningun objetivo.
+- **Segunda copia de Gertzbein** (`papers/gertzbein1990pedicularscrew.pdf`): mismo articulo; **todas las cifras de la
+  ficha CONFIRMADAS**, dos citas del abstract corregidas a literal y el grosor de corte sigue NO ENCONTRADO.
+
+### 79 — Templeman: el +-4 grados es trigonometria 2D idealizada, el 21.7 mm no es un diametro de corredor, y el artefacto impidio graduar 5 de 57 tornillos en CT postoperatoria — DECIDIDA (limitacion a declarar, sin cambio ahora)
+
+- **+-4 grados** (p. 197): sale de suponer piel-ilion de unos 10 cm, ilion-cuerpo de 5 cm y un pediculo de 21 mm, con
+  insercion y alineacion perfectas. Los propios autores advierten que la tolerancia es menor fuera del eje central. **Es
+  un modelo, no un umbral medido.** `main.tex` no usa los 4 grados (usa las tolerancias de McLaren, 1.53 y 1.02 grados).
+  Sin cambio.
+- **21.7 mm (16.2-28.9):** es la dimension AP entre el foramen S1 y la cortical anterior, en corte axial. Los autores dicen
+  que *"the 3-dimensional zone ... could not be determined"*. **No se compara con `D_TS`** (diametro inscrito perpendicular
+  al eje, mediana 9.5 mm).
+- **Hallazgo que si toca un supuesto:** con CT de 4 mm y ventana osea, en 5 de 57 tornillos no se pudo decidir la relacion
+  con el foramen por *"too much scatter"* (p. 196), y cuando el artefacto tocaba una estructura se anotaba 0 mm. **Los
+  grados clinicos de brecha se leen sobre CT con artefacto metalico.** Eso vale tambien para el benchmark de Zwingmann,
+  cuyo protocolo de CT sigue NO ENCONTRADO (#67): las distribuciones objetivo pueden llevar un error de lectura que la tesis
+  no controla.
+- **Decision (asistente, delegada):** (b).
+  - (a) *Descartada:* reabrir #67 como bloqueo. No cambia el metodo, porque SAP se mide sobre la pose conocida del
+    tornillo sintetico, sin leer la imagen.
+  - (b) **Elegida:** declararlo como limitacion del benchmark cuando se escriba la seccion de resultados del Objetivo 2
+    (*"clinical grades are read on post-operative CT under metal artefact; Templeman et al. could not grade 5 of 57
+    screws for scatter"*). Ademas es un argumento de motivacion para el renderizador: el artefacto oculta justo la relacion
+    tornillo-cortical que se grada. No se toca `main.tex` ahora (regla 4).
+  - (c) *Descartada:* usar Templeman como segundo benchmark. Es binario, solo S1 y parcial.
+- **Tipo:** SUPUESTO (benchmark) + redaccion futura. **Nivel:** N2.
+
+### 80 — Noojin y Matta: dos trampas de cifra registradas; ninguna cierra #7 — CERRADA (registro)
+
+- **Noojin 2000:** 27.76 mm de alto y 28.05 mm de ancho son la **extension del contorno** del pediculo sacro en UN corte
+  sagital oblicuo paralelo a la SI, de un solo lado, en 13 pacientes con CT de 5 mm. **No es un diametro inscrito
+  perpendicular al eje del tornillo.** `D_TS` exige un cilindro continuo por ambas alas y el cuerpo, asi que por
+  construccion es menor o igual. **28 mm no contradice 9.5 mm; no citar uno contra el otro.** Tampoco cuantifica la caida
+  fuera del centro, asi que no da zona segura operacional y **#7 sigue como estaba** (cubierta operacionalmente por
+  McLaren y Kaiser).
+- **Matta 1996:** escala de REDUCCION, no de posicion de tornillo, con limites que no coinciden entre abstract y Metodos
+  (4/5 mm; 10 mm cae en dos categorias). No evalua malposicion. Confirma la trampa de #12 (2026-09-08): **no citar Matta
+  para SAP.**
+- **Decision:** ninguna cita nueva en `main.tex`. **Sin cambio.**
+
+### 81 — `zhu2023sinogram`: la parafrasis de Xie cambia el objeto de la critica al umbral, pero `main.tex` no depende de ella; #47 sigue CERRADA — CERRADA (registro)
+
+- Zhu dice que el umbral simple sobre CT sin corregir *"can make the metal projection data inaccurate or cause difficulties
+  in clinical applications"* (Sec. 2.2.1, p. 4). No habla de segmentacion, no cita a nadie y no compara contra ningun
+  umbral. Xie lo cita como *"inaccurate metal segmentation"*.
+- **`main.tex:54` (C1) no usa esa parafrasis.** Cita a Xie por su propia sobrecobertura en cortes simulados (p. 6, Tabla 2)
+  y a la auditoria local E8. Asi que #47 no se reabre.
+- **Aporte lateral:** Zhu es otro ejemplo de metal simulado sobre CT limpio (DeepLesion; titanio; Spektr 120 kVp, XCOM,
+  beam hardening y photon starvation; sin scatter) **para entrenar MAR, no como aumentacion para segmentacion**, y sin
+  datos clinicos con metal. Entra en la familia de simuladores fisicos que `main.tex:48`/`:54` ya describe. No da el
+  alcance espacial del artefacto en mm: el *"remains unmeasured"* de #57 sigue en pie.
+- **Decision (asistente, delegada):** no citar.
+  - (a) *Descartada:* citarlo en Related Work como simulador de insercion. Hay fuentes mas directas ya leidas
+    (`peters2025hybrid`, `ren2022metalinsertion`) y no aporta al renderizador.
+- **Snowballing:** Park 2015 (caracterizacion matematica del beam hardening) queda PENDIENTE N2 en `_candidatos.md`. Es la
+  unica pista nueva hacia la estructura espacial del artefacto (#57). **No se lee salvo que sobre tiempo.**
+
+### 82 — Duplicados en `refs/raw/` y `\nocite{*}`: la bibliografia sube a 70 entradas, seis de ellas sin citar — DECIDIDA en parte (aplicacion en `main.tex` pendiente de orden)
+
+- **Duplicados:** `gertzbein1990pedicularscrew.nbib` y `templeman1996iliosacralscrews.nbib` son copias identicas (`diff`
+  vacio) de raws que ya existian. **Decision (asistente): no se crean claves nuevas.** Los PDF nuevos se asocian a
+  `gertzbein1990` y `templeman1996proximity` (`refs/MAPEO.md`).
+  - *Descartadas:* crear las dos entradas (la referencia saldria duplicada en la bibliografia); borrar los raw (la regla 9
+    dice que el raw no se toca y que la lista la define la autora).
+  - **Pendiente de la autora (opcional):** borrar esos dos raw o renombrar los PDF a la clave. No cambia `refs.bib`.
+- **`\nocite{*}` (`main.tex:139`):** las seis altas entran a la bibliografia **sin que `main.tex` cite ninguna**. Entre
+  ellas va `vaccaro1995part1`, que esta en N4 (fuera de alcance). Compilado en copia: 6 paginas, **70 referencias**, 0
+  citas indefinidas, y los tres avisos esperados de BibTeX (numero sin volumen: `hinsche2002fluoroscopy`,
+  `templeman1996proximity` y ahora `matta1996internal`).
+  - (a) Mantener `\nocite{*}`. La bibliografia refleja todo lo leido, pero un jurado vera obras que el texto no cita.
+  - (b) **Recomendada:** quitar `\nocite{*}` antes de la entrega, para que la bibliografia liste solo lo citado. Es una
+    linea. **No se aplica: la regla 4 exige orden explicita sobre `main.tex` en el turno.**
+  - (c) Citar las nuevas en `main.tex`. *Descartada*: ninguna aporta a un objetivo (#77-#81).
+- **Tipo:** REDACCION / forma. **Nivel:** N3.
+
+### Evaluacion de impacto sobre los documentos rectores (regla 13)
+
+- **`00-tesis.md`:** sin cambio de alcance, hipotesis ni objetivos. Solo queda **obsoleta una linea** de `Pendiente de
+  decision de la autora`: *"`templeman1996proximity` sigue en `refs.bib` sin PDF"*. Ya tiene PDF y ficha completa, y su
+  papel en el 2-15% queda resuelto (#77). Texto propuesto en el chat; lo aplica la autora.
+- **`01-decisiones.md`:** no hace falta ninguna decision de alcance. Se propone en el chat una entrada breve que deje
+  constancia de #77-#82. Este archivo lo escribe la autora (regla 3).
+- **`02-datos.md`:** **sin implicancias.** Ninguna fuente toca CTPelvic1K, la cohorte ni las particiones.
+- **Renderizador / Objetivo 1 / P1:** **sin implicancias.** Nada de lo leido afecta el VAE, la compuerta de 25 HU,
+  ControlNet ni `B_delta`. El camino critico sigue siendo P1 en Khipu.
+
+---
+
+## Ronda 2026-09-18 — 13 fuentes nuevas, limpieza de duplicados (asistente en rol de asesor, delegacion explicita)
+
+**Encargo de la autora (2026-09-18):** leer los papers nuevos con subagentes, revisar si queda algun PDF sin ficha y
+borrar los duplicados verificados. Lecturas: `ziran2003` (PDF previo sin ficha, ahora con raw), `gardner2011transiliac-transsacral`,
+`reilly2003effect`, `miller2012variations`, `wu2009variable`, `xu1996projection`, `ebraheim2000lumbosacral`,
+`griffin2003vertically`, `mostafavi1996radiologic`, `lyu2020dudonet`, `wang2022adaptativeconv`, `yazdi2011opposite`
+y `song2024bmar` (solo abstract, no hay PDF). **Despues de esta ronda no queda ningun PDF de `papers/` sin ficha.**
+
+**Duplicados borrados** (autorizacion de la autora; detalle en `refs/MAPEO.md`): `miller2012sacralmorphology` (raw y PDF
+identicos byte a byte a `miller2012variations`), `gertzbein1990pedicularscrew` (raw y PDF) y el raw
+`templeman1996iliosacralscrews`. El PDF de Templeman se renombro a `papers/templeman1996proximity.pdf`.
+
+**Veredicto global:** una sola lectura toca `main.tex` (#85, redaccion de la limitacion de campo mas un supuesto del
+benchmark). El resto cierra cadenas de citas o confirma decisiones vigentes. **Alcance, compuerta del Objetivo 1, P1 y
+renderizador: sin cambios.**
+
+### 83 — `ziran2003` no propone el umbral de 10 mm y no da prior ordinal en S2: se cierra el ultimo nodo de la cadena — CERRADA (sin cambio)
+
+- La unica mencion es descriptiva: *"very narrow (10 to 14 mm) corridors"* en sacros dismorficos (Discussion, p. 417).
+  No se mide sistematicamente, no se cita de nadie y no se propone como criterio. `gardner2010safezones` simplifica
+  esa frase al atribuirle el 10 mm.
+- 113 tornillos de 7.3 mm (80 S1, 31 S2, 2 S3), 66 pacientes, **0 malposicion con criterio binario** (pp. 413-416).
+  No hay mm, grados ni resultados por nivel: **no hay prior ordinal para S2**, lo que confirma que S2 se evalua solo
+  descriptivamente (#12).
+- El ano es 2003 (J Bone Joint Surg Br 85-B:411-8). El "2002" de Moed corresponde a las fechas de recepcion.
+- `main.tex:52` atribuye el 10 mm a Kaiser como convencion elegida. Es correcto. **Sin cambio.** La ref. 22 de Ziran
+  (resumen de congreso de 1996) queda en `_candidatos.md` como "no perseguir".
+
+### 84 — Tres atribuciones de `kaiser2014dysmorphism` no aparecen en sus fuentes primarias — CERRADA (registro; `main.tex` no las usa)
+
+- **Gardner 2011:** la frase *"sufficient size and complementary orientation to allow screw placement without a cortical
+  breach"* **no esta en el PDF**. El criterio de viabilidad transsacra es cualitativo, sin umbral en mm.
+- **Miller 2012:** la definicion de displasia (*"a sacral phenotype in which the size and orientation ... does not allow
+  safe passage"*) **no esta en el PDF**. Solo aparecen frases cercanas (*"may preclude transiliac, transsacral screw
+  placement"*, p. 12). Los siete signos de dismorfismo son cualitativos.
+- **Wu 2009** (Kaiser lo cita como "Lu LP" y con otro titulo): no mide dismorfismo ni corredor, no usa CT (203 sacros
+  secos). **No sostiene la diferencia etnica** que Kaiser le atribuye para explicar su prevalencia de 41%.
+- **Que usa `main.tex` de Kaiser:** el marco de referencia, la holgura de 5 mm, la convencion de 10 mm, el calibre de
+  6.3-8 mm y la regla de longitud util. **Nada de lo anterior**, y los fenotipos ya estan fuera de alcance (punto 8).
+- **Decision (asistente):** sin cambio. Regla para la redaccion futura: **no citar via Kaiser** la definicion de
+  dismorfismo, el requisito transsacro de Gardner ni argumentos etnicos. Si hacen falta, citar la fuente primaria con
+  su frase real.
+  - *Descartado:* reabrir el punto 8 de `Fuera de alcance`. Estas lecturas refuerzan la decision de no estratificar.
+- **Nota de Miller (p. 13):** con transicion lumbosacra, la raiz en riesgo puede ser de otro nivel. El etiquetado de S1
+  en la cohorte local ya tiene control de nivel (TotalSegmentator + revisor clinico, #50/#53/#54). Sin accion nueva.
+
+### 85 — `main.tex:117` dice que ninguna fuente midio el corredor con fractura, pero `reilly2003effect` lo mide; y abre un supuesto sobre la poblacion del benchmark — ABIERTA (decidida; aplicacion en `main.tex` pendiente de orden)
+
+- **Hallazgo 1 (redaccion):** `main.tex:117` afirma *"Every source that publishes sacral corridor geometry measured it
+  in pelves without implants and without fracture"*. **Es falso.**
+  - `reilly2003effect` mide la zona segura de S1 en 6 cadaveres con fractura sacra zona II por osteotomia y desplazamiento
+    craneal de 0, 5, 10, 15 y 20 mm, con CT de 1 mm.
+  - El area de la seccion limitante cae 36/50/79/90% (tablas, pp. 90-91). Con mas de 10 mm, el tornillo de 7 mm *"may not
+    be technically possible"* (p. 93).
+  - El abstract da otros porcentajes (30/56/81/90%) y el texto mezcla cm2 con mm2: **citar las tablas, no el abstract.**
+- **Hallazgo 2 (supuesto, no registrado antes):** el benchmark de Zwingmann viene de pacientes **fracturados y reducidos**,
+  mientras que los corredores de la tesis (`D_TS`) y los huespedes de la sintesis son pelvis **sin osteosintesis**. Reilly
+  muestra que la malreduccion estrecha el corredor, asi que parte de la malposicion clinica puede deberse a corredores mas
+  estrechos que los del huesped. Comparar las poses sinteticas con esas distribuciones supone que la geometria del
+  corredor no difiere entre ambas poblaciones.
+- **Opciones:**
+  - (a) **Elegida:** reescribir la frase para que Reilly refuerce la limitacion en vez de contradecirla, y anadir el
+    supuesto. Texto propuesto para `main.tex:117`:
+    > *"With one exception, every source that publishes sacral corridor geometry measured it in pelves without implants
+    > and without fracture: [...]. The exception, \citet{reilly2003effect}, osteotomised a zone~II sacral fracture in six
+    > cadaveric pelves and found that 5--20~mm of cranial displacement reduced the limiting S1 cross-section by 36--90\%,
+    > so corridor limits from intact pelves do not transfer to fractured or malreduced ones. The clinical ordinal
+    > distributions targeted here come from fractured, reduced pelves, whereas corridors are measured on pelves without
+    > osteosynthesis; residual malreduction is therefore an uncontrolled difference between benchmark and host."*
+  - (b) Acotar la frase a *"clinical CT cohorts"*. Es minimo y cierto, porque Reilly es cadaverico, pero pierde el mejor
+    argumento a favor de medir el corredor en cada volumen y deja el supuesto sin declarar.
+  - (c) Borrar la frase. Pierde la justificacion de R1.
+- **Por que (a):** corrige una afirmacion falsa verificable por cualquier revisor y convierte la fuente en respaldo del
+  diseno (medir `D_TS` por volumen). No cambia ningun metodo ni corrida.
+- **No aplicado:** la regla 4 exige orden explicita sobre `main.tex` en el turno. **Tipo:** REDACCION + SUPUESTO
+  (benchmark). **Nivel:** N1 (frase falsa en el documento).
+
+### 86 — Punto de entrada y margenes neurales: siguen sin fuente en mm, y el diseno no los necesita — CERRADA (sin cambio)
+
+- `xu1996projection` da la region de entrada como triangulo (EIPS 30 mm y EIPI 27.4 mm al eje), sin S1/S2, sin angulos
+  y sin CT. `ebraheim2000lumbosacral` trata un tornillo **dorsal** S1 (no iliosacro) y no da margenes en mm.
+- El muestreador obtiene la trayectoria del corredor medido en cada volumen, y la entrada sale como interseccion con la
+  cortical iliaca lateral. **No depende de un prior publicado de entrada.** La holgura `c` de 1-2 mm y la escala de brecha
+  siguen declaradas como convenciones (Kaiser; #68/#78).
+- **Decision:** sin cambio. *Descartado:* perseguir Kellam 1992 (capitulo de libro) o Mirkovic 1991.
+
+### 87 — Umbrales de metal en la literatura MAR: la cadena del 2500 HU no tiene origen, y el 3000 HU tampoco — CERRADA (sin cambio; refuerza C1)
+
+- `wang2022adaptativeconv` segmenta las mascaras clinicas de CLINIC-metal a 2500 HU *"Following [Yu et al., 2020]"*
+  (p. 5), pero `yu2021` (esa misma obra) usa **2000 HU**. `wang2025adaptiveweighting` atribuye el 2500 HU a DICDNet y
+  DuDoNet. **El 2500 HU sobre CLINIC-metal es una convencion del grupo sin fuente primaria.**
+- `lyu2020dudonet`: 3000 HU sin justificar ni citar (p. 4). Es la unica fuente que Xie da para ese umbral.
+- `yazdi2011opposite`: umbral **global** `0.9*Imax` por corte, sin validar la segmentacion. Es precedente de umbral
+  relativo, **no** del semimaximo local de E8.
+- ACDNet admite que *"An unsatisfactory threshold possibly makes tissues be wrongly regarded as metals"* (p. 6).
+- **Que toca:** `main.tex` ya usa 2500 HU solo como cribado heuristico (`02-datos.md`) y como cota en `main.tex:119`, y
+  C1 se apoya en la sobrecobertura propia de Xie y en E8. **Nada que corregir.**
+- **Decision:** sin cambio.
+  - *Descartado:* citar ACDNet en C1. Refuerza, pero C1 ya esta respaldada.
+  - *Descartado:* presentar Yazdi como precedente del semimaximo. No es el mismo principio.
+
+### 88 — Versiones y metadatos: reimpresion de Griffin, preprints de Lyu y ACDNet, `song2024bmar` sin PDF; la bibliografia sube a 83 — DECIDIDA (registro; refuerza #82)
+
+- `griffin2003vertically`: el raw y el PDF son la **reimpresion** (JOT 2006;20(1 Suppl):S30-S36); `refs.bib` imprime 2006
+  con la clave 2003 (precedente `herman2016`). El original (2003;17(6):399-405) solo aparece en la portada del PDF.
+- `lyu2020dudonet` (preprint arXiv, **sin Liao** entre los autores) y `wang2022adaptativeconv` (arXiv v2): las paginas
+  de las fichas no coinciden con la version publicada que cita `refs.bib`.
+- `song2024bmar`: solo abstract. **No confirma** ser el origen de la escala humana de 5 niveles de `wang2025adaptiveweighting`.
+  `main.tex` no la usa.
+- **Ninguna de las 13 se cita en `main.tex`.** Con `\nocite{*}` la bibliografia pasa a **83 referencias**, 19 sin citar.
+  Compila en copia: 6 paginas, 0 citas indefinidas, 4 avisos esperados (CORR sin volumen, ahora tambien
+  `mostafavi1996radiologic`). **Refuerza la recomendacion (b) de #82: quitar `\nocite{*}` antes de la entrega.**
+- **Decision:** ninguna de estas versiones se cita con numero de pagina mientras no haya PDF de la version publicada.
+  *Descartado:* cambiar la clave de Griffin (la define la autora).
+
+### Evaluacion de impacto sobre los documentos rectores (regla 13)
+
+- **`00-tesis.md`:** sin cambio de alcance. #85 anade un supuesto al benchmark (poblacion fracturada frente a huesped
+  sin osteosintesis), que va a `main.tex` si la autora aprueba (a). No se toca `00-tesis.md` (regla 14).
+- **`01-decisiones.md`:** texto propuesto en el chat (duplicados borrados + #85).
+- **`02-datos.md`:** sin implicancias. El 2500 HU ya estaba declarado como heuristica de cribado (#87 lo confirma).
+- **Renderizador / Objetivo 1 / P1:** sin implicancias.
+
+### 85 — APLICADA en `main.tex:117` (2026-09-18), opcion (a), por orden explicita de la autora
+
+- Titulo del parrafo: *"corridor geometry has almost only been characterized in intact pelves"*.
+- *"With one exception, every source ..."*, seguido de Reilly: seis cadaveres, fractura zona II osteotomizada, 5-20 mm de
+  desplazamiento craneal y area para tornillos de S1 reducida un 36-90% (Results, p. 91). Se cierra con *"this supports
+  measuring the corridor on each volume"*.
+- Supuesto declarado: las distribuciones de Zwingmann vienen de pelvis fracturadas (Tile B y C; Materials and Methods,
+  p. 1834), y los corredores se miden en pelvis sin osteosintesis.
+- **Diferencia con el texto propuesto:** donde el borrador decia *"fractured, reduced pelves"* quedo *"fractured pelves
+  (Tile types B and C)"*. La ficha de Zwingmann respalda el tipo de fractura, pero no la calidad de la reduccion, asi que
+  "reduced" se quito para no afirmar algo sin fuente.
+- Compila: 6 paginas, 83 referencias, 0 citas indefinidas. **#85 APLICADA.**

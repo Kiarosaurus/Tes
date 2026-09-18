@@ -48,9 +48,9 @@ Menciona el artefacto y una correccion, pero sin cuantificarla ni validarla: "Th
 | 40 pacientes | "assessed in 40 consecutive patients treated with the AO" | Abstract, p. 11 |
 | 167 tornillos, T8-S1 | "analyzes 167 pedicular screws inserted with the AO 'Fixateur Interne' from T8 to S1" | Introduction, p. 11 |
 | 81% dentro de 2 mm | "Eighty-one percent of the screws were placed within 2 mm of the medial border" | Abstract, p. 11 |
-| 6% con 4-8 mm | "6% had 4-8 mm canal encroachment with two patients developing minor neurological complications" | Abstract, p. 11 |
+| 6% con 4-8 mm | "6% had 4-8 mm of canal encroachment with two patients developing minor neurological complications" | Abstract, p. 11 |
 | 9% con 2-4 mm | "Another 9% were inserted 2-4.0 mm into the spinal canal" | Results, p. 11 |
-| 4% lateral al pediculo (abstract) | "Four percent of the screws were inserted lateral to the pedicle." | Abstract, p. 11 |
+| 4% lateral al pediculo (abstract) | "Four percent were inserted lateral to the pedicle." | Abstract, p. 11 |
 | 3.7% lateral (resultados) | "Screw placement lateral to the pedicle occurred in 3.7% of the total screws" | Results, p. 11 |
 | Tramos de la Tabla 1 | "In pedicle / 0-2 mm / 2.1-4.0 mm / 4.1-6.0 mm / 6.1-8.0 mm / Lateral to Pedicle" | Tabla 1, p. 13 |
 | Porcentajes por tramo | "71.9 / 9.6 / 9.0 / 4.8 / 1.8 / 3.6" (columna %) | Tabla 1, p. 13 |
@@ -89,8 +89,8 @@ Auditoria de la procedencia de la escala ordinal de brecha cortical del benchmar
 | Modalidad de verificacion | "Postoperative CT scans were used to measure canal encroachment from the medial border" | Abstract, p. 11 |
 | TC en todos los casos | "CT scans were performed postoperatively in every case to measure canal encroachment" | Materials and Methods, p. 11 |
 | Corte 2 mm (81%) | "Eighty-one percent of the screws were placed within 2 mm of the medial border" | Abstract, p. 11 |
-| Tramo 4-8 mm (6%) | "6% had 4-8 mm canal encroachment with two patients developing minor neurological complications" | Abstract, p. 11 |
-| Colocacion lateral (4%) | "Four percent of the screws were inserted lateral to the pedicle." | Abstract, p. 11 |
+| Tramo 4-8 mm (6%) | "6% had 4-8 mm of canal encroachment with two patients developing minor neurological complications" | Abstract, p. 11 |
+| Colocacion lateral (4%) | "Four percent were inserted lateral to the pedicle." | Abstract, p. 11 |
 | Parametros ligados al exito | "entry point, angle of insertion and pedicular isthmus widths" | Abstract, p. 11 |
 | Mejora en el ultimo 25% | "Improvement in accuracy was noted in the latter 25% of screw insertions" | Abstract, p. 11 |
 | Novedad declarada (in vivo) | "no studies have been undertaken to assess the accuracy of pedicular screw placement in vivo" | Introduction, p. 11 |
@@ -161,3 +161,18 @@ Auditoria de la procedencia de la escala ordinal de brecha cortical del benchmar
 **(b) Nivel sugerido: 1 (profunda).** Es el nodo raiz de la escala central del benchmark; su lectura fina cambia como se cita y como se justifica la metrica principal.
 
 **(c) Acceso y paginas.** Acceso: PDF completo local, texto legible, 4 paginas (pp. 11-14 de Spine, vol. 15, num. 1, 1990). Incluye las dos tablas y las ocho figuras. Sin DOI impreso en el documento.
+
+## Verificacion contra segunda copia del PDF (2026-09-17)
+
+- La autora subio `papers/gertzbein1990pedicularscrew.pdf` (hash distinto; raw
+  `refs/raw/gertzbein1990pedicularscrew.nbib` identico a `gertzbein1990.nbib`, PMID 2326693).
+  Mismo articulo: Spine 15(1):11-14, sin paginas faltantes ni erratum. Escaneo sin capa de texto.
+- Toda cifra de esta ficha: CONFIRMADA contra la segunda copia (seis tramos de la Tabla 1,
+  71.9/9.6/9.0/4.8/1.8/3.6%, 40 pacientes, 167 tornillos, frases de 2 mm y 4 mm, p. 12).
+- Corregidas dos citas del abstract que no eran literales (se anadio "of the screws" y se
+  omitio "of"); las cifras no cambian.
+- Grosor de corte: sigue NO ENCONTRADO EN EL PDF en el texto. Las imagenes de las Figs. 6 y 8
+  (pp. 13-14) muestran rotulos de consola "5.0 MM"; el paper no dice que sea el grosor de corte,
+  asi que no se usa.
+- Escala de cuatro grados o letras A/B/C/D: no aparece (las letras solo rotulan Figs. 1 y 2).
+- No se crea entrada nueva: `gertzbein1990pedicularscrew` es duplicado de esta clave (ver `refs/MAPEO.md`).

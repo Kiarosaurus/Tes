@@ -1038,3 +1038,35 @@ literatura, que P1 produce igual.
 ninguna decision.
 
 Registrada por el asistente en rol de asesor con delegacion explicita de la autora (2026-09-17).
+
+---
+
+## 2026-09-17 (3) — Regla operativa de la compuerta del Objetivo 1 en P1 (#76)
+
+**Decision** (preguntas 1-4 respondidas por la autora; desempate y marginal decididos por el asistente como asesor por orden
+explicita de la autora; todo fijado ANTES de correr P1):
+- **Combinaciones:** modelo {VAE de SD 1.5 preentrenado, decodificador afinado con encoder congelado} x codificacion
+  {`pub`, `LW20000`, `pub+asinh`}; un decodificador afinado por codificacion. **Hay Go si alguna de las seis pasa.**
+- **Lectura de HU:** `vae regla` (canal mas estrecho no saturado, sin usar el HU verdadero). `vae oraculo` es cota.
+- **Estadistico:** MAE en hueso (> 150 HU) por paciente; **media sobre los 34 pacientes de test < 25 HU**
+  (`experiments/objetivo1/p1_particion.csv`, semilla 20260917, estratos Dataset x Metal). Si falta algun paciente de test,
+  la combinacion queda sin veredicto.
+- **Multiplicidad:** declarada, sin corregir. IC95 bootstrap por paciente junto a cada veredicto; un pase con limite
+  superior >= 25 HU se reporta como **MARGINAL** y no cambia el veredicto.
+- **Desempate si pasan varias:** orden a priori, no por error: `pub+asinh`, `LW20000`, `pub`; dentro de cada codificacion,
+  preentrenado antes que afinado.
+- **No deciden:** RMSE, metal, `B_delta`, mediana, pacientes que fallan, subgrupos.
+
+**Aplicado:** `tesis/main.tex:77` y fila *Representation Viability* de la tabla (compila: 0 errores, 6 paginas, 64
+referencias); `p1_decodificador_sd15.py` (`ORDEN_OBJ3`, etiqueta MARGINAL); #76 DECIDIDA Y APLICADA.
+
+**Por que:** las cuatro elecciones cambian el veredicto y no estaban en el documento; una regla preinscrita que solo vive
+en un script no se puede auditar. Elegir entre combinaciones por menor error seria seleccionar sobre el test. El orden
+pone primero las codificaciones que representan el rango del metal (el techo de 2000 HU de `pub` lo recorta, #39) y el
+modelo que menos cambia.
+
+**Alternativas descartadas:** una sola codificacion preinscrita (propuesta del asistente; la autora eligio las tres);
+decidir por limite superior del IC95 < 25 HU (mas estricto; la autora eligio la media); desempate por menor MAE.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-17).
+

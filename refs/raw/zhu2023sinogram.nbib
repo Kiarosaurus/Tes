@@ -1,0 +1,132 @@
+PMID- 36842222
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20230314
+LR  - 20230320
+IS  - 1879-0534 (Electronic)
+IS  - 0010-4825 (Linking)
+VI  - 155
+DP  - 2023 Mar
+TI  - Sinogram domain metal artifact correction of CT via deep learning.
+PG  - 106710
+LID - S0010-4825(23)00175-0 [pii]
+LID - 10.1016/j.compbiomed.2023.106710 [doi]
+AB  - PURPOSE: Metal artifacts can significantly decrease the quality of computed 
+      tomography (CT) images. This occurs as X-rays penetrate implanted metals, causing 
+      severe attenuation and resulting in metal artifacts in the CT images. This 
+      degradation in image quality can hinder subsequent clinical diagnosis and 
+      treatment planning. Beam hardening artifacts are often manifested as severe strip 
+      artifacts in the image domain, affecting the overall quality of the reconstructed 
+      CT image. In the sinogram domain, metal is typically located in specific areas, 
+      and image processing in these regions can preserve image information in other 
+      areas, making the model more robust. To address this issue, we propose a 
+      region-based correction of beam hardening artifacts in the sinogram domain using 
+      deep learning. METHODS: We present a model composed of three modules: (a) a 
+      Sinogram Metal Segmentation Network (Seg-Net), (b) a Sinogram Enhancement Network 
+      (Sino-Net), and (c) a Fusion Module. The model starts by using the Attention 
+      U-Net network to segment the metal regions in the sinogram. The segmented metal 
+      regions are then interpolated to obtain a sinogram image free of metal. The 
+      Sino-Net is then applied to compensate for the loss of organizational and 
+      artifact information in the metal regions. The corrected metal sinogram and the 
+      interpolated metal-free sinogram are then used to reconstruct the metal CT and 
+      metal-free CT images, respectively. Finally, the Fusion Module combines the two 
+      CT images to produce the result. RESULTS: Our proposed method shows strong 
+      performance in both qualitative and quantitative evaluations. The peak 
+      signal-to-noise ratio (PSNR) of the CT image before and after correction was 
+      18.22 and 30.32, respectively. The structural similarity index measure (SSIM) 
+      improved from 0.75 to 0.99, and the weighted peak signal-to-noise ratio (WPSNR) 
+      increased from 21.69 to 35.68. CONCLUSIONS: Our proposed method demonstrates the 
+      reliability of high-accuracy correction of beam hardening artifacts.
+CI  - Copyright © 2023 Elsevier Ltd. All rights reserved.
+FAU - Zhu, Yulin
+AU  - Zhu Y
+AD  - The First Dongguan Affiliated Hospital, Guangdong Medical University, Dongguan, 
+      523808, China.
+FAU - Zhao, Hanqing
+AU  - Zhao H
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Wang, Tangsheng
+AU  - Wang T
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Deng, Lei
+AU  - Deng L
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Yang, Yupeng
+AU  - Yang Y
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Jiang, Yuming
+AU  - Jiang Y
+AD  - Department of Radiation Oncology, Stanford University, Stanford, CA, 94305, USA.
+FAU - Li, Na
+AU  - Li N
+AD  - Department of Biomedical Engineering, Guangdong Medical University, Dongguan, 
+      523808, China.
+FAU - Chan, Yinping
+AU  - Chan Y
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Dai, Jingjing
+AU  - Dai J
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Zhang, Chulong
+AU  - Zhang C
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Li, Yunhui
+AU  - Li Y
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Xie, Yaoqin
+AU  - Xie Y
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China.
+FAU - Liang, Xiaokun
+AU  - Liang X
+AD  - Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences, Shenzhen, 
+      518055, China. Electronic address: xk.liang@siat.ac.cn.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20230220
+PL  - United States
+TA  - Comput Biol Med
+JT  - Computers in biology and medicine
+JID - 1250250
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Artifacts
+MH  - *Deep Learning
+MH  - Reproducibility of Results
+MH  - Tomography, X-Ray Computed/methods
+MH  - Metals
+MH  - Image Processing, Computer-Assisted/methods
+MH  - Phantoms, Imaging
+MH  - Algorithms
+OTO - NOTNLM
+OT  - Deep learning
+OT  - Image segmentation
+OT  - Metal artifact correction
+OT  - Sino-net
+OT  - Sinogram domain
+COIS- Declaration of competing interest The authors declare that they have no known 
+      competing financial interests or personal relationships that could have appeared 
+      to influence the work reported in this paper.
+EDAT- 2023/02/27 06:00
+MHDA- 2023/03/15 06:00
+CRDT- 2023/02/26 18:08
+PHST- 2022/08/09 00:00 [received]
+PHST- 2023/02/12 00:00 [revised]
+PHST- 2023/02/19 00:00 [accepted]
+PHST- 2023/02/27 06:00 [pubmed]
+PHST- 2023/03/15 06:00 [medline]
+PHST- 2023/02/26 18:08 [entrez]
+AID - S0010-4825(23)00175-0 [pii]
+AID - 10.1016/j.compbiomed.2023.106710 [doi]
+PST - ppublish
+SO  - Comput Biol Med. 2023 Mar;155:106710. doi: 10.1016/j.compbiomed.2023.106710. Epub 
+      2023 Feb 20.

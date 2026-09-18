@@ -9,7 +9,7 @@
 
 **Donde esta el proyecto.**
 - `main.tex` compila: **6 paginas**, 64 referencias, 0 errores, 0 citas indefinidas. `src/` sigue **vacio**.
-- Literatura: **toda entrada de `refs/raw/` tiene ficha** (ronda 2026-09-16). Implicancias hasta **#75**.
+- Literatura: **toda entrada de `refs/raw/` tiene ficha** (ronda 2026-09-16). Implicancias hasta **#76**.
 - **Decisiones del 2026-09-17, delegadas al asistente como asesor** (`01-decisiones.md`, entrada 2026-09-17):
   - se mantiene el renderizador (la autora rechazo recortarlo);
   - ablaciones FUERA; brazo fisico de Peters sobre un subconjunto reducido;
@@ -24,14 +24,23 @@ vacio. En la PC: `outputs/e6b_vae_sd15.csv` = cohorte MAE vieja (178 filas, 32 c
 `outputs/e6b/`. **Decision 2026-09-17 (2):** no se relanza la cohorte RMSE sola; MAE y RMSE se reportan dentro de P1.
 
 **Siguiente, en orden:**
-1. **P1 — script nuevo (no modificar la corrida vieja):** afinar solo el decodificador del VAE de SD 1.5 (encoder
-   congelado) con cortes multi-ventana de pacientes de entrenamiento, y evaluar en pacientes separados **el VAE
-   preentrenado y el afinado** con MAE **y** RMSE en ROI hueso (> 150 HU), metal (> 2500 HU) y `B_delta` (metal dilatado
-   ~12 mm menos metal). Reutilizar de `e6b_vae_sd15.py` la codificacion, el ROI y el control de identidad. Particion
-   por paciente (`Grupo paciente` de `experiments/exploration-3d/revision.csv`, exclusiones de
-   `experiments/exploration-3d/exclusiones.csv`). Leer `experiments/objetivo2/KHIPU.md`
-   antes de escribir el `.sbatch`. Criterio preinscrito en `main.tex`: MAE en hueso < 25 HU; si ninguno pasa, no hay
-   Objetivo 3.
+1. **P1 — PREPARADO Y PROBADO EN LOCAL (2026-09-17), falta correr en Khipu.** `experiments/objetivo1/p1_decodificador_sd15.py`
+   + `p1_entrenar.sbatch` / `p1_evaluar.sbatch` + `p1_particion.csv` (168 pacientes: 126/8/34, semilla 20260917). Regla
+   fijada por la autora antes de correr: Go si **alguna** de {sd15, afinado} x {pub, LW20000, pub+asinh} tiene **media por
+   paciente** del MAE en hueso con **`vae regla`** < 25 HU en los 34 de test. Comandos: `KHIPU.md`, seccion P1 (prueba
+   corta -> 3 entrenamientos -> evaluacion). Local: controles identidad/eco/hash/`B_delta` OK; VAE real sin probar.
+   **#76 DECIDIDA Y APLICADA** (regla completa en `main.tex:77`; desempate a priori pub+asinh > LW20000 > pub, sd15 antes
+   que afinado; pase MARGINAL si IC95 superior >= 25 HU). Registrada en `01-decisiones.md` 2026-09-17 (3).
+   **Lanzado en Khipu (2026-09-17):** prueba 51667 (entrenar) + 51668 (evaluar, afterok) y cohorte 51669/51670/51671
+   (pub+asinh/LW20000/pub) **a la vez, sin esperar la prueba**. Evaluacion rechazada (`QOSMaxSubmitJobPerUserLimit`).
+   Estado 00:56: 51667 corre bien en ds001 (paso 0: val hueso regla MAE 156.02 HU, 4.1 GB); 51668 espera dependencia;
+   51669-71 en PD (Priority). ~01:05: 51667 COMPLETED (5:40); **51668 FAILED rc=1 (2:38), causa sin leer**; 51669 corre
+   en ds001 (arranco antes del hold); 51670-71 retenidos. Causa de 51668: faltaba `qc/e6b_vae_sd15_mae_20260915.csv` (evaluacion
+   completa, fallo en el control). Prueba: 1.32 s/paso, 24.6 GB, ~11 h/config. Pendiente: subir CSV + `.py`, `resumen` en
+   nodo de acceso (meta sd15 frente a E6b 4 de 4) y `scontrol release 51670 51671`.
+   **51669 (`pub+asinh`) COMPLETED en 10:36:07** (estimacion 11 h, acertada). **51670 y 51671 siguen PENDING 20 h
+   despues por `scontrol hold`; liberados y 51670 corre en g002, 51671 detras.** Controles de la prueba CERRADOS:
+   **sd15 frente a E6b 4 de 4**, identidad 2 de 2, hashes OK. Falta: evaluacion (~3.5-4 h tras el ultimo entrenamiento).
 2. **P2:** verificar en el codigo de XCIST si paciente y metal se proyectan juntos (#70).
 3. **P3:** muestreador + SAP en `src/muestreador/` (en paralelo a P1).
 Autora: laminas `e9ts_revision_laminas_autora.csv` 0/16; plazo de 2 semanas al revisor de #53.

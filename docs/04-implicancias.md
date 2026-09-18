@@ -6116,3 +6116,39 @@ dentro de esa restriccion. Estado resultante:
 Si hay limite de paginas, el recorte natural es el parrafo del supuesto de dominio imagen (`main.tex:56`) y la frase de
 Mirza. Sin implicancia nueva sobre el argumento.
 
+### 76 — La regla operativa del Go/No-Go de P1 (fijada el 2026-09-17) no esta escrita en `main.tex` e introduce comparacion multiple: seis combinaciones, basta con que pase una — DECIDIDA Y APLICADA (2026-09-17)
+
+- **Origen:** preparacion de P1 (`experiments/objetivo1/p1_decodificador_sd15.py`), 2026-09-17. Antes de escribir codigo
+  la autora fijo, **sin haber visto resultados**: (i) las tres configuraciones (`pub`, `LW20000`, `pub+asinh`) con un
+  decodificador afinado por cada una, **Go si alguna pasa**; (ii) lectura de HU `vae regla`; (iii) estadistico = media
+  por paciente del MAE en hueso < 25 HU; (iv) poblacion = los 34 pacientes de test, estratificados.
+- **Hallazgo 1 (redaccion):** `main.tex:77` dice *"evaluated on held-out patients for the pretrained autoencoder and for a
+  decoder-adapted variant"*, pero no nombra la configuracion de ventanas, la lectura de HU (oraculo o regla), el
+  estadistico (media, mediana, todos) ni la poblacion. Esas cuatro elecciones cambian el veredicto y hoy solo estan en
+  el docstring del script y en el chat. Una regla preinscrita que no esta en el documento no se puede auditar.
+- **Hallazgo 2 (supuesto / validez):** con 2 modelos x 3 configuraciones hay **seis oportunidades** de pasar. No se
+  corrige por multiplicidad. Con 34 pacientes y una media de puntos, una combinacion puede quedar bajo 25 HU por azar de
+  muestreo aunque su IC95 cruce el umbral. El script reporta IC95 bootstrap por paciente pero, por la regla elegida, **no
+  decide** con el.
+- **Hueco nuevo:** si pasan dos o mas combinaciones, **no hay regla para elegir cual usa el Objetivo 3**. Elegirla despues
+  de ver las cifras repite el patron #25/#37/#45/#47/#50.
+- **Opciones para la autora:**
+  - (a) Escribir en `main.tex:77`, antes de lanzar la cohorte, las cuatro elecciones y la frase de multiplicidad. Recomendada.
+  - (b) Fijar ya la regla de desempate (p. ej., menor media de MAE en hueso con `vae regla`; o preferencia a priori por
+    `pub+asinh`, codificacion exacta) y registrarla en `01-decisiones.md`.
+  - (c) Reportar el IC95 junto al veredicto y declarar en limitaciones que la compuerta no corrige por multiplicidad.
+- **No aplicado** (regla 14). **Tipo:** REDACCION + SUPUESTO / criterio del Objetivo 1. **Nivel propuesto: N1** (toca la
+  compuerta que decide si existe el Objetivo 3).
+- **Decision (asistente como asesor, orden explicita de la autora, 2026-09-17):** (a) + (b) + (c), sin tocar el
+  estadistico que eligio la autora (media puntual).
+  - (a) La regla completa queda en `main.tex:77` (34 pacientes de test estratificados; dos variantes x tres codificaciones
+    nombradas, ventanas de `wang2025adaptiveweighting`; lectura sin verdad; media por paciente < 25 HU; basta una de seis).
+    Fila *Representation Viability* de la tabla ajustada a lo mismo.
+  - (b) Desempate **a priori, no por error**: `pub+asinh`, `LW20000`, `pub` (techo de 2000 HU recorta el metal); dentro de
+    cada una, preentrenado antes que afinado. Elegir por menor MAE seria seleccionar sobre el test.
+  - (c) Multiplicidad declarada sin corregir; IC95 bootstrap por paciente junto a cada veredicto; un pase con limite
+    superior >= 25 HU se etiqueta **MARGINAL** y no cambia el veredicto.
+- **Aplicado:** `main.tex` compila 0 errores, 6 paginas, 64 referencias, 0 citas indefinidas. `p1_decodificador_sd15.py`
+  implementa (b) y (c) (`ORDEN_OBJ3`); probado con CSV sinteticos de 34 pacientes: NO-GO, GO con eleccion por orden (elige
+  `pub+asinh` aunque `pub` tenga menor error) y GO MARGINAL (media 24.56, IC95 [20.00, 33.68]).
+

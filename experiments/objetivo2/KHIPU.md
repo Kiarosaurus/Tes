@@ -77,6 +77,9 @@ Cuenta: `--account=tesis`.
    `sed -i 's/\r$//' ~/metalsynth/*.sbatch`.
 6. En una MIG, `nvidia-smi` muestra la tarjeta física (A100 40 GB), no la porción asignada.
 7. El log de `tail -f` puede quedar vacío un rato: `module` y `conda` tardan antes del primer `echo`.
+8. **Límite de envíos (2026-09-17):** con 5 jobs propios en cola o corriendo (P1: 51667-51671), el sexto `sbatch`
+   fue rechazado con `QOSMaxSubmitJobPerUserLimit`, y `$E` quedó vacío sin error aparente. Aparte de `MaxJobsPU=3`
+   (corriendo), hay un tope de jobs **enviados**. Un job con `--dependency` también ocupa cupo mientras espera.
 
 ## Correr la cohorte completa
 
@@ -536,3 +539,144 @@ python -c "import csv; r=list(csv.DictReader(open(r'experiments\objetivo1\output
 
 Meta: **178 filas y 56 columnas**. Y que las medianas de MAE del `.md` nuevo coincidan con las de
 `e6b_mae_20260915\e6b_vae_sd15.md` (hueso: 152.05 / 212.00 / 162.95 en `vae regla`).
+
+## P1: compuerta del Objetivo 1 con decodificador afinado (decision 2026-09-17, D.1)
+
+GPU (RTX A6000, particion `gpu`). Script `experiments/objetivo1/p1_decodificador_sd15.py` (no toca E6b): afina
+`post_quant_conv` + `decoder` del VAE de SD 1.5 con el encoder congelado, **una vez por configuracion** (`pub`,
+`LW20000`, `pub+asinh`), y evalua en los **34 pacientes de test** el VAE preentrenado (`sd15`) y el afinado con MAE y
+RMSE en hueso, metal y `B_delta`. Particion versionada en `experiments/objetivo1/p1_particion.csv` (168 pacientes:
+126 train, 8 val, 34 test; semilla 20260917). Regla del Go/No-Go y diseno en el docstring del script.
+
+**Regla preinscrita (autora, 2026-09-17, antes de correr):** Go si ALGUNA combinacion {sd15, afinado} x configuracion
+tiene media por paciente del MAE en hueso con `vae regla` < 25 HU sobre los 34 de test. Lo escribe `p1_compuerta.md`,
+con IC95 (pase MARGINAL si el limite superior >= 25 HU) y, si pasan varias, la elegida por orden a priori (#76).
+
+**Prueba local (2026-09-17, PC sin GPU, diffusers aislado en el scratchpad):**
+- `identidad` + `eco` sobre `CLINIC_0012` (sin metal) y `metal_0006`: identidad frente a E6c **9 de 9**; eco frente a
+  identidad **24 de 24** (incluye `bdelta`). Con un valor de E6c alterado en 0.5 HU: **8 de 9** y senala el valor.
+- `B_delta` frente a fuerza bruta en un volumen sintetico anisotropo: 648 = 648 voxeles.
+- VAE diminuto con pesos aleatorios (misma clase `AutoencoderKL`): entrenamiento cortado por `--horas-max`, reanudado
+  desde el paso guardado y completado; relanzar con `decoder_<cfg>.pt` ya escrito no hace nada. Encoder congelado (hash
+  identico) 1 de 1; decodificador afinado distinto del preentrenado 1 de 1. Control `sd15 frente a E6b` **0 de 4**
+  con ese modelo aleatorio: el control puede fallar.
+- **El VAE real no se probo en local** (ni velocidad ni memoria de entrenamiento). Su primer uso es la prueba corta.
+
+**Prueba corta (2026-09-17, job 51667, ds001, RTX A6000):** 126 volumenes train y 8 val; **49 490 199 parametros
+entrenables**; paso 0 (VAE preentrenado, cortes de val): **val hueso regla MAE 156.02 HU, RMSE 401.18 HU**, del orden de E6b
+(`pub+asinh vae regla` mediana 162.95); memoria 4.1 GB antes del primer paso de entrenamiento. Paso 200: **1.32 s/paso,
+24.6 GB** de GPU, val hueso regla MAE 130.92 HU; COMPLETO en 5 min 40 s con hash del encoder identico. Estimacion:
+30 000 pasos x 1.32 s = **~11 h por configuracion** (sin contar val ni lectura de volumenes).
+Evaluacion 51668: **~65 s por volumen y modelo con 1 configuracion**; `sd15 pub+asinh vae regla hueso` en `metal_0006` =
+242.9751, la misma cifra que E6b. Controles de hash OK. **Fallo rc=1 al final** (`FileNotFoundError:
+e6b_vae_sd15_mae_20260915.csv`): el `scp` de la cohorte E6b no se habia hecho. Desde entonces el script comprueba
+`--e6c`, `--e6b` y `--particion` antes de cargar modelos. 51668 y 51669 no compartieron GPU (51669 arranco 22 s despues).
+Tras subir el CSV, `resumen` en el **nodo de acceso** (segundos, sin GPU) cerro los controles de la prueba:
+**sd15 frente a E6b 4 de 4** (tolerancia 0.05 HU), identidad frente a E6c 2 de 2, encoder congelado 1 de 1 y
+decodificador afinado distinto 1 de 1. La tuberia reproduce E6b: la cohorte queda validada.
+
+**Paso 1: subir** (PowerShell local). `e6b_vae_sd15.py`, `e6c_techo_lw.py` y `e6c_techo_lw.csv` ya estan en `qc/`
+desde E6b; se vuelven a subir para asegurar la version. La cohorte MAE de E6b va con fecha en el nombre (control):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo1
+ssh kiara.balcazar@khipu.utec.edu.pe "mkdir -p ~/metalsynth/qc ~/metalsynth/data/p1"
+scp p1_entrenar.sbatch p1_evaluar.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp p1_decodificador_sd15.py p1_particion.csv e6b_vae_sd15.py e6c_techo_lw.py e6c_techo_lw.csv kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+scp outputs\e6b_vae_sd15.csv kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/e6b_vae_sd15_mae_20260915.csv
+```
+
+**Paso 2: comprobar** (Khipu). El entorno `e6b` y los pesos de SD 1.5 ya existen (E6b, paso 2):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' p1_*.sbatch
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate e6b && python -c "import torch, diffusers, nibabel, pandas, scipy; print('ok')"
+ls -l data/derivados/dataset7_CLINIC_metal_0059u0071_union.nii.gz      # la union de P158
+find data/extracted -name '*_data.nii*' | wc -l                         # 178
+wc -l qc/p1_particion.csv                                               # 169 (168 + cabecera)
+ls -l qc/e6b_vae_sd15_mae_20260915.csv qc/e6c_techo_lw.csv               # los dos deben existir (51668 fallo por esto)
+squeue -u $USER -o "%.8i %.14j %.9P %.2t %.10M %.8N %R"
+sbatch --test-only p1_entrenar.sbatch pub+asinh
+```
+
+**Paso 3: prueba corta** (Khipu): 200 pasos de `pub+asinh` y evaluacion de 1 caso de test con ese decodificador.
+Salida aparte en `data/p1_prueba/` para no mezclarla con la cohorte.
+
+```bash
+cd ~/metalsynth
+P=$(sbatch --parsable --time=01:00:00 p1_entrenar.sbatch pub+asinh --pasos 200 --cada-val 100 --cada-ckpt 100 --out $HOME/metalsynth/data/p1_prueba/pesos); echo "P1_prueba_entrenar=$P" | tee -a p1_jobs.txt
+Q=$(sbatch --parsable --time=01:00:00 --dependency=afterok:$P p1_evaluar.sbatch --pesos $HOME/metalsynth/data/p1_prueba/pesos --configs pub+asinh --casos dataset7_CLINIC_metal_0006_data --out $HOME/metalsynth/data/p1_prueba/eval); echo "P1_prueba_evaluar=$Q" | tee -a p1_jobs.txt
+squeue -j $P,$Q -o "%.8i %.12j %.2t %.10M %.8N %R"
+until [ -f p1_entrenar_$P.log ]; do sleep 20; done; tail -f p1_entrenar_$P.log     # Ctrl+C para salir
+```
+
+En `p1_entrenar_$P.log`, lee:
+- `nvidia-smi` y `cuda True`;
+- `paso 0 ... val hueso regla MAE X`: el VAE preentrenado sobre los cortes de val. Debe ser del orden de E6b
+  (cientos de HU); si da cerca de 0 o NaN, algo esta mal y **no lances la cohorte**;
+- `paso 200 ... | S s/paso | mem M GB`: **S x 30000 / 3600 = horas por configuracion**. Si pasa de 23 h, el job sale
+  con `INCOMPLETO` y se relanza igual (reanudable); anotalo, no cambies `--pasos` por eso. Si da `CUDA out of memory`,
+  copia el mensaje y para: bajar `--lote-entreno` es un cambio de diseno;
+- `COMPLETO ... CONTROL encoder congelado: hash identico`.
+
+En `p1_evaluar_$Q.log` (`tail -40`), lee:
+- `CONTROL encoder congelado ... [pub+asinh, paso 200]: OK` y `decodificador afinado distinto del preentrenado ... OK`;
+- `CONTROL identidad frente a E6c float: 2 de 2`;
+- `CONTROL sd15 frente a E6b: 4 de 4` (tolerancia 0.05 HU). **Si no es 4 de 4, no lances la cohorte**: la tuberia
+  no reproduce E6b;
+- `ok N s` por fila (aqui 1 configuracion; la cohorte evalua 3 por modelo).
+
+**Paso 4: entrenar las tres configuraciones** (Khipu), **solo despues de leer la prueba corta** (lección 8: con la
+prueba en cola, los tres entrenamientos llenan el cupo de envíos). Tres jobs de 8 CPU y 32G suman 24 CPU y 96G (tope `a-tesis`:
+32 CPU, 98G, 3 jobs): **no puede haber nada mas corriendo**. Solo hay dos RTX A6000 (g002, ds001): el tercero queda
+en `PD (Resources)` hasta que se libere una; es normal.
+
+```bash
+cd ~/metalsynth
+squeue -u $USER                                          # vacio
+for C in pub+asinh LW20000 pub; do J=$(sbatch --parsable p1_entrenar.sbatch $C); echo "P1_entrenar_$C=$J" | tee -a p1_jobs.txt; done
+```
+
+Seguimiento:
+
+```bash
+cat p1_jobs.txt
+squeue -u $USER -o "%.8i %.12j %.2t %.10M %.8N %R"
+tail -3 data/p1/pesos/curva_*.csv                         # una fila cada 1000 pasos
+grep -H "COMPLETO\|INCOMPLETO\|ERROR" p1_entrenar_*.log
+ls data/p1/pesos/decoder_*.pt                              # meta: 3
+sacct -j <ids> --format=JobID,JobName,State,ExitCode,Elapsed,MaxRSS
+```
+
+Si un log dice `INCOMPLETO` o el job se corto, relanza **la misma configuracion**: `sbatch p1_entrenar.sbatch <cfg>`
+(sigue desde `ckpt_<cfg>.pt`; el orden de los cortes tras reanudar no se reproduce, declarado en el script).
+
+**Paso 5: evaluar** (Khipu), cuando esten los tres `decoder_*.pt` (si falta uno, el script aborta al arrancar):
+
+```bash
+cd ~/metalsynth
+E=$(sbatch --parsable p1_evaluar.sbatch); echo "P1_evaluar=$E" | tee -a p1_jobs.txt
+tail -f p1_evaluar_$E.log                                  # 68 lineas "ok": 34 casos x (sd15, afinado)
+wc -l data/p1/eval/p1_eval.csv                             # meta: 69
+cat data/p1/eval/p1_eval_errores.csv                       # solo cabecera
+grep "CONTROL\|Resultado\|Sin veredicto" p1_evaluar_$E.log
+sacct -j $E --format=JobID,State,ExitCode,Elapsed,MaxRSS
+```
+
+Controles esperados: identidad frente a E6c con 6 valores por caso con metal y 3 sin metal (la union de P158 no esta en
+E6c); `sd15 frente a E6b` con 12 por caso con metal y 6 sin metal; encoder congelado y decodificador distinto **3 de 3**
+cada uno. Tiempo sin medir: por E6b, ~180 s por volumen y modelo con tres configuraciones, mas `B_delta`.
+Si se corta, relanza el mismo `sbatch`: salta los pares (Caso, modelo) ya escritos.
+
+**Paso 6: traer** (PowerShell). Los pesos (~3 x 200 MB) no hacen falta en la PC para leer el resultado:
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+mkdir experiments\objetivo1\outputs\p1
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/p1/eval experiments\objetivo1\outputs\p1\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/p1/pesos/curva_*.csv" experiments\objetivo1\outputs\p1\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_*.log" experiments\objetivo1\outputs\p1\
+```

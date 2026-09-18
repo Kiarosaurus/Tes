@@ -122,8 +122,8 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   cribado; metal integrity con la regla adaptativa por ROI de `peters2025hybrid`. Queda
   **propuesta** (no decidida) una tercera regla para extraer mascaras de implantes reales:
   umbral de semimaximo local (E8, #46).
-- **`templeman1996proximity` sigue en `refs.bib` sin PDF.** Su prioridad bajo: su papel en
-  la cadena del 2-15% ya no es decisivo.
+- ~~`templeman1996proximity` sigue en `refs.bib` sin PDF.~~ **RESUELTO 2026-09-17**: PDF y ficha
+  completos; no publica ningun % de malposicion (#77).
 
 ## Eje S1/S2 y limite del benchmark (2026-09-08; implicancias #12 y #28)
 

@@ -1,0 +1,67 @@
+PMID- 21626962
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20110620
+LR  - 20170214
+IS  - 0094-2405 (Print)
+IS  - 0094-2405 (Linking)
+VI  - 38
+IP  - 4
+DP  - 2011 Apr
+TI  - An opposite view data replacement approach for reducing artifacts due to metallic 
+      dental objects.
+PG  - 2275-81
+AB  - PURPOSE: To present a conceptually new method for metal artifact reduction (MAR) 
+      that can be used on patients with multiple objects within the scan plane that are 
+      also of small sized along the longitudinal (scanning) direction, such as dental 
+      fillings. METHODS: The proposed algorithm, named opposite view replacement, 
+      achieves MAR by first detecting the projection data affected by metal objects and 
+      then replacing the affected projections by the corresponding opposite view 
+      projections, which are not affected by metal objects. The authors also applied a 
+      fading process to avoid producing any discontinuities in the boundary of the 
+      affected projection areas in the sinogram. A skull phantom with and without a 
+      variety of dental metal inserts was made to extract the performance metric of the 
+      algorithm. A head and neck case, typical of IMRT planning, was also tested. 
+      RESULTS: The reconstructed CT images based on this new replacement scheme show a 
+      significant improvement in image quality for patients with metallic dental 
+      objects compared to the MAR algorithms based on the interpolation scheme. For the 
+      phantom, the authors showed that the artifact reduction algorithm can efficiently 
+      recover the CT numbers in the area next to the metallic objects. CONCLUSIONS: The 
+      authors presented a new and efficient method for artifact reduction due to 
+      multiple small metallic objects. The obtained results from phantoms and clinical 
+      cases fully validate the proposed approach.
+FAU - Yazdi, Mehran
+AU  - Yazdi M
+AD  - Department of Electrical Engineering, School of Engineering, Shiraz University, 
+      Shiraz 7134851154, Iran.
+FAU - Lari, Meghdad Asadi
+AU  - Lari MA
+FAU - Bernier, Gaston
+AU  - Bernier G
+FAU - Beaulieu, Luc
+AU  - Beaulieu L
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+RN  - 0 (Metals)
+SB  - IM
+MH  - Algorithms
+MH  - *Artifacts
+MH  - *Dental Prosthesis
+MH  - Image Processing, Computer-Assisted/*methods
+MH  - *Metals
+MH  - Phantoms, Imaging
+MH  - Tomography, X-Ray Computed/*methods
+EDAT- 2011/06/02 06:00
+MHDA- 2011/06/21 06:00
+CRDT- 2011/06/02 06:00
+PHST- 2011/06/02 06:00 [entrez]
+PHST- 2011/06/02 06:00 [pubmed]
+PHST- 2011/06/21 06:00 [medline]
+AID - 10.1118/1.3566016 [doi]
+PST - ppublish
+SO  - Med Phys. 2011 Apr;38(4):2275-81. doi: 10.1118/1.3566016.

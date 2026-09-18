@@ -1070,3 +1070,63 @@ decidir por limite superior del IC95 < 25 HU (mas estricto; la autora eligio la 
 
 Registrada por el asistente por orden explicita de la autora (2026-09-17).
 
+
+
+---
+
+## 2026-09-17 (4) — Literatura nueva (#77-#82), sin cambio de alcance
+
+**Decision** (delegada al asistente en rol de asesor, 2026-09-17):
+- Se leen 8 fuentes nuevas de `refs/raw/`. **Ninguna cambia alcance, hipotesis, objetivos, baseline, la compuerta del
+  Objetivo 1 ni el renderizador.**
+- **Origen del 2-15% resuelto (#77):** Routt 1997 (2.05%, binario) + cita de Routt a una presentacion de congreso de
+  Keating (15%; el articulo publicado da 13%). Templeman no publica ningun porcentaje. El rango sigue retirado.
+- **Escala de 4 grados (#78):** no esta en Vaccaro 1995 (Partes I y II). Cadena de #68 cerrada; `main.tex:52` ya es correcto.
+- **Ambas cadenas se cierran sin tocar `main.tex`.**
+- **Lectura del benchmark bajo artefacto (#79):** Templeman no pudo graduar 5 de 57 tornillos por scatter. Se declara
+  como limitacion del Objetivo 2 al escribir sus resultados.
+- **Raw duplicados (#82):** `gertzbein1990pedicularscrew` y `templeman1996iliosacralscrews` no generan claves nuevas; sus
+  PDF se asocian a `gertzbein1990` y `templeman1996proximity`.
+- **Pendiente:** quitar `
+ocite{*}` antes de la entrega (#82, recomendado; requiere orden sobre `main.tex`).
+
+**Por que:** las lecturas solo auditan cadenas de citas del Objetivo 2 y confirman decisiones ya tomadas; ninguna justifica
+gastar tiempo del camino critico (P1).
+
+**Alternativas descartadas:** ver #77-#82 en `04-implicancias.md`.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-18).
+
+
+---
+
+## 2026-09-18 — Literatura nueva (#83-#88), duplicados borrados y correccion de `main.tex:117` (#85)
+
+**Decision** (delegada al asistente en rol de asesor; borrado de duplicados y edicion de `main.tex` por orden explicita de
+la autora, 2026-09-18):
+- **Se leen 13 fuentes nuevas** (12 con PDF completo, `song2024bmar` solo desde el abstract). Ya no queda ningun PDF de
+  `papers/` sin ficha ni ningun raw sin su entrada en `clean`. `refs.bib` = 83 entradas.
+- **Duplicados borrados:** `miller2012sacralmorphology` (raw y PDF identicos byte a byte a `miller2012variations`),
+  `gertzbein1990pedicularscrew` (raw y PDF) y el raw `templeman1996iliosacralscrews`. El PDF de Templeman se renombra a
+  `papers/templeman1996proximity.pdf`. Detalle en `refs/MAPEO.md`.
+- **#85 APLICADA en `main.tex:117`:** *"With one exception"*. Reilly 2003 midio el corredor con fractura (area para
+  tornillos de S1 reducida un 36-90% con 5-20 mm de desplazamiento), lo que respalda medir el corredor en cada volumen. Se
+  declara que el benchmark viene de pelvis fracturadas (Tile B y C) y los corredores se miden en pelvis sin osteosintesis.
+- **Se cierran sin cambios:**
+  - #83: Ziran 2003 no propone el 10 mm y no da prior ordinal en S2.
+  - #84: tres atribuciones de Kaiser (a Gardner 2011, Miller y Wu) no aparecen en sus fuentes; `main.tex` no las usa.
+  - #86: el punto de entrada y los margenes neurales no tienen fuente en mm, y el diseno no los necesita.
+  - #87: los umbrales de metal (2500 y 3000 HU) no tienen origen en la literatura MAR.
+  - #88: aviso de versiones (reimpresion de Griffin, preprints de Lyu y ACDNet).
+- **Regla de redaccion:** no citar via Kaiser la definicion de dismorfismo, el requisito transsacro ni argumentos etnicos.
+- **Pendiente:** quitar `
+ocite{*}` antes de la entrega (#82/#88; recomendado); PDF y raw de MWLNet y Choi (prioridades
+  1-2 de `_candidatos.md`).
+
+**Por que:** la unica lectura que contradecia el documento era Reilly. Corregirla convierte una afirmacion falsa en
+respaldo del diseno, sin nuevas corridas. Las demas lecturas cierran cadenas de citas y no tocan el camino critico (P1).
+
+**Alternativas descartadas:** para #85, (b) acotar la frase a *"clinical CT cohorts"* y (c) borrarla. Tambien crear
+claves nuevas para los duplicados y reabrir el punto 8 de `Fuera de alcance`. Detalle en #83-#88 de `04-implicancias.md`.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-18).

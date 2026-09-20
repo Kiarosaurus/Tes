@@ -1,0 +1,148 @@
+"""Entrenamiento del renderizador del Diseno A (difusion en espacio de imagen).
+
+ESTADO: EL DISENO NO ESTA PREINSCRITO
+-------------------------------------
+`experiments/objetivo3/diseno_A.md` sigue en BORRADOR y tiene cuatro `[DECIDIR]` de la autora. Este
+script **existe para poder medir** (prueba corta de 200 pasos en Khipu: s/paso y memoria, #89), que
+es el paso 3 de la semana 1. Correrlo entero antes de la preinscripcion contradiria el propio
+diseno, asi que `--pasos` no tiene valor por defecto grande y la bandera `--preinscrito` deja
+constancia de si la corrida es piloto de medicion o corrida definitiva.
+
+CONTROLES QUE PUEDEN FALLAR (se corren al arrancar, antes de gastar GPU)
+------------------------------------------------------------------------
+1. Identidad multi-ventana (`common.ventanas.verificar`): ida y vuelta < 1e-6 HU.
+2. Aislamiento: ningun caso de test en el cargador. Se comprueba contra `p1_particion.csv`.
+3. Enmascarado: con `G` toda a cero la perdida es exactamente 0 (la perdida vive solo en `G`).
+Si alguno falla, el script aborta.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import sys
+import time
+from pathlib import Path
+
+import torch
+
+_RAIZ = Path(__file__).resolve().parents[2]
+for _p in (str(_RAIZ / 'src'), str(Path(__file__).resolve().parent)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from common.ventanas import verificar as verificar_ventanas  # noqa: E402
+from datos import ParchesMetal, lee_particion  # noqa: E402
+from difusion import Difusion, perdida  # noqa: E402
+from modelo import UNetDifusion  # noqa: E402
+
+
+def controles(ds: ParchesMetal, particion: Path, modelo, dif: Difusion,
+              dispositivo: str) -> dict[str, str]:
+    """Los tres controles de la cabecera. Lanza si alguno no cierra."""
+    res: dict[str, str] = {}
+
+    v = verificar_ventanas()
+    res['identidad_ventanas'] = f"peor {v['peor']:.3g} HU"
+
+    test = lee_particion(particion, ('test',))
+    fuga = sorted(set(ds.por_caso) & test)
+    if fuga:
+        raise RuntimeError(f'FUGA DE TEST: {len(fuga)} casos en el cargador: {fuga[:5]}')
+    res['aislamiento'] = f'0 de {len(test)} casos de test en el cargador'
+
+    lote = next(iter(torch.utils.data.DataLoader(ds, batch_size=2)))
+    g0 = torch.zeros_like(lote['g']).to(dispositivo)
+    with torch.no_grad():
+        p = perdida(modelo, lote['x0'].to(dispositivo), lote['cond'].to(dispositivo), g0, dif)
+    if float(p) != 0.0:
+        raise RuntimeError(f'la perdida no vive solo en G: con G vacia da {float(p)!r}')
+    res['perdida_solo_en_G'] = 'G vacia -> 0.0'
+    return res
+
+
+def main() -> None:
+    p = argparse.ArgumentParser(description=__doc__,
+                                formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument('--cache', type=Path, required=True, help='cache de A1 (.npz por corte)')
+    p.add_argument('--particion', type=Path,
+                   default=_RAIZ / 'experiments/objetivo1/p1_particion.csv')
+    p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--pasos', type=int, default=200, help='200 = prueba corta de medicion (#89)')
+    p.add_argument('--lote', type=int, default=4)
+    p.add_argument('--lado', type=int, default=256)
+    p.add_argument('--base', type=int, default=64)
+    p.add_argument('--lr', type=float, default=1e-4)
+    p.add_argument('--objetivo', choices=('v', 'eps'), default='v')
+    p.add_argument('--semilla', type=int, default=20260920)
+    p.add_argument('--dispositivo', default='cuda' if torch.cuda.is_available() else 'cpu')
+    p.add_argument('--trabajadores', type=int, default=2)
+    p.add_argument('--cada', type=int, default=25, help='cada cuantos pasos se registra')
+    p.add_argument('--borrar-contexto', action='store_true',
+                   help='brazo de sensibilidad de #96; NO es el piloto')
+    p.add_argument('--preinscrito', action='store_true',
+                   help='marcar la corrida como posterior a la preinscripcion de diseno_A.md')
+    args = p.parse_args()
+
+    torch.manual_seed(args.semilla)
+    args.out.mkdir(parents=True, exist_ok=True)
+
+    ds = ParchesMetal(args.cache, args.particion, ('train',), args.lado, args.borrar_contexto)
+    dif = Difusion(objetivo=args.objetivo)
+    modelo = UNetDifusion(base=args.base).to(args.dispositivo)
+
+    chk = controles(ds, args.particion, modelo, dif, args.dispositivo)
+    meta = {'pasos': args.pasos, 'lote': args.lote, 'lado': args.lado, 'base': args.base,
+            'objetivo': args.objetivo, 'semilla': args.semilla, 'dispositivo': args.dispositivo,
+            'parametros': modelo.n_parametros(), 'preinscrito': bool(args.preinscrito),
+            'borrar_contexto': bool(args.borrar_contexto),
+            'datos': ds.resumen(), 'controles': chk}
+    (args.out / 'entrenar_meta.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
+    for k, v in chk.items():
+        print(f'control {k}: {v}')
+    print(f"datos: {ds.resumen()}  parametros: {modelo.n_parametros() / 1e6:.1f} M")
+    if not args.preinscrito:
+        print('AVISO: corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis.')
+
+    cargador = torch.utils.data.DataLoader(
+        ds, batch_size=args.lote, shuffle=True, num_workers=args.trabajadores,
+        drop_last=True, pin_memory=args.dispositivo == 'cuda')
+    opt = torch.optim.AdamW(modelo.parameters(), lr=args.lr)
+
+    curva = open(args.out / 'curva.csv', 'w', newline='', encoding='utf-8')
+    w = csv.writer(curva)
+    w.writerow(['paso', 'perdida', 's_por_paso', 'gb_max'])
+
+    modelo.train()
+    paso, t0, it = 0, time.time(), iter(cargador)
+    while paso < args.pasos:
+        try:
+            lote = next(it)
+        except StopIteration:
+            it = iter(cargador)
+            continue
+        l = perdida(modelo, lote['x0'].to(args.dispositivo), lote['cond'].to(args.dispositivo),
+                    lote['g'].to(args.dispositivo), dif)
+        opt.zero_grad(set_to_none=True)
+        l.backward()
+        torch.nn.utils.clip_grad_norm_(modelo.parameters(), 1.0)
+        opt.step()
+        paso += 1
+        if paso % args.cada == 0 or paso == args.pasos:
+            gb = (torch.cuda.max_memory_allocated() / 1e9
+                  if args.dispositivo == 'cuda' else 0.0)
+            sp = (time.time() - t0) / paso
+            val = float(l.detach())
+            w.writerow([paso, round(val, 6), round(sp, 4), round(gb, 2)])
+            curva.flush()
+            print(f'paso {paso}/{args.pasos} perdida {val:.5f} {sp:.3f} s/paso {gb:.1f} GB')
+    curva.close()
+
+    torch.save({'modelo': modelo.state_dict(), 'meta': meta}, args.out / 'ckpt.pt')
+    sp = (time.time() - t0) / max(paso, 1)
+    print(f'LISTO. {paso} pasos, {sp:.3f} s/paso. '
+          f'Extrapolacion a 30 000 pasos: {sp * 30_000 / 3600:.1f} h')
+
+
+if __name__ == '__main__':
+    main()

@@ -14,6 +14,11 @@ data/*
 *.raw
 *.opdownload
 
+# ---- Codigo de terceros clonado (se consulta, no se versiona) ----
+# repos/xcist-main y repos/xcist-example, ~528 MB, clonados el 2026-09-20 para P2 (#70)
+# y para las metricas del reto AAPM (_candidatos.md, filas 132-133). Se reclonan con git clone.
+repos/
+
 # ---- Artefactos ----
 __pycache__/
 *.py[cod]

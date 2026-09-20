@@ -474,3 +474,36 @@ articulo confirmado por lectura o hash identico.
 `papers/templeman1996iliosacralscrews.pdf` **no se borro**: era el unico PDF de la entrada. Se **renombro** a
 `papers/templeman1996proximity.pdf`. Queda solo `zhang2026pediclescrew` sin PDF entre las entradas con raw de articulo
 (`song2024bmar` tambien, por acceso).
+
+## Excepcion — documentacion tecnica de fabricante sin `raw` (2026-09-19)
+
+Tres documentos de fabricante entraron a `refs/clean/` **sin archivo en `refs/raw/`**: un fabricante no
+entrega un export bibliografico. La regla 9 se mantiene en su fondo (ningun campo sin respaldo verificable)
+cambiando solo cual es la capa de respaldo:
+
+1. **La fuente primaria es el propio PDF**, que vive en `papers/` como cualquier otro documento leido.
+2. **Cada campo se transcribe del documento** y su procedencia (portada, contraportada, pagina impresa y
+   pagina del PDF) queda en comentarios `%` dentro del archivo de `refs/clean/`.
+3. **Lo que no esta impreso no se pone.** Version, autor, DOI y URL quedan fuera en los tres casos.
+4. **Lo dudoso se marca con `% VERIFICAR`** dentro del archivo (codigos impresos en vertical, ano de
+   copyright frente a codigo de tirada).
+5. **Se citan como documentacion tecnica, no como literatura revisada por pares**, y asi se declara en el
+   texto y en `docs/literatura/_index.md` (columna de nivel de acceso).
+
+| Clave | PDF en `papers/` | Identificador impreso | Ano | Campos con `% VERIFICAR` |
+|---|---|---|---|---|
+| `synthes2006cannulated` | `Synthes All cannulated screws.pdf` | 036.000.094 | 2006 (copyright) | codigos `SM_707815 AB` y `31060004`, en vertical |
+| `synthes2002chart` | `Synthes Screw Reference Chart.pdf` | GP0644-C 4/04 J1364-C | 2002 (copyright) | copyright 2002 frente a tirada 4/04; sin paginacion impresa |
+| `acumed2020cannulated` | `acumed 6.5 mm - 7.3 mm Cannulated Screw System.pdf` | SPF10-05-E | 2020 | — |
+
+## Altas del 2026-09-19 (con `raw`)
+
+| Clave (autora) | Archivo raw | Formato | Notas de normalizacion |
+|---|---|---|---|
+| `berk2023washer` | `berk2023washer.nbib` | PubMed nbib | `LID 1379` -> `pages` (MDPI numera articulo); revista `Medicina` |
+| `gardner2015screw` | `gardner2015screw.nbib` | PubMed nbib | `41-6` -> `41--46`; iniciales expandidas del propio raw |
+| `radzi2014metalartifacts` | `radzi2014metalartifacts.nbib` | PubMed nbib | `163-72` -> `163--172` |
+| `zhu2022optimalposition` | `zhu2022optimalposition.nbib` | PubMed nbib | revista completa; **clave 2022 y ano 2023**: el raw da `DP 2023 Jul` (epub 2022) |
+| `sayres2014comparison` | `sayres2014comparison.nbib` | PubMed nbib | `32-6` -> `32--36`; **clave 2014 y ano 2015** (epub 2014) |
+| `cassanego2026evolution` | `cassanego2026evolution.bib` | BibTeX Elsevier | clave del editor `CASSANEGO2026106691` descartada; `doi` sin prefijo de URL; se descartan `keywords`, `url`, `issn` y `abstract` |
+

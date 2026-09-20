@@ -1,0 +1,502 @@
+control,Caso,columna,valor,referencia,coincide
+identidad frente a E6c float,dataset6_CLINIC_0001_data,pub hueso,0.1634,0.1634,True
+identidad frente a E6c float,dataset6_CLINIC_0012_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0016_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0018_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0021_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0022_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0024_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0030_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0034_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,pub hueso,0.0025,0.0025,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,pub hueso,0.1232,0.1232,True
+identidad frente a E6c float,dataset6_CLINIC_0047_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,pub hueso,0.0319,0.0319,True
+identidad frente a E6c float,dataset6_CLINIC_0059_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0063_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,pub hueso,0.5447,0.5447,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,pub hueso,0.0037,0.0037,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,pub hueso,0.9034,0.9034,True
+identidad frente a E6c float,dataset6_CLINIC_0090_data,pub hueso,0.0187,0.0187,True
+identidad frente a E6c float,dataset6_CLINIC_0100_data,pub hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,pub hueso,72.0263,72.0263,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,pub hueso,31.3539,31.3539,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,pub hueso,2.0955,2.0955,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,pub hueso,150.3672,150.3672,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,pub hueso,20.5095,20.5095,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,pub hueso,46.9274,46.9274,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,pub hueso,61.9115,61.9116,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,pub hueso,2.5772,2.5772,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,pub hueso,3.7885,3.7885,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,pub hueso,101.1133,101.1133,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,pub hueso,64.3593,64.3593,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,pub hueso,162.8932,162.8933,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,pub hueso,14.6751,14.6751,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,pub hueso,4.733,4.733,True
+identidad frente a E6c float,dataset6_CLINIC_0001_data,pub metal,1491.8705,1491.8705,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,pub metal,745.9091,745.9091,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,pub metal,1453.0625,1453.0625,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,pub metal,1121.322,1121.322,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,pub metal,2393.2744,2393.2744,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,pub metal,540.0,540.0,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,pub metal,2861.8523,2861.8523,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,pub metal,4633.1841,4633.1841,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,pub metal,2537.0605,2537.0605,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,pub metal,996.1038,996.1038,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,pub metal,4876.2915,4876.2915,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,pub metal,3855.7371,3855.7371,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,pub metal,4866.334,4866.334,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,pub metal,5163.6196,5163.6191,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,pub metal,4739.2373,4739.2373,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,pub metal,1605.3641,1605.3641,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,pub metal,5047.6094,5047.6094,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,pub metal,4905.9585,4905.9585,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,pub metal,5553.7383,5553.7378,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,pub metal,6843.7231,6843.7231,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,pub metal,3606.1064,3606.1064,True
+identidad frente a E6c float,dataset6_CLINIC_0001_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0012_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0016_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0018_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0021_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0022_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0024_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0030_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0034_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0047_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0059_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0063_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0090_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0100_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,LW20000 hueso,0.0087,0.0087,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,LW20000 hueso,0.0006,0.0006,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,LW20000 hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,LW20000 hueso,0.0013,0.0013,True
+identidad frente a E6c float,dataset6_CLINIC_0001_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,LW20000 metal,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,LW20000 metal,1.4242,1.4242,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,LW20000 metal,0.085,0.085,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,LW20000 metal,0.0014,0.0014,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,LW20000 metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,LW20000 metal,0.3308,0.3308,True
+identidad frente a E6c float,dataset6_CLINIC_0001_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0012_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0016_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0018_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0021_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0022_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0024_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0030_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0034_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0047_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0059_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0063_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0090_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset6_CLINIC_0100_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,pub+asinh hueso,0.0087,0.0087,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,pub+asinh hueso,0.0006,0.0006,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,pub+asinh hueso,0.0,0.0,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,pub+asinh hueso,0.0013,0.0013,True
+identidad frente a E6c float,dataset6_CLINIC_0001_data,pub+asinh metal,0.0002,0.0002,True
+identidad frente a E6c float,dataset6_CLINIC_0036_data,pub+asinh metal,0.0002,0.0002,True
+identidad frente a E6c float,dataset6_CLINIC_0041_data,pub+asinh metal,0.0002,0.0002,True
+identidad frente a E6c float,dataset6_CLINIC_0052_data,pub+asinh metal,0.0002,0.0002,True
+identidad frente a E6c float,dataset6_CLINIC_0072_data,pub+asinh metal,0.0003,0.0003,True
+identidad frente a E6c float,dataset6_CLINIC_0074_data,pub+asinh metal,0.0001,0.0001,True
+identidad frente a E6c float,dataset6_CLINIC_0089_data,pub+asinh metal,0.0003,0.0003,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0006_data,pub+asinh metal,0.0004,0.0005,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0009_data,pub+asinh metal,0.0003,0.0003,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0010_data,pub+asinh metal,0.0002,0.0002,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0023_data,pub+asinh metal,0.0005,0.0005,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0024_data,pub+asinh metal,1.4245,1.4245,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0031_data,pub+asinh metal,0.0005,0.0005,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0032_data,pub+asinh metal,0.0005,0.0006,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0036_data,pub+asinh metal,0.0005,0.0005,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0048_data,pub+asinh metal,0.0851,0.0852,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0049_data,pub+asinh metal,0.0005,0.0005,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0053_data,pub+asinh metal,0.0018,0.0018,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0066_data,pub+asinh metal,0.0005,0.0006,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0068_data,pub+asinh metal,0.0007,0.0008,True
+identidad frente a E6c float,dataset7_CLINIC_metal_0072_data,pub+asinh metal,0.3311,0.3311,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub vae oraculo hueso,63.18,63.18,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,pub vae oraculo hueso,88.0765,88.0765,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,pub vae oraculo hueso,78.756,78.756,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,pub vae oraculo hueso,79.647,79.647,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,pub vae oraculo hueso,70.5674,70.5674,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,pub vae oraculo hueso,61.4513,61.4513,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,pub vae oraculo hueso,72.8249,72.8249,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,pub vae oraculo hueso,87.8442,87.8442,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,pub vae oraculo hueso,108.7719,108.7719,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub vae oraculo hueso,68.7473,68.7473,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub vae oraculo hueso,60.9197,60.9197,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,pub vae oraculo hueso,58.9991,58.9991,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub vae oraculo hueso,62.5835,62.5835,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,pub vae oraculo hueso,63.2229,63.2229,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,pub vae oraculo hueso,75.7519,75.7519,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub vae oraculo hueso,77.5158,77.5158,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub vae oraculo hueso,67.5499,67.5499,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub vae oraculo hueso,65.927,65.927,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,pub vae oraculo hueso,69.9314,69.9314,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,pub vae oraculo hueso,79.1776,79.1776,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub vae oraculo hueso,158.6257,158.6257,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub vae oraculo hueso,88.8431,88.8431,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub vae oraculo hueso,63.5858,63.5858,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub vae oraculo hueso,246.2755,246.2755,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub vae oraculo hueso,116.1345,116.1345,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub vae oraculo hueso,116.323,116.323,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub vae oraculo hueso,147.4004,147.4004,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub vae oraculo hueso,77.3237,77.3237,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub vae oraculo hueso,59.8484,59.8484,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub vae oraculo hueso,185.3989,185.3989,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub vae oraculo hueso,158.3355,158.3355,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub vae oraculo hueso,233.1771,233.1771,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub vae oraculo hueso,114.9407,114.9407,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub vae oraculo hueso,88.9766,88.9766,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub vae oraculo metal,2462.8496,2462.8496,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub vae oraculo metal,1267.3639,1267.3639,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub vae oraculo metal,2241.4932,2241.4932,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub vae oraculo metal,1659.8474,1659.8474,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub vae oraculo metal,2881.5137,2881.5137,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub vae oraculo metal,1332.9246,1332.9246,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub vae oraculo metal,3537.4844,3537.4844,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub vae oraculo metal,5194.8711,5194.8711,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub vae oraculo metal,2692.5918,2692.5918,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub vae oraculo metal,1157.1948,1157.1948,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub vae oraculo metal,5179.1191,5179.1191,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub vae oraculo metal,4396.9214,4396.9214,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub vae oraculo metal,5420.6553,5420.6553,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub vae oraculo metal,5693.0703,5693.0703,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub vae oraculo metal,5622.2207,5622.2207,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub vae oraculo metal,1893.7113,1893.7113,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub vae oraculo metal,5318.728,5318.728,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub vae oraculo metal,5536.6885,5536.6885,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub vae oraculo metal,5726.6914,5726.6914,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub vae oraculo metal,7777.9229,7777.9229,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub vae oraculo metal,4385.1841,4385.1841,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub vae regla hueso,113.24,113.24,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,pub vae regla hueso,172.6004,172.6004,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,pub vae regla hueso,136.4776,136.4776,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,pub vae regla hueso,137.1175,137.1175,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,pub vae regla hueso,128.2903,128.2903,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,pub vae regla hueso,107.5812,107.5812,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,pub vae regla hueso,126.5198,126.5198,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,pub vae regla hueso,162.0966,162.0966,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,pub vae regla hueso,177.4736,177.4736,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub vae regla hueso,121.4113,121.4113,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub vae regla hueso,114.3229,114.3229,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,pub vae regla hueso,106.2407,106.2407,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub vae regla hueso,119.4249,119.4249,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,pub vae regla hueso,112.3239,112.3239,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,pub vae regla hueso,136.0026,136.0026,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub vae regla hueso,148.5293,148.5293,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub vae regla hueso,119.9553,119.9553,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub vae regla hueso,115.679,115.679,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,pub vae regla hueso,136.7489,136.7489,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,pub vae regla hueso,143.2595,143.2595,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub vae regla hueso,243.7674,243.7674,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub vae regla hueso,133.1378,133.1378,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub vae regla hueso,115.9907,115.9907,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub vae regla hueso,345.4358,345.4358,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub vae regla hueso,192.554,192.554,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub vae regla hueso,170.1686,170.1686,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub vae regla hueso,209.8756,209.8756,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub vae regla hueso,132.6638,132.6638,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub vae regla hueso,122.7887,122.7887,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub vae regla hueso,260.8501,260.8501,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub vae regla hueso,229.9344,229.9344,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub vae regla hueso,305.0135,305.0135,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub vae regla hueso,202.4456,202.4456,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub vae regla hueso,144.668,144.668,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub vae regla metal,3254.0048,3254.0048,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub vae regla metal,2314.1136,2314.1136,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub vae regla metal,3148.2987,3148.2987,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub vae regla metal,2777.0656,2777.0656,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub vae regla metal,3871.0615,3871.0615,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub vae regla metal,2078.5941,2078.5941,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub vae regla metal,4549.643,4549.643,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub vae regla metal,6029.1373,6029.1373,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub vae regla metal,3180.3099,3180.3099,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub vae regla metal,2040.6749,2040.6749,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub vae regla metal,5837.4037,5837.4037,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub vae regla metal,5350.6156,5350.6156,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub vae regla metal,6248.0128,6248.0128,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub vae regla metal,6549.6779,6549.6779,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub vae regla metal,6453.6158,6453.6158,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub vae regla metal,2971.3127,2971.3127,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub vae regla metal,6015.2531,6015.2531,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub vae regla metal,6354.7777,6354.7777,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub vae regla metal,6299.527,6299.527,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub vae regla metal,8543.2548,8543.2548,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub vae regla metal,5232.5682,5232.5682,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,LW20000 vae oraculo hueso,84.8605,84.8605,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,LW20000 vae oraculo hueso,129.8437,129.8437,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,LW20000 vae oraculo hueso,122.186,122.186,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,LW20000 vae oraculo hueso,109.6189,109.6189,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,LW20000 vae oraculo hueso,111.5511,111.5511,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,LW20000 vae oraculo hueso,83.0056,83.0056,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,LW20000 vae oraculo hueso,99.716,99.716,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,LW20000 vae oraculo hueso,128.2835,128.2835,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,LW20000 vae oraculo hueso,148.9474,148.9474,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,LW20000 vae oraculo hueso,114.6533,114.6533,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,LW20000 vae oraculo hueso,91.8751,91.8751,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,LW20000 vae oraculo hueso,79.0453,79.0453,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,LW20000 vae oraculo hueso,87.9226,87.9226,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,LW20000 vae oraculo hueso,81.9963,81.9963,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,LW20000 vae oraculo hueso,106.7254,106.7254,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,LW20000 vae oraculo hueso,112.1318,112.1318,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,LW20000 vae oraculo hueso,90.8921,90.8921,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,LW20000 vae oraculo hueso,90.7192,90.7192,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,LW20000 vae oraculo hueso,94.6252,94.6252,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,LW20000 vae oraculo hueso,115.4476,115.4476,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,LW20000 vae oraculo hueso,167.3,167.3,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,LW20000 vae oraculo hueso,101.4325,101.4325,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,LW20000 vae oraculo hueso,100.3206,100.3206,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,LW20000 vae oraculo hueso,252.9571,252.9571,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,LW20000 vae oraculo hueso,148.6377,148.6377,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,LW20000 vae oraculo hueso,121.2149,121.2149,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,LW20000 vae oraculo hueso,166.8952,166.8952,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,LW20000 vae oraculo hueso,100.3351,100.3351,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,LW20000 vae oraculo hueso,77.5137,77.5137,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,LW20000 vae oraculo hueso,178.6465,178.6465,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,LW20000 vae oraculo hueso,169.1617,169.1617,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,LW20000 vae oraculo hueso,175.2127,175.2127,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,LW20000 vae oraculo hueso,160.1277,160.1277,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,LW20000 vae oraculo hueso,130.7621,130.7621,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,LW20000 vae oraculo metal,2185.4392,2185.4392,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,LW20000 vae oraculo metal,1460.8273,1460.8273,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,LW20000 vae oraculo metal,1990.9221,1990.9221,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,LW20000 vae oraculo metal,1332.9558,1332.9558,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,LW20000 vae oraculo metal,2352.7917,2352.7917,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,LW20000 vae oraculo metal,1928.5289,1928.5289,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,LW20000 vae oraculo metal,3288.8193,3288.8193,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,LW20000 vae oraculo metal,3864.9788,3864.9788,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,LW20000 vae oraculo metal,1748.3597,1748.3597,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,LW20000 vae oraculo metal,1785.2118,1785.2118,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,LW20000 vae oraculo metal,3150.5828,3150.5828,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,LW20000 vae oraculo metal,3343.4922,3343.4922,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,LW20000 vae oraculo metal,3909.6411,3909.6411,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,LW20000 vae oraculo metal,4118.8086,4118.8086,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,LW20000 vae oraculo metal,4430.728,4430.728,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,LW20000 vae oraculo metal,2126.3728,2126.3728,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,LW20000 vae oraculo metal,3023.1907,3023.1907,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,LW20000 vae oraculo metal,3798.8677,3798.8677,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,LW20000 vae oraculo metal,2405.1597,2405.1597,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,LW20000 vae oraculo metal,5437.8516,5437.8516,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,LW20000 vae oraculo metal,2993.9553,2993.9553,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,LW20000 vae regla hueso,152.2373,152.2373,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,LW20000 vae regla hueso,223.6899,223.6899,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,LW20000 vae regla hueso,227.6093,227.6093,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,LW20000 vae regla hueso,176.6185,176.6185,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,LW20000 vae regla hueso,216.8476,216.8476,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,LW20000 vae regla hueso,156.774,156.774,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,LW20000 vae regla hueso,174.0526,174.0526,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,LW20000 vae regla hueso,216.8039,216.8039,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,LW20000 vae regla hueso,254.4705,254.4705,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,LW20000 vae regla hueso,204.7692,204.7692,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,LW20000 vae regla hueso,176.6885,176.6885,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,LW20000 vae regla hueso,141.2602,141.2602,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,LW20000 vae regla hueso,165.7873,165.7873,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,LW20000 vae regla hueso,147.3995,147.3995,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,LW20000 vae regla hueso,172.4895,172.4895,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,LW20000 vae regla hueso,182.941,182.941,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,LW20000 vae regla hueso,152.4256,152.4256,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,LW20000 vae regla hueso,162.4679,162.4679,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,LW20000 vae regla hueso,184.5358,184.5358,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,LW20000 vae regla hueso,196.7902,196.7902,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,LW20000 vae regla hueso,261.3975,261.3975,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,LW20000 vae regla hueso,171.8108,171.8108,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,LW20000 vae regla hueso,170.2954,170.2954,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,LW20000 vae regla hueso,390.3233,390.3233,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,LW20000 vae regla hueso,248.6383,248.6383,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,LW20000 vae regla hueso,210.1671,210.1671,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,LW20000 vae regla hueso,286.978,286.978,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,LW20000 vae regla hueso,184.9881,184.9881,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,LW20000 vae regla hueso,142.3255,142.3255,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,LW20000 vae regla hueso,283.6927,283.6927,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,LW20000 vae regla hueso,274.5023,274.5023,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,LW20000 vae regla hueso,300.8793,300.8793,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,LW20000 vae regla hueso,262.899,262.899,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,LW20000 vae regla hueso,243.5765,243.5765,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,LW20000 vae regla metal,3272.4913,3272.4913,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,LW20000 vae regla metal,2365.51,2365.51,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,LW20000 vae regla metal,3196.3357,3196.3357,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,LW20000 vae regla metal,2864.213,2864.213,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,LW20000 vae regla metal,3834.9486,3834.9486,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,LW20000 vae regla metal,2109.8704,2109.8704,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,LW20000 vae regla metal,4601.3031,4601.3031,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,LW20000 vae regla metal,5031.3363,5031.3363,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,LW20000 vae regla metal,2081.5793,2081.5793,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,LW20000 vae regla metal,1978.3304,1978.3304,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,LW20000 vae regla metal,4475.7997,4475.7997,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,LW20000 vae regla metal,4613.9759,4613.9759,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,LW20000 vae regla metal,5174.7897,5174.7897,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,LW20000 vae regla metal,5662.4005,5662.4005,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,LW20000 vae regla metal,6417.6054,6417.6054,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,LW20000 vae regla metal,2641.672,2641.672,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,LW20000 vae regla metal,4376.0075,4376.0075,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,LW20000 vae regla metal,5787.4605,5787.4605,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,LW20000 vae regla metal,4211.9744,4211.9744,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,LW20000 vae regla metal,8479.7275,8479.7275,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,LW20000 vae regla metal,5136.4453,5136.4453,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub+asinh vae oraculo hueso,71.1076,71.1076,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,pub+asinh vae oraculo hueso,104.3235,104.3235,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,pub+asinh vae oraculo hueso,96.0026,96.0026,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,pub+asinh vae oraculo hueso,91.8085,91.8085,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,pub+asinh vae oraculo hueso,85.8036,85.8036,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,pub+asinh vae oraculo hueso,69.9102,69.9102,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,pub+asinh vae oraculo hueso,82.9069,82.9069,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,pub+asinh vae oraculo hueso,102.9999,102.9999,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,pub+asinh vae oraculo hueso,128.1927,128.1927,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub+asinh vae oraculo hueso,87.4565,87.4565,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub+asinh vae oraculo hueso,72.5194,72.5194,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,pub+asinh vae oraculo hueso,67.2804,67.2804,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub+asinh vae oraculo hueso,72.2162,72.2162,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,pub+asinh vae oraculo hueso,69.6979,69.6979,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,pub+asinh vae oraculo hueso,87.1169,87.1169,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub+asinh vae oraculo hueso,91.1467,91.1467,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub+asinh vae oraculo hueso,77.2249,77.2249,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub+asinh vae oraculo hueso,75.312,75.312,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,pub+asinh vae oraculo hueso,78.842,78.842,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,pub+asinh vae oraculo hueso,94.029,94.029,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub+asinh vae oraculo hueso,158.4526,158.4526,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub+asinh vae oraculo hueso,84.0977,84.0977,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub+asinh vae oraculo hueso,78.1531,78.1531,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub+asinh vae oraculo hueso,232.9386,232.9386,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub+asinh vae oraculo hueso,127.2874,127.2874,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub+asinh vae oraculo hueso,115.2138,115.2138,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub+asinh vae oraculo hueso,154.2461,154.2461,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub+asinh vae oraculo hueso,86.3542,86.3542,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub+asinh vae oraculo hueso,64.3753,64.3753,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub+asinh vae oraculo hueso,167.5675,167.5675,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub+asinh vae oraculo hueso,162.1528,162.1528,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub+asinh vae oraculo hueso,169.3498,169.3498,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub+asinh vae oraculo hueso,133.4862,133.4862,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub+asinh vae oraculo hueso,106.86,106.86,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub+asinh vae oraculo metal,2547.1571,2547.1571,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub+asinh vae oraculo metal,769.7248,769.7248,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub+asinh vae oraculo metal,2162.2869,2162.2869,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub+asinh vae oraculo metal,1002.5369,1002.5369,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub+asinh vae oraculo metal,2490.7753,2490.7753,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub+asinh vae oraculo metal,1742.4249,1742.4249,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub+asinh vae oraculo metal,2894.1227,2894.1227,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub+asinh vae oraculo metal,4425.0111,4425.0111,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub+asinh vae oraculo metal,1615.5718,1615.5718,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub+asinh vae oraculo metal,1090.1347,1090.1347,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub+asinh vae oraculo metal,3717.0033,3717.0033,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub+asinh vae oraculo metal,3754.4016,3754.4016,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub+asinh vae oraculo metal,4603.5219,4603.5219,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub+asinh vae oraculo metal,4925.2182,4925.2182,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub+asinh vae oraculo metal,4997.1128,4997.1128,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub+asinh vae oraculo metal,1589.5557,1589.5557,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub+asinh vae oraculo metal,3570.7443,3570.7443,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub+asinh vae oraculo metal,4820.0142,4820.0142,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub+asinh vae oraculo metal,2978.4381,2978.4381,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub+asinh vae oraculo metal,6891.6141,6891.6141,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub+asinh vae oraculo metal,3574.8199,3574.8199,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub+asinh vae regla hueso,117.1438,117.1438,True
+sd15 frente a E6b,dataset6_CLINIC_0012_data,pub+asinh vae regla hueso,181.0563,181.0563,True
+sd15 frente a E6b,dataset6_CLINIC_0016_data,pub+asinh vae regla hueso,153.8737,153.8737,True
+sd15 frente a E6b,dataset6_CLINIC_0018_data,pub+asinh vae regla hueso,149.253,149.253,True
+sd15 frente a E6b,dataset6_CLINIC_0021_data,pub+asinh vae regla hueso,143.168,143.168,True
+sd15 frente a E6b,dataset6_CLINIC_0022_data,pub+asinh vae regla hueso,114.0057,114.0057,True
+sd15 frente a E6b,dataset6_CLINIC_0024_data,pub+asinh vae regla hueso,133.9095,133.9095,True
+sd15 frente a E6b,dataset6_CLINIC_0030_data,pub+asinh vae regla hueso,173.6143,173.6143,True
+sd15 frente a E6b,dataset6_CLINIC_0034_data,pub+asinh vae regla hueso,192.0836,192.0836,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub+asinh vae regla hueso,136.7284,136.7284,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub+asinh vae regla hueso,121.0037,121.0037,True
+sd15 frente a E6b,dataset6_CLINIC_0047_data,pub+asinh vae regla hueso,109.376,109.376,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub+asinh vae regla hueso,123.4548,123.4548,True
+sd15 frente a E6b,dataset6_CLINIC_0059_data,pub+asinh vae regla hueso,117.9973,117.9973,True
+sd15 frente a E6b,dataset6_CLINIC_0063_data,pub+asinh vae regla hueso,143.9441,143.9441,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub+asinh vae regla hueso,154.5311,154.5311,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub+asinh vae regla hueso,125.8323,125.8323,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub+asinh vae regla hueso,121.0774,121.0774,True
+sd15 frente a E6b,dataset6_CLINIC_0090_data,pub+asinh vae regla hueso,140.2762,140.2762,True
+sd15 frente a E6b,dataset6_CLINIC_0100_data,pub+asinh vae regla hueso,154.3774,154.3774,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub+asinh vae regla hueso,242.9751,242.9751,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub+asinh vae regla hueso,122.0245,122.0245,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub+asinh vae regla hueso,128.368,128.368,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub+asinh vae regla hueso,331.8785,331.8785,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub+asinh vae regla hueso,198.7982,198.7982,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub+asinh vae regla hueso,170.9599,170.9599,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub+asinh vae regla hueso,218.3099,218.3099,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub+asinh vae regla hueso,138.4428,138.4428,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub+asinh vae regla hueso,121.312,121.312,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub+asinh vae regla hueso,246.3512,246.3512,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub+asinh vae regla hueso,238.8214,238.8214,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub+asinh vae regla hueso,252.9292,252.9292,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub+asinh vae regla hueso,220.4747,220.4747,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub+asinh vae regla hueso,163.3888,163.3888,True
+sd15 frente a E6b,dataset6_CLINIC_0001_data,pub+asinh vae regla metal,3283.6976,3283.6976,True
+sd15 frente a E6b,dataset6_CLINIC_0036_data,pub+asinh vae regla metal,2332.3755,2332.3755,True
+sd15 frente a E6b,dataset6_CLINIC_0041_data,pub+asinh vae regla metal,3169.796,3169.796,True
+sd15 frente a E6b,dataset6_CLINIC_0052_data,pub+asinh vae regla metal,2839.7115,2839.7115,True
+sd15 frente a E6b,dataset6_CLINIC_0072_data,pub+asinh vae regla metal,3850.9005,3850.9005,True
+sd15 frente a E6b,dataset6_CLINIC_0074_data,pub+asinh vae regla metal,2121.6978,2121.6978,True
+sd15 frente a E6b,dataset6_CLINIC_0089_data,pub+asinh vae regla metal,4570.9052,4570.9052,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0006_data,pub+asinh vae regla metal,5639.6454,5639.6454,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0009_data,pub+asinh vae regla metal,1784.6641,1784.6641,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0010_data,pub+asinh vae regla metal,1130.3362,1130.3362,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0023_data,pub+asinh vae regla metal,4524.9203,4524.9203,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0024_data,pub+asinh vae regla metal,4841.5441,4841.5441,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0031_data,pub+asinh vae regla metal,5661.3916,5661.3916,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0032_data,pub+asinh vae regla metal,5942.8852,5942.8852,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0036_data,pub+asinh vae regla metal,6447.8762,6447.8762,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0048_data,pub+asinh vae regla metal,2014.5541,2014.5541,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0049_data,pub+asinh vae regla metal,4554.9156,4554.9156,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0053_data,pub+asinh vae regla metal,5974.8147,5974.8147,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0066_data,pub+asinh vae regla metal,4005.9193,4005.9193,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0068_data,pub+asinh vae regla metal,8534.3788,8534.3788,True
+sd15 frente a E6b,dataset7_CLINIC_metal_0072_data,pub+asinh vae regla metal,5237.8573,5237.8573,True
+encoder congelado (hash base = hash al entrenar),-,pub,30000.0,-,True
+decodificador afinado distinto del preentrenado,-,pub,30000.0,-,True
+encoder congelado (hash base = hash al entrenar),-,LW20000,30000.0,-,True
+decodificador afinado distinto del preentrenado,-,LW20000,30000.0,-,True
+encoder congelado (hash base = hash al entrenar),-,pub+asinh,30000.0,-,True
+decodificador afinado distinto del preentrenado,-,pub+asinh,30000.0,-,True

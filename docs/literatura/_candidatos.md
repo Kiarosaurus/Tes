@@ -35,7 +35,9 @@ lectura de `ziran2007fluoroscopic` y de la lectura de `moed2006s2screw`.
 | 3 | Zwingmann J et al., J Trauma 2010;69:1501-1506 | de `zwingmann2013` (ref. 11) | **Benchmark del Objetivo 2.** Cohorte mayor (14/131 convencional, 1/63 navegado); si publica grados, seria la segunda distribucion ordinal | Antes de fijar el benchmark de SAP |
 | 4 | Selles et al. 2023, ref. [140] de `selles2024marreview` (CT pelvica y fusion sacroiliaca) | de `selles2024marreview` | **`B_delta` y #57.** Seria la primera medicion de la extension espacial del artefacto cerca de un implante sacroiliaco | Antes de escribir la justificacion de `B_delta`. Primero hay que transcribir la cita completa |
 | 5 | Park HS, Chung YE, Seo JK. *CT beam-hardening artefacts: mathematical characterization*, Phil Trans A 2015 | de `zhu2023sinogram` | #57 (estructura espacial del beam hardening), solo teorico | Si sobra tiempo |
-| 6 | MAISI (Guo et al., WACV 2025), MedVAE (Varma et al.), CVQ-VAE (Zheng & Vedaldi, ICCV 2023) | de `chen2026foundationvae` / `yun2026simulationdriven` | **VAE alternativo para el Objetivo 3** | **Solo si P1 da No-Go** en las seis combinaciones (decision 2026-09-17) |
+| 6 | MAISI (Guo et al., WACV 2025), MedVAE (Varma et al.), CVQ-VAE (Zheng & Vedaldi, ICCV 2023) | de `chen2026foundationvae` / `yun2026simulationdriven` | **VAE alternativo para el Objetivo 3** | **Solo si P1 da No-Go** en las seis combinaciones (decision 2026-09-17)  LEIDOS 2026-09-19: MAISI -> guo2025maisi.md, MedVAE -> varma2025medvae.md; CVQ-VAE sigue PENDIENTE |
+| 7 | **Berk T et al. 2023, Medicina 59(8):1379 — arandela en iliosacros** | `refs/deep-research` (2026-09-19) | **Geometria del implante para el Diseno A (#95).** Unica fuente revisada por pares y de acceso libre que mide un sistema **iliosacro** de 7.3 mm con y sin arandela. La arandela es el mayor volumen de metal del conjunto y se asienta en la cortical iliaca | **Antes de rasterizar la mascara parametrica** **LEIDO 2026-09-19** -> `berk2023washer.md`: da solo el diametro de la arandela |
+| 8 | **Gardner AW et al. 2015, J Orthop Surg 23(1):41-46 — fuste, nucleo y tramo roscado** | `refs/deep-research` (2026-09-19) | **Diametro real del fuste (#95).** El deep-research afirma fuste 4.8-4.9 mm y nucleo 4.5-4.7 mm frente al nominal de 7.3 mm; si se confirma, el cilindro liso de 6.5-8.0 mm de `main.tex:113` **sobreestima el metal** y contradice lo que el modelo vera en entrenamiento (E8: 5.00 mm). Es estudio femoral: aporta geometria del dispositivo, no validacion iliosacra | **Junto con el 7** | **LEIDO 2026-09-19** -> `gardner2015screw.md`; quedan el 7 (Berk) y T1 |
 | — | Herramientas de GitHub del CT-MAR (scoring y FBP/reproyeccion) | de `haneda2025aapm` | Implementacion del brazo de Peters y P2 (#70) | Al implementar P2; es codigo, no lectura |
 
 **No leer (cerrados por decision o sin impacto):** Ziran 2003 (cadena del 10 mm cerrada; ademas falta el raw), Roy-Camille
@@ -546,9 +548,11 @@ los transcribio `lector-papers` desde la lista de referencias de cada PDF; no ve
 
 | Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
 |---|---|---|---|---|
-| Guo et al. MAISI: Medical AI for synthetic imaging. WACV 2025 | `chen2026foundationvae` | **VAE entrenado en CT**, contrapunto directo a E6b y a la opcion 3 de #36/#39 (otro VAE con MAE de hueso < 25 HU). Si publica error en HU o su rango de recorte cubre hueso denso, es el candidato natural a VAE del renderizador; si recorta como Chen, refuerza #65 | 1 | PENDIENTE |
-| Varma et al. MedVAE: Efficient automated interpretation of medical images with large-scale generalizable autoencoders. arXiv:2502.14753, 2025 | `chen2026foundationvae` | Autoencoder medico de 1 canal; mismo papel que MAISI para la opcion 3 de #36/#39. Chen reporta cifras contradictorias de MedVAE entre texto y tabla | 2 | PENDIENTE |
-| Tonetti J, Carrat L, Blendea S, et al. Clinical results of percutaneous pelvic surgery. Computer assisted surgery using ultrasound compared to standard fluoroscopy. Comput Aided Surg 2001 | `tejwani2014` | Reporta una tasa clinica de malposicion (fuente del "24%" de Tejwani). Es la cohorte de 2001, **no** Tonetti 1998 ya descartado. Baja prioridad: el prior ordinal ya esta delimitado a Zwingmann en S1 | 3 | PENDIENTE |
+| Guo et al. MAISI: Medical AI for synthetic imaging. WACV 2025 | `chen2026foundationvae` | **VAE entrenado en CT**, contrapunto directo a E6b y a la opcion 3 de #36/#39 (otro VAE con MAE de hueso < 25 HU). Si publica error en HU o su rango de recorte cubre hueso denso, es el candidato natural a VAE del renderizador; si recorta como Chen, refuerza #65 | 1 | LEIDO 2026-09-19 -> guo2025maisi.md (no responde la compuerta: rango HU en el suplementario, no incluido) |
+| Konz N, Chen Y, Dong H, Mazurowski MA. Anatomically-controllable medical image generation with segmentation-guided diffusion models. arXiv:2402.05210, 2024 | `guo2025maisi` (ref. 38) | Difusion guiada por mascaras de segmentacion: competidor directo del renderizador condicionado | 2 | PENDIENTE |
+| Varma et al. MedVAE: Efficient automated interpretation of medical images with large-scale generalizable autoencoders. arXiv:2502.14753, 2025 | `chen2026foundationvae` | Autoencoder medico de 1 canal; mismo papel que MAISI para la opcion 3 de #36/#39. Chen reporta cifras contradictorias de MedVAE entre texto y tabla | 2 | LEIDO 2026-09-19 -> varma2025medvae.md (excluye metal; HU no documentado; no valida la compuerta) |
+| Chambon P, Bluethgen C, Langlotz CP, Chaudhari A. Adapting pretrained vision-language foundational models to medical imaging domains, 2022 | `varma2025medvae` (ref. 6) | Posible respaldo de que modelos de imagen natural generalizan mal a imagen medica (fallo del VAE de SD en P1); contenido no verificado | 3 | PENDIENTE |
+| Tonetti J, Carrat L, Blendea S, et al. Clinical results of percutaneous pelvic surgery. Computer assisted surgery using ultrasound compared to standard fluoroscopy. Comput Aided Surg 2001 | `tejwani2014` | Reporta una tasa clinica de malposicion (fuente del "24%" de Tejwani). Es la cohorte de 2001, **no** Tonetti 1998 ya descartado. Baja prioridad: el prior ordinal ya esta delimitado a Zwingmann en S1 | 3 | LEIDO 2026-09-19 -> tonetti2001results.md: binario, 23% (no 24%), sin S1/S2 ni grados |
 | Wagner D, Kamer L, Rommens PM, et al. 3D statistical modeling techniques to investigate the anatomy of the sacrum, its bone mass distribution, and the trans-sacral corridors. J Orthop Res 2014 | `arand2019pelvicring` (tercera fuente que la cita; ya registrada arriba como "NINGUNO SE PERSIGUE") | **Cambia de estatus por #64:** es la unica candidata conocida que podria respaldar "bone mass distribution" con corredores, si la autora decide mantener una cita de densidad en `main.tex`. No se persigue sin esa decision | 2 | PENDIENTE (condicionada a #64) |
 
 **Descartadas en el filtrado (no reproponer):** de `zhang2018`, Tang 2008 (J X-Ray Sci Technol), Kyriakou 2010
@@ -611,3 +615,54 @@ Conflitti, Karachalios, Matta & Saucedo 1989, DICDNet).
 | Edeiken-Monroe BS, Browner BD, Jackson H. The role of standard roentgenograms in the evaluation of instability of pelvic ring disruption. Clin Orthop 240:63-76, 1989 | `mostafavi1996radiologic` (ref. 4) | Desplazamiento radiografico frente a estabilidad | 4 | PENDIENTE — no perseguir |
 | M. Yazdi, L. Gingras, L. Beaulieu. An adaptive approach of metal artifact reduction in helical CT for radiation therapy treatment planning: experimental and clinical studies. Int J Radiat Oncol Biol Phys 62, 1224-1231 (2005) | `yazdi2011opposite` (ref. 14) | MAR con protesis de cadera; enfoque "adaptive" de segmentacion de metal (#87) | 3 | PENDIENTE — no perseguir |
 
+---
+
+## Ronda 2026-09-19 — geometria del tornillo iliosacro (de `refs/deep-research/`, aportado por la autora)
+
+> Procedencia: `fuentes_geometria_tornillo_iliosacro.md` y `gemini_research.md`. **No son lecturas**: son busquedas
+> asistidas, sin ficha y sin PDF en `papers/`. Ninguna cifra de esos documentos puede entrar en la tesis (reglas 1, 2 y 9);
+> lo que sigue solo ordena **que conviene conseguir**. Ambos documentos se contradicen entre si en varias medidas, asi que
+> las cifras van aqui como *afirmacion por verificar*, no como dato.
+>
+> **Por que importa ahora:** el Objetivo 3 pasa a generar por mascara (`main.tex`, Obj 3 reescrito). La mascara es la
+> condicion del modelo, asi que la geometria del implante dejo de ser un detalle: define #95 (brecha entre la mascara de
+> entrenamiento y la de sintesis).
+
+| # | Fuente | Que cerraria | Afirmacion por verificar | Acceso | Prioridad |
+|---|---|---|---|---|---|
+| G1 | Berk T et al. 2023, *Medicina* 59(8):1379 | Arandela en un sistema **iliosacro** de 7.3 mm | Arandela 13.0 mm confirmada (*"washers (diameter 13.0 mm, thickness 6.6 mm)"*, p. 2); el *"thickness 6.6 mm"* queda **AMBIGUO** (el PDF no define la magnitud) y el diametro interior es NO ENCONTRADO. **No cierra el fuste:** fuste, nucleo, rosca, paso, canulacion y cabeza son NO ENCONTRADO. Acero 316LVM, no titanio | PMC, libre | **LEIDO 2026-09-19** -> `berk2023washer.md` |
+| G2 | Gardner AW et al. 2015, *J Orthop Surg* 23(1):41-46 | Fuste, nucleo y longitud roscada del canulado de 7.3 mm | **LEIDO 2026-09-19 -> `gardner2015screw.md`. VERIFICADO EXACTO: nucleo 4.7 mm, fuste 4.9 mm, rosca 16.0 mm, nominal = diametro de rosca (Tabla 1, p. 42).** No da cabeza, arandela, paso ni diametro de canulacion | DOI + copia en RG | **LEIDO** |
+| G3 | Radzi S et al. 2014, *Quant Imaging Med Surg* 4(3):163-172 | Efecto de **material y canulacion** sobre el artefacto de CT | Compara titanio/acero, macizo/canulado; el propio deep-research advierte que no aisla la canulacion ni da un efecto transferible | Libre | MEDIA **LEIDO 2026-09-19** -> `radzi2014metalartifacts.md`: SI da mm (CT 1.6-2.6) pero **desde el eje**, con umbral sin publicar y con O-MAR solo en titanio; no aisla la canulacion (4.0 vs 3.5 mm) |
+| G4 | Zhu Z, Liao F 2023, *J Orthop Res* 41:1546-1554 | Paso de rosca | **LEIDA 2026-09-19 -> zhu2022optimalposition.md. CONFIRMADO en el cuerpo (2.3, p. 1548):** *"thread pitch, 2.5 mm"*, *"thread length, 16 mm"*, *"shaft diameter, 4.8 mm"*, *"thread diameter, 7.3 mm"*. Sin cita ni catalogo; es cuello femoral; cabeza, nucleo, canulacion y arandela NO ENCONTRADO | Wiley | **LEIDA** |
+| G5 | Sayres SC et al. 2015, *Foot Ankle Int* 36(1):32-36 | Diametro de cabeza | **LEIDA 2026-09-19 -> sayres2014comparison.md. CONFIRMADO en el CUERPO (Discusion, p. 34):** cabeza de 8.0 mm y altura 4.5 mm para 7.3 y 6.5 mm (Synthes). Sin cita ni catalogo; errata "4.3 mm" en el pie de Figura 2; calcaneo; sin CT ni artefacto | SAGE | **LEIDA** |
+| G6 | Cassanego GR et al. 2026, *Vet J* 317:106691 | Artefacto de canulado vs macizo | Solo abstract consultado; condilo humeral **canino** | PubMed | BAJA **LEIDO 2026-09-19** -> `cassanego2026evolution.md`: solo titanio, canino, sin estadistica y contradictorio consigo mismo; no transferible |
+| T1 | Synthes, *Cannulated Screws 3.0-7.3, Surgical technique* (PDF del fabricante) | Fuste y arandela del sistema que el manual asocia a dislocaciones iliosacras | Fuste 4.8 mm; arandela X19.990 de 13 mm exterior y 6.6 mm interior; **no publica el espesor** | PDF alojado por un hospital | **ALTA como documentacion tecnica** (no es paper revisado por pares; declararlo como tal) |
+| T2 | Acumed, *6.5/7.3 mm Cannulated Screw System*, SPF10-05-E (2022) | Alternativa documentada | Arandela 13 mm exterior / 6.7 mm interior; rosca de 16 o 32 mm; titanio ASTM F136 | PDF oficial | MEDIA como documentacion tecnica |
+| X | Catalogos de distribuidores y copias en scribd, studylib, pdfcoffee, epdf, dokumen.pub (34 enlaces de `gemini_research.md`) | — | — | — | **NO CITABLE.** No entran en `refs/raw/` |
+
+**Contradicciones detectadas entre los dos documentos (a resolver con los PDF, no entre ellos):**
+
+| Medida | `fuentes_geometria...` | `gemini_research` |
+|---|---|---|
+| Diametro interior de la arandela | 6.6 mm (Synthes) / 6.7 mm (Acumed) | 7.5 mm |
+| Espesor de la arandela | no publicado; Berk dice "thickness 6.6 mm" (dudoso) | ~1.5 mm |
+| Diametro exterior de la arandela | 13 mm | 13.0-14.0 mm |
+| Cabeza | **8.0 mm VERIFICADO** (`sayres2014comparison`, p. 34; altura 4.5 mm) | 8.2 mm **descartado, sin respaldo** |
+| Canulacion | guia 2.8 mm; broca 5 mm (instrumental, no el agujero) | agujero de 2.9 mm |
+| Paso de rosca | **2.5 mm VERIFICADO** (`zhu2022optimalposition`, p. 1548) | 2.75 mm **descartado, sin respaldo** |
+
+**Recomendacion del asistente (decide la autora):** conseguir **G1, G2 y T1** (los tres abarcan fuste, nucleo, rosca y
+arandela del sistema de 7.3 mm, y dos son de acceso libre). G4 solo si se decide modelar la rosca. G5 y G6 no valen el
+tiempo. Para que entren: PDF en `papers/` con la clave como nombre y su archivo de cita en `refs/raw/`; despues,
+lectura con `lector-papers`.
+
+**Snowballing de la ronda 2026-09-19:**
+
+| Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
+|---|---|---|---|---|
+| Parker MJ, Ali SM. Short versus long thread cannulated cancellous screws for intracapsular hip fractures: a randomised trial of 432 patients. Injury 2010;41:382-4 | `gardner2015screw` (ref. 14) | Unica ref. que opone dos longitudes de rosca; podria fijar el par 16/32 mm que T2 (Acumed) afirma sin verificar. Geometria de mascara, no biomecanica | 3 | PENDIENTE — baja prioridad, es femoral |
+| Bishop JA, Behn AW, Castillo TN. The Biomechanical Significance of Washer Use with Screw Fixation. *J Orthop Trauma* 2014;28:114-117 | `berk2023washer` (ref. 6) | Unica fuente dedicada a la arandela que cita Berk; candidata a publicar su geometria (espesor, diametro interior), que es justo lo que Berk deja ambiguo (#97) | 3 | PENDIENTE |
+| Gruneweller N, Raschke MJ, Zderic I, et al. Biomechanical comparison of augmented versus non-augmented sacroiliac screws in a novel hemi-pelvis test model. *J Orthop Res* 2017;35:1485-1493 | `berk2023washer` (ref. 19) | Es el estudio al que Berk atribuye *"washer penetration in the iliac bone"* (p. 7): unica pista sobre el asiento de la arandela en la cortical iliaca (#97) | 3 | PENDIENTE |
+| Johnson NL, Galuppo LD, Stover SM, Taylor KT. An in vitro biomechanical comparison ... AO 6.5-mm standard cancellous and 7.3-mm self-tapping, cannulated bone screws in foal femoral bone. *Vet Surg* 2004;33:691-698 | `berk2023washer` (ref. 5) | Fuente de *"screws of 6.5 mm or 7.3 mm diameter are used together with washers"* (p. 1); podria traer geometria del canulado, pero es **veterinaria (potro)** | 4 | PENDIENTE — no perseguir salvo que G2 y T1 fallen |
+| Ziran N, Collinge C, Smith W, Matta JM. Trans-sacral screw fixation of posterior pelvic ring injuries: review and expert opinion. *Patient Saf Surg* 2022;16:24 | `berk2023washer` (ref. 32) | Opinion experta sobre cuando usar arandela; contexto, sin geometria | 4 | PENDIENTE — no perseguir |
+| Moon SG, Hong SH, Choi JY, et al. Metal artifact reduction by the alteration of technical factors in multidetector CT. *J Comput Assist Tomogr* 2008;32:630 | `radzi2014metalartifacts` (ref. 28) | Cuantifica el **volumen 3D** del artefacto, no su extension en mm; el propio Radzi la descarta por eso (#57) | 3 | PENDIENTE — no perseguir |

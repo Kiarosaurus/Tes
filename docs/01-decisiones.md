@@ -1130,3 +1130,35 @@ respaldo del diseno, sin nuevas corridas. Las demas lecturas cierran cadenas de 
 claves nuevas para los duplicados y reabrir el punto 8 de `Fuera de alcance`. Detalle en #83-#88 de `04-implicancias.md`.
 
 Registrada por el asistente por orden explicita de la autora (2026-09-18).
+
+---
+
+## 2026-09-19 — Tras el No-Go de P1 (#91): opcion A (difusion en espacio de imagen) y MAISI como extension del Objetivo 1
+
+**Decision** (de la autora, 2026-09-19: *"Acepto tus propuestas"*; sin tope rigido para MAISI a peticion suya;
+escrita por el asistente por orden explicita: *"escribelo en 01-decisiones"*):
+1. **El No-Go del Objetivo 1 se reporta tal cual** (P1: mejor combinacion afinado `pub+asinh`, 61.72 HU, IC95
+   [55.12, 68.99], 34/34 pacientes >= 25 HU; controles 165/165, 330/330, 3/3, 3/3). El criterio no se mueve.
+2. **El Objetivo 3 se redisena como difusion en el espacio de imagen, por parches alrededor del implante, sin
+   autoencoder.** Es una decision **posterior al resultado**, y asi se declara en la tesis. El diseno
+   (`experiments/objetivo3/diseno_A.md`) **se preinscribe antes de entrenar**.
+3. **MAISI se evalua como extension del Objetivo 1**, con sus pesos preentrenados, sobre los mismos 34 pacientes de
+   test (`p1_particion.csv`) y con la misma regla (media por paciente del MAE en hueso < 25 HU). **Subordinado a A**
+   (prioridad de GPU y de tiempo) y **sin tope rigido**; revision conjunta al terminar la semana 3. Paso 0: si su
+   normalizacion (codigo o suplementario) recorta el rango del hueso denso, se descarta por diseno sin correr.
+   **Su resultado no cambia el diseno del Objetivo 3.**
+4. **Pendiente de aplicar tras revisar el diseno:** titulo (*"Multi-Window Latent Diffusion"*), Objetivo 3, #74 y
+   `main.tex`; `00-tesis.md` (alcance completo).
+
+**Por que:** la compuerta mostro que los latentes preentrenados no transportan HU de hueso (61.72 HU en el mejor caso,
+curvas en plateau, 69.89 HU dentro de `B_delta`). Quitar el latente elimina el error de reconstruccion por
+construccion y mantiene multi-ventana, `B_delta`, el protocolo de Peters y el muestreador. MAISI (#93) y MedVAE (#94)
+no documentan su rango de HU ni error en HU; MAISI es 3D con difusor propio, por eso solo se mide como argumento del
+Objetivo 1.
+
+**Alternativas descartadas:** (a) de #91 sola, sin Objetivo 3 (la autora quiere resultados de generacion); MedVAE
+como compuerta nueva (excluye metal en su entrenamiento, #94); seguir con el decodificador afinado de SD como
+exploratorio (mostraria imagenes que la propia compuerta rechazo); subir el umbral o cambiar la lectura tras ver el test.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-19).
+

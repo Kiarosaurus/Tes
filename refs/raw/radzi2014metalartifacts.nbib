@@ -1,0 +1,118 @@
+PMID- 24914417
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DCOM- 20140610
+LR  - 20240502
+IS  - 2223-4292 (Print)
+IS  - 2223-4306 (Electronic)
+IS  - 2223-4306 (Linking)
+VI  - 4
+IP  - 3
+DP  - 2014 Jun
+TI  - Metal artifacts from titanium and steel screws in CT, 1.5T and 3T MR images of 
+      the tibial Pilon: a quantitative assessment in 3D.
+PG  - 163-72
+LID - 10.3978/j.issn.2223-4292.2014.03.06 [doi]
+AB  - Radiographs are commonly used to assess articular reduction of the distal tibia 
+      (pilon) fractures postoperatively, but may reveal malreductions inaccurately. 
+      While magnetic resonance imaging (MRI) and computed tomography (CT) are potential 
+      three-dimensional (3D) alternatives they generate metal-related artifacts. This 
+      study aims to quantify the artifact size from orthopaedic screws using CT, 1.5T 
+      and 3T MRI data. Three screws were inserted into one intact human cadaver ankle 
+      specimen proximal to and along the distal articular surface, then CT, 1.5T and 3T 
+      MRI scanned. Four types of screws were investigated: titanium alloy (TA), 
+      stainless steel (SS) (Ø =3.5 mm), cannulated TA (CTA) and cannulated SS (CSS) (Ø 
+      =4.0 mm, Ø empty core =2.6 mm). 3D artifact models were reconstructed using 
+      adaptive thresholding. The artifact size was measured by calculating the 
+      perpendicular distance from the central screw axis to the boundary of the 
+      artifact in four anatomical directions with respect to the distal tibia. The 
+      artifact sizes (in the order of TA, SS, CTA and CSS) from CT were 2.0, 2.6, 1.6 
+      and 2.0 mm; from 1.5T MRI they were 3.7, 10.9, 2.9, and 9 mm; and 3T MRI they 
+      were 4.4, 15.3, 3.8, and 11.6 mm respectively. Therefore, CT can be used as long 
+      as the screws are at a safe distance of about 2 mm from the articular surface. 
+      MRI can be used if the screws are at least 3 mm away from the articular surface 
+      except for SS and CSS. Artifacts from steel screws were too large thus obstructed 
+      the pilon from being visualised in MRI. Significant differences (P<0.05) were 
+      found in the size of artifacts between all imaging modalities, screw types and 
+      material types, except 1.5T versus 3T MRI for the SS screws (P=0.063). CTA screws 
+      near the joint surface can improve postoperative assessment in CT and MRI. MRI 
+      presents a favourable non-ionising alternative when using titanium hardware. 
+      Since these factors may influence the quality of postoperative assessment, 
+      potential improvements in operative techniques should be considered.
+FAU - Radzi, Shairah
+AU  - Radzi S
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Cowin, Gary
+AU  - Cowin G
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Robinson, Mark
+AU  - Robinson M
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Pratap, Jit
+AU  - Pratap J
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Volp, Andrew
+AU  - Volp A
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Schuetz, Michael A
+AU  - Schuetz MA
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+FAU - Schmutz, Beat
+AU  - Schmutz B
+AD  - 1 Institute of Health and Biomedical Innovation, Queensland University of 
+      Technology, QLD 4059, Australia ; 2 Centre of Advanced Imaging, University of 
+      Queensland, QLD 4072, Australia ; 3 Orthopaedics Department, Royal Brisbane and 
+      Women's Hospital, QLD 4006, Australia ; 4 Radiology Department, 5 Trauma 
+      Services, Princess Alexandra Hospital, QLD 4102, Australia.
+LA  - eng
+PT  - Journal Article
+PL  - China
+TA  - Quant Imaging Med Surg
+JT  - Quantitative imaging in medicine and surgery
+JID - 101577942
+PMC - PMC4032923
+OTO - NOTNLM
+OT  - Computed tomography (CT)
+OT  - magnetic resonance imaging (MRI)
+OT  - metal artifacts
+OT  - pilon
+OT  - tibial plafond
+EDAT- 2014/06/11 06:00
+MHDA- 2014/06/11 06:01
+PMCR- 2014/06/01
+CRDT- 2014/06/11 06:00
+PHST- 2014/01/28 00:00 [received]
+PHST- 2014/03/14 00:00 [accepted]
+PHST- 2014/06/11 06:00 [entrez]
+PHST- 2014/06/11 06:00 [pubmed]
+PHST- 2014/06/11 06:01 [medline]
+PHST- 2014/06/01 00:00 [pmc-release]
+AID - qims-04-03-163 [pii]
+AID - 10.3978/j.issn.2223-4292.2014.03.06 [doi]
+PST - ppublish
+SO  - Quant Imaging Med Surg. 2014 Jun;4(3):163-72. doi: 
+      10.3978/j.issn.2223-4292.2014.03.06.

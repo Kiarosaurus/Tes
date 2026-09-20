@@ -6436,3 +6436,276 @@ renderizador: sin cambios.**
   (Tile types B and C)"*. La ficha de Zwingmann respalda el tipo de fractura, pero no la calidad de la reduccion, asi que
   "reduced" se quito para no afirmar algo sin fuente.
 - Compila: 6 paginas, 83 referencias, 0 citas indefinidas. **#85 APLICADA.**
+
+---
+
+## Ronda 2026-09-18 (2) — entrega recortada de 2 paginas (`entrega/main.tex`)
+
+### 89 — Retroalimentacion del asesor sobre la primera version: `main.tex` no tiene plan de falsos positivos de extraccion ni presupuesto de computo — ABIERTA
+
+- **Origen:** retroalimentacion sobre `entrega/PFCII___ENG___Kiara.pdf`, transmitida por la autora el 2026-09-18:
+  (1) plan para falsos positivos/artefactos en la extraccion; (2) recursos de computo para estimar si caben las pruebas
+  de difusion y simulador; (3) estilo: spanglish, exceso de adverbios y adjetivos.
+- **Hallazgo:** `tesis/main.tex` (6 pp.) no trae ninguno de los dos contenidos. La entrega de 2 pp. los arma solo con
+  cifras ya medidas: cribado 2500 HU (113/178, 0 falsos negativos, #22), E8 (9 de 57 fragmentados, 49 de 57 < 6.0 mm,
+  #46), corredor ocupado 53.8% -> 40.4% en 52 pacientes, R1 48/29 de 65; computo de `KHIPU.md` (2 x RTX A6000 48 GB,
+  QoS a-tesis 3 jobs/32 CPU/98G/24 h; P1 1.32 s/paso, 24.6 GB, 10 h 36 min por codificacion; TS 6 h 27 min).
+- **Cifra retenida:** el borrador de la autora (~140 GPU-h; 50 h ControlNet, 40 h segmentacion downstream, 15 h
+  generacion) **no entra**: ninguna cifra esta medida, el asesor pidio no ponerla, y las 40 h de segmentacion downstream
+  contradicen el punto 1 de `Fuera de alcance`. Su atribucion del limite de tamano a los "kernels de scatter Monte Carlo"
+  tampoco tiene respaldo: `haneda2025aapm` (Sec. 4, p. 16) dice "may look distorted for large metal objects with
+  diameters larger than 3.0 cm", sobre la traza de metal del sinograma.
+- **Gap abierto:** el tiempo de entrenamiento del ControlNet y el de XCIST por volumen no estan medidos. La entrega
+  declara el procedimiento (piloto de 200 pasos, como en P1) y no da cifra.
+- **Que toca:** `tesis/main.tex` (dos parrafos nuevos + pasada de estilo), `docs/00-tesis.md` (presupuesto de computo
+  como supuesto), plan de P3/O3.
+- **Tipo:** REDACCION + SUPUESTO. **Pendiente de decision de la autora. No aplicado a `main.tex` (reglas 4 y 14).**
+
+### 90 — Plazo: la autora habla de 5 semanas, los documentos dicen ~11 — ABIERTA
+
+- **Origen:** pregunta de la autora, 2026-09-18: "es posible llegar hasta el 4 en 5 semanas?".
+- **Hallazgo:** `01-decisiones.md` (2026-09-17, "Por que") planifica con **~11 semanas**; `ESTADO.md` cita ~12 semanas
+  desde el 2026-09-15 (#23). Ningun documento registra 5 semanas ni una decision de "llegar solo hasta el Objetivo 3".
+  Lo registrado: minimo = Obj 1 + Obj 2 + SAP; completo = Obj 3 (condicionado a la compuerta del Obj 1, renderizador
+  mantenido por la autora) + Obj 4.
+- **Que toca:** si 5 semanas es el plazo real, el alcance COMPLETO de `00-tesis.md`, la pregunta y la hipotesis
+  (comparacion contra Peters) y la entrega de 2 pp. dejan de ser alcanzables tal como estan escritos.
+- **Tipo:** ALCANCE + SUPUESTO. **Pendiente de la autora: confirmar plazo y a que corresponde. No aplicado.**
+
+---
+
+## Ronda 2026-09-19 — resultado de P1 (compuerta del Objetivo 1)
+
+### 91 — P1 da NO-GO con la regla preinscrita: ninguna de las seis combinaciones baja de 25 HU; la mejor (decodificador afinado, `pub+asinh`) queda en 61.72 HU — ABIERTA
+
+- **Origen:** jobs 51669/51670/51671+51878 (entrenamiento) y 51879 (evaluacion), Khipu, 2026-09-17 a 2026-09-19.
+  `data/p1/eval/p1_compuerta.md` (copia local pendiente). Regla fijada el 2026-09-17 (`01-decisiones.md` (3), #76,
+  `main.tex:77`) **antes** de correr.
+- **Controles, todos OK:** identidad frente a E6c 165 de 165; `sd15` frente a E6b 330 de 330 (0.05 HU); encoder
+  congelado 3 de 3; decodificador afinado distinto del preentrenado 3 de 3. 68 filas (34 pacientes x 2 modelos), 0 errores.
+- **Veredicto (media por paciente del MAE en hueso, `vae regla`, 34 de test):**
+
+  | Modelo | Codificacion | media | IC95 bootstrap | pacientes >= 25 HU |
+  |---|---|---|---|---|
+  | sd15 | `pub` | 160.13 | [142.42, 180.62] | 34/34 |
+  | sd15 | `LW20000` | 209.39 | [191.91, 228.62] | 34/34 |
+  | sd15 | `pub+asinh` | 164.76 | [148.81, 182.87] | 34/34 |
+  | afinado | `pub` | 72.91 | [59.37, 89.02] | 34/34 |
+  | afinado | `LW20000` | 77.03 | [70.12, 84.65] | 34/34 |
+  | afinado | `pub+asinh` | **61.72** | [55.12, 68.99] | 34/34 |
+
+  **NO-GO.** Ningun paciente de test, en ninguna combinacion, baja de 25 HU. El mejor IC95 empieza en 55.12 HU.
+- **Lo que el resultado separa:**
+  - El afinado del decodificador **reduce el error a menos de la mitad** (164.76 -> 61.72 en `pub+asinh`), pero queda
+    ~2.5 veces por encima del umbral.
+  - **No es un problema del metal.** Sin metal (dataset6, n = 14), el mejor afinado da 53.72 HU de media. Con el
+    oraculo (que elige canal con el HU verdadero) el afinado sigue en 49.65-63.56 HU: la regla de lectura no explica la
+    brecha.
+  - **Lectura plausible, no verificada:** con el encoder congelado, el latente f=8 de SD 1.5 es el cuello de botella;
+    un decodificador mejor no recupera lo que el encoder ya descarto. P1 no mide el encoder, asi que esto no esta probado.
+  - Metal (descriptivo): el afinado baja de ~4200 a ~2065-2154 HU en `LW20000`/`pub+asinh`. `B_delta` (descriptivo):
+    64.62-88.72 HU con afinado. Ninguno decide.
+- **Objecion previsible: entrenamiento insuficiente.** Las curvas de validacion terminan en 61.84 / 79.99 / 70.31 HU
+  (`pub+asinh` / `LW20000` / `pub`) tras 30 000 pasos; `pub` estuvo entre 69.85 y 73.64 HU desde el paso 15 000
+  (plateau). Falta revisar la pendiente de las otras dos en `curva_*.csv` antes de afirmarlo. Aun asi, pasar de 61.72
+  a < 25 HU exige reducir el error 2.5 veces.
+- **Curvas revisadas (2026-09-19, `experiments/objetivo1/p1_curvas/`):** casi toda la mejora ocurre en los primeros
+  ~5 000 pasos (`pub+asinh` 156.02 -> 71.61; `pub` 151.64 -> 76.57; `LW20000` 208.48 -> 81.80). Media de val MAE en
+  hueso, pasos 10-19k frente a 20-30k: `pub+asinh` 66.54 -> 64.47; `pub` 71.63 -> 71.42; `LW20000` 76.93 -> 70.77.
+  Pendiente lineal 20-30k: -0.60, -0.59 y **+0.18** HU por 1000 pasos. Aun extrapolando esa pendiente en linea recta
+  (optimista para una curva que se aplana), `pub+asinh` necesitaria ~66 000 pasos mas (~23 h) para llegar a 25 HU, y
+  `LW20000` no bajaria. El minimo de val de toda la corrida es 60.78 HU (`pub+asinh`, paso 27 000). El val final
+  (61.84) coincide con la media de test (61.72): los 8 pacientes de val representan bien al test. **Conclusion: el
+  entrenamiento esta en plateau; "faltaron pasos" no explica el No-Go.** Ademas, entrenar mas despues de ver el test
+  seria elegir tras el resultado (opcion c).
+- **Versionado:** `experiments/objetivo1/p1_compuerta.md`, `p1_eval.csv`, `p1_control.csv` y `p1_curvas/`.
+- **Analisis del asesor (2026-09-19, a pedido de la autora; lectura, no medicion nueva salvo donde se indica):**
+  - *Orden de magnitud esperable:* `rombach2022latentdiffusion` da para KL f=8, c=4 (la configuracion del VAE de SD)
+    PSNR 24.19 dB en imagen natural (Tabla 8, p. 21). 24 dB equivale a un error RMS de ~6% del rango; sobre la LW de
+    `pub` (3000 HU) son ~185 HU. Es el mismo orden que lo medido con `sd15` (RMSE en hueso 397-511 HU de media).
+    25 HU de MAE sobre 3000 HU exige errores de ~0.8% del rango. **Inferencia, no medicion:** el objetivo pide una
+    fidelidad que la arquitectura no declara ni en su dominio de origen.
+  - *Componer el original fuera de `B_delta` no rescata el Objetivo 3.* Medido en `p1_eval.csv`: con el mejor afinado
+    (`pub+asinh`), en los 20 pacientes de test con metal, el MAE dentro de `B_delta` es 69.89 HU, frente a 67.32 en
+    hueso. El error del autoencoder esta tambien dentro de la banda que el renderizador tiene que generar.
+  - *Anclaje del 25 HU:* las cifras que lo sostienen en `main.tex:77` (NMAR 20.2, DDPM 12.3, MLD-MAR 12.74) son RMSE de
+    imagen completa fuera de la mascara de metal, en tareas de MAR. `karageorgos2024ddpm` define hueso como
+    150 <= CTN < 1000 HU (Sec. II-G, p. 11) y da RMSE_ROI de 36 (NMAR) y 52 (DDPM) en su caso de cadera (Tabla II,
+    p. 29); el ROI de esta tesis es hueso > 150 HU sin tope. El umbral es exigente para un ROI de hueso denso. **Sirve
+    para la discusion, NO para mover el umbral ahora** (ya esta declarado que no hay umbral publicado).
+  - *MAISI:* sin ficha y sin leer (`01-decisiones.md` 2026-09-17 E). Antes de decidir (b) hay que verificar, via
+    `lector-papers`: dominio de entrenamiento (CT en HU), normalizacion de intensidad (si recorta a un rango tipo
+    [-1000, 1000] HU, como declara `chen2026foundationvae` en sus experimentos de generacion, el hueso denso y el metal
+    quedan fuera), factor de compresion, 2D/3D y memoria, y si trae modelo de difusion con ControlNet propio (#74).
+- **Consecuencia segun la regla ya escrita** (`main.tex:77`): *"If none passes, Objective 3 is not pursued and the
+  No-Go result is reported as the outcome."* El criterio **no se mueve** (patron #25/#37/#45/#47/#50).
+- **Tension con la contingencia registrada:** `01-decisiones.md` 2026-09-17 C dice *"Otro VAE (MAISI) queda como
+  contingencia solo si el decodificador adaptado no pasa y queda tiempo"*. `main.tex` no la menciona. Probar otro VAE
+  seria una **compuerta nueva**, no un reintento de esta, y solo es legitima si se preinscribe antes de correrla. Choca
+  ademas con #74 (otro latente invalida ControlNet sobre SD 1.5) y con #90 (plazo).
+- **Opciones para la autora:**
+  - (a) **Aceptar el No-Go como resultado** (lo que dice `main.tex`): el Objetivo 3 sale del alcance ejecutado y la
+    tesis entrega Obj 1 (resultado negativo con controles) + Obj 2 + SAP. Es el alcance minimo de `00-tesis.md`.
+    **Recomendada por el asistente**, sobre todo con #90 (5 semanas).
+  - (b) Contingencia MAISI como compuerta nueva y preinscrita (misma regla, mismo test, un solo VAE), con plazo cerrado.
+    Si pasa, el Objetivo 3 se rehace sin ControlNet sobre SD 1.5 (#74 a).
+  - (c) No recomendada: subir el umbral, cambiar la lectura a oraculo o entrenar mas pasos despues de ver el test.
+- **Que toca:** `main.tex` (Obj 1 resultado, Obj 3, tabla, resumen), `00-tesis.md` (alcance), #74, #90.
+- **No aplicado** (regla 14). **Tipo:** RESULTADO + ALCANCE. **Nivel propuesto: N1.**
+
+### 92 — El "24%" de malposicion que heredan `tejwani2014` y la cadena de Gardner (#12) viene de `tonetti2001results`, que publica 23%, binario y sin denominador declarado — ABIERTA
+
+- **Origen:** ficha `tonetti2001results.md` (lector-papers, 2026-09-19).
+- **Hallazgo:** *"Outside bone trajectories 12 (23%) 0 (0%)"* (Table 1, p. 209); criterio binario dentro/fuera de hueso,
+  sin mm ni grados ni nivel S1/S2; *"No statistical comparison tests were done"* (p. 208). 12/51 = 23.5% es calculo del
+  lector, el paper no declara el denominador.
+- **Consecuencia:** no es prior ordinal ni distribucion S2 para SAP (Obj 2 sin cambio). Si se cita la cifra, citar
+  12 (23%) desde Tonetti, no "24%" via Tejwani.
+- **No aplicado** (regla 14). **Tipo:** REDACCION / trazabilidad. **Nivel propuesto: N3.**
+
+### 93 — MAISI no permite preinscribir la contingencia de #91 (b) desde el paper: el rango de HU esta en un suplementario no incluido, y su latente 3D obliga a cambiar el renderizador entero — ABIERTA (liga con #91, #74)
+
+- **Origen:** ficha `guo2025maisi.md` (lector-papers, 2026-09-19; articulo sin suplementario).
+- **Hallazgo:** normalizacion de HU del CT: NO ENCONTRADO EN EL PDF (remite a *"Supplementary Sec. A/B"*). Metricas de
+  reconstruccion solo PSNR/SSIM/LPIPS (Tabla 1, p. 4435), sin error en HU ni en hueso. Datos de CT: torax, abdomen y
+  cabeza-cuello; pelvis y metal NO ENCONTRADO. VAE-GAN **3D**, con difusor y ControlNet 3D propios condicionados por
+  mascaras de 127 estructuras; entrenado en A100 80G.
+- **Consecuencias:** (1) la compuerta de MAISI solo se puede decidir midiendo; su rango de recorte hay que sacarlo del
+  suplementario o del codigo (no citables hoy). (2) Adoptarlo no es "cambiar un VAE": cambia el renderizador 2.5D sobre
+  SD 1.5 por uno 3D (resuelve #74 por reemplazo, no por compatibilidad). (3) MAISI es precedente de ControlNet con
+  mascaras en CT: la novedad del renderizador debe apoyarse en metal + artefacto fuera de la mascara (`B_delta`).
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / arquitectura Obj 3. **Nivel propuesto: N1.**
+
+### 94 — MedVAE tampoco resuelve la compuerta desde el paper, y excluye explicitamente los estudios con metal — ABIERTA (liga con #91, #74, #93)
+
+- **Origen:** ficha `varma2025medvae.md` (lector-papers, 2026-09-19).
+- **Hallazgo:** parte del KL-VAE de `rombach2022` con LoRA en todas las convoluciones y entrada de 1 canal. Los modelos
+  2D se entrenan solo con radiografia de torax y mamografia; CT solo en 3D (1,434 CT de cuerpo entero, pelvis NO
+  ENCONTRADO). *"remove all samples with metal hardware and casts"* (p. 15). Normalizacion de HU, error en HU y
+  compatibilidad con el latente de SD: NO ENCONTRADO. Solo PSNR/MS-SSIM, con posible solape entre entrenamiento y
+  evaluacion. No reporta uso del latente para difusion.
+- **Consecuencias:** (1) como MAISI (#93), solo se decide midiendo. (2) La forma del latente 64/4 coincide con la de SD
+  (H/8 x W/8 x 4), pero LoRA y la entrada de 1 canal impiden dar por compatible el espacio: ControlNet sobre SD 1.5 no
+  queda respaldado (#74). (3) Excluir metal en el entrenamiento hace improbable que transporte el rango del implante.
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / arquitectura Obj 3. **Nivel propuesto: N2.**
+
+### 95 — Opcion A: el renderizador se entrenaria con mascaras de metal real por umbral y se usaria con mascaras de tornillo parametrico; la diferencia entre las dos es un gap de dominio sin medir — ABIERTA (liga con #41, E8, #31)
+
+- **Origen:** pronostico de la opcion A (chat, 2026-09-19). **Correccion del asistente:** en el chat se dijo que las
+  mascaras por umbral salen "mas gruesas por blooming". **E8 midio lo contrario:** *"2500 HU no infla por blooming: esta
+  cerca del semimaximo y recorta la periferia"* (#41, E8), con fuste mediano de 5.00 mm a > 2500 HU frente a 5.14 mm a
+  semimaximo, y 10 de 62 objetos alargados partidos a > 2500 HU.
+- **Gap:** las mascaras de entrenamiento (umbral sobre metal real) son algo mas finas que la periferia real y a veces
+  estan fragmentadas; la mascara parametrica (cilindro de calibre publicado, 6.0-8.0 mm segun #31) es continua y mas
+  gruesa que el 5.00 mm medido. El renderizador veria en inferencia mascaras distintas de las de entrenamiento.
+- **Opciones:** (a) entrenar con la misma regla de mascara que se usara en inferencia (umbral aplicado tambien al
+  implante sintetizado, o mascara parametrica ajustada a los implantes reales); (b) medir la sensibilidad del generador
+  al calibre de la mascara como analisis declarado; (c) calibre del cilindro tomado de E8 (5.00 mm) en vez de #31, con la
+  salvedad de E8 de que no coincide con la geometria publicada.
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / diseno del Obj 3. **Nivel propuesto: N2.** Se resuelve en el
+  documento de diseno de A, antes de entrenar.
+
+### 96 — Opcion A: el contexto de entrenamiento trae el streaking del implante real y el de uso (paciente sin metal) no — ABIERTA (liga con #57, #95)
+
+- **Origen:** borrador `experiments/objetivo3/diseno_A.md` (2026-09-19), seccion 8.
+- **Hallazgo (razonamiento de diseno, sin medir):** en inpainting sobre pacientes con metal, lo que queda fuera de
+  `G = M ∪ B_delta` incluye el streaking lejano del implante real (el que `B_delta` trunca por diseno, #57). En la
+  sintesis sobre pacientes sin metal ese contexto es limpio. El modelo puede aprender a apoyarse en rayas que en uso no
+  existen: artefacto debil o costura en el borde de la banda.
+- **Como se vera:** E-A2 del diseno (costura a traves del borde de `B_delta`, streak amplitude frente a copia-pega y
+  al brazo fisico).
+- **Opciones:** (a) contexto recortado o suavizado fuera de `G` en entrenamiento; (b) banda de contexto intermedia
+  excluida de la entrada; (c) aceptar y medir. Se decide tras la prueba corta, antes de preinscribir.
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / diseno del Obj 3. **Nivel propuesto: N2.**
+
+### 97 — El deep-research sugiere que el tornillo canulado de 7.3 mm es, en su mayor parte, un fuste de ~4.8 mm con cabeza y arandela mucho mas grandes: si se confirma, el cilindro liso de 6.5-8.0 mm de `main.tex` sobreestima el metal — ABIERTA (liga con #95, #41, #31)
+
+- **Origen:** `refs/deep-research/fuentes_geometria_tornillo_iliosacro.md` y `gemini_research.md`, aportados por la autora
+  (2026-09-19). **Ninguna de sus cifras esta verificada**: no hay PDF en `papers/` ni entrada en `refs/raw/`, asi que nada
+  de esto puede escribirse en la tesis todavia (reglas 1, 2 y 9). Los dos documentos se contradicen entre si (tabla en
+  `docs/literatura/_candidatos.md`, ronda 2026-09-19).
+- **Afirmacion central por verificar:** el nominal de 7.3 mm describe la **rosca distal**, no el cuerpo. El fuste seria de
+  ~4.8-4.9 mm y el nucleo de ~4.5-4.7 mm a lo largo de casi toda la trayectoria, con una cabeza de ~8.0-8.2 mm y, en
+  iliosacros, una arandela de ~13-14 mm apoyada en la cortical iliaca.
+- **Por que toca al metodo, si se confirma:**
+  1. **`main.tex:113` modela un cilindro liso de 6.5-8.0 mm en todo el trayecto.** Eso pondria ~7.3 mm de metal donde el
+     implante real tiene ~4.8 mm, es decir mas del doble de area transversal, y ademas **sobre hueso trabecular sano**.
+     Agrava #95 en la direccion contraria a la que el diseno suponia.
+  2. **Coherencia con E8:** el fuste medido en CLINIC-metal fue 5.00 mm (mediana, HU > 2500), muy cerca del 4.8 mm que
+     afirma el deep-research y lejos de los calibres publicados de 6.5-8.0 mm. E8 lo habia leido como "geometria extraida
+     que no coincide con la publicada" (#41); esta lectura ofrece una explicacion alternativa: **el calibre publicado y el
+     fuste no son la misma magnitud**. No esta verificado, pero reordena la interpretacion de E8.
+  3. **Cabeza y arandela no estan en el modelo.** Estan en la cortical iliaca, en un gradiente alto, y por volumen serian
+     el mayor emisor de artefacto del conjunto. Su ausencia en la mascara de sintesis es un candidato mas fuerte que el
+     fuste para explicar diferencias con los pacientes reales.
+  4. **#31 no cambia:** para la viabilidad del corredor manda la envolvente (rosca, 6.5-8.0 mm). Lo que cambia es la
+     mascara de metal para sintetizar. **Son dos geometrias distintas y hoy el texto usa una sola.**
+- **Lo que NO se puede hacer:** cambiar `main.tex:113` con estas cifras. Requiere los PDF (G1, G2 y la ficha tecnica T1 de
+  `_candidatos.md`) y su lectura con `lector-papers`.
+- **Opciones para la autora:** (a) conseguir G1 + G2 + T1 y modelar fuste, cabeza y arandela por piezas; (b) mantener el
+  cilindro liso declarado como simplificacion y calibrar su diametro con E8 (5.00 mm) en vez de con el nominal, declarando
+  que es la magnitud que el modelo vio en entrenamiento; (c) mantener 6.5-8.0 mm, que es lo que dice hoy el texto, y
+  declarar la sobreestimacion como limitacion.
+- **Recomendacion del asistente:** (b) para el piloto, porque no depende de ninguna lectura nueva y alinea la mascara con
+  los datos de entrenamiento; (a) para la version final si llegan los PDF.
+- **VERIFICADO el 2026-09-19 con seis lecturas y tres fichas tecnicas** (todas ya en `refs.bib`):
+
+  | Pieza | Valor | Fuente |
+  |---|---|---|
+  | Diametro de rosca (el "nominal") | 7.3 mm | `synthes2002chart` (*"Thread Diameter"* sobre *"SCREW DIAMETER (mm)"*); `gardner2015screw` Tabla 1, p. 42; `zhu2022optimalposition` p. 1548 |
+  | **Fuste** | **4.8 mm** (`synthes2006cannulated`, columna *"Shaft diameter"*, p. impresa 4; `zhu2022optimalposition`, p. 1548) y **4.9 mm** (`gardner2015screw`, p. 42) | tres fuentes independientes |
+  | Nucleo | 4.7 mm | `gardner2015screw`, p. 42 |
+  | Longitud de rosca | 16 / 32 mm o completa | `synthes2002chart`; `acumed2020cannulated`; `gardner2015screw`; `zhu2022optimalposition` |
+  | Paso de rosca | **2.5 mm** | `zhu2022optimalposition`, p. 1548 (descarta el 2.75 mm del deep-research) |
+  | Cabeza | **8.0 mm de diametro, 4.5 mm de altura**, hex de 4.0 mm, sin avellanado | `sayres2014comparison`, p. 34; `synthes2006cannulated` (*"4.0 mm Hex"*) |
+  | Arandela plana 6.5/7.3 | **13.0 mm exterior, 6.6 mm interior** (X19.990, `synthes2006cannulated`, p. 5); 13.0 x 6.7 mm en Acumed; 13.0 mm en `berk2023washer`, p. 2 | tres fuentes coincidentes en el exterior |
+  | Espesor de la arandela | **SIN FUENTE.** Synthes no lo publica; el *"thickness 6.6 mm"* de Berk (p. 2) coincide con el **diametro interior** del catalogo y el PDF no define la magnitud | ninguna |
+  | Diametro de canulacion | **SIN FUENTE.** Los 2.8 mm son la aguja guia y los 5.0 mm la broca: instrumental, no el implante | ninguna |
+  | Material | `berk2023washer` usa **acero 316LVM**; Acumed declara **titanio ASTM F136**; Synthes dice *"stainless steel and titanium"* sin aleacion | coexisten los dos |
+
+- **Conclusion: la afirmacion central de #97 queda PROBADA.** El nominal es el diametro de rosca; el cuerpo del
+  tornillo mide ~4.8 mm en casi todo el trayecto. El cilindro liso de 6.5-8.0 mm de `main.tex:113` **sobreestima el
+  area transversal del metal en mas del doble** a lo largo del corredor, y por casualidad acierta el tamano de la
+  cabeza (8.0 mm), que es la unica parte del implante con ese calibre.
+- **Precedente en la literatura para separarlas:** `zhu2022optimalposition` usa las **dos** geometrias del mismo
+  tornillo sin comentarlo: cilindro de 7.3 mm para planificar sobre imagen (*"7.3 mm diameter splines"*, p. 1547) y
+  fuste de 4.8 mm para simular (p. 1548). Es exactamente la separacion **envolvente del corredor (#31) frente a
+  mascara de metal (#95)** que el texto de la tesis hoy no hace.
+- **Lo que queda abierto:** espesor de arandela, diametro de canulacion, y el hecho de que ninguna de las fuentes de
+  dimensiones sea iliosacra (Gardner y Zhu son femorales, Sayres calcaneo). `berk2023washer` si es iliosacro pero no
+  publica el cuerpo del tornillo. **Ninguna fuente de dimensiones cita a su vez una fuente**: son nodos terminales.
+- **Consecuencia para el material (nueva):** el implante iliosacro puede ser acero o titanio segun el fabricante, y
+  `radzi2014metalartifacts` y `cassanego2026evolution` muestran que el artefacto cambia con el material y entre
+  fabricantes. La mascara binaria del Objetivo 3 no codifica aleacion: queda como limitacion declarada (#98).
+- **Recomendacion revisada del asistente:** modelar **por piezas** (cabeza de 8.0 x 4.5 mm + fuste de 4.8 mm +
+  envolvente de rosca de 7.3 mm en los 16 o 32 mm distales + arandela de 13.0 mm como opcion declarada), con la
+  envolvente de 6.5-8.0 mm reservada a la viabilidad del corredor (#31). Ya no hace falta buscar mas papers para esto:
+  lo esencial esta citable. Solo el espesor de la arandela y la canulacion siguen sin fuente, y para ambos la salida
+  honesta es declarar la simplificacion.
+- **No aplicado** (regla 14). **Tipo:** SUPUESTO / geometria del implante. **Nivel propuesto: N1.**
+
+### 98 — Existe un precedente publicado que cuantifica en milimetros la extension peri-implante del artefacto en CT: la frase de `main.tex:54` hay que acotarla — ABIERTA (liga con #57, #96)
+
+- **Origen:** ficha `radzi2014metalartifacts.md` (lector-papers, 2026-09-19).
+- **Lo que dice `main.tex:54`:** *"for which no published precedent quantifying a peri-implant band was found"*.
+- **Hallazgo:** `radzi2014metalartifacts` publica distancias en milimetros del artefacto en CT: *"from CT were 2.0, 2.6,
+  1.6 and 2.0 mm"* (Resultados, p. 167) para titanio, acero, canulado de titanio y canulado de acero. Es una cifra
+  peri-implante publicada, aunque no sea una banda de generacion.
+- **Por que la frase no cae del todo:** Radzi mide la *"perpendicular distance from the central screw axis"* (p. 163),
+  es decir **desde el eje**, no desde la superficie del implante, hasta el borde de una superficie **umbralizada** cuyo
+  umbral no publica y sin mencionar HU en todo el PDF. No mide el alcance del streaking (en MRI lo excluye
+  explicitamente, p. 169, y en CT no lo aclara), es un tobillo de un solo cadaver y usa tornillos de 3.5-4.0 mm.
+- **Riesgo concreto:** la frase, tal como esta, es un reclamo de ausencia de precedente. Un jurado que conozca a Radzi
+  la puede refutar con una sola cita.
+- **Opciones:** (a) precisar a *"no published precedent quantifying a generation band outside the implant mask"*;
+  (b) citar a Radzi como precedente de medicion y declarar en que se diferencia (desde el eje, umbral no publicado,
+  tobillo, sin HU); (c) dejarla y aceptar la objecion.
+- **Recomendacion del asistente:** (a) + (b). Cuesta dos frases y convierte una afirmacion fragil en una acotacion.
+- **Lo que NO cambia:** `B_delta` = 12 mm sigue sin calibracion publicada. Radzi no la respalda ni la refuta, y
+  `cassanego2026evolution` mide 3.1-4.2 mm con el mismo metodo declarado, sin punto de referencia: los dos numeros no
+  son comparables entre si.
+- **Dato adicional para el renderizador:** entre titanios de distinto fabricante el artefacto varia (3.1 a 3.9 mm,
+  Cassanego Tabla 3, p. 7), y Radzi separa titanio de acero (2.0 vs 2.6 mm) aunque con O-MAR solo en el titanio. La
+  **mascara binaria no codifica aleacion**: queda como limitacion declarada del Objetivo 3, no como equivalencia.
+- **No aplicado** (regla 14). **Tipo:** REDACCION / reclamo de novedad. **Nivel propuesto: N1.**
+

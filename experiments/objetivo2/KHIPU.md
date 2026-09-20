@@ -788,3 +788,96 @@ scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_maisi_*.log" experiments\o
 
 **Al leer el resultado:** MAISI es 3D y de un canal, asi que **no hay `oraculo` ni `regla`** y la comparacion con P1 es
 solo contra la columna de HU reconstruidos. El veredicto se escribe en `p1_maisi.md` con el mismo umbral de 25 HU.
+
+## A2: piloto de 200 pasos del renderizador del Diseno A (#89, #100; 2026-09-20)
+
+**Que mide y que no.** Mide **s/paso y memoria GPU** del renderizador de difusion en espacio de imagen, para
+convertir el presupuesto de computo de #89 (hoy estimado con cifras de P1, que era otro modelo) en una cifra
+medida. **No** es un resultado de tesis: `diseno_A.md` sigue en BORRADOR y sin `--preinscrito` el script imprime
+el aviso. La perdida de 200 pasos no significa nada; la unica salida util es la columna `s_por_paso` y `gb_max`
+de `curva.csv`.
+
+**OJO — el caché cambio el 2026-09-20: la unidad es el COMPONENTE, no el corte** (decision D2, implicancia #102).
+El caché valido es el de `a1b_parches_componente.py` (`outputs/a1b_cache`), **no** el de `a1_parches.py`, que
+quedo congelado como evidencia. Si subiste `a1_cache` antes de esa fecha, **borralo en Khipu**: entrenar con el
+produce `G` multi-implante, que es justamente lo que la decision descarto.
+
+**Antes de subir nada, en la PC.** Son decenas de miles de `.npz`; miles de archivos sueltos por `scp` tardan
+mucho mas que un `.tar`, asi que se empaqueta. El recuento exacto esta en `outputs/a1b/a1b_parches.md`.
+
+```bat
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+tar -czf a1b_cache.tgz -C experiments\objetivo3\outputs a1b_cache
+dir a1b_cache.tgz
+```
+
+**Subida (una sola vez).** `src/common` REEXPORTA los modulos de `experiments/`, asi que esos cuatro `.py` tienen
+que estar en `qc/` o el import falla.
+
+```bat
+ssh kiara.balcazar@khipu.utec.edu.pe "mkdir -p ~/metalsynth/qc ~/metalsynth/src ~/metalsynth/data"
+
+scp experiments\objetivo3\a2_entrenar.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp -r src\common src\renderizador kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/src/
+scp experiments\objetivo1\e6c_techo_lw.py experiments\objetivo1\e6b_vae_sd15.py experiments\objetivo1\p1_decodificador_sd15.py experiments\objetivo1\p1_particion.csv experiments\objetivo3\a1_parches.py experiments\objetivo3\a1b_parches_componente.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+scp a1b_cache.tgz kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/
+```
+
+`a1_parches.py` sigue subiendo porque `src/common/region.py` **reexporta** su `region_generacion`; no se usa para
+extraer nada.
+
+**Desempaquetar y arreglar CRLF (leccion 5; el `.sbatch` y los `.py` vienen de Windows):**
+
+```bash
+ssh kiara.balcazar@khipu.utec.edu.pe
+cd ~/metalsynth/data && tar -xzf a1b_cache.tgz && ls a1b_cache | wc -l   # comparar con a1b_parches.md
+rm -rf ~/metalsynth/data/a1_cache                                       # caché viejo por corte, si existe
+sed -i 's/\r$//' ~/metalsynth/*.sbatch ~/metalsynth/src/*/*.py ~/metalsynth/qc/*.py
+```
+
+**Lanzar el piloto.** Captura el numero con `--parsable` (leccion 4) y **lanza desde el directorio del script**,
+nunca desde `~` (eso ya costo una noche en P1):
+
+```bash
+cd ~/metalsynth
+J=$(sbatch --parsable a2_entrenar.sbatch 200)
+echo "job $J"
+squeue -j "$J"
+tail -f a2_entrenar_"$J".log
+```
+
+**Que tiene que salir bien en el log, en este orden.** Si falta alguno, el resultado no vale:
+
+```
+control identidad_ventanas: peor 1.27e-11 HU
+control aislamiento: 0 de 34 casos de test en el cargador
+control perdida_solo_en_G: G vacia -> 0.0
+datos: {'parches': ..., 'casos': 74.0, 'frac_borde': ...}
+```
+
+El numero de `parches` tiene que coincidir con el de `a1b_parches.md` para la particion `train`; `casos` debe dar
+**74**. Si `casos` da menos, falta parte del caché; si da mas, se colo algo que no es de `train`.
+
+El aviso `corrida NO preinscrita` **debe aparecer**: si no aparece, alguien paso `--preinscrito` sin que
+`diseno_A.md` este preinscrito.
+
+**Traer el resultado:**
+
+```bat
+scp -r "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/a2/*" experiments\objetivo3\outputs\a2\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/a2_entrenar_*.log" experiments\objetivo3\outputs\a2\
+```
+
+**Como se lee (esto es lo que responde #89).** De `curva.csv` se toma `s_por_paso` **del ultimo tramo**, no del
+primero (los primeros pasos incluyen la carga). Presupuesto = `s_por_paso x pasos_previstos / 3600` horas. La
+ultima linea del script ya imprime esa extrapolacion a 30 000 pasos. `gb_max` dice si cabe en la A6000 de 48 GB y
+si el `--mem=32G` del `.sbatch` basta. **Si `gb_max` pasa de ~40 GB o `s_por_paso` da mas de ~20 h por corrida,
+la respuesta correcta no es lanzarla igual: es bajar `--base`, bajar `--lote` o recortar pasos, y dejar escrito
+por que.**
+
+**Barridos utiles en el mismo piloto** (cada uno es otro `sbatch`; ojo con el tope de 5 envios, leccion 8):
+
+```bash
+sbatch a2_entrenar.sbatch 200 --base 96 --lote 2     # mas capacidad, menos lote
+sbatch a2_entrenar.sbatch 200 --base 64 --lote 8     # mas lote
+```

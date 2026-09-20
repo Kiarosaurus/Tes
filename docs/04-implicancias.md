@@ -6818,3 +6818,224 @@ Escrito para una sesion nueva. Detalle de cada una en su entrada; las decisiones
    Los scripts (`e11_perfil_axial.py`, `a1_parches.py`) estan escritos y probados en local.
 4. **Nada se cita sin `refs/raw/` o, para documentacion de fabricante, sin la excepcion de `refs/MAPEO.md`.**
 
+
+## Ronda 2026-09-20 (2) — E11 corrido, y el hueco de implementacion del Diseno A
+
+### 100 — El Diseno A no tiene codigo de entrenamiento ni de evaluacion: el "paso 3, prueba corta en Khipu" no era lanzable, y el presupuesto de #89 no lo contempla — ABIERTA (liga con #89, #90, #91)
+
+- **Origen:** revision de estado pedida por la autora (2026-09-20), verificada contra disco.
+- **Hallazgo:** `experiments/objetivo3/` contenia **dos** archivos, los dos de CPU (`a1_parches.py`,
+  `diseno_A.md`), y `src/` (`common/`, `muestreador/`, `renderizador/`) estaba **vacio**. La seccion 9 de
+  `diseno_A.md` lista como paso 3 de la semana 1 una "prueba corta en Khipu (200 pasos)", pero **no existia red
+  que entrenar**: ni U-Net, ni proceso de difusion, ni cargador de parches, ni `.sbatch`.
+- **Por que importa, y no es solo trabajo pendiente:** (a) el presupuesto de computo que la entrega de 2 paginas
+  le dio al asesor (#89) se construyo con cifras de P1, que era un autoencoder afinado, no una difusion en pixeles
+  entrenada desde cero; (b) el plazo (#90) se planifico sin contar este desarrollo; (c) mientras no exista y se
+  mida, **cualquier cifra de GPU-h para el Objetivo 3 es una estimacion sin base**, que es exactamente lo que #89
+  pedia evitar.
+- **Estado tras esta sesion:** escrito y probado en local, en CPU, por orden de la autora del 2026-09-20:
+  `src/common/ventanas.py`, `src/common/region.py`, `src/renderizador/{modelo,difusion,datos,entrenar}.py`.
+  Los modulos de `src/common/` **reexportan** la implementacion ya validada en `experiments/` en vez de
+  reimplementarla, para no crear una segunda version numerica sin control (control de identidad: peor error
+  **1.27e-11 HU**). Controles del muestreador verificados en CPU: perdida exactamente 0.0 con `G` vacia, salida
+  exactamente 0.0 fuera de `G`, reproducibilidad por semilla.
+- **Lo que sigue sin existir:** la evaluacion E-A1..E-A4 (metricas de Peters, baseline de copia-pega, costura en
+  el borde de `B_delta`) y el `.sbatch` de Khipu. Y el codigo **no sustituye a la preinscripcion**: `diseno_A.md`
+  sigue en BORRADOR con cuatro `[DECIDIR]`.
+- **Opciones:** (a) medir la prueba corta de 200 pasos y **actualizar #89 con la cifra medida** antes de
+  comprometer plazo; (b) dejar el presupuesto como esta y aceptar que el numero del Objetivo 3 no esta medido.
+- **Recomendacion del asistente:** (a). Es una corrida de minutos y convierte la unica cifra no medida de la
+  respuesta al asesor en una medida.
+- **No aplicado** (regla 14). **Tipo:** ALCANCE / presupuesto y plazo. **Nivel propuesto: N1.**
+
+### 101 — E11 mide el perfil axial en la cohorte: el cuerpo de ~4.9 mm queda confirmado por tercera via independiente, y el ensanchamiento de extremo es de ~1 voxel en la mediana — ABIERTA (resuelve la parte medible de #97; liga con #95, #41)
+
+- **Origen:** E11 corrido sobre los **178 volumenes** el 2026-09-20 (`experiments/objetivo2/e11_perfil_axial.py`;
+  salidas en `outputs/e11/`, fuera de git por `.gitignore`). 79 componentes esbeltos (largo >= 30 mm, anchos
+  <= 12 mm), tramos de 2 mm, diametro = 2 x p95 del radio, el mismo estimador de E8.
+- **Resultado principal:** `d_centro` mediana **4.91 mm** (p10 3.39, p90 7.37). Coincide con el fuste de catalogo
+  **4.8 mm** (`synthes2003guide`, impresa 2) y con los **5.00 mm** medidos por E8 con otro metodo. Tres vias
+  independientes — catalogo del fabricante, censo E8 y perfil axial — dentro de un cuarto de voxel.
+- **Ensanchamiento de extremo (extremo mas ancho menos centro), n = 59 componentes con los tres valores:**
+  mediana **0.96 mm**, p90 3.41 mm, maximo 4.07 mm. Por encima de un voxel (~0.78 mm): **33/59**. Por encima de
+  2.0 mm: **12/59**. Por encima de 3.0 mm: **7/59**.
+- **Como se lee (la decision es de la autora, D3 de `diseno_A.md` seccion 8 bis):** la mediana de 0.96 mm es
+  **del orden de un voxel**, asi que en el caso tipico el volumen parcial **si** promedia cabeza y rosca, y el
+  cilindro uniforme de ~5 mm queda justificado con medicion propia. Pero **no es despreciable en una minoria**:
+  12 de 59 superan 2 mm, que es lo que se esperaria si el CT estuviera resolviendo una cabeza de 8.0 mm sobre un
+  cuerpo de ~5 mm. La lectura conservadora es **cilindro uniforme como piloto, cabeza como sensibilidad**, que es
+  justamente el par que `diseno_A.md` seccion 6 ya tenia propuesto — ahora con cifra propia detras.
+- **Salvedades que hay que declarar si esto va al documento:** (a) el filtro es **geometrico**, no por tipo de
+  implante: entre los 79 esbeltos hay material que no es tornillo iliosacro; (b) 5 de los componentes esbeltos
+  estan en casos `dataset6`, el grupo nominalmente sin metal; (c) `d_max` (mediana 8.10 mm) es un **maximo sobre
+  tramos** y por tanto sesgado al alza, no debe citarse como "diametro de cabeza medido"; (d) 2 componentes no
+  dieron `d_centro` y 20 no dieron los dos extremos (tramos con menos voxeles que el minimo).
+- **Lo que NO resuelve:** #95 sigue abierta. E11 dice como es el metal real; no dice cuanto se parece la mascara
+  por umbral a la mascara parametrica, que es la brecha que el Diseno A tiene que declarar.
+- **No aplicado** (regla 14). **Tipo:** GEOMETRIA / medicion propia. **Nivel propuesto: N1.**
+
+### 102 — A1 sobre la cohorte: `G` se define por CORTE y no por IMPLANTE, asi que en pacientes con material bilateral la region de generacion abarca toda la pelvis y el parche no la contiene (20.1% de los cortes) — ABIERTA (liga con #95, #96, y decide D2)
+
+- **Origen:** A1 corrido sobre la particion completa el 2026-09-20 (`experiments/objetivo3/a1_parches.py`;
+  resumen versionado en `experiments/objetivo3/a1_casos.csv`).
+- **Lo que salio bien, y cierra un bloque de la evaluacion:** el **control de composicion dio 13496 de 13496**
+  cortes identicos bit a bit fuera de `G`. La fila E-A3 ("preservacion fuera de la banda, cero por construccion")
+  queda respaldada por el control, no solo por el argumento.
+- **Hallazgo:** **2714 de 13496 cortes (20.1%)** tienen `G` que no cabe en el parche de 256. La prueba piloto en
+  2 casos habia dado 216 de 216, es decir **0%**: dos casos no eran la cohorte.
+- **Dos explicaciones descartadas con datos:**
+  - *No* es la mezcla de implantes: casos **con** componente esbelto 20.0%, **sin** componente esbelto 20.2%.
+  - *No* es el spacing: por tramos de spacing en plano da 13.3%, 21.7%, 23.7% y 11.9%, sin tendencia.
+- **Causa verificada:** en los tres casos peores el metal tiene **9, 12 y 7 componentes** de mas de 50 voxeles,
+  con extension en plano de **380, 358 y 321 mm**, es decir toda la anchura pelvica. `G` es la union de **todo**
+  el metal del corte, asi que un paciente con implantes bilaterales produce una `G` que ningun parche centrado
+  puede contener. El parche de 256 mide 211.7 mm de mediana: el problema no es que sea pequeno.
+- **Por que importa mas alla del encuadre:** en **sintesis** se coloca **un** tornillo, cuya `G` (cilindro de
+  ~4.9 mm mas banda de 12 mm) cabe de sobra. Entrenar con `G` multi-implante y usar con `G` de un implante es una
+  **segunda brecha de dominio**, distinta de #95 (que es sobre el borde de la mascara) y que hoy no esta declarada.
+- **Opciones:**
+  - (a) **Extraer por COMPONENTE en vez de por corte**: cada componente conexo de `M` con su propia `B_delta` y su
+    propio parche. La `G` de entrenamiento pasa a tener la misma estructura que la de sintesis (un implante),
+    la contencion deja de ser un problema de encuadre y de paso se puede reportar y equilibrar la mezcla por
+    tamano de componente, que es el riesgo 3 de este documento.
+  - (b) Agrandar el parche. El computo crece con el cuadrado del lado y aun asi no cubre los 380 mm.
+  - (c) Dejar 256 y declarar que el 20% de los cortes entrena con `G` truncada.
+- **Recomendacion del asistente:** **(a)**. Es la unica que alinea entrenamiento con uso; (b) no alcanza y (c)
+  ensena al modelo a completar mascaras cortadas por el borde, que en sintesis nunca ocurre. Cuesta una
+  modificacion de `a1_parches.py` y volver a correrlo (~2 h de CPU).
+- **No aplicado** (regla 14). **Tipo:** DISENO / definicion de la unidad de entrenamiento. **Nivel propuesto: N1.**
+
+### 102 — ACTUALIZACION (2026-09-20): DECIDIDA opcion (a), extraccion por componente; verificada en el peor caso
+
+- **Decision de la autora** (*"ahora trataremos D2 como COMPONENTE"*), escrita en `01-decisiones.md`,
+  entrada 2026-09-20 (2), seccion D2.
+- **Verificacion antes de adoptarla, en dos casos de prueba** (uno de ellos `CLINIC_metal_0044`, el peor de esta
+  implicancia, con 215 de 298 cortes sin contener): la extraccion por componente da **0 de 1217 parches** con `G`
+  fuera del encuadre, frente al **20.1%** por corte. **Control de composicion 1217 de 1217.** El diagnostico
+  (la union multi-implante, no el tamano del parche) queda confirmado por el arreglo.
+- **Efecto secundario medido y declarado:** **548 de 1217** parches contienen metal de **otro** componente. No se
+  enmascara —es anatomia real del paciente— pero se cuenta en `n_metal_otros`. Es insumo cuantitativo para #96,
+  no su solucion.
+- **Codigo:** `experiments/objetivo3/a1b_parches_componente.py` (nuevo). `a1_parches.py` queda **CONGELADO** como
+  evidencia de esta implicancia, igual que `ts_piloto_qc.py` para #49/#50. `src/renderizador/datos.py` agrupa el
+  2.5D por **serie** (caso + componente), de modo que los vecinos de un corte son del **mismo implante** y no del
+  contralateral; reporta `casos` (pacientes, unidad de la particion) y `series` (implantes, unidad de
+  entrenamiento) por separado.
+- **Coste aceptado:** el numero de parches sube (un corte con varios implantes produce un parche por implante), y
+  con el crece el cache y el tiempo de subida a Khipu. `a2_entrenar.sbatch` y la seccion A2 de `KHIPU.md` ya
+  apuntan a `a1b_cache`, con la advertencia de borrar `a1_cache` si se subio antes.
+- **Sigue ABIERTA la parte de #96** que esta decision no toca: el contexto de entrenamiento trae streaking del
+  implante real y el paciente limpio de sintesis no.
+
+### 103 — La extraccion por componente murio por memoria a los 47 de 79 casos y perdio todo lo calculado: dos defectos de diseno corregidos, y un dato para #89 — CERRADA (registro; liga con #102, #89)
+
+- **Que paso:** la primera version de `a1b_parches_componente.py` se detuvo en el caso 47 de 79 **sin traceback y
+  sin escribir un solo CSV**. El proceso ya no existia. Es el patron que `ESTADO.md` avisa ("dos corridas de fondo
+  murieron por RAM") y el mismo de E10 el 2026-09-14 (SIGKILL externo, `Caso,Error` vacio por falta de `finally`).
+- **Causa:** por cada componente se materializaban **dos mascaras del tamano del volumen completo**
+  (`etiquetas == lab` y su banda). Con 9-12 componentes por caso y ~1.4 GB de RAM libre, la PC no aguanta.
+- **Corregido, y por que asi:**
+  1. **Memoria:** se trabaja dentro de la **caja del componente** ensanchada por la banda (`find_objects`), sin
+     materializar nunca una mascara del volumen entero. Fuera de esa caja la `G` del componente es vacia **por
+     definicion**, asi que no se pierde nada.
+  2. **Reanudable:** los CSV se anexan **caso a caso con `flush`**, y al arrancar se saltan los casos que ya tienen
+     fila en `a1b_casos.csv`. Un corte deja de costar la corrida entera.
+- **Control de que la correccion no cambia el resultado:** los tres casos de prueba dan cifras **identicas** a la
+  version que murio (`0016`: 4 comp / 461 parches / 0 no caben; `0044`: 12 comp / 756 / 0; `0022`: 1 comp / 75 /
+  **31 no caben**). La reescritura es equivalente, solo mas liviana.
+- **Dato que hay que llevarse a #89:** `0022` tiene **31 de 75** parches sin contener **con un solo componente**.
+  La extraccion por componente **no lleva la no-contencion a cero en todos los casos**: hay implantes que por si
+  solos exceden los 256 px. El titular "0 de 1217" salia de dos casos elegidos; la cifra de cohorte saldra del
+  `a1b_parches.md` final y **hay que citar esa, no la de los casos de prueba**.
+- **Tipo:** INFRAESTRUCTURA / honestidad de cifras. **Nivel propuesto: N2.** No toca `main.tex`.
+
+### 98 — APLICADA en `main.tex` (2026-09-20), opciones (a) + (b), por orden explicita de la autora
+
+- **Orden:** *"Sobre #98, aplica (a) + (b) y redacta main.tex"* (2026-09-20).
+- **Antes:** *"together with $B_{\delta}$, for which no published precedent quantifying a peri-implant band was
+  found"*. Era un reclamo de ausencia refutable con una sola cita.
+- **Despues:** el reclamo se acota a *"no published precedent quantifying a **generation band outside the implant
+  mask**"* (opcion a) y se **cita el precedente de medicion** (opcion b): `radzi2014metalartifacts` con
+  *"2.0, 2.6, 1.6 and 2.0 mm"* y `cassanego2026evolution` con 3.1-4.2 mm.
+- **Diferencias declaradas en el texto, todas con respaldo en ficha:** la medida es *"the perpendicular distance
+  from the central screw axis to the boundary of the artifact"* (Radzi, Abstract p. 163), es decir desde el **eje**
+  y no desde la superficie; el umbral de la superficie umbralizada **no se publica**; son tornillos de 3.5-4.0 mm
+  en tobillo de un solo cadaver y en contexto dental; **no reportan HU**; y los dos rangos **no son comparables
+  entre si** por falta de punto de referencia comun. Se cierra diciendo que el ancho de banda usado aqui es una
+  **construccion declarada, no una medicion heredada**.
+- **Lo que NO cambia:** `B_delta` = 12 mm sigue sin calibracion publicada. Radzi no la respalda ni la refuta.
+- **Compilacion verificada:** 0 errores, **0 citas indefinidas**, 7 paginas, 95 referencias. Las dos claves ya
+  estaban en `refs.bib` (lineas 55 y 552), asi que **`refs.bib` no se toco** (regla 9 respetada).
+- **Estado: CERRADA** en redaccion. **Tipo:** REDACCION / reclamo de novedad.
+
+### 104 — La composicion del conjunto de entrenamiento no coincide con la tarea de sintesis: 42.5% de parches sin metal, 40.3% con metal ajeno y componentes que son fragmentos — ABIERTA (liga con #95, #96, #102; toca D4)
+
+- **Origen:** A1b corrido sobre la particion completa el 2026-09-20 (79 casos, 363 componentes, **23 058 parches**,
+  0 errores). Salidas en `experiments/objetivo3/outputs/a1b/`.
+- **Lo que cierra:** D2 queda verificada en cohorte. La no-contencion baja de **2714/13496 (20.1%)** por corte a
+  **336/23058 (1.5%)** por componente, con **0/1304** en validacion, y el control de composicion da
+  **23 058 de 23 058**. La decision de extraer por componente **funciona y no se revierte**.
+- **Lo que abre, en tres cifras medidas:**
+  1. **42.5% de los parches (9 811) no contienen NINGUN voxel del implante objetivo.** `n_metal` mediana 20
+     voxeles, p10 = 0. Es estructural: `B_delta` se extiende 12 mm en 3D, asi que los cortes mas alla de las
+     puntas tienen `G` sin `M`. Casi la mitad del entrenamiento seria "rellena una banda donde no hay metal",
+     que **no es la tarea de sintesis**.
+  2. **40.3% de los parches (9 298) contienen metal de OTRO componente**, y en **6 886** el metal ajeno supera al
+     propio. En **4 452 (19.3%) no hay metal propio y si ajeno**: el modelo ve metal que no debe explicar y no ve
+     el que si. Es #96 medido, y mas severo que como estaba descrito.
+  3. **Los componentes son mayoritariamente fragmentos.** Volumen mediano **458 mm3**, frente a ~1450 mm3 de un
+     tornillo de 4.8 x 80 mm. El **52%** esta por debajo de 500 mm3 y el **18%** por debajo de 50 mm3. El umbral
+     usado (`MIN_COMP_MM3` = 10, heredado de `e8_censo_implantes`) sirve para **censar** metal, no para definir
+     una **unidad de entrenamiento**.
+- **Causa de fondo:** el diseno nunca declaro una politica de **que componente y que corte entran como ejemplo**.
+  Hoy la decide por omision un umbral heredado de otro experimento. El `[SUPUESTO]` de la seccion 3 de
+  `diseno_A.md` ("entra todo el metal de los pacientes de entrenamiento") se escribio antes de tener estas cifras.
+- **Toca D4, y esto es lo mas facil de pasar por alto:** el margen `Delta` se mide sobre validacion, y
+  **validacion tiene 673 de 1304 parches (51.6%) sin metal**. Medir ahi la variabilidad del metodo sin
+  estratificar daria un `Delta` dominado por parches donde no hay nada que generar, y por tanto
+  **artificialmente pequeno**, lo que haria mas facil declarar "equivalencia". Es el mismo patron que D4 trataba
+  de evitar, entrando por otra puerta.
+- **Opciones (politica de muestreo, a PREINSCRIBIR antes de entrenar):**
+  - (a) Volumen minimo de componente. A 200 mm3 se excluye el 35% de componentes y solo el **18.7%** de los
+    parches; a 500 mm3, el 52% de componentes.
+  - (b) Proporcion declarada de parches sin metal. No eliminarlos (la banda mas alla de la punta es real), pero
+    fijar un objetivo a priori en vez de heredar el 42.5%.
+  - (c) Metal ajeno: como minimo estratificar y reportar; para el piloto, considerar excluir los parches donde el
+    ajeno supera al propio.
+  - (d) Estratificar la medicion de `Delta` por presencia de metal.
+- **Recomendacion del asistente:** (a) 200 mm3 en el piloto + (b) ratio declarado ~1 sin metal por cada 2 con
+  metal + (c) estratificar y reportar + (d) obligatoria. Se aplican al construir el `Dataset`, **sin volver a
+  recorrer la cohorte**.
+- **Advertencia metodologica sobre un numero que NO debe usarse:** al cruzar los 363 componentes con el filtro
+  geometrico de E11 salieron "14 tipo tornillo". **Es un artefacto:** se calculo con las extensiones de la caja
+  alineada a los ejes, mientras E11 usa el eje principal por PCA; un tornillo oblicuo tiene caja grande en los
+  tres ejes y el filtro lo rechaza por construccion. El cruce correcto exige emparejar indices de componente
+  entre los dos scripts, que no coinciden. **No citar ese 14.**
+- **No aplicado** (regla 14). **Tipo:** DISENO / composicion del conjunto de entrenamiento. **Nivel propuesto: N1.**
+
+### 104 — ACTUALIZACION (2026-09-20): el subconjunto limpio esta cuantificado, y la opcion (c) es viable
+
+- **Pregunta de la autora** (2026-09-20): si conviene revisar `revision.csv` a mano, aislar casos con metal
+  limpio, o quedarse solo con criterios automaticos.
+- **Precision sobre `revision.csv`, para que no se pierda:** de ese archivo **solo esta en uso la columna
+  `Metal`** (si/no), que ya esta **178/178 completa**, y llega a los experimentos **indirectamente**, via
+  `p1_particion.csv`. `e11_perfil_axial.py` y `a1b_parches_componente.py` **no lo leen**. Las columnas
+  incompletas (`Tipo de estructura observada`, `Artefactos`, `Severidad`) **no las usa ningun experimento del
+  Diseno A**. Completarlas **no resolveria #104**: `revision.csv` tiene una fila **por volumen** (178) y el
+  problema es **por componente** (363). Es la granularidad equivocada.
+- **Subconjunto limpio, medido:** parches con metal propio, **sin metal ajeno** y de componentes >= 200 mm3:
+  **7 974 parches**, **197 componentes**, **68 casos** (train 7 631 en 63 casos; val 343 en 5 casos). Es un
+  tercio del total crudo, pero cada ejemplo contiene el implante que el modelo debe explicar y nada mas.
+- **Casos con pocos implantes**, por si se prefiere filtrar por caso y no por parche: <= 1 componente 18 casos
+  (1 273 parches), <= 2 componentes 28 casos (3 066), <= 3 componentes 42 casos (6 171), <= 5 componentes 57
+  casos (10 500).
+- **Recomendacion del asistente, afinada con estas cifras:** piloto sobre el **subconjunto limpio** (7 974) y
+  conjunto completo como sensibilidad; criterios **automaticos** (volumen, elongacion por eje principal, metal
+  ajeno) como filtro primario, **validados** contra laminas de contacto de una muestra de 30-40 componentes
+  revisada por la autora, con el formato de las laminas de E9-TS. La revision por forma **no requiere criterio
+  medico** —distinguir objeto alargado y fino de placa o fragmento es geometria, no diagnostico—, a diferencia
+  de #53, que si lo requeria.
+- **Dos condiciones que no se pueden saltar:** (1) el filtro se **declara antes** de entrenar, o es seleccion
+  post hoc; (2) `val` baja a **343 parches en 5 casos**, asi que la medicion de `Delta` de D4 hay que
+  **estratificarla** igualmente.
+- **Sigue ABIERTA.** La politica de muestreo es decision de la autora y falta preinscribirla.

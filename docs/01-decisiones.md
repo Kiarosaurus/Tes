@@ -1195,3 +1195,98 @@ del sistema 7.3 mm de Synthes, y su ausencia no bloquea el piloto).
 
 Registrada por el asistente por orden explicita de la autora (2026-09-20).
 
+
+## 2026-09-20 (2) — Las cuatro decisiones abiertas del Diseno A (D1-D4), con dos de ellas resueltas por medicion propia
+
+**Decision** (de la autora, 2026-09-20: *"Me gusta la decision D3 que sugieres"*, *"ahora trataremos D2 como
+COMPONENTE"* y *"Aplica las recomendaciones que puedes aplicar ahora"*; escrita por el asistente por orden
+explicita). Las cuatro corresponden a los `[DECIDIR]` de `experiments/objetivo3/diseno_A.md`.
+
+### D1 — Mascara `M` de entrenamiento: umbral de 2500 HU en el piloto, semimaximo como sensibilidad
+
+Se mantiene el umbral de cribado (#22), que es el unico con validacion propia en esta cohorte (E1: 0 falsos
+negativos sobre 113 candidatos). El semimaximo local por objeto entra como analisis de sensibilidad.
+
+**Consecuencia aceptada y declarada:** a 2500 HU los tornillos salen fragmentados en 9 de 57 (E8, #46), asi que
+el modelo ve mascaras con huecos mientras que la mascara parametrica de sintesis sera siempre solida. Eso es la
+brecha #95 y **no la arregla la eleccion de umbral**: se declara como limitacion.
+
+### D2 — La unidad de entrenamiento es el COMPONENTE, no el corte (#102)
+
+El parche se mantiene en **256 x 256**. Lo que cambia es la unidad: cada **componente conexo** de `M` con su
+propia banda `B_delta`, en lugar de la union de todo el metal del corte.
+
+**Por que, con la medicion que lo forzo:** A1 sobre la cohorte dio **2714 de 13496 cortes (20.1%)** con `G` fuera
+del encuadre, cuando el piloto de 2 casos habia dado 0%. Se descartaron con datos dos explicaciones — la mezcla de
+implantes (20.0% con componente esbelto frente a 20.2% sin) y el spacing (sin tendencia) — y se verifico la real:
+en los tres casos peores el metal tiene **9, 12 y 7 componentes** repartidos en **380, 358 y 321 mm**, es decir
+toda la anchura pelvica. El parche no era pequeno (211.7 mm de mediana); `G` estaba mal definida.
+
+El argumento de fondo no es de encuadre: en **sintesis** se coloca **un** tornillo. Entrenar con `G` multi-implante
+y usar con `G` de un implante es una brecha de dominio distinta de #95, y la extraccion por componente la cierra.
+
+**Verificacion antes de adoptarla:** sobre `CLINIC_metal_0044` —el peor caso de #102, con 215 de 298 cortes sin
+contener— la extraccion por componente da **0 de 1217 parches** fuera del encuadre, con control de composicion
+1217 de 1217.
+
+**Declarado:** **548 de 1217** parches contienen metal de **otro** componente. No se enmascara, porque es anatomia
+real del paciente, pero se cuenta (`n_metal_otros`). Es insumo para #96, no su solucion.
+
+**Alternativas descartadas:** agrandar el parche (el computo crece con el cuadrado del lado y aun asi no cubre
+380 mm); dejar 256 por corte y declarar el 20% (ensena al modelo a completar mascaras cortadas por el borde, cosa
+que en sintesis no ocurre nunca).
+
+`a1_parches.py` queda **congelado** como evidencia de #102; el script nuevo es `a1b_parches_componente.py`.
+
+### D3 — Geometria de sintesis: cilindro uniforme de ~4.9 mm, cabeza y rosca como sensibilidad (E11, #101)
+
+E11 corrio sobre los **178 volumenes** (79 componentes esbeltos en 43 casos):
+
+- `d_centro` mediana **4.91 mm**, frente a **4.8 mm** de catalogo (`synthes2003guide`) y **5.00 mm** de E8: tres
+  vias independientes dentro de **un cuarto de voxel**. El cuerpo del tornillo queda cerrado con medicion propia.
+- Ensanchamiento de extremo: mediana **0.96 mm**, del orden de **un voxel**. En el caso tipico el volumen parcial
+  promedia cabeza y rosca, asi que el cilindro uniforme **queda justificado midiendo, no eligiendo**.
+- Pero **12 de 59** componentes superan 2 mm de ensanchamiento: la cabeza no se declara inexistente y entra como
+  variante de sensibilidad, junto con la rosca de 7.3 mm.
+
+**Limites que acompanan a toda cifra de E11:** el filtro es **geometrico** (HU > 2500, largo >= 30 mm, anchos
+<= 12 mm), **no clinico**: selecciona componentes metalicos alargados y finos, y **no afirma que sean tornillos
+iliosacros**. Sus seis limitaciones estan en `experiments/objetivo2/e11_perfil_axial.md`. **`d_max` (8.10 mm) es
+un maximo sobre tramos, sesgado al alza, y no debe citarse como diametro de cabeza medido.**
+
+Esto sustituye al punto 3 de la decision del 2026-09-20 (que fijaba 5.0 mm sobre E8) y **cumple su punto 4**, que
+condicionaba la geometria a medir el perfil axial.
+
+### D4 — Criterio de exito: la forma se fija ahora, el margen de equivalencia despues del piloto
+
+`main.tex:98` promete *"Lower profile discrepancy than naive copy-paste insertion, with streak amplitudes
+statistically comparable to, or better than, the adopted physics-based protocol"*. Son dos contrastes distintos:
+
+1. **Endpoint primario unico, declarado antes de mirar el test: streak amplitude.** Las demas metricas de Peters
+   quedan **descriptivas**. Sin esto se repite el patron de #76 (varias combinaciones, basta con que pase una).
+2. **"Mejor que copia-pega" = superioridad**, pareada (mismos pacientes en los dos brazos) y de **una cola**:
+   **Wilcoxon de rangos con signo**, alfa 0.05, reportando tamano de efecto e IC ademas del p.
+3. **"Comparable al brazo fisico" = equivalencia, con TOST**, no un contraste de diferencia. Un p > 0.05 con
+   n = 14 indica falta de potencia mucho mas probablemente que igualdad. Se concluye equivalencia solo si el
+   **IC90** de la diferencia pareada cae entero dentro de `[-Delta, +Delta]`.
+4. **El margen `Delta` NO se fija hoy, y no por descuido.** No existe umbral publicado de "streak amplitude
+   comparable" (mismo hueco que el proyecto ya declaro para los 25 HU, decision 2026-09-15 (2)), y calibrarlo
+   sobre los resultados de test seria exactamente el patron prohibido. `Delta` se define como la **variabilidad
+   propia del metodo bajo condiciones que no deberian cambiar el resultado** — dispersion entre semillas DDIM del
+   mismo caso y test-retest del brazo fisico — medida **solo en los 5 pacientes de validacion**, nunca en los
+   20/14 de test, y escrita aqui **antes** de correr la evaluacion.
+
+**Declaracion de potencia, aceptada de antemano:** n = 14 sin metal y n = 20 con metal son muestras chicas para un
+TOST. Es posible que el resultado honesto sea *"no se pudo concluir equivalencia con esta n"*, y **eso se
+reportara como tal**: el Objetivo 1 de esta tesis ya demuestra que un resultado negativo es publicable. No se
+convertira un no-concluyente en un "comparable" por la via del p > 0.05.
+
+### Fuera de las cuatro, decidido en el mismo turno
+
+- **Mitigacion de #96:** el piloto corre con **contexto intacto**. El contexto recortado o suavizado entra **solo**
+  como brazo de sensibilidad preinscrito, no como arreglo posterior si la costura sale fea.
+- **Preinscripcion:** `diseno_A.md` se congela y se registra **cuando se mida `Delta`**. Es lo unico que falta.
+- **#89:** el presupuesto de computo del Objetivo 3 se cierra con la cifra **medida** en el piloto de 200 pasos en
+  Khipu (`a2_entrenar.sbatch`), no con la extrapolacion desde P1, que era otro modelo.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-20).

@@ -8,6 +8,80 @@
 > (ultimo commit `420d51c`). El bloque del 2026-09-17 queda mas abajo como historico: **su plan (renderizador
 > latente + compuerta) ya se ejecuto y cambio de rumbo**; lo unico vigente de el son P2 (#70) y P3.
 
+### Actualizacion 2026-09-20 (3) — las cuatro decisiones del Diseno A, RESUELTAS y escritas
+
+- **`01-decisiones.md` tiene la entrada 2026-09-20 (2)** con D1-D4, escrita por el asistente **por orden explicita
+  de la autora**. Resumen: D1 umbral 2500 (semimaximo como sensibilidad); **D2 unidad = COMPONENTE**; D3 cilindro
+  uniforme de ~4.9 mm con cabeza como sensibilidad; D4 forma del contraste fijada (endpoint primario unico,
+  Wilcoxon de una cola, **TOST** para equivalencia) y margen `Delta` medido despues sobre validacion.
+- **Para preinscribir `diseno_A.md` solo falta el margen `Delta`**, que por construccion se mide despues del
+  piloto. Todo lo demas esta decidido.
+- **D2 cambio por medicion, no por opinion (#102).** A1 dio 2714/13496 cortes (20.1%) con `G` fuera del encuadre.
+  Se descartaron con datos la mezcla de implantes (20.0% vs 20.2%) y el spacing (sin tendencia); la causa real es
+  que `G` se definia por corte y en pacientes bilaterales abarca 380 mm. **`a1b_parches_componente.py`** (nuevo)
+  extrae por componente; en el peor caso de #102 da **0 de 1217** parches fuera del encuadre y control 1217/1217.
+  `a1_parches.py` queda **CONGELADO** como evidencia.
+- **A1b: la primera corrida MURIO por memoria en 47/79 sin escribir un solo CSV (#103).** Causa: materializaba dos
+  mascaras del tamano del volumen por componente. **Corregido**: ahora trabaja dentro de la caja del componente
+  (`find_objects`) y **anexa los CSV caso a caso con `flush`**, saltando los que ya tienen fila (reanudable).
+  Control: los tres casos de prueba dan cifras **identicas** a la version muerta, asi que la reescritura es
+  equivalente y solo mas liviana. **Relanzado sobre la cohorte; al cierre seguia corriendo.**
+- **A1b TERMINADO (79/79, 0 errores).** Cifras de cohorte, que son las citables: 363 componentes, **23 058
+  parches**; no contenidos **336/23058 (1.5%)** frente al 20.1% por corte, **0/1304** en validacion; control de
+  composicion **23 058 de 23 058**. Caché ~**2.25 GB**. **D2 cerrada con medicion.**
+- **PERO A1b abrio #104, que es mas grave que lo que cerro.** La composicion del conjunto no coincide con la
+  tarea: **42.5% de parches sin ningun voxel del implante objetivo** (`B_delta` se extiende mas alla de las
+  puntas), **40.3% con metal de otro componente** (19.3% sin metal propio y con ajeno), y componentes con volumen
+  mediano **458 mm3** frente a ~1450 de un tornillo (52% por debajo de 500 mm3). Falta una **politica declarada de
+  muestreo** y hay que preinscribirla. **Toca D4**: validacion tiene 51.6% de parches sin metal, asi que medir
+  `Delta` ahi sin estratificar lo haria artificialmente pequeno.
+- **NO subir el cache a Khipu todavia:** si cambia la politica de muestreo, cambia lo que se sube.
+- **Numero que NO se debe citar:** el cruce "14 componentes tipo tornillo" es un artefacto de usar caja alineada
+  a los ejes en vez del eje principal por PCA (detalle en #104).
+- **`datos.py` agrupa el 2.5D por SERIE (caso + componente)**, asi los vecinos de un corte son del mismo implante
+  y no del contralateral. Reporta `casos` (pacientes) y `series` (implantes) por separado.
+- **`KHIPU.md` seccion A2 y `a2_entrenar.sbatch` apuntan ya a `a1b_cache`**, con la orden de borrar `a1_cache` en
+  el cluster si se subio antes: entrenar con el produciria `G` multi-implante.
+- **`main.tex`: #98 APLICADA** (2026-09-20, orden explicita de la autora, opciones a + b). El reclamo de ausencia
+  se acota a *"generation band outside the implant mask"* y se citan los precedentes de medicion
+  (`radzi2014metalartifacts` 2.0/2.6/1.6/2.0 mm; `cassanego2026evolution` 3.1-4.2 mm) con sus cuatro diferencias
+  declaradas: desde el **eje** y no la superficie, umbral no publicado, tornillos de 3.5-4.0 mm en cadaver/dental,
+  sin HU. Compila **0 errores, 0 citas indefinidas, 7 paginas, 95 referencias**; `refs.bib` **sin tocar** (las dos
+  claves ya estaban). `B_delta` = 12 mm sigue sin calibracion publicada: queda como construccion declarada.
+
+**Siguiente:** (1) A1b termina -> anotar parches y empaquetar `a1b_cache.tgz`; (2) subir y correr el piloto de 200
+pasos en Khipu; (3) cerrar #89 con la cifra medida; (4) medir `Delta` sobre validacion y **preinscribir**;
+(5) escribir la evaluacion E-A1..E-A4, que sigue sin existir.
+
+### Actualizacion 2026-09-20 (2) — E11 corrido, A1 corriendo, y el Diseno A ya tiene codigo
+
+- **E11 TERMINADO sobre los 178 volumenes.** 79 componentes esbeltos. `d_centro` mediana **4.91 mm**, que
+  coincide con el fuste de catalogo (4.8 mm) y con E8 (5.00 mm): **tres vias independientes dentro de un cuarto
+  de voxel**. Ensanchamiento de extremo: mediana **0.96 mm** (~1 voxel), pero **12/59 superan 2 mm**. Lectura:
+  cilindro uniforme como piloto, cabeza como sensibilidad. Salidas en `experiments/objetivo2/outputs/e11/`
+  (fuera de git). **Implicancia #101.** Con esto, **D3 de `diseno_A.md` ya se puede decidir**.
+- **A1 CORRIENDO** (`experiments/objetivo3/outputs/a1/`, cache en `outputs/a1_cache/`). Al cierre iba en 9/79.
+  Señal temprana: la contencion en 256 falla **solo en implantes grandes** (`CLINIC_0005`: 60 de 267 cortes no
+  caben; el resto de los casos vistos, 0). Hay que leer `a1_casos.csv` al terminar: es el control de D2.
+- **Codigo del Diseno A escrito y probado en CPU** (no existia; **implicancia #100**):
+  `src/common/{ventanas,region}.py` y `src/renderizador/{modelo,difusion,datos,entrenar}.py`, mas
+  `experiments/objetivo3/a2_entrenar.sbatch`. `src/common/` **reexporta** lo validado en `experiments/`, no lo
+  reimplementa. Controles que pasan: identidad multi-ventana **1.27e-11 HU**, perdida exactamente 0.0 con `G`
+  vacia, salida exactamente 0.0 fuera de `G`, reproducibilidad por semilla, y **aislamiento: 0 de 34 casos de
+  test en el cargador**. Prueba end-to-end sobre 736 parches reales: 1.8 M parametros a `base=16`, 0.77 s/paso
+  en CPU. **Esa cifra de CPU no sirve de presupuesto**: la prueba corta de 200 pasos en Khipu sigue pendiente.
+- **`diseno_A.md` ampliado con la seccion 8 bis**: recomendaciones del asesor sobre las cuatro `[DECIDIR]`, con
+  la columna de **cuando** se puede fijar cada una (D1 y D2 ya; D3 tras E11, ya disponible; D4 mixto: la forma
+  del contraste ya, el margen `Delta` solo tras el piloto sobre validacion). Sigue en **BORRADOR, no preinscrito**.
+- **`repos/` nuevo:** `xcist-main` y `xcist-example` clonados (este ultimo trae `AAPM_datachallenge`, filas 132-133
+  de `_candidatos.md`, ligadas a #8 y P2/#70). Son los dos unicos repos de codigo que `_candidatos.md` menciona.
+
+**Siguiente, en orden:** (1) leer `a1_casos.csv` cuando A1 termine y cerrar D2; (2) la autora decide las cuatro
+`[DECIDIR]` — D3 ya tiene su medicion; (3) preinscribir `diseno_A.md`; (4) prueba corta de 200 pasos en Khipu con
+`a2_entrenar.sbatch` y actualizar #89 con la cifra medida; (5) escribir la evaluacion E-A1..E-A4, que no existe.
+**Pendientes que surgieron:** #100 y #101 ABIERTAS; el ensanchamiento de 12/59 no esta decidido; la evaluacion del
+Objetivo 3 sigue sin una sola linea de codigo.
+
 ### Donde esta el proyecto
 
 - **El Objetivo 1 esta CERRADO y dio NO-GO.** P1 (jobs 51669-51671, 51878, 51879) evaluo seis combinaciones

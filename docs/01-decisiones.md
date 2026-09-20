@@ -1162,3 +1162,36 @@ exploratorio (mostraria imagenes que la propia compuerta rechazo); subir el umbr
 
 Registrada por el asistente por orden explicita de la autora (2026-09-19).
 
+---
+
+## 2026-09-20 — Geometria del implante para el Objetivo 3 (#97)
+
+**Decision** (de la autora, 2026-09-20: *"Acepto citar Double Medical y canulacion como parametro libre"* y, sobre el
+modelado, aceptada la recomendacion del asistente; escrita por el asistente por orden explicita):
+
+1. **Espesor de arandela: 1.5 mm**, citando `doublemedical2021trauma` (*"Thickness: 1.5mm"*, impresa 5/7) y
+   **declarando que es otro fabricante**. Synthes y Acumed publican el ancho (13.0 mm) pero no el espesor.
+2. **Canulacion: parametro libre del modelo.** No hay fuente citable: el unico valor (2.9 mm) esta solo en listados de
+   distribuidor y el documento del fabricante no lo publica. Se evalua macizo frente a hueco como sensibilidad.
+3. **Mascara del piloto, dos piezas:** cuerpo cilindrico de **5.0 mm** (medido en E8; el catalogo da 4.8-4.9 mm) y
+   **cabeza de 8.0 mm de diametro y 4.5 mm de altura** (`sayres2014comparison`), apoyada en la cortical iliaca y sin
+   avellanar. Sin rosca explicita, sin arandela y sin canulacion.
+4. **Antes de fijarla se mide** el perfil de diametro **a lo largo del eje** en los tornillos reales de CLINIC-metal
+   (E11, `experiments/objetivo2/e11_perfil_axial.py`, CPU local). Si el extremo distal se ensancha hacia 7.3 mm, se
+   anade el tramo de rosca; si no, el cilindro uniforme queda justificado con medicion propia.
+5. **La envolvente de 6.5-8.0 mm se reserva a la viabilidad del corredor (#31).** Son dos geometrias para dos
+   preguntas distintas; `zhu2022optimalposition` usa las dos sin declararlo (p. 1547 frente a p. 1548).
+6. **Variantes declaradas como sensibilidad:** envolvente de rosca de 7.3 mm en los 16/32 mm distales y variante
+   totalmente roscada; arandela de 13.0 x 1.5 mm; canulacion hueca frente a maciza.
+
+**Por que:** el catalogo describe el tornillo fisico, pero el renderizador aprendio **mascaras por umbral de implantes
+reales**, y la mascara de sintesis tiene que parecerse a esas. El fuste de catalogo (4.8-4.9 mm) y el medido en E8
+(5.00 mm) coinciden dentro de un cuarto de voxel, asi que el cuerpo se puede modelar con confianza; lo que falta por
+decidir (rosca si o no) se resuelve midiendo, no eligiendo.
+
+**Alternativas descartadas:** mantener el cilindro liso de 6.5-8.0 mm en todo el trayecto (sobreestima el area
+transversal del metal en mas del doble, #97); perseguir mas fuentes para la canulacion (solo quedaria la guia tecnica
+del sistema 7.3 mm de Synthes, y su ausencia no bloquea el piloto).
+
+Registrada por el asistente por orden explicita de la autora (2026-09-20).
+

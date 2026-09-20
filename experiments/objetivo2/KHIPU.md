@@ -694,3 +694,97 @@ scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/p1/eval experiments\ob
 scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/p1/pesos/curva_*.csv" experiments\objetivo1\outputs\p1\
 scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_*.log" experiments\objetivo1\outputs\p1\
 ```
+
+## P1-MAISI: ida y vuelta con el VAE 3D de MAISI (extension del Objetivo 1, decision 2026-09-19)
+
+Subordinado a la opcion A: **si compite con el renderizador por GPU o por tiempo, va primero A**. Su resultado
+**no cambia** el diseno del Objetivo 3. Script: `experiments/objetivo1/p1_maisi.py` (subcomandos `inspeccionar` y
+`evaluar`) y `p1_maisi.sbatch`. Regla: la misma de P1 (#76), media por paciente del MAE en hueso < 25 HU en los 34 de
+test. **El paso 0 no es opcional:** `guo2025maisi` no publica como normaliza los HU (#93), y el script **aborta** si no
+se le pasan `--hu-min/--hu-max`.
+
+**Paso 1: subir** (PowerShell local). El resto de archivos (`p1_decodificador_sd15.py`, `e6b_vae_sd15.py`,
+`e6c_techo_lw.py`, `p1_particion.csv`) ya estan en `~/metalsynth/qc/` desde P1:
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis\experiments\objetivo1
+scp p1_maisi.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
+scp p1_maisi.py p1_decodificador_sd15.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+```
+
+**Paso 2: entorno y pesos** (Khipu, **nodo de acceso**, que es el que tiene internet; una sola vez):
+
+```bash
+cd ~/metalsynth
+module load miniconda/3.0
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda create -y -n maisi --clone e6b          # no se toca el entorno de P1
+conda activate maisi
+pip install "monai-weekly[nibabel,tqdm]" fire   # `fire` lo necesita la linea de comandos de MONAI
+python -c "import monai, torch; print('monai', monai.__version__, 'torch', torch.__version__)"
+# Nombre exacto del bundle, por la API de Python (no hace falta la CLI ni `fire`):
+python -c "from monai.bundle import get_all_bundles_list; L=get_all_bundles_list(); print([n for n in L if 'maisi' in str(n).lower()]); print('total bundles:', len(L))"
+# Descarga con el nombre que imprima la linea anterior (NO pegar marcadores tipo <...>: bash lee '<' como redireccion):
+python -c "from monai.bundle import download; download(name='maisi_ct_generative', bundle_dir='$HOME/metalsynth/modelos')"
+ls -R $HOME/metalsynth/modelos | head -40
+```
+
+Si la lista sale vacia (con `total bundles` > 0), el bundle no esta en el indice de esa version de MONAI: hay que
+bajarlo a mano desde el nodo de acceso y descomprimirlo en `~/metalsynth/modelos/maisi/`. **Anota que version bajaste**:
+el paper no basta para reproducir (#93).
+
+**Errores ya vistos (2026-09-20):** `OptionalImportError: import fire` al usar `python -m monai.bundle ...` (falta
+`fire`, o se usa la API de Python); y `-bash: nombre_exacto: No such file or directory` por pegar el marcador
+`<nombre_exacto>` tal cual.
+
+**Paso 3: PASO 0, sin GPU** (nodo de acceso, segundos):
+
+```bash
+cd ~/metalsynth
+sed -i 's/\r$//' p1_maisi.sbatch
+cd qc
+python p1_maisi.py inspeccionar --bundle $HOME/metalsynth/modelos/maisi
+```
+
+Lee la salida:
+- si el recorte de intensidad **deja fuera el hueso denso** (algo como `a_max` = 1000 HU), **MAISI se descarta por
+  diseno**: se anota en #93 y no se corre nada mas. Es el resultado barato, y tambien sirve al Objetivo 1;
+- si el rango cubre hueso y metal, apunta `a_min` y `a_max`: son los `--hu-min/--hu-max` del paso 4.
+
+**Paso 4: prueba corta de 1 caso** (Khipu, GPU), sustituyendo A y B por lo que dijo el paso 0:
+
+```bash
+cd ~/metalsynth
+P=$(sbatch --parsable --time=02:00:00 p1_maisi.sbatch --hu-min A --hu-max B --casos dataset7_CLINIC_metal_0006_data --out $HOME/metalsynth/data/p1_maisi_prueba); echo "MAISI_prueba=$P" | tee -a p1_jobs.txt
+squeue -j $P -o "%.8i %.2t %.10M %.8N %R"
+until [ -f p1_maisi_$P.log ]; do sleep 20; done; tail -f p1_maisi_$P.log
+```
+
+En el log, lee: que aparezcan `monai` y `cuda True`; que `claves no cargadas` sea cercano a 0 (si son cientos, el
+bundle y el codigo no casan y hay que parar); y la linea `ok N s | hueso ...`. Si da `CUDA out of memory`, baja
+`--bloque` (por defecto 128 cortes) y anotalo: eso cambia el solape, no la regla.
+
+**Paso 5: los 34 de test** (Khipu):
+
+```bash
+cd ~/metalsynth
+M=$(sbatch --parsable p1_maisi.sbatch --hu-min A --hu-max B); echo "MAISI=$M" | tee -a p1_jobs.txt
+tail -f p1_maisi_$M.log
+wc -l data/p1_maisi/p1_maisi.csv          # meta: 35 (34 + cabecera)
+cat data/p1_maisi/p1_maisi_errores.csv    # solo cabecera
+grep "Media por paciente\|Sin veredicto" p1_maisi_$M.log
+sacct -j $M --format=JobID,State,ExitCode,Elapsed,MaxRSS
+```
+
+Si se corta, relanza el mismo `sbatch`: salta los casos ya escritos.
+
+**Paso 6: traer** (PowerShell):
+
+```powershell
+cd D:\UTEC\CICLOX\PFCII\metalsynth-pelvis
+scp -r kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/p1_maisi experiments\objetivo1\outputs\
+scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_maisi_*.log" experiments\objetivo1\outputs\p1_maisi\
+```
+
+**Al leer el resultado:** MAISI es 3D y de un canal, asi que **no hay `oraculo` ni `regla`** y la comparacion con P1 es
+solo contra la columna de HU reconstruidos. El veredicto se escribe en `p1_maisi.md` con el mismo umbral de 25 HU.

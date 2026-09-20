@@ -6682,6 +6682,26 @@ renderizador: sin cambios.**
   envolvente de 6.5-8.0 mm reservada a la viabilidad del corredor (#31). Ya no hace falta buscar mas papers para esto:
   lo esencial esta citable. Solo el espesor de la arandela y la canulacion siguen sin fuente, y para ambos la salida
   honesta es declarar la simplificacion.
+- **Cierre parcial con 5 documentos mas (2026-09-20):**
+  - **Espesor de arandela: hay cifra, pero de OTRO fabricante.** `doublemedical_trauma_catalogue` publica
+    *"Thickness: 1.5mm"* con *"Width: 13.0mm"* para su arandela de 6.5/7.3 mm (impresa 5/7, PDF 98), y 5.5 mm para la
+    variante con puas. Coincide con el ancho de 13.0 mm de Synthes y Acumed, pero **es un catalogo de Double Medical**:
+    sirve para decir *"un fabricante publica 1.5 mm"*, no para atribuirselo al implante de Synthes.
+  - **Canulacion: NO se cierra.** El valor de 2.9 mm aparece **solo en listados de distribuidor**
+    (`primis_synthes_listings`), atribuido al tornillo pero sin respaldo del fabricante: el `Inventory Control Form` de
+    Synthes **no publica canulacion**, y sus 2.8 mm son aguja guia y sus 5.0/7.3 mm brocas. Uno de esos listados trae
+    ademas texto residual de otro producto (*"SYNTHES TI SOLID TIBIAL NAIL"* en una ficha de acero), lo que degrada toda
+    su columna de cifras.
+  - **Tres contradicciones que resuelve lo ya verificado:** nucleo 4.5 (listados) frente a **4.7** (`gardner2015screw`);
+    cabeza 8.2 frente a **8.0** (`sayres2014comparison`, y `doublemedical_trauma_catalogue` tambien imprime 8.0);
+    paso 2.75 frente a **2.5** (`zhu2022optimalposition`). Prevalecen las fuentes citables.
+  - **Dato nuevo de catalogo:** existe una variante de 7.3 mm **totalmente roscada** (209.620-209.780) y el rango de
+    longitudes llega a 30-180 mm. La mascara parametrica debe poder representar rosca parcial y total.
+  - **Conclusion operativa:** de los dos huecos, **uno se cubre con fuente de otro fabricante (1.5 mm) y el otro no
+    tiene fuente citable**. No recomiendo seguir buscando: el camino que faltaria es el *Technique Guide* especifico del
+    sistema 7.3 mm de Synthes, y su ausencia no bloquea el piloto. **Propuesta: declarar la canulacion como parametro
+    libre del modelo (y evaluar el caso macizo frente al hueco como sensibilidad), y el espesor de arandela como
+    1.5 mm citando a Double Medical con la salvedad de fabricante.**
 - **No aplicado** (regla 14). **Tipo:** SUPUESTO / geometria del implante. **Nivel propuesto: N1.**
 
 ### 98 — Existe un precedente publicado que cuantifica en milimetros la extension peri-implante del artefacto en CT: la frase de `main.tex:54` hay que acotarla — ABIERTA (liga con #57, #96)
@@ -6708,4 +6728,63 @@ renderizador: sin cambios.**
   Cassanego Tabla 3, p. 7), y Radzi separa titanio de acero (2.0 vs 2.6 mm) aunque con O-MAR solo en el titanio. La
   **mascara binaria no codifica aleacion**: queda como limitacion declarada del Objetivo 3, no como equivalencia.
 - **No aplicado** (regla 14). **Tipo:** REDACCION / reclamo de novedad. **Nivel propuesto: N1.**
+
+### 99 — La guia del fabricante confirma el fuste pero deja sin cerrar arandela y canulacion, y atribuye la indicacion sacroiliaca al calibre de 6.5 mm, no al de 7.3 — ABIERTA (liga con #97, #41, #31)
+
+- **Origen:** ficha `synthes_cannulated_65_73_guide.md` (lector-papers, 2026-09-20). Es la guia **especifica del
+  sistema** que la tesis modela, del propio fabricante (doc. J4552-E).
+- **Lo que confirma, y ahora con la fuente mas directa posible:** *"4.8 mm diameter shaft"* (impresa 2), roscas de
+  16 mm, 32 mm y completa, hex de 4.0 mm, longitudes de 20 a 180 mm y material *"316L stainless steel or titanium alloy
+  (Ti-6Al-7Nb)"* (impresa 12), sin norma ASTM/ISO. Ademas: *"The core and shaft diameters are the same."* (impresa 5),
+  es decir el nucleo del fuste **es** el fuste; los 4.7 mm de `gardner2015screw` son del nucleo **bajo la rosca**, que
+  es otra magnitud. **El cuerpo del tornillo queda cerrado en 4.8 mm con fuente del fabricante.**
+- **Lo que NO cierra:** espesor y diametro interior de la arandela son **NO ENCONTRADO** (solo *"Washer, 13.0 mm"*,
+  impresa 12, refs. 219.99 acero y 419.99 titanio), y el **diametro de canulacion del tornillo tampoco aparece**.
+- **Hallazgo que corrige la pista de los distribuidores:** en esta guia **el 2.9 mm es siempre canulacion de
+  INSTRUMENTAL** (brocas 310.495 y 310.63, destornilladores 314.05 y 314.23, impresa 18). Lo unico que el documento
+  dice del tornillo es funcional: *"Cannulated shaft accepts 2.8 mm diameter guide wires"* (impresa 2). El 2.9 mm de
+  los listados de distribuidor **no solo carece de respaldo: hay evidencia de que su origen es el instrumental**. La
+  decision del 2026-09-20 (canulacion como parametro libre) queda **reforzada**, no revisada.
+- **Riesgo nuevo, y es de redaccion:** la unica mencion sacroiliaca impresa, *"Sacroiliac joint disruptions"*
+  (impresa 4), esta bajo el encabezado *"6.5 mm Cannulated Screws are also indicated for:"*, o sea **atribuida al
+  calibre de 6.5 mm, no al de 7.3**; "iliosacral", "sacrum", "S1" y "S2" no aparecen en todo el documento. La tesis
+  ancla su envolvente de 6.5-8.0 mm en literatura clinica (`gardner2010safezones`, `kaiser2014dysmorphism`), no en el
+  fabricante, asi que **nada obliga a cambiar el rango**; lo que no se puede escribir es que el fabricante indique el
+  7.3 mm para fijacion iliosacra. `synthes2006cannulated` si lista *"iliosacral dislocations"*, pero bajo el grupo
+  *"CSS 6.5, 7.0 und 7.3"*, sin separar calibres.
+- **Efecto sobre el material:** el mismo sistema existe en **acero 316L y en titanio Ti-6Al-7Nb**, y `berk2023washer`
+  uso acero 316LVM mientras Acumed declara titanio. Refuerza la limitacion ya declarada en #98: la mascara binaria no
+  codifica aleacion y la cohorte real mezcla materiales.
+- **Opciones para la autora:** (a) mantener la envolvente de 6.5-8.0 mm citando la literatura clinica y **no** atribuir
+  la indicacion al fabricante; (b) declarar en `main.tex` que el cuerpo del tornillo es de 4.8 mm citando
+  `synthes2003guide`, que es ahora la fuente mas directa; (c) dejar espesor de arandela (1.5 mm,
+  `doublemedical2021trauma`, otro fabricante) y canulacion (libre) como estan, con su salvedad.
+- **Recomendacion del asistente:** (a) + (b) + (c). No queda nada que buscar: es la guia del sistema y no publica esos
+  dos parametros.
+- **No aplicado** (regla 14). **Tipo:** REDACCION + SUPUESTO / geometria del implante. **Nivel propuesto: N2.**
+
+### 93 — CERRADA (2026-09-20): MAISI recorta su salida a [-1000, 1000] HU, y ese recorte por si solo ya falla la compuerta
+
+- **Paso 0 ejecutado** (regla fijada en `01-decisiones.md`, 2026-09-19: si la normalizacion deja fuera el hueso denso,
+  MAISI se descarta por diseno y no se corre). Bundle `maisi_ct_generative` descargado con `monai.bundle` en Khipu
+  (autoencoder 80 MB, difusor 2066 MB, ControlNet 275 MB, generador de mascaras).
+- **Lo que el paper no publicaba y el bundle si:** `scripts/sample.py` fija `a_min = -1000` y `a_max = 1000` (lineas
+  211-212) y devuelve la imagen con `synthetic_images * (a_max - a_min) + a_min` (linea 309). **La salida del modelo
+  vive en [-1000, 1000] HU.**
+- **Medicion propia, sin modelo y sin GPU** (`p1_maisi.py cota`, 34 pacientes de test, ROI de P1): recortar a ese
+  rango y comparar con el CT original da, **solo por el recorte**, MAE en hueso de **media 42.24 HU** (mediana 18.24,
+  min 6.96, max 231.43), con **11 de 34 pacientes por encima del umbral de 25 HU**; en metal, miles de HU.
+  `experiments/objetivo1/p1_maisi_cota.csv`.
+- **Consecuencia:** es una **cota inferior**. Con la regla preinscrita (media por paciente < 25 HU), MAISI **no puede
+  pasar la compuerta ni con un autoencoder perfecto**, porque 42.24 > 25 antes de que el modelo haga nada. La
+  evaluacion en GPU **no se corre**: no aportaria informacion y gastaria una cola que necesita la opcion A.
+- **Lo que esto NO dice:** no evalua a MAISI como generador. Dentro de su rango declarado puede ser excelente; lo que
+  queda probado es que **su representacion no cubre el hueso denso ni el metal**, que es justo lo que esta tesis
+  necesita. Tambien confirma la lectura de `chen2026foundationvae`, que declara el mismo recorte para generacion.
+- **Efecto sobre #91 y la opcion A:** ninguno. La decision del 2026-09-19 ya decia que el resultado de MAISI no cambia
+  el diseno del Objetivo 3. Lo que aporta es un argumento mas fuerte para el Objetivo 1: **no es que el VAE de SD 1.5
+  sea malo; es que los latentes preentrenados disponibles, incluido uno entrenado en CT, se definen sobre un rango de
+  HU que excluye el hueso denso y el metal.**
+- **Queda para la redaccion (pendiente de la autora):** una frase en el Objetivo 1 con este resultado, y la cita del
+  bundle (no del paper) para el rango. **Tipo:** RESULTADO. **#93 CERRADA.**
 

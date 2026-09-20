@@ -1,0 +1,120 @@
+PMID- 37629669
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20230828
+LR  - 20240930
+IS  - 1648-9144 (Electronic)
+IS  - 1010-660X (Print)
+IS  - 1010-660X (Linking)
+VI  - 59
+IP  - 8
+DP  - 2023 Jul 28
+TI  - Is a Washer a Mandatory Component in Young Trauma Patients with S1-S2 Iliosacral 
+      Screw Fixation of Posterior Pelvis Ring Injuries? A Biomechanical Study.
+LID - 10.3390/medicina59081379 [doi]
+LID - 1379
+AB  - Background and purpose: Cannulated screws are standard implants for percutaneous 
+      fixa-tion of posterior pelvis ring injuries. The choice of whether to use these 
+      screws in combination with a washer is still undecided. The aim of this study was 
+      to evaluate the biomechanical competence of S1-S2 sacroiliac (SI) screw fixation 
+      with and without using a washer across three different screw designs. Material 
+      and Methods: Twenty-four composite pelvises were used and an SI joint injury type 
+      APC III according to the Young and Burgess classification was simulated. Fixation 
+      of the posterior pelvis ring was performed using either partially threaded short 
+      screws, fully threaded short screws, or fully threaded long transsacral screws. 
+      Biomechanical testing was performed under progressively increasing cyclic loading 
+      until failure, with monitoring of the intersegmental and bone-implant movements 
+      via motion tracking. Results: The number of cycles to failure and the 
+      corresponding load at failure (N) were significantly higher for the fully 
+      threaded short screws with a washer (3972 ± 600/398.6 ± 30.0) versus its 
+      counterpart without a washer (2993 ± 527/349.7 ± 26.4), p = 0.026. In contrast, 
+      these two parameters did not reveal any significant differences when comparing 
+      fixations with and without a washer using either partially threaded short of 
+      fully threaded long transsacral screws, p ≥ 0.359. Conclusions: From a 
+      biomechanical perspective, a washer could be optional when using partially 
+      threaded short or fully threaded long transsacral S1-S2 screws for treatment of 
+      posterior pelvis ring injuries in young trauma patients. Yet, the omission of the 
+      washer in fully threaded short screws could lead to a significant diminished 
+      biomechanical stability.
+FAU - Berk, Till
+AU  - Berk T
+AUID- ORCID: 0000-0001-9582-1810
+AD  - AO Research Institute Davos, Clavadelerstrasse 8, 7270 Davos, Switzerland.
+AD  - Department of Trauma, University Hospital Zurich, Raemistrasse 100, 8091 Zurich, 
+      Switzerland.
+AD  - Harald-Tscherne Laboratory for Orthopedic and Trauma Research, University of 
+      Zurich, Sternwartstrasse 14, 8091 Zurich, Switzerland.
+FAU - Zderic, Ivan
+AU  - Zderic I
+AUID- ORCID: 0000-0003-0484-887X
+AD  - AO Research Institute Davos, Clavadelerstrasse 8, 7270 Davos, Switzerland.
+FAU - Schwarzenberg, Peter
+AU  - Schwarzenberg P
+AD  - AO Research Institute Davos, Clavadelerstrasse 8, 7270 Davos, Switzerland.
+FAU - Pastor, Torsten
+AU  - Pastor T
+AUID- ORCID: 0000-0003-4357-236X
+AD  - Department of Orthopaedic and Trauma Surgery, Cantonal Hospital Lucerne, 6000 
+      Lucerne, Switzerland.
+FAU - Halvachizadeh, Sascha
+AU  - Halvachizadeh S
+AUID- ORCID: 0000-0003-1393-3232
+AD  - Department of Trauma, University Hospital Zurich, Raemistrasse 100, 8091 Zurich, 
+      Switzerland.
+AD  - Harald-Tscherne Laboratory for Orthopedic and Trauma Research, University of 
+      Zurich, Sternwartstrasse 14, 8091 Zurich, Switzerland.
+FAU - Richards, Geoff
+AU  - Richards G
+AUID- ORCID: 0000-0002-7778-2480
+AD  - AO Research Institute Davos, Clavadelerstrasse 8, 7270 Davos, Switzerland.
+FAU - Gueorguiev, Boyko
+AU  - Gueorguiev B
+AUID- ORCID: 0000-0001-9795-115X
+AD  - AO Research Institute Davos, Clavadelerstrasse 8, 7270 Davos, Switzerland.
+FAU - Pape, Hans-Christoph
+AU  - Pape HC
+AD  - Department of Trauma, University Hospital Zurich, Raemistrasse 100, 8091 Zurich, 
+      Switzerland.
+AD  - Harald-Tscherne Laboratory for Orthopedic and Trauma Research, University of 
+      Zurich, Sternwartstrasse 14, 8091 Zurich, Switzerland.
+LA  - eng
+PT  - Journal Article
+DEP - 20230728
+PL  - Switzerland
+TA  - Medicina (Kaunas)
+JT  - Medicina (Kaunas, Lithuania)
+JID - 9425208
+SB  - IM
+MH  - Humans
+MH  - *Pelvis
+MH  - *Histological Techniques
+MH  - Patients
+MH  - Software
+MH  - Bone Screws
+PMC - PMC10456504
+OTO - NOTNLM
+OT  - S1-S2 sacroiliac screw fixation
+OT  - biomechanics
+OT  - motion tracking
+OT  - posterior pelvis ring injury
+OT  - synthetic pelvic bone model
+OT  - transsacral fixation
+OT  - washer
+OT  - washerless
+COIS- The authors declare no conflict of interest.
+EDAT- 2023/08/26 10:46
+MHDA- 2023/08/28 06:42
+PMCR- 2023/07/28
+CRDT- 2023/08/26 01:20
+PHST- 2023/05/01 00:00 [received]
+PHST- 2023/07/21 00:00 [revised]
+PHST- 2023/07/25 00:00 [accepted]
+PHST- 2023/08/28 06:42 [medline]
+PHST- 2023/08/26 10:46 [pubmed]
+PHST- 2023/08/26 01:20 [entrez]
+PHST- 2023/07/28 00:00 [pmc-release]
+AID - medicina59081379 [pii]
+AID - medicina-59-01379 [pii]
+AID - 10.3390/medicina59081379 [doi]
+PST - epublish
+SO  - Medicina (Kaunas). 2023 Jul 28;59(8):1379. doi: 10.3390/medicina59081379.

@@ -575,6 +575,20 @@ Tras subir el CSV, `resumen` en el **nodo de acceso** (segundos, sin GPU) cerro 
 **sd15 frente a E6b 4 de 4** (tolerancia 0.05 HU), identidad frente a E6c 2 de 2, encoder congelado 1 de 1 y
 decodificador afinado distinto 1 de 1. La tuberia reproduce E6b: la cohorte queda validada.
 
+**Cohorte de entrenamiento (2026-09-17/18):** `pub+asinh` 51669 COMPLETED 10:36:07 (ds001); `LW20000` 51670 COMPLETED
+10:33:24 (g002); `pub` 51671 **CANCELLED** (`ExitCode 0:15`, SIGTERM) a las 5:56:43 en ds001, atribuido por la autora a
+mantenimiento. Quedo `ckpt_pub.pt` (checkpoint cada 1000 pasos) y se relanza la misma configuracion, que reanuda desde
+ahi. **Declarar:** el decodificador de `pub` se entreno con una interrupcion; el orden de cortes tras reanudar no
+reproduce el de una corrida continua (pesos y optimizador si se restauran). 51670 y 51671 estuvieron ~10 h en
+`JobHeldUser` antes de arrancar (`scontrol hold` sin liberar).
+Log de 51671: `CANCELLED AT 2026-09-18T11:29:23 DUE to SIGNAL Terminated`, sin mencion de tiempo ni de preempcion.
+Ultimo checkpoint en el paso **16 000** (11:11:15): se pierden ~18 min. Relanzado como **51878**, con la evaluacion
+**51879** encolada con `afterok:51878`.
+
+**Corrida real (2026-09-19):** 51878 reanudo `pub` desde el paso 16 000 (g002) y termino en el paso 30 000. Evaluacion
+51879: 68 filas (34 x 2), 0 errores, mediana 177 s por fila, 3.22 h. Controles: identidad frente a E6c 165/165, sd15
+frente a E6b 330/330, encoder congelado 3/3, decodificador distinto 3/3. **Resultado: NO-GO** (#91).
+
 **Paso 1: subir** (PowerShell local). `e6b_vae_sd15.py`, `e6c_techo_lw.py` y `e6c_techo_lw.csv` ya estan en `qc/`
 desde E6b; se vuelven a subir para asegurar la version. La cohorte MAE de E6b va con fecha en el nombre (control):
 

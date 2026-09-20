@@ -7,6 +7,8 @@
 > Sustituye como entrada al bloque del 2026-09-15 que sigue abajo (queda como historico; sus pendientes sobre
 > #36/#39 y la lectura de Chen ya estan resueltos). Verificado contra disco el 2026-09-17.
 
+**Sesion 2026-09-18 (2) — entrega de 2 pp.** `entrega/main.tex` + `main.pdf` (2 pp., 21 refs, 0 indefinidas) responden la retroalimentacion del asesor: plan de falsos positivos de extraccion y presupuesto de computo con cifras medidas en Khipu; sin las ~140 GPU-h del borrador (no medidas). Implicancia **#89 ABIERTA**. Siguiente: piloto cronometrado del ControlNet cuando P1 cierre; decidir si #89 pasa a `main.tex`.
+
 **Sesion 2026-09-18 — 13 fuentes mas + duplicados.** 13 altas (`refs.bib` = 83; compila 6 pp., 0 indefinidas); ningun PDF queda sin ficha; duplicados borrados con autorizacion (Miller, Gertzbein, raw de Templeman; PDF de Templeman renombrado). Implicancias **#83-#88** (ninguna abierta); `main.tex:117` decia falsamente que ningun corredor se midio con fractura (Reilly 2003 lo hace) -> **APLICADA (a) en `main.tex:117`** por orden de la autora (compila 6 pp., 83 refs, 0 indefinidas). Pendiente: `
 ocite{*}` (#82/#88); PDF + raw de MWLNet y Choi (prioridades 1-2 de `_candidatos.md`); entrada 2026-09-18 para `01-decisiones.md`. Siguiente: evaluacion de P1 en Khipu.
 
@@ -47,6 +49,36 @@ vacio. En la PC: `outputs/e6b_vae_sd15.csv` = cohorte MAE vieja (178 filas, 32 c
    **51669 (`pub+asinh`) COMPLETED en 10:36:07** (estimacion 11 h, acertada). **51670 y 51671 siguen PENDING 20 h
    despues por `scontrol hold`; liberados y 51670 corre en g002, 51671 detras.** Controles de la prueba CERRADOS:
    **sd15 frente a E6b 4 de 4**, identidad 2 de 2, hashes OK. Falta: evaluacion (~3.5-4 h tras el ultimo entrenamiento).
+   2026-09-18: la evaluacion NO se encolo (`cd` mal tecleado; `sbatch` corrio en `~`). 51670/51671 ya no estan en cola:
+   Verificado: **51670 (`LW20000`) COMPLETED 10:33:24 en g002**, hash identico. **51671 (`pub`) CANCELLED 0:15 a las
+   5:56:43 en ds001** (probable mantenimiento del cluster); queda `ckpt_pub.pt` de las 11:11. Siguiente: relanzar
+   `p1_entrenar.sbatch pub` (reanuda del checkpoint) y encolar la evaluacion con `afterok`.
+   Relanzado: **51878** (`pub`, desde el paso 16000; PD Resources, las dos A6000 en `mix`) y **51879** (evaluacion,
+   afterok:51878). Faltan 14 000 pasos x 1.26 s = ~4.9 h + ~3.5-4 h de evaluacion, contadas desde que arranque.
+   `squeue --start`: 51878 entra en ds001 a mas tardar ~01:09 del 19 (cota por TIME_LIMIT ajenos); veredicto ~10:00 del 19.
+   No se cambia de GPU: MIG 3g.20gb < 24.6 GB y la tesla de g001 no tiene memoria verificada (decision 2026-09-18).
+   **2026-09-19: P1 TERMINADO — NO-GO** (51879; controles 165/165, 330/330, 3/3, 3/3). Mejor: afinado `pub+asinh`
+   61.72 HU [55.12, 68.99]; 34/34 pacientes >= 25 HU en las seis. **#91 ABIERTA: decidir (a) aceptar No-Go, sin
+   Objetivo 3 (recomendada) o (b) MAISI como compuerta nueva preinscrita.** Salidas traidas a la PC y versionadas en
+   `experiments/objetivo1/` (`p1_compuerta.md`, `p1_eval.csv`, `p1_control.csv`, `p1_curvas/`). Curvas en plateau
+   desde ~5 000 pasos: "faltaron pasos" no explica el No-Go (#91).
+   Fichas 2026-09-19: `guo2025maisi` (#93), `varma2025medvae` (#94), `tonetti2001results` (#92). Ninguno de los dos VAE
+   documenta su rango de HU ni error en HU: solo se deciden midiendo. Paper del sacro ("3D statistical modeling...") NO
+   esta en `papers/` ni `refs/raw/`. Pendiente: refs/clean + build_refs para las tres entradas nuevas.
+   **Decision 2026-09-19 (01-decisiones): opcion A + MAISI como extension del Obj 1.** Borrador de diseno en
+   `experiments/objetivo3/diseno_A.md` (NO preinscrito; 4 `[DECIDIR]` de la autora). #95/#96 ABIERTAS.
+   Siguiente: respuestas de la autora -> extraccion de parches (CPU) -> prueba corta Khipu -> preinscripcion.
+   **`main.tex` adaptado (2026-09-19, orden de la autora):** titulo, RQ, objetivo general, resultado No-Go escrito en
+   el Obj 1, Obj 3 reescrito como inpainting en espacio de imagen y fila de la tabla. Compila 6 paginas, 0 errores.
+   `docs/00-tesis.md` sigue describiendo el Obj 3 como LDM + ControlNet: pendiente de orden de la autora.
+   **`refs/deep-research/` revisado (2026-09-19):** candidatos de geometria del tornillo en `_candidatos.md`
+   (ronda 2026-09-19; prioridad G1 Berk 2023, G2 Gardner 2015, T1 ficha Synthes) e implicancia **#97** (el nominal de
+   7.3 mm seria rosca, no fuste; cabeza y arandela ausentes del modelo).
+   **2026-09-19, 9 lecturas mas (6 papers + 3 fichas de fabricante): #97 VERIFICADA.** Rosca 7.3 / fuste 4.8-4.9 /
+   nucleo 4.7 / paso 2.5 / cabeza 8.0 x 4.5 / arandela 13.0 mm. Sin fuente: espesor de arandela y canulacion.
+   Nueva **#98** (`main.tex:54` afirma que no hay precedente que cuantifique la banda; Radzi publica mm en CT).
+   `refs.bib` pasa a **92 entradas**; las tres fichas de fabricante entran como `@manual` sin raw (excepcion en
+   `refs/MAPEO.md`). Compila 6 paginas, 0 errores.
 2. **P2:** verificar en el codigo de XCIST si paciente y metal se proyectan juntos (#70).
 3. **P3:** muestreador + SAP en `src/muestreador/` (en paralelo a P1).
 Autora: laminas `e9ts_revision_laminas_autora.csv` 0/16; plazo de 2 semanas al revisor de #53.

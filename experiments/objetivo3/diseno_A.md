@@ -70,8 +70,29 @@
 - **Pose inicial (antes del muestreador P3):** eje del corredor S1 ya medido en E9-TS (`e9ts_corredor.csv`: centro
   `c_x/c_y/c_z`, direccion `u_x/u_y/u_z`, largo `L_TS_mejor_mm`, viabilidad por diametro y holgura). Cuando P3 exista,
   sus poses.
-- **`[DECIDIR]` Brecha de mascara (#95):** diametro del cilindro principal 6.5-8.0 mm (publicado) y **sensibilidad con
-  5.00 mm** (fuste medido en E8, que es lo que el modelo vio en entrenamiento). Recomendado.
+- **Geometria de la mascara (propuesta del asistente tras las lecturas del 2026-09-19/20, #97).** El catalogo describe
+  el tornillo fisico; el modelo aprendio **mascaras por umbral de implantes reales**. La mascara debe parecerse a lo
+  segundo. Fuste de catalogo 4.8 mm (`synthes2006cannulated`, `zhu2022optimalposition`) y 4.9 mm (`gardner2015screw`)
+  frente a los **5.00 mm medidos en E8**: coinciden dentro de un cuarto de voxel.
+  - **Piloto, dos piezas:** cuerpo cilindrico de **5.0 mm** en todo el corredor + **cabeza de 8.0 mm de diametro y
+    4.5 mm de altura** (`sayres2014comparison`), apoyada en la cortical iliaca y **sin avellanar** (*"No countersink was
+    used"*, p. 33). Sin rosca explicita, sin arandela y sin canulacion.
+  - **Verificacion barata antes de fijarlo (~1 h, CPU local):** perfil de diametro **a lo largo del eje** en los
+    tornillos reales de CLINIC-metal. E8 da un solo diametro por componente (`d_ext_2500_mm`), no su variacion axial.
+    Si el extremo distal se ensancha hacia 7.3 mm, hay que anadir el tramo de rosca; si el volumen parcial lo promedia
+    a ~5 mm, el cilindro uniforme queda justificado **con medicion propia**.
+  - **Variantes declaradas, como sensibilidad:** envolvente de rosca 7.3 mm en los 16/32 mm distales y variante
+    totalmente roscada (209.620-209.780); arandela 13.0 x **1.5 mm** (`doublemedical2021trauma`, otro fabricante,
+    salvedad declarada; conviene medir antes cuantos pacientes reales la llevan); canulacion hueca frente a maciza
+    (**parametro libre**, decision de la autora del 2026-09-20).
+  - **Actualizacion 2026-09-20 (#99), con la guia del fabricante (`synthes2003guide`):** el cuerpo del tornillo queda
+    cerrado en **4.8 mm** (*"4.8 mm diameter shaft"*) y el documento aclara que *"The core and shaft diameters are the
+    same."*, asi que los 4.7 mm de `gardner2015screw` son el nucleo **bajo la rosca**, otra magnitud. La guia **no
+    publica** espesor de arandela ni canulacion, y su 2.9 mm es canulacion de **instrumental**: el parametro libre se
+    mantiene y ahora con evidencia de que la pista del distribuidor venia de una broca. Material del mismo sistema:
+    **316L o Ti-6Al-7Nb**, lo que refuerza que la mascara binaria no codifica aleacion (#98).
+  - **No se mezcla con #31:** la viabilidad del corredor sigue usando la envolvente de 6.5-8.0 mm. Son dos geometrias
+    para dos preguntas, como hace `zhu2022optimalposition` sin declararlo (p. 1547 frente a p. 1548).
 
 ## 7. Evaluacion (a preinscribir; sin umbrales numericos no verificados, como pide `main.tex:115`)
 

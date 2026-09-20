@@ -79,6 +79,19 @@ vacio. En la PC: `outputs/e6b_vae_sd15.csv` = cohorte MAE vieja (178 filas, 32 c
    Nueva **#98** (`main.tex:54` afirma que no hay precedente que cuantifique la banda; Radzi publica mm en CT).
    `refs.bib` pasa a **92 entradas**; las tres fichas de fabricante entran como `@manual` sin raw (excepcion en
    `refs/MAPEO.md`). Compila 6 paginas, 0 errores.
+   2026-09-20, 5 documentos mas: **espesor de arandela 1.5 mm** (catalogo Double Medical, otro fabricante) y
+   **canulacion sin fuente citable** (2.9 mm solo en listados de distribuidor).
+   2026-09-20 (2): leida la **guia del fabricante del sistema 6.5/7.3** (`synthes2003guide`): confirma fuste 4.8 mm y
+   material 316L o Ti-6Al-7Nb, **no publica** arandela ni canulacion, y su 2.9 mm es de instrumental. Nueva **#99**
+   (la indicacion sacroiliaca impresa es del calibre 6.5, no del 7.3). `refs.bib` = 94 entradas.
+   **`main.tex` con la geometria nueva (2026-09-20, orden de la autora):** envolvente del corredor frente a mascara de
+   metal, cuerpo 4.8 mm (`synthes2003guide`), cabeza 8.0 x 4.5, arandela 1.5 mm (otro fabricante), canulacion libre y
+   aleacion no codificada. Compila 0 errores, **7 paginas** (por `nocite{*}` con 94 entradas: si hay limite, se quita).
+   Scripts nuevos probados en local: `objetivo2/e11_perfil_axial.py`, `objetivo3/a1_parches.py`, `objetivo1/p1_maisi.py`
+   + `.sbatch` (comandos en `KHIPU.md`, seccion P1-MAISI).
+   **MAISI CERRADO (2026-09-20, paso 0): descartado por diseno.** `scripts/sample.py` del bundle fija el rango en
+   [-1000, 1000] HU; medido con `p1_maisi.py cota`, ese recorte solo ya da **42.24 HU de media en hueso** (11/34
+   pacientes > 25 HU). No se corre la evaluacion en GPU. #93 CERRADA; tabla en `experiments/objetivo1/p1_maisi_cota.csv`.
 2. **P2:** verificar en el codigo de XCIST si paciente y metal se proyectan juntos (#70).
 3. **P3:** muestreador + SAP en `src/muestreador/` (en paralelo a P1).
 Autora: laminas `e9ts_revision_laminas_autora.csv` 0/16; plazo de 2 semanas al revisor de #53.

@@ -6788,3 +6788,33 @@ renderizador: sin cambios.**
 - **Queda para la redaccion (pendiente de la autora):** una frase en el Objetivo 1 con este resultado, y la cita del
   bundle (no del paper) para el rango. **Tipo:** RESULTADO. **#93 CERRADA.**
 
+---
+
+## Ronda 2026-09-19/20 — estado consolidado (leer esto al retomar)
+
+Escrito para una sesion nueva. Detalle de cada una en su entrada; las decisiones, en `01-decisiones.md`
+(2026-09-19 y 2026-09-20).
+
+| # | Tema | Estado |
+|---|---|---|
+| 91 | **P1 da NO-GO**: mejor combinacion 61.72 HU en hueso, 34/34 pacientes fallan, controles en verde y curvas en plateau | **RESUELTA en redaccion** (`main.tex`, Obj 1) y en alcance (opcion A). Queda como resultado de la tesis |
+| 92 | El "24%" de malposicion de la cadena Tejwani/Gardner viene de `tonetti2001results`, que publica 23% binario y sin denominador | ABIERTA (N3). Solo importa si se cita esa cifra |
+| 93 | **MAISI descartado por diseno**: su bundle mapea la salida a [-1000, 1000] HU; el recorte solo ya da 42.24 HU en hueso (11/34 sobre el umbral) | **CERRADA**, aplicada a `main.tex` (Obj 1) |
+| 94 | MedVAE tampoco resuelve la compuerta y **excluye metal** en su entrenamiento | CERRADA de hecho por la decision 2026-09-19 (no se evalua) |
+| 95 | Brecha entre la mascara de entrenamiento (umbral sobre metal real) y la de sintesis (parametrica) | **ABIERTA, bloqueante del Diseno A.** Se resuelve con E11 y con la eleccion de mascara de `diseno_A.md` |
+| 96 | El contexto de entrenamiento trae streaking del implante real; el paciente limpio de sintesis no | **ABIERTA, riesgo principal del Diseno A.** Se ve en la evaluacion E-A2 (costura en el borde de la banda) |
+| 97 | El nominal de 7.3 mm es la ROSCA; el cuerpo mide 4.8 mm, con cabeza de 8.0 x 4.5 y arandela de 13.0 mm | **VERIFICADA y aplicada** a `main.tex` (geometria) y a `diseno_A.md`. Sin fuente: espesor de arandela y canulacion |
+| 98 | `main.tex:54` afirma que no hay precedente que cuantifique una banda peri-implante, y `radzi2014metalartifacts` publica mm en CT | **ABIERTA. Pendiente de la autora**; es la frase mas facil de refutar del documento |
+| 99 | La guia del fabricante confirma el fuste pero no publica arandela ni canulacion, y su indicacion sacroiliaca es del calibre 6.5 | ABIERTA (N2). Aplicado lo verificable; no atribuir al fabricante la indicacion del 7.3 |
+
+**Lo que un agente nuevo debe saber antes de tocar nada:**
+
+1. **El Objetivo 1 ya se ejecuto y dio No-Go. El criterio NO se mueve** (`main.tex:77`, regla preinscrita el
+   2026-09-17). Cualquier propuesta de bajar el umbral, cambiar la lectura de HU a `oraculo` o entrenar mas pasos
+   despues de ver el test repite el patron que `ESTADO.md` manda vigilar (#25, #37, #45, #47, #50, #76).
+2. **El Objetivo 3 ya no es latente.** No reintroducir VAE, ControlNet ni Stable Diffusion sin una decision nueva
+   de la autora: la opcion A se eligio **despues** del No-Go y asi esta declarado en el documento.
+3. **Lo que bloquea el Diseno A no es codigo, son las 4 decisiones de `diseno_A.md`** y las implicancias #95 y #96.
+   Los scripts (`e11_perfil_axial.py`, `a1_parches.py`) estan escritos y probados en local.
+4. **Nada se cita sin `refs/raw/` o, para documentacion de fabricante, sin la excepcion de `refs/MAPEO.md`.**
+

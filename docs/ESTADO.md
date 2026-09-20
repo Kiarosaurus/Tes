@@ -2,7 +2,78 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-17)
+## PUNTO DE RETOMA — leer esto primero (2026-09-20)
+
+> Escrito para una sesion nueva, sin historial. Verificado contra disco el 2026-09-20; el arbol esta limpio
+> (ultimo commit `420d51c`). El bloque del 2026-09-17 queda mas abajo como historico: **su plan (renderizador
+> latente + compuerta) ya se ejecuto y cambio de rumbo**; lo unico vigente de el son P2 (#70) y P3.
+
+### Donde esta el proyecto
+
+- **El Objetivo 1 esta CERRADO y dio NO-GO.** P1 (jobs 51669-51671, 51878, 51879) evaluo seis combinaciones
+  {preentrenado, decodificador afinado} x {`pub`, `LW20000`, `pub+asinh`} en 34 pacientes de test. La mejor,
+  afinado `pub+asinh`, dio **61.72 HU** de media por paciente en hueso (IC95 [55.12, 68.99]) contra un umbral de
+  25 HU, con **34/34 pacientes fallando en las seis**. Controles todos en verde: identidad frente a E6c 165/165,
+  preentrenado frente a E6b 330/330, encoder congelado 3/3, decodificador distinto 3/3. Curvas en plateau desde
+  ~5 000 pasos. Resultados versionados en `experiments/objetivo1/p1_compuerta.md`, `p1_eval.csv`, `p1_control.csv`
+  y `p1_curvas/`. Implicancia **#91**.
+- **MAISI tambien esta cerrado, sin gastar GPU (#93 CERRADA).** Su bundle (`maisi_ct_generative`, descargado en
+  Khipu) mapea la salida a **[-1000, 1000] HU** en `scripts/sample.py`, rango que el paper no publica. Medido con
+  `p1_maisi.py cota` sobre los 34 de test: **solo el recorte** ya da 42.24 HU de media en hueso (11/34 por encima
+  del umbral). Es cota inferior, asi que no pasa ni con pesos perfectos. Tabla: `experiments/objetivo1/p1_maisi_cota.csv`.
+  MedVAE quedo descartado antes (#94: excluye metal en su entrenamiento).
+- **El Objetivo 3 se redisenó: opcion A, difusion en el ESPACIO DE IMAGEN, sin autoencoder** (decision de la autora,
+  `01-decisiones.md` 2026-09-19). Inpainting de `G = M ∪ B_delta`; fuera de `G` se copia el CT, asi que la
+  preservacion es exacta por construccion. Ya **aplicado a `main.tex`**: titulo (*Multi-Window Image-Domain
+  Diffusion*), pregunta, objetivo general, resultado No-Go escrito en el Obj 1 (con la frase de MAISI), Obj 3
+  reescrito y fila de la tabla. Compila **0 errores, 7 paginas, 95 referencias**.
+- **La geometria del tornillo quedo cerrada con fuentes citables** (decision 2026-09-20, #97 y #99): el "7.3 mm"
+  es el **diametro de rosca**; el cuerpo es de **4.8 mm** (`synthes2003guide`, guia del fabricante del sistema),
+  nucleo bajo la rosca 4.7 mm, paso 2.5 mm, rosca de 16/32 mm o completa, **cabeza 8.0 x 4.5 mm sin avellanar**
+  (`sayres2014comparison`), arandela 13.0 mm de diametro. Sin fuente y declarados: **espesor de arandela**
+  (1.5 mm, `doublemedical2021trauma`, OTRO fabricante) y **canulacion** (parametro libre; el 2.9 mm de los
+  distribuidores resulto ser canulacion de brocas). Material: 316L o Ti-6Al-7Nb, y la mascara binaria no lo codifica.
+
+### Lo siguiente: experimentos del Diseno A
+
+Diseno en `experiments/objetivo3/diseno_A.md`, **en BORRADOR: no preinscrito**. Se preinscribe (se congela y se
+registra en `01-decisiones.md`) **antes de entrenar**. Orden:
+
+1. **E11 — perfil axial (CPU local, ~30 s por caso).** `experiments/objetivo2/e11_perfil_axial.py`, probado en 3
+   casos. Mide el diametro a lo largo del eje de los tornillos reales para decidir si la mascara necesita el tramo
+   de rosca de 7.3 mm o basta un cilindro de 5.0 mm. Es el paso 4 de la decision 2026-09-20.
+   `python e11_perfil_axial.py --out <dir>` (sin `--casos` recorre los 178; filtra a componentes esbeltos:
+   largo >= 30 mm y anchos <= 12 mm, que deja fuera placas y protesis).
+2. **A1 — extraccion de parches (CPU local).** `experiments/objetivo3/a1_parches.py`, probado en 2 casos: 216
+   cortes, **todos caben en 256 x 256** y el control de composicion fuera de `G` dio 216/216.
+   `python a1_parches.py --out <dir> [--cache <dir>] --verificar`. Usa la particion de P1
+   (`experiments/objetivo1/p1_particion.csv`: 126 train / 8 val / 34 test por paciente).
+3. **Las 4 decisiones que faltan** (marcadas `[DECIDIR]` en `diseno_A.md`): mascara de entrenamiento (umbral 2500
+   frente a semimaximo), tamano de parche (recomendado 256), diametro del cilindro y **criterio de exito**
+   (`main.tex:98` promete "mejor que copia-pega" y "comparable al brazo fisico": falta fijar la prueba estadistica
+   ANTES de ver resultados, patron #76).
+4. **Prueba corta en Khipu** (200 pasos, como en P1) para medir s/paso y memoria antes de lanzar nada largo (#89).
+5. **En paralelo, sin GPU:** P2 (verificar en el codigo de XCIST si paciente y metal se proyectan juntos, #70) y
+   P3 (muestreador + SAP en `src/muestreador/`, que sigue vacio).
+
+### Pendiente de decision de la autora (nada de esto lo aplica el asistente, reglas 4 y 14)
+
+- **#98:** `main.tex:54` afirma que no hay precedente que cuantifique una banda peri-implante, y
+  `radzi2014metalartifacts` publica milimetros en CT (2.0/2.6/1.6/2.0). Hay que acotar la frase.
+- **#89:** plan de falsos positivos de extraccion y presupuesto de computo, pedidos por el asesor.
+- **#90:** el plazo real (la autora hablo de 5 semanas y luego de ~10; los documentos planifican con ~11).
+- **7 paginas:** el `nocite` global de `main.tex:139` mete las 95 entradas en la bibliografia. Si hay limite, se quita.
+- **#95, #96, #99** y las 4 de `diseno_A.md`.
+
+### Reglas que esta sesion aprendio por las malas
+
+- **Khipu:** hay tope de jobs **enviados** (con 5 en cola, el sexto se rechaza); `scontrol hold` sin liberar costo
+  ~10 h de cola; un `.sbatch` lanzado desde `~` no encuentra el script; y los marcadores tipo `<nombre>` pegados
+  tal cual hacen que bash los lea como redireccion. Todo en `KHIPU.md`, con sus secciones P1, P1-MAISI y lecciones.
+- **Documentacion de fabricante sin `raw`:** entra a `refs/clean/` como `@manual` con la procedencia en comentarios
+  y `% VERIFICAR` en lo dudoso; la excepcion esta escrita en `refs/MAPEO.md`. Ya hay cinco entradas asi.
+
+## PUNTO DE RETOMA anterior (2026-09-17, historico)
 
 > Sustituye como entrada al bloque del 2026-09-15 que sigue abajo (queda como historico; sus pendientes sobre
 > #36/#39 y la lectura de Chen ya estan resueltos). Verificado contra disco el 2026-09-17.

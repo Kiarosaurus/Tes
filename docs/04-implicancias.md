@@ -7039,3 +7039,283 @@ Escrito para una sesion nueva. Detalle de cada una en su entrada; las decisiones
   post hoc; (2) `val` baja a **343 parches en 5 casos**, asi que la medicion de `Delta` de D4 hay que
   **estratificarla** igualmente.
 - **Sigue ABIERTA.** La politica de muestreo es decision de la autora y falta preinscribirla.
+
+### 104 — ACTUALIZACION (2026-09-20): laminas generadas, planilla lista, revision pendiente de la autora
+
+- **Generadas 40 laminas** con `experiments/objetivo3/a3_laminas_componentes.py` (semilla 20260920,
+  reproducible). Muestra estratificada por volumen en escala logaritmica, con **sobremuestreo deliberado de la
+  franja 100-500 mm3**, que es donde cae el umbral propuesto (200 mm3). Cubre de **11 a 15 530 mm3**.
+- **Planilla:** `experiments/objetivo3/a3_revision_componentes.csv` (40 filas, ordenadas por volumen, columnas
+  `veredicto` y `nota` vacias). Guia: `a3_revision_componentes.md`. Laminas en `outputs/a3/laminas/`, fuera de git.
+- **Hipotesis a contrastar, escrita ANTES de mirar:** la columna `propuesta_auto` trae lo que dice hoy el filtro
+  (< 200 mm3 = `fragmento`; si no, `tornillo` cuando largo >= 30 mm y ancho <= 12 mm por **PCA**, si no
+  `otro implante`). Reparto: **17 `fragmento`, 17 `otro implante`, 6 `tornillo`**. Que este escrito de antemano
+  es lo que permite medir acuerdo en vez de racionalizar despues.
+- **Medida de forma corregida respecto al error ya registrado:** las laminas y la planilla usan **eje principal
+  por PCA**, como E11, y no la caja alineada a los ejes que produjo el "14 tipo tornillo" que esta implicancia
+  manda no citar.
+- **Que decide esta revision:** no 40 componentes, sino **si el umbral de 200 mm3 es defendible**. Los dos tipos
+  de error tienen consecuencias distintas y se reportaran por separado: `fragmento` automatico que resulta
+  tornillo (umbral alto, quita datos buenos) frente a `tornillo`/`otro implante` que resulta fragmento o no es
+  metal (umbral bajo, mete ruido, que es lo que #104 sospecha).
+- **Regla fijada de antemano:** si aparece un patron de error, se recalibra el criterio y se vuelve a mirar **la
+  misma muestra**. No se genera una muestra nueva despues de ver el resultado.
+- **Sigue ABIERTA.** Bloquea el entrenamiento: nada se entrena antes de que la politica de muestreo este escrita
+  en `01-decisiones.md`.
+
+### 105 — 29 de los 79 casos de entrenamiento NO tienen material ortopedico: su metal son electrodos, cremalleras, DIU y accesorios de ropa, y aportan el 20.5% de los parches y 2 de los 5 casos de validacion — ABIERTA (liga con #104, #102; toca D4 y la particion)
+
+- **Origen:** observacion de la autora al revisar las primeras laminas de A3 (2026-09-20): *"aparecen artefactos
+  que no estan siquiera dentro del cuerpo (accesorios exteriores o incluso electrodos)"*. Cuantificado despues
+  contra `revision.csv`.
+- **Hallazgo, con la columna que la propia autora creia sin terminar:** `Tipo de estructura observada` de
+  `revision.csv` esta **completa para todos los casos con metal**, y sobre los 79 casos de A1b declara
+  **29 casos SIN material ortopedico**. Su metal es `electrodo`, `zipper (cursor)`, `diu`, `accesorio de la
+  ropa`, `botones`. Aportan **100 componentes y 4 719 parches = 20.5% del conjunto**.
+- **Lo mas grave: contamina la validacion.** **2 de los 5 casos de validacion** (`dataset6_CLINIC_0019_data`,
+  `dataset6_CLINIC_0102_data`) no contienen ningun implante. Validacion es donde D4 manda medir el margen
+  `Delta`. Medirlo ahi significa estimar la variabilidad del metodo sobre pacientes donde **no hay implante que
+  generar**, lo que lo hace artificialmente pequeno y facilita declarar "equivalencia". Es el tercer camino por
+  el que D4 puede viciarse (los otros dos: #104, parches sin metal; y la falta de estratificacion).
+- **Por que entraron:** la particion se filtra por la columna **`Metal` = si**, que dice si hay metal, **no si
+  hay implante**. Un electrodo de ECG es metal. El filtro nunca pretendio distinguirlos.
+- **Correccion a lo que este asistente afirmo antes (registro del error):** en la actualizacion anterior de #104
+  se dijo que completar `revision.csv` **no** resolveria el problema, por ser granularidad de volumen y no de
+  componente. Eso **sigue siendo cierto para elegir el umbral por componente**, pero era una respuesta
+  incompleta: la anotacion **ya existente** resuelve un eje distinto y mayor —excluir casos enteros sin
+  implante— sin trabajo manual nuevo. La columna que parecia no aportar es la que ataja el 20.5%.
+- **Opciones:**
+  - (a) Excluir del entrenamiento los 29 casos sin material ortopedico declarado, **y rehacer la particion de
+    validacion** para que los 5 casos tengan implante.
+  - (b) Excluir solo los componentes externos, conservando los casos (requiere juicio por componente: es #104).
+  - (c) Conservarlos como contexto negativo, declarado.
+- **Recomendacion del asistente:** **(a) para validacion, obligatorio** —un conjunto de validacion sin implantes
+  no puede calibrar nada— y **(a) tambien para entrenamiento en el piloto**, con (c) como sensibilidad si se
+  quiere medir si el metal no osteosintetico aporta o estorba. **Ojo:** rehacer la particion toca la *Strict
+  Isolation Rule* (`main.tex:111`) y la semilla 20260917 de P1; hay que declarar el cambio y **no tocar test**.
+- **Categorias `externo` y `diu` anadidas** a la planilla de A3 (`a3_revision_componentes.md`): el esquema
+  original las habria forzado a `otro implante`, que es exactamente el error que contamina el entrenamiento.
+- **No aplicado** (regla 14). **Tipo:** DATOS / composicion de la cohorte y particion. **Nivel propuesto: N1.**
+
+### 106 — La arquitectura y el planificador del renderizador ya implementados NO tienen fuente citable en `refs.bib`: faltan DDPM, ADM, el planificador coseno y DDIM — ABIERTA (liga con #74, #100)
+
+- **Origen:** pregunta de la autora (2026-09-20) sobre por que U-Net y no una arquitectura mas nueva. Al verificar
+  la bibliografia aparecio el hueco inverso al que se buscaba.
+- **Verificado en `refs.bib`:** **0 entradas** de difusion con transformer (DiT). Pero tambien **0 entradas** de
+  las piezas que `src/renderizador/` **ya implementa**:
+  - **Ho et al. 2020**, DDPM (la formulacion de difusion).
+  - **Nichol y Dhariwal**, planificador **coseno** — que `difusion.py` implementa y **nombra en su docstring**.
+  - **Dhariwal y Nichol**, ADM (la U-Net de difusion condicionada por concatenacion).
+  - **Song et al.**, **DDIM** (el muestreador, 50 pasos, eta = 0).
+- **Lo que hoy se cita en `main.tex` para el renderizador** (`rombach2022latentdiffusion`, `zhang2023controlnet`,
+  `karageorgos2024ddpm`) **no es fuente de ninguna de las cuatro**: Rombach es latente (y el latente se
+  descarto), ControlNet se cayo con el (#74) y Karageorgos es una aplicacion a MAR, no el metodo base.
+- **Por que importa ahora y no al final:** la seccion de Metodos no se puede escribir sin esas cuatro citas, y
+  por la **regla 9** anadir una fuente **empieza por pegar su archivo en `refs/raw/`**, cosa que solo hace la
+  autora. Es trabajo con dependencia externa: conviene abrirlo ya, no la semana de escribir.
+- **Sobre la pregunta original (U-Net frente a DiT), para que quede el razonamiento:** la eleccion se sostiene en
+  (a) entrenamiento **desde cero** con ~7 600-18 000 parches, donde el sesgo inductivo convolucional compensa la
+  falta de datos; (b) **no existe base preentrenada en pixeles de CT** que dé ventaja a un DiT, que es lo mismo
+  que cerro #74; (c) la tarea es inpainting local con `G` ocupando una **mediana del 2.3% del parche** y un borde
+  que debe quedar sin costura, que es justo lo que preservan las conexiones de salto; (d) atencion O(N^2) sobre
+  65 536 pixeles es inviable, por eso la implementacion pone atencion solo en la resolucion mas baja.
+  **NO se comparo DiT contra U-Net**, y las ablaciones estan fuera de alcance (decision 2026-09-17): la eleccion
+  se declara como **razonada y no medida**, que es lo unico defendible.
+- **Opciones:** (a) dar de alta las cuatro fuentes en `refs/raw/` y citarlas en Metodos; (b) citar solo las que
+  se usen literalmente y declarar el resto como implementacion propia (no recomendado: el planificador coseno y
+  DDIM son de otros y hay que atribuirlos).
+- **Recomendacion del asistente:** (a), y ademas **declarar en el texto** que la arquitectura no se comparo con
+  alternativas, como limitacion. Un jurado puede preguntar por que no un DiT; la respuesta razonada existe, pero
+  no debe presentarse como resultado medido.
+- **No aplicado** (regla 14). **Tipo:** BIBLIOGRAFIA / atribucion de metodo. **Nivel propuesto: N1.**
+
+### 107 — `main.tex` llama a `karageorgos2024ddpm` "an image-domain diffusion model", pero su DDPM opera en el dominio de SINOGRAMA: la cita que ancla el umbral de 25 HU esta mal caracterizada, y ademas debilita el argumento del Objetivo 3 — ABIERTA (liga con #91, #61, #63)
+
+- **Origen:** pregunta de la autora (2026-09-20) sobre que arquitectura usa cada paper de referencia. Al verificar
+  contra la ficha aparecio la discrepancia.
+- **Lo que dice `main.tex`:** *"The NMAR algorithm ... reports an RMSE of 20.2~HU, **an image-domain diffusion
+  model 12.3~HU** \citep{karageorgos2024ddpm}"*. Es parte del anclaje del umbral de 25 HU (decision
+  2026-09-15 (2)).
+- **Lo que dice la ficha `karageorgos2024ddpm.md`, con frase textual:** entrena un DDPM **incondicional en el
+  dominio de sinograma**: *"a DDPM-based approach is proposed for inpainting of missing sinogram data for
+  improved MAR"* (Abstract) y *"The DDPM was unconditionally trained with the ground truth sinograms, S_GT"*
+  (Sec. II-A). El implante se reinyecta por umbralizacion, no se modela: *"an estimate of the metal object was
+  added, by thresholding the uncorrected image"* (Sec. II-F).
+- **Que parte es y que parte no es error:** el **12.3 HU si** se mide sobre la imagen reconstruida (Tabla I,
+  p. 28), asi que la cifra y su uso como ancla **se sostienen**. Lo que esta mal es llamar al **modelo**
+  "image-domain": es un DDPM de sinograma cuyo error se reporta en HU tras reconstruir.
+- **Por que no es un detalle menor:** el Objetivo 3 se sostiene sobre que la apariencia se puede generar **en el
+  dominio imagen sin acceso a proyecciones** (`main.tex`, parrafo del supuesto). Citar un metodo de **sinograma**
+  como si fuera la evidencia de rendimiento del dominio imagen **resta fuerza justo al argumento que hay que
+  defender**, y un jurado que conozca el paper lo detecta.
+- **Error del asistente en el mismo hilo, registrado:** en la conversacion del 2026-09-20 este asistente le dijo
+  a la autora que `karageorgos2024ddpm` era "difusion en espacio de imagen, en CT, con metal" y que era "la
+  prueba de que el dominio imagen funciona aca", para un mensaje a su asesor. **Es falso** por lo mismo de
+  arriba. Es el patron que `ESTADO.md` manda vigilar (#25, #37, #45, #47, #50): un enunciado se vuelve verdad
+  por repetirse. Queda corregido aqui.
+- **Opciones para `main.tex`:** (a) cambiar *"an image-domain diffusion model"* por *"a sinogram-domain
+  diffusion model, evaluated in image space"*, que es exacto y conserva el ancla; (b) sustituir el ejemplo por
+  uno que si sea de dominio imagen, **si existe con cifra en HU** (hoy no consta ninguno en `refs.bib`);
+  (c) dejarlo.
+- **Recomendacion del asistente:** **(a)**. Cuesta cinco palabras, mantiene el anclaje del umbral y elimina una
+  objecion facil. **NO aplicado** (regla 14): toca `main.tex` y espera orden explicita.
+- **Cual es de verdad el referente arquitectonico mas cercano:** **no** Karageorgos, sino `ramzan2026claim`
+  (CLAIM), que segun su ficha usa *"a conditional diffusion model based on Denoising Diffusion Probabilistic
+  Model (DDPM)"* (Sec. 2, p. 3) con *"The diffusion model (often implemented as a UNet parameterized by theta)"*
+  (Sec. 2.1, p. 4), **no latente y no Stable Diffusion** (item 16 de su ficha: NO ENCONTRADO EN EL PDF).
+- **Tipo:** REDACCION / caracterizacion de una cita. **Nivel propuesto: N1.**
+
+### 108 — La Tabla III de `karageorgos2024ddpm` cuantifica el colapso de calidad al subestimar la mascara metalica, y hoy NO se usa para justificar `B_delta` — ABIERTA (liga con #98, #57, #104)
+
+- **Origen:** pregunta de la autora (2026-09-20) sobre por que Karageorgos es relevante por sus cifras en HU.
+  Al revisar su ficha aparecieron dos tablas cuyo contenido no esta en el argumento de la tesis.
+- **Hallazgo 1 — respaldo cuantitativo para `B_delta`, sin usar.** Tabla III (p. 16): con mascara **ensanchada**
+  el RMSE se mantiene (R = 1.4 -> 11.45; R = 1.8 -> 11.63), y con mascara **reducida** se desploma
+  (R = 0.7 -> **54.82**; R = 0.5 -> **57.69**). La referencia con traza real da 7.57. La propia ficha ya lo
+  marcaba: *"dato util para justificar la banda extendida B_delta"*. **Hoy `main.tex` no lo cita.**
+  - **Por que importa:** `B_delta` = 12 mm es la decision con menos respaldo externo del diseno. #98 se cerro
+    acotando el reclamo de novedad, pero **la anchura sigue sin justificacion publicada**. Esta tabla no la
+    calibra —es sensibilidad de mascara en MAR de sinograma, no anchura de banda de generacion— pero **si
+    respalda la direccion**: subestimar la extension del metal degrada, ensancharla no penaliza. Es el argumento
+    mas fuerte disponible hoy para generar mas alla de la mascara.
+- **Hallazgo 2 — el tamano del implante domina el error, y refuerza #104.** Tabla II (p. 29), mismo DDPM:
+  pelvis (Paciente 1) **RMSE_INT 11**, protesis total de cadera (Paciente 4) **RMSE_INT 147**, trece veces peor.
+  Es evidencia externa de que **tornillos y protesis no son intercambiables** ni para entrenar ni para evaluar,
+  que es justo lo que #104 sospecha desde los datos propios.
+- **Lo que NO autoriza:** ninguna de las dos cifras calibra los 12 mm. Citarlas como si fijaran la anchura seria
+  el patron de #25/#45. Sirven como **respaldo de direccion**, declarado como tal.
+- **Opciones:** (a) citar la Tabla III en el parrafo de `B_delta` como respaldo de direccion, con la salvedad de
+  que es sensibilidad de mascara en MAR y no anchura de banda; (b) citar ademas la Tabla II en el argumento de
+  #104 sobre mezcla de implantes; (c) no usarlas.
+- **Recomendacion del asistente:** **(a) + (b)**. Las dos son cifras publicadas, verificadas contra ficha con
+  pagina, y cubren los dos puntos mas debiles del diseno actual.
+- **No aplicado** (regla 14). **Tipo:** REDACCION / respaldo de una decision de diseno. **Nivel propuesto: N1.**
+
+### 104 — ACTUALIZACION (2026-09-20): las laminas de A3 cortaban por el eje equivocado; corregidas y regeneradas
+
+- **Origen:** la autora, revisando las laminas, pregunto que significaba "corte 344" porque no le cuadraba al
+  abrir ITK-SNAP.
+- **Fallo:** `a3_laminas_componentes.py` tomaba el corte con `arr[k]` sobre el **eje 0 del archivo**, sin el
+  `moveaxis` que si hace `a1b_parches_componente.py`. En esta cohorte la orientacion es **('L','P','S')** y el
+  **eje axial es el 2**, asi que el panel rotulado "CT, corte N" mostraba un plano **sagital** y su numero no
+  correspondia a ningun corte axial del visor. El panel "proyeccion axial" tampoco lo era.
+- **Alcance:** afecta solo a la **herramienta de revision**, no a ningun resultado. `a1b_parches_componente.py`
+  y `e11_perfil_axial.py` siempre trabajaron en el marco correcto, asi que **ninguna cifra publicada cambia**.
+  Las tres proyecciones de la mascara seguian siendo utiles para juzgar forma (son ortogonales en cualquier
+  orden); lo inservible era el numero de corte y el rotulo.
+- **Corregido:** se mueve el eje axial al 0 antes de dibujar, y ademas cada lamina y cada fila de la planilla
+  traen ahora el **centroide del componente en indices del archivo** (`voxel_itksnap`, formato `x, y, z`), que
+  es lo que se teclea en el cursor de ITK-SNAP y no depende de convenciones de rotulado. Se declara que el
+  indice es **base 0**. Laminas regeneradas (40, misma semilla 20260920).
+- **Por que se registra:** esta revision es la evidencia que sostendra el umbral de #104. Una herramienta que
+  muestra un plano distinto del que dice es exactamente el tipo de error que `ESTADO.md` manda vigilar
+  (#25, #37, #45, #47, #50): el revisor habria juzgado sobre un plano equivocado creyendo que era otro.
+- **Nota operativa:** si la regeneracion falla con `OSError [Errno 22]`, hay un visor de PNG con el archivo
+  abierto; basta cerrarlo.
+
+### 104 — RESULTADO DE LA REVISION (2026-09-21): el filtro automatico acierta 15 de 40, y el umbral de volumen esta mal planteado, no mal calibrado
+
+- **La autora lleno las 40 filas** de `a3_revision_componentes.csv`. Acuerdo exacto con `propuesta_auto`:
+  **15/40 = 38%**.
+
+| Propuesta \ Veredicto | tornillo | otro implante | fragmento | externo | diu | dudoso |
+|---|---|---|---|---|---|---|
+| **tornillo** (6) | **4** | 0 | 2 | 0 | 0 | 0 |
+| **otro implante** (17) | 1 | **8** | 2 | 5 | 1 | 0 |
+| **fragmento** (17) | 0 | 1 | **3** | 11 | 0 | 2 |
+
+- **Hallazgo 1 — el umbral de volumen no separa implante de no-implante.** El cubo `fragmento` resulto ser
+  **11 externos de 17**. Un electrodo o un cursor de cremallera es **pequeno**, asi que cae bajo 200 mm3 igual
+  que un fragmento de tornillo. **Volumen y "es implante" son ejes distintos**: la propuesta de 200 mm3 estaba
+  mal planteada, no mal calibrada. Queda descartada como criterio primario.
+- **Hallazgo 2 — el criterio de FORMA si discrimina.** De 6 propuestos `tornillo`, **4** lo eran; de los 5
+  tornillos que marco la autora, el filtro cazo **4**. Precision 4/6, recall 4/5, sobre numeros chicos. El
+  `largo >= 30 mm` y `ancho <= 12 mm` por **PCA** se conserva.
+- **Hallazgo 3 — confirma #105 por via independiente.** **16 de 40 (40%) son `externo`** y 1 es `diu`. #105 lo
+  dedujo de `revision.csv` a nivel de caso; esta revision lo confirma **componente a componente**.
+- **SALVEDAD que hay que citar siempre con estas cifras:** la muestra esta **estratificada por volumen**, con
+  sobremuestreo deliberado de 100-500 mm3. **NO es aleatoria**, asi que **no se puede extrapolar** el 40% de
+  externos ni ninguna otra proporcion a los 363 componentes. Para una tasa poblacional haria falta una muestra
+  aleatoria aparte.
+- **Criterio nuevo que sugieren los datos:** un test **espacial** (¿el componente esta dentro del cuerpo?),
+  calculable con la misma superficie de 300 HU que ya dibujan los HTML de A4. Habria atrapado los 16 externos
+  de golpe, es geometrico, auditable y no depende de nada externo.
+- **Regla ya fijada que aqui aplica:** si se recalibra el criterio, se vuelve a medir **sobre esta misma
+  muestra**, no sobre una nueva.
+- **Sigue ABIERTA:** falta implementar el criterio revisado, remedir el acuerdo y preinscribir la politica.
+
+### 109 — Usar un segmentador de implantes ya publicado en vez de un criterio propio: evaluado y NO recomendado — ABIERTA (decidida en recomendacion; liga con #104, #105, C1)
+
+- **Pregunta de la autora (2026-09-21):** si convendria apoyarse en un repositorio que ya haga la
+  identificacion de implantes, en vez de proponer criterios propios, y si el problema seria que no sean
+  especificos de pelvis.
+- **Razon 1 — no ahorra el trabajo, lo mueve.** Cualquier segmentador externo habria que **validarlo en esta
+  cohorte**, es decir revisar laminas exactamente como se acaba de hacer. La planilla seguiria siendo necesaria.
+- **Razon 2 — el unico candidato disponible no resuelve el problema.** `xie2024implantsegmentation` (DiffSeg)
+  segmenta metal **2D por corte**, su unico ground truth es **sintetico** (*"Metal implants were inserted into
+  clean CT images"*, Method, p. 3) y en CT clinica *"Due to the lack of a corresponding ground truth"*
+  (Results, p. 6) la comparacion es solo visual. Ademas separa **metal de no-metal**, no **implante de
+  electrodo**, que es el problema real segun la revision de #104. Detectar metal ya esta resuelto: el umbral de
+  2500 HU da 0 falsos negativos (E1).
+- **Razon 3 — tension con C1.** `main.tex` reclama *"non-biological rigid implant geometries, which avoid the
+  threshold-dependent size distortion of fixed-HU metal segmentation"* y **cita a Xie** para sostenerlo. Adoptar
+  un segmentador aprendido como pieza central obliga a explicar por que se depende de aquello de lo que se dice
+  escapar. No es contradiccion fatal (son usos distintos), pero es una objecion previsible.
+- **Sobre la sospecha de la autora (que no sean de pelvis):** es real pero **no es el problema principal**. Pesa
+  mas que la referencia de DiffSeg sea sintetica y que no distinga tipos de objeto, que el que no sea pelvico.
+- **Marco conceptual que conviene fijar:** un **criterio de inclusion** para armar el conjunto de entrenamiento
+  **no es una contribucion** que haya que defender como novedad. Se le exige ser **preinscrito y reproducible**,
+  no original. Esto responde la preocupacion de fondo de la autora ("proponer metricas nosotros").
+- **Recomendacion del asistente:** criterio propio, geometrico y declarado, con cuatro reglas: (1) test
+  espacial dentro/fuera del cuerpo; (2) forma por PCA (validada en #104); (3) volumen como criterio
+  **secundario**; (4) exclusion de los 29 casos sin material ortopedico via `revision.csv` (#105). Se mide el
+  acuerdo sobre las **mismas** 40 laminas ya revisadas.
+- **No aplicado** (regla 14). **Tipo:** METODO / dependencias externas. **Nivel propuesto: N1.**
+
+### 104/109 — CORRECCION (2026-09-21): el umbral de 300 HU NO delimita el cuerpo, y el criterio espacial propuesto estaba roto de origen
+
+- **Origen:** la autora, mirando los HTML de A4: *"el criterio de los 300 HU para detectar piel no funciono, no
+  esta saliendo la piel... solo los metales en realidad"*.
+- **El error:** `a4_html_componentes.py` dibujaba una isosuperficie a **300 HU** y la rotulaba "silueta del
+  paciente". **300 HU es hueso**, no piel: el tejido blando esta entre -100 y +60 HU y el borde aire/tejido
+  ronda los **-400 HU**. El umbral se copio de `exploration-3d/explorar.py`, donde estaba puesto para
+  superficies densas, sin comprobar que representaba.
+- **Medido en `dataset7_CLINIC_metal_0004_data`:** HU > **-400** da el **29.7%** del volumen (el paciente);
+  HU > 300 da el **1.3%** (hueso y metal); HU > 1500, el 0.1% (metal). Entre -600 y -200 la fraccion apenas
+  cambia: **-400 cae en una meseta**, asi que no es un valor delicado.
+- **Por que no es solo cosmetico:** ese mismo umbral es el que se propuso en #104 y #109 como **criterio
+  espacial** (dentro/fuera del cuerpo) para sustituir al de volumen, que es el que habria atrapado los 16
+  componentes `externo`. Implementado con 300 HU, **el criterio habria estado roto desde el principio** y el
+  fallo habria sido invisible en una tabla, a diferencia de en un HTML. La deteccion la hizo la autora mirando.
+- **Corregido:** `mascara_cuerpo()` construye el cuerpo como tejido > **-400 HU**, **componente conexo mayor**
+  (descarta mesa, tubos y ruido) y **huecos rellenos** (el aire intestinal no abre agujeros). Verificado en el
+  caso de prueba: **28.5%** del volumen y **99.9%** del metal del paciente queda dentro.
+- **Ademas:** el hueso de referencia baja de 1500 a **150 HU**, el mismo umbral que usa el resto de la tesis
+  (`BONE_HU` de `e6c_techo_lw`), para que se vea el hueso completo y no solo cortical muy densa.
+- **Las etiquetas de la leyenda traen ahora el veredicto de la autora**, asi que el HTML sirve tambien para
+  revisar lo ya decidido.
+- **Lo que NO cambia:** ninguna cifra publicada. `a1b`, `e11` y la planilla no usan este umbral. El criterio
+  espacial **todavia no esta implementado** como filtro: cuando se implemente, usara `mascara_cuerpo()`.
+
+### 104/109 — CORRECCION DE LA CORRECCION (2026-09-21): la causa NO era el valor del umbral, era que el umbral nunca se pasaba
+
+- **Rectifica la entrada anterior de este mismo dia.** Ahi se atribuyo el fallo a que 300 HU delimita hueso y no
+  piel. **Eso es cierto como hecho pero NO era la causa**, y dejarlo escrito asi habria mandado a cualquiera a
+  buscar en el sitio equivocado.
+- **Causa real:** `superficie()` llamaba a `marching_cubes(dato, level=None, ...)` para los arrays de HU.
+  Sin `level`, `marching_cubes` usa **`(max + min) / 2`**. En estos CT: `(18283 + (-3820)) / 2 =` **7 231 HU**.
+  Las capas rotuladas "piel" y "hueso" dibujaban en realidad **metal**. Por eso la autora describio ver
+  *"solo los metales... y algunas partes internas a esos mismos metales"*: era una descripcion exacta.
+- **Prueba medida, no visual:** decodificando los arrays binarios del HTML, la capa de hueso tenia **367**
+  vertices; con el nivel pasado correctamente tiene **89 513**. La capa de cuerpo siempre funciono (40 316)
+  porque es una mascara **booleana** y para booleanas si se pasaba `level=0.5`.
+- **Corregido:** `nivel` es **obligatorio** para arrays de HU y el script **lanza** si falta, en vez de dibujar
+  algo silenciosamente equivocado. Se anade ademas una comprobacion de rango. Hueso fijado en **300 HU**, el
+  mismo de `exploration-3d/explorar.py`, por peticion de la autora, para que las dos vistas sean comparables.
+- **Patron, tercera vez en esta sesion:** fallo en silencio + explicacion dada sin medir. Las otras dos: #107
+  (caracterizar una cita sin verificarla contra la ficha) y el eje sagital de las laminas. En los tres casos lo
+  detecto la autora mirando la salida, no un control. **Leccion operativa: toda capa o metrica derivada necesita
+  una comprobacion que pueda fallar**; aqui la comprobacion util resulto ser contar vertices, no mirar la figura.
+- **Lo que NO cambia:** ninguna cifra publicada. Afecta solo a la herramienta de visualizacion A4. El criterio
+  espacial de #104/#109 sigue sin implementarse; cuando se implemente usara `mascara_cuerpo()`, que es booleana
+  y nunca estuvo afectada por este fallo.

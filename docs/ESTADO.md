@@ -8,6 +8,19 @@
 > (ultimo commit `420d51c`). El bloque del 2026-09-17 queda mas abajo como historico: **su plan (renderizador
 > latente + compuerta) ya se ejecuto y cambio de rumbo**; lo unico vigente de el son P2 (#70) y P3.
 
+### Actualizacion 2026-09-20 (4) — tabla de prioridad de `_candidatos.md` reordenada tras el giro a dominio de imagen
+
+- **Ultimo paso completado:** auditoria y reordenamiento de "PRIORIDAD VIGENTE" en `docs/literatura/_candidatos.md`,
+  que seguia congelada en el 2026-09-18, es decir en la bibliografia del renderizador **latente + ControlNet**.
+  Ahora entra primero el bloque de **#106** (DDPM, DDIM, coseno, ADM: implementados en `src/renderizador/`, con
+  **0 entradas** en `refs.bib`), suben LeFusion (N1), `B_delta`/Selles y RePaint (N2), y las metricas AAPM pasan a
+  insumo de E-A1..E-A4; **baja** Choi (es latente y es *removal*). La fila del **VAE alternativo queda DESCARTADA**
+  (MAISI/MedVAE/CVQ-VAE): su condicion "solo si P1 da No-Go" se evaporo al elegirse la opcion A sin autoencoder.
+- **Siguiente:** la autora decide la reordenacion (la tabla dice que la prioridad la propone el asistente) y, si la
+  acepta, **#106 empieza por pegar los cuatro raw en `refs/raw/`** (regla 9); sin eso no se escribe Metodos.
+- **Pendiente que surgio:** ninguno nuevo. Sin implicancias sobre la tesis: el fondo ya esta en **#106**; lo de hoy
+  es mantenimiento bibliografico. Sin tocar `refs.bib`, `main.tex`, `00-tesis.md` ni `01-decisiones.md`.
+
 ### Actualizacion 2026-09-20 (3) — las cuatro decisiones del Diseno A, RESUELTAS y escritas
 
 - **`01-decisiones.md` tiene la entrada 2026-09-20 (2)** con D1-D4, escrita por el asistente **por orden explicita

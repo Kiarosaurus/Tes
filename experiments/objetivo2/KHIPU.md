@@ -819,7 +819,7 @@ ssh kiara.balcazar@khipu.utec.edu.pe "mkdir -p ~/metalsynth/qc ~/metalsynth/src 
 
 scp experiments\objetivo3\a2_entrenar.sbatch kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/
 scp -r src\common src\renderizador kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/src/
-scp experiments\objetivo1\e6c_techo_lw.py experiments\objetivo1\e6b_vae_sd15.py experiments\objetivo1\p1_decodificador_sd15.py experiments\objetivo1\p1_particion.csv experiments\objetivo3\a1_parches.py experiments\objetivo3\a1b_parches_componente.py kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+scp experiments\objetivo1\e6c_techo_lw.py experiments\objetivo1\e6b_vae_sd15.py experiments\objetivo1\p1_decodificador_sd15.py experiments\objetivo1\p1_particion.csv experiments\objetivo3\a1_parches.py experiments\objetivo3\a1b_parches_componente.py experiments\objetivo3\a5_manifiesto_train.csv kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
 scp a1b_cache.tgz kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/
 ```
 
@@ -852,11 +852,11 @@ tail -f a2_entrenar_"$J".log
 control identidad_ventanas: peor 1.27e-11 HU
 control aislamiento: 0 de 34 casos de test en el cargador
 control perdida_solo_en_G: G vacia -> 0.0
-datos: {'parches': ..., 'casos': 74.0, 'frac_borde': ...}
+datos: {'parches': 17149.0, 'casos': 47.0, 'series': 339.0, 'frac_borde': 0.028}
 ```
 
-El numero de `parches` tiene que coincidir con el de `a1b_parches.md` para la particion `train`; `casos` debe dar
-**74**. Si `casos` da menos, falta parte del caché; si da mas, se colo algo que no es de `train`.
+**`parches` debe dar exactamente 17 149 y `casos` 47**: es el conjunto congelado por la decision del
+2026-09-21 (R1-R3). Si sale 21 754 / 72, el manifiesto no se aplico y la corrida **no** es la preinscrita.
 
 El aviso `corrida NO preinscrita` **debe aparecer**: si no aparece, alguien paso `--preinscrito` sin que
 `diseno_A.md` este preinscrito.

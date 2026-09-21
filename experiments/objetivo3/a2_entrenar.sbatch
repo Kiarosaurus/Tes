@@ -6,13 +6,15 @@
 # Corrida larga (SOLO despues de preinscribir diseno_A.md, regla del propio diseno):
 #   sbatch a2_entrenar.sbatch 30000 --preinscrito
 #
-# `diseno_A.md` sigue en BORRADOR: las cuatro [DECIDIR] estan resueltas (01-decisiones 2026-09-20 (2)),
-# pero falta medir el margen Delta de D4. Sin `--preinscrito` el script avisa que es piloto de medicion.
+# Conjunto de entrenamiento CONGELADO el 2026-09-21 (01-decisiones): R1 dentro del cuerpo, R2 caso
+# con material ortopedico, R3 metal + banda al 0.62 => 17 149 parches, 241 componentes, 47 casos.
+# Falta solo el margen Delta de D4. Sin `--preinscrito` el script avisa que es piloto de medicion.
 #
 # Requiere en Khipu (disposicion de KHIPU.md: .py planos en ~/metalsynth/qc):
 #   ~/metalsynth/src/{common,renderizador}/   copia de src/ de la PC
 #   ~/metalsynth/qc/  p1_particion.csv, e6c_techo_lw.py, e6b_vae_sd15.py, p1_decodificador_sd15.py,
 #                     a1_parches.py, a1b_parches_componente.py  (src/common los REEXPORTA: tienen que estar)
+#   ~/metalsynth/qc/a5_manifiesto_train.csv   conjunto CONGELADO (R1-R3, decision 2026-09-21)
 #   ~/metalsynth/data/a1b_cache/      .npz de A1b, uno por (componente, corte); se sube desde la PC
 #   entorno conda e6b
 # Salida: ~/metalsynth/data/a2/<etiqueta>/{curva.csv, entrenar_meta.json, ckpt.pt}
@@ -56,6 +58,7 @@ echo "inicio $(date -Is)  nodo $(hostname)  pasos $PASOS  etiqueta $ETIQUETA"
 python entrenar.py \
     --cache "$DATA/a1b_cache" \
     --particion "$RAIZ/qc/p1_particion.csv" \
+    --manifiesto "$RAIZ/qc/a5_manifiesto_train.csv" \
     --out "$DATA/a2/$ETIQUETA" \
     --pasos "$PASOS" "$@"
 rc=$?

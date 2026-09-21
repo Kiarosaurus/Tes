@@ -1,0 +1,70 @@
+PMID- 25939628
+OWN - NLM
+STAT- PubMed-not-MEDLINE
+DCOM- 20160707
+LR  - 20190130
+IS  - 1471-2962 (Electronic)
+IS  - 1364-503X (Print)
+IS  - 1364-503X (Linking)
+VI  - 373
+IP  - 2043
+DP  - 2015 Jun 13
+TI  - Computed tomographic beam-hardening artefacts: mathematical characterization and 
+      analysis.
+LID - 10.1098/rsta.2014.0388 [doi]
+LID - 20140388
+AB  - This paper presents a mathematical characterization and analysis of 
+      beam-hardening artefacts in X-ray computed tomography (CT). In the field of 
+      dental and medical radiography, metal artefact reduction in CT is becoming 
+      increasingly important as artificial prostheses and metallic implants become more 
+      widespread in ageing populations. Metal artefacts are mainly caused by the 
+      beam-hardening of polychromatic X-ray photon beams, which causes mismatch between 
+      the actual sinogram data and the data model being the Radon transform of the 
+      unknown attenuation distribution in the CT reconstruction algorithm. We 
+      investigate the beam-hardening factor through a mathematical analysis of the 
+      discrepancy between the data and the Radon transform of the attenuation 
+      distribution at a fixed energy level. Separation of cupping artefacts from 
+      beam-hardening artefacts allows causes and effects of streaking artefacts to be 
+      analysed. Various computer simulations and experiments are performed to support 
+      our mathematical analysis.
+CI  - © 2015 The Author(s) Published by the Royal Society. All rights reserved.
+FAU - Park, Hyoung Suk
+AU  - Park HS
+AD  - Department of Computational Science and Engineering, Yonsei University, Seoul, 
+      Republic of Korea.
+FAU - Chung, Yong Eun
+AU  - Chung YE
+AD  - Department of Radiology, Yonsei University College of Medicine, Seoul, Republic 
+      of Korea.
+FAU - Seo, Jin Keun
+AU  - Seo JK
+AD  - Department of Computational Science and Engineering, Yonsei University, Seoul, 
+      Republic of Korea seoj@yonsei.ac.kr.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - England
+TA  - Philos Trans A Math Phys Eng Sci
+JT  - Philosophical transactions. Series A, Mathematical, physical, and engineering 
+      sciences
+JID - 101133385
+PMC - PMC4424484
+OTO - NOTNLM
+OT  - Radon transform
+OT  - beam-hardening artefacts
+OT  - computerized tomography
+OT  - wavefront set
+EDAT- 2015/05/06 06:00
+MHDA- 2015/05/06 06:01
+PMCR- 2016/06/13
+CRDT- 2015/05/06 06:00
+PHST- 2015/05/06 06:00 [entrez]
+PHST- 2015/05/06 06:00 [pubmed]
+PHST- 2015/05/06 06:01 [medline]
+PHST- 2016/06/13 00:00 [pmc-release]
+AID - rsta.2014.0388 [pii]
+AID - rsta20140388 [pii]
+AID - 10.1098/rsta.2014.0388 [doi]
+PST - ppublish
+SO  - Philos Trans A Math Phys Eng Sci. 2015 Jun 13;373(2043):20140388. doi: 
+      10.1098/rsta.2014.0388.

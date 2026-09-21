@@ -1,0 +1,109 @@
+PMID- 41134563
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20251024
+LR  - 20251027
+IS  - 1526-9914 (Electronic)
+IS  - 1526-9914 (Linking)
+VI  - 26
+IP  - 11
+DP  - 2025 Nov
+TI  - Metal artifact reduction algorithm with conditional latent diffusion model for 
+      dental cone-beam CT.
+PG  - e70317
+LID - 10.1002/acm2.70317 [doi]
+LID - e70317
+AB  - BACKGROUND: Metal artifacts in computed tomography pose great challenges to 
+      diagnosis and treatment planning. Various metal artifact reduction techniques 
+      have been developed tackling the artifacts in the sinogram, projection, and image 
+      domains. PURPOSE: We aimed to reduce the metal artifacts via latent diffusion 
+      network and improve normalized metal artifact reduction (NMAR) scheme with metal 
+      segmentation network and secondary artifact correction network in dental 
+      cone-beam computed tomography (CBCT). METHODS: We first produced a 
+      metal-artifact-reduced image through a latent diffusion model (LDM) with the 
+      metal-artifact-corrupted image as the condition. A combination of mean squared 
+      error (MSE) and learned perceptual image patch similarity (LPIPS) loss were used 
+      as the objective function to train the network. To resolve the concerns of an 
+      image from the generative model such as hallucination, we used the image as a 
+      prior for a modified normalized metal artifact reduction (NMAR) process which is 
+      a well-known analytic scheme. The modified NMAR in this work includes an 
+      automatic metal segmentation network and a secondary artifact correction network 
+      to enhance the MAR performance. RESULTS: The proposed method showed significant 
+      outperformance over the models such as classical NMAR and a state-of-the-art 
+      convolutional-neural-network-based MAR (CNNMAR) approach for CBCT. The major 
+      improvements to metal artifact reduction are attributed to the improved NMAR 
+      prior estimated by the LDM. The proposed method improved the image quality 
+      compared to CNNMAR in terms of RMSE, PSNR, and SSIM from 34.78 × 10(-4) to 
+      19.30 × 10(-4), 49.3-54.3, and 91.2-97.2, respectively. Its clinical dental 
+      implementation was also explored and showcased success in reducing metal 
+      artifacts while preserving other tissue structures. CONCLUSIONS: The proposed 
+      method has shown its practical utility in dental CBCT for reducing metal 
+      artifacts and is believed to contribute to dental diagnosis and treatment.
+CI  - © 2025 The Author(s). Journal of Applied Clinical Medical Physics published by 
+      Wiley Periodicals, LLC on behalf of The American Association of Physicists in 
+      Medicine.
+FAU - Choi, Da-In
+AU  - Choi DI
+AUID- ORCID: 0000-0002-1803-6963
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Yun, Sungho
+AU  - Yun S
+AUID- ORCID: 0009-0002-9551-0822
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Hyun, Subong
+AU  - Hyun S
+AUID- ORCID: 0009-0000-4173-8915
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+FAU - Cho, Seungryong
+AU  - Cho S
+AUID- ORCID: 0000-0002-9409-3628
+AD  - Department of Nuclear and Quantum Engineering, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+AD  - KAIST Institute for Health Science and Technology, Korea Advanced Institute of 
+      Science and Technology (KAIST), Daejeon, South Korea.
+AD  - KAIST Institute for IT Convergence, Korea Advanced Institute of Science and 
+      Technology (KAIST), Daejeon, South Korea.
+LA  - eng
+GR  - NRF-2020R1A2C201195915/National Research Foundation of Korea/
+GR  - RS-2023-00285089/National Research Foundation of Korea/
+GR  - 20014921/Ministry of Science and ICT (MSIT, Korea) & the Ministry of Trade, 
+      Industry and Energy (MOTIE, Korea)/
+PT  - Journal Article
+PL  - United States
+TA  - J Appl Clin Med Phys
+JT  - Journal of applied clinical medical physics
+JID - 101089176
+RN  - 0 (Metals)
+SB  - IM
+MH  - *Cone-Beam Computed Tomography/methods
+MH  - *Artifacts
+MH  - Humans
+MH  - *Algorithms
+MH  - *Metals
+MH  - *Image Processing, Computer-Assisted/methods
+MH  - *Phantoms, Imaging
+PMC - PMC12551599
+OTO - NOTNLM
+OT  - cone‐beam CT
+OT  - latent diffusion model
+OT  - metal artifact
+OT  - metal artifact reduction
+COIS- The authors have no relevant conflicts of interest to disclose.
+EDAT- 2025/10/24 12:29
+MHDA- 2025/10/24 12:30
+PMCR- 2025/10/24
+CRDT- 2025/10/24 11:33
+PHST- 2025/07/23 00:00 [revised]
+PHST- 2025/04/23 00:00 [received]
+PHST- 2025/09/23 00:00 [accepted]
+PHST- 2025/10/24 12:30 [medline]
+PHST- 2025/10/24 12:29 [pubmed]
+PHST- 2025/10/24 11:33 [entrez]
+PHST- 2025/10/24 00:00 [pmc-release]
+AID - ACM270317 [pii]
+AID - 10.1002/acm2.70317 [doi]
+PST - ppublish
+SO  - J Appl Clin Med Phys. 2025 Nov;26(11):e70317. doi: 10.1002/acm2.70317.

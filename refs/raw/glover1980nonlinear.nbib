@@ -1,0 +1,55 @@
+PMID- 7393149
+OWN - NLM
+STAT- MEDLINE
+DCOM- 19800923
+LR  - 20170214
+IS  - 0094-2405 (Print)
+IS  - 0094-2405 (Linking)
+VI  - 7
+IP  - 3
+DP  - 1980 May-Jun
+TI  - Nonlinear partial volume artifacts in x-ray computed tomography.
+PG  - 238-48
+AB  - Dark streaks connecting the petrous bones are often observed in cranial 
+      transverse section CT reconstructions. These artifacts are usually only slightly 
+      diminished by two-pass beam hardening corrections. However, it is found that by 
+      narrowing the slice thickness the artifacts are substantially reduced. In this 
+      paper, it is shown that axial partial volume effects can account for the presence 
+      of the artifacts. These axial partial volume effects occur when, at any point in 
+      the slice, the object has axial variations in attenuation. In such cases the 
+      logarithm of the integrated intensity measured by the detector is not a linear 
+      function of the integrated attenuation (even for monochromatic beams). This 
+      nonlinearity causes inconsistencies in the data set which in turn can cause 
+      streaks in the image. We have studied the partial volume effect using computer 
+      simulation. Algorithms are presented whose purpose is to correct for these 
+      effects by estimating the axial variation using neighboring slices. These 
+      correction algorithms are successful in computer simulation cases but failed with 
+      clinical data. It is concluded that no practical correction method is viable 
+      unless overlap scanning is employed. However, thin-slice scanning for sections 
+      where these artifacts are common is perhaps a more preferable solution.
+FAU - Glover, G H
+AU  - Glover GH
+FAU - Pelc, N J
+AU  - Pelc NJ
+LA  - eng
+PT  - Journal Article
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+SB  - IM
+MH  - Brain/*diagnostic imaging
+MH  - Humans
+MH  - Petrous Bone/diagnostic imaging
+MH  - Radiographic Image Enhancement
+MH  - Scattering, Radiation
+MH  - Tomography, X-Ray Computed/*methods
+EDAT- 1980/05/01 00:00
+MHDA- 1980/05/01 00:01
+CRDT- 1980/05/01 00:00
+PHST- 1980/05/01 00:00 [pubmed]
+PHST- 1980/05/01 00:01 [medline]
+PHST- 1980/05/01 00:00 [entrez]
+AID - 10.1118/1.594678 [doi]
+PST - ppublish
+SO  - Med Phys. 1980 May-Jun;7(3):238-48. doi: 10.1118/1.594678.

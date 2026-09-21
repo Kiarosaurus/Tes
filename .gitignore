@@ -14,6 +14,15 @@ data/*
 *.raw
 *.opdownload
 
+# Empaquetados para subir a Khipu: derivados, pesados y regenerables con un `tar`.
+# `a1b_cache.tgz` son 2.30 GB y un `git add .` lo metio al historial el 2026-09-21
+# (commit cbdaba4, sin pushear): .git paso a 2.2 GB. Un .tgz ya esta comprimido, asi
+# que git no gana nada al guardarlo. Se regeneran desde `experiments/**/outputs/`.
+*.tgz
+*.tar
+*.tar.gz
+*.zip
+
 # ---- Codigo de terceros clonado (se consulta, no se versiona) ----
 # repos/xcist-main y repos/xcist-example, ~528 MB, clonados el 2026-09-20 para P2 (#70)
 # y para las metricas del reto AAPM (_candidatos.md, filas 132-133). Se reclonan con git clone.

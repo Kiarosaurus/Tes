@@ -7097,36 +7097,50 @@ Escrito para una sesion nueva. Detalle de cada una en su entrada; las decisiones
   original las habria forzado a `otro implante`, que es exactamente el error que contamina el entrenamiento.
 - **No aplicado** (regla 14). **Tipo:** DATOS / composicion de la cohorte y particion. **Nivel propuesto: N1.**
 
-### 106 — La arquitectura y el planificador del renderizador ya implementados NO tienen fuente citable en `refs.bib`: faltan DDPM, ADM, el planificador coseno y DDIM — ABIERTA (liga con #74, #100)
+### 106 — Las cuatro fuentes del metodo ya son citables, pero su combinacion exacta no fue validada y no hay evidencia de superioridad frente a DiT — ABIERTA (liga con #74, #100)
 
 - **Origen:** pregunta de la autora (2026-09-20) sobre por que U-Net y no una arquitectura mas nueva. Al verificar
   la bibliografia aparecio el hueco inverso al que se buscaba.
-- **Verificado en `refs.bib`:** **0 entradas** de difusion con transformer (DiT). Pero tambien **0 entradas** de
-  las piezas que `src/renderizador/` **ya implementa**:
-  - **Ho et al. 2020**, DDPM (la formulacion de difusion).
-  - **Nichol y Dhariwal**, planificador **coseno** — que `difusion.py` implementa y **nombra en su docstring**.
-  - **Dhariwal y Nichol**, ADM (la U-Net de difusion condicionada por concatenacion).
-  - **Song et al.**, **DDIM** (el muestreador, 50 pasos, eta = 0).
+- **Actualizacion tras lectura profunda (2026-09-21):** ya estan en `refs.bib`, con raw, clean, PDF y ficha,
+  **Ho et al. 2020** (DDPM) y **Dhariwal y Nichol 2021** (ADM). Tambien entraron seis fuentes para justificar
+  o tensionar la arquitectura: Ronneberger 2015, Liu 2021, Peebles y Xie 2023, Yeap et al. 2025, Zhang et al.
+  2025 (LeFusion) y An et al. 2025.
+- **Cierre bibliografico 2026-09-21:** ya estan tambien en `refs.bib`, con raw, clean, PDF y ficha:
+  - **Nichol y Dhariwal 2021**, fuente primaria del planificador **coseno**: `s = 0.008`, beta recortada a 0.999.
+  - **Song et al. 2021**, fuente primaria de **DDIM**: define el caso determinista eta = 0 y evalua 50 pasos.
+  Con estas dos altas, las cuatro fuentes metodologicas quedan disponibles para citar.
 - **Lo que hoy se cita en `main.tex` para el renderizador** (`rombach2022latentdiffusion`, `zhang2023controlnet`,
   `karageorgos2024ddpm`) **no es fuente de ninguna de las cuatro**: Rombach es latente (y el latente se
   descarto), ControlNet se cayo con el (#74) y Karageorgos es una aplicacion a MAR, no el metodo base.
-- **Por que importa ahora y no al final:** la seccion de Metodos no se puede escribir sin esas cuatro citas, y
-  por la **regla 9** anadir una fuente **empieza por pegar su archivo en `refs/raw/`**, cosa que solo hace la
-  autora. Es trabajo con dependencia externa: conviene abrirlo ya, no la semana de escribir.
-- **Sobre la pregunta original (U-Net frente a DiT), para que quede el razonamiento:** la eleccion se sostiene en
-  (a) entrenamiento **desde cero** con ~7 600-18 000 parches, donde el sesgo inductivo convolucional compensa la
-  falta de datos; (b) **no existe base preentrenada en pixeles de CT** que dé ventaja a un DiT, que es lo mismo
-  que cerro #74; (c) la tarea es inpainting local con `G` ocupando una **mediana del 2.3% del parche** y un borde
-  que debe quedar sin costura, que es justo lo que preservan las conexiones de salto; (d) atencion O(N^2) sobre
-  65 536 pixeles es inviable, por eso la implementacion pone atencion solo en la resolucion mas baja.
-  **NO se comparo DiT contra U-Net**, y las ablaciones estan fuera de alcance (decision 2026-09-17): la eleccion
-  se declara como **razonada y no medida**, que es lo unico defendible.
-- **Opciones:** (a) dar de alta las cuatro fuentes en `refs/raw/` y citarlas en Metodos; (b) citar solo las que
-  se usen literalmente y declarar el resto como implementacion propia (no recomendado: el planificador coseno y
-  DDIM son de otros y hay que atribuirlos).
-- **Recomendacion del asistente:** (a), y ademas **declarar en el texto** que la arquitectura no se comparo con
-  alternativas, como limitacion. Un jurado puede preguntar por que no un DiT; la respuesta razonada existe, pero
-  no debe presentarse como resultado medido.
+- **Que si respalda U-Net:** Ho documenta el backbone U-Net residual con normalizacion por grupos y atencion;
+  ADM conserva esa familia y publica ablaciones arquitectonicas; Yeap prueba viabilidad de una U-Net 2D de
+  difusion para CT con pocos pacientes y condicion concatenada; LeFusion aporta una U-Net 3D para sintesis local
+  en CT, perdida enmascarada y recomposicion con fondo real. Ronneberger solo sustenta el origen del sesgo local y
+  multiescala. Ninguna de estas fuentes estudia sintesis peri-implante pelvica ni compara U-Net contra DiT.
+- **Dos correcciones obligatorias al razonamiento anterior:**
+  1. Peebles y Xie no aplican atencion sobre 65 536 pixeles: DiT tokeniza **parches latentes**. Por tanto, el
+     argumento O(N^2) sobre cada pixel no describe esa alternativa y debe retirarse.
+  2. An et al. compara DiT y U-Net en espacio de pixeles y a FLOPs equivalentes; con 10^3--10^4 imagenes naturales
+     32 x 32 reporta una brecha de PSNR menor para DiT. La localidad ayuda, pero tambien puede incorporarse a DiT.
+     No se transfiere directamente a CT, metal o inpainting, pero invalida afirmar que pocos datos demuestran una
+     ventaja de U-Net.
+- **Razonamiento que queda defendible:** la U-Net es una eleccion **pragmatica y no comparada**, alineada con DDPM,
+  ADM y dos precedentes medicos cercanos, entrenable en el pipeline ya implementado y sin depender del VAE que
+  fracaso en #74. Las conexiones de salto y la localidad son motivaciones arquitectonicas, no garantia de ausencia
+  de costuras; esa propiedad depende de la composicion explicita fuera de `G` y debe evaluarse.
+- **Limite metodologico descubierto al cerrar las fuentes:** los componentes estan respaldados **por separado**,
+  pero la configuracion conjunta de `src/renderizador/difusion.py` no aparece evaluada en ninguno: schedule coseno
+  con T = 1000 + DDIM con subsecuencia lineal, eta = 0 y 50 pasos + U-Net + CT. Song usa T = 1000 y evalua 50
+  pasos, pero no el schedule coseno. Nichol--Dhariwal usa T = 4000 en las ablaciones relevantes; sus 50 *forward
+  passes* corresponden a Improved DDPM con varianza aprendida, no a DDIM eta = 0. Ademas reporta que el stride
+  cuadratico de Song perjudico al combinarse con coseno. La implementacion local usa `torch.linspace`, es decir,
+  una subsecuencia lineal.
+- **Opciones:** (a) citar las cuatro fuentes por cada componente y declarar que la integracion se valida localmente;
+  (b) atribuir la combinacion completa a una sola fuente, lo que seria incorrecto.
+- **Recomendacion del asistente:** (a). Al redactar Metodos, citar Ho/ADM por la familia arquitectonica, Song por
+  DDIM eta = 0 y 50 pasos, Nichol--Dhariwal por la formula coseno, Yeap por CT + pocos pacientes + concatenacion y
+  LeFusion por inpainting local; declarar que no hubo comparacion U-Net--DiT y que la configuracion conjunta es una
+  integracion propia que requiere evaluacion.
 - **No aplicado** (regla 14). **Tipo:** BIBLIOGRAFIA / atribucion de metodo. **Nivel propuesto: N1.**
 
 ### 107 — `main.tex` llama a `karageorgos2024ddpm` "an image-domain diffusion model", pero su DDPM opera en el dominio de SINOGRAMA: la cita que ancla el umbral de 25 HU esta mal caracterizada, y ademas debilita el argumento del Objetivo 3 — ABIERTA (liga con #91, #61, #63)
@@ -7319,3 +7333,506 @@ Escrito para una sesion nueva. Detalle de cada una en su entrada; las decisiones
 - **Lo que NO cambia:** ninguna cifra publicada. Afecta solo a la herramienta de visualizacion A4. El criterio
   espacial de #104/#109 sigue sin implementarse; cuando se implemente usara `mascara_cuerpo()`, que es booleana
   y nunca estuvo afectada por este fallo.
+
+### 110 — La categoria `externo` mezcla dos cosas distintas: accesorios (13) y componentes de FIJADOR EXTERNO (3), y su exclusion necesita justificaciones separadas — ABIERTA (liga con #104, #105, #109)
+
+- **Origen:** la autora pregunto si `CLINIC_metal_0044` y `CLINIC_metal_0013` eran el mismo CT, por lo parecidos
+  que se ven (2026-09-21).
+- **Respuesta a la pregunta, verificada:** **no son el mismo volumen ni el mismo paciente.** `metal_0044` es
+  `Grupo paciente` **P143**, SHA256 `c623c237...`, spacing 0.866 mm; `metal_0013` es **P116**, SHA256
+  `3b82dc1a...`, spacing 0.746 mm. El sistema de duplicados **si funciono**: `metal_0013` esta agrupado con
+  `metal_0043` (mismo SHA256, mismo P116). **La regla de aislamiento no esta comprometida.**
+- **Por que se parecen:** los dos llevan **fijador externo pelvico**. Las notas de `revision.csv` describen en
+  ambos "bloques externos", "vastagos rectilineos entrando en las crestas iliacas" y "montaje bilateral". Es el
+  mismo tipo de dispositivo en pacientes distintos. Detalle consistente con herraje de catalogo: los dos
+  componentes muestreados de esos casos miden **largo 46.7 mm** por PCA.
+- **Hallazgo que abre esta entrada:** de los **16** componentes que la autora marco `externo`, **13** vienen de
+  casos **sin** material ortopedico (accesorios, electrodos, cremalleras, botones) y **3** vienen de casos
+  **con** material ortopedico: son piezas de **fijador externo**. No son lo mismo:
+  - un accesorio o electrodo **no es material quirurgico**: es ruido y se descarta sin mas;
+  - un fijador externo **si es material quirurgico deliberado**, produce artefacto real y su apariencia es
+    senal legitima; se descarta porque su **geometria no se parece a un tornillo** y esta **fuera del hueso**,
+    no porque sea espurio.
+- **Consecuencia para el criterio de #109:** la regla "dentro del cuerpo" excluye a los dos, lo cual es correcto
+  para sintetizar tornillos iliosacros, pero **la justificacion escrita debe separarlos**. Si no, el documento
+  dira que se descarto material quirurgico real por "no estar dentro del cuerpo" sin explicar que ademas su
+  geometria es ajena al objeto de sintesis.
+- **Consecuencia para la planilla:** conviene una columna de **procedencia** (el `Tipo de estructura observada`
+  de `revision.csv`) que permita separar `externo`-accesorio de `externo`-fijador **sin** que nadie tenga que
+  reinterpretar los veredictos ya escritos. Es dato, no juicio.
+- **Estado de la revision al 2026-09-21:** 40/40 veredictos llenos; acuerdo exacto con `propuesta_auto`
+  **16/40 = 40%**; distribucion: externo 16, otro implante 9, fragmento 8, tornillo 5, diu 1, dudoso 1.
+- **No aplicado** (regla 14). **Tipo:** DATOS / taxonomia de exclusion. **Nivel propuesto: N2.**
+
+### 106 (duplicada) — RETIRADA el 2026-09-21 por orden de la autora
+
+- **Que habia aqui:** una segunda entrada #106, escrita por el asistente, que declaraba la implicancia
+  **CERRADA** al comprobar que las cuatro fuentes del metodo ya estaban en `refs.bib`.
+- **Por que se retira y no se renumera:** sus afirmaciones centrales **ya estaban refutadas** por la #106
+  vigente (mas arriba en este archivo), que la autora actualizo tras lectura profunda. En concreto:
+  (a) el argumento de que un DiT exigiria atencion sobre 65 536 pixeles es **falso** —Peebles y Xie
+  tokenizan **parches latentes**—; y (b) la afirmacion de que con pocos datos la U-Net gana por sesgo
+  inductivo la **contradice An et al. 2025**, que a FLOPs equivalentes reporta brecha de PSNR menor para
+  DiT. Renumerarla habria dejado en el archivo critico un texto con afirmaciones falsas, citable por error.
+- **Causa del duplicado, que es lo que vale la pena conservar:** el asistente **no releyo la entrada #106
+  existente antes de escribir**. Verifico `refs.bib`, vio las claves y apendo una entrada nueva con el mismo
+  numero. Es el mismo modo de fallo de #107 y del `level=None` de `marching_cubes`: **afirmar sin verificar
+  el estado actual del artefacto que se esta modificando**. Antes de escribir sobre una implicancia
+  existente, hay que leerla.
+- **Lo unico sustantivo que aportaba, y que ya consta en la #106 vigente:** el cierre bibliografico del
+  2026-09-21 (DDPM, ADM, coseno y DDIM disponibles para citar).
+- **Consecuencia para la redaccion:** la justificacion de la U-Net que vaya a Metodos es la de la #106
+  vigente —**eleccion pragmatica y no comparada**, con la integracion declarada como propia y pendiente de
+  evaluacion—, **no** el argumento del sesgo inductivo con pocos datos.
+
+### 110 — ACTUALIZACION (2026-09-21): la anotacion de `revision.csv` es de CASO y solo vale en una direccion; verificado contra los 40 veredictos
+
+- **Objecion de la autora:** al distinguir por componente, `tipo_caso_revision` "no es del todo cierta". **Es
+  correcta**, y la asimetria quedo medida.
+- **Verificacion contra los 40 veredictos de la autora:**
+
+| | Veredictos observados |
+|---|---|
+| `CASO_tiene_ortopedico = no` (13 comp.) | **externo 13, y nada mas** |
+| `CASO_tiene_ortopedico = si` (27 comp.) | otro implante 9, fragmento 8, tornillo 5, **externo 3**, diu 1, dudoso 1 |
+
+- **Contradicciones en la direccion fuerte: 0.** Ningun componente de un caso sin material ortopedico fue
+  juzgado implante.
+- **Regla de uso, asimetrica y por logica (no por correlacion):**
+  - **`no` CONCLUYE a nivel de componente:** si el caso no tiene material ortopedico, **ningun** componente suyo
+    puede ser un implante. La implicacion baja de caso a componente sin perdida. Sirve para **excluir el caso
+    entero** y ya cubre 13 de los 16 `externo`.
+  - **`si` NO CONCLUYE nada del componente:** que el paciente lleve osteosintesis no implica que *este* objeto
+    lo sea. Prueba: 4 componentes en casos con ortopedico resultaron `externo` (3 piezas de fijador, en
+    `metal_0027` y `metal_0045`) o `diu` (`metal_0062`). Ahi decide la **geometria**.
+- **Encaje con el criterio de #109:** la regla 4 (excluir casos sin ortopedico) usa **solo** la direccion
+  valida; las reglas 1 (dentro del cuerpo) y 2 (forma por PCA) hacen el trabajo dentro de los casos que si
+  tienen material.
+- **Salvedad a declarar:** en `dataset7` el valor "material ortopedico" proviene de una **regla de la autora**
+  ("fila en blanco en dataset7 = hay material ortopedico"), no de inspeccion objeto por objeto. No afecta a la
+  direccion `no`, porque esos 13 componentes estan en casos `dataset6` con tipo explicito (electrodo, zipper,
+  DIU), pero si limita cualquier uso de la direccion `si`.
+- **Columnas renombradas** a `CASO_tipo_revision` y `CASO_tiene_ortopedico`: el prefijo avisa de que el ambito es
+  el caso y no el componente. Verificado que ningun veredicto cambio.
+
+### 109 — REEVALUACION (2026-09-21): el criterio de FORMA y el umbral de VOLUMEN quedan descartados como filtros de entrenamiento; el criterio correcto es "¿este ejemplo ensena algo que en sintesis sera falso?"
+
+- **Origen:** la autora pidio reevaluar si las cuatro reglas propuestas eran la direccion correcta. Al hacerlo,
+  el asistente **descarta dos de sus propias recomendaciones**.
+- **Error de planteamiento:** las reglas de forma (PCA tipo tornillo) y de volumen (>= 200 mm3) optimizaban para
+  *"se parece a un tornillo"*. Pero el renderizador no aprende tornillos: aprende **la relacion entre una
+  mascara de metal y el artefacto que produce**, que es fisica (atenuacion y geometria) y **no depende de si el
+  objeto es tornillo, placa o fragmento**. Filtrar por forma tira datos que ensenan justo lo que se quiere
+  aprender: en la muestra revisada solo **5 de 40** componentes son tornillos.
+- **Ademas, la forma no arregla #95.** La brecha entre mascara real umbralizada y mascara parametrica no se
+  cierra descartando componentes: el modelo condiciona en la mascara que se le da. Corresponde **declarar y
+  reportar** la distribucion de formas y tamanos, no tirar datos.
+- **Criterio correcto, que sustituye al anterior:** no *"¿esto es un tornillo?"* sino **"¿este ejemplo ensena
+  algo que en sintesis sera falso?"**. Aplicado:
+
+| Exclusion candidata | ¿Ensena algo falso? | Decision |
+|---|---|---|
+| Metal **fuera del cuerpo** | Si: contexto aire/piel, cuando en sintesis el tornillo va en hueso | **Excluir** |
+| Parches **sin metal** (42.5%, #104) | Si: ensena "rellenar banda vacia"; en sintesis toda `G` tiene metal | **Excluir o acotar** |
+| Casos **sin material ortopedico** (#105) | Si: no hay nada que aprender | **Excluir** |
+| **Fragmentos** | No: metal real en hueso con artefacto real | **Conservar y reportar** |
+| **Placas y protesis** | No: artefacto real; amplian el rango mascara -> artefacto | **Conservar y reportar** |
+
+- **Reglas revisadas:** **R1** dentro del cuerpo; **R2** excluir casos sin material ortopedico (direccion `no`,
+  validada en #110); **R3** el parche debe contener metal del componente objetivo, con proporcion declarada de
+  parches de solo banda (no cero: la banda mas alla de la punta es real); **R4** tamano y forma como variables
+  de **ESTRATIFICACION Y REPORTE**, no de exclusion.
+- **Medido sobre los 21 754 parches de entrenamiento de A1b:**
+
+| Criterio | Parches | Componentes | Casos |
+|---|---|---|---|
+| R2 sola | 17 170 | 241 | 47 |
+| **R2 + R3** | **10 586** | **241** | **47** |
+| R2 + R3 + volumen >= 200 mm3 | 10 160 | 172 | 47 |
+| R2 + R3 + sin metal ajeno | 6 478 | 162 | 47 |
+
+- **El dato que cierra el caso del umbral de volumen:** quita solo el **4%** de los parches pero elimina
+  **69 componentes (29%)**. Descarta variedad de formas sin ganar tamano de conjunto. **Queda descartado.**
+- **La forma por PCA vuelve a su proposito legitimo:** fue el filtro de **E11** para *medir* el diametro del
+  tornillo, y ahi sigue siendo valido. No es un filtro de entrenamiento.
+- **Direcciones alternativas evaluadas y descartadas, declaradas:** (a) **condicionar el modelo con descriptores
+  del componente** (volumen, elongacion) en vez de filtrar — mas elegante, pero anade maquinaria y una via de
+  fallo nueva a un modelo aun no entrenado, con el computo sin medir (#89); (b) **entrenar con todo y afinar
+  luego sobre el subconjunto tipo tornillo** — duplica el gasto de GPU; queda como extension natural **si** el
+  piloto sale barato.
+- **Recomendacion final del asistente:** **R2 + R3** como exclusiones (10 586 parches, 241 componentes, 47
+  casos), **R1** como refinamiento dentro de eso, **R4** solo como reporte.
+- **No aplicado** (regla 14). **Tipo:** METODO / composicion del conjunto. **Nivel propuesto: N1.**
+
+### 111 — La fragmentacion del umbral (E8: 9 de 57) se agrava con D2: un implante fisico puede dar VARIAS unidades de entrenamiento con mascara parcial — ABIERTA (agrava #95; liga con #46, #101, #102)
+
+- **Origen:** observacion de la autora al terminar la revision (2026-09-21): *"hay metal que es ortopedico que no
+  estamos considerando (tal vez por la forma)"*, y que reconoce piezas de tornillo etiquetadas como otro metal.
+- **Evidencia previa del proyecto:** E8 midio que **a 2500 HU los tornillos salen fragmentados en 9 de 57**
+  (#46), con `d_ext_semimax` de mediana 5.08 mm. Ya esta citado en `main.tex` dentro de C1.
+- **Lo que cambia con D2, y no estaba declarado:** cuando la unidad era el **corte**, un tornillo partido seguia
+  dentro de la misma `G` y el modelo veia la mascara completa aunque tuviera huecos. Con extraccion **por
+  componente** (#102), **un tornillo fragmentado se vuelve varias unidades de entrenamiento**, cada una con
+  mascara parcial. El modelo aprende "esta astilla produce este artefacto" cuando el artefacto lo produce el
+  tornillo entero; en sintesis se coloca **un cilindro solido**. Es #95 **agravada por D2**.
+- **Donde NO cuesta:** en el conjunto de entrenamiento. R1-R4 (#109 reevaluada) **no filtran por tipo ni forma**,
+  asi que un fragmento entra igual. El error de etiqueta es la parte barata; la cara es la fragmentacion fisica
+  de la mascara, que **no se arregla etiquetando mejor**.
+- **Donde SI cuesta, y hay que declararlo:**
+  1. **E11 esta sesgado.** Su filtro exige **largo >= 30 mm**; un tornillo partido en tres da piezas de ~20 mm
+     que **quedan fuera de la medicion**. El `d_centro` de **4.91 mm** se midio sobre los tornillos que
+     sobrevivieron **enteros** al umbral: esta sesgado hacia los mejor segmentados. **No invalida la cifra**
+     (coincide con catalogo 4.8 mm y E8 5.00 mm por vias independientes), pero **la salvedad falta** en
+     `e11_perfil_axial.md` y en #101.
+  2. **Reportar la mezcla (R4).** Sin tipo anotado no se puede decir "N tornillos y M placas"; se reporta por
+     **volumen y elongacion**, y se declara que el tipo no esta anotado, como ya hace `main.tex:111`.
+- **Lo que NO se recomienda:** perseguir la clasificacion perfecta. Llevaria a segmentacion manual de los 363
+  componentes, que es justo el trabajo que #109 concluyo que no corresponde.
+- **Medicion propia pendiente, opcional y barata:** cuantos componentes se unirian con **semimaximo local**
+  (propuesta abierta de #22/#46), para tener una cifra de fragmentacion **sobre esta cohorte** en vez de heredar
+  el 9/57 de E8. **Aviso metodologico:** el asistente intento estimarlo con **cierre morfologico** y el metodo
+  **NO sirve** — unia componentes en unos casos y los separaba en otros (hasta -67%). No usar esa via.
+- **No aplicado** (regla 14). **Tipo:** DATOS / mascara de entrenamiento. **Nivel propuesto: N1.**
+
+### 112 — La proporcion de parches "solo banda" NO se elige: se calcula del corredor medido, y da 1.40, no el 0.5 que propuso el asistente — ABIERTA (fija un parametro de R3, #109; liga con #104, #57)
+
+- **Pregunta de la autora (2026-09-21):** si hay fuente para `--dentro-min 0.5` y `--ratio-banda 0.5`, o si son
+  razonables con los datos propios.
+- **Para `ratio-banda` no hace falta fuente ni eleccion: es geometria ya medida.** La proporcion correcta es la
+  que tendra el **caso de sintesis**, y el eje del corredor esta en `experiments/objetivo2/e9ts_corredor.csv`
+  (E9-TS). Para un cilindro de diametro `d` y largo `L` sobre el eje unitario `u`, su extension axial es
+  `L*|u_z| + d*sqrt(1-u_z^2)`, y la banda anade `2*delta` con `delta = 12 mm`:
+
+  `ratio = 2*delta / (L*|u_z| + d*sqrt(1-u_z^2))`
+
+- **Medido sobre 908 corredores viables (`D_TS >= 10 mm`), con `d = 4.9 mm` (E11):**
+
+| Magnitud | mediana | p10 | p90 |
+|---|---|---|---|
+| `|u_z|` (inclinacion fuera del plano axial) | **0.087** | 0.000 | 0.174 |
+| Extension axial del cilindro (mm) | **17.1** | 4.9 | 30.0 |
+| **Ratio banda-sola / con-metal** | **1.40** | 0.80 | 4.90 |
+
+- **Robusto al diametro supuesto**, que es la magnitud con mas discusion en el proyecto (#97, #99, #101):
+  ratio mediana **1.40** con 4.9 mm, 1.40 con 5.0, **1.23** con 7.3 y **1.19** con 8.0. La eleccion de geometria
+  no lo mueve.
+- **Interpretacion:** el tornillo transacro corre **casi en el plano axial** (`|u_z|` ~ 0.09), asi que aparece en
+  pocos cortes axiales mientras `B_delta` anade 12 mm por cada extremo. Es el caso extremo de "poco metal por
+  corte, mucha banda".
+- **Dos correcciones que salen de aqui:**
+  1. **El 0.5 propuesto por el asistente era casi tres veces demasiado bajo.** Queda **descartado**.
+  2. **El conjunto de entrenamiento tambien se queda corto**: en A1b los parches sin metal dan ratio **0.74**,
+     frente al **1.40** que producira la sintesis. Tiene sentido —placas y protesis tienen extension axial
+     grande y diluyen—, pero es una **diferencia de distribucion entre entrenamiento y uso** que hay que
+     declarar, y que R3 puede corregir deliberadamente al fijar el ratio.
+- **Valor recomendado: `--ratio-banda 1.4`**, justificado con medicion propia sobre 908 corredores y con la
+  sensibilidad al diametro declarada. **No requiere fuente externa.**
+- **Para `--dentro-min` el argumento es OTRO y sigue pendiente:** no existe ni cabe esperar una fuente sobre
+  "que fraccion de un implante debe estar dentro del cuerpo". El precedente correcto del proyecto es
+  **justificar por invariancia**, como se hizo con `F = 0.001` (decision 2026-09-14 (5), justificada por la
+  invarianza de `D_TS`). Si `frac_dentro` resulta **bimodal** (tornillo ~1.0, electrodo ~0.0), cualquier umbral
+  entre 0.2 y 0.8 da el mismo resultado y el valor deja de ser una eleccion. **Si NO es bimodal, hay una
+  decision real que tomar y se declarara como tal.** Se mide con `a5_acuerdo.csv`, en curso.
+- **No aplicado** (regla 14). **Tipo:** METODO / parametro con justificacion propia. **Nivel propuesto: N1.**
+
+### 112 — ACTUALIZACION (2026-09-21): el ratio 1.40 NO es alcanzable con los parches existentes; el maximo es 0.62
+
+- **Medido tras R2 (casos con material ortopedico), particion train:** **10 586** parches con metal del
+  componente y **6 584** de solo banda. **Ratio maximo alcanzable = 0.62.** Para 1.40 harian falta 14 820 de
+  banda: **faltan 8 236**.
+- **Es decir: el parametro justificado con medicion propia no se puede cumplir con los datos extraidos.** Queda
+  registrado asi, sin maquillarlo.
+- **Opciones:**
+  - **(a)** Usar **todos** los parches de banda disponibles (ratio **0.62**) y **declarar la brecha** frente al
+    1.40 que producira la sintesis. Coste cero.
+  - **(b)** **Extraer mas parches de banda** bajando `MIN_VOX_G` (hoy 50 voxeles de `G` para que un corte
+    cuente), lo que admitiria cortes de banda fina en los extremos del implante. **Exige recorrer A1b otra vez**
+    (~2 h de CPU, reanudable).
+  - **(c)** Recortar parches con metal hasta alcanzar 1.40. **Descartada:** tirar ~6 000 parches buenos para
+    igualar una proporcion repite el error del umbral de 200 mm3 (#109).
+- **Recomendacion del asistente:** **(a) ahora**, y **(b) solo si el piloto muestra problema de costura en el
+  borde de `B_delta`** (bloque E-A2 de `diseno_A.md`). La brecha 0.62 frente a 1.40 se declara como limitacion
+  del conjunto, junto a la diferencia 0.74 (A1b crudo) ya registrada.
+- **Nota de infraestructura, relevante para el plan:** cambiar `ratio-banda` o `dentro-min` **no exige reextraer
+  nada**. El cache de A1b guarda todos los parches y el criterio se aplica al construir el `Dataset`, por
+  diseno. Solo la opcion (b) obligaria a recorrer A1b.
+
+### 109 — RESULTADO DE R1-R3 (2026-09-21): el criterio de inclusion acierta 36 de 39, con recall 100%, y `dentro-min` queda justificado por INVARIANCIA
+
+- **Medido con `a5_criterio_inclusion.py` sobre las mismas 40 laminas ya revisadas** (regla fijada de antemano
+  en #104: no se genera muestra nueva). 1 `dudoso` excluido del calculo, no forzado.
+
+| | Criterio anterior (#104) | **R1 + R2** |
+|---|---|---|
+| Que mide | acierto de **tipo** | **incluir / excluir** |
+| Acuerdo | 16/40 = **40%** | **36/39 = 92%** |
+| Precision / recall | — | **88% / 100%** |
+
+- **Recall 100%:** ningun componente que la autora juzgo implante fue excluido. Los 3 errores son falsos
+  positivos, la direccion barata.
+- **Las dos reglas se reparten el trabajo:** de los 14 aciertos de exclusion, **7 los caza R1** (fuera del
+  cuerpo) y **7 los caza R2** (caso sin ortopedico). Ninguna es redundante.
+- **`--dentro-min` NO necesita fuente ni eleccion: es invariante.** `frac_dentro` resulta **perfectamente
+  bimodal** — vale **0.000 o 1.000, nunca un valor intermedio** (n=22 "debe entrar", todos 1.000; n=17 "debe
+  salir", mediana 1.000 por los falsos positivos pero minimo 0.000). Barrido de **0.05 a 0.95**: exactitud
+  **92% en todos los umbrales**, con TP/FP/TN/FN identicos. Es el mismo argumento con que el proyecto justifico
+  **`F = 0.001`** (decision 2026-09-14 (5), invarianza de `D_TS`). **Queda cerrado sin fuente externa.**
+- **Los 3 falsos positivos, identificados y explicables:** `metal_0045` comp 0 (162.2 mm3) y comp 1 (21.8 mm3),
+  marcados `externo` por la autora pero **dentro del cuerpo** (previsiblemente los tornillos del fijador, que
+  atraviesan piel y entran en hueso); y `metal_0062` comp 2 (267.6 mm3), **DIU**: interno y deliberado, pero no
+  osteosintesis. **Ninguna regla geometrica los separa**: requieren criterio humano. Se declara.
+
+### 112 — ACTUALIZACION (2026-09-21): la opcion (b) interactua con la normalizacion de la perdida, y hoy seria PERJUDICIAL
+
+- **Pregunta de la autora:** si (b) —bajar `MIN_VOX_G` para extraer mas parches de solo banda— no seria mejor
+  opcion.
+- **Hallazgo no registrado hasta ahora.** `difusion.perdida()` normaliza **por imagen**:
+  `err.sum(dim=(1,2,3)) / (n * canales)` con `n = |G|`, y luego promedia el lote. Es decir **cada parche pesa
+  igual, sin importar el tamano de `G`** — puesto a proposito para que las protesis grandes no dominen (riesgo 3
+  de `diseno_A.md`).
+- **Consecuencia:** (b) admitiria miles de parches con `G` **menor de 50 voxeles** (< 0.08% de un parche de
+  256x256), y **cada uno pesaria lo mismo que uno con un tornillo entero**. El gradiente lo dominarian parches
+  casi sin informacion. **(b) no es solo mas lenta: hoy seria perjudicial.**
+- **Recomendacion revisada:** **(a) ahora**. Si tras el piloto la **costura** en el borde de `B_delta` (salto de
+  HU al cruzar el borde de `G`, metrica del bloque E-A2) resulta un problema, entonces **(b) junto con cambiar
+  la normalizacion a peso proporcional a `|G|`** — una linea. Hacer (b) sin ese cambio es arreglar un
+  desbalance creando otro.
+- **Lo que esto anade al registro:** la composicion del conjunto y la funcion de perdida **no son decisiones
+  independientes**. Cualquier cambio futuro en el ratio de banda debe revisar la normalizacion, y viceversa.
+
+### 57 — ACTUALIZACION (2026-09-21): Selles 2023 y Park 2015 confirman artefacto fuera de `M`, pero ninguno calibra `B_delta`
+
+- **Selles 2023** es evidencia clinica en la anatomia mas cercana disponible: compara HU en hueso y musculo
+  ipsilateral y contralateral alrededor de implantes de fusion sacroiliaca. Esto refuerza que el efecto relevante
+  no se limita a la mascara del metal. Sin embargo, sus ROI no se definen por distancia al implante y el paper no
+  publica perfiles radiales, una distancia maxima ni un ancho de banda.
+- **Park 2015** aporta el fundamento fisico-matematico: el beam hardening produce cupping dentro del objeto y
+  streaking fuera de el, con dependencia de la geometria y disposicion de los objetos. Su modelo 2D tampoco
+  define un radio finito ni una distancia en milimetros.
+- **Consecuencia:** ambas fuentes respaldan la **direccion** de `G = M u B_delta`, pero **no justifican
+  `delta = 12 mm`**. Ese valor conserva su estatus de construccion metodologica/hiperparametro local y debe
+  validarse mediante la sensibilidad ya prevista. La medicion contralateral de Selles tampoco implica que una
+  banda local capture todo el campo: `B_delta` es una delimitacion deliberada del objetivo, no la extension
+  fisica total del artefacto.
+- **Estado:** ABIERTA en cuanto al ancho; evidencia externa reforzada para la necesidad de salir de `M`.
+
+### 113 — Zwingmann 2010 no puede entrar todavia al benchmark SAP: publica un grado 4 sin definir y puede solaparse con la cohorte 2009 — ABIERTA
+
+- **Hallazgo primario:** Metodos define cuatro grados, `0`, `1`, `2` y `3`, pero la Tabla 1 publica cinco
+  categorias. La distribucion navegada es **81/11/3/5%** para grados 0-3; la convencional es
+  **42/22/21/13/2%** para grados 0-4. El paper no define el grado 4.
+- **Segundo riesgo:** es una cohorte secuencial/historica del mismo grupo y no hay informacion suficiente para
+  demostrar o descartar solapamiento con `zwingmann2009navigated`. Tratar ambas distribuciones como observaciones
+  independientes podria duplicar pacientes.
+- **Opciones:** (a) excluir Zwingmann 2010 del benchmark principal; (b) obtener de los autores la definicion del
+  grado 4 y la relacion entre cohortes; (c) hacer una sensibilidad que agrupe el grado 4 con `>4 mm`, dejando
+  claro que esa agrupacion es una suposicion externa y no una definicion del paper.
+- **Recomendacion:** **(a)**. Conservar la fuente como evidencia descriptiva y no modificar el prior SAP hasta
+  resolver ambas ambiguedades. **Tipo:** BENCHMARK / validez de la distribucion ordinal. **Nivel: N1.**
+
+## Ronda 2026-09-21 (cierre) — ENCARGO PARA EL SIGUIENTE AGENTE
+
+Escrito para una sesion nueva sin historial. Leer tambien `docs/ESTADO.md` (regla 11) y la entrada
+**2026-09-21** de `01-decisiones.md`, que congela el conjunto de entrenamiento.
+
+### Tarea 1 — Analizar el piloto de Khipu (job 52074)
+
+Es lo primero. Salidas en `~/metalsynth/data/a2/<etiqueta>/`: `curva.csv`, `entrenar_meta.json`, `ckpt.pt`.
+Comandos de bajada en `KHIPU.md`, seccion **A2**.
+
+- **CONTROL QUE PUEDE FALLAR, mirarlo antes que nada:** el log debe decir **`parches: 17149`** y
+  **`casos: 47`**. Si dice 21 754 / 72, **el manifiesto no se aplico** y esa corrida **no** es la
+  preinscrita: hay que relanzarla, no reinterpretarla.
+- Los tres controles deben aparecer antes del paso 1: identidad de ventanas (1.27e-11 HU), aislamiento
+  (0 de 34 casos de test) y perdida solo en `G` (G vacia -> 0.0).
+- Debe aparecer el aviso **`corrida NO preinscrita`**: es piloto de medicion, no resultado de tesis.
+- **Que se extrae:** `s_por_paso` del **ultimo** tramo de `curva.csv` (los primeros pasos incluyen carga)
+  y `gb_max`. Presupuesto = `s_por_paso x pasos / 3600`. **La perdida de 200 pasos no significa nada.**
+- **Con eso se cierra #89**, que es el encargo pendiente del asesor. Si `gb_max` pasa de ~40 GB o la
+  extrapolacion da mas de ~20 h por corrida, la respuesta correcta **no** es lanzarla igual: es bajar
+  `--base` o `--lote` y dejar escrito por que.
+
+### Tarea 2 — Leer las fichas nuevas y medir su impacto (regla 13)
+
+Hay **14 fichas nuevas sin procesar** en `docs/literatura/`, subidas por la autora. **No releer los PDF**
+(regla 10: toda lectura va por `lector-papers`); aqui basta con leer las fichas y evaluar impacto:
+
+| Ficha | Por que importa |
+|---|---|
+| `lugmayr2022repaint` | **Prioridad 1.** RePaint es inpainting con difusion: es el metodo del Diseno A. Puede ser mejor referente que CLAIM o LeFusion, y puede aportar tecnica de muestreo (resampling) que hoy no se usa |
+| `zhang2025lefusion` | Sintesis controlada por mascara enfocada en lesion; candidata a referente principal |
+| `ho2020denoising`, `dhariwal2021diffusion`, `nichol2021improved`, `song2021ddim` | Las cuatro piezas que `src/renderizador/` implementa. Hay que **citarlas en Metodos** |
+| `peebles2023scalablediffusion`, `an2025generalization`, `liu2021efficienttraining` | Sostienen el argumento U-Net frente a DiT (#106, #109), que hasta ahora era razonamiento sin fuente |
+| `ronnenberger2015unet` | U-Net original |
+| `yeap2025fewshots` | DDPM para CT sintetica con pocos datos: pertinente al regimen de esta tesis |
+| `choi2025mar`, `selles2023ai`, `park2015ct`, `zwingmann2010percutaneous` | Sin evaluar por este asistente |
+
+**Para cada una:** ¿obliga a ajustar redaccion, alcance, un supuesto, un baseline, o abre un gap? Si si,
+entrada nueva aqui; si no, decirlo explicitamente en el chat (regla 13).
+
+### Tarea 3 — Resolver la contradiccion de #106
+
+**Hay DOS entradas #106 incompatibles**: una ABIERTA escrita por la autora (*"las cuatro fuentes ya son
+citables, pero su combinacion exacta no fue validada y no hay evidencia de superioridad frente a DiT"*) y
+una CERRADA escrita por el asistente. **La de la autora plantea un estandar mas alto y deberia prevalecer.**
+Decidir cual queda, renumerar la otra, y dejar el archivo sin contradiccion. Es el archivo critico
+irreemplazable (regla 17).
+
+### Estado de `main.tex` al cierre
+
+**Editado el 2026-09-21 por orden explicita de la autora.** Compila **0 errores, 0 citas indefinidas,
+7 paginas, 110 referencias**. Cambios:
+- **#107 APLICADA:** *"an image-domain diffusion model"* -> *"a sinogram-domain diffusion model evaluated
+  in image space"* para `karageorgos2024ddpm`. Era un error factual: su DDPM opera en sinograma.
+- **Objetivo 3 puesto al dia** con lo decidido el 2026-09-21: unidad de entrenamiento = **componente**, no
+  corte; criterio de inclusion fijado antes de entrenar; tamano y forma **se reportan, no filtran**.
+- **De dos desplazamientos de dominio declarados se pasa a TRES**: se anade el de la proporcion de parches
+  de solo banda (0.62 extraido frente a 1.40 que predice la geometria del corredor, #112).
+
+**Lo que `main.tex` todavia NO dice, y alguien tiene que escribir:**
+- La **arquitectura** (U-Net tipo DDPM/ADM, planificador coseno, muestreo DDIM, ~28 M parametros) y su
+  atribucion a las cuatro fuentes nuevas. Es la seccion de Metodos, y ya no hay excusa bibliografica.
+- Que la eleccion de U-Net **no se comparo** con alternativas: limitacion a declarar (#106, #109).
+- **#108 sin aplicar:** la Tabla III de `karageorgos2024ddpm` respalda la direccion de `B_delta`
+  (mascara ensanchada RMSE ~11.5; reducida 54.8 y 57.7). Es el apoyo mas fuerte disponible para la
+  decision con menos respaldo externo del diseno.
+
+### Implicancias ABIERTAS que bloquean, por gravedad
+
+1. **#105** — **2 de los 5 casos de validacion no tienen ningun implante**. Validacion es donde D4 manda
+   medir el margen `Delta`. **Bloquea la evaluacion**, y rehacer la particion toca la *Strict Isolation
+   Rule* (`main.tex:111`) y la semilla 20260917 de P1.
+2. **#111** — la fragmentacion del umbral se agrava con la unidad por componente; el sesgo de E11 ya esta
+   declarado en `e11_perfil_axial.md`, falta decidir si se mide.
+3. **#112** — si el piloto muestra problema de **costura** en el borde de `B_delta`, la opcion de extraer
+   mas parches de banda **exige ademas** cambiar la normalizacion de la perdida a peso proporcional a
+   `|G|`. Las dos cosas juntas o ninguna.
+4. **#108**, **#106** (contradiccion), y la evaluacion **E-A1..E-A4**, que **sigue sin una sola linea de
+   codigo**.
+
+### 105 — REEVALUACION Y APLICACION (2026-09-21): no hacia falta rehacer la particion; bastaba aplicar R2 tambien a validacion
+
+- **La recomendacion anterior del asistente era desproporcionada y partia de un dato incompleto.** Decia
+  "rehacer la particion de validacion", lo que tocaba la *Strict Isolation Rule* (`main.tex:111`) y la semilla
+  20260917 de P1 —la misma sobre la que descansa el resultado No-Go del Objetivo 1 (#91)—. **Nada de eso era
+  necesario.**
+- **Dato que faltaba:** la particion `val` tiene **8 casos**, no 5. Los 5 eran los que tienen metal, que es lo
+  unico que A1b procesa. Desglose real:
+
+| Casos | Cuales | Para que sirven |
+|---|---|---|
+| **3 con material ortopedico** | `metal_0011`, `metal_0039`, `metal_0056` | validacion de reconstruccion |
+| **2 con metal NO ortopedico** | `CLINIC_0019` (accesorio), `CLINIC_0102` (cremallera) | **nada**: no hay implante que generar |
+| **3 sin metal** | `CLINIC_0046`, `CLINIC_0066`, `CLINIC_0101` | analogo de sintesis (E-A2): paciente limpio |
+
+- **Los 3 sin metal NO son un problema**, al contrario: son exactamente el caso de uso de sintesis. El problema
+  se reduce a **2 casos**.
+- **Solucion aplicada: aplicar R2 tambien a `val`.** No es una decision nueva —es aplicar con consistencia el
+  criterio ya preinscrito el 2026-09-21—, y **no toca la particion, ni la semilla, ni test**. Ventaja decisiva
+  frente a re-particionar: **cero seleccion post hoc**, porque no se elige que casos entran, solo se aplica una
+  regla escrita de antemano.
+- **Resultado medido:** `val` pasa de 1 304 a **896 parches** (553 con metal, 343 banda) en **3 casos con
+  implante real**, de los 5 con metal. Manifiesto versionado: `experiments/objetivo3/a5_manifiesto_val.csv`.
+  `a5_criterio_inclusion.py` genera ahora los dos manifiestos con el mismo codigo.
+- **Limitacion que hay que declarar, y es real:** el margen `Delta` de D4 se medira sobre **3 pacientes**. Es
+  poco. Mitiga en parte que `Delta` mide variabilidad **intra-metodo** (semillas DDIM sobre el mismo caso, mas
+  test-retest del brazo fisico), asi que el n efectivo es 3 casos x k semillas y no 3 observaciones. **Aun asi
+  es fino, y el informe debe decirlo**, no presentar un `Delta` de 3 pacientes como si fuera robusto.
+- **Alternativa descartada y por que:** mover casos de `train` a `val` para volver a 5 mantendria la isolation
+  rule (no repite paciente entre particiones) pero **obliga a elegir cuales**, y elegir despues de ver los
+  datos es seleccion post hoc. No compensa por dos pacientes.
+- **Estado: RESUELTA en lo que bloqueaba.** Queda abierta la declaracion de la limitacion de n = 3 en el
+  documento, que es de redaccion y no de metodo.
+
+## Ronda 2026-09-21 (cierre 2) — ENCARGO ACTUALIZADO PARA EL SIGUIENTE AGENTE
+
+**Sustituye al encargo anterior de esta misma fecha.** Leer antes `docs/ESTADO.md` (regla 11) y las dos
+entradas **2026-09-21** de `01-decisiones.md`.
+
+### Cambios desde el encargo anterior
+
+- **#105 RESUELTA.** No hizo falta rehacer la particion: basto aplicar **R2 tambien a `val`**. `val` queda en
+  **896 parches / 3 casos con implante real**; manifiesto `a5_manifiesto_val.csv`. **`Delta` se medira sobre
+  n = 3 pacientes**, limitacion a declarar. Ya **no bloquea** la evaluacion.
+- **La contradiccion de #106 esta resuelta:** la entrada duplicada del asistente fue retirada y sustituida por
+  una nota de trazabilidad. **La #106 vigente es la de la autora** y sigue ABIERTA.
+- **`main.tex:98` actualizado:** el criterio de exito deja de ser *"statistically comparable"* a secas y pasa a
+  declarar endpoint primario unico (streak amplitude), **Wilcoxon** de una cola para superioridad, **TOST**
+  para equivalencia con margen fijado de antemano y medido solo en validacion, y que **un resultado
+  no concluyente es reportable**. Es D4 llevado al documento.
+
+### Tarea 1 — Analizar el piloto (job 52074). Sigue siendo lo primero
+
+Sin cambios respecto al encargo anterior: control **`parches: 17149`, `casos: 47`** antes que nada; si sale
+21 754 / 72 el manifiesto no se aplico y hay que relanzar. De `curva.csv`, `s_por_paso` del **ultimo** tramo y
+`gb_max`. **Con eso se cierra #89.**
+
+### Tarea 2 — Las 15 fichas nuevas, sin procesar (regla 13)
+
+`an2025generalization`, `choi2025mar`, `dhariwal2021diffusion`, `ho2020denoising`, `liu2021efficienttraining`,
+**`lugmayr2022repaint`**, `nichol2021improved`, `park2015ct`, `peebles2023scalablediffusion`,
+`ronnenberger2015unet`, `selles2023ai`, `song2021ddim`, `yeap2025fewshots`, `zhang2025lefusion`,
+`zwingmann2010percutaneous`.
+
+**No releer los PDF** (regla 10). Prioridad 1: **`lugmayr2022repaint`** — RePaint es inpainting con difusion,
+es decir el metodo de esta tesis, y puede aportar tecnica de muestreo (resampling) que hoy no se usa.
+`zwingmann2010percutaneous` ya genero **#113**. Las demas: evaluar impacto y registrar o declarar "sin
+implicancias" en el chat.
+
+### Tarea 3 — Codigo que falta, por orden
+
+1. **Bucle de validacion en `entrenar.py`.** `a5_manifiesto_val.csv` existe pero **nada lo consume**: hoy el
+   script solo carga `train`. Sin esto, `val` no sirve para nada.
+2. **Evaluacion E-A1..E-A4**, que sigue **sin una sola linea**.
+3. **Metodos en `main.tex`:** la arquitectura (U-Net tipo DDPM/ADM, coseno, DDIM, ~28 M parametros) y su
+   atribucion. **Usar la justificacion de la #106 vigente** —eleccion pragmatica y no comparada, integracion
+   declarada como propia y pendiente de evaluacion— y **NO** el argumento del sesgo inductivo con pocos datos,
+   que An et al. contradice.
+
+### ABIERTAS que quedan, por gravedad
+
+1. **#106** — la combinacion coseno T=1000 + DDIM lineal eta=0 con 50 pasos **no esta evaluada en ninguna
+   fuente**, y Nichol--Dhariwal advierte que el stride de Song empeora combinado con coseno. Toca
+   `src/renderizador/difusion.py`: declarar como integracion propia o ajustar a una combinacion con respaldo.
+2. **#112** — si el piloto muestra **costura** en el borde de `B_delta`, extraer mas parches de banda **exige
+   ademas** cambiar la normalizacion de la perdida a peso proporcional a `|G|`. Las dos cosas juntas o ninguna.
+3. **#111** — sesgo de fragmentacion de E11, ya declarado en `e11_perfil_axial.md`; falta decidir si se mide
+   con semimaximo local.
+4. **#108** — la Tabla III de `karageorgos2024ddpm` respalda la direccion de `B_delta` y **sigue sin aplicarse**
+   a `main.tex`. Es el apoyo mas fuerte disponible para la decision con menos respaldo externo del diseno.
+5. **#113** — Zwingmann 2010 y el grado 4 sin definir.
+
+### Advertencia de metodo, ganada en esta sesion
+
+Cuatro fallos silenciosos se detectaron **mirando la salida**, no con controles: el eje sagital de las laminas,
+el `level=None` de `marching_cubes`, la caracterizacion erronea de una cita (#107) y una entrada duplicada por
+no releer el archivo antes de escribir (#106). **Antes de afirmar algo sobre un artefacto, leer su estado
+actual.** Y toda capa o metrica derivada necesita una comprobacion que pueda fallar: para las superficies 3D,
+la util resulto ser **contar vertices**, no mirar la figura.
+
+### 108 — APLICADA en `main.tex` (2026-09-21), por orden explicita de la autora
+
+- **Donde:** parrafo del Objetivo 3, justo despues de declarar que el ancho de banda es un parametro de diseno
+  sin extension publicada.
+- **Que se anadio:** la Tabla III de `karageorgos2024ddpm` como **respaldo de direccion**, con sus cifras:
+  dilatar la traza metalica deja el error practicamente igual (**RMSE 11.45 y 11.63 HU** con factores 1.4 y
+  1.8), mientras que encogerla lo hace **colapsar** (**54.82 y 57.69 HU** con 0.7 y 0.5), frente a **7.57 HU**
+  con la traza verdadera. El argumento que habilita: **quedarse corto cubriendo el metal es mucho mas danino
+  que pasarse**, que es exactamente la razon para generar mas alla de la mascara del implante.
+- **Salvedad escrita en el mismo texto, para que nadie la lea de mas:** ese experimento varia una **mascara**
+  en reduccion de artefacto **en dominio sinograma**, no una **banda de generacion** en dominio imagen. Por
+  eso **motiva la direccion de `B_delta` sin fijar su anchura**, y el valor de **12 mm sigue siendo una
+  construccion declarada**.
+- **Por que importaba:** `B_delta` era la decision de diseno con menos respaldo externo de toda la tesis. Con
+  esto pasa de no tener ningun apoyo publicado a tener uno **direccional y honestamente acotado**.
+- **Compilacion verificada:** 0 errores, **0 citas indefinidas**, 7 paginas, 110 referencias. `refs.bib` **sin
+  tocar**: la clave ya estaba (regla 9).
+- **Estado: CERRADA.**
+
+### Correccion al encargo del siguiente agente (2026-09-21)
+
+Dos puntos del encargo anterior **ya no aplican**:
+- **#108 ya NO esta pendiente**: fue aplicada (arriba). Retirarla de la lista de ABIERTAS.
+- **El aviso para quien escriba Metodos** (usar la justificacion de la #106 vigente y **no** el argumento del
+  sesgo inductivo) **se movio a `docs/ESTADO.md`**, por orden de la autora, en la seccion *"AVISO para quien
+  escriba Metodos"*. Es el sitio correcto: `ESTADO.md` es lo primero que se lee al arrancar (regla 11).

@@ -60,6 +60,14 @@ def caso_de(serie: str) -> str:
     return re.sub(r'_c\d{3}$', '', serie)
 
 
+def _lee_manifiesto(ruta: Path) -> set[tuple[str, int]]:
+    """Parches admitidos, como {(serie, corte)}. Una fila por parche."""
+    import csv
+    with open(ruta, newline='', encoding='utf-8') as fh:
+        return {(f'{r["Caso"]}_c{int(r["comp"]):03d}', int(r['corte']))
+                for r in csv.DictReader(fh)}
+
+
 class ParchesMetal(Dataset):
     """Parches 2.5D: 3 cortes x 3 ventanas + `M` + `G`; objetivo, el corte central.
 
@@ -71,12 +79,21 @@ class ParchesMetal(Dataset):
 
     def __init__(self, cache: Path, particion: Path,
                  particiones: tuple[str, ...] = ('train',), lado: int = 256,
-                 borrar_contexto: bool = False) -> None:
+                 borrar_contexto: bool = False, inclusion: Path | None = None,
+                 ratio_banda: float | None = None, semilla: int = 20260921) -> None:
         self.cache = Path(cache)
         self.lado = lado
         self.borrar_contexto = borrar_contexto
         self.canales = canales_diseno_a()
         permitidos = lee_particion(Path(particion), particiones)
+        # Criterio de inclusion R1-R3, PREINSCRITO el 2026-09-21 (`01-decisiones.md`).
+        # `inclusion` es el MANIFIESTO: un CSV con una fila por parche que entra al entrenamiento,
+        # generado por `a5_criterio_inclusion.py --manifiesto`. Es un artefacto versionado, no
+        # logica que se recalcule aqui: asi el conjunto congelado es auditable y reproducible.
+        # Si es None NO se filtra, y el conjunto es el crudo de A1b, que **no** es el de la decision.
+        self.manifiesto = _lee_manifiesto(Path(inclusion)) if inclusion else None
+        self.ratio_banda = ratio_banda
+        self.semilla = semilla
 
         # `indice` y `por_caso` van por SERIE (caso + componente); el filtro de particion, por CASO.
         self.indice: list[tuple[str, int]] = []
@@ -90,8 +107,12 @@ class ParchesMetal(Dataset):
             caso = caso_de(serie)
             if caso not in permitidos:
                 continue
-            self.indice.append((serie, k))
+            # el manifiesto decide que parches ENTRENAN; los vecinos 2.5D se cargan igual aunque
+            # no esten en el, porque son contexto y no ejemplos.
             self.por_caso.setdefault(serie, set()).add(k)
+            if self.manifiesto is not None and (serie, k) not in self.manifiesto:
+                continue
+            self.indice.append((serie, k))
             self.casos.add(caso)
         if not self.indice:
             raise RuntimeError(f'cache vacio para {particiones} en {self.cache}')

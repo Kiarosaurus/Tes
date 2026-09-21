@@ -2,11 +2,66 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+### Actualizacion 2026-09-21 (4) — cinco candidatos prioritarios leidos y normalizados
+
+- **Ultimo paso completado:** `lector-papers` leyo `selles2023ai`, `lugmayr2022repaint`,
+  `zwingmann2010percutaneous`, `choi2025mar` y `park2015ct`. Las cinco fichas, sus entradas `refs/clean/`,
+  el mapeo y el indice quedaron actualizados; `refs.bib` pasa de 105 a **110 entradas**.
+- **Impacto:** Selles y Park refuerzan que el artefacto excede `M`, pero ninguno calibra los 12 mm de
+  `B_delta` (#57). Zwingmann 2010 publica un grado 4 sin definir y puede solaparse con la cohorte de 2009;
+  por eso no entra al benchmark y abre #113. RePaint y Choi quedan como antecedentes mecanisticos/Related Work.
+- **Snowballing:** se registro Selles et al. 2022 sobre O-MAR en fusion sacroiliaca como N3 pendiente, sin
+  buscarlo ni descargarlo. `main.tex` y `01-decisiones.md` no se modificaron.
+- **Pendiente:** Niu 2021 sigue sin PDF/raw y `song2024bmar` sigue sin texto completo. El ancho de `B_delta`
+  conserva justificacion empirica local y requiere la sensibilidad prevista.
+
 ## PUNTO DE RETOMA — leer esto primero (2026-09-20)
 
 > Escrito para una sesion nueva, sin historial. Verificado contra disco el 2026-09-20; el arbol esta limpio
 > (ultimo commit `420d51c`). El bloque del 2026-09-17 queda mas abajo como historico: **su plan (renderizador
 > latente + compuerta) ya se ejecuto y cambio de rumbo**; lo unico vigente de el son P2 (#70) y P3.
+
+### Actualizacion 2026-09-21 (3) — DDIM y planificador coseno leidos; bloque metodologico de #106 completo
+
+- **Ultimo paso completado:** `lector-papers` leyo `song2021ddim` y `nichol2021improved`; ambas fuentes tienen
+  ficha, raw, clean, alta en `refs/MAPEO.md` e `_index.md`. `refs.bib` pasa de 103 a **105 entradas**. Con ellas
+  quedan disponibles DDPM, ADM, DDIM y el planificador coseno.
+- **Que respalda cada una:** Song define DDIM determinista con eta = 0 y evalua 50 pasos sobre modelos T = 1000;
+  Nichol--Dhariwal define el schedule coseno con `s = 0.008` y beta <= 0.999.
+- **Limite que debe conservarse en Metodos:** ningun paper evalua la combinacion exacta de la tesis —coseno con
+  T = 1000, DDIM lineal con eta = 0 y 50 pasos, U-Net y CT pelvica con metal—. Nichol usa T = 4000 en las
+  ablaciones relevantes y sus 50 evaluaciones corresponden a Improved DDPM, no a DDIM. #106 sigue ABIERTA solo
+  hasta atribuir correctamente cada componente en `main.tex` y declarar que la integracion se valida localmente.
+- **Snowballing:** las dos lecturas no abrieron candidatos nuevos que cumplan las reglas.
+
+### Actualizacion 2026-09-21 (2) — ocho fuentes de #106 leidas, normalizadas y auditadas
+
+- **Ultimo paso completado:** `lector-papers` leyo a fondo los ocho PDF entregados y genero sus fichas en
+  `docs/literatura/`: DDPM, ADM, U-Net original, Liu 2021, DiT, Yeap 2025, LeFusion y An 2025. Todos tienen
+  `refs/clean/`, alta en `refs/MAPEO.md` y fila en `_index.md`; `refs.bib` pasa de 95 a **103 entradas**.
+- **Conclusion para #106:** U-Net se puede justificar por alineacion con DDPM/ADM, por Yeap (CT, pocos pacientes
+  y concatenacion) y por LeFusion (sintesis local y copia del fondo). **No** se puede justificar como superior a
+  DiT por pocos datos: An 2025 favorece a DiT en brecha de PSNR con 10^3--10^4 imagenes naturales 32 x 32 y
+  FLOPs equivalentes. Peebles tambien invalida el descarte por atencion sobre 65 536 pixeles, porque usa parches
+  latentes. #106 queda corregida como eleccion pragmatica y no comparada.
+- **Pendiente:** de las cuatro fuentes metodologicas originales aun faltan raw y PDF de **DDIM** y de
+  **Nichol--Dhariwal (planificador coseno)**. Nuevo snowballing N2 condicional: Kadkhodaie et al., ICLR 2024.
+- **Verificacion:** `scripts/build_refs.py` genero las 103 entradas; BibTeX y dos pasadas de pdfLaTeX terminaron
+  sin citas indefinidas (7 paginas). `latexmk` no se uso porque la instalacion local de MiKTeX no tiene Perl.
+  `main.tex` y `01-decisiones.md` no se modificaron. La discrepancia de paginas de DiT (raw 4172--4182; PDF
+  4195--4205) queda marcada `% VERIFICAR` y documentada en `refs/MAPEO.md`.
+
+### Actualizacion 2026-09-21 — busqueda dirigida de fuentes para justificar U-Net (#106)
+
+- **Ultimo paso completado:** se buscaron fuentes primarias publicadas y se añadieron a la prioridad de
+  `docs/literatura/_candidatos.md`. Las mas directas son **LeFusion (ICLR 2025)**, U-Net 3D para sintesis medica
+  local en CT con fondo preservado, y **Yeap et al. (Medical Physics 2025)**, U-Net de difusion entrenada desde
+  cero con 25 pacientes y reentrenada con 27 casos pelvicos. Se registraron tambien U-Net original, evidencia
+  de regimen escaso y los controles adversariales DiT/An.
+- **Siguiente:** la autora decide cuales fuentes incorporar; cada alta empieza por su raw en `refs/raw/`. La cadena
+  N1 propuesta es DDPM/ADM + LeFusion + Yeap; no se toca `refs.bib` ni `main.tex` antes de esos raw.
+- **Pendiente/impacto:** #106 sigue ABIERTA, pero mejor delimitada. No aparece una implicancia nueva: ninguna fuente
+  compara U-Net contra DiT en esta tarea, asi que solo se puede defender una eleccion razonada, no superioridad.
 
 ### Actualizacion 2026-09-20 (4) — tabla de prioridad de `_candidatos.md` reordenada tras el giro a dominio de imagen
 
@@ -20,6 +75,86 @@
   acepta, **#106 empieza por pegar los cuatro raw en `refs/raw/`** (regla 9); sin eso no se escribe Metodos.
 - **Pendiente que surgio:** ninguno nuevo. Sin implicancias sobre la tesis: el fondo ya esta en **#106**; lo de hoy
   es mantenimiento bibliografico. Sin tocar `refs.bib`, `main.tex`, `00-tesis.md` ni `01-decisiones.md`.
+
+### PUNTO DE RETOMA 2026-09-21 — leer esto primero
+
+**El proyecto esta esperando el resultado del primer entrenamiento de su historia.** Job **52074** en Khipu,
+piloto de 200 pasos del renderizador. Encolado al cierre de la sesion.
+
+**Lo primero que hay que hacer:** bajar sus salidas y analizarlas. El **encargo detallado esta al final de
+`docs/04-implicancias.md`**, seccion *"Ronda 2026-09-21 (cierre 2) — ENCARGO ACTUALIZADO PARA EL SIGUIENTE
+AGENTE"* — **la segunda, que sustituye a la primera**. Trae las tres tareas, los controles que pueden fallar y
+las implicancias abiertas por gravedad. **Leerlo antes de tocar nada.**
+
+**Control que decide si la corrida vale:** el log debe decir **`parches: 17149`** y **`casos: 47`**. Si dice
+21 754 / 72, el manifiesto no se aplico y hay que relanzar, no reinterpretar.
+
+#### Lo que se cerro el 2026-09-21
+
+- **Criterio de inclusion PREINSCRITO** (`01-decisiones.md`, entrada 2026-09-21). R1 dentro del cuerpo, R2 caso
+  con material ortopedico, R3 metal del componente mas banda al 0.62. **Tamano y forma se reportan, no filtran.**
+  Conjunto congelado: **17 149 parches, 241 componentes, 47 casos**, en el manifiesto versionado
+  `experiments/objetivo3/a5_manifiesto_train.csv`, que el entrenador lee y **sin el cual aborta**.
+- **Validado contra las 40 laminas revisadas por la autora: 36/39 = 92%**, recall 100%, frente al 40% del
+  criterio anterior. Los 3 falsos positivos (dos piezas de fijador dentro del cuerpo y un DIU) **no los separa
+  ninguna regla geometrica**: limitacion declarada.
+- **Dos recomendaciones del asistente quedaron descartadas por los datos**, y consta: el umbral de volumen de
+  200 mm3 (quita el 4% de parches pero el 29% de componentes) y el filtro por forma tipo tornillo.
+- **`--dentro-min` no necesita justificacion: es invariante.** `frac_dentro` es 0.000 o 1.000, nunca
+  intermedio; el barrido de 0.05 a 0.95 da resultados identicos. Mismo argumento que `F = 0.001`.
+- **`main.tex` editado** (orden explicita): #107 aplicada, Objetivo 3 al dia, de dos desplazamientos de dominio
+  declarados se pasa a **tres**, y el **criterio de exito de `main.tex:98`** deja de ser *"statistically
+  comparable"* a secas: ahora declara endpoint primario unico (streak amplitude), **Wilcoxon** de una cola para
+  superioridad, **TOST** para equivalencia con margen fijado de antemano y medido solo en validacion, y que un
+  resultado **no concluyente es reportable**. Compila **0 errores, 0 indefinidas, 7 paginas, 110 referencias**.
+- **Contradiccion de #106 resuelta:** la entrada duplicada del asistente se retiro y quedo una nota de
+  trazabilidad. **La #106 vigente es la de la autora**, y sigue ABIERTA: la combinacion coseno T=1000 + DDIM
+  lineal eta=0 con 50 pasos **no esta evaluada en ninguna fuente**.
+- **#106 cerrada en su parte bibliografica:** las cuatro fuentes del metodo (DDPM, ADM, coseno, DDIM) ya estan
+  en `refs.bib`, subidas por la autora, mas cuatro que sostienen la discusion U-Net frente a DiT.
+
+#### Lo que queda, por gravedad
+
+1. **#105 RESUELTA el 2026-09-21** (`01-decisiones.md`, entrada 2026-09-21 (2)). **Ya no bloquea.** No hizo
+   falta rehacer la particion: basto aplicar **R2 tambien a `val`**, que es el criterio ya preinscrito, sin
+   tocar semilla ni `test` y **sin seleccion post hoc**. `val` queda en **896 parches / 3 casos con implante
+   real**, manifiesto en `a5_manifiesto_val.csv`. **Limitacion declarada: `Delta` se medira sobre n = 3
+   pacientes**; el informe debe decir la n y no presentarlo como robusto.
+   - **PENDIENTE DE CODIGO:** `entrenar.py` **todavia no usa** el manifiesto de validacion; hoy solo carga
+     `train`. Hay que conectar el bucle de validacion antes de que `val` sirva para algo.
+2. **14 fichas nuevas sin procesar** en `docs/literatura/` (regla 13). La mas urgente es **`lugmayr2022repaint`**:
+   RePaint es inpainting con difusion, o sea el metodo de esta tesis.
+3. **Dos entradas #106 contradictorias** en el archivo critico (regla 17). Debe prevalecer la de la autora.
+4. **La evaluacion E-A1..E-A4 sigue sin una sola linea de codigo.**
+5. **Metodos sin escribir:** la arquitectura no esta en `main.tex` y ya no hay excusa bibliografica.
+
+#### AVISO para quien escriba Metodos — leer antes de redactar la arquitectura
+
+La justificacion de la **U-Net** que va al documento es la de la **#106 vigente**: **eleccion pragmatica y no
+comparada**, alineada con DDPM y ADM y con dos precedentes medicos cercanos (Yeap, LeFusion), entrenable en el
+pipeline ya implementado y sin depender del VAE que fracaso; la integracion concreta se declara **propia y
+pendiente de evaluacion**.
+
+**NO usar el argumento del sesgo inductivo con pocos datos.** Lo escribio este asistente y **esta refutado** por
+la bibliografia del propio proyecto:
+- **`an2025generalization`** compara DiT y U-Net en espacio de pixeles a FLOPs equivalentes y, con 10^3-10^4
+  imagenes, reporta **brecha de PSNR menor para DiT**.
+- El argumento de que un DiT exigiria atencion sobre 65 536 pixeles es **falso**: `peebles2023scalablediffusion`
+  tokeniza **parches latentes**.
+
+Es la trampa mas facil de pisar, porque el razonamiento suena convincente y esta mal. Detalle en la **#106
+vigente** y en la nota de la **#106 (duplicada) RETIRADA**.
+
+**Limite adicional a declarar (#106):** la combinacion **coseno T = 1000 + DDIM lineal eta = 0 con 50 pasos**
+que implementa `src/renderizador/difusion.py` **no aparece evaluada en ninguna fuente**; Nichol--Dhariwal
+advierte ademas que el stride cuadratico de Song empeoro al combinarse con coseno.
+
+#### Advertencia de metodo, ganada a golpes en esta sesion
+
+Tres fallos silenciosos se detectaron **mirando la salida**, no con controles: el eje sagital de las laminas,
+el `level=None` de `marching_cubes` que dibujaba metal donde decia piel, y una cita mal caracterizada (#107).
+**Toda capa o metrica derivada necesita una comprobacion que pueda fallar.** En el caso de las superficies, la
+comprobacion util resulto ser **contar vertices**, no mirar la figura.
 
 ### Actualizacion 2026-09-20 (3) — las cuatro decisiones del Diseno A, RESUELTAS y escritas
 

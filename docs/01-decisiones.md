@@ -1290,3 +1290,114 @@ convertira un no-concluyente en un "comparable" por la via del p > 0.05.
   Khipu (`a2_entrenar.sbatch`), no con la extrapolacion desde P1, que era otro modelo.
 
 Registrada por el asistente por orden explicita de la autora (2026-09-20).
+
+## 2026-09-21 — Criterio de inclusion del conjunto de entrenamiento del Objetivo 3 (R1-R3), PREINSCRITO
+
+**Decision** (de la autora, 2026-09-21: *"apruebo las 4 reglas actuales"*, *"Acepto estos nuevos parametros"* y
+*"congela esos parametros"*; escrita por el asistente por orden explicita). Congela la composicion del conjunto
+con el que se entrenara el renderizador. Implicancias que la originan: **#104, #105, #109, #110, #111, #112**.
+
+### Lo que se descarto, y por que consta aqui
+
+La primera propuesta del asistente filtraba por **forma** (PCA tipo tornillo) y por **volumen** (>= 200 mm3).
+**Las dos quedan descartadas**, con medicion:
+
+- El renderizador aprende la relacion **mascara -> artefacto**, que es fisica y **no depende** de si el objeto
+  es tornillo, placa o fragmento. Filtrar por forma tira datos que ensenan justo lo que se quiere aprender: en
+  la muestra revisada solo **5 de 40** componentes son tornillos.
+- El umbral de 200 mm3 quita solo el **4%** de los parches pero elimina el **29%** de los componentes: descarta
+  variedad de formas sin ganar tamano de conjunto.
+
+La pregunta que decide cada regla no es *"¿esto es un tornillo?"* sino **"¿este ejemplo ensena algo que en
+sintesis sera falso?"**.
+
+### Reglas congeladas
+
+1. **R1 — el componente esta dentro del cuerpo.** Cuerpo = tejido por encima de **-400 HU**, componente conexo
+   mayor, huecos rellenos (`a4_html_componentes.mascara_cuerpo`). Motivo: un electrodo o una cremallera tienen
+   contexto de aire y piel; en sintesis el tornillo va en hueso.
+   - **El umbral de fraccion minima (`--dentro-min`) es INVARIANTE y no se elige.** Medido sobre los 40
+     componentes revisados, `frac_dentro` es **0.000 o 1.000, nunca intermedio**; el barrido de **0.05 a 0.95**
+     da exactitud 92% con TP/FP/TN/FN identicos. Se fija en **0.5** por convencion, y **se declara que
+     cualquier valor del rango da el mismo resultado**. Es el mismo argumento con que se justifico `F = 0.001`
+     (decision 2026-09-14 (5)).
+2. **R2 — el caso tiene material ortopedico declarado** en `Tipo de estructura observada` de `revision.csv`.
+   Se usa **solo en la direccion que concluye**: si el caso **no** tiene material ortopedico, ningun componente
+   suyo puede ser implante. La direccion contraria **no dice nada** del componente (#110, verificada con cero
+   contradicciones sobre los 40 veredictos).
+3. **R3 — el parche contiene metal del componente objetivo**, mas una proporcion declarada de parches de solo
+   banda. **No se eliminan del todo**: la banda mas alla de la punta del implante es real.
+   - **`ratio-banda` = 0.62**, que es **todos los parches de solo banda disponibles** tras R2.
+   - **Brecha declarada:** el ratio que producira la **sintesis** es **1.40** (calculado sobre 908 corredores
+     viables de `e9ts_corredor.csv`, robusto al diametro supuesto: 1.40 con 4.9 mm, 1.23 con 7.3, 1.19 con 8.0).
+     **1.40 NO es alcanzable**: harian falta 14 820 parches de banda y solo hay 6 584. Se entrena con 0.62 y
+     **la diferencia se declara como limitacion**, junto a #95 (forma de la mascara) y #96 (contexto).
+4. **R4 — tamano y forma NO filtran: se reportan.** Se publica la mezcla del conjunto por volumen y elongacion,
+   y se declara que **el tipo de implante no esta anotado** (`main.tex:111`).
+
+### Conjunto resultante (particion `train` de `p1_particion.csv`, semilla 20260917)
+
+| | Parches | Componentes | Casos |
+|---|---|---|---|
+| A1b completo | 21 754 | 339 | 72 |
+| Tras R2 | 17 170 | 241 | 47 |
+| Con metal (R3) | 10 586 | 241 | 47 |
+| **Congelado (R2 + R3 con ratio 0.62)** | **17 170** | **241** | **47** |
+
+### Validacion del criterio, sobre la muestra ya revisada
+
+Medido con `a5_criterio_inclusion.py` **sobre las mismas 40 laminas** de #104 (la regla fijada de antemano
+prohibe generar una muestra nueva para esto); 1 `dudoso` excluido del calculo, no forzado a ningun lado:
+
+**36 de 39 = 92% de acuerdo binario incluir/excluir**, precision 88%, **recall 100%**. El criterio anterior,
+basado en forma y volumen, acertaba **16 de 40 = 40%** de tipo. De los 14 aciertos de exclusion, **7 los caza
+R1** y **7 los caza R2**: ninguna regla es redundante.
+
+**Limitacion declarada:** los 3 falsos positivos —dos piezas de `metal_0045` que estan dentro del cuerpo pese a
+ser marcadas `externo`, y el DIU de `metal_0062`— **no los separa ninguna regla geometrica**. Requieren criterio
+humano y se aceptan como error conocido del criterio.
+
+### Lo que queda fuera de esta decision
+
+- **La particion de validacion** sigue con **2 de 5 casos sin ningun implante** (#105). Se decide aparte; toca
+  la *Strict Isolation Rule* de `main.tex:111` y condiciona la medicion del margen `Delta` de D4.
+- **La opcion de extraer mas parches de banda** bajando `MIN_VOX_G` queda **descartada por ahora** (#112): la
+  perdida normaliza por imagen, asi que parches con `G` diminuta pesarian igual que un tornillo entero y
+  dominarian el gradiente. Se reconsidera **solo** si el piloto muestra problema de costura, y entonces
+  **junto** con cambiar la normalizacion a peso proporcional a `|G|`.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-21).
+
+## 2026-09-21 (2) — Validacion: se aplica R2 tambien a `val`, sin rehacer la particion (#105)
+
+**Decision** (de la autora, 2026-09-21: pide reevaluar si la recomendacion sobre #105 era la adecuada y
+aplicarla si procede; escrita por el asistente por orden explicita). **Reemplaza la recomendacion anterior del
+asistente**, que proponia rehacer la particion de validacion.
+
+**Lo que se hace:** el criterio de inclusion preinscrito hoy (R1-R3) se aplica **igual a `train` y a `val`**.
+No se rehace la particion, no se cambia la semilla 20260917 y **no se toca `test`**.
+
+**Por que la recomendacion anterior se descarta:** rehacer la particion tocaba la *Strict Isolation Rule*
+(`main.tex:111`) y la semilla sobre la que descansa el resultado **No-Go del Objetivo 1** (#91), que es un
+resultado de la tesis. El problema no lo justificaba.
+
+**Dato que corrige el planteamiento:** `val` tiene **8 casos**, no 5. Tres llevan material ortopedico
+(`metal_0011`, `metal_0039`, `metal_0056`), tres **no llevan metal** (`CLINIC_0046`, `CLINIC_0066`,
+`CLINIC_0101`) y dos llevan metal **no ortopedico** (`CLINIC_0019`, accesorio; `CLINIC_0102`, cremallera).
+Los tres sin metal **no son un problema**: son el caso de uso de sintesis (analogo del bloque E-A2). El
+problema se reduce a **dos casos**, y R2 los excluye por la regla ya escrita.
+
+**Ventaja decisiva:** **cero seleccion post hoc.** No se elige que casos entran; se aplica un criterio fijado
+antes. Mover casos de `train` a `val` para volver a cinco habria obligado a **elegir cuales**, despues de ver
+los datos.
+
+**Resultado:** `val` queda en **896 parches** (553 con metal, 343 de banda) sobre **3 casos con implante real**.
+Manifiesto versionado en `experiments/objetivo3/a5_manifiesto_val.csv`, generado por el mismo codigo que el de
+entrenamiento.
+
+**Limitacion aceptada y declarada:** el margen `Delta` de D4 se medira sobre **3 pacientes**. Es poco. Mitiga
+en parte que `Delta` mide variabilidad **intra-metodo** (semillas DDIM sobre el mismo caso, mas test-retest del
+brazo fisico), de modo que el n efectivo es 3 casos por k semillas y no 3 observaciones. **El informe debe
+declarar esta n**, y no presentar el `Delta` resultante como robusto.
+
+Registrada por el asistente por orden explicita de la autora (2026-09-21).

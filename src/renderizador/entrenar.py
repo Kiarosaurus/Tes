@@ -82,12 +82,21 @@ def main() -> None:
                    help='brazo de sensibilidad de #96; NO es el piloto')
     p.add_argument('--preinscrito', action='store_true',
                    help='marcar la corrida como posterior a la preinscripcion de diseno_A.md')
+    p.add_argument('--manifiesto', type=Path,
+                   default=_RAIZ / 'experiments/objetivo3/a5_manifiesto_train.csv',
+                   help='conjunto congelado por la decision 2026-09-21 (R1-R3). '
+                        '`--manifiesto ""` entrena con el crudo de A1b, que NO es el de la decision')
     args = p.parse_args()
 
     torch.manual_seed(args.semilla)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    ds = ParchesMetal(args.cache, args.particion, ('train',), args.lado, args.borrar_contexto)
+    man = args.manifiesto if (args.manifiesto and str(args.manifiesto)) else None
+    if man and not Path(man).exists():
+        raise SystemExit(f'ABORTA: falta el manifiesto {man}. Es el conjunto congelado (R1-R3, '
+                         f'decision 2026-09-21). Para entrenar sin el, pasa --manifiesto ""')
+    ds = ParchesMetal(args.cache, args.particion, ('train',), args.lado, args.borrar_contexto,
+                      inclusion=man)
     dif = Difusion(objetivo=args.objetivo)
     modelo = UNetDifusion(base=args.base).to(args.dispositivo)
 
@@ -96,6 +105,7 @@ def main() -> None:
             'objetivo': args.objetivo, 'semilla': args.semilla, 'dispositivo': args.dispositivo,
             'parametros': modelo.n_parametros(), 'preinscrito': bool(args.preinscrito),
             'borrar_contexto': bool(args.borrar_contexto),
+            'manifiesto': str(man) if man else None,
             'datos': ds.resumen(), 'controles': chk}
     (args.out / 'entrenar_meta.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
     for k, v in chk.items():

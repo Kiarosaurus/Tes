@@ -40,9 +40,17 @@ Los otros 65 casos quedan etiquetados `sin metal` en `e11_componentes.csv`.
    puede** afirmar "estos son tornillos iliosacros"; afirma "estos son componentes metalicos alargados y finos".
 2. **No distingue cabeza de rosca.** Reporta los dos extremos del eje (`A` = t bajo, `B` = t alto) y el centro.
    Cual extremo es la cabeza se decidiria mirando donde apoya respecto a la cortical, y **eso no se midio**.
-3. **Puede partir un implante en varios componentes.** A 2500 HU los tornillos salen fragmentados en 9 de 57
-   (E8, #46). Un tornillo partido en dos puede entrar como dos componentes cortos, o no entrar por el criterio de
-   30 mm. El filtro **no repara** la fragmentacion.
+3. **Puede partir un implante en varios componentes, y eso SESGA la muestra.** A 2500 HU los tornillos salen
+   fragmentados en 9 de 57 (E8, #46). Un tornillo partido en tres da piezas de ~20 mm que **no llegan al
+   criterio de 30 mm**, asi que **quedan fuera de esta medicion**. El filtro **no repara** la fragmentacion:
+   la hereda.
+   - **Consecuencia directa sobre las cifras de abajo:** `d_centro` = 4.91 mm se midio sobre los tornillos que
+     **sobrevivieron enteros** al umbral. La muestra esta **sesgada hacia los mejor segmentados**, que
+     previsiblemente son los mas densos o los mas gruesos. **La cifra no se invalida** —coincide con el
+     catalogo (4.8 mm, `synthes2003guide`) y con E8 (5.00 mm) por vias independientes, y las tres caen dentro
+     de un cuarto de voxel— pero **cualquier uso de ella debe declarar este sesgo**.
+   - Cuanto pesa el sesgo **no esta medido**. Medirlo exigiria repetir el perfil con una definicion de mascara
+     que no fragmente (semimaximo local, la propuesta abierta de #22/#46). Registrado en **#111**.
 4. **Deja fuera placas y protesis a proposito**, que son las que mas voxeles de metal aportan a la cohorte. Por eso
    las cifras de E11 **no** describen "el metal de CLINIC-metal": describen su subconjunto alargado.
 5. **5 de los componentes esbeltos estan en casos `dataset6`**, el grupo nominalmente sin metal. Es un dato sobre la

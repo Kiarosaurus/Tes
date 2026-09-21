@@ -46,13 +46,17 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 
 | Clave (autora) | Archivo raw | Formato | Clave o id del editor | PMID |
 |---|---|---|---|---|
+| `an2025generalization` | `an2025generalization.bib` | BibTeX NeurIPS | `NEURIPS2025_2dc52e27` | — |
 | `arand2019pelvicring` | `arand2019pelvicring.nbib` | PubMed nbib | — | 30575034 |
 | `chen2024tumorsynthesis` | `chen2024tumorsynthesis.bib` | BibTeX IEEE | `10656868` | — |
 | `chen2026foundationvae` | `chen2026foundationvae.bib` | BibTeX arXiv | `chen2026foundationvaes3dct` | — |
+| `choi2025mar` | `choi2025mar.nbib` | PubMed nbib | — | 41134563 |
 | `deman2007catsim` | `deman2007catsim.bib` | BibTeX SPIE | `10.1117/12.710713` | — |
+| `dhariwal2021diffusion` | `dhariwal2021diffusion.bib` | BibTeX ACM | `3540261.3540933` | — |
 | `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
 | `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
+| `ho2020denoising` | `ho2020denoising.bib` | BibTeX ACM | `3495724.3496298` | — |
 | `isensee2021` | `isensee2021.nbib` | PubMed nbib | — | 33288961 |
 | `jacob2026lgesynthnet` | `jacob2026lgesynthnet.bib` | BibTeX Springer | `10.1007/978-3-032-17734-6_4` | — |
 | `kaiser2014dysmorphism` | `kaiser2014dysmorphism.nbib` | PubMed nbib | — | 25031382 |
@@ -61,16 +65,24 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `keating1999iliosacral` | `keating1999iliosacral.nbib` | PubMed nbib | — | 10052785 |
 | `lee2014` | `lee2014.nbib` | PubMed nbib | — | 25231682 |
 | `liu2021ctpelvic1k` | `liu2021ctpelvic1k.nbib` | PubMed nbib | — | 33864189 |
+| `liu2021efficienttraining` | `liu2021efficienttraining.bib` | BibTeX NeurIPS | `NEURIPS2021_c81e155d` | — |
 | `liu2025pipeline` | `liu2025pipeline.nbib` | PubMed nbib | — | 39012731 |
+| `lugmayr2022repaint` | `lugmayr2022repaint.bib` | BibTeX CVF | `Lugmayr_2022_CVPR` | — |
 | `mclaren2021corridor` | `mclaren2021corridor.nbib` | PubMed nbib | — | 33649991 |
+| `nichol2021improved` | `nichol2021improved.bib` | BibTeX PMLR | `pmlr-v139-nichol21a` | — |
+| `park2015ct` | `park2015ct.nbib` | PubMed nbib | — | 25939628 |
+| `peebles2023scalablediffusion` | `peebles2023scalablediffusion.bib` | BibTeX IEEE | `10377858` | — |
 | `peters2025hybrid` | `peters2025hybrid.nbib` | PubMed nbib | — | 41058534 |
 | `ramadanov2025safezone` | `ramadanov2025safezone.bib` | BibTeX MDPI | `jcm14103567` | 40429562 |
 | `ramzan2026claim` | `ramzan2026claim.bib` | BibTeX Springer | `10.1007/978-3-032-00652-3_20` | — |
 | `ren2022metalinsertion` | `ren2022metalinsertion.nbib` | PubMed nbib | — | 35721310 |
 | `rombach2022latentdiffusion` | `rombach2022latentdiffusion.bib` | BibTeX IEEE | `9878449` | — |
+| `ronnenberger2015unet` | `ronnenberger2015unet.bib` | BibTeX Springer | `10.1007/978-3-319-24574-4_28` | — |
+| `selles2023ai` | `selles2023ai.bib` | BibTeX Amsterdam UMC | `ad21ce3a6a4e4d2a866cf6a9b80b9536` | — |
 | `selles2024marreview` | `selles2024marreview.nbib` | PubMed nbib | — | 38142571 |
 | `singhrao2024fiducial` | `singhrao2024fiducial.nbib` | PubMed nbib | — | 38055419 |
 | `smith2006iliosacral` | `smith2006iliosacral.nbib` | PubMed nbib | — | 16418646 |
+| `song2021ddim` | `song2021ddim.bib` | BibTeX OpenReview | `song2021denoising` | — |
 | `templeman1996proximity` | `templeman1996proximity.nbib` | PubMed nbib | — | 8769451 |
 | `vanbosse2011pelvicpositioning` | `vanbosse2011pelvicpositioning.nbib` | PubMed nbib | — | 21365336 |
 | `wagner2017` | `wagner2017.bibtex` | BibTeX Wiley | `https://doi.org/10.1002/jor.23554` | — |
@@ -79,12 +91,15 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `wasserthal2023` | `wasserthal2023.bib` | BibTeX RSNA | `doi:10.1148/ryai.230024` | — |
 | `wu2022xcist` | `wu2022xcist.bib` | BibTeX IOP | `Wu_2022` | 36096127 |
 | `xie2024implantsegmentation` | `xie2024implantsegmentation.nbib` | PubMed nbib | — | 39107679 |
+| `yeap2025fewshots` | `yeap2025fewshots.bibtex` | BibTeX Wiley | `https://doi.org/10.1002/mp.70126` | — |
 | `yun2026simulationdriven` | `yun2026simulationdriven.nbib` | PubMed nbib | — | 41699969 |
 | `zhao2012` | `zhao2012.nbib` | PubMed nbib | — | 22610442 |
 | `zhang2023controlnet` | `zhang2023controlnet.bib` | BibTeX IEEE | `10377881` | — |
 | `zhang2025diffboost` | `zhang2025diffboost.bib` | BibTeX IEEE | `10804854` | — (ver "Cambio de raw de DiffBoost") |
+| `zhang2025lefusion` | `zhang2025lefusion.bib` | BibTeX ICLR | `ICLR2025_233d16f1` | — |
 | `zhang2026pediclescrew` | `zhang2026pediclescrew.bib` | BibTeX SAGE | `doi:10.1177/08953996261443500` | 42141954 |
 | `zwingmann2009navigated` | `zwingmann2009navigated.nbib` | PubMed nbib | — | 19034594 |
+| `zwingmann2010percutaneous` | `zwingmann2010percutaneous.nbib` | PubMed nbib | — | 20526214 |
 
 ## Alta de tres fuentes (2026-09-08)
 
@@ -506,4 +521,53 @@ cambiando solo cual es la capa de respaldo:
 | `zhu2022optimalposition` | `zhu2022optimalposition.nbib` | PubMed nbib | revista completa; **clave 2022 y ano 2023**: el raw da `DP 2023 Jul` (epub 2022) |
 | `sayres2014comparison` | `sayres2014comparison.nbib` | PubMed nbib | `32-6` -> `32--36`; **clave 2014 y ano 2015** (epub 2014) |
 | `cassanego2026evolution` | `cassanego2026evolution.bib` | BibTeX Elsevier | clave del editor `CASSANEGO2026106691` descartada; `doi` sin prefijo de URL; se descartan `keywords`, `url`, `issn` y `abstract` |
+
+## Altas del 2026-09-21 — fuentes arquitectonicas de la implicancia #106
+
+La autora pego ocho raws BibTeX y sus ocho PDF para fundamentar la eleccion de U-Net y contrastarla
+con DiT. Se crearon ocho entradas nuevas en `refs/clean/`; `refs.bib` se regenera, no se edita a mano.
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `an2025generalization` | `an2025generalization.bib` | NeurIPS | se descarta `url`; DOI conservado; nombres de editores quedan con las iniciales que entrega el raw |
+| `dhariwal2021diffusion` | `dhariwal2021diffusion.bib` | ACM | se descartan `abstract`, `articleno` y `numpages`; se conservan `publisher`, `address`, `series` e `isbn` |
+| `ho2020denoising` | `ho2020denoising.bib` | ACM | se descartan `abstract`, `articleno`, `numpages` y `location`; se conservan `publisher`, `address`, `series` e `isbn` |
+| `liu2021efficienttraining` | `liu2021efficienttraining.bib` | NeurIPS | se descarta `url`; nombres de editores quedan con las iniciales del raw |
+| `peebles2023scalablediffusion` | `peebles2023scalablediffusion.bib` | IEEE | se descartan `abstract`, `keywords`, `url`, `month` y campos vacios; DOI sin prefijo URL; ver aviso de paginas abajo |
+| `ronnenberger2015unet` | `ronnenberger2015unet.bib` | Springer | se descarta `abstract`; no se agrega DOI porque el raw no trae campo `doi`; se conservan editores, editorial, direccion e ISBN |
+| `yeap2025fewshots` | `yeap2025fewshots.bibtex` | Wiley | se descartan `abstract`, `keywords`, `url` y `eprint`; DOI sin prefijo URL |
+| `zhang2025lefusion` | `zhang2025lefusion.bib` | ICLR | se descarta `url`; nombres de editores quedan con las iniciales del raw |
+
+**Discrepancia de paginacion en `peebles2023scalablediffusion`:** el raw de IEEE da `4172-4182`,
+mientras las actas abiertas de CVF muestran `4195-4205`. Manda el raw, asi que `refs/clean/` conserva
+`4172--4182` y lleva `% VERIFICAR`. No se corrige sin un raw nuevo de la version que la autora quiera citar.
+
+### Cierre bibliografico del metodo — DDIM y planificador coseno
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `nichol2021improved` | `nichol2021improved.bib` | PMLR | se descartan `month`, `pdf`, `url` y `abstract`; se conservan editores, editorial, volumen, serie y paginas |
+| `song2021ddim` | `song2021ddim.bib` | OpenReview | clave del editor `song2021denoising` sustituida por la clave estable de autora; se descarta `url`; el raw no trae editores, paginas ni DOI |
+
+## Altas del 2026-09-21 — cinco candidatos prioritarios con PDF
+
+La autora proporciono el PDF y el raw de los cinco candidatos disponibles de mayor prioridad. Se crearon
+sus fichas a partir de lectura completa y una entrada normalizada por raw; `refs.bib` se regenera con el script.
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `selles2023ai` | `selles2023ai.bib` | Amsterdam UMC | se descartan `abstract`, `keywords`, `language`, `issn`, `publisher`, `note`, `month` y `day`; el raw no trae el numero de articulo `110844` en un campo bibliografico, por lo que no se agrega como `pages` |
+| `lugmayr2022repaint` | `lugmayr2022repaint.bib` | CVF | clave del editor sustituida por la clave estable; se descarta `month`; paginas normalizadas a guion doble; el raw no trae DOI |
+| `zwingmann2010percutaneous` | `zwingmann2010percutaneous.nbib` | PubMed | autores conservados con las iniciales que entrega el raw; `1501-6` se expande a `1501--1506` |
+| `choi2025mar` | `choi2025mar.nbib` | PubMed | `e70317` se conserva como numero de articulo en `pages`; revista expandida desde `JT` |
+| `park2015ct` | `park2015ct.nbib` | PubMed | `20140388` se conserva como numero de articulo en `pages`; revista expandida desde `JT` |
+
+**Aviso de nombre de archivo:** el PDF de RePaint esta guardado como `papers/lugmayr2002repaint.pdf`, pero
+el raw, la portada y la publicacion dan 2022. La clave bibliografica correcta es `lugmayr2022repaint`; no se
+renombra el PDF entregado por la autora.
+
+**Aviso de orden de autores:** en `selles2023ai`, el raw y la portada institucional ordenan Selles--Maas--
+Wellenberg--Slotman--van Osch--Nijholt--Boomsma, mientras que la primera pagina editorial ordena
+Selles--Slotman--van Osch--Nijholt--Wellenberg--Maas--Boomsma. La entrada clean conserva el orden del raw,
+de acuerdo con la regla de normalizacion del repositorio.
 

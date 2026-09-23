@@ -1,0 +1,131 @@
+
+PMID- 30921783
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20200225
+LR  - 20260207
+IS  - 1361-6560 (Electronic)
+IS  - 0031-9155 (Print)
+IS  - 0031-9155 (Linking)
+VI  - 64
+IP  - 9
+DP  - 2019 May 2
+TI  - Atlas-based automatic planning and 3D-2D fluoroscopic guidance in pelvic trauma 
+      surgery.
+PG  - 095022
+LID - 10.1088/1361-6560/ab1456 [doi]
+AB  - Percutaneous screw fixation in pelvic trauma surgery is a challenging procedure 
+      that often requires long fluoroscopic exposure times and trial-and-error 
+      insertion attempts along narrow bone corridors of the pelvis. We report a method 
+      to automatically plan surgical trajectories using preoperative CT and assist 
+      device placement by augmenting the fluoroscopic scene with planned trajectories. 
+      A pelvic shape atlas was formed from 40 CT images and used to construct a 
+      statistical shape model (SSM). Each member of the atlas included expert 
+      definition of volumetric regions representing safe trajectory within bone 
+      corridors for fixating 10 common fracture patterns. Patient-specific planning is 
+      obtained by mapping the SSM to the (un-segmented) patient CT via active shape 
+      model (ASM) registration and free-form deformation (FFD), and the resulting 
+      transformation is used to transfer the atlas trajectory volumes to the patient 
+      CT. Fluoroscopic images acquired during K-wire placement are in turn augmented 
+      with projection of the planned trajectories via 3D-2D registration. Registration 
+      performance was evaluated via leave-one-out cross-validation over the 40-member 
+      atlas, computing the root mean square error (RMSE) in pelvic surface alignment 
+      (volumetric registration error), the positive predicted value (PPV) of volumetric 
+      trajectories within bone corridors (safety of the automatically planned 
+      trajectories), and the distance between trajectories within the planned volume 
+      and the bone cortex (absence of breach). A cadaver study was conducted in which 
+      K-wires were placed under fluoroscopic guidance to validate 3D-2D registration 
+      accuracy and evaluate the potential utility of augmented fluoroscopy with planned 
+      trajectories. The leave-one-out cross-validation achieved surface RMSE of 
+      2.2  +/-  0.3 mm after ASM registration and 1.8  +/-  0.2 mm after FFD refinement. 
+      Automatically determined surgical plans conformed within bone corridors with 
+      PPV  >  90% and centerline trajectory within 3-5 mm of the bone cortex. 3D-2D 
+      registration in the cadaver study achieved 0.3  +/-  0.8 mm accuracy (in-plane 
+      translation) and  <4 degrees  accuracy (in-plane rotation). Fluoroscopic images augmented 
+      with planning data exhibited  >90% conformance of volumetric planning data 
+      overlay within bone, and all centerline trajectories were within safe corridors. 
+      The approach yields a method for both automatic planning of pelvic fracture 
+      fixation and augmentation of fluoroscopy for improved surgical precision and 
+      safety. The method does not require segmentation of the patient CT, operates 
+      without additional hardware (e.g. tracking systems), and is consistent with 
+      common workflow in fluoroscopically guided procedures. The approach has the 
+      potential to reduce operating time and radiation dose by minimizing 
+      trial-and-error attempts in percutaneous screw placement.
+FAU - Han, R
+AU  - Han R
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+FAU - Uneri, A
+AU  - Uneri A
+AUID- ORCID: 0000-0003-3419-1805
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+FAU - De Silva, T
+AU  - De Silva T
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+FAU - Ketcha, M
+AU  - Ketcha M
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+FAU - Goerres, J
+AU  - Goerres J
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+FAU - Vogt, S
+AU  - Vogt S
+AD  - Siemens Healthineers, Erlangen, Germany.
+FAU - Kleinszig, G
+AU  - Kleinszig G
+AD  - Siemens Healthineers, Erlangen, Germany.
+FAU - Osgood, G
+AU  - Osgood G
+AD  - Department of Orthopaedic Surgery, The Johns Hopkins Hospital, Baltimore, MD, 
+      United States of America.
+FAU - Siewerdsen, J H
+AU  - Siewerdsen JH
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, Baltimore, 
+      MD, United States of America.
+AD  - Department of Biomedical Engineering, Johns Hopkins University, Traylor Building, 
+      Room 622, 720 Rutland Avenue, Baltimore, MD 21205, United States of America.
+LA  - eng
+GR  - R01 EB017226/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+DEP - 20190502
+PL  - England
+TA  - Phys Med Biol
+JT  - Physics in medicine and biology
+JID - 0401220
+SB  - IM
+MH  - Adolescent
+MH  - Adult
+MH  - Aged
+MH  - Algorithms
+MH  - Bone Screws
+MH  - Cadaver
+MH  - Female
+MH  - Fluoroscopy/*methods
+MH  - Fractures, Bone/diagnostic imaging/pathology/*surgery
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*methods
+MH  - Imaging, Three-Dimensional/*methods
+MH  - Male
+MH  - Middle Aged
+MH  - Pelvis/diagnostic imaging/pathology/*surgery
+MH  - Surgery, Computer-Assisted/*methods
+MH  - Tomography, X-Ray Computed/*methods
+MH  - Young Adult
+PMC - PMC9113192
+MID - NIHMS1803883
+EDAT- 2019/03/29 06:00
+MHDA- 2020/02/26 06:00
+PMCR- 2022/05/17
+CRDT- 2019/03/29 06:00
+PHST- 2019/03/29 06:00 [pubmed]
+PHST- 2020/02/26 06:00 [medline]
+PHST- 2019/03/29 06:00 [entrez]
+PHST- 2022/05/17 00:00 [pmc-release]
+AID - 10.1088/1361-6560/ab1456 [doi]
+PST - epublish
+SO  - Phys Med Biol. 2019 May 2;64(9):095022. doi: 10.1088/1361-6560/ab1456.

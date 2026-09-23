@@ -5,7 +5,10 @@
 ## Titulo actual
 
 MetalSynth-Pelvis: Conditioned synthesis of osteosynthesis implants and local metal
-artifacts in pelvic CT scan volumes using Multi-Window Latent Diffusion.
+artifacts in pelvic CT scan volumes using Multi-Window Image-Domain Diffusion.
+
+> Actualizado el 2026-09-21: *Latent* -> *Image-Domain*, aplicando el punto 4 de la decision
+> del 2026-09-19. `tesis/main.tex:36` ya lo tenia; este archivo iba retrasado.
 
 ## Pregunta de investigacion
 
@@ -17,7 +20,11 @@ artifacts in pelvic CT scan volumes using Multi-Window Latent Diffusion.
 
 ## Alcance MINIMO VIABLE (lo que garantizo defender)
 
-- Objetivo 1: validacion de la representacion multi-ventana (Go/No-Go, MAE < 25 HU en hueso)
+- Objetivo 1: validacion de la representacion multi-ventana (Go/No-Go, MAE < 25 HU en hueso).
+  **EJECUTADO el 2026-09-19. Resultado: NO-GO**, y se reporta como resultado (#91, decision
+  2026-09-19 pto 1). Mejor de las seis combinaciones preinscritas: **61.72 HU** (IC95 bootstrap
+  [55.12, 68.99]), **34/34 pacientes** por encima del umbral. MAISI se descarto sin correr: recorta
+  a [-1000, 1000] HU y ese recorte solo ya da 42.24 HU (#93). El criterio no se movio.
 - Objetivo 2: muestreador de colocacion quirurgicamente restringido, expresado en el
   marco de referencia de `kaiser2014dysmorphism` (reformateo por el eje sacro perpendicular
   al platillo superior de S1; angulo coronal contra la linea de crestas iliacas; angulo
@@ -30,14 +37,45 @@ artifacts in pelvic CT scan volumes using Multi-Window Latent Diffusion.
   S1/S2 se conserva como variable geometrica del muestreador; S2 se evalua
   descriptivamente (geometria y grados de brecha), sin prior ordinal clinico disponible.
 
+> **Tres geometrias para tres preguntas distintas** (decision 2026-09-20 pto 5; D3 del 2026-09-20 (2);
+> D-O2.4 del 2026-09-22). No se mezclan, y cada una se nombra por su proposito:
+>
+> | Geometria | Para que sirve | Origen |
+> |---|---|---|
+> | Envolvente **6.5-8.0 mm** | **viabilidad** de corredor, `Dmax >= d + 2c` | #31, 2026-09-11 |
+> | Cilindro **~4.91 mm** | lo que se **sintetiza** (Objetivo 3) | D3, 2026-09-20 (2) |
+> | Cilindro **7.0 mm** | lo que **mide** la brecha cortical en SAP | D-O2.4, 2026-09-22; #118 |
+>
+> La de sintesis es el `d_centro` mediana de E11 (4.91 mm, frente a 4.8 mm de catalogo y 5.00 mm de E8),
+> con cabeza y rosca de 7.3 mm como sensibilidad. La de SAP es **7.0 mm porque es el calibre del
+> benchmark**: `zwingmann2009navigated` midio sus cuatro grados sobre tornillos canulados de 7.0 mm
+> (*"the screws using a 7.0-mm cannulated screw"*, Materials and Methods, p. 1835). Como la profundidad
+> de perforacion escala con el radio, medir SAP con otro calibre meteria un sesgo sistematico dentro del
+> Wasserstein-1 y lo volveria ininterpretable. `zhu2022optimalposition` usa dos diametros sin declararlo;
+> aqui las tres se declaran.
+
 Defendible por si solo como: "un muestreador de colocacion de implantes
 quirurgicamente admisible, validado contra la distribucion clinica real de malposiciones".
 
 ## Alcance COMPLETO (si el tiempo alcanza)
 
-- Objetivo 3: renderizador (LDM 2.5D + ControlNet + banda B_delta), demostrativo
-  **condicionado a la compuerta del Objetivo 1** (decision 2026-09-17): se prueba el VAE preentrenado y uno con
-  decodificador adaptado y encoder congelado; si ninguno pasa, el Objetivo 3 no se ejecuta y el No-Go es el resultado
+- Objetivo 3: renderizador **por difusion en el espacio de imagen, sin autoencoder** ("opcion A",
+  decision 2026-09-19 pto 2). Sustituye a la formulacion latente y, con ella, al backbone
+  ControlNet + Stable Diffusion 1.5. Se formula como **inpainting de la region de generacion**
+  `G = M union B_delta`: el modelo recibe el parche con `G` borrada, la mascara del implante y la de
+  banda, y genera HU **solo dentro de `G`**; fuera de `G` se copia del volumen fuente, asi que la
+  preservacion fuera de la banda vale **por construccion, no por medicion**. Se conserva la
+  codificacion multi-ventana y la banda `B_delta` (~12 mm).
+  - **Es una decision POSTERIOR al resultado del Objetivo 1 y asi se declara.** La compuerta se fijo
+    antes y no se modifico.
+  - El diseno (`experiments/objetivo3/diseno_A.md`) **se preinscribe antes de entrenar**; hoy sigue en
+    BORRADOR y lo unico que falta para congelarlo es medir el margen `Delta` (D4).
+  - La unidad de entrenamiento es el **componente conexo**, no el corte (D2, #102). Conjunto congelado
+    el 2026-09-21: **17 149 parches, 241 componentes, 47 casos** (`train`) y **896 parches, 3 casos**
+    (`val`, #105); `Delta` se medira sobre **n = 3 pacientes**, y se declara.
+  - **Tres desplazamientos de dominio declarados**, no supuestos ausentes: mascara de entrenamiento por
+    umbral frente a cilindro parametrico liso; contexto con streaking real frente a paciente limpio;
+    y parches de solo banda menos frecuentes de lo que predice la geometria del corredor.
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
 - ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`
@@ -100,7 +138,11 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   **MEDIDO el 2026-09-11 y escrito en `main.tex`:** de 65 pacientes con material
   ortopedico, marco computable con S1 confirmado por revisor clinico en 49 y sin
   contaminacion en 30. La perdida la explican mas el FOV (7) y la localizacion que el
-  artefacto. El tratamiento de los 7 con FOV cortado sigue sin decidir. Implicancia #26.
+  artefacto. **El pendiente de los 7 con FOV cortado queda CERRADO el 2026-09-22** (D-O2.2, #119):
+  no por resolverlo, sino **por irrelevancia para la cohorte del Objetivo 2**. Verificado sobre
+  `e9ts_corredor.csv` (152 casos unicos), `fov7 = True` se da en **4 casos y los cuatro son de grupo 1**;
+  la cohorte primaria son los grupos 2 y 3, asi que ninguno entra. El "7" original cuenta sobre los 65
+  pacientes de R1, que es un universo distinto: las dos cifras no deben citarse juntas. Implicancia #26.
 - **R2 — RESUELTO el 2026-09-08 por la via corta: no se avanza.** Se adopta de Kaiser solo
   lo operacional (marco de referencia, definiciones angulares, margen de 5 mm). El score,
   el `>70` y los fenotipos quedan fuera, asi que ya no hay nada que decidir. Las tres
@@ -113,15 +155,22 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
 - ~~Tabla de sensibilidad del cribado (#22)~~ **HECHA** el 2026-09-09 (E1).
 - ~~Cifra de R1 (#26)~~ **HECHA** el 2026-09-11 y escrita en `main.tex` (49 de 65 con
   marco computable y S1 confirmado por revisor clinico; 30 sin contaminacion).
-- **Medicion del corredor por volumen (E9, #31).** Bloqueada por segmentacion: un umbral
-  HU no representa el hueso esponjoso del sacro (implicancia #48).
+- ~~**Medicion del corredor por volumen (E9, #31).** Bloqueada por segmentacion~~ **DESBLOQUEADA y
+  HECHA** (E9-TS, 2026-09-14/15): el bloqueo era que un umbral HU no representa el esponjoso del sacro
+  (#48), y se resolvio segmentando con TotalSegmentator en vez de por umbral. `e9ts_corredor.csv` trae
+  **2 352 filas validas sobre 152 casos, 0 errores**, con eje del corredor por caso (centro `c_*`,
+  direccion `u_*`, angulos coronal y axial) y banderas de viabilidad por combinacion `(d, c)`.
+  Cohorte del Objetivo 2, 72 casos: `D` mediana **9.5 mm**, **40.3%** pasa el criterio de 10 mm,
+  **65.3%** con `d=6.5, c=1`.
 
 ## Pendiente de decision de la autora
 
 - ~~Reparto del umbral en dos reglas (#22)~~ **DECIDIDO el 2026-09-11**: 2500 HU solo para
-  cribado; metal integrity con la regla adaptativa por ROI de `peters2025hybrid`. Queda
+  cribado; metal integrity con la regla adaptativa por ROI de `peters2025hybrid`. ~~Queda
   **propuesta** (no decidida) una tercera regla para extraer mascaras de implantes reales:
-  umbral de semimaximo local (E8, #46).
+  umbral de semimaximo local (E8, #46).~~ **DECIDIDO el 2026-09-20** (D1): la mascara `M` de
+  entrenamiento se extrae con **umbral de 2500 HU en el piloto**, y el **semimaximo local queda como
+  variante de sensibilidad**, no como regla principal.
 - ~~`templeman1996proximity` sigue en `refs.bib` sin PDF.~~ **RESUELTO 2026-09-17**: PDF y ficha
   completos; no publica ningun % de malposicion (#77).
 

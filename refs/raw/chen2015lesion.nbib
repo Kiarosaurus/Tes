@@ -1,0 +1,106 @@
+PMID- 26632058
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20160912
+LR  - 20191210
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Print)
+IS  - 0094-2405 (Linking)
+VI  - 42
+IP  - 12
+DP  - 2015 Dec
+TI  - Lesion insertion in the projection domain: Methods and initial results.
+PG  - 7034-42
+LID - 10.1118/1.4935530 [doi]
+AB  - PURPOSE: To perform task-based image quality assessment in CT, it is desirable to 
+      have a large number of realistic patient images with known diagnostic truth. One 
+      effective way of achieving this objective is to create hybrid images that combine 
+      patient images with inserted lesions. Because conventional hybrid images 
+      generated in the image domain fails to reflect the impact of scan and 
+      reconstruction parameters on lesion appearance, this study explored a 
+      projection-domain approach. METHODS: Lesions were segmented from patient images 
+      and forward projected to acquire lesion projections. The forward-projection 
+      geometry was designed according to a commercial CT scanner and accommodated both 
+      axial and helical modes with various focal spot movement patterns. The energy 
+      employed by the commercial CT scanner for beam hardening correction was measured 
+      and used for the forward projection. The lesion projections were inserted into 
+      patient projections decoded from commercial CT projection data. The combined 
+      projections were formatted to match those of commercial CT raw data, loaded onto 
+      a commercial CT scanner, and reconstructed to create the hybrid images. Two 
+      validations were performed. First, to validate the accuracy of the 
+      forward-projection geometry, images were reconstructed from the forward 
+      projections of a virtual ACR phantom and compared to physically acquired ACR 
+      phantom images in terms of CT number accuracy and high-contrast resolution. 
+      Second, to validate the realism of the lesion in hybrid images, liver lesions 
+      were segmented from patient images and inserted back into the same patients, each 
+      at a new location specified by a radiologist. The inserted lesions were compared 
+      to the original lesions and visually assessed for realism by two experienced 
+      radiologists in a blinded fashion. RESULTS: For the validation of the 
+      forward-projection geometry, the images reconstructed from the forward 
+      projections of the virtual ACR phantom were consistent with the images physically 
+      acquired for the ACR phantom in terms of Hounsfield unit and high-contrast 
+      resolution. For the validation of the lesion realism, lesions of various types 
+      were successfully inserted, including well circumscribed and invasive lesions, 
+      homogeneous and heterogeneous lesions, high-contrast and low-contrast lesions, 
+      isolated and vessel-attached lesions, and small and large lesions. The two 
+      experienced radiologists who reviewed the original and inserted lesions could not 
+      identify the lesions that were inserted. The same lesion, when inserted into the 
+      projection domain and reconstructed with different parameters, demonstrated a 
+      parameter-dependent appearance. CONCLUSIONS: A framework has been developed for 
+      projection-domain insertion of lesions into commercial CT images, which can be 
+      potentially expanded to all geometries of CT scanners. Compared to conventional 
+      image-domain methods, the authors' method reflected the impact of scan and 
+      reconstruction parameters on lesion appearance. Compared to prior 
+      projection-domain methods, the authors' method has the potential to achieve 
+      higher anatomical complexity by employing clinical patient projections and real 
+      patient lesions.
+FAU - Chen, Baiyu
+AU  - Chen B
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+FAU - Leng, Shuai
+AU  - Leng S
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+FAU - Yu, Lifeng
+AU  - Yu L
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+FAU - Yu, Zhicong
+AU  - Yu Z
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+FAU - Ma, Chi
+AU  - Ma C
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+FAU - McCollough, Cynthia
+AU  - McCollough C
+AD  - Department of Radiology, Mayo Clinic, Rochester, Minnesota 55905.
+LA  - eng
+GR  - R01 EB017095/EB/NIBIB NIH HHS/United States
+GR  - U01 EB017185/EB/NIBIB NIH HHS/United States
+GR  - R01EB017095/EB/NIBIB NIH HHS/United States
+GR  - U01EB017185/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Validation Study
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+SB  - IM
+MH  - Humans
+MH  - Liver/diagnostic imaging
+MH  - Phantoms, Imaging
+MH  - Tomography Scanners, X-Ray Computed
+MH  - Tomography, X-Ray Computed/instrumentation/*methods
+PMC - PMC4654739
+EDAT- 2015/12/04 06:00
+MHDA- 2016/09/13 06:00
+PMCR- 2016/12/01
+CRDT- 2015/12/04 06:00
+PHST- 2015/12/04 06:00 [entrez]
+PHST- 2015/12/04 06:00 [pubmed]
+PHST- 2016/09/13 06:00 [medline]
+PHST- 2016/12/01 00:00 [pmc-release]
+AID - 027512MPH [pii]
+AID - 1.4935530 [pii]
+AID - 10.1118/1.4935530 [doi]
+PST - ppublish
+SO  - Med Phys. 2015 Dec;42(12):7034-42. doi: 10.1118/1.4935530.

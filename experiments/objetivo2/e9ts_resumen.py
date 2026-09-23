@@ -93,7 +93,10 @@ def main() -> None:
     g1 = qc[qc['Grupo'] == 'grupo 1']
     if len(g1):
         sin7 = g1[~verdad(g1['fov7'])]
-        L += [f'### QC de nivel, grupo 1 sin los 7 de FOV cortado: {sin7["Caso"].nunique()} casos', '',
+        # El "7" original cuenta sobre los 65 pacientes de R1; aqui el universo es otro (152 casos) y el
+        # descuento real es menor. Se imprime calculado, no hardcodeado (#119, 2026-09-22).
+        n_fov = g1["Caso"].nunique() - sin7["Caso"].nunique()
+        L += [f'### QC de nivel, grupo 1 sin los {n_fov} de FOV cortado: {sin7["Caso"].nunique()} casos', '',
               md(tabla_corredor(sin7)), '']
     L += [f'### Todos, sin QC: {hueso["Caso"].nunique()} casos', '', md(tabla_corredor(hueso)), '']
 

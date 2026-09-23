@@ -1,0 +1,104 @@
+PMID- 28241103
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20180723
+LR  - 20221029
+IS  - 2473-4209 (Electronic)
+IS  - 0094-2405 (Print)
+IS  - 0094-2405 (Linking)
+VI  - 44
+IP  - 5
+DP  - 2017 May
+TI  - Technical Note: Insertion of digital lesions in the projection domain for 
+      dual-source, dual-energy CT.
+PG  - 1655-1660
+LID - 10.1002/mp.12185 [doi]
+AB  - PURPOSE: To compare algorithms performing material decomposition and 
+      classification in dual-energy CT, it is desirable to know the ground truth of the 
+      lesion to be analyzed in real patient data. In this work, we developed and 
+      validated a framework to insert digital lesions of arbitrary chemical composition 
+      into patient projection data acquired on a dual-source, dual-energy CT system. 
+      METHODS: A model that takes into account beam-hardening effects was developed to 
+      predict the CT number of objects with known chemical composition. The model 
+      utilizes information about the x-ray energy spectra, the patient/phantom 
+      attenuation, and the x-ray detector energy response. The beam-hardening model was 
+      validated on samples of iodine (I) and calcium (Ca) for a second-generation 
+      dual-source, dual-energy CT scanner for all tube potentials available and a wide 
+      range of patient sizes. The seven most prevalent mineral components of renal 
+      stones were modeled and digital stones were created with CT numbers computed for 
+      each patient/phantom size and x-ray energy spectra using the developed 
+      beam-hardening model. Each digital stone was inserted in the dual-energy 
+      projection data of a water phantom scanned on a dual-source scanner and 
+      reconstructed with the routine algorithms in use in our practice. The geometry of 
+      the forward projection for dual-energy data was validated by comparing CT number 
+      accuracy and high-contrast resolution of simulated dual-energy CT data of the ACR 
+      phantom with experimentally acquired data. RESULTS: The beam-hardening model and 
+      forward projection method accurately predicted the CT number of I and Ca over a 
+      wide range of tube potentials and phantom sizes. The images reconstructed after 
+      the insertion of digital kidney stones were consistent with the images 
+      reconstructed from the scanner, and the CT number ratios for different kidney 
+      stone types were consistent with data in the literature. A sample application of 
+      the proposed tool was also demonstrated. CONCLUSION: A framework was developed 
+      and validated for the creation of digital objects of known mineral composition, 
+      and for inserting the digital objects into projection data from a commercial 
+      dual-source, dual-energy CT scanner. Among other applications, it will allow a 
+      systematic investigation of the impact of scan and reconstruction parameters on 
+      kidney stone dual-energy properties under rigorously controlled conditions.
+CI  - © 2017 American Association of Physicists in Medicine.
+FAU - Ferrero, Andrea
+AU  - Ferrero A
+AD  - Department of Radiology, Mayo Clinic, Rochester, MN, 55905, USA.
+FAU - Chen, Baiyu
+AU  - Chen B
+AD  - Department of Radiology, Mayo Clinic, Rochester, MN, 55905, USA.
+FAU - Li, Zhoubo
+AU  - Li Z
+AD  - Department of Radiology, Mayo Clinic, Rochester, MN, 55905, USA.
+FAU - Yu, Lifeng
+AU  - Yu L
+AD  - Department of Radiology, Mayo Clinic, Rochester, MN, 55905, USA.
+FAU - McCollough, Cynthia
+AU  - McCollough C
+AD  - Department of Radiology, Mayo Clinic, Rochester, MN, 55905, USA.
+LA  - eng
+GR  - R01 EB017095/EB/NIBIB NIH HHS/United States
+GR  - U01 EB017185/EB/NIBIB NIH HHS/United States
+GR  - U54 DK100227/DK/NIDDK NIH HHS/United States
+PT  - Journal Article
+DEP - 20170417
+PL  - United States
+TA  - Med Phys
+JT  - Medical physics
+JID - 0425746
+SB  - IM
+MH  - Humans
+MH  - Phantoms, Imaging
+MH  - Radiography, Dual-Energy Scanned Projection
+MH  - Tomography Scanners, X-Ray Computed
+MH  - *Tomography, X-Ray Computed
+MH  - X-Rays
+PMC - PMC5462480
+MID - NIHMS856107
+OTO - NOTNLM
+OT  - computed tomography (CT)
+OT  - dual-energy CT
+OT  - lesion insertion
+OT  - material decomposition
+OT  - projection domain
+COIS- Potential Conflicts of Interest: Dr. McCollough receives industry grant support 
+      from Siemens Healthcare. All other authors have no conflicts to disclose.
+EDAT- 2017/02/28 06:00
+MHDA- 2018/07/24 06:00
+PMCR- 2018/05/01
+CRDT- 2017/02/28 06:00
+PHST- 2016/10/31 00:00 [received]
+PHST- 2017/01/09 00:00 [revised]
+PHST- 2017/02/22 00:00 [accepted]
+PHST- 2017/02/28 06:00 [pubmed]
+PHST- 2018/07/24 06:00 [medline]
+PHST- 2017/02/28 06:00 [entrez]
+PHST- 2018/05/01 00:00 [pmc-release]
+AID - MP12185 [pii]
+AID - 10.1002/mp.12185 [doi]
+PST - ppublish
+SO  - Med Phys. 2017 May;44(5):1655-1660. doi: 10.1002/mp.12185. Epub 2017 Apr 17.

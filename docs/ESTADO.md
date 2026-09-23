@@ -2,6 +2,363 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## PUNTO DE RETOMA 2026-09-22 (4) — EL OBJETIVO 2 TIENE SU PRIMER RESULTADO (job 52175)
+
+> Sustituye a los tres bloques anteriores de este mismo dia, que quedan abajo como historico.
+
+**El alcance minimo viable ya no esta sin ejecutar.** Corrida 52175 en Khipu, las dos cohortes, sin
+errores. Salidas en `experiments/objetivo2/`: `e13_sap.md`, `e13_poses.csv`, `e13_sap_g3.md`,
+`e13_poses_g3.csv`.
+
+### Resultado preinscrito (SAP, calibre 7.0 mm)
+
+| Cohorte | n poses | g0 / g1 / g2 / g3 (%) | W1 navegado | W1 convencional |
+|---|---|---|---|---|
+| Primaria, 72 casos | 3600 | 51.5 / 31.4 / 11.1 / 6.0 | **0.206** | 0.230 |
+| Sensibilidad, 49 casos | 2450 | 54.9 / 30.4 / 9.9 / 4.8 | **0.186** | 0.299 |
+
+Integridad: **72 y 49** casos, **0** poses sin grado, todos los estados `ok`. Referencias de Zwingmann:
+navegado 69/15/8/8, convencional 40/37/11.5/11.5. W1 en grados, maximo 3.0.
+
+### #122 NUEVA, y es lo importante de la corrida
+
+El control de pose sin perturbar reporto **16 de 72 casos "fallando"**. **No era un fallo de la
+metrica: el control estaba mal especificado** —usaba 7.0 mm en vez de `D_TS_max`, que es la unica
+identidad garantizada por construccion—. Los 16 coinciden con los que tienen **`D_TS_max < 7.0 mm`**:
+en esas pelvis el corredor no admite el tornillo del benchmark y **el eje ideal ya perfora**. Es
+anatomia, no error.
+
+**Las cifras de la tabla de arriba son validas y no cambian**: nada se excluyo. La frase del `.md` que
+decia "sus cifras no se usan" era falsa —`resumen()` calculaba sobre todas las poses— y excluirlos
+habria estado mal, porque Zwingmann tampoco excluyo a sus pacientes estrechos.
+
+**Estratificado (post hoc declarado, `e13b_estratificado.md`):**
+
+| estrato | g0 (%) | W1 navegado | W1 convencional |
+|---|---|---|---|
+| `D_TS >= 7.0` (57 de 72) | **64.2** | **0.183** | 0.482 |
+| `D_TS < 7.0` (15 de 72) | 3.3 | 1.122 | 0.727 |
+
+En corredores viables el muestreador da **64.2%** de grado 0 frente al **69%** del brazo navegado, y la
+cohorte de sensibilidad lo reproduce (**64.6%**, W1 0.175). **La cifra agregada es una mezcla de dos
+poblaciones**, y su parecido con el brazo convencional es en parte efecto de esa mezcla.
+
+### Aplicado en este turno
+
+Control de `procesar()` corregido a `D_TS_max`; `corredor_estrecho` y brecha del eje a 7.0 mm anadidos
+como dato reportado; `resumen()` ya no afirma que excluye casos; nota de correccion al inicio de los dos
+`.md` de la corrida; `python -u` en el `.sbatch`; `verificar_coherencia.py` en **41/41**.
+
+### #122 CERRADA y ESCRITA en `main.tex` (2026-09-22, por peticion explicita)
+
+La autora adopto **(a)+(b)**. La fila *Surgical Admissibility* pasa a **executed** con la cifra
+preinscrita de las dos cohortes, y un parrafo nuevo trae la estratificacion **declarada post hoc**, la
+fraccion de corredores estrechos y el motivo por el que **no** se restringe la cohorte. Compila: 0
+errores, 0 citas indefinidas, 8 paginas.
+
+`verificar_coherencia.py` **recomputa desde los CSV todas las cifras que `main.tex` afirma** —las dos
+distribuciones, los seis Wasserstein-1, y los recuentos de casos viables y estrechos— y comprueba que
+el texto las declare. **78/78 comprobaciones pasan.**
+
+### Siguiente
+
+1. **#121 (S2).** Lo que falta es concreto y pequeno: `buscar()` (`e9ts_corredor.py:195-201`) guarda
+   `mejor_por_z[iz] = mejor_z.get('D_TS', 0.0)`, es decir **solo el diametro**, y tira el `c` y el `u`
+   de cada altura; la fila de perfil (linea 305) escribe solo `z_rel_S1_mm` y `D_TS_mejor_mm`. Hay que
+   conservar el eje por altura y anadir seis columnas a `CAMPOS_PERFIL`. Coste de la corrida:
+   **E9-TS entero fueron 1.34 h de CPU** sobre 152 casos y todas las variantes; los 72 con una sola
+   variante son minutos.
+   **Pero antes hay que resolver una cosa:** el pico inferior se identifica por la **forma del perfil
+   de diametro**, no por una etiqueta. TotalSegmentator `total` etiqueta `vertebrae_S1` y el sacro
+   entero, **no S2**. En la cohorte el pico inferior esta entre **-45.6 y -24.0 mm** de S1 (p10-p90) y
+   existe en **69 de 72** casos. Llamarlo "S2" sin verificarlo seria un supuesto silencioso.
+2. Objetivo 3, con el minimo viable ya defendible.
+
+## PUNTO DE RETOMA 2026-09-22 (3) — TODO LISTO PARA KHIPU; LA CORRIDA NO SE PUEDE HACER EN LOCAL
+
+> Sustituye a los dos bloques anteriores de este mismo dia, que quedan abajo como historico.
+
+### Lo que BLOQUEA, y no es una decision
+
+**E13 sobre la cohorte no se puede correr en esta maquina.** Verificado: los **72/72** CT de la cohorte
+estan en disco, pero **0/72** tienen mascaras de TotalSegmentator; en local solo existen las de los dos
+casos piloto (`data/derivados/ts_piloto/`). `totalsegmentator` no esta instalado y `torch` es **2.9.1+cpu**
+sin CUDA. Las mascaras de la cohorte viven en Khipu (`~/metalsynth/data/ts_total`, 358 casos).
+
+**Para lanzarlo** (todo lo demas ya esta hecho):
+
+```
+scp experiments/objetivo2/{e13_muestreo_sap.py,e13_muestreo_sap.sbatch,e12_sap_control.py}     kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+scp src/muestreador/{sap.py,muestreo.py} kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/qc/
+# en Khipu:  sed -i 's/
+$//' ~/metalsynth/qc/*.sbatch  &&  sbatch e13_muestreo_sap.sbatch
+```
+
+El `.sbatch` corre **las dos cohortes en un solo job**: primaria (72, grupos 2 y 3) y sensibilidad
+(49, grupo 3). Coste medido: **15.7 s/caso**, unos **32 min** de reloj para las dos. Solo CPU.
+Salidas: `e13_poses.csv` / `e13_sap.md` y `e13_poses_g3.csv` / `e13_sap_g3.md`.
+
+### Lo que SI se hizo en este turno
+
+- **Semilla por caso** (`muestreo.rng_de_caso`, blake2b del nombre + semilla global). Antes era un
+  generador global que avanzaba caso a caso: el mismo paciente habria recibido poses distintas en la
+  corrida de 72 y en la de 49, y la diferencia entre ambas cifras habria mezclado efecto de cohorte con
+  ruido de muestreo. Corregido **antes** de cualquier corrida y declarado en la preinscripcion.
+- **`main.tex`, cuatro cambios** (regla 4: pedidos en el turno). Tres eran **contradicciones con D-O2.1**
+  que quedaban en el texto: el Problem Statement decia *"sample from the measured ordinal distribution
+  of clinical malpositions"*, los Objetivos *"emulating the two measured ordinal distributions"* y la
+  tabla *"Wasserstein-1 shows generated placements approaching..."*. Las tres describian el muestreador
+  **calibrado contra el benchmark**, que es justo la opcion (b) rechazada. Reescritas. El cuarto cambio
+  es un parrafo nuevo, **Pre-registration of the placement sampler**, tras la tabla de Expected Results.
+  Compila: **0 errores, 0 citas indefinidas, 8 paginas**.
+- **`verificar_coherencia.py`: 39 comprobaciones, 39 pasan.**
+
+### #121 (S2): la salida es mas barata de lo que decia la entrada original
+
+Verificado en `e9ts_corredor.py:167-200`: **`buscar()` ya calcula el eje a cada altura** (`mejor_z` con
+`c` y `u`) y **lo tira**; a `e9ts_perfiles.csv` solo se escribe el diametro. El barrido ya cubre S2 —en
+la cohorte el pico inferior esta a **-30 mm** de S1, diametro mediano **7.3 mm**, presente en **69 de
+72** casos— y **no hace falta ningun landmark nuevo**. Cerrar #121 = anadir seis columnas a la salida de
+perfiles, relanzar E9-TS sobre los 72, preinscribir S2 aparte y correrlo sin W1. Recomendacion: hacerlo,
+pero **despues** de la corrida principal.
+
+### Siguiente
+
+1. Lanzar `e13_muestreo_sap.sbatch` en Khipu. Produce el primer resultado propio del Objetivo 2.
+2. Con las cifras en mano, escribir Resultados. **No hay nada escrito con numeros inventados.**
+3. Decidir #121.
+
+## PUNTO DE RETOMA 2026-09-22 (2) — EL OBJETIVO 2 CORRE DE PUNTA A PUNTA. Leer esto primero
+
+> Sustituye al bloque "SAP EXISTE Y ESTA CONTROLADA" de este mismo dia, que queda abajo como historico.
+
+- **Ultimo paso completado:** #120 resuelta por la opcion **(b)** y aplicada; **preinscripcion escrita y
+  congelada** (`experiments/objetivo2/preinscripcion_muestreador.md`); **muestreador implementado**
+  (`src/muestreador/muestreo.py`); **camino completo verificado de punta a punta** sobre los dos casos
+  piloto (E13). `main.tex` **actualizado por orden explicita de la autora** (regla 4).
+- **Lo que existe ahora:** `sap.py` (metrica), `muestreo.py` (poses), `e12_sap_control.py` (seis
+  controles), `e13_muestreo_sap.py` (cohorte + W1) y `verificar_coherencia.py` (**34 comprobaciones,
+  34 pasan**), que falla si codigo, preinscripcion, controles y `main.tex` dejan de decir lo mismo.
+- **Definicion final de la brecha, y lo que costo llegar:** el tramo que SAP califica es el **propio
+  implante**, de longitud fija igual a la del corredor del caso, centrado en la pose **anclada al punto
+  medio del corredor** y recortado 8 mm por extremo. Dos definiciones anteriores cayeron: "del primer al
+  ultimo cruce con el hueso" (la tumbo C6: 10.38 mm sobre el eje del corredor, que debe dar 0) y la
+  misma cortando en huecos de 40 mm (la tumbo C5: brecha 0.0 a 20 grados de inclinacion, porque el tramo
+  se encoge con la pose). **Los controles hicieron todo el trabajo.**
+- **`main.tex`:** tres geometrias en vez de dos, con la frase de los tornillos de 7.0 mm de Zwingmann;
+  definicion operativa de SAP en la fila *Surgical Admissibility* (protrusion radial, recorte de 8 mm,
+  grado 3 en vez de descarte, resolucion 0.083 mm, envolvente de hueso y no de cortical); y los casos de
+  FOV truncado declarados fuera de la cohorte del muestreador. **Compila: 0 errores, 0 citas
+  indefinidas, 8 paginas.**
+- **#121 NUEVA y ABIERTA:** **S2 no tiene eje de corredor medido.** `e9ts_corredor.csv` guarda un solo
+  eje por caso y es el de S1; de S2 solo hay posicion y diametro del pico inferior, sin direccion. La
+  mitad de D-O2.5 no es ejecutable. **No bloquea el resultado principal** (el benchmark ordinal ya era
+  solo S1). Recomendacion: (b), dejar S2 fuera del muestreo y reportarlo con lo ya medido.
+- **Siguiente, y es una sola cosa:** correr **E13 sobre los 72 casos en Khipu**
+  (`python e13_muestreo_sap.py --ts-dir ~/metalsynth/data/ts_total --ct-dir ~/metalsynth/data/ts_input`).
+  Eso produce el primer resultado propio del Objetivo 2. Nada mas hay que decidir para lanzarlo.
+- **Lo unico que la autora tiene que decidir antes o despues:** #121 (S2).
+
+## PUNTO DE RETOMA 2026-09-22 — SAP EXISTE Y ESTA CONTROLADA. Leer esto primero
+
+> Sustituye como punto de entrada al bloque del 2026-09-21 (cierre 3), que queda mas abajo como historico.
+> Lo que ese bloque llama "agenda de decisiones del Objetivo 2" **ya esta resuelto**: las siete decisiones
+> D-O2.1 a D-O2.7 estan tomadas y escritas en `docs/01-decisiones.md` (entrada del 2026-09-22).
+
+- **Ultimo paso completado:** las siete decisiones del Objetivo 2, aplicadas a `00-tesis.md` (tres
+  geometrias en vez de dos; pendiente de FOV cerrado), y **la primera implementacion de SAP**.
+  `src/muestreador/` deja de estar vacio: `sap.py` calcula los tres componentes (grado de brecha de
+  cuatro niveles, fraccion por zona de densidad, viabilidad de corredor) y el Wasserstein-1 ordinal
+  contra las dos distribuciones de `zwingmann2009navigated`. #118 y #119 quedan CERRADAS.
+- **Controles, en `experiments/objetivo2/e12_sap_control.md`:** C1 fantasma de geometria conocida, error
+  maximo **0.083 mm** (esa es la resolucion de SAP y va declarada junto a cualquier cifra de brecha);
+  C2 identidad con el corredor, **0.0 exacto** en el fantasma y en los dos casos piloto reales;
+  C3 monotonia en diametro; C4 la envolvente reconstruida reproduce el `D_TS_max` de E9-TS
+  (diferencias 0.012 y 0.042 mm, dentro del redondeo del CSV); C5 discriminacion por inclinacion.
+  **Los controles atraparon tres errores reales** durante la implementacion, dos de convencion de
+  distancia y uno de diseno (#120).
+- **#120 NUEVA y es lo siguiente que hay que decidir:** `e9_corredor.tramo` exige salida a tejido blando
+  y lateralidad de EIPS, porque se escribio para **buscar corredores**. SAP **califica poses**, y a 5-8
+  grados de inclinacion devuelve "no evaluable" en vez de un grado. Descartar esas poses sesgaria el W1
+  a la baja, que es justo lo que D-O2.1 existe para evitar. Mitigado a medias:
+  `distribucion_grados` **lanza por defecto** si hay poses sin grado, asi que el descarte silencioso es
+  imposible. La eleccion de fondo (contarlas grado 3, separar el calificador del buscador, o categoria
+  aparte) es **de la autora**.
+- **Siguiente:** decidir #120; luego el muestreador en `src/muestreador/`, perturbando el eje de
+  `e9ts_corredor.csv` con una distribucion **preinscrita** (D-O2.1, D-O2.7); luego correr SAP sobre la
+  cohorte de 72 y calcular el W1.
+- **`tesis/main.tex` NO se toco** (regla 4). La tercera geometria y las cifras de SAP estan en `docs/`,
+  pendientes de que la autora decida llevarlas al documento.
+
+## PUNTO DE RETOMA 2026-09-21 (cierre 3) — ARRANCA EL OBJETIVO 2. Leer esto primero
+
+> Escrito para una sesion nueva sin historial. Sustituye como punto de entrada al bloque del 2026-09-20.
+> **Ojo:** la *Actualizacion (6)* (ronda de 8 papers: Jin, Wu, Konz, Glover, Selles 2022, Kadkhodaie,
+> Chen, Ferrero) la escribio otra sesion en paralelo el mismo dia. Es posterior y **sigue vigente**: no
+> abre implicancia numerada nueva, actualiza #56, #57/#60, #73 y #106, y deja dicho que **esas ocho fuentes
+> aun no estan en `refs.bib`** (sigue en 110 entradas). De ella importa para el Objetivo 3, no para el 2.
+>
+> Lo del Objetivo 3 esta al dia y **no bloquea**: el piloto se analizo, #89 esta medida y el modelo entrenado
+> existe. **El trabajo ahora es el Objetivo 2.**
+
+### Decision de plazo, tomada el 2026-09-21 por la autora
+
+**Se apunta a llegar al Objetivo 3 en ~5 semanas. NO se corta nada todavia.** `main.tex` **no se toca**:
+el brazo de equivalencia (TOST frente al protocolo fisico de `peters2025hybrid`) **se mantiene como meta**.
+El recorte propuesto por el asistente queda como **contingencia declarada**, registrada en la
+**ACTUALIZACION de #90**, y solo se aplica si el plazo lo obliga. **No lo apliques por tu cuenta.**
+
+### Lo que el Objetivo 2 YA tiene medido (no rehacer nada de esto)
+
+| Insumo | Donde | Que trae |
+|---|---|---|
+| Corredor por caso | `experiments/objetivo2/e9ts_corredor.csv` | **2 352 filas, 152 casos, 0 errores**. Eje del corredor por caso: centro `c_x,c_y,c_z`, direccion `u_x,u_y,u_z`, `ang_coronal_crestas_deg`, `ang_axial_eips_deg`, `D_TS_max_mm`, `L_TS_mejor_mm`, y banderas `viable_TS_*` por combinacion `(d, c)` |
+| Resumen | `experiments/objetivo2/e9ts_resumen.md` | Cohorte Obj 2 (72 casos): `D` mediana **9.5 mm**, **40.3%** pasa 10 mm, **65.3%** con `d=6.5, c=1`, **54.2%** con `d=7.3, c=1`, **23.6%** con `d=8.0, c=2` |
+| Landmarks | `r1_landmarks.csv`, `r1_auditoria_s1_clinico.csv` | Marco de Kaiser computable con S1 confirmado por revisor clinico en **49 de 65**; **30** sin contaminacion |
+| Densidad S1 | `e9b_densidad_s1.csv` | Insumo de la fraccion por zona de densidad de SAP |
+| Geometria del tornillo | E8 + E11 (`e11_perfil_axial.md`) | Cuerpo **~4.91 mm** (`d_centro` mediana), tres vias coincidentes dentro de un cuarto de voxel |
+
+**El muestreador NO se construye desde cero: se construye perturbando un eje ya medido.**
+
+### Lo que NO existe (es todo el trabajo)
+
+- **`src/muestreador/` esta VACIO.** 0 archivos.
+- **SAP no tiene una sola linea** en el repositorio. Es, segun `00-tesis.md`, la **unica metrica que esta
+  tesis introduce**. Ver **#116**.
+
+### SAP, tal como ya esta comprometida en `main.tex` (no reinventarla)
+
+`main.tex`, tabla de Expected Results, fila *Surgical Admissibility*:
+
+- **Grado de brecha cortical de cuatro niveles** (`smith2006iliosacral`), con **limites fijados por
+  convencion**: grado **0** sin perforacion, **1** en `(0,2)`, **2** en `[2,4]`, **3** en `(4,inf)` mm.
+- Mas **fraccion por zona de densidad** y **viabilidad de corredor** (`mclaren2021corridor`) en el marco de
+  `kaiser2014dysmorphism`.
+- **Comparacion: distancia de Wasserstein-1** contra las **dos** distribuciones ordinales de
+  `zwingmann2009navigated`, condicionadas por tecnica y **solo en S1**. S2 se reporta descriptivamente.
+
+**Las dos distribuciones de referencia** (de la ficha, con frase original verificada):
+- **Navegado: 69 / 15 / 8 / 8** (grados 0/1/2/3), 26 tornillos en 24 pacientes.
+- **Convencional: 40 / 37 / 11.5 / 11.5**, 35 tornillos en 32 pacientes.
+- Umbrales del paper: *"Grade 0, no perforation; Grade 1, perforation less than 2 mm"*, *"Grade 2,
+  perforation between 2 and 4 mm; and Grade 3, perforation greater than 4 mm"* (Materials and Methods,
+  p. 1835). Los limites exactos de `main.tex` son **convencion propia** porque el paper no cierra los bordes.
+- **`zwingmann2010percutaneous` NO entra al benchmark** (#113): publica un grado 4 sin definir y puede
+  solaparse con la cohorte de 2009.
+
+### Agenda de decisiones del Objetivo 2 — esto es lo que hay que resolver con la autora
+
+Ninguna esta decidida. Van en este orden porque cada una condiciona la siguiente.
+
+1. **D-O2.1 — Que se muestrea, y como se evita la circularidad. ES LA DECISION CENTRAL.**
+   El prior de `zwingmann2009navigated` es **ordinal** (cuatro grados), no una distribucion de poses. El
+   muestreador produce **poses 3D continuas**. Hay que decidir el sentido de la flecha:
+   - (a) muestrear poses desde una distribucion geometrica declarada, **medir** la distribucion de grados
+     que resulta, y **compararla** con Zwingmann via Wasserstein-1; o
+   - (b) calibrar el muestreador para **reproducir** las proporciones de Zwingmann.
+   **(b) hace la comparacion circular** —se compara contra lo que se uso para ajustar— y destruiria el
+   unico resultado propio de la tesis. **Recomendacion del asistente: (a), y preinscribir la distribucion
+   geometrica antes de medir nada.** Si se elige (b), la metrica deja de ser validacion y pasa a ser
+   verificacion de ajuste, y hay que decirlo asi.
+2. **D-O2.2 — Cohorte.** 72 casos (grupos 2 y 3 con QC de nivel) o 49 (grupo 3). Y que se hace con los
+   **7 con FOV cortado** de R1, que `00-tesis.md` declara **sin decidir** desde el 2026-09-11.
+3. **D-O2.3 — Como se mide la brecha cortical en milimetros.** Es lo que convierte SAP en algo calculable.
+   Necesita una definicion operativa de superficie cortical sobre la segmentacion de TotalSegmentator, y
+   una regla para medir cuanto sobresale el cilindro. **Sin esto no hay grado y no hay SAP.**
+4. **D-O2.4 — Que diametro entra en la brecha.** `00-tesis.md` ya separa **dos geometrias**: envolvente
+   **6.5-8.0 mm** para viabilidad de corredor (#31) y cilindro **~4.9 mm** para sintesis (D3). Para SAP hay
+   que elegir explicitamente cual, y no mezclarlas.
+5. **D-O2.5 — S1 y S2.** El benchmark ordinal es **solo S1** (#12, #28). Decidir si el muestreador propone
+   pose en S2 y se reporta descriptivamente, o si S2 queda fuera del muestreo.
+6. **D-O2.6 — Fraccion por zona de densidad.** Existe `e9b_densidad_s1.csv`; falta definir como entra en SAP
+   (componente de la metrica, o covariable que condiciona el muestreo).
+7. **D-O2.7 — Preinscripcion.** SAP y la distribucion de poses se congelan **antes** de comparar contra
+   Zwingmann, igual que se hizo con `diseno_A.md` y con el criterio de inclusion R1-R3.
+
+### Trampas conocidas, ganadas a golpes en este proyecto
+
+- **No reintroducir fenotipos sacros ni el score de dismorfismo.** FUERA POR COMPLETO desde el 2026-09-08
+  (punto 8 de `Fuera de alcance`, #27). El muestreador **mide el corredor en cada volumen**.
+- **No usar el "31-60%" ni el "2-15%"** como rango de malposicion: los dos estan RETIRADOS (#12, #25).
+- **No citar `zwingmann2010`** en el benchmark (#113).
+- **Toda capa o metrica derivada necesita una comprobacion que pueda fallar.** En las superficies 3D la util
+  resulto ser **contar vertices**, no mirar la figura. Cuatro fallos silenciosos de este proyecto se
+  detectaron **mirando la salida**, no con controles.
+- **`d_max` de E11 (8.10 mm) es un maximo sobre tramos, sesgado al alza, y NO es un diametro de cabeza medido.**
+
+### Estado del Objetivo 3, para no volver a abrirlo sin motivo
+
+Piloto **52074** analizado y valido. **#89 medida** (0.0923 s/paso, 0.77 h por 30 000 pasos, 3.35 GB) y lista
+para cerrar, no aplicada. Abiertas: **#114** (instrumentacion de `s_por_paso`), **#115** (7% de GPU),
+**#117** (el muestreador **no** es RePaint ni LeFusion; corrige la atribucion de Metodos y guarda el
+remuestreo como mitigacion de #112), **#106**, **#112**. Sin conectar: bucle de validacion y E-A1..E-A4.
+**Nunca se ha generado una muestra sintetica** (#116).
+
+### Actualizacion 2026-09-21 (7) — las 8 fuentes de la ronda (6), dadas de alta: `refs.bib` pasa a 118
+
+- **Ultimo paso completado:** normalizacion bibliografica de las ocho fuentes que la ronda (6) dejo leidas
+  pero sin alta. Se escribieron los ocho `refs/clean/*.bib` desde su raw, se anadieron las ocho filas a
+  `refs/MAPEO.md` y se regenero `refs.bib` con `python scripts/build_refs.py`: **110 -> 118 entradas**.
+  Compilacion verificada: **0 errores, 0 citas indefinidas, 7 paginas**.
+- **Ninguna esta citada en `main.tex`** (regla 4): entran como **disponibles**, no como usadas.
+- **Fichas releidas y contrastadas con la ronda (6):** coinciden. **No se abrio implicancia numerada nueva**
+  y no se duplico nada; la ronda (6) ya habia ajustado #56, #57/#60, #73 y #106. Se le hicieron dos
+  correcciones de hecho: (i) la linea que decia que no hubo alta en `refs.bib` quedo tachada y corregida;
+  (ii) se anadio que **`konz2024anatomicallycontrollable` apoya la #106**, por ser el precedente publicado
+  mas cercano a lo implementado (difusion en espacio de imagen, U-Net, mascara concatenada por paso,
+  `T = 1000`, DDIM), con sus limites en la misma frase: normaliza a `[0, 255]` y no a HU, y genera el corte
+  completo desde ruido.
+- **Pendientes que arrastra la ronda (6):** el reclamo de novedad de `main.tex` hay que estrecharlo (#56) —
+  no son novedad ni la insercion sintetica, ni la U-Net de difusion con mascara concatenada, ni tocar fuera
+  de la mascara; lo que sobrevive es **metal rigido + multi-ventana + banda exterior explicita + copia exacta
+  fuera de `G`**. Y E-A4 debe separar **streaking** de **delineacion cortical** (#73, Selles 2022).
+  **Nada de esto se aplico a `main.tex`** (reglas 4 y 14).
+- **Siguiente:** sin cambios — arranca el **Objetivo 2** por **D-O2.1** (ver el punto de retoma del tope).
+
+### Actualizacion 2026-09-21 (6) — ocho papers pendientes leidos; novedad y evaluacion mejor delimitadas
+
+- **Ultimo paso completado:** `lector-papers` leyo a fondo `chen2015lesion`,
+  `ferrero2017technicalnote`, `glover1980nonlinear`, `jin2021freetumor`,
+  `kadkhodaie2024generalization`, `konz2024anatomicallycontrollable`, `selles2022mar` y
+  `wu2025freetumor`. Las ocho fichas, `_index.md` y los estados de `_candidatos.md` quedaron actualizados;
+  todas se proponen N2. `refs/clean/`, `refs/MAPEO.md` y `refs.bib` **no se tocaron**: el encargo no incluyo
+  normalizacion bibliografica y `refs.bib` conserva 110 entradas.
+- **Impacto:** Jin/Wu/Konz obligan a centrar la diferencia en metal + multi-ventana + `B_delta` + copia
+  exterior, no en insercion, U-Net o mascara concatenada. Glover refuerza que el artefacto excede `M` pero
+  no calibra 12 mm. Selles muestra que menos streaking puede coexistir con peor delineacion cortical, por
+  lo que E-A4 debe separar ambos items. Kadkhodaie no demuestra superioridad U-Net/DiT y #106 no cambia.
+- **Implicancias:** la ronda actualiza #56, #57/#60, #73 y #106; **no abre una implicancia numerada nueva**,
+  no cambia baseline, arquitectura, alcance ni preinscripcion. E-A3 debe presentarse como preservacion por
+  construccion, no como fidelidad fisica global. No surgio snowballing que superara el filtro vigente.
+- **Siguiente:** la autora debe resolver la priorizacion abierta por #116. Mientras no la cambie, el paso
+  operativo previamente vigente sigue siendo conectar `a5_manifiesto_val.csv` en `entrenar.py`, seguido de
+  E-A1..E-A4 y Metodos. Si estas ocho fuentes se van a citar, falta su alta en `refs/clean/`/`refs.bib`.
+
+### Actualizacion 2026-09-21 (5) — PILOTO A2 ANALIZADO: corrida valida, #89 medida, dos implicancias nuevas
+
+- **Ultimo paso completado:** se bajo y analizo el job **52074**, el primer entrenamiento del proyecto.
+  Salidas en `experiments/objetivo3/outputs/a2/`. **La corrida es VALIDA:** `parches: 17149`, `casos: 47`
+  (el conjunto preinscrito, no el 21 754 / 72), los tres controles pasan y aparece el aviso
+  `corrida NO preinscrita`. `rc=0`, 49 s de reloj.
+- **#89 queda MEDIDA y lista para cerrar** (no aplicada a `main.tex`, reglas 4 y 14): **0.0923 s/paso** en
+  regimen, **0.77 h por 30 000 pasos**, **`gb_max` 3.35 GB** de 48. Los umbrales de relanzamiento
+  (~40 GB, ~20 h) no se acercan: **no hay que bajar `--base` ni `--lote`**.
+- **#114 NUEVA:** la columna `s_por_paso` de `curva.csv` es un **promedio acumulado**, no el ritmo de un
+  tramo (`entrenar.py:144`, `t0` nunca se reinicia), y el titular `LISTO` incluye la escritura de
+  `ckpt.pt`. **La instruccion de `KHIPU.md` —"tomar el ultimo tramo"— no es ejecutable leyendo la ultima
+  fila.** La cifra buena (0.0923) sale de diferenciar la columna. El sesgo es conservador, asi que la
+  decision no cambia; la cifra publicable, si.
+- **#115 NUEVA:** el renderizador usa el **7% de la GPU** y ~1 h de las 24 h de cola. Abre que hacer con la
+  holgura (lote, base, pasos, banda). **Recomendacion: no agrandar nada todavia** — el piloto midio coste,
+  no calidad, y E-A1..E-A4 sigue sin una linea de codigo.
+- **Siguiente:** Tarea 3.1 del encargo, **conectar el bucle de validacion en `entrenar.py`**
+  (`a5_manifiesto_val.csv` existe y nada lo consume); despues E-A1..E-A4 y Metodos. Tarea 2 (15 fichas sin
+  procesar, prioridad `lugmayr2022repaint`) sigue pendiente.
+- **Pendiente que surgio:** hay **5 raw nuevos sin procesar** en `refs/raw/` subidos por la autora
+  (`chen2015lesion`, `ferrero2017technicalnote`, `kadkhodaie2024generalization`,
+  `konz2024anatomicallycontrollable`, `selles2022mar`). No se tocaron: el alta empieza por decision de la
+  autora (regla 9).
+
 ### Actualizacion 2026-09-21 (4) — cinco candidatos prioritarios leidos y normalizados
 
 - **Ultimo paso completado:** `lector-papers` leyo `selles2023ai`, `lugmayr2022repaint`,
@@ -15,7 +372,7 @@
 - **Pendiente:** Niu 2021 sigue sin PDF/raw y `song2024bmar` sigue sin texto completo. El ancho de `B_delta`
   conserva justificacion empirica local y requiere la sensibilidad prevista.
 
-## PUNTO DE RETOMA — leer esto primero (2026-09-20)
+## PUNTO DE RETOMA del 2026-09-20 — SUPERADO por el bloque de arriba (historico)
 
 > Escrito para una sesion nueva, sin historial. Verificado contra disco el 2026-09-20; el arbol esta limpio
 > (ultimo commit `420d51c`). El bloque del 2026-09-17 queda mas abajo como historico: **su plan (renderizador

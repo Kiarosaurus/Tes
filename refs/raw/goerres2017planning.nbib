@@ -1,0 +1,128 @@
+
+PMID- 29058687
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20180409
+LR  - 20260627
+IS  - 1361-6560 (Electronic)
+IS  - 0031-9155 (Print)
+IS  - 0031-9155 (Linking)
+VI  - 62
+IP  - 23
+DP  - 2017 Nov 13
+TI  - Planning, guidance, and quality assurance of pelvic screw placement using 
+      deformable image registration.
+PG  - 9018-9038
+LID - 10.1088/1361-6560/aa954f [doi]
+AB  - Percutaneous pelvic screw placement is challenging due to narrow bone corridors 
+      surrounded by vulnerable structures and difficult visual interpretation of 
+      complex anatomical shapes in 2D x-ray projection images. To address these 
+      challenges, a system for planning, guidance, and quality assurance (QA) is 
+      presented, providing functionality analogous to surgical navigation, but based on 
+      robust 3D-2D image registration techniques using fluoroscopy images already 
+      acquired in routine workflow. Two novel aspects of the system are investigated: 
+      automatic planning of pelvic screw trajectories and the ability to account for 
+      deformation of surgical devices (K-wire deflection). Atlas-based registration is 
+      used to calculate a patient-specific plan of screw trajectories in preoperative 
+      CT. 3D-2D registration aligns the patient to CT within the projective geometry of 
+      intraoperative fluoroscopy. Deformable known-component registration (dKC-Reg) 
+      localizes the surgical device, and the combination of plan and device location is 
+      used to provide guidance and QA. A leave-one-out analysis evaluated the accuracy 
+      of automatic planning, and a cadaver experiment compared the accuracy of dKC-Reg 
+      to rigid approaches (e.g. optical tracking). Surgical plans conformed within the 
+      bone cortex by 3-4 mm for the narrowest corridor (superior pubic ramus) 
+      and  >5 mm for the widest corridor (tear drop). The dKC-Reg algorithm localized 
+      the K-wire tip within 1.1 mm and 1.4 degrees  and was consistently more accurate than 
+      rigid-body tracking (errors up to 9 mm). The system was shown to automatically 
+      compute reliable screw trajectories and accurately localize deformed surgical 
+      devices (K-wires). Such capability could improve guidance and QA in orthopaedic 
+      surgery, where workflow is impeded by manual planning, conventional tool trackers 
+      add complexity and cost, rigid tool assumptions are often inaccurate, and 
+      qualitative interpretation of complex anatomy from 2D projections is prone to 
+      trial-and-error with extended fluoroscopy time.
+FAU - Goerres, J
+AU  - Goerres J
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Uneri, A
+AU  - Uneri A
+AUID- ORCID: 0000-0003-3419-1805
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Jacobson, M
+AU  - Jacobson M
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Ramsay, B
+AU  - Ramsay B
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - De Silva, T
+AU  - De Silva T
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Ketcha, M
+AU  - Ketcha M
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Han, R
+AU  - Han R
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Manbachi, A
+AU  - Manbachi A
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+FAU - Vogt, S
+AU  - Vogt S
+AD  - Siemens Healthineers, Erlangen, Germany.
+FAU - Kleinszig, G
+AU  - Kleinszig G
+AD  - Siemens Healthineers, Erlangen, Germany.
+FAU - Wolinsky, J-P
+AU  - Wolinsky JP
+AD  - Neurological Surgery, The Johns Hopkins Hospital, Baltimore, MD, United States of 
+      America.
+FAU - Osgood, G
+AU  - Osgood G
+AD  - Orthopaedic Surgery, The Johns Hopkins Hospital, Baltimore, MD, United States of 
+      America.
+FAU - Siewerdsen, J H
+AU  - Siewerdsen JH
+AD  - Biomedical Engineering, Johns Hopkins University, Baltimore, MD, United States of 
+      America.
+AD  - Neurological Surgery, The Johns Hopkins Hospital, Baltimore, MD, United States of 
+      America.
+LA  - eng
+GR  - R01 EB017226/EB/NIBIB NIH HHS/United States
+PT  - Journal Article
+DEP - 20171113
+PL  - England
+TA  - Phys Med Biol
+JT  - Physics in medicine and biology
+JID - 0401220
+SB  - IM
+MH  - *Algorithms
+MH  - *Bone Screws
+MH  - Cadaver
+MH  - Fluoroscopy/methods
+MH  - Humans
+MH  - Image Processing, Computer-Assisted/*methods
+MH  - Imaging, Three-Dimensional/methods
+MH  - Pelvis/diagnostic imaging/*surgery
+MH  - *Quality Assurance, Health Care
+MH  - Surgery, Computer-Assisted/*methods
+MH  - Tomography, X-Ray Computed/*methods
+PMC - PMC5868367
+MID - NIHMS924936
+EDAT- 2017/10/24 06:00
+MHDA- 2018/04/10 06:00
+PMCR- 2018/11/13
+CRDT- 2017/10/24 06:00
+PHST- 2017/10/24 06:00 [pubmed]
+PHST- 2018/04/10 06:00 [medline]
+PHST- 2017/10/24 06:00 [entrez]
+PHST- 2018/11/13 00:00 [pmc-release]
+AID - 10.1088/1361-6560/aa954f [doi]
+PST - epublish
+SO  - Phys Med Biol. 2017 Nov 13;62(23):9018-9038. doi: 10.1088/1361-6560/aa954f.

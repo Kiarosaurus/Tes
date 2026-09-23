@@ -1,0 +1,104 @@
+
+PMID- 35462347
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20220530
+LR  - 20220530
+IS  - 1872-7565 (Electronic)
+IS  - 0169-2607 (Linking)
+VI  - 220
+DP  - 2022 Jun
+TI  - Computer-aided automatic planning and biomechanical analysis of a novel arc screw 
+      for pelvic fracture internal fixation.
+PG  - 106810
+LID - S0169-2607(22)00192-4 [pii]
+LID - 10.1016/j.cmpb.2022.106810 [doi]
+AB  - BACKGROUND AND OBJECTIVE: The sacroiliac joint screw is a common fixation method 
+      for pelvic posterior ring fractures. The complex anatomical structure around the 
+      pelvis makes it impossible to find a suitable fixed path, which increases the 
+      difficulty of surgical operation. In this paper, we propose an automatic planning 
+      algorithm based on a computer-aided internal arc fixation channel for pelvic 
+      fractures for the first time. METHODS: A channel generation algorithm based on 
+      seed derived points was designed, and the optimal channel was selected by scoring 
+      rules based on 3D erode algorithm for the generated channel. The biomechanical 
+      properties of the internal arc fixation screw and traditional internal straight 
+      fixation screw in three postures were compared using biomechanical finite element 
+      analysis. RESULTS: The proposed algorithm verified the existence of a more 
+      adaptable internal arc fixation channel and can quantitatively plan a relatively 
+      optimal constant-curvature internal arc fixation channel in pelvises of ten 
+      adults. Significantly high stresses concentrated around the interaction region 
+      between the screws and bone may increase the risk of bone fractures and screw 
+      loosening in the long term. The experimental results show that the internal arc 
+      fixation screw has better strain and deformation performance than the internal 
+      straight fixation screw. CONCLUSIONS: A novel arc internal fixation method for 
+      pelvic fractures was proposed to improve the safety and stability of screw 
+      fixation of pelvic fracture. The nonparametric test proved that the sacroiliac 
+      dislocation model repaired by internal arc fixation screw was significantly 
+      different from that repaired by internal straight fixation screw. The 
+      computer-aided automatic planning algorithm provides the possibility of 
+      robot-assisted pelvic fracture fixation.
+CI  - Copyright (c) 2022. Published by Elsevier B.V.
+FAU - Yang, Qing
+AU  - Yang Q
+AD  - School of Biological Science and Medical Engineering, Beihang University, 
+      Beijing, China; Beijing Advanced Innovation Center for Biomedical Engineering, 
+      Beihang University, Beijing, China.
+FAU - Feng, Siru
+AU  - Feng S
+AD  - School of Biological Science and Medical Engineering, Beihang University, 
+      Beijing, China; Beijing Advanced Innovation Center for Biomedical Engineering, 
+      Beihang University, Beijing, China.
+FAU - Song, Jian
+AU  - Song J
+AD  - School of Biological Science and Medical Engineering, Beihang University, 
+      Beijing, China; Beijing Advanced Innovation Center for Biomedical Engineering, 
+      Beihang University, Beijing, China.
+FAU - Cheng, Chang
+AU  - Cheng C
+AD  - Department of Mathematics and Computer Science Colorado College, Colorado, USA.
+FAU - Liang, Chendi
+AU  - Liang C
+AD  - School of Biological Science and Medical Engineering, Beihang University, 
+      Beijing, China; Beijing Advanced Innovation Center for Biomedical Engineering, 
+      Beihang University, Beijing, China.
+FAU - Wang, Yu
+AU  - Wang Y
+AD  - School of Biological Science and Medical Engineering, Beihang University, 
+      Beijing, China; Beijing Advanced Innovation Center for Biomedical Engineering, 
+      Beihang University, Beijing, China. Electronic address: wangyu@buaa.edu.cn.
+LA  - eng
+PT  - Journal Article
+DEP - 20220414
+PL  - Ireland
+TA  - Comput Methods Programs Biomed
+JT  - Computer methods and programs in biomedicine
+JID - 8506513
+SB  - IM
+MH  - Adult
+MH  - Biomechanical Phenomena
+MH  - Bone Screws
+MH  - Computers
+MH  - Fracture Fixation, Internal/methods
+MH  - *Fractures, Bone/diagnostic imaging/surgery
+MH  - Humans
+MH  - *Pelvic Bones/diagnostic imaging/surgery
+OTO - NOTNLM
+OT  - Biomechanical finite element analysis
+OT  - Computer-aided surgery
+OT  - Internal arc fixation channel (IAFC)
+OT  - Pelvic fractures
+COIS- Conflict of Interest All authors declare that they have no conflict of interest.
+EDAT- 2022/04/25 06:00
+MHDA- 2022/05/31 06:00
+CRDT- 2022/04/24 20:29
+PHST- 2021/12/07 00:00 [received]
+PHST- 2022/03/28 00:00 [revised]
+PHST- 2022/04/10 00:00 [accepted]
+PHST- 2022/04/25 06:00 [pubmed]
+PHST- 2022/05/31 06:00 [medline]
+PHST- 2022/04/24 20:29 [entrez]
+AID - S0169-2607(22)00192-4 [pii]
+AID - 10.1016/j.cmpb.2022.106810 [doi]
+PST - ppublish
+SO  - Comput Methods Programs Biomed. 2022 Jun;220:106810. doi: 
+      10.1016/j.cmpb.2022.106810. Epub 2022 Apr 14.

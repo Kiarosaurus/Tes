@@ -1,0 +1,135 @@
+
+PMID- 33341493
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20210623
+LR  - 20221019
+IS  - 1361-8423 (Electronic)
+IS  - 1361-8415 (Print)
+IS  - 1361-8415 (Linking)
+VI  - 68
+DP  - 2021 Feb
+TI  - Fracture reduction planning and guidance in orthopaedic trauma surgery via 
+      multi-body image registration.
+PG  - 101917
+LID - S1361-8415(20)30281-4 [pii]
+LID - 10.1016/j.media.2020.101917 [doi]
+AB  - PURPOSES: Surgical reduction of pelvic fracture is a challenging procedure, and 
+      accurate restoration of natural morphology is essential to obtaining positive 
+      functional outcome. The procedure often requires extensive preoperative planning, 
+      long fluoroscopic exposure time, and trial-and-error to achieve accurate 
+      reduction. We report a multi-body registration framework for reduction planning 
+      using preoperative CT and intraoperative guidance using routine 2D fluoroscopy 
+      that could help address such challenges. METHOD: The framework starts with 
+      semi-automatic segmentation of fractured bone fragments in preoperative CT using 
+      continuous max-flow. For reduction planning, a multi-to-one registration is 
+      performed to register bone fragments to an adaptive template that adjusts to 
+      patient-specific bone shapes and poses. The framework further registers bone 
+      fragments to intraoperative fluoroscopy to provide 2D fluoroscopy guidance and/or 
+      3D navigation relative to the reduction plan. The framework was investigated in 
+      three studies: (1) a simulation study of 40 CT images simulating three fracture 
+      categories (unilateral two-body, unilateral three-body, and bilateral two-body); 
+      (2) a proof-of-concept cadaver study to mimic clinical scenario; and (3) a 
+      retrospective clinical study investigating feasibility in three cases of 
+      increasing severity and accuracy requirement. RESULTS: Segmentation of simulated 
+      pelvic fracture demonstrated Dice coefficient of 0.92+/-0.06. Reduction planning 
+      using the adaptive template achieved 2-3 mm and 2-3 degrees  error for the three fracture 
+      categories, significantly better than planning based on mirroring of 
+      contralateral anatomy. 3D-2D registration yielded ~2 mm and 0.5 degrees  accuracy, 
+      providing accurate guidance with respect to the preoperative reduction plan. The 
+      cadaver study and retrospective clinical study demonstrated comparable accuracy: 
+      ~0.90 Dice coefficient in segmentation, ~3 mm accuracy in reduction planning, and 
+      ~2 mm accuracy in 3D-2D registration. CONCLUSION: The registration framework 
+      demonstrated planning and guidance accuracy within clinical requirements in both 
+      simulation and clinical feasibility studies for a broad range of 
+      fracture-dislocation patterns. Using routinely acquired preoperative CT and 
+      intraoperative fluoroscopy, the framework could improve the accuracy of pelvic 
+      fracture reduction, reduce radiation dose, and could integrate well with common 
+      clinical workflow without the need for additional navigation systems.
+CI  - Copyright (c) 2020 Elsevier B.V. All rights reserved.
+FAU - Han, R
+AU  - Han R
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States.
+FAU - Uneri, A
+AU  - Uneri A
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States.
+FAU - Vijayan, R C
+AU  - Vijayan RC
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States.
+FAU - Wu, P
+AU  - Wu P
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States.
+FAU - Vagdargi, P
+AU  - Vagdargi P
+AD  - Department of Computer Science, The Johns Hopkins University, BaltimoreMD, United 
+      States.
+FAU - Sheth, N
+AU  - Sheth N
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States.
+FAU - Vogt, S
+AU  - Vogt S
+AD  - Siemens Healthineers, ErlangenGermany.
+FAU - Kleinszig, G
+AU  - Kleinszig G
+AD  - Siemens Healthineers, ErlangenGermany.
+FAU - Osgood, G M
+AU  - Osgood GM
+AD  - Department of Orthopaedic Surgery, The Johns Hopkins Hospital, BaltimoreMD, 
+      United States.
+FAU - Siewerdsen, J H
+AU  - Siewerdsen JH
+AD  - Department of Biomedical Engineering, The Johns Hopkins University, BaltimoreMD, 
+      United States. Electronic address: jeff.siewerdsen@jhu.edu.
+LA  - eng
+GR  - R01 EB017226/EB/NIBIB NIH HHS/United States
+GR  - T32 GM007057/GM/NIGMS NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20201130
+PL  - Netherlands
+TA  - Med Image Anal
+JT  - Medical image analysis
+JID - 9713490
+SB  - IM
+MH  - Body Image
+MH  - Fluoroscopy
+MH  - Fracture Fixation
+MH  - Humans
+MH  - Imaging, Three-Dimensional
+MH  - *Orthopedics
+MH  - Retrospective Studies
+MH  - *Surgery, Computer-Assisted
+MH  - Tomography, X-Ray Computed
+PMC - PMC8661907
+MID - NIHMS1759391
+OTO - NOTNLM
+OT  - 3D-2D registration
+OT  - Image registration
+OT  - Image-guided surgery
+OT  - Statistical modeling
+OT  - Surgical planning
+COIS- Declaration of Competing Interest The authors declare that they have no known 
+      competing financial interests or personal relationships that could have appeared 
+      to influence the work reported in this paper.
+EDAT- 2020/12/21 06:00
+MHDA- 2021/06/24 06:00
+PMCR- 2021/12/10
+CRDT- 2020/12/20 20:24
+PHST- 2020/04/28 00:00 [received]
+PHST- 2020/11/16 00:00 [revised]
+PHST- 2020/11/23 00:00 [accepted]
+PHST- 2020/12/21 06:00 [pubmed]
+PHST- 2021/06/24 06:00 [medline]
+PHST- 2020/12/20 20:24 [entrez]
+PHST- 2021/12/10 00:00 [pmc-release]
+AID - S1361-8415(20)30281-4 [pii]
+AID - 10.1016/j.media.2020.101917 [doi]
+PST - ppublish
+SO  - Med Image Anal. 2021 Feb;68:101917. doi: 10.1016/j.media.2020.101917. Epub 2020 
+      Nov 30.

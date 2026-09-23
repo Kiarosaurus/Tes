@@ -48,21 +48,27 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 |---|---|---|---|---|
 | `an2025generalization` | `an2025generalization.bib` | BibTeX NeurIPS | `NEURIPS2025_2dc52e27` | — |
 | `arand2019pelvicring` | `arand2019pelvicring.nbib` | PubMed nbib | — | 30575034 |
+| `chen2015lesion` | `chen2015lesion.nbib` | PubMed nbib | — | 26632058 |
 | `chen2024tumorsynthesis` | `chen2024tumorsynthesis.bib` | BibTeX IEEE | `10656868` | — |
 | `chen2026foundationvae` | `chen2026foundationvae.bib` | BibTeX arXiv | `chen2026foundationvaes3dct` | — |
 | `choi2025mar` | `choi2025mar.nbib` | PubMed nbib | — | 41134563 |
 | `deman2007catsim` | `deman2007catsim.bib` | BibTeX SPIE | `10.1117/12.710713` | — |
 | `dhariwal2021diffusion` | `dhariwal2021diffusion.bib` | BibTeX ACM | `3540261.3540933` | — |
+| `ferrero2017technicalnote` | `ferrero2017technicalnote.nbib` | PubMed nbib | — | 28241103 |
+| `glover1980nonlinear` | `glover1980nonlinear.nbib` | PubMed nbib | — | 7393149 |
 | `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
 | `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
 | `ho2020denoising` | `ho2020denoising.bib` | BibTeX ACM | `3495724.3496298` | — |
 | `isensee2021` | `isensee2021.nbib` | PubMed nbib | — | 33288961 |
 | `jacob2026lgesynthnet` | `jacob2026lgesynthnet.bib` | BibTeX Springer | `10.1007/978-3-032-17734-6_4` | — |
+| `jin2021freetumor` | `jin2021freetumor.bib` | BibTeX Elsevier | `Jin_2021` | — |
+| `kadkhodaie2024generalization` | `kadkhodaie2024generalization.bib` | BibTeX ICLR | `ICLR2024_cbaf319a` | — |
 | `kaiser2014dysmorphism` | `kaiser2014dysmorphism.nbib` | PubMed nbib | — | 25031382 |
 | `karageorgos2024ddpm` | `karageorgos2024ddpm.nbib` | PubMed nbib | — | 38963746 |
 | `kazerouni2023diffusionsurvey` | `kazerouni2023diffusionsurvey.nbib` | PubMed nbib | — | 37295311 |
 | `keating1999iliosacral` | `keating1999iliosacral.nbib` | PubMed nbib | — | 10052785 |
+| `konz2024anatomicallycontrollable` | `konz2024anatomicallycontrollable.bib` | BibTeX MICCAI | `Kon_AnatomicallyControllable_MICCAI2024` | — |
 | `lee2014` | `lee2014.nbib` | PubMed nbib | — | 25231682 |
 | `liu2021ctpelvic1k` | `liu2021ctpelvic1k.nbib` | PubMed nbib | — | 33864189 |
 | `liu2021efficienttraining` | `liu2021efficienttraining.bib` | BibTeX NeurIPS | `NEURIPS2021_c81e155d` | — |
@@ -78,6 +84,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `ren2022metalinsertion` | `ren2022metalinsertion.nbib` | PubMed nbib | — | 35721310 |
 | `rombach2022latentdiffusion` | `rombach2022latentdiffusion.bib` | BibTeX IEEE | `9878449` | — |
 | `ronnenberger2015unet` | `ronnenberger2015unet.bib` | BibTeX Springer | `10.1007/978-3-319-24574-4_28` | — |
+| `selles2022mar` | `selles2022mar.nbib` | PubMed nbib | — | 35065483 |
 | `selles2023ai` | `selles2023ai.bib` | BibTeX Amsterdam UMC | `ad21ce3a6a4e4d2a866cf6a9b80b9536` | — |
 | `selles2024marreview` | `selles2024marreview.nbib` | PubMed nbib | — | 38142571 |
 | `singhrao2024fiducial` | `singhrao2024fiducial.nbib` | PubMed nbib | — | 38055419 |
@@ -90,14 +97,15 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `wang2025adaptiveweighting` | `wang2025adaptiveweighting.bib` | BibTeX IEEE | `10887049` | — |
 | `wasserthal2023` | `wasserthal2023.bib` | BibTeX RSNA | `doi:10.1148/ryai.230024` | — |
 | `wu2022xcist` | `wu2022xcist.bib` | BibTeX IOP | `Wu_2022` | 36096127 |
+| `wu2025freetumor` | `wu2025freetumor.bib` | BibTeX arXiv | `wu2025freetumorlargescalegenerativetumor` | — |
 | `xie2024implantsegmentation` | `xie2024implantsegmentation.nbib` | PubMed nbib | — | 39107679 |
 | `yeap2025fewshots` | `yeap2025fewshots.bibtex` | BibTeX Wiley | `https://doi.org/10.1002/mp.70126` | — |
 | `yun2026simulationdriven` | `yun2026simulationdriven.nbib` | PubMed nbib | — | 41699969 |
-| `zhao2012` | `zhao2012.nbib` | PubMed nbib | — | 22610442 |
 | `zhang2023controlnet` | `zhang2023controlnet.bib` | BibTeX IEEE | `10377881` | — |
 | `zhang2025diffboost` | `zhang2025diffboost.bib` | BibTeX IEEE | `10804854` | — (ver "Cambio de raw de DiffBoost") |
 | `zhang2025lefusion` | `zhang2025lefusion.bib` | BibTeX ICLR | `ICLR2025_233d16f1` | — |
 | `zhang2026pediclescrew` | `zhang2026pediclescrew.bib` | BibTeX SAGE | `doi:10.1177/08953996261443500` | 42141954 |
+| `zhao2012` | `zhao2012.nbib` | PubMed nbib | — | 22610442 |
 | `zwingmann2009navigated` | `zwingmann2009navigated.nbib` | PubMed nbib | — | 19034594 |
 | `zwingmann2010percutaneous` | `zwingmann2010percutaneous.nbib` | PubMed nbib | — | 20526214 |
 

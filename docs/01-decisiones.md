@@ -1401,3 +1401,120 @@ brazo fisico), de modo que el n efectivo es 3 casos por k semillas y no 3 observ
 declarar esta n**, y no presentar el `Delta` resultante como robusto.
 
 Registrada por el asistente por orden explicita de la autora (2026-09-21).
+
+---
+
+## 2026-09-22 — Objetivo 2: las siete decisiones de la agenda (D-O2.1 a D-O2.7), PREINSCRITAS
+
+> Registrada por el asistente **por orden explicita de la autora** (2026-09-22, en chat: *"Estoy de acuerdo
+> con todas tus recomendaciones, aplicalas (y redacta mi decision en donde corresponda)"*). Mismo
+> procedimiento que la entrada del 2026-09-21 (2). La regla 3 sigue vigente para todo lo demas.
+
+Estas siete decisiones se toman **antes** de calcular un solo Wasserstein-1 contra `zwingmann2009navigated`.
+Esa anterioridad es lo que hace del resultado una validacion y no un ajuste, y por eso consta la fecha.
+
+### D-O2.1 — El muestreador NO se calibra contra Zwingmann. Se muestrea, se mide y se compara
+
+Se adopta la **opcion (a)**: muestrear poses desde una distribucion geometrica **declarada y preinscrita**,
+**medir** la distribucion de grados de brecha que resulta, y **compararla** con las dos distribuciones
+ordinales de `zwingmann2009navigated` por distancia de Wasserstein-1.
+
+Se **rechaza** la opcion (b) —calibrar el muestreador para reproducir las proporciones de Zwingmann— porque
+compara contra lo que se uso para ajustar. Con (b) la metrica dejaria de ser validacion y pasaria a ser
+verificacion de ajuste, y SAP, que `00-tesis.md` declara **unica metrica introducida por esta tesis**, se
+quedaria sin contenido evaluativo.
+
+**Condicion que hace exigible la decision, y no solo declarativa:** los parametros de la perturbacion
+**no pueden derivarse de Zwingmann ni ajustarse mirando el W1 resultante**. Salen de fuente independiente
+(holgura cortical de 5 mm de `kaiser2014dysmorphism`; tolerancia angular de 4 grados que Zwingmann cita de
+terceros en su Introduction, p. 1834) o se declaran convencion. Se fijan **una vez**, por escrito, antes de
+medir.
+
+**Se acepta de antemano que el W1 puede salir alto.** Ese resultado es reportable y sigue siendo el
+resultado propio de la tesis. Lo que no seria reportable es un W1 bajo obtenido moviendo parametros.
+
+### D-O2.2 — Cohorte: 72 casos primaria, 49 sensibilidad. El pendiente de FOV queda cerrado
+
+Cohorte primaria del Objetivo 2: **72 casos** (grupos 2 y 3 con QC de nivel). Sensibilidad: **49 casos**
+(grupo 3). Las dos tablas ya existen en `e9ts_resumen.md` y no hay que recalcular nada.
+
+El pendiente que `00-tesis.md` arrastraba desde el 2026-09-11 —*"El tratamiento de los 7 con FOV cortado
+sigue sin decidir"*— **se cierra por irrelevancia para esta cohorte**: verificado sobre
+`e9ts_corredor.csv` (152 casos unicos), `fov7 = True` se da en **4 casos y los cuatro son de grupo 1**.
+Ninguno entra en grupos 2 o 3. Ver **#119**.
+
+### D-O2.3 — Definicion operativa de la brecha cortical
+
+La brecha se mide como **profundidad de protrusion del cilindro fuera de la envolvente osea**:
+
+1. Envolvente osea `B`: la **misma** del corredor (union de `sacrum`, `vertebrae_S1`, `hip_left`,
+   `hip_right` de TotalSegmentator, cierre morfologico de 2 mm, relleno de cavidades cerradas en 3D). Se
+   reutiliza, no se redefine: si SAP usara otra envolvente, el grado y la viabilidad dejarian de ser
+   comparables entre si.
+2. Campo de distancia euclidea **fuera** de `B`, con el spacing del header.
+3. Se muestrea la **superficie lateral** del cilindro a lo largo del eje y en angulo. Para cada punto
+   fuera de `B`, su profundidad es el valor del campo. **Brecha = maximo** sobre todos los puntos.
+4. Se excluyen **8 mm por extremo** del tramo oseo, con el mismo `RECORTE_EXTREMO_MM` de `e9_corredor.py`.
+   **Razon clinica, no numerica:** un tornillo iliosacro entra y sale por la cortical del ilion **por
+   diseno**. Sin este recorte, toda trayectoria valida puntuaria como grado 3 por sus propios puntos de
+   entrada y salida.
+
+**Limite que se declara en el mismo sitio donde se reporte la cifra:** la mascara de TotalSegmentator es
+una mascara de **hueso**, no una segmentacion de cortical. Su borde **aproxima** la superficie cortical
+externa. SAP mide protrusion fuera de la envolvente osea segmentada, y asi debe enunciarse; no se
+reclama medicion de cortical.
+
+**Control que puede fallar, obligatorio en cada corrida:** un cilindro de diametro `<= D_TS_max` centrado
+en el eje del corredor de ese mismo caso **tiene que dar brecha 0**, porque `D_TS_max` es por construccion
+dos veces la distancia libre minima a lo largo del eje recortado. Si da mas que 0, la implementacion esta
+mal y la cifra no se usa. Se anade la monotonia en diametro: la brecha no puede decrecer al ensanchar el
+cilindro.
+
+### D-O2.4 — El diametro de SAP es 7.0 mm. Es una TERCERA geometria, y se declara como tal
+
+`zwingmann2009navigated` midio sus grados sobre tornillos canulados de **7.0 mm**: *"the screws using a
+7.0-mm cannulated screw"* (Materials and Methods, p. 1835). La profundidad de perforacion escala con el
+radio, asi que medir SAP con otro diametro mete un sesgo sistematico dentro del propio Wasserstein-1 y lo
+vuelve ininterpretable: no se sabria cuanto de la distancia es diferencia de poses y cuanto es diferencia
+de calibre.
+
+**SAP se mide con un cilindro de 7.0 mm.** `4.91 mm` y `7.3 mm` entran como **sensibilidad declarada**.
+
+Con esto el proyecto pasa a declarar **tres** geometrias con tres propositos distintos, y no se mezclan:
+
+| Geometria | Para que | Origen |
+|---|---|---|
+| Envolvente **6.5-8.0 mm** | viabilidad de corredor, `Dmax >= d + 2c` | #31, decision 2026-09-11 |
+| Cilindro **~4.91 mm** | lo que se **sintetiza** en el Objetivo 3 | D3, decision 2026-09-20 (2) |
+| Cilindro **7.0 mm** | lo que **mide** la brecha en SAP | esta decision; #118 |
+
+**No se reabre D3.** Cambiar la geometria de sintesis a 7.0 mm obligaria a rehacer E11 y la cache de
+17 149 parches, y D3 respondia a una pregunta distinta ("que se sintetiza"), no a esta ("con que se mide
+la brecha"). `zhu2022optimalposition` ya usa dos diametros sin declararlo; aqui se declara.
+7.0 cae dentro del rango 6.3-8 mm de Kaiser que `main.tex` ya cita, asi que no contradice lo escrito.
+
+### D-O2.5 — S1 y S2: se muestrea en los dos, el prior ordinal es solo S1
+
+El muestreador propone pose en **S1 y en S2**. El benchmark ordinal de Zwingmann y el Wasserstein-1 se
+aplican **solo en S1**. S2 se reporta **descriptivamente** (geometria y grados de brecha), sin prior
+clinico. Es lo que ya cerraron #12 y #28 y no se reabre.
+
+### D-O2.6 — La fraccion por zona de densidad es componente REPORTADO de SAP, no condicionante del muestreo
+
+Entra como **componente que se reporta**, calculado sobre `e9b_densidad_s1.csv`. **No** condiciona la
+distribucion de muestreo. Si condicionara el muestreo se convertiria en un parametro ajustable mas, y la
+circularidad que D-O2.1 acaba de cerrar volveria a entrar por la puerta de atras.
+
+### D-O2.7 — Preinscripcion
+
+SAP y la distribucion de poses se congelan por escrito **antes** de calcular el primer Wasserstein-1,
+igual que se hizo con `diseno_A.md` y con el criterio de inclusion R1-R3. Esta entrada es esa
+preinscripcion para las siete decisiones; la distribucion de poses concreta se preinscribe en su propio
+documento cuando se fije.
+
+### Orden de implementacion decidido en el mismo turno
+
+**SAP primero, muestreador despues.** SAP se puede validar sobre los tornillos **reales** ya censados
+(E8/E11), donde la posicion es dato y no salida del muestreador. Implementar el muestreador antes
+obligaria a depurar metrica y muestreador a la vez, con dos fuentes de error simultaneas y ninguna
+referencia externa.

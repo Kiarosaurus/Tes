@@ -103,7 +103,8 @@ RESULTADOS = (['D_TS_max_mm', 'L_TS_mejor_mm', 'D_IS_izq_max_mm', 'D_IS_der_max_
 CAMPOS = (['Caso', 'Grupo', 'cohorte', 'clinico', 'estado_TS', 'fov7', 'S1_toca_fov', 'modo', 'F_limpieza',
            'politica_metal', 'igual_a_F', 'vox_quitados', 'vox_quitados_recorte', 'vox_ocupados_recorte']
           + RESULTADOS + ['segundos', 'Error'])
-CAMPOS_PERFIL = ['Caso', 'modo', 'F_limpieza', 'politica_metal', 'z_rel_S1_mm', 'D_TS_mejor_mm']
+CAMPOS_PERFIL = ['Caso', 'modo', 'F_limpieza', 'politica_metal', 'z_rel_S1_mm', 'D_TS_mejor_mm',
+                 'c_x_mm', 'c_y_mm', 'c_z_mm', 'u_x', 'u_y', 'u_z']
 
 
 def caja_recorte(s1: np.ndarray, zoom: np.ndarray, forma: np.ndarray) -> tuple[slice, ...]:
@@ -165,7 +166,8 @@ def ocupacion(hu: np.ndarray, zoom: np.ndarray) -> dict[str, np.ndarray] | None:
 
 
 def buscar(hu: np.ndarray, hueso: np.ndarray, densidad: np.ndarray, origen: np.ndarray, zoom: np.ndarray,
-           r1: pd.Series, dmetal: np.ndarray | None) -> tuple[dict, np.ndarray, np.ndarray, dict]:
+           r1: pd.Series, dmetal: np.ndarray | None
+           ) -> tuple[dict, np.ndarray, np.ndarray, dict, list[dict | None]]:
     """Busqueda de corredor de `e9_corredor.analizar` sobre una mascara dada, mas metal y densidad en el eje."""
     s1 = np.array([r1['S1_x_mm'], r1['S1_y_mm'], r1['S1_z_mm']], dtype=np.float32)
     x_mid = float(r1['S1_x_mm'])
@@ -180,6 +182,10 @@ def buscar(hu: np.ndarray, hueso: np.ndarray, densidad: np.ndarray, origen: np.n
             direcciones.append(u / np.linalg.norm(u))
     mejor_global: dict = {}
     mejor_por_z = np.zeros(len(zs))
+    # Eje del mejor corredor A CADA ALTURA. Antes solo se guardaba el diametro (`mejor_por_z`) y el
+    # `c`/`u` de cada z se descartaba al pasar a la siguiente; solo sobrevivia el del mejor global, que
+    # es el de S1. Sin el eje por altura no se puede muestrear ni marcar el corredor de S2 (#121).
+    ejes_por_z: list[dict | None] = [None] * len(zs)
     mejores_is = {'D_IS_izq': 0.0, 'D_IS_der': 0.0}
     for iz, z in enumerate(zs):
         mejor_z: dict = {}
@@ -197,6 +203,8 @@ def buscar(hu: np.ndarray, hueso: np.ndarray, densidad: np.ndarray, origen: np.n
                 if r['D_TS'] > mejor_z.get('D_TS', -1):
                     mejor_z = {**r, 'c': c, 'u': u}
         mejor_por_z[iz] = mejor_z.get('D_TS', 0.0)
+        if mejor_z:
+            ejes_por_z[iz] = {'c': mejor_z['c'], 'u': mejor_z['u']}
         if mejor_por_z[iz] > mejor_global.get('D_TS', -1):
             mejor_global = mejor_z
     del edt
@@ -246,7 +254,7 @@ def buscar(hu: np.ndarray, hueso: np.ndarray, densidad: np.ndarray, origen: np.n
         for c_h in HOLGURAS:
             fila[f'viable_TS_d{d_imp}_c{c_h:.0f}'] = 'si' if fila['D_TS_max_mm'] >= d_imp + 2 * c_h else 'no'
     fila['viable_TS_10mm'] = 'si' if fila['D_TS_max_mm'] >= 10.0 else 'no'
-    return fila, zs, mejor_por_z, mejor_global
+    return fila, zs, mejor_por_z, mejor_global, ejes_por_z
 
 
 def procesar(caso: str, ruta_ct: Path, ts_dir: Path, r1: pd.Series, meta: dict,
@@ -299,11 +307,17 @@ def procesar(caso: str, ruta_ct: Path, ts_dir: Path, r1: pd.Series, meta: dict,
                         cerrado = ndi.binary_closing(np.pad(sin_cierre, it), iterations=it)[it:-it, it:-it, it:-it]
                     hueso = cerrado & ~occ if occ is not None else cerrado
                     densidad = sin_cierre & ~occ if occ is not None else sin_cierre
-                    res, zs, perfil, mejor = buscar(hu, hueso, densidad, origen, zoom, r1, dmetal)
+                    res, zs, perfil, mejor, ejes = buscar(hu, hueso, densidad, origen, zoom, r1, dmetal)
                     fila.update(res)
-                    perfiles += [{'Caso': caso, 'modo': modo, 'F_limpieza': frac, 'politica_metal': politica,
-                                  'z_rel_S1_mm': round(float(z - s1[2]), 1), 'D_TS_mejor_mm': round(float(d), 1)}
-                                 for z, d in zip(zs, perfil)]
+                    for z, d, eje in zip(zs, perfil, ejes):
+                        p = {'Caso': caso, 'modo': modo, 'F_limpieza': frac, 'politica_metal': politica,
+                             'z_rel_S1_mm': round(float(z - s1[2]), 1), 'D_TS_mejor_mm': round(float(d), 1)}
+                        if eje is not None:
+                            ce, ue = eje['c'], eje['u']
+                            p.update({'c_x_mm': round(float(ce[0]), 1), 'c_y_mm': round(float(ce[1]), 1),
+                                      'c_z_mm': round(float(ce[2]), 1), 'u_x': round(float(ue[0]), 4),
+                                      'u_y': round(float(ue[1]), 4), 'u_z': round(float(ue[2]), 4)})
+                        perfiles.append(p)
                     if dir_laminas is not None and modo == modo_laminas and frac == 0.0 and politica == 'hueso':
                         lamina(hu, zoom, origen, mejor, zs, perfil, float(s1[2]), dir_laminas / f'{caso}.png',
                                f'{caso} (TS {modo}, F=0, metal como hueso): D_TS max {res["D_TS_max_mm"]} mm; '

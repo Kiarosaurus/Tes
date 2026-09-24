@@ -2,6 +2,103 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## PUNTO DE RETOMA 2026-09-23 (2) — TRASPASO. Leer esto y nada mas para arrancar
+
+> Escrito para una sesion nueva **sin historial**. Sustituye a los bloques del 2026-09-22 y al primero
+> del 2026-09-23, que quedan abajo como historico.
+
+### En una frase
+
+El **Objetivo 2 esta terminado y escrito en `main.tex`**; lo que queda son **dos revisiones humanas**
+(#123 y #125), **una decision de redaccion** (#124), y despues el **Objetivo 3**, que es el riesgo real
+porque **nunca ha generado una muestra** (#116).
+
+### Orden de lectura al arrancar
+
+1. Este bloque.
+2. `experiments/objetivo2/EXPERIMENTOS.md` — que artefacto esta vigente, quien lo produjo, que lo
+   consume. **Un CSV vacio no significa que nadie respondio**; puede ser una planilla superada.
+3. `docs/04-implicancias.md`, solo **#123, #124 y #125**, que son las abiertas del Objetivo 2.
+4. Correr `python experiments/objetivo2/verificar_coherencia.py` (**94 comprobaciones**). Si falla
+   alguna, el codigo y `main.tex` han dejado de decir lo mismo y eso se arregla **antes** de tocar nada.
+
+### El resultado del Objetivo 2, ya en `main.tex`
+
+Corrida **52175** (Khipu), preinscrita en `preinscripcion_muestreador.md`, sin errores. Fila
+*Surgical Admissibility* marcada **executed**:
+
+| Cohorte | n poses | g0 / g1 / g2 / g3 (%) | W1 navegado | W1 convencional |
+|---|---|---|---|---|
+| Primaria, 72 casos | 3600 | 51.5 / 31.4 / 11.1 / 6.0 | **0.206** | 0.230 |
+| Sensibilidad, 49 casos | 2450 | 54.9 / 30.4 / 9.9 / 4.8 | **0.186** | 0.299 |
+
+`main.tex`: 0 errores, 0 citas indefinidas, 8 paginas.
+
+**Cerradas esta semana:** #118 (SAP se mide con 7.0 mm, el calibre del benchmark) · #119 (los FOV
+cortados no estan en la cohorte) · #120 (el tramo que SAP califica es el implante, de longitud fija) ·
+#121 (el segundo corredor **no es S2**: 13 S2 / 4 S3 / 1 S4 en 18 casos) · #122 (en 15 de 72 el corredor
+no admite el calibre; W1 estratificado, **post hoc declarado**).
+
+### Lo que queda, con su estado exacto
+
+| # | Que | Estado | Donde |
+|---|---|---|---|
+| **#123** | 16 casos del **recorte de 6 mm**. Condicion de reapertura escrita por la autora y nunca evaluada; **todas** las cifras del Obj 2 salen de ese recorte | autora **0/16**, agente **16/16** | `e9ts_revision_laminas_autora.csv`, `_agente.csv`, instrucciones en `e9ts_revision_laminas.md` |
+| **#125** | **Cribado de fractura**, 30 casos **ciegos** (15 estrechos + 15 control) | **0/30** | `r3_fractura_revisor.csv` + `.md`. El reparto esta en `r3_fractura_grupos.csv` y **NO se entrega al revisor** |
+| **#124** | Decidir si la frase del acuerdo **61 de 61** entra en `main.tex` | decision | recomendacion: si, en una frase, con los dos limites declarados |
+
+**Revisiones ya completas:** S1 sobre laminas (**61/61**, acuerdo total con el revisor clinico ORL) y
+nivel del segundo corredor (**18/18**).
+
+### El subagente ya corrio, y su resultado tiene un pero
+
+`.claude/agents/revisor-laminas-corredor.md` reviso los 16 casos de #123: **14 `ok`, 2 `fallo_3mm`,
+0 `fallo_6mm`, 0 `dudoso`**. Los dos fallos son `CLINIC_0076` y `CLINIC_0022`, y en los dos **la region
+perdida lo es en el recorte de 3 mm**, no en el de 6 mm.
+
+**Cero `fallo_6mm` apunta a que la decision de 2026-09-14 (4) no se reabre. Pero NO la cierra:**
+
+- Es una **propuesta**, no la referencia. La revision de la autora sigue en 0/16 y es la que vale.
+- **Cero `dudoso` en 16 casos visuales es sospechoso.** Las instrucciones invitaban explicitamente a
+  usarlo y el agente no lo uso ni una vez. Un revisor que nunca duda sobre cortes sueltos esta siendo
+  optimista, no preciso.
+- `ok` significa *"no veo error en estos cortes"*, no *"no hay error"*: las laminas **no demuestran
+  ausencia** (#19, #21).
+
+### Por que #125 es la mas seria de las tres
+
+`CLINIC_0060` tiene **fractura confirmada** —por un medico recien licenciado, **sin especialidad**, y
+asi debe citarse— y un corredor de **6.2 mm**: **esta dentro de los 15 estrechos de #122**, que
+`main.tex` presenta hoy como variabilidad anatomica. `CLINIC_0022` tiene 4.7 mm y tambien esta.
+`reilly2003effect`, ya citado en la tesis, midio que una fractura desplazada reduce el area para
+tornillos en S1 **entre 36% y 90%**. Si la fractura se concentra en los estrechos, parte de lo que la
+tesis llama anatomia es patologia no detectada. Por eso el cribado es **ciego y con grupo de control**:
+sin el, no se distingue concentracion de tasa de fondo.
+
+### Estado del repositorio
+
+**Hay trabajo sin commitear**, incluido el resultado del Objetivo 2, cuatro ediciones de `main.tex`,
+ocho implicancias, cuatro planillas de revision, `EXPERIMENTOS.md` y el subagente. **Commitear es lo
+primero.** Comprobar con `git status --short`.
+
+### Siguiente, en orden
+
+1. **Commitear.**
+2. Las dos revisiones humanas: **#123** (la autora, para contrastar con el agente) y **#125** (mejor si
+   la contesta alguien con especialidad; con un lector general sigue valiendo, pero hay que escribirlo asi).
+3. Decidir **#124**.
+4. **Objetivo 3.** Es lo que queda del alcance completo: nunca se ha generado una muestra sintetica
+   (#116) y sigue en pie el compromiso del brazo TOST (#90), que la autora decidio mantener como meta.
+
+### Aviso de metodo, ganado a golpes esta semana
+
+El asistente afirmo **cinco veces** algo por delante de la evidencia: dio por aplicado un cambio que no
+ejecuto (dos veces), infirio de un CSV vacio que un revisor no habia respondido, generalizo desde una
+sola imagen y cito un documento que solo habia leido a medias. Las cinco las detecto la autora o una
+verificacion posterior. **Pedir la cifra medida, no la impresion.** Los hallazgos reales de la semana
+—el calibre de 7.0 mm, el tramo del implante, que el segundo corredor no es S2— salieron todos de un
+control que podia fallar, no de razonar sobre el codigo.
+
 ## PUNTO DE RETOMA 2026-09-22 (4) — EL OBJETIVO 2 TIENE SU PRIMER RESULTADO (job 52175)
 
 > Sustituye a los tres bloques anteriores de este mismo dia, que quedan abajo como historico.

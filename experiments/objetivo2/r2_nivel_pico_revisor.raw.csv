@@ -1,0 +1,19 @@
+Caso,Lamina,D_corredor_mm,corte_sagital,corte_coronal,corte_axial,corte_sagital_1,corte_coronal_1,corte_axial_1,HU_voxel,HU_mediana_3x3x3,Archivo,revisor,nivel_del_punto,vertebra_transicion,legible,comentario
+dataset6_CLINIC_0025_data,outputs/r2_nivel_pico/dataset6_CLINIC_0025_data.png,6.8,252,302,205,253,303,206,84,83.0,data/dataset6/dataset6_CLINIC_0025_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0030_data,outputs/r2_nivel_pico/dataset6_CLINIC_0030_data.png,8.8,262,318,195,263,319,196,151,138.0,data/dataset6/dataset6_CLINIC_0030_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0036_data,outputs/r2_nivel_pico/dataset6_CLINIC_0036_data.png,6.9,274,296,181,275,297,182,144,139.0,data/dataset6/dataset6_CLINIC_0036_data.nii.gz,autora,S3,,,
+dataset6_CLINIC_0044_data,outputs/r2_nivel_pico/dataset6_CLINIC_0044_data.png,6.4,215,334,210,216,335,211,198,229.0,data/dataset6/dataset6_CLINIC_0044_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0045_data,outputs/r2_nivel_pico/dataset6_CLINIC_0045_data.png,5.5,232,320,213,233,321,214,46,51.0,data/dataset6/dataset6_CLINIC_0045_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0050_data,outputs/r2_nivel_pico/dataset6_CLINIC_0050_data.png,9.0,237,265,211,238,266,212,129,129.0,data/dataset6/dataset6_CLINIC_0050_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0060_data,outputs/r2_nivel_pico/dataset6_CLINIC_0060_data.png,3.8,253,302,139,254,303,140,467,458.0,data/dataset6/dataset6_CLINIC_0060_data.nii.gz,autora,S4,?,no,los huesos en esa parte parecen (en mi opinión están) rotos
+dataset6_CLINIC_0067_data,outputs/r2_nivel_pico/dataset6_CLINIC_0067_data.png,4.7,250,304,196,251,305,197,597,495.0,data/dataset6/dataset6_CLINIC_0067_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0073_data,outputs/r2_nivel_pico/dataset6_CLINIC_0073_data.png,11.9,258,302,251,259,303,252,131,127.0,data/dataset6/dataset6_CLINIC_0073_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0077_data,outputs/r2_nivel_pico/dataset6_CLINIC_0077_data.png,9.6,310,297,232,311,298,233,124,110.0,data/dataset6/dataset6_CLINIC_0077_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0079_data,outputs/r2_nivel_pico/dataset6_CLINIC_0079_data.png,10.2,260,293,278,261,294,279,181,180.0,data/dataset6/dataset6_CLINIC_0079_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0086_data,outputs/r2_nivel_pico/dataset6_CLINIC_0086_data.png,11.2,242,321,177,243,322,178,81,82.0,data/dataset6/dataset6_CLINIC_0086_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0088_data,outputs/r2_nivel_pico/dataset6_CLINIC_0088_data.png,10.7,269,286,223,270,287,224,108,108.0,data/dataset6/dataset6_CLINIC_0088_data.nii.gz,autora,S2,,,
+dataset6_CLINIC_0092_data,outputs/r2_nivel_pico/dataset6_CLINIC_0092_data.png,7.9,253,370,210,254,371,211,-72,-27.0,data/dataset6/dataset6_CLINIC_0092_data.nii.gz,autora,S3,,,
+dataset6_CLINIC_0093_data,outputs/r2_nivel_pico/dataset6_CLINIC_0093_data.png,4.9,264,324,200,265,325,201,333,282.0,data/dataset6/dataset6_CLINIC_0093_data.nii.gz,autora,S2,,,al final de S2 casi en la unión
+dataset6_CLINIC_0100_data,outputs/r2_nivel_pico/dataset6_CLINIC_0100_data.png,9.4,244,389,167,245,390,168,-55,-54.0,data/dataset6/dataset6_CLINIC_0100_data.nii.gz,autora,S3,,,
+dataset6_CLINIC_0101_data,outputs/r2_nivel_pico/dataset6_CLINIC_0101_data.png,6.4,262,318,166,263,319,167,-54,-60.0,data/dataset6/dataset6_CLINIC_0101_data.nii.gz,autora,S3,,,
+dataset6_CLINIC_0103_data,outputs/r2_nivel_pico/dataset6_CLINIC_0103_data.png,7.3,255,345,228,256,346,229,115,109.0,data/dataset6/dataset6_CLINIC_0103_data.nii.gz,autora,S2,,,

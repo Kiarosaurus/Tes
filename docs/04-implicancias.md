@@ -8279,7 +8279,7 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   0-3 grados -> grado 0; 5 -> 1; 8 -> 2; 12 y 20 -> 3. **Ninguna pose se queda sin grado.**
 - **Estado: CERRADA.**
 
-### 121 — D-O2.5 manda muestrear en S1 y S2, pero S2 **no tiene eje de corredor medido**: `e9ts_corredor.csv` guarda un solo eje por caso, y es el de S1 — ABIERTA (bloquea la mitad de D-O2.5)
+### 121 — El segundo corredor NO es S2: en 5 de 18 casos cae en S3 o mas caudal. Medido, no supuesto — **CERRADA el 2026-09-23** (medido, decidido y escrito en `main.tex`)
 
 - **Origen:** al escribir `experiments/objetivo2/preinscripcion_muestreador.md`, 2026-09-22. Salio de
   buscar en el CSV los campos que hacian falta para muestrear en S2 y no encontrarlos.
@@ -8361,16 +8361,44 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   3. Si **no** confirma o no hay revisor: se implementa igual, pero se reporta como **"el segundo
      corredor por debajo de S1"** y no como S2. Cumple la parte descriptiva de D-O2.5 sin afirmar un
      nivel que no se midio.
-- **ACTUALIZACION 2026-09-22 (4): el plan depende de un revisor cuya ultima planilla no volvio, y eso
-  cambia el orden de los pasos.** Verificado: `r1_revision_itksnap_revisor.csv`, preparada el 2026-09-15
-  a peticion del propio revisor, sigue con **0 de 61 filas respondidas**. La revision que **si** se
-  completo fue la del **mosaico** (`r1_auditoria_s1_clinico.csv`, 2026-09-11), que es la que cita
-  `main.tex`. Es decir: la via que se completa es la lamina; la via que permitia contar vertebras es la
-  que quedo sin responder.
-  - **Mitigado en el material preparado:** la revision de #121 se entrega como **lamina sagital
-    completa** (`r2_nivel_pico_laminas.py`), no como planilla de ITK-SNAP. Resuelve la objecion original
-    del revisor —el mosaico de +-60 mm no deja contar vertebras— sin exigirle abrir software.
-  - **Pero el riesgo de no-respuesta no se elimina, y por eso S2 no debe colgar de el.**
+- **ACTUALIZACION 2026-09-22 (4), CORREGIDA: sobre el formato de la revision, no sobre el revisor.**
+  - **Hechos verificados:** `r1_auditoria_s1_clinico.csv` (revision de S1 **sobre laminas**, 2026-09-11)
+    esta **completa: 65 de 65**. `r1_revision_itksnap_revisor.csv` (segunda vuelta de S1 **en
+    ITK-SNAP**, preparada el 2026-09-15) sigue en **0 de 61**.
+  - **RECTIFICACION.** En el chat del 2026-09-22 este asistente presento ese 0 de 61 como que "el
+    revisor no devolvio la planilla", y de ahi dedujo un riesgo de no-respuesta. **Es incorrecto y no
+    estaba sostenido por ninguna evidencia del repositorio:** la revision de S1 se completo, en su
+    formato de lamina, y la segunda vuelta en ITK-SNAP es un encargo posterior distinto que
+    simplemente no se persiguio. La autora lo corrigio en el chat. Queda registrado por la regla 17.
+  - **Lo que si se sostiene, y es lo unico que hay que retener:** el formato que se completa es la
+    **lamina**; ITK-SNAP quedo sin usar. Por eso la revision de #121 se entrega como lamina
+    (`r2_nivel_pico_laminas.py`) y no como planilla de ITK-SNAP, resolviendo ademas la objecion
+    original del revisor: el mosaico de +-60 mm no deja contar vertebras, y la lamina nueva si.
+  - **Dato que condiciona el plan:** los 18 casos de la revision de S2 y los 65 de la revision de S1
+    **no comparten ningun paciente**. Los de S1 son todos `dataset7` (con metal); la cohorte del
+    Objetivo 2 es `dataset6` (sin osteosintesis, decision #52 a). No se puede revalidar S1 sobre las
+    laminas de S2.
+- **ACTUALIZACION 2026-09-22 (5), a raiz de una pregunta de la autora: la lamina de verificacion
+  hereda el mismo hueco de datos, y eso obliga a reordenar los pasos.**
+  - **Pregunta de la autora:** *"¿y si la linea pasa por dos S? porque a veces estan muy como
+    acostados"*.
+  - **Es un problema real, y medido.** La linea de la lamina es un **plano axial**, horizontal; los
+    segmentos sacros no lo son. Ademas los dos corredores que mide E9-TS estan separados **18 mm**
+    (mediana; IQR 15-21, min 12, max 42) sobre 69 casos de la cohorte, menos que la altura de un cuerpo
+    sacro. Un plano axial puede cortar dos segmentos.
+  - **La causa de fondo no es la lamina: es que solo se guardo la altura.** El corredor no es un plano,
+    es un tubo de **7.3 mm** de diametro (mediana en el pico inferior) que pasa por un punto concreto
+    `c = (x_mid, y, z)` (`e9ts_corredor.buscar`). De ese punto **solo se conserva `z`**; la `y` se
+    descarta junto con `c` y `u`. Por eso la lamina solo puede marcar una linea horizontal a lo ancho de
+    toda la imagen, cuando lo correcto seria marcar **un punto**.
+  - **Consecuencia para el orden de trabajo:** hacer primero el cambio de codigo de #121 y **despues**
+    la revision. Con `c` y `u` por altura, la lamina marca el punto por donde pasa el corredor y la
+    pregunta pasa a tener la **misma forma que la de S1** —un punto juzgado contra la anatomia—, que es
+    la que ya se ha contestado 65 de 65 veces. Mandar la revision antes arriesga una segunda pasada.
+  - **Medida provisional, por si se manda igual:** la planilla acepta `S1-S2` y `S2-S3`, con el nivel
+    dominante en `comentario`. Esa respuesta tambien es informativa: dice que la altura sola no
+    identifica un nivel.
+  - **No afecta al lote de revalidacion de S1** (61 casos), que marca un punto y no una linea.
 - **RECOMENDACION FINAL DEL ASISTENTE, revisada con lo anterior: desacoplar.**
   1. Implementar el volcado del eje por altura y la corrida, y reportar el segundo corredor como
      **"el segundo corredor por debajo de S1"**. Eso **ya cierra** la promesa de `main.tex`, no depende
@@ -8380,6 +8408,80 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   3. No poner S2 en el camino critico. El minimo viable ya esta cerrado y el riesgo que queda es el
      Objetivo 3, que **nunca ha generado una muestra** (#116) y arrastra el compromiso del brazo TOST
      (#90).
+- **ACTUALIZACION 2026-09-22 (6): el cambio de codigo esta HECHO y verificado en local; falta la
+  corrida.** Por orden de la autora. En `e9ts_corredor.py`: `buscar()` conserva el eje de cada altura
+  (`ejes_por_z`) y lo devuelve; `CAMPOS_PERFIL` pasa de 6 a 12 columnas (+ `c_x_mm, c_y_mm, c_z_mm,
+  u_x, u_y, u_z`); `procesar()` los escribe por fila de perfil. Se anade `e9ts_ejes.sbatch`, con
+  `--out-dir` propio para **no sobrescribir** el `e9ts_corredor.csv` que respalda cifras de `main.tex`.
+  - **Controles pasados sobre el caso piloto:** `|u| = 1` en todas las filas con eje; y el
+    `e9ts_corredor.csv` nuevo es **identico por valor** al existente en las **46** columnas comparadas.
+    La primera comparacion marco cuatro columnas como distintas y eran **solo dtype** (el CSV viejo
+    tiene 152 casos y mezcla tipos); por valor no difiere ninguna. El cambio solo anade.
+  - **Pendiente:** lanzar `e9ts_ejes.sbatch` en Khipu, bajar `e9ts_perfiles.csv` y regenerar las 18
+    laminas de S2 marcando el **punto** del corredor en vez de la linea.
+- **ACTUALIZACION 2026-09-22 (7): el hueco de datos esta CERRADO. Queda solo la decision de etiqueta.**
+  La corrida de Khipu se hizo y se bajo (`outputs/e9ts_ejes_corredor.csv`, `e9ts_ejes_perfiles.csv`).
+  - **Control de identidad: PASA.** 2 352 filas, 152 casos, **0 errores**, y las **46** columnas del
+    `e9ts_corredor.csv` nuevo son identicas por valor a las del existente. El cambio solo anadio.
+  - **Eje por altura disponible:** `|u| = 1` en todas las filas con eje, y **69 de 72** casos de la
+    cohorte tienen eje a la altura del pico inferior, que son exactamente los que tenian pico.
+  - **Dato que explica la ambiguedad de la lamina anterior:** el corredor inferior pasa **30 mm por
+    detras** del punto de S1 (mediana; rango -45 a -15), y su eje esta a **8.5 grados** de la horizontal
+    izquierda-derecha (mediana; maximo 27). Una linea horizontal no localizaba nada en el plano.
+  - **Laminas regeneradas:** las 18 marcan ahora el **punto** del corredor y su seccion, con los indices
+    de ITK-SNAP del mismo punto al pie. Planilla nueva `r2_nivel_pico_revisor.csv` con `nivel_del_punto`;
+    las instrucciones viejas quedan en `r2_nivel_pico_revisor.ANTERIOR.md`.
+  - **Pendiente:** solo la revision y, con ella, decidir si el segundo corredor se reporta como **S2** o
+    como **"el segundo corredor por debajo de S1"**.
+- **RESULTADO DE LA REVISION (2026-09-22), y contesta la pregunta de raiz.** La autora juzgo los 18
+  casos sobre las laminas con el punto del corredor marcado (`r2_nivel_pico_revisor.csv`):
+
+  | Nivel juzgado | n | Profundidad bajo S1 (mm): min / mediana / max | Diametro mediano |
+  |---|---|---|---|
+  | **S2** | **13** | -39 / -30 / -24 | 8.8 mm |
+  | **S3** | **4** | -54 / -40.5 / -33 | 7.4 mm |
+  | **S4** | **1** | -51 | 3.8 mm |
+
+  - **El pico inferior NO es S2.** Lo es en **13 de 18 (72%)**; en **5 de 18 (28%)** cae en S3 o mas
+    caudal. **Llamarlo "corredor de S2" habria sido incorrecto en mas de uno de cada cuatro casos**, y
+    era exactamente lo que este asistente propuso hacer en dos actualizaciones anteriores de esta misma
+    implicancia. El supuesto no sobrevivio a la medicion.
+  - **La profundidad predice pero no determina.** Un umbral en -32 mm acertaria en 17 de 18, pero hay
+    una inversion real: `CLINIC_0093` a **-39 mm** es **S2** —*"al final de S2 casi en la union"*—
+    mientras que casos a **-36** y **-33 mm** son **S3**. La altura sola no identifica el nivel, que es
+    justo lo que la autora anticipo al preguntar por el sacro inclinado.
+  - **El diametro acompana al nivel:** 8.8 mm en S2, 7.4 en S3, 3.8 en el S4. Cuanto mas caudal, mas
+    estrecho. Es coherente con la anatomia y no se uso para juzgar.
+  - **Un caso ilegible, y con motivo:** `CLINIC_0060`, juzgado S4, `legible = no`, comentario *"los
+    huesos en esa parte parecen (en mi opinion estan) rotos"*. Diametro 3.8 mm, el menor de la muestra.
+    Es un volumen de `dataset6`, sin osteosintesis, pero **no necesariamente sin fractura**.
+- **DECISION QUE QUEDA, ahora con evidencia:** el segundo corredor se reporta como **"el segundo
+  corredor por debajo de S1"**, sin atribuirle nivel vertebral, y se declara que en una muestra de 18
+  casos cayo en S2 en 13, en S3 en 4 y en S4 en 1. **La opcion de etiquetarlo S2 queda descartada por
+  medicion propia**, no por prudencia.
+- **Consecuencia para D-O2.5 y para `main.tex`:** el documento promete hoy evaluar S2
+  descriptivamente. Con esto, lo que se puede evaluar es **el segundo corredor**, que no es un nivel
+  vertebral fijo. Hay que reescribir esa promesa. **No aplicado (reglas 4 y 14).**
+- **Higiene de datos, aplicada:** la planilla venia en cp1252; reescrita en UTF-8, original en
+  `r2_nivel_pico_revisor.raw.csv`. Las columnas de juicio quedaron intactas.
+- **APLICADO a `tesis/main.tex` el 2026-09-23, por peticion explicita** (regla 4). Cuatro ediciones:
+  1. *Problem Statement*: *"S2 placements are evaluated descriptively"* -> *"placements in the second
+     osseous corridor below S1"*.
+  2. *Objetivos*: parrafo nuevo con el hallazgo medido —13 / 4 / 1 en S2 / S3 / S4, profundidades
+     medianas de 30, 40.5 y 51 mm, diametros medianos de 8.8, 7.4 y 3.8 mm, y la inversion del caso a
+     39 mm— y la frase que lo ata al argumento que el texto ya hacia: **medir cada corredor sobre la
+     anatomia individual en vez de asumir una jerarquia universal de nivel**.
+  3. *Tabla de Expected Results*: la fila deja de hablar de S2 y declara que el nivel vertebral del
+     segundo corredor **no es constante**.
+  4. **Correccion de una frase propia del 2026-09-22**: el parrafo de resultados decia que la anatomia
+     receptora *"is unfractured"*. No esta verificado: la cohorte se selecciono **sin osteosintesis**,
+     que no es lo mismo. Reescrito como *"selected as free of osteosynthesis rather than verified as
+     free of fracture"*. Lo motivo `CLINIC_0060` (ver #125).
+- **Verificacion:** `verificar_coherencia.py` recomputa desde `r2_nivel_pico_revisor.csv` los recuentos,
+  las tres profundidades medianas, los tres diametros medianos y la inversion, y comprueba que
+  `main.tex` los declare. **94/94 comprobaciones pasan.** Compila: 0 errores, 0 citas indefinidas,
+  8 paginas.
+- **Estado: CERRADA.**
 - **En los tres casos el resultado principal del Objetivo 2 no se toca.**
 - **Tipo:** ALCANCE + DATO. **No aplicado (reglas 3, 4 y 14): la eleccion es de la autora.**
 
@@ -8464,3 +8566,173 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   **todas** las cifras que `main.tex` afirma —distribuciones, los seis Wasserstein-1, recuentos de casos
   viables y estrechos— y comprueba que el texto las declara. **78/78 comprobaciones pasan.**
 - **Estado: CERRADA.**
+
+### 123 — La decision del recorte de 6 mm tiene una condicion de reapertura que NUNCA se evaluo, y todas las cifras del Objetivo 2 salen de ese recorte — ABIERTA
+
+- **Origen:** inventario del directorio `experiments/objetivo2/` para escribir `EXPERIMENTOS.md`,
+  2026-09-22. No sale de un paper ni de un experimento: sale de contar columnas vacias.
+- **Hallazgo, verificado:** `e9ts_revision_laminas_autora.csv` tiene **16 filas y las columnas
+  `veredicto` y `nota` completamente vacias**. Su documento, `e9ts_revision_laminas.md`, dice literal:
+  *"Condicion de reapertura de la decision 2026-09-14 (4): el recorte de 6 mm se mantiene como
+  principal salvo que esta revision muestre un fallo suyo."*
+- **Por que importa y no es gestion:** **todo** el Objetivo 2 se calcula sobre `default6mm`. La cohorte
+  de 72, el `D_TS_max` de cada caso, la longitud del implante, la pose base, los 3 600 grados de brecha
+  y los dos Wasserstein-1 que ya estan escritos en `main.tex` salen de ese recorte. La decision que lo
+  fijo se tomo **condicionada** a una revision que no se hizo, asi que la condicion sigue **sin
+  verificar**.
+- **Que tan grande es el efecto, con lo ya medido:** `e9ts_resumen.md` da las dos variantes sobre la
+  cohorte de 72. `default6mm`: D mediana **9.5 mm**, **40.3%** pasa 10 mm, **65.3%** con `d=6.5, c=1`.
+  `robust3mm`: **9.4 mm**, **37.5%**, **62.5%**. Las diferencias agregadas son pequenas. **Pero la
+  revision no se preparo sobre agregados:** los 16 casos son justamente aquellos donde
+  `|D_TS(6 mm) - D_TS(3 mm)| >= 1 mm`, mas dos con cajas desplazadas mas de 10 mm (#49). El efecto por
+  caso puede ser grande aunque la mediana no se mueva, y por caso es como entra en SAP.
+- **Lo que NO se puede concluir:** que las cifras esten mal. No hay evidencia de eso. Lo que hay es una
+  **condicion declarada y no comprobada**, que es distinto.
+- **Opciones:**
+  - (a) **Llenar la revision de los 16 casos.** Las laminas ya existen (`outputs/e9ts/laminas/` y
+    `outputs/e9ts_3mm/laminas/`) y la planilla tambien. Es mirar 16 pares de imagenes.
+  - (b) **Correr SAP con `robust3mm`** sobre la cohorte y reportar la diferencia como sensibilidad del
+    recorte. No necesita revisor, pero si una corrida de Khipu y una preinscripcion de la sensibilidad.
+  - (c) Declarar la condicion como no evaluada y decirlo en la limitacion del documento.
+- **Recomendacion del asistente: (a), y es barata.** Son 16 casos con las laminas ya generadas; cierra
+  una condicion que la propia autora escribio. (b) es el respaldo cuantitativo si (a) levanta dudas.
+  (c) sola no basta: una condicion de reapertura que se declara incumplida sin mirarla, teniendo las
+  imagenes en disco, es dificil de defender.
+- **Por que no se vio antes:** nada en el repositorio distinguia una planilla llena de una vacia, ni una
+  pendiente de una superada. `EXPERIMENTOS.md` existe para que esto no vuelva a pasar.
+- **ACTUALIZACION 2026-09-23: la revision tenia un criterio que habria producido fallos falsos.**
+  Al actualizar `e9ts_revision_laminas.md` se encontro que pedia comprobar que *"el corredor esta a la
+  altura de S1, no en S2 ni en L5"*. **Ese criterio contradice lo medido despues** y se retiro:
+  - El **mejor corredor global** de la cohorte de 72 esta a una mediana de **-20 mm** del punto de S1
+    (p10 -33, p90 -9), y **36 de 72 casos** lo tienen a mas de 20 mm por debajo.
+  - La revision de #121 mostro que corredores a **-24 mm** ya se juzgan **S2**, y que la profundidad no
+    determina el nivel (un S2 a -39 mm frente a S3 a -36 y -33 mm).
+  Con el criterio antiguo, **la mitad de la cohorte tendria un "fallo" de nivel que no es tal**. Si la
+  revision se hubiera hecho en su momento, habria producido falsos positivos justo en la variable que
+  #121 acaba de demostrar que es variable. El nivel pasa a anotarse en `nota`, no a puntuarse.
+- **Otros dos cambios, de forma, aplicados el 2026-09-23:** las rutas del CSV estaban referidas a la
+  raiz del repositorio mientras las otras dos revisiones las refieren a `experiments/objetivo2/`;
+  unificadas, 48 de 48 resuelven. Y se anadio la columna `revisor`, que no existia; el original quedo
+  en `e9ts_revision_laminas_autora.sin_revisor.csv`.
+- **Lo demas de la especificacion de 2026-09-14 sigue siendo correcto:** los 16 casos, los tres paneles,
+  las cinco categorias de `veredicto` y la advertencia de #19/#21.
+- **PROPUESTA DEL AGENTE (2026-09-23), que NO cierra la condicion.** El subagente
+  `revisor-laminas-corredor` reviso los 16 casos y escribio `e9ts_revision_laminas_agente.csv`:
+  **14 `ok`, 2 `fallo_3mm`, 0 `fallo_6mm`, 0 `dudoso`**. Los dos fallos son `CLINIC_0076` y
+  `CLINIC_0022`, y en ambos la region perdida lo es en el recorte de **3 mm**, no en el de 6 mm; la
+  evidencia que cita es la fila 3 de la lamina de mascaras, donde esa region aparece solo en azul.
+  - **Apunta a que la decision 2026-09-14 (4) no se reabre**, porque el unico veredicto que la reabriria
+    es `fallo_6mm` y no hay ninguno.
+  - **Pero no la cierra, por tres razones.** (i) Es una **propuesta**: la revision de la autora sigue en
+    **0 de 16** y es la que vale. (ii) **Cero `dudoso` en 16 casos visuales es sospechoso**: las
+    instrucciones lo invitaban explicitamente y el agente no lo uso ni una vez; un revisor que nunca
+    duda sobre cortes sueltos esta siendo optimista, no preciso. (iii) `ok` significa *"no veo error en
+    estos cortes"*, y las laminas **no demuestran ausencia** (#19, #21).
+  - **La condicion se cierra cuando la autora revise y se comparen las dos**, como se hizo en R1 entre
+    el agente y el revisor clinico (0.908 exacto, kappa 0.81). Los desacuerdos son los casos a mirar dos
+    veces.
+  - Higiene: el CSV venia en cp1252, reescrito en UTF-8; original en
+    `e9ts_revision_laminas_agente.raw.csv`. `e9ts_revision_laminas_autora.csv` **intacto**, verificado.
+- **Tipo:** METODO + VERIFICACION PENDIENTE. Toca la decision del 2026-09-14 (4) y, si (a) o (b) mueven
+  algo, las cifras del Objetivo 2. **No aplicado (reglas 3, 4 y 14).**
+
+### 124 — Segunda lectura independiente del nivel de S1 sobre laminas: 61 de 61 de acuerdo con la revision del ORL — ABIERTA (que se puede afirmar con ella; no cambia ninguna cifra)
+
+- **Origen:** revision de `r1_revision_laminas_revisor.csv`, llenada por la autora el 2026-09-22 sobre
+  las 61 laminas alargadas.
+- **Resultado bruto:** 61 de 61 llenas. Distribucion **ok 51, +1 7, otro 2, ? 1**, que reproduce
+  **exactamente** la del revisor clinico ORL de 2026-09-11 (`r1_landmarks.md:45`: ok 51, +1 7, otro 2,
+  ? 1, mas 4 "no hallado" que no estan en este subconjunto). Tabla cruzada: **todo en la diagonal, 61
+  de 61, acuerdo exacto 100%**.
+- **RECTIFICACION (2026-09-22).** Este asistente concluyo primero que la lectura **no** era
+  independiente, porque tres comentarios son identicos palabra por palabra a los de 2026-09-11. **Era
+  una inferencia equivocada.** La autora lo aclaro en el chat: *"primero llene los juicio_nivel,
+  verifique por mi cuenta si concordaban con el pasado (y si), y como eran iguales anadi exactamente
+  los mismos comentarios adrede"*. Es decir, el **orden fue juicio -> comparacion -> copia deliberada
+  del comentario**, no al reves. Los juicios **si** son una segunda lectura independiente. Queda
+  registrado por la regla 17: es la segunda vez en la sesion que el asistente infiere procedencia de un
+  artefacto en vez de preguntarla.
+- **Lo que por tanto SI se puede afirmar:** una **segunda lectura independiente** del nivel de S1 sobre
+  las 61 laminas coincide con la del revisor clinico en **61 de 61 casos**, categoria por categoria.
+  Como contraste, el agente automatico sobre los mismos casos daba 0.908 exacto y kappa 0.81
+  (`r1_landmarks.md:47`).
+- **Los dos limites que conviene conservar al redactarlo:**
+  1. **Los comentarios no son evidencia independiente**: se copiaron a proposito una vez comprobada la
+     coincidencia, y la propia autora lo declara. Solo los **juicios** lo son.
+  2. **El segundo lector es la autora, no un segundo clinico.** Es una segunda lectura, no una segunda
+     opinion clinica, y asi debe describirse si llega al documento.
+- **Lo que la relectura SI aporta, y no es poco:**
+  - **El formato funciona:** 60 de 61 casos legibles sobre lamina, sin abrir ITK-SNAP. Cierra la
+    objecion del revisor de 2026-09-14 al mosaico de +-60 mm.
+  - **Dos observaciones nuevas** que no estaban en 2026-09-11: `metal_0019`, marcado `ok`, lleva ahora
+    *"aunque ligeramente cae en el pediculo"*; y `metal_0015` aporta un **candidato concreto de
+    correccion** hallado en ITK-SNAP, S1 en **(277-350-114)**, con `legible = no`.
+  - **Un modo de fallo del detector, ahora con texto:** en `metal_0035` el punto cae *"mas en la parte
+    lateral que en la parte superior"*, y en `metal_0046` y `metal_0058` la cruz esta sobre los
+    **ligamentos sacroiliacos posteriores**. Son tres casos del mismo tipo de error, no tres errores
+    distintos.
+- **Impacto en las cifras de `main.tex`: NINGUNO, verificado.** `metal_0015` ya tiene
+  `marco_computable = False` en `r1_estados.csv`, asi que el candidato de correccion afecta a un caso
+  que ya estaba fuera del recuento de 48. Las cifras de 48 y 29 no se mueven.
+- **Lo que `main.tex` dice hoy sigue siendo exacto:** *"a clinician reviewer (one surgeon,
+  otorhinolaryngology), blinded to the automatic audit, confirmed the S1 level on every patient"*. Esa
+  frase describe la revision de 2026-09-11 y no se toca. El riesgo es solo anadir un segundo lector que
+  no existe.
+- **Opciones:** (a) dejar `main.tex` como esta y guardar la segunda lectura como respaldo interno;
+  (b) anadir una frase declarando el acuerdo de 61 de 61 entre el revisor clinico y una segunda lectura
+  de la autora, con los dos limites de arriba explicitos.
+- **Recomendacion: (b), en una sola frase.** El acuerdo es real y refuerza el unico punto del marco de
+  referencia que depende de juicio humano; ocultarlo seria desaprovechar trabajo hecho. Pero tiene que
+  decir **quien** es el segundo lector y que los comentarios no son independientes, o pasa a afirmar de
+  mas.
+- **Nota de higiene de datos, ya aplicada:** la planilla venia en **cp1252** y con cinco textos libres
+  escritos en la columna `vertebra_transicion`, que solo admite `si`/`no`/`?`. Se movieron a
+  `comentario`, se guardo en UTF-8 y el original quedo en `r1_revision_laminas_revisor.raw.csv`.
+- **Tipo:** REDACCION + PROCEDENCIA. **No aplicado a `tesis/main.tex` (regla 14).**
+
+### 125 — `CLINIC_0060` tiene fractura CONFIRMADA y esta entre los 15 corredores estrechos de #122; la cohorte nunca se verifico libre de fractura, solo libre de osteosintesis — ABIERTA (cribado ciego preparado)
+
+- **Origen:** revision del segundo corredor, 2026-09-22. La revisora juzgo `dataset6_CLINIC_0060_data`
+  como S4 con `legible = no` y comento: *"los huesos en esa parte parecen (en mi opinion estan) rotos"*.
+  Es el corredor mas estrecho de la muestra, **3.8 mm**.
+- **CONFIRMADO el 2026-09-23.** Un medico **recien licenciado y sin especialidad** confirmo que
+  `CLINIC_0060` tiene fractura. Es una confirmacion real y se cuenta como tal, pero **no es lectura de
+  radiologo ni de traumatologo**, y esa salvedad debe acompanar a cualquier cifra que se derive.
+- **Y el caso confirmado cae DENTRO del grupo que hace dudar de #122.** `CLINIC_0060` tiene
+  `D_TS_max = 6.2 mm`, asi que **es uno de los 15 corredores estrechos** que #122 atribuye hoy a
+  variabilidad anatomica. La otra sospecha abierta, `CLINIC_0022` (fragmentos separados de sacro o S1,
+  E10b/#49), tiene **4.7 mm** y **tambien** esta en ese grupo. `CLINIC_0043`, la tercera candidata,
+  tiene 11.7 mm y no lo esta.
+- **Eso convierte la duda en una hipotesis comprobable:** si la fractura se concentra en los corredores
+  estrechos, parte de lo que `main.tex` presenta como anatomia es patologia no detectada.
+- **El hallazgo de fondo no depende de ese caso.** El criterio con el que se construyo la cohorte del
+  Objetivo 2 es **ausencia de osteosintesis** (#52 a), no ausencia de fractura. Nadie verifico lo
+  segundo, ni caso por caso ni por muestreo. `dataset6` es la particion sin metal de CTPelvic1K, y eso
+  no garantiza pelvis intacta.
+- **Aplicado a `main.tex` el 2026-09-23:** la frase del parrafo de resultados que decia que la anatomia
+  receptora *"is unfractured"* —escrita por este asistente el 2026-09-22— pasa a *"selected as free of
+  osteosynthesis rather than verified as free of fracture"*. Era una afirmacion mas fuerte que la
+  evidencia, del mismo tipo que las otras de esta sesion.
+- **Por que puede importar mas que un caso:** `reilly2003effect`, ya citado en `main.tex`, midio que
+  5-20 mm de desplazamiento craneal de una fractura de zona II reducen el area disponible para tornillos
+  iliosacros en S1 **entre 36% y 90%**. Si hubiera fracturas no detectadas en la cohorte receptora,
+  sus corredores estarian estrechados por la misma razon, y eso **confunde parcialmente** el hallazgo de
+  #122 —los 15 de 72 corredores mas estrechos que el calibre del benchmark— con una causa distinta de
+  la variabilidad anatomica normal.
+- **Opciones:** (a) esperar la confirmacion de `CLINIC_0060` y, si es fractura, revisar los corredores
+  mas estrechos de la cohorte en busca de mas casos; (b) revisar de entrada los 15 casos estrechos de
+  #122, que son donde la hipotesis se juega; (c) declarar la limitacion sin mirar.
+- **Recomendacion del asistente: (b), y ya esta preparada.** Con una correccion de diseno respecto de
+  lo que propuse ayer: **mirar solo los 15 estrechos no contesta la pregunta**. Si aparecieran tres
+  fracturas no se sabria si es mucho o poco, porque falta la tasa de fondo de la coleccion. Por eso el
+  cribado lleva **grupo de comparacion y es ciego**:
+  - `r3_fractura_revisor.csv`: **30 casos barajados**, 15 estrechos (todos los que hay) y 15 de control
+    tomados al azar de los 57 viables, **sin decir a que grupo pertenece ninguno**. Semilla 20260923.
+  - El reparto esta en `r3_fractura_grupos.csv`, que **no se entrega** y solo se abre al analizar.
+  - Instrucciones en `r3_fractura_revisor.md`. Las **60 laminas** ya existen en disco.
+  - Columnas: `revisor` (pide especialidad a proposito), `fractura` (`si`/`no`/`dudoso`), `donde`,
+    `legible`, `comentario`.
+- **Las tres salidas posibles son reportables:** sin fractura en ninguno de los dos grupos, #122 se
+  reporta como esta; concentrada en los estrechos, cambia la interpretacion de #122 y es un resultado;
+  repartida por igual, es tasa de fondo de CTPelvic1K y se declara como limitacion.
+- **Tipo:** DATO + LIMITACION. **No aplicado a `00-tesis.md` ni al criterio de cohorte (reglas 3 y 14).**

@@ -148,6 +148,33 @@ def main() -> int:
               '0.482', 'declared post-hoc', 'considered and rejected'):
         chk(f'main.tex declara {s!r}', s in tex)
 
+    # --- lo que main.tex afirma del segundo corredor tiene que salir de la planilla (#121) ---
+    rev = _AQUI / 'r2_nivel_pico_revisor.csv'
+    if rev.exists():
+        rv = pd.read_csv(rev)
+        e9b = pd.read_csv(_AQUI / 'e9ts_corredor.csv')
+        e9b = e9b[(e9b.modo == 'default6mm') & (e9b.F_limpieza == 0.0)
+                  & (e9b.politica_metal == 'hueso')].drop_duplicates('Caso').set_index('Caso')
+        rv['z'] = [e9b.loc[c, 'pico_inf_z_rel_mm'] for c in rv.Caso]
+        rv['D'] = [e9b.loc[c, 'pico_inf_D_mm'] for c in rv.Caso]
+        cuenta = rv.nivel_del_punto.value_counts().to_dict()
+        chk('segundo corredor: 18 casos juzgados', len(rv) == 18)
+        chk('segundo corredor: S2 13 / S3 4 / S4 1',
+            (cuenta.get('S2'), cuenta.get('S3'), cuenta.get('S4')) == (13, 4, 1), str(cuenta))
+        for niv, prof, diam in (('S2', 30.0, 8.8), ('S3', 40.5, 7.4), ('S4', 51.0, 3.8)):
+            s = rv[rv.nivel_del_punto == niv]
+            chk(f'{niv}: profundidad mediana {prof} mm', abs(-s.z.median() - prof) < 0.05,
+                f'({-s.z.median()})')
+            chk(f'{niv}: diametro mediano {diam} mm', abs(s.D.median() - diam) < 0.05,
+                f'({s.D.median()})')
+        chk('la inversion existe: un S2 a 39 mm y algun S3 a 36 o 33 mm',
+            (-rv[rv.nivel_del_punto == 'S2'].z.min() == 39.0)
+            and set([-x for x in rv[rv.nivel_del_punto == 'S3'].z]) >= {36.0, 33.0})
+        for s in ('at S2 in', 'at S3 in 4 and at S4 in 1', '30, 40.5 and 51~mm',
+                  '8.8, 7.4 and 3.8~mm', 'second corridor below S1', 'not as S2',
+                  'rather than verified as free of fracture'):
+            chk(f'main.tex declara {s!r}', s in tex)
+
     e12 = _AQUI / 'e12_sap_control.md'
     if e12.exists():
         txt = e12.read_text(encoding='utf-8')

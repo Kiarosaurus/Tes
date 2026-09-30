@@ -57,3 +57,6 @@ experiments/**/outputs/
 # ---- Sistema ----
 .DS_Store
 Thumbs.db
+
+# Compilacion local del documento de overleaf (scripts/lint_redaccion.py --compilar)
+redaccion/.build/

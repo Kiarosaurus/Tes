@@ -8736,3 +8736,95 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   reporta como esta; concentrada en los estrechos, cambia la interpretacion de #122 y es un resultado;
   repartida por igual, es tasa de fondo de CTPelvic1K y se declara como limitacion.
 - **Tipo:** DATO + LIMITACION. **No aplicado a `00-tesis.md` ni al criterio de cohorte (reglas 3 y 14).**
+
+---
+
+### 116 — ACTUALIZACION (2026-09-24): la mitad del minimo viable ya tiene codigo; la otra mitad del diagnostico sigue en pie, literal
+
+- **Origen:** revision de estado pedida por la autora, 2026-09-24 (asistente en rol de asesor). Verificado
+  contra disco, no inferido.
+- **Lo que ya NO se sostiene de la #116 original:**
+  - `src/muestreador/` **no esta vacio**: `sap.py` (469 lineas, 17 funciones) y `muestreo.py` (125 lineas).
+  - **SAP existe, corre y produjo resultado**: corrida 52175, dos cohortes, escrita en `main.tex`.
+  - El minimo viable **Obj 1 + Obj 2 + SAP** esta, por tanto, ejecutado y redactado.
+- **Lo que sigue exactamente igual, comprobado hoy:**
+  - `muestrea_ddim` (`src/renderizador/difusion.py:93`) **sigue sin un solo llamador** en todo el arbol
+    (`grep -rn "muestrea_ddim" --include=*.py --include=*.sbatch`, un unico acierto: la propia definicion).
+    **El proyecto no ha generado ninguna muestra sintetica.**
+  - El unico `ckpt.pt` es el del piloto de 200 pasos (`outputs/a2/pasos200_20260921_074236`), declarado
+    en su propio log: *"corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis."*
+  - El banco de geometrias de implante sigue **PENDIENTE DE DEFINIR** (CLAUDE.md; #97, #99).
+- **Consecuencia sobre la priorizacion, que es lo que cambia:** el argumento de la #116 original era
+  *"el camino critico es el minimo viable"*. Ese argumento **ya se consumio**. El camino critico hoy es
+  el **pegamento del Obj 3** —geometria -> pose -> mascara -> render -> metrica—, del que solo existe el
+  cuarto eslabon. El entrenamiento **no es el cuello de botella**: el piloto midio 0.106 s/paso y 3.4 GB
+  en A6000, y extrapola a **0.9 h para 30 000 pasos**.
+- **Sigue ABIERTA.** No se cierra porque su afirmacion central —cero muestras sinteticas, contribucion de
+  apariencia sin observar— es verdadera hoy. Lo que caduco es el inventario de `src/muestreador/`.
+- **Tipo:** ALCANCE + PLAN DE TRABAJO. **No aplicado a `main.tex` ni a `00-tesis.md` (reglas 4 y 14).**
+
+---
+
+## Ronda 2026-09-29 — arranque del documento de entrega (`overleaf/`)
+
+### 126 — El documento que se entrega a la universidad (`overleaf/`) contradice el alcance vigente: titulo, introduccion y datos de portada — ABIERTA
+
+- **Origen:** lectura de `overleaf/` para montar el ciclo de redaccion, 2026-09-29. Verificado contra
+  disco.
+- **Lo que dice hoy `overleaf/`, y por que choca:**
+  - **Titulo** (`overleaf/main.tex:49`): *"...mediante difusion condicionada para aumento de datos en
+    segmentacion osea"*. La mejora downstream esta **fuera de alcance** (punto 1 de `Fuera de alcance`,
+    `docs/00-tesis.md`; `tesis/main.tex`, *"Downstream segmentation impact is deliberately excluded"*).
+    El titulo vigente en `docs/00-tesis.md` es otro (*Multi-Window Image-Domain Diffusion*).
+  - **Introduccion** (`overleaf/secciones/introduccion.tex`): la pregunta, el objetivo general y el
+    objetivo especifico 4 prometen **DSC y HD95** sobre casos reales con metal; el metodo es **2D** y
+    **difusion latente con ControlNet**. Las tres cosas quedaron retiradas: #1 fuera de alcance, No-Go del
+    Objetivo 1 (#91) y rediseno del Objetivo 3 al dominio de imagen (decision 2026-09-19 pto 4).
+  - **Portada:** el asesor figura como *"Victor"* sin apellido y los dos ORCID son `0000-0000-0000-0000`;
+    la plantilla declara el ORCID **obligatorio**.
+- **Consecuencia para la redaccion:** la introduccion se reescribe desde `tesis/main.tex` y su texto
+  actual **no** se usa como fuente (marcada DESFASADO en `redaccion/MAPA.md`). El titulo y la portada no
+  los decide el asistente.
+- **Que falta decidir (autora):** (a) titulo en espanol del documento de entrega; (b) si el titulo menciona
+  la motivacion (aumento de datos) o solo lo que se evalua (coherencia fisica y quirurgica); (c) nombre
+  completo y ORCID del asesor, y ORCID propio.
+- **Tipo:** REDACCION + ALCANCE. **No aplicado: `overleaf/main.tex` conserva titulo y portada (regla 14).**
+
+### 127 — La redaccion del capitulo 3 (`overleaf/`) destapo contradicciones entre decisiones, corridas y `tesis/main.tex` — ABIERTA
+
+Origen: `/ciclo-redaccion capitulo3`, rondas r01-r02 (2026-09-29). Detalle en
+`redaccion/rondas/capitulo3-r01-respuesta.md` y `capitulo3-r02-respuesta.md`. Hoy todo entra al capitulo como `\GAPDEC`.
+
+1. **SAP, componente de viabilidad (T01):** D-O2.4 fija la envolvente en 6.5-8.0 mm para `D >= d + 2c`, pero `e13_sap.md` se corrio con 4.91 / 7.0 / 7.3 mm y 1 mm de holgura. Hay que decidir cual se reporta.
+2. **SAP, fraccion por zona de densidad (T03):** D-O2.6 la calcula sobre E9b, pero la decision del 2026-09-14 (#50) retiro E9b como evidencia de densidad. Falta definir la fraccion por pose.
+3. **Obj 3, prueba primaria (guia-1, r02):** el Wilcoxon de *streak amplitude* contra copia y pegado no puede fallar, porque la copia no produce rayas por construccion. Hay que decir que resultado cuenta como fallo, o si la prueba decisiva es la TOST contra el protocolo fisico.
+4. **Obj 1, preinscripcion (guia-3, r02):** la regla de la compuerta se escribio despues de una exploracion sobre la cohorte completa, incluidos los 34 de prueba. Toca la validez que se afirma para la preinscripcion.
+5. **`tesis/main.tex` desfasado:**
+   - :78 y :117 contradicen D-O2.6 y D3 (densidad y cabeza del tornillo);
+   - :52 y :123 usan el criterio de 10 mm, sustituido por #31;
+   - :77 dice "fixed before any run" y "latent route is abandoned";
+   - la frase de :121 sobre el truncamiento no cuadra con su propio embudo (7 frente a 19).
+6. **Obj 2 sin regla de decision y Obj 4 sin evidencia experimental** (guia-2 y guia-3, r01). Tambien siguen abiertos h = 2 sigma, la agregacion por paciente y el tamano del brazo fisico.
+7. **Supuesto no verificado (guia-3, r03):** el sintetizador se entrena con todo el material ortopedico (placas, protesis) y sintetiza solo tornillos. Eso supone que la relacion entre mascara y artefacto no depende del tipo de implante. El capitulo lo declara como amenaza a la validez de constructo (dato: 5 de 40 componentes revisados eran tornillos, DEC 2026-09-21).
+8. **`tesis/main.tex:117`:** dice "more than a factor of two", pero en el extremo de 6.5 mm la razon de secciones frente a 4.91 mm es de aproximadamente 1.75 (S01, r03).
+9. **Cohorte de sensibilidad del Obj 2:** ninguna fuente dice por que son solo los pacientes del grupo 3 (guia-9, r03).
+10. **Exclusion de extremos de 8 mm (T02, r04):** D-O2.3 justifica excluir los extremos al medir el corredor y el tramo $T$ de SAP, pero no justifica el valor de 8 mm. Si es una convencion propia, hay que declararlo.
+11. **Viabilidad con dos papeles (guia-5, r04):** en el capitulo 3 aparece como caracterizacion de la cohorte (l.91) y como variable dependiente descriptiva del Obj 2. Hay que decidir cual queda.
+12. **S1 en la serie navegada (guia-3, r04):** esta decidido (#69, DEC 2026-09-17 C) y ahora figura como supuesto en validez de constructo. Para justificarlo hace falta una frase de `zwingmann2009navigated` que la ficha no trae; la ficha solo tiene la del criterio de evaluacion. Revisar el PDF via `lector-papers`.
+13. **La envolvente osea implementada no es la decidida (T01, r05):** D-O2.3 (pto 1) fija un cierre de 2 mm mas el relleno de cavidades cerradas en 3D. El codigo que midio el corredor (`e9ts_corredor.py`:307-308) y el que corrio SAP (`e12_sap_control.py`:111-112, importado por `e13_muestreo_sap.py`) solo aplican el cierre. El relleno solo existe en `e9_corredor.py`:99, la version por umbral de HU que ya se reemplazo. Hay que decidir si se corrige el texto de la decision o se vuelve a correr E9-TS, E12 y E13 con relleno. Mientras tanto, las cifras del corredor y de SAP corresponden a la envolvente sin relleno.
+14. **Regiones de medicion de rayas (guia-2, r05):** la banda $B_\delta$ trunca a proposito las rayas lejanas, y fuera de la banda el sintetizador da amplitud nula por construccion. El protocolo fisico, en cambio, genera rayas en todo el volumen. Si las regiones de *streak amplitude* se miden fuera de $B_\delta$, la comparacion con el protocolo fisico (TOST) queda sesgada en contra del sintetizador. El borrador `diseno_A.md` supone medir dentro de la banda, pero no esta preinscrito.
+15. **Margen $\Delta$ (guia-1, r05):** no esta definido que cambia entre dos corridas repetidas del protocolo fisico (semilla de ruido o corrida completa).
+16. **Evaluaciones sin metrica (guia-3, r05):** la diferencia entre mascara umbralizada y cilindro liso, la continuidad de los valores de TC en el borde de $B_\delta$ y el realismo frente a observaciones reales solo constan en el borrador `diseno_A.md`, sin preinscripcion.
+
+### 128 — Al reescribir la introduccion (`overleaf/`) aparecieron eslabones del argumento que ninguna fuente del repositorio escribe — ABIERTA
+
+Origen: `/ciclo-redaccion introduccion` (Objetivos, Justificacion y Alcance), rondas r01-r03, 2026-09-29/30. Detalle en `redaccion/rondas/introduccion-r0*-respuesta.md`. En el texto van como `\GAPDEC`; no se invento ninguna razon.
+
+1. **Para que un sintetizador por difusion, si el protocolo fisico ya corre sobre las poses muestreadas (guia-1, r03):** el diseno del Obj 3 ejecuta el protocolo fisico de Peters et al. sobre las poses del muestreador. Entonces la tension "ningun enfoque produce a la vez poses clinicas y apariencia del artefacto" queda debilitada por el propio diseno. Falta la razon declarada (costo, validacion del simulador, otra). **Toca el argumento central de la tesis.** Salvedad (T01, introduccion r04): la implementacion y los resultados del protocolo fisico siguen como `\GAPDATO` en el cap. 3; lo que existe hoy es el diseno, no la corrida.
+2. **Orden coherencia -> utilidad (guia-4, r01):** ni `tesis/main.tex` ni `docs/00-tesis.md` dicen por que la coherencia fisica y quirurgica debe establecerse antes de medir la utilidad para segmentacion. Tampoco dicen por que un implante sintetico aliviaria la escasez de volumenes con metal anotados.
+3. **Contribucion no evaluada (guia-4, r02):** "el uso para la sintesis de la codificacion multiventana" figura como contribucion, pero ningun objetivo verifica su error de ida y vuelta sin autoencoder (ver #127.6).
+4. **Contribucion en tension con el diseno (guia-2, r03):** la geometria parametrica "evita segmentar el metal con un umbral fijo de HU", pero el sintetizador se entrena con mascaras umbralizadas.
+5. **Alcance: solo el tornillo iliosacro (guia-5, r03):** no hay razon declarada para excluir placas y otros tornillos. La coincidencia verificable es que la referencia clinica y el marco de Kaiser et al. solo cubren ese tornillo.
+6. **Ablacion excluida sin objeto (r02):** "restriccion por restriccion" no enumera restricciones; el muestreador actual solo perturba el eje.
+7. **Hipotesis ausente (r00):** la introduccion no enuncia hipotesis (G-A1). Su lugar es la Formulacion del problema, desfasada (#126).
+8. **Como se enuncia el resultado del Obj 1 (guia-1, r05):** la introduccion lo presentaba como mecanismo ("los autoencoders se definen sobre rangos de intensidad que excluyen el hueso denso y el metal"), pero el diseno del Obj 1 solo mide si se supera el umbral de 25 HU. El texto ya se corrigio. Queda por decidir si esa explicacion del mecanismo se afirma en algun lugar de la tesis (cap. 4) y con que evidencia.

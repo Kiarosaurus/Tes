@@ -1,0 +1,134 @@
+%% --------------------------------------------------------------------
+%% Template UTEC Tesis
+%% --------------------------------------------------------------------
+% Este es el archivo que se debe compilar.
+% 
+% Este template ha sido modificado y actualizado por Eduardo Castro y Roosevelt Ubaldo en base a lo trabajado por Víctor Murray, Oscar Ramos y Juan Carlos Barbaran.
+%
+% Última actualización: Mayo, 2022
+
+\documentclass[a4paper,12pt,oneside]{tesisutec}
+
+\selectlanguage{spanish}
+
+%% Paquetes
+\usepackage[utf8]{inputenc}
+\usepackage[square, numbers, comma, sort&compress]{natbib}
+% Libreria de idioma
+\usepackage[spanish]{babel}
+% Libreria para posicionamiento
+\usepackage{float}
+% Librerias para insertar codigos
+\usepackage[spanish,onelanguage,ruled,vlined]{algorithm2e}
+\usepackage{verbatim} 
+% Librería para hipervínculos
+\usepackage{hyperref}
+ % Librería necesaria para arreglar el orden de referencias en overleaf.com
+\usepackage{notoccite}
+
+% Incluir acá los paquetes adicionales que deseas. 
+% Ubicación de los imágenes.
+\graphicspath{images/}
+
+\makeatletter
+% Reinsert missing \algbackskip
+\def\algbackskip{\hskip-\ALG@thistlm}
+\makeatother
+
+\hypersetup{urlcolor=blue, colorlinks=true}
+
+%% ----------------------------------------------------------------------------
+%% Marcas de GAP de redaccion (ver overleaf/CLAUDE.md y redaccion/ESTILO.md).
+%% Hacen visible en el PDF lo que el texto todavia no puede afirmar.
+%%   \GAPLIT{...}   falta una fuente: busqueda de literatura pendiente.
+%%   \GAPDATO{...}  falta un resultado propio: experimento o revision pendiente.
+%%   \GAPDEC{...}   falta una decision de la autora o del asesor.
+%% Para la entrega, cambiar a \entregafinaltrue: cualquier GAP detiene la
+%% compilacion con un error que dice cual es.
+%% ----------------------------------------------------------------------------
+\usepackage{xcolor}
+\newif\ifentregafinal
+\entregafinalfalse
+\newcounter{gaplit}
+\newcounter{gapdato}
+\newcounter{gapdec}
+\newcommand{\gapmarca}[4]{%
+  \stepcounter{#1}%
+  \ifentregafinal\errmessage{#2 sin resolver: #4}\fi
+  \textcolor{#3}{\textbf{[#2: #4]}}}
+\newcommand{\GAPLIT}[1]{\gapmarca{gaplit}{GAP-LIT}{red!75!black}{#1}}
+\newcommand{\GAPDATO}[1]{\gapmarca{gapdato}{GAP-DATO}{orange!85!black}{#1}}
+\newcommand{\GAPDEC}[1]{\gapmarca{gapdec}{GAP-DEC}{blue!70!black}{#1}}
+\makeatletter
+\AtEndDocument{\immediate\write\@auxout{%
+  \string\gdef\string\gapstotales{\arabic{gaplit}/\arabic{gapdato}/\arabic{gapdec}}}}
+\newcommand{\resumengaps}{%
+  \ifentregafinal\else
+    \@ifundefined{gapstotales}{}{%
+      \begin{center}\fbox{\parbox{0.85\linewidth}{\centering\small
+        \textbf{BORRADOR} --- GAP pendientes (literatura / dato / decisión):
+        \textbf{\gapstotales}}}\end{center}}%
+  \fi}
+\makeatother
+
+\begin{document}
+
+\frontmatter
+
+\department{CIENCIAS DE LA COMPUTACIÓN}
+\degree{Bachiller }
+\major{Ciencias de la Computación }
+
+
+\title{Síntesis de imágenes de TC pélvica con implantes metálicos mediante difusión condicionada para aumento de datos en segmentación ósea}
+
+\author{Kiara Alexandra Balcázar Santa Cruz \orcid{0000-0000-0000-0000}} % Es obligatorio agregar ORCID del alumno
+\supervisor{Victor \orcid{0000-0000-0000-0000}} % Es obligatorio agregar ORCID del asesor
+\date{2026}
+
+\maketitle
+
+\setstretch{1.5}
+
+\resumengaps
+
+
+\input{encabezados/dedicatoria}
+\input{encabezados/agradecimientos}
+
+\tableofcontents
+
+\newpage
+
+\listoftables
+
+\newpage
+
+\listoffigures
+
+\addtocontents{toc}{\vspace{1.5em}}
+
+%% ============================================================================
+\mainmatter
+\pagestyle{fancy}
+
+\input{secciones/resumen}
+\input{secciones/abstract} 
+\input{secciones/introduccion}   % Bloque (a)
+\input{secciones/capitulo1}      % Bloque (b) teorico: marco teorico
+\input{secciones/capitulo2}      % Bloque (b) comparativo: estado del arte y brecha
+\input{secciones/capitulo3}      % Bloque (c) formal y diseno experimental
+\input{secciones/capitulo4}      % Bloque (c) empirico: resultados y discusion
+\input{secciones/conclusiones}   % Bloque (d)
+\input{secciones/trabajosFuturos} % sección opcional
+
+%% ============================================================================
+\renewcommand{\bibname}{\hfill\Large\bf{REFERENCIAS BIBLIOGRÁFICAS}\hfill}
+
+\bibliographystyle{IEEEtran} % Estableciendo el estilo de citas IEEEtram.
+
+\bibliography{referencias} % Recibe las referencias de IEEE
+
+\input{secciones/anexos}
+
+\end{document}

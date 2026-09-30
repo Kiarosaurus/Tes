@@ -2,6 +2,25 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-09-30 — `/ciclo-redaccion introduccion` (solo Objetivos, Justificacion y Alcance): TOPE en r05
+
+- **Hecho:** tres subsecciones reescritas (r00) y corregidas en r01 a r05. Dentro del alcance el lint da 0/0 y compila (67 pag.). Revisores alta/media: r01 2/27 -> r05 0/12 (solo estilo no baja). Los PDF estan en `redaccion/.build/etapas/introduccion-r0*.pdf`. Se abrio la #128: eslabones del argumento sin fuente, en especial para que el sintetizador si el protocolo fisico corre sobre las mismas poses.
+- **Siguiente:** la autora decide #128, #127 y #126. Luego se reescriben el encabezado y la Formulacion del problema (pregunta, hipotesis) y se alinean con los nuevos objetivos.
+- **Pendientes para el cap. 3:** alinear el titulo de `sec:obj1` y la l. 13 ("valida") con el nuevo titulo del Obj 1; la l. 253 atribuye al "control de nivel" los 7 de 57 que la l. 52 atribuye a la discordancia de nivel; el control tambien excluyo a un paciente por borde del campo de vision, de grupo no dicho: revisar; decidir "componentes" o "medidas" para SAP en todo el documento.
+
+## 2026-09-29 (2) — `/ciclo-redaccion capitulo3`: TOPE en r05, con decisiones pendientes
+
+- **Hecho:** cap. 3 redactado (r00) y corregido en r01 a r05. El lint PASA y compila (57 pag.). Los PDF por etapa estan en `redaccion/.build/etapas/`. Revisores alta/media: r01 8/35 -> r05 1/11. La bitacora tiene 42 patrones (21 VIGENTES, 21 ERRADICADOS).
+- **Siguiente:** que la autora decida los 16 puntos de #127 (22 `\GAPDEC` en el cap. 3). Despues, `/ciclo-redaccion capitulo3` para una ronda mas, o seguir con `capitulo4` / `capitulo1`.
+- **Pendientes nuevos:** #127, sobre todo el punto 13 (envolvente implementada distinta de D-O2.3; puede obligar a volver a correr E9-TS, E12 y E13) y el 14 (regiones de rayas contra $B_\delta$). Validar las decisiones de redaccion de `BITACORA.md` §2.
+
+## 2026-09-29 — Arranque del documento de entrega (`overleaf/`)
+
+- **Hecho:** ciclo de redaccion montado: `overleaf/CLAUDE.md`, `redaccion/` (RUBRICA, ESTILO, MAPA, muestras), 4 agentes, skill `/ciclo-redaccion`, `scripts/lint_redaccion.py` (+8 tests) y macros `\GAPLIT/\GAPDATO/\GAPDEC`. Capitulos reordenados segun la guia; `overleaf/referencias.bib` ahora sale de `build_refs.py`. Compila (25 pag.).
+- **Ajuste (misma fecha):** modelo de prosa = la guia del departamento (`ESTILO.md` §1.1); compilacion obligatoria al cerrar cada etapa, con PDF en `redaccion/.build/etapas/` y registro en `redaccion/BITACORA.md`.
+- **Siguiente:** `/ciclo-redaccion capitulo3` (las muestras de la autora ya son opcionales) (el bloque con mas fuente en `tesis/main.tex`); la introduccion va despues.
+- **Pendientes nuevos:** #126 (titulo, introduccion desfasada, ORCID/asesor en portada). Siguen #123, #124, #125 del Obj 2.
+
 ## PUNTO DE RETOMA 2026-09-23 (2) — TRASPASO. Leer esto y nada mas para arrancar
 
 > Escrito para una sesion nueva **sin historial**. Sustituye a los bloques del 2026-09-22 y al primero

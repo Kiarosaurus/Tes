@@ -4,6 +4,8 @@
 refs/raw/ es la fuente descargada del editor y no se toca nunca.
 refs/clean/ es la version normalizada a mano, una entrada por archivo.
 refs.bib es el producto: no se edita a mano, se regenera con este script.
+overleaf/referencias.bib es una copia identica para el documento de la universidad
+(Overleaf solo ve archivos dentro de su carpeta); tampoco se edita a mano.
 """
 from __future__ import annotations
 
@@ -13,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "refs" / "clean"
 OUT = ROOT / "refs.bib"
+OUT_OVERLEAF = ROOT / "overleaf" / "referencias.bib"
 
 HEADER = """% refs.bib — MetalSynth-Pelvis
 % GENERADO. No editar a mano: se reconstruye con `python scripts/build_refs.py`.
@@ -32,8 +35,12 @@ def main() -> int:
     parts = [HEADER]
     for path in files:
         parts.append(path.read_text(encoding="utf-8").strip() + "\n")
-    OUT.write_text("\n".join(parts), encoding="utf-8")
+    texto = "\n".join(parts)
+    OUT.write_text(texto, encoding="utf-8")
     print(f"{len(files)} entradas -> {OUT.relative_to(ROOT)}")
+    if OUT_OVERLEAF.parent.is_dir():
+        OUT_OVERLEAF.write_text(texto, encoding="utf-8")
+        print(f"{len(files)} entradas -> {OUT_OVERLEAF.relative_to(ROOT)}")
     return 0
 
 

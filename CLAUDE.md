@@ -122,3 +122,9 @@ brazo de comparacion: su reimplementacion validada esta declarada fuera de alcan
 18. **`docs/literatura/_index.md` absorbio el registro de accesibilidad.** No crees
     `_acceso.md` bajo ninguna circunstancia. El nivel de acceso va como columna en
     `_index.md`. Esta regla y la 16 dicen lo mismo a proposito: antes se contradecian.
+
+19. **Documento de entrega: `overleaf/`.** Es la tesis que se presenta a UTEC (espanol, citas
+    IEEE); `tesis/main.tex` es el boceto en ingles y su fuente de contenido. Para trabajar ahi
+    manda `overleaf/CLAUDE.md`; la redaccion y revision se hacen con `/ciclo-redaccion`
+    (agentes `redactor-tesis`, `revisor-guia-cs`, `revisor-estilo`, `auditor-trazabilidad`;
+    apoyo en `redaccion/`). `overleaf/referencias.bib` lo genera `scripts/build_refs.py`.

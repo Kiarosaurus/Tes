@@ -175,6 +175,33 @@ def main() -> int:
                   'rather than verified as free of fracture'):
             chk(f'main.tex declara {s!r}', s in tex)
 
+    # --- lo que main.tex afirma del cribado de fractura (#132) ---
+    cr = _AQUI / 'r3_fractura_revisor.csv'
+    gr = _AQUI / 'r3_fractura_grupos.csv'
+    if cr.exists() and gr.exists():
+        rv = pd.read_csv(cr)
+        gg = pd.read_csv(gr).set_index('Caso')
+        rv['grupo'] = rv.Caso.map(gg.grupo_oculto)
+        com = rv.comentario.fillna('')
+        rv['despl'] = (com.str.contains('con desplazamiento', case=False)
+                       & ~com.str.contains('sin desplazamiento', case=False))
+        rv['sacra_despl'] = (rv.donde == 'sacro') & rv.despl
+        chk('cribado: 30 casos, 15 por estrato', len(rv) == 30
+            and (rv.grupo == 'estrecho').sum() == 15 and (rv.grupo == 'control').sum() == 15)
+        chk('cribado: 20 de 30 con fractura', int((rv.fractura == 'si').sum()) == 20,
+            f'({int((rv.fractura == "si").sum())})')
+        e = int(rv[rv.grupo == 'estrecho'].sacra_despl.sum())
+        c_ = int(rv[rv.grupo == 'control'].sacra_despl.sum())
+        chk('cribado: sacra desplazada 7 estrechos / 2 control', (e, c_) == (7, 2), f'({e}, {c_})')
+        chk('cribado: 14 fracturas sacras', int((rv.donde == 'sacro').sum()) == 14)
+        niv = rv[rv.donde == 'sacro'].comentario.fillna('').str.extract(r'(S[123])', expand=False)
+        chk('cribado: 5 fracturas sacras en S2', int((niv == 'S2').sum()) == 5,
+            f'({int((niv == "S2").sum())})')
+        for s in ('7 of the 15 narrow corridors against 2 of the 15', '$p=0.109$',
+                  '5 of the 14 sacral fractures', 'fracture in 20 of the 30 volumes',
+                  'unquantifiable fraction'):
+            chk(f'main.tex declara {s!r}', s in tex)
+
     e12 = _AQUI / 'e12_sap_control.md'
     if e12.exists():
         txt = e12.read_text(encoding='utf-8')

@@ -1,5 +1,77 @@
 # Cribado de fractura en la cohorte del Objetivo 2 (#125)
 
+## Para la autora: que pedir y como explicarlo
+
+> Esta primera seccion es para ti, no para el medico. Las de abajo son las que el lee.
+
+### La tarea, en una frase
+
+Hay que mirar **30 tomografias de pelvis** y decir, en cada una, **si se ve una fractura, donde, y si la
+imagen alcanza para decidirlo**. Nada mas. No se le pide diagnostico, ni opinion sobre tornillos, ni
+nada que tenga que ver con el programa.
+
+### Por que lo necesitas, en lenguaje llano
+
+El programa mide, en cada pelvis, el **ancho del tunel de hueso** por donde cabria un tornillo. En 15 de
+las 72 pelvis ese tunel salio **mas angosto** que el tornillo de referencia, y la tesis lo esta
+explicando como **variacion normal entre personas**.
+
+El problema: en una de esas 15 ya se confirmo una **fractura**. Y una fractura desplazada **angosta el
+tunel**. Si varias de esas 15 estuvieran fracturadas, lo que la tesis llama "anatomia normal" seria en
+realidad **hueso roto sin detectar**. Eso cambiaria como se interpreta el resultado.
+
+Por eso hay que mirar.
+
+### Por que son 30 y no 15
+
+Si solo miraras las 15 angostas y aparecieran tres fracturas, **no sabrias si eso es mucho o poco**:
+quiza en cualquier grupo de 15 pelvis de esta coleccion aparecerian tres.
+
+Por eso van **15 angostas + 15 normales, mezcladas y sin etiqueta**. Al final se cuenta cuantas
+fracturas cayeron en cada grupo. Si hay mas entre las angostas, la sospecha se confirma; si estan
+repartidas, es solo la tasa de fondo de la coleccion.
+
+**El medico no debe saber a que grupo pertenece cada caso.** Si lo supiera, buscaria mas fuerte en las
+angostas y el resultado dejaria de servir. Por eso el reparto esta en un archivo aparte,
+`r3_fractura_grupos.csv`, que **no se entrega**.
+
+### Que le entregas
+
+1. La carpeta con las **60 imagenes** (dos por caso).
+2. `r3_fractura_revisor.csv`, que es donde anota.
+3. Este documento, desde la seccion *Por que esta revision existe* hacia abajo.
+
+**No** le des `r3_fractura_grupos.csv`.
+
+### Que le dices
+
+> Son 30 tomografias de pelvis, anonimas y mezcladas. En cada una necesito que me digas tres cosas:
+> si ves fractura (si / no / dudoso), donde esta si la hay (sacro, ilion, ambos u otro), y si la imagen
+> te permite juzgarlo.
+>
+> "Dudoso" es una respuesta valida y util: prefiero un dudoso honesto a un "no" forzado. Son imagenes
+> fijas, no el estudio completo, asi que no se puede descartar fractura con seguridad y no te estoy
+> pidiendo que lo hagas.
+>
+> Es para investigacion, no son pacientes en atencion y no se emite ningun diagnostico. Voy a reportar
+> tu revision indicando tu grado de formacion.
+
+### Que haces tu antes y despues
+
+**Antes:** confirma que las 60 imagenes esten, y que `r3_fractura_grupos.csv` **no** vaya en el envio.
+
+**Despues:** me pasas el CSV lleno. Se cuenta cuantas fracturas hay en cada grupo y eso decide si la
+interpretacion de los 15 tuneles angostos cambia o no.
+
+### Lo unico que tienes que vigilar
+
+- Que anote **su especialidad** en la columna `revisor`. Un medico recien egresado es un cribado valido,
+  pero **no** es lectura de especialista, y la tesis tiene que decirlo tal cual.
+- Que no fuerce respuestas. Un `dudoso` no es un fracaso de la revision: es informacion.
+- Que no mire el archivo de grupos.
+
+---
+
 ## Por que esta revision existe
 
 La cohorte del Objetivo 2 se construyo con un criterio: **pelvis sin osteosintesis** (#52 a). Nunca se

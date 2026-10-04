@@ -8636,7 +8636,7 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
 - **Tipo:** METODO + VERIFICACION PENDIENTE. Toca la decision del 2026-09-14 (4) y, si (a) o (b) mueven
   algo, las cifras del Objetivo 2. **No aplicado (reglas 3, 4 y 14).**
 
-### 124 — Segunda lectura independiente del nivel de S1 sobre laminas: 61 de 61 de acuerdo con la revision del ORL — ABIERTA (que se puede afirmar con ella; no cambia ninguna cifra)
+### 124 — Segunda lectura independiente del nivel de S1 sobre laminas: 61 de 61 de acuerdo con la revision del ORL — **CERRADA el 2026-10-04** (opcion (b) aplicada a `main.tex`)
 
 - **Origen:** revision de `r1_revision_laminas_revisor.csv`, llenada por la autora el 2026-09-22 sobre
   las 61 laminas alargadas.
@@ -8685,6 +8685,13 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   referencia que depende de juicio humano; ocultarlo seria desaprovechar trabajo hecho. Pero tiene que
   decir **quien** es el segundo lector y que los comentarios no son independientes, o pasa a afirmar de
   mas.
+- **DECISION DE LA AUTORA (2026-10-04):** se adopta **(b)**.
+- **APLICADO a `tesis/main.tex`**, por peticion explicita (regla 4), en el parrafo de la limitacion de
+  campo: una frase que declara el acuerdo **61 de 61** y, en la misma oracion, los dos limites —que el
+  segundo lector es **la autora y no un segundo clinico**, y que **solo los juicios de nivel son
+  independientes**, porque las notas se copiaron una vez vista la coincidencia—. Compila: 0 errores,
+  0 citas indefinidas, 8 paginas.
+- **Estado: CERRADA.**
 - **Nota de higiene de datos, ya aplicada:** la planilla venia en **cp1252** y con cinco textos libres
   escritos en la columna `vertebra_transicion`, que solo admite `si`/`no`/`?`. Se movieron a
   `comentario`, se guardo en UTF-8 y el original quedo en `r1_revision_laminas_revisor.raw.csv`.
@@ -8812,6 +8819,38 @@ Origen: `/ciclo-redaccion capitulo3`, rondas r01-r02 (2026-09-29). Detalle en
 11. **Viabilidad con dos papeles (guia-5, r04):** en el capitulo 3 aparece como caracterizacion de la cohorte (l.91) y como variable dependiente descriptiva del Obj 2. Hay que decidir cual queda.
 12. **S1 en la serie navegada (guia-3, r04):** esta decidido (#69, DEC 2026-09-17 C) y ahora figura como supuesto en validez de constructo. Para justificarlo hace falta una frase de `zwingmann2009navigated` que la ficha no trae; la ficha solo tiene la del criterio de evaluacion. Revisar el PDF via `lector-papers`.
 13. **La envolvente osea implementada no es la decidida (T01, r05):** D-O2.3 (pto 1) fija un cierre de 2 mm mas el relleno de cavidades cerradas en 3D. El codigo que midio el corredor (`e9ts_corredor.py`:307-308) y el que corrio SAP (`e12_sap_control.py`:111-112, importado por `e13_muestreo_sap.py`) solo aplican el cierre. El relleno solo existe en `e9_corredor.py`:99, la version por umbral de HU que ya se reemplazo. Hay que decidir si se corrige el texto de la decision o se vuelve a correr E9-TS, E12 y E13 con relleno. Mientras tanto, las cifras del corredor y de SAP corresponden a la envolvente sin relleno.
+
+    **MEDICION (2026-10-03), sobre los dos casos piloto con mascaras en disco.** El relleno es
+    practicamente un no-op sobre mascaras de TotalSegmentator:
+
+    | Caso | voxeles del hueso cerrado | anade el relleno | D_TS sin relleno -> con relleno |
+    |---|---|---|---|
+    | `CLINIC_0002` | 1 186 638 | **0** (0.000 %) | 9.158 -> **9.158** mm |
+    | `metal_0008` | 1 565 517 | **394** (0.025 %, 0.17 cm3) | 11.288 -> **11.288** mm |
+
+    **Y hay una razon de construccion, no una casualidad.** El comentario de `e9_corredor.py`:95-98 dice
+    por que existe el relleno ahi: *"El esponjoso del sacro y del ilion puede quedar bajo 150 HU: sin
+    rellenar, la mascara es un cascaron cortical y el corredor sale de 1-3 mm"*. Es decir, el relleno
+    corrige el **hueco trabecular de una mascara por umbral de HU**. Las etiquetas de TotalSegmentator
+    son volumenes solidos: no hay cascaron que rellenar. El mismo comentario anade que *"el conducto
+    sacro y los foramenes se comunican con el exterior y no se rellenan"*, asi que el escenario de que
+    el relleno tape el canal o un foramen **no puede darse** con `binary_fill_holes`, que solo rellena
+    cavidades cerradas.
+
+    **Lectura:** D-O2.3 describe la envolvente de `e9_corredor.recortar` (la via por umbral de HU,
+    reemplazada por #48) y nunca describio la de E9-TS. Es un **defecto de documentacion**, no de
+    implementacion, y la opcion "corregir el texto de la decision" tiene respaldo empirico.
+
+    **Limite de esta medicion, y es importante:** son **2 casos de 152**. No se puede generalizar desde
+    ahi —el proyecto ya tiene registrado ese error de metodo—. Lo que falta es barato: un trabajo de
+    Khipu que, por caso, cuente los voxeles que anade el relleno y recalcule `D_TS` **sobre el eje ya
+    guardado**, sin rehacer la busqueda de corredor. Si el maximo sobre los 152 sigue siendo
+    despreciable, se corrige el texto; si algun caso se mueve, ese caso —y solo ese— justifica la
+    corrida de sensibilidad completa.
+
+    **Coste real, medido en el log del job 51505:** E9-TS entero (152 casos, todas las variantes,
+    16 CPU) tardo **6 min 39 s de reloj**, no 1.34 h; esa cifra es la **suma de CPU**, no el tiempo de
+    pared. E13 sobre las dos cohortes son ~32 min. El diagnostico de arriba es mas barato que ambos.
 14. **Regiones de medicion de rayas (guia-2, r05):** la banda $B_\delta$ trunca a proposito las rayas lejanas, y fuera de la banda el sintetizador da amplitud nula por construccion. El protocolo fisico, en cambio, genera rayas en todo el volumen. Si las regiones de *streak amplitude* se miden fuera de $B_\delta$, la comparacion con el protocolo fisico (TOST) queda sesgada en contra del sintetizador. El borrador `diseno_A.md` supone medir dentro de la banda, pero no esta preinscrito.
 15. **Margen $\Delta$ (guia-1, r05):** no esta definido que cambia entre dos corridas repetidas del protocolo fisico (semilla de ruido o corrida completa).
 16. **Evaluaciones sin metrica (guia-3, r05):** la diferencia entre mascara umbralizada y cilindro liso, la continuidad de los valores de TC en el borde de $B_\delta$ y el realismo frente a observaciones reales solo constan en el borrador `diseno_A.md`, sin preinscripcion.
@@ -8828,3 +8867,268 @@ Origen: `/ciclo-redaccion introduccion` (Objetivos, Justificacion y Alcance), ro
 6. **Ablacion excluida sin objeto (r02):** "restriccion por restriccion" no enumera restricciones; el muestreador actual solo perturba el eje.
 7. **Hipotesis ausente (r00):** la introduccion no enuncia hipotesis (G-A1). Su lugar es la Formulacion del problema, desfasada (#126).
 8. **Como se enuncia el resultado del Obj 1 (guia-1, r05):** la introduccion lo presentaba como mecanismo ("los autoencoders se definen sobre rangos de intensidad que excluyen el hueso denso y el metal"), pero el diseno del Obj 1 solo mide si se supera el umbral de 25 HU. El texto ya se corrigio. Queda por decidir si esa explicacion del mecanismo se afirma en algun lugar de la tesis (cap. 4) y con que evidencia.
+
+### 129 — La redaccion del capitulo 2 (`overleaf/`) encontro supuestos del Obj 1 y de la introduccion que el registro contradice — ABIERTA
+
+Origen: `/ciclo-redaccion capitulo2`, rondas r01-r06 (2026-09-30). Detalle en `redaccion/rondas/capitulo2-r0*-respuesta.md` y `capitulo2-r0*-trazabilidad.md`. En el cap. 2 van como `\GAPDEC` o escalados; no se aplico nada fuera de esa seccion (regla 14).
+
+1. **La ida y vuelta sin autoencoder SI esta medida (T01, r03):** `experiments/objetivo1/p1_compuerta.md`:31-38 (control de identidad, `pub+asinh`, 0.00 HU en hueso) y `e6c_techo_lw.md`:21 la miden. Eso contradice #128.3 ("ningun objetivo verifica su error de ida y vuelta"), `introduccion.tex`:46 y `capitulo3.tex`:172, que la dan por no verificada; ademas `sec:obj1` no describe esa medicion (PAT-88). Lo que de verdad falta es decidir que codificacion y que precision adopta el sintetizador. El cap. 2 ya lo dice asi.
+2. **Escala del umbral de 25 HU del Obj 1 (T02 r05; nota del auditor r06):** DEC 2026-09-15 (2) y `capitulo3.tex`:67 anclan los 25 HU en RMSE publicados de MAR (Karageorgos 12.3 y 20.2; Yun 12.74) y los dan en HU, pero las fichas no traen la unidad. Ademas, DEC 2026-09-15 (2) llama "difusion en imagen" al 12.3 de Karageorgos, cuya ficha dice que opera en el sinograma. Si la unidad o el dominio no son los registrados, se debilita la justificacion del umbral. Propuesta: relectura con `lector-papers` de Karageorgos (Tablas I y III, Sec. II-G, region del RMSE) y Yun (Tabla 1, Sec. 2.4.2).
+3. **Cifras de `jacob2026lgesynthnet` (r06):** la ficha pide no citarlas sin decidir cual vale (Dice +6 puntos en el resumen frente a +5 en resultados) y `_index.md`:107 dice "hoy no se cita ninguna cifra"; el cap. 2 cita Dice 0.72 -> 0.77 (Tabla 2, N = 300) y SSIM 0.587 con un `\GAPDEC`. Decidir si se mantienen.
+
+- **Tipo:** SUPUESTO + REDACCION. **No aplicado.**
+
+### 130 — El marco teorico (`overleaf/` cap. 1) no puede decir que tipo de tornillo representa el corredor que mide la tesis — ABIERTA
+
+Origen: `/ciclo-redaccion capitulo1`, r00 (nota del redactor) y r01 (guia-2, T05 escalados), 2026-10-03. Detalle en `redaccion/rondas/capitulo1-r01-respuesta.md`. En el cap. 1 va como `\GAPDEC`; no se toco el cap. 3 (regla 14).
+
+1. **Tres nombres para un corredor:** `docs/03-glosario.md`:74-75 separa transiliosacro (cruza ambas articulaciones sacroiliacas) de iliosacro y dice que las cifras de `mclaren2021corridor` son transiliosacras. `tesis/main.tex`:123 mide un "transsacral corridor diameter"; `tesis/main.tex`:52 y `capitulo3.tex`:196 hablan de tornillo iliosacro, y el cap. 3 justifica la exclusion de 8 mm por extremo con que el tornillo "entra y sale por la cortical del ilion", rasgo que el glosario asocia al transiliosacro.
+2. **Que convenciones aplican:** el criterio de 10 mm y la holgura de 1-2 mm vienen de `kaiser2014dysmorphism` y las tolerancias angulares de `mclaren2021corridor` (transiliosacras). Si el corredor medido es de un tipo, no esta dicho si las convenciones tomadas del otro valen.
+3. **Referencia clinica:** `zwingmann2009navigated` gradua tornillos iliosacros; si el corredor muestreado es transiliosacro, la comparacion de distribuciones de brecha une poblaciones de tornillos distintas.
+
+4. **Lo que si consta (T01, capitulo1-r02):** `docs/SITUACION_ACTUAL.md`:183 describe el corredor de E9 como transsacro, "de la cortical externa de un ilion ... a la cortical externa del ilion opuesto": cruza ambas articulaciones, rasgo que el glosario asigna al transiliosacro. Lo abierto no es que corredor se mide, sino que tornillo representa y si le valen las convenciones de Kaiser et al. y la referencia de Zwingmann et al.
+
+5. **La propia referencia clinica mezcla los nombres (T01, capitulo1-r03):** la ficha `zwingmann2009navigated` dice "navigated iliosacral screw placement" (:79, p. 1834) y "localization of the transiliosacral screw" (:83, :197, p. 1835). El punto 3 no se resuelve sin aclarar que tornillo graduo Zwingmann et al.; posible relectura con `lector-papers`.
+
+- **Tipo:** SUPUESTO + REDACCION. **No aplicado.** Decision de la autora: que tornillo representa el corredor medido; luego alinear cap. 1, cap. 3 y `tesis/main.tex`.
+
+### 131 — La revision del recorte NO reabre la decision de 6 mm (0 de 16 `fallo_6mm`), y E14 cierra la desviacion de la envolvente: 0 casos de la cohorte cambian — ABIERTA (dos hallazgos nuevos de segmentacion)
+
+- **Origen:** revision de los 16 casos por la autora con apoyo de un medico con SERUM, y corrida E14 en
+  Khipu, 2026-10-03/04.
+
+#### 1. La condicion de reapertura no se cumple
+
+`e9ts_revision_laminas_autora.csv`, 16 de 16: **14 `ok`, 2 `fallo_ambos`, 0 `fallo_6mm`, 0 `fallo_3mm`**.
+El unico veredicto que reabre la decision **2026-09-14 (4)** es `fallo_6mm`, y no hay ninguno. **El
+recorte de 6 mm se mantiene como principal, ahora con la condicion evaluada y no solo declarada.**
+
+- Normalizacion aplicada: la autora escribio `bien`, que no es categoria del protocolo; se mapeo a `ok`.
+  Codificacion a UTF-8. Original en `e9ts_revision_laminas_autora.raw.csv`.
+- **Procedencia corregida el 2026-10-04:** la columna `revisor` decia `autora`; la revision se hizo
+  **con apoyo de un medico egresado (SERUM, sin especialidad)** y ahora lo declara. El nombre del
+  archivo conserva el sufijo `_autora` por compatibilidad con las referencias ya escritas, pero
+  **el juicio no es solo suyo**, y asi debe citarse.
+- **Acuerdo con el agente: 13 de 16.** Los tres desacuerdos van en la direccion esperada: el agente
+  llamo `fallo_3mm` a dos casos que la autora juzgo `fallo_ambos` u `ok`, y `ok` a uno que ella juzgo
+  `fallo_ambos`. El agente nunca uso `dudoso`, lo que ya se habia senalado como optimista.
+- **Los 2 `fallo_ambos` son errores de segmentacion, no de recorte**, y por eso no reabren nada:
+  `CLINIC_0022` *"se reconoce S2 como S1 y el S1 no esta totalmente reconocido en plano sagital"*;
+  `CLINIC_0024` *"parte de S1 no es reconocido en la vista coronal"*.
+
+#### 2. E14: la desviacion de la envolvente no mueve nada en la cohorte (cierra #127, pto 13)
+
+`outputs/e14_relleno.csv`, **152 casos, 0 errores**:
+
+| Magnitud | Valor |
+|---|---|
+| Voxeles que anade el relleno | mediana **139**, max **9 833** (0.51 %) |
+| `|dif D_TS|` | mediana **0.000 mm**, max **2.330 mm** |
+| Casos con `|dif D_TS|` > 0.05 mm | **4 de 152** |
+| Casos que cruzan el umbral de 7 mm | **0** |
+| **Casos de la cohorte de 72 que cambian** | **0**; maxima diferencia dentro de la cohorte: **0.000 mm** |
+
+Los 4 que se mueven son `metal_0025`, `metal_0066`, `metal_0068` y `metal_0072`, **todos fuera de la
+cohorte del Objetivo 2**. **Ninguna cifra publicada depende del relleno.** Procede corregir el texto de
+D-O2.3 para que describa la envolvente que E9-TS construye, en vez de volver a correr E9-TS, E12 y E13.
+
+#### 3. Hallazgo nuevo: `vertebrae_S1` incluye el arco posterior, y eso NO es un error
+
+**12 de los 16 casos** llevan la misma nota: *"se reconoce parte de la medula a la misma altura como
+parte de S1"*. Dos aclaraciones:
+
+- **`vertebrae_S1` de TotalSegmentator es una etiqueta de vertebra completa**, no de cuerpo vertebral.
+  Incluir laminas, cresta sacra media y apofisis articulares superiores es su comportamiento esperado.
+  Confirmado mirando las laminas de `CLINIC_0030` y `CLINIC_0076`: el contorno rojo rodea el cuerpo de
+  S1 y se extiende por detras.
+- **"Medula" es un nombre equivocado para lo que se vio**, y la propia autora lo declara: es hueso. Lo
+  que hay por detras del cuerpo de S1 a esa altura es el **arco posterior**, cuyos componentes a ese
+  nivel son la **cresta sacra media** (las apofisis espinosas fusionadas, en la linea media), las
+  **laminas** y las **apofisis articulares superiores**, laterales a la cresta.
+- **Nomenclatura, corregida por la autora el 2026-10-04:** en el chat dijo primero "astas del sacro" y
+  acto seguido lo rectifico a **cresta sacra**, que es lo correcto. Las **astas** estan en el extremo
+  **caudal**, flanqueando el hiato sacro, y no aparecen a la altura de S1. Queda anotado para que el
+  termino que entre al documento sea el bueno.
+- **Aun asi, esto necesita confirmacion del medico antes de entrar al documento.** El asistente lo
+  dedujo mirando laminas, no es radiologo, y la distincion entre cresta media y apofisis articulares
+  superiores depende de que se vio exactamente en cada caso. Se registra como **nomenclatura pendiente
+  de confirmar**, no como dato.
+
+#### 4. No hay contradiccion con la revision de R1, y conviene dejarlo escrito
+
+La autora pregunta si aceptar la parte posterior como S1 contradice que en R1 un punto posterior se
+marcara `otro`. **No se contradicen: son dos preguntas sobre dos objetos distintos.**
+
+- **R1 juzga un PUNTO** y pregunta si esta *"en el platillo superior de S1"*. El platillo es la cara
+  superior del **cuerpo** vertebral. Un punto sobre el arco posterior o sobre los ligamentos
+  sacroiliacos **no** esta en el platillo: `otro` es correcto.
+- **Esta revision juzga una MASCARA** y pregunta si cubre la vertebra S1. El arco posterior **si** es
+  parte de S1: no es error.
+
+Ademas, **R1 no usa mascaras de TotalSegmentator** (verificado: 0 referencias en `r1_landmarks.py`), asi
+que el comportamiento de `vertebrae_S1` no puede haber causado los puntos posteriores de R1. Y el modo
+de fallo ya estaba previsto en el codigo: `r1_landmarks.py`:225 dice que *"el tope en z a secas cae a
+veces en el arco posterior"*, y por eso `s1_sagital` busca el promontorio en el bloque sagital.
+
+- **Tipo:** RESULTADO + NOMENCLATURA. Cierra la condicion de reapertura y el punto 13 de #127.
+  **Pendiente de la autora:** confirmar con el medico el nombre del arco posterior, y decidir si los dos
+  `fallo_ambos` ameritan revisar la segmentacion de esos dos casos. **No aplicado (reglas 3, 4 y 14).**
+
+### 132 — El cribado ciego NO sostiene que la fractura explique los corredores estrechos (p = 1.000), pero destapa que **21 de 30** pelvis de la cohorte tienen fractura — ABIERTA (cierra #125; abre una pregunta mayor)
+
+- **Origen:** `r3_fractura_revisor.csv`, 30 de 30, cribado ciego con grupo de comparacion. Revisor:
+  **medico licenciado sin especialidad**. 2026-10-04.
+
+#### 1. La hipotesis que motivo el cribado NO se sostiene
+
+El cribado existia para comprobar si los 15 corredores estrechos de **#122** se explican por fractura no
+detectada. **No se explican.**
+
+| | estrecho (n=15) | control (n=15) | Fisher bilateral |
+|---|---|---|---|
+| Fractura (cualquiera) | **10 (67%)** | **11 (73%)** | **p = 1.000** |
+| Fractura **sacra** | 9 (60%) | 5 (33%) | p = 0.272 |
+
+- Sin concentracion global: la tasa es practicamente igual en los dos grupos.
+- La fractura **sacra** —la unica con mecanismo, por `reilly2003effect`— va en la direccion predicha
+  pero **no se distingue del azar** con n = 15 por grupo.
+- **Y el subconjunto legible la borra:** entre los 18 casos que el revisor juzgo legibles, la fractura
+  sacra es **3 de 8** en estrechos y **3 de 10** en controles. Sin diferencia.
+
+**Consecuencia: #122 se mantiene como esta.** Los 15 corredores estrechos siguen reportandose como
+variabilidad anatomica, y ahora con un cribado que lo respalda en vez de con una limitacion declarada.
+
+#### 2. El hallazgo inesperado, y es mas grande que la pregunta original
+
+**21 de 30 pelvis (70%) tienen fractura**, repartidas por igual entre los dos grupos. La cohorte del
+Objetivo 2 se construyo con el criterio **"sin osteosintesis"** (#52 a); nadie verifico "sin fractura", y
+resulta que la mayoria **si** la tiene. `dataset6` es la particion sin metal de CTPelvic1K, no una
+coleccion de pelvis sanas.
+
+Esto **no invalida ninguna cifra** —el corredor se mide sobre cada volumen tal como esta—, pero cambia
+como hay que **describir la anatomia receptora** en el documento. La frase actual de `main.tex`,
+*"selected as free of osteosynthesis rather than verified as free of fracture"*, es exacta pero suave:
+el dato dice que la mayoria esta fracturada.
+
+#### 3. Los limites reales, tras una correccion importante
+
+**RECTIFICACION (2026-10-04).** La primera version de esta entrada decia que *"buena parte de los
+diagnosticos se emitieron sobre imagenes que el propio revisor declaro insuficientes"*. **Es falso**, y
+el error es del asistente por interpretar la columna sin preguntar. La autora lo aclaro: `legible = no`
+**no** significa que el caso quedara sin juzgar, sino que **la lamina no basto y el revisor abrio el
+volumen completo en ITK-SNAP**, donde si distinguio la fractura. Los `si`/`no` directos son los que eran
+evidentes desde la lamina.
+
+Es decir, **la evidencia de esos 12 casos es mejor, no peor**: se juzgaron sobre el volumen entero y no
+sobre tres cortes. El `70%` queda **mas respaldado** de lo que decia la version anterior.
+
+Los limites que si quedan en pie:
+
+- **El revisor es medico licenciado sin especialidad**, no radiologo ni traumatologo. Sigue siendo un
+  cribado y asi debe citarse siempre.
+- **La evidencia es heterogenea por diseno accidental:** 18 casos se juzgaron solo con laminas y 12 con
+  el volumen completo. Como el salto a ITK-SNAP lo motivo una **sospecha**, la deteccion pudo ser mas
+  sensible justo donde ya se sospechaba algo. El reparto entre grupos es parejo —7 estrechos y 5
+  controles fueron a ITK-SNAP—, asi que no sesga la comparacion del punto 1, pero si conviene declararlo.
+- **La columna `legible` quedo mal definida en las instrucciones.** El documento la planteaba como
+  "¿se puede juzgar con lo que se ve?" y el revisor la uso como "¿basto la lamina?". **Hay que renombrar
+  esa columna** antes de reutilizar este material: por ejemplo `basto_la_lamina`, con el volumen completo
+  como recurso previsto y no como excepcion.
+
+**Las dos conclusiones anteriores se mantienen, y la segunda se refuerza.**
+
+#### 4. Sobre pedir mas especificidad, que es lo que pregunto la autora
+
+- **`donde` no tiene huecos:** esta lleno en los **21** casos con `fractura = si` (14 sacro, 7 ilion).
+  No hay nada que reclamar ahi.
+- Lo que falta es el **nivel y la zona** de la fractura sacra y su **desplazamiento**, que es lo que
+  `reilly2003effect` liga al estrechamiento del corredor. Solo 5 comentarios lo traen (`S1` en tres,
+  *"a la altura del S2"* en dos).
+- **RECOMENDACION CORREGIDA (2026-10-04).** La version anterior decia que pedir mas detalle seria un
+  error porque el cuello de botella eran las imagenes. **Con la aclaracion del punto 3 eso ya no aplica:**
+  el revisor **ya esta abriendo el volumen completo** cuando hace falta, y en 5 casos anoto el nivel por
+  iniciativa propia (`S1` en tres, *"a la altura del S2"* en dos).
+- **Si vale la pena pedir el nivel, y es un encargo pequeno:** solo los **14 casos con fractura sacra**,
+  de los cuales **9 no tienen nivel anotado**. No hay que volver a mirar los 30 ni los de ilion.
+- Lo que conviene pedir, en este orden: **nivel** (S1, S2, S3 o mas caudal) y **si esta desplazada**.
+  El desplazamiento es lo que `reilly2003effect` liga al estrechamiento del corredor; el nivel solo no
+  completa el mecanismo.
+- **Si se va a citar una clasificacion por zonas** (tipo Denis), su fuente tiene que entrar por
+  `refs/raw/` antes de usarse (regla 9). Mientras no exista, pedir el nivel y el desplazamiento en
+  lenguaje llano, sin nombre de clasificacion.
+
+- **Opciones:** (a) cerrar el cribado como esta, con sus limites declarados, y mantener #122;
+  (b) si se quiere probar el mecanismo, montar una revision **distinta**: solo los casos con fractura
+  sacra, **sobre el volumen completo en un visor**, preguntando zona y desplazamiento, idealmente con
+  especialista; (c) volver a pedirle al mismo revisor mas detalle sobre las mismas imagenes.
+- **Recomendacion corregida: (a) mas el encargo pequeno de nivel y desplazamiento sobre los 9 casos de
+  fractura sacra sin nivel.** (b), la revision formal con especialista, solo si el 70% va a entrar al
+  documento como cifra central. (c) deja de estar descartada: ahora es justamente lo barato y util,
+  porque el revisor ya trabaja sobre el volumen.
+#### 5. AMPLIACION (2026-10-04) con desplazamiento y nivel: **el resultado se INVIERTE**
+
+**RECTIFICACION.** La primera version de este bloque, escrita el mismo dia, concluyo que el
+desplazamiento tampoco se concentraba (4/15 frente a 4/15, p = 1.000). **Esa lectura era sobre datos
+incompletos**: la planilla no se habia guardado bien y faltaba el desplazamiento de 7 fracturas. Con los
+**20 de 20** datos, la conclusion es la contraria. Queda registrado por la regla 17.
+
+Ademas se corrigio un caso: `CLINIC_0056` (control) pasa de `fractura = si, ilion` a `no`; el revisor lo
+habia confundido con un volumen de `dataset7`. Total: **20 de 30 (67%)** con fractura.
+
+**El desplazamiento SI se concentra en los corredores estrechos**, y el efecto va en la direccion que
+predice `reilly2003effect`:
+
+| | estrecho (n=15) | control (n=15) | Fisher bilateral |
+|---|---|---|---|
+| Fractura **desplazada** (cualquiera) | **8 (53%)** | **4 (27%)** | p = 0.264 |
+| Fractura **sacra y desplazada** | **7 (47%)** | **2 (13%)** | **p = 0.109** |
+
+Y el contraste por estado es grande:
+
+| Estado | n | `D_TS` mediana |
+|---|---|---|
+| **Fractura desplazada** | 12 | **6.2 mm** |
+| Fractura **no** desplazada | 8 | **10.4 mm** |
+| Sin fractura | 10 | 6.7 mm |
+
+**Como leerlo, sin pasarse.**
+
+- **La direccion es la predicha y el tamano del efecto es grande:** 47% frente a 13% en el estrato
+  estrecho, y 4.2 mm de diferencia de mediana entre fractura desplazada y no desplazada.
+- **No alcanza significacion** con n = 15 por grupo: p = 0.109 en la comparacion con mecanismo. Es
+  **sugerente, no establecido**. Decir que esta demostrado seria sobreinterpretar 9 casos.
+- **La tabla de `D_TS` por estado NO es una comparacion limpia:** el muestreo fue estratificado por
+  `D_TS` (15 por debajo de 7 mm y 15 por encima), asi que su distribucion esta fijada por diseno. La
+  comparacion valida es la de **proporciones entre estratos**, que es la primera tabla.
+- **Nivel:** de las 14 fracturas sacras, **9 en S1 y 5 en S2**. Reilly solo estudio S1 y solo
+  desplazamiento craneal; para las de S2 su resultado **no transfiere**.
+
+**Consecuencia para #122, y es la que importa.** Hasta hoy los 15 corredores estrechos se reportaban como
+**variabilidad anatomica**. Con esto, **casi la mitad de ellos (7 de 15) tienen una fractura sacra
+desplazada**, que es un mecanismo conocido de estrechamiento. **Esa redaccion ya no se sostiene tal
+cual**: hay que declarar que una parte del estrechamiento puede ser patologia, no anatomia normal, y que
+la muestra no permite cuantificar cuanta.
+
+**Lo que no cambia:** el resultado principal del Objetivo 2 —las distribuciones de grado y los
+Wasserstein-1— se mide sobre cada volumen tal como esta y no depende de esta discusion.
+
+- **APLICADO a `tesis/main.tex` el 2026-10-04, por peticion explicita** (regla 4). Dos ediciones en el
+  parrafo *Placement result*:
+  1. Los 15 corredores estrechos dejan de atribuirse a anatomia. El texto dice ahora que **no esta
+     establecido** que los estrecha, reporta el cribado ciego —**7 de 15 frente a 2 de 15** con fractura
+     sacra desplazada, **p = 0.109**, lector sin especialidad—, declara que **5 de las 14 sacras estan
+     en S2**, donde `reilly2003effect` no transfiere, y concluye que *"an unquantifiable fraction of
+     them may be displaced fracture rather than anatomy"*.
+  2. La limitacion sobre la anatomia receptora se concreta: el cribado **hallo fractura en 20 de los 30
+     volumenes** que examino.
+- **Verificacion:** `verificar_coherencia.py` recomputa desde `r3_fractura_revisor.csv` y
+  `r3_fractura_grupos.csv` los recuentos por estrato, las 20 fracturas, los 7 frente a 2, las 14 sacras
+  y las 5 en S2, y comprueba que `main.tex` los declare. **104/104 comprobaciones pasan.** Compila:
+  0 errores, 0 citas indefinidas, 8 paginas.
+- **APLICADO tambien a `docs/00-tesis.md` el 2026-10-04**, por orden explicita de la autora: seccion
+  nueva *Criterio de cohorte del Objetivo 2: lo que significa y lo que NO*. Declara que la cohorte **no
+  es anatomia sana**, que el documento debe decir **"sin osteosintesis"** y nunca "intacta", que ninguna
+  cifra depende de esto porque el corredor se mide sobre cada volumen tal como esta, y que una fraccion
+  **no cuantificable** del estrechamiento puede ser patologia.
+- **Tipo:** RESULTADO + LIMITACION. Cierra **#125**. Debilito la redaccion de #122, **ya corregida en
+  `main.tex`**, y el criterio de cohorte de **#52 (a)**, **ya declarado en `00-tesis.md`**.

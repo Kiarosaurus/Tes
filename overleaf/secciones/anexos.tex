@@ -3,4 +3,30 @@
 \markboth{ANEXOS}{ANEXOS} 
 
 \par Los algoritmos desarrollados .....
-    
+
+\setcounter{table}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+
+\begin{sidewaystable}
+\centering
+\footnotesize
+\caption{Comparación de los trabajos revisados con este trabajo.}
+\label{tab:comparacion}
+\begin{tabular}{p{0.10\linewidth} p{0.18\linewidth} p{0.19\linewidth} p{0.18\linewidth} p{0.24\linewidth}}
+\hline
+\textbf{Trabajo} & \textbf{Enfoque} & \textbf{Colocación del objeto} & \textbf{Fuera del objeto} & \textbf{Resultado reportado y su condición} \\
+\hline
+Chen et al.~\cite{chen2024tumorsynthesis} & Difusión latente; \emph{inpainting} por máscara de tumor & Máscaras de elipsoides refinadas con radiólogos & No se modela & Dice en hígado de 62.5 a 66.5\,\%, con una de tres redes; cerca de la mitad tomada por real por cuatro radiólogos \\
+Ramzan et al.~\cite{ramzan2026claim} & Difusión en el dominio de imagen; \emph{inpainting} & Máscaras muestreadas sobre un modelo clínico de 17 segmentos & Fondo recompuesto con la imagen real en cada paso & Dice de 58.89 a 63.53 en su mejor configuración; fondo evaluado solo de forma cualitativa \\
+Jacob et al.~\cite{jacob2026lgesynthnet} & Difusión latente con ControlNet; \emph{inpainting} & Elipsoide en una región elegida al azar & La imagen completa se decodifica del espacio latente & SSIM de imagen completa de 0.587; Dice de 0.72 a 0.77 con 300 imágenes sintéticas \\
+Zhang et al.~\cite{zhang2025diffboost} & ControlNet sobre Stable Diffusion; imagen completa desde ruido & Borde de una máscara de segmentación existente & Cambia la intensidad de toda la imagen, sin efecto ligado al objeto & Dice de 78.46 a 84.56\,\% en próstata, de 94.42 a 94.78\,\% en bazo y de 62.92 a 71.65\,\% en mama \\
+Peters et al.~\cite{peters2025hybrid} & Simulación física híbrida, bidimensional & Aleatoria en entrenamiento; sin regla descrita en evaluación & Artefacto simulado en toda la imagen & En el fantoma, valor medio de TC con desviación menor que 2\,\%; discrepancia del ruido de hasta 13.3\,\% en regiones con artefacto, en uno de los experimentos \\
+Karageorgos et al.~\cite{karageorgos2024ddpm} & Simulación con CatSim para entrenar MAR por difusión en sinograma & Solape de al menos 50\,\% con una región de más de 200~HU & Artefacto simulado y después eliminado & SSIM de 0.964 en datos simulados; mejor valor en 13 de 28 métricas en cuatro TC clínicas con metal virtual \\
+Liu et al.~\cite{liu2025pipeline} & Planificación geométrica por optimización & Una trayectoria por tornillo; sin mención de tornillos iliosacros; no se aplica a fracturas de sacro & No genera imagen & Error de reducción de la fractura de 2.56~mm y $3.31^{\circ}$ en 14 casos; aceptación de 86.7\,\% en 12 casos, según tres cirujanos \\
+Zwingmann et al.~\cite{zwingmann2009navigated} & Series clínicas, navegada y convencional & Colocaciones reales: dos distribuciones ordinales & No aplica & Grado~0 de brecha cortical en el 69\,\% (navegada) y el 40\,\% (convencional) de los tornillos \\
+Wang et al.~\cite{wang2025adaptiveweighting} & MAR con tres ventanas de HU en cascada & Metal segmentado de datos clínicos e insertado a mano (conjunto dental) & Artefacto eliminado, no generado & En datos simulados y en la ventana estrecha, PSNR de 32.67~dB con supervisión multiventana y de 26.76~dB sin ella; lectura de cinco médicos \\
+\hline
+Este trabajo & Muestreador de colocación y sintetizador por difusión en el dominio de imagen. Supuesto: el artefacto puede generarse en el dominio de imagen. Convención: ancho de $B_{\delta}$ & Distribución de poses preinscrita alrededor del corredor medido en cada volumen & Genera dentro de $G = M \cup B_{\delta}$ y copia el resto & SAP frente a la referencia clínica, ya ejecutado; sin resultado del sintetizador, que se comparará por \emph{streak amplitude} con la inserción por copia y pegado y, según el plazo, con el protocolo físico \\
+\hline
+\end{tabular}
+\end{sidewaystable}

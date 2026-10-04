@@ -125,6 +125,32 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
     para liberar tiempo del camino critico (VAE y muestreador). El brazo fisico de Peters se conserva sobre un
     subconjunto reducido de pacientes.
 
+## Criterio de cohorte del Objetivo 2: lo que significa y lo que NO (2026-10-04)
+
+> Anadido tras el cribado ciego de fractura (#132). Lo escribe el asistente **por orden explicita de la
+> autora**; la decision de fondo sigue siendo suya.
+
+La cohorte del Objetivo 2 se construyo con el criterio de la decision **#52 (a)**: medir el corredor en
+pelvis **sin osteosintesis**. **Eso no es lo mismo que pelvis sin fractura, y nunca se verifico.**
+
+Un cribado ciego de 30 volumenes de esa cohorte —15 con corredor estrecho y 15 de comparacion, leidos
+por un medico licenciado **sin especialidad**, con la asignacion a estrato oculta— hallo **fractura en
+20 de los 30**. En **7 de los 15** corredores estrechos la fractura es **sacra y desplazada**, frente a
+**2 de 15** en el grupo de comparacion (`p = 0.109`).
+
+Por tanto:
+
+- **La cohorte NO es anatomia sana.** Es la particion sin metal de CTPelvic1K, y la mayoria de los
+  volumenes examinados tiene fractura. Donde el documento hable de la anatomia receptora debe decir
+  **"sin osteosintesis"**, nunca "intacta" ni "sin fractura".
+- **El corredor se mide sobre cada volumen tal como esta**, asi que ninguna cifra del Objetivo 2 depende
+  de esto. Lo que cambia es **como se interpreta** el estrechamiento, no como se calcula.
+- **Una fraccion no cuantificable del estrechamiento puede ser patologia** y no variacion anatomica
+  normal. La muestra no permite decir cuanta: el efecto es grande pero no alcanza significacion, y 5 de
+  las 14 fracturas sacras estan en S2, donde `reilly2003effect` no transfiere.
+- **El cribado es eso, un cribado.** Lector sin especialidad, y evidencia heterogenea: 18 casos juzgados
+  sobre laminas y 12 sobre el volumen completo en un visor.
+
 ## Riesgos asumidos (2026-09-08)
 
 > Se declaran aqui porque condicionan el Objetivo 2. Los dos estan en

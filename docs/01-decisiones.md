@@ -1459,6 +1459,63 @@ La brecha se mide como **profundidad de protrusion del cilindro fuera de la envo
    diseno**. Sin este recorte, toda trayectoria valida puntuaria como grado 3 por sus propios puntos de
    entrada y salida.
 
+#### CORRECCION DE D-O2.3 (2026-10-04)
+
+> Registrada por el asistente **por orden explicita de la autora** (chat del 2026-10-04). La regla 3
+> sigue vigente para todo lo demas.
+>
+> **Los cuatro puntos de arriba se conservan tal como se escribieron el 2026-09-22.** No se corrigen en
+> su sitio a proposito: este archivo es una **bitacora de decisiones**, no una especificacion. Su valor
+> esta en poder reconstruir que se decidio y cuando; reescribir el pasado para que coincida con el
+> codigo lo convertiria en documentacion y destruiria la auditoria. Lo que sigue **sustituye** a los
+> puntos 1, 3 y 4 como definicion operativa vigente.
+
+**Que paso.** Tres de los cuatro puntos describen una implementacion que nunca existio en E9-TS. Los
+tres desajustes tienen el mismo origen: D-O2.3 dice *"la misma del corredor"* y copio la descripcion de
+`e9_corredor.recortar`, que es la via **por umbral de HU** que #48 reemplazo. Cuando E9-TS cambio la
+fuente de la mascara a TotalSegmentator, esas tres frases dejaron de describir lo que se ejecuta.
+
+| Punto | Lo que decia | Lo que hace el codigo |
+|---|---|---|
+| 1 | cierre de 2 mm **+ relleno de cavidades cerradas en 3D** | **solo** el cierre de 2 mm |
+| 3 | muestrear la **superficie lateral** del cilindro | medir sobre el **eje**: `max(0, radio + sd)` |
+| 4 | recorte de 8 mm sobre el **tramo oseo** | recorte de 8 mm sobre el **propio implante**, de longitud fija |
+
+**Por que no se corrige el codigo y se vuelve a correr, que era la otra opcion.**
+
+- **Punto 1, medido (E14, `outputs/e14_relleno.csv`, 152 casos, 0 errores):** anadir el relleno cambia
+  `D_TS` en **0 de los 72 casos de la cohorte**, con diferencia maxima de **0.000 mm**. Los 4 casos que
+  se mueven en toda la coleccion estan fuera de la cohorte. Volver a correr produciria **las mismas
+  cifras** a cambio de rehacer E9-TS, E12 y E13.
+- **Y hay una razon de construccion, no una casualidad:** el relleno existia para tapar el hueco
+  trabecular de una mascara por umbral de HU, que queda como un cascaron cortical (`e9_corredor.py`:95-98
+  lo dice explicitamente). Las etiquetas de TotalSegmentator son volumenes solidos: **no hay hueco que
+  tapar**. El relleno es un no-op por diseno de la fuente, no por suerte.
+- **Puntos 3 y 4** ya se habian corregido en el codigo **con motivo y por control**, no por descuido:
+  los fijo la **#120** despues de que los controles C5 y C6 de E12 tumbaran dos definiciones anteriores.
+  Medir sobre la superficie daba 1.000 mm donde la identidad exige 0; hacer depender el tramo del hueso
+  premiaba a las poses que se salen. La definicion vigente es **mejor** que la escrita, no una
+  desviacion a reparar.
+
+**Definicion operativa vigente, que es la que esta implementada en `src/muestreador/sap.py`:**
+
+1. **Envolvente osea `B`:** union de `sacrum`, `vertebrae_S1`, `hip_left` y `hip_right` de
+   TotalSegmentator, con **cierre morfologico de 2 mm**. **Sin relleno de cavidades**, porque con
+   mascaras de TS no anade nada (E14). Sigue siendo **la misma del corredor**, que es lo que el punto 1
+   queria garantizar.
+2. **Campo de distancia signada** `sd`: positiva fuera de `B`, negativa dentro, cero en el borde. Se usa
+   signada y no solo exterior para que la identidad *"cilindro de diametro `D_TS_max` sobre el eje del
+   corredor => brecha 0"* se cumpla por construccion (#120).
+3. **Brecha** `= max sobre t de max(0, radio + sd(c + t u))`, evaluada **sobre el eje**, no sobre la
+   superficie lateral.
+4. **Tramo evaluado:** el **propio implante**, de longitud fija igual a la del corredor de ese caso,
+   centrado en la pose anclada al punto medio del corredor, y recortado **8 mm por extremo**. La razon
+   clinica del punto 4 original no cambia; lo que cambia es que la extension es la del implante y **no
+   depende de donde este el hueso**.
+5. **Resolucion declarada: 0.083 mm** (control C1 de E12). Por debajo, la metrica no distingue.
+
+**Que cierra esta correccion:** el punto 13 de **#127**. **Ninguna cifra publicada cambia.**
+
 **Limite que se declara en el mismo sitio donde se reporte la cifra:** la mascara de TotalSegmentator es
 una mascara de **hueso**, no una segmentacion de cortical. Su borde **aproxima** la superficie cortical
 externa. SAP mide protrusion fuera de la envolvente osea segmentada, y asi debe enunciarse; no se

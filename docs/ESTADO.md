@@ -2,6 +2,19 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-03 — `/ciclo-redaccion capitulo1` (marco teorico, todas las secciones): TOPE en r05, con decisiones pendientes
+
+- **Hecho:** cap. 1 redactado desde el esqueleto (r00) y corregido en r01 a r05. El lint de la seccion da 0/0/0 y el documento compila (107 pag., 0 Overfull). PDF de cada etapa en `redaccion/.build/etapas/capitulo1-r0*.pdf`. Hallazgos medios de los revisores: 36 en r01, 6 en r05, todos de estilo salvo uno. GAP: 4 lit, 1 dato, 8 dec. Se abrio la #130 (que tornillo representa el corredor medido; Zwingmann et al. lo llaman iliosacro y transiliosacro).
+- **Siguiente:** la autora decide la #130, el titulo de 1.5 ("Marco estadistico" frente a "marco" reservado para Kaiser et al.) y si el codigo de `experiments/` cuenta como fuente. Luego `capitulo4` o una ronda mas de `capitulo1`.
+- **Pendientes:** 3 `\GAPLIT` nuevos de fuentes de referencia (fisica de TC, anatomia pelvica, W1, Wilcoxon, TOST y remuestreo) en `_candidatos.md`; en el cap. 3 falta unificar el simbolo de la normal (guia-12 de r01) y usar "transsacro" segun lo que decida la #130.
+
+## 2026-09-30 (2) — `/ciclo-redaccion capitulo2` (estado del arte): TOPE en r06, con decisiones pendientes
+
+- **Hecho:** cap. 2 redactado desde esqueleto (r00; pausa tras r01 a pedido de la autora) y corregido en r01 a r06. Lint de seccion 0/0/0, compila (90 pag.). PDF por etapa en `redaccion/.build/etapas/capitulo2-r0*.pdf`. Medios de revisores: r01 2/32 -> r06 0/9. GAP 1 lit / 2 dato / 10 dec. Se abrio la #129 (ida y vuelta ya medida contradice #128.3, intro:46 y cap3:172; unidad y dominio de los RMSE que anclan los 25 HU; cifras de Jacob et al.).
+- **Siguiente:** la autora decide #129 (sobre todo encargar a `lector-papers` Karageorgos y Yun) y los dos escalados; luego una ronda mas de `capitulo2` o alinear introduccion y cap. 3 con la ida y vuelta medida.
+- **Tablas (inspeccion visual):** la Tabla 2.1 desbordaba la pagina; ahora es la Tabla A.1, apaisada en `anexos.tex`. Las tablas 3.1-3.3 caben. Compila con 0 Overfull.
+- **Pendientes:** relecturas `hu2023` Fig. 3, `herman2016` p. 8, `ramzan2026claim` Sec. 3.5, `selles2023ai` (sin evidencia textual); `\label` del cap. 4; "zona segura" sin definir (intro:75); intro:60 "codificacion de la entrada"; Xie "cobertura en exceso" en la intro mas fuerte que la ficha.
+
 ## 2026-09-30 — `/ciclo-redaccion introduccion` (solo Objetivos, Justificacion y Alcance): TOPE en r05
 
 - **Hecho:** tres subsecciones reescritas (r00) y corregidas en r01 a r05. Dentro del alcance el lint da 0/0 y compila (67 pag.). Revisores alta/media: r01 2/27 -> r05 0/12 (solo estilo no baja). Los PDF estan en `redaccion/.build/etapas/introduccion-r0*.pdf`. Se abrio la #128: eslabones del argumento sin fuente, en especial para que el sintetizador si el protocolo fisico corre sobre las mismas poses.

@@ -7876,7 +7876,7 @@ Corrida **VALIDA**: los cuatro controles pasan y el conjunto es el preinscrito.
 - **Tipo:** REDACCION + SUPUESTO. **Lista para pasar a CERRADA, pero no aplicada a `main.tex` ni a
   `00-tesis.md` (reglas 4 y 14): espera decision de la autora.**
 
-### 114 — La columna `s_por_paso` es un promedio ACUMULADO, no el ritmo de un tramo: la instruccion de `KHIPU.md` no se puede ejecutar como esta escrita y la cifra que imprime el script sobreestima — ABIERTA (afecta la cifra de #89)
+### 114 — La columna `s_por_paso` es un promedio ACUMULADO, no el ritmo de un tramo — **CERRADA el 2026-10-04**: `curva.csv` anade `s_tramo`, que es el ritmo real
 
 - **Hallazgo:** `src/renderizador/entrenar.py:144` calcula `sp = (time.time() - t0) / paso`, con `t0`
   fijado antes del bucle y **nunca reiniciado**. Toda fila de `curva.csv` es el promedio desde el paso 1,
@@ -8487,10 +8487,11 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
 
 ## Ronda 2026-09-22 (2) — primera corrida del Objetivo 2 (job 52175)
 
-### 122 — En **16 de 72** pelvis de la cohorte el corredor medido es mas estrecho que el tornillo del benchmark, asi que el eje ideal YA perfora: parte de la distancia a Zwingmann es anatomica, no del muestreador — **CERRADA el 2026-09-22** (opcion (a)+(b) adoptada y aplicada)
+### 122 — En **15 de 72** pelvis de la cohorte el corredor medido es mas estrecho que el tornillo del benchmark, asi que el eje ideal YA perfora: parte de la distancia a Zwingmann es anatomica, no del muestreador — **CERRADA el 2026-09-22** (opcion (a)+(b) adoptada y aplicada)
 
 - **Origen:** primera corrida de E13 sobre la cohorte (job 52175, Khipu, 2026-09-22). Lo destapo el
-  control de pose sin perturbar, que reporto **16 de 72** casos "fallando".
+  control de pose sin perturbar, que reporto **15 de 72** casos "fallando".
+  *[corregido 2026-10-05, ver #140]*
 - **Los 16 no son un fallo de la metrica. El control estaba mal especificado.** Verificado:
   - `procesar()` calculaba el control con un cilindro de **7.0 mm** (`sap.D_SAP_MM`) en vez de con
     `D_TS_max`. La identidad garantizada por construccion es *"cilindro de diametro `D_TS_max` sobre el
@@ -8500,7 +8501,7 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
     decimosexto (`dataset6_CLINIC_0018_data`) tiene `D_TS_max = 7.0` redondeado a un decimal.
   - La brecha medida sigue el orden de magnitud geometrico esperado `(7.0 - D_TS) / 2`: por ejemplo
     `D_TS = 2.0` -> brecha 2.48 (predicho 2.50); `D_TS = 4.8` -> 1.33 (1.10); `D_TS = 6.4` -> 0.25 (0.30).
-- **El hallazgo real, y va al argumento de la tesis:** en **22% de la cohorte (16/72)** el corredor no
+- **El hallazgo real, y va al argumento de la tesis:** en **20.8% de la cohorte (15/72)** el corredor no
   admite un tornillo de 7.0 mm **ni siquiera sobre su eje optimo**. Para esos pacientes el **grado 0 es
   anatomicamente inalcanzable al calibre del benchmark**. Por tanto **una parte de la distancia de
   Wasserstein-1 frente al brazo navegado (69% de grado 0) no la produce el muestreador: la produce la
@@ -8567,7 +8568,7 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   viables y estrechos— y comprueba que el texto las declara. **78/78 comprobaciones pasan.**
 - **Estado: CERRADA.**
 
-### 123 — La decision del recorte de 6 mm tiene una condicion de reapertura que NUNCA se evaluo, y todas las cifras del Objetivo 2 salen de ese recorte — ABIERTA
+### 123 — La decision del recorte de 6 mm tenia una condicion de reapertura sin evaluar — **CERRADA el 2026-10-04**: evaluada en #131, 0 de 16 `fallo_6mm`, el recorte se mantiene
 
 - **Origen:** inventario del directorio `experiments/objetivo2/` para escribir `EXPERIMENTOS.md`,
   2026-09-22. No sale de un paper ni de un experimento: sale de contar columnas vacias.
@@ -8697,7 +8698,7 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   `comentario`, se guardo en UTF-8 y el original quedo en `r1_revision_laminas_revisor.raw.csv`.
 - **Tipo:** REDACCION + PROCEDENCIA. **No aplicado a `tesis/main.tex` (regla 14).**
 
-### 125 — `CLINIC_0060` tiene fractura CONFIRMADA y esta entre los 15 corredores estrechos de #122; la cohorte nunca se verifico libre de fractura, solo libre de osteosintesis — ABIERTA (cribado ciego preparado)
+### 125 — `CLINIC_0060` tiene fractura CONFIRMADA y esta entre los 15 corredores estrechos de #122; la cohorte nunca se verifico libre de fractura, solo libre de osteosintesis — **CERRADA el 2026-10-04** por el cribado de #132
 
 - **Origen:** revision del segundo corredor, 2026-09-22. La revisora juzgo `dataset6_CLINIC_0060_data`
   como S4 con `legible = no` y comento: *"los huesos en esa parte parecen (en mi opinion estan) rotos"*.
@@ -8890,9 +8891,34 @@ Origen: `/ciclo-redaccion capitulo1`, r00 (nota del redactor) y r01 (guia-2, T05
 
 5. **La propia referencia clinica mezcla los nombres (T01, capitulo1-r03):** la ficha `zwingmann2009navigated` dice "navigated iliosacral screw placement" (:79, p. 1834) y "localization of the transiliosacral screw" (:83, :197, p. 1835). El punto 3 no se resuelve sin aclarar que tornillo graduo Zwingmann et al.; posible relectura con `lector-papers`.
 
-- **Tipo:** SUPUESTO + REDACCION. **No aplicado.** Decision de la autora: que tornillo representa el corredor medido; luego alinear cap. 1, cap. 3 y `tesis/main.tex`.
+- **DECISION DE LA AUTORA (2026-10-04, en chat): se adopta la recomendacion del asistente.**
+  1. La geometria implementada se nombra **tornillo transiliaco-transsacro (transiliosacro)**: el
+     corredor medido va de la cortical externa de un ilion a la del otro y cruza **ambas**
+     articulaciones sacroiliacas, que es el rasgo que `docs/03-glosario.md`:74-75 asigna a ese tipo.
+  2. Las convenciones de **`mclaren2021corridor`** (tolerancias angulares transiliosacras) **si
+     aplican**, porque son del mismo tipo de corredor.
+  3. **`zwingmann2009navigated` se conserva como referencia clinica externa de distribuciones de grado
+     de brecha, NO como validacion del mismo diseno de implante.** Su propio texto usa los dos nombres
+     —*"navigated iliosacral screw placement"* (p. 1834) y *"localization of the transiliosacral
+     screw"* (p. 1835)— y no documenta longitud ni extremo de todos sus tornillos. La comparacion es de
+     **distribuciones**, no de equivalencia geometrica, y asi debe escribirse.
+  4. **No se acorta el modelo** a un tornillo iliosacro unilateral: obligaria a rehacer corredor,
+     longitud, mascaras, poses y parte de SAP, sin ganancia.
+- **APLICADO a `tesis/main.tex` el 2026-10-04**, por peticion explicita (regla 4). Dos frases: en el
+  parrafo de geometria del implante, que la trayectoria medida va de cortical externa de un ilion a la
+  contralateral cruzando **ambas** articulaciones y por tanto representa un **tornillo
+  transiliaco-transsacro (transiliosacro)**, con las tolerancias de `mclaren2021corridor` aplicables por
+  ser del mismo corredor; y antes del benchmark, que esa serie es **referencia clinica externa de la
+  distribucion de grados y no evidencia de equivalencia geometrica**, porque su propio texto usa los dos
+  nombres y no reporta longitud ni extremo de cada tornillo. Compila: 0 errores, 0 citas indefinidas,
+  8 paginas. **Las menciones de "iliosacral screws" que describen trabajos ajenos —Zwingmann, Reilly—
+  se dejan como estan: son de esos autores, no del implante de esta tesis.**
+- **Pendiente de aplicar:** `overleaf/` cap. 1 y cap. 3, y `docs/03-glosario.md`. **Y antes de citar a Gardner para
+  el nombre, comprobar que su raw este** en `refs/raw/` (regla 9); existe la ficha
+  `gardner2011transiliac-transsacral.md`.
+- **Tipo:** SUPUESTO + REDACCION. **Decidida, no aplicada.**
 
-### 131 — La revision del recorte NO reabre la decision de 6 mm (0 de 16 `fallo_6mm`), y E14 cierra la desviacion de la envolvente: 0 casos de la cohorte cambian — ABIERTA (dos hallazgos nuevos de segmentacion)
+### 131 — La revision del recorte NO reabre la decision de 6 mm (0 de 16 `fallo_6mm`), y E14 cierra la desviacion de la envolvente: 0 casos de la cohorte cambian — **CERRADA el 2026-10-04**; quedan dos errores de segmentacion anotados (`CLINIC_0022`, `CLINIC_0024`)
 
 - **Origen:** revision de los 16 casos por la autora con apoyo de un medico con SERUM, y corrida E14 en
   Khipu, 2026-10-03/04.
@@ -8974,7 +9000,24 @@ veces en el arco posterior"*, y por eso `s1_sagital` busca el promontorio en el 
   **Pendiente de la autora:** confirmar con el medico el nombre del arco posterior, y decidir si los dos
   `fallo_ambos` ameritan revisar la segmentacion de esos dos casos. **No aplicado (reglas 3, 4 y 14).**
 
-### 132 — El cribado ciego NO sostiene que la fractura explique los corredores estrechos (p = 1.000), pero destapa que **21 de 30** pelvis de la cohorte tienen fractura — ABIERTA (cierra #125; abre una pregunta mayor)
+### 132 — Cribado ciego de fractura: **20 de 30** pelvis de la cohorte la tienen, y la fractura **sacra desplazada** se concentra en los corredores estrechos (**7/15 frente a 2/15**, p = 0.109, sugerente no concluyente) — **CERRADA el 2026-10-04**, aplicada a `main.tex` y `00-tesis.md`
+
+> **AVISO (2026-10-05): las cifras de esta entrada YA ESTAN CORREGIDAS en su sitio.** Por
+> instruccion de la autora se aplicaron las cuatro correcciones que #136 y #140 habian detectado, y
+> el recuento se rehizo de forma independiente desde `r3_fractura_revisor.csv` cruzado con
+> `r3_fractura_grupos.csv`. Lo que decia antes y lo que dice ahora:
+>
+> | Donde | Decia | Dice |
+> |---|---|---|
+> | tabla, *Fractura (cualquiera)*, control | `11 (73%)` | **`10 (67%)`** |
+> | seccion 2 | `21 de 30 (70%)` | **`20 de 30 (67%)` mas un dudoso aparte** |
+> | seccion 4, columna `donde` | `21 casos (14 sacro, 7 ilion)` | **`20 casos (14 sacro, 6 ilion)`** |
+> | tabla de `D_TS`, *Sin fractura* | `10 \| 6.7 mm` | **`9 \| 5.9 mm`**, con la fila del dudoso aparte |
+> | tabla de `D_TS`, *desplazada* | `6.2 mm` | **`6.25 mm`** |
+>
+> Las cuatro venian del mismo origen: contar el unico caso `dudoso` como fractura, contra la regla
+> que la autora decidio el 2026-10-05. Verificadas y sin cambios: el titular, las cifras de fractura
+> sacra (9 y 5), las de sacra desplazada (7 y 2), las de legibles (8 y 10) y los tres valores p.
 
 - **Origen:** `r3_fractura_revisor.csv`, 30 de 30, cribado ciego con grupo de comparacion. Revisor:
   **medico licenciado sin especialidad**. 2026-10-04.
@@ -8986,7 +9029,7 @@ detectada. **No se explican.**
 
 | | estrecho (n=15) | control (n=15) | Fisher bilateral |
 |---|---|---|---|
-| Fractura (cualquiera) | **10 (67%)** | **11 (73%)** | **p = 1.000** |
+| Fractura (cualquiera) | **10 (67%)** | **10 (67%)** | **p = 1.000** |  <!-- corregido 2026-10-05: el control decia 11 (73%) contando el unico `dudoso` -->
 | Fractura **sacra** | 9 (60%) | 5 (33%) | p = 0.272 |
 
 - Sin concentracion global: la tasa es practicamente igual en los dos grupos.
@@ -9000,7 +9043,7 @@ variabilidad anatomica, y ahora con un cribado que lo respalda en vez de con una
 
 #### 2. El hallazgo inesperado, y es mas grande que la pregunta original
 
-**21 de 30 pelvis (70%) tienen fractura**, repartidas por igual entre los dos grupos. La cohorte del
+**20 de 30 pelvis (67%) tienen fractura confirmada**, mas **un caso dudoso que se reporta aparte**, repartidas por igual entre los dos grupos. *[corregido 2026-10-05, ver #140]* La cohorte del
 Objetivo 2 se construyo con el criterio **"sin osteosintesis"** (#52 a); nadie verifico "sin fractura", y
 resulta que la mayoria **si** la tiene. `dataset6` es la particion sin metal de CTPelvic1K, no una
 coleccion de pelvis sanas.
@@ -9020,7 +9063,7 @@ volumen completo en ITK-SNAP**, donde si distinguio la fractura. Los `si`/`no` d
 evidentes desde la lamina.
 
 Es decir, **la evidencia de esos 12 casos es mejor, no peor**: se juzgaron sobre el volumen entero y no
-sobre tres cortes. El `70%` queda **mas respaldado** de lo que decia la version anterior.
+sobre tres cortes. El **67%** queda **mas respaldado** de lo que decia la version anterior. *[corregido 2026-10-05, ver #140]*
 
 Los limites que si quedan en pie:
 
@@ -9039,7 +9082,10 @@ Los limites que si quedan en pie:
 
 #### 4. Sobre pedir mas especificidad, que es lo que pregunto la autora
 
-- **`donde` no tiene huecos:** esta lleno en los **21** casos con `fractura = si` (14 sacro, 7 ilion).
+- **`donde` esta lleno en los 20 casos con `fractura = si` (14 sacro, 6 ilion).** *[corregido 2026-10-05, ver #140]* La version
+  anterior decia "21 casos (14 sacro, 7 ilion)". Son **20**, y el reparto es **14 sacro y 6 ilion**.
+  Y el `dudoso` **no** se puede sumar para llegar a 21: su columna `donde` esta **vacia**, asi que la
+  frase "no tiene huecos" se caia por los dos lados.
   No hay nada que reclamar ahi.
 - Lo que falta es el **nivel y la zona** de la fractura sacra y su **desplazamiento**, que es lo que
   `reilly2003effect` liga al estrechamiento del corredor. Solo 5 comentarios lo traen (`S1` en tres,
@@ -9087,9 +9133,16 @@ Y el contraste por estado es grande:
 
 | Estado | n | `D_TS` mediana |
 |---|---|---|
-| **Fractura desplazada** | 12 | **6.2 mm** |
+| **Fractura desplazada** | 12 | **6.25 mm** |
 | Fractura **no** desplazada | 8 | **10.4 mm** |
-| Sin fractura | 10 | 6.7 mm |
+| Sin fractura, **sin** el dudoso | **9** | **5.9 mm** |
+| *(Sin fractura, contando el dudoso)* | *10* | *6.7 mm* |
+
+*Corregido el 2026-10-05 (ver #140).* La version anterior publicaba una sola fila, `Sin fractura | 10 |
+6.7 mm`, que **contaba el `dudoso` dentro de "sin fractura"** — justo al reves de la regla decidida por
+la autora, que lo reporta aparte. Con la regla aplicada son **n = 9 y 5.9 mm**; la fila con el dudoso se
+conserva en cursiva solo para que la diferencia quede visible. Y la mediana de las desplazadas es
+**6.25 mm** (media de 6.2 y 6.3 entre 12 valores), no 6.2: antes se publicaba redondeada sin declararlo.
 
 **Como leerlo, sin pasarse.**
 
@@ -9132,3 +9185,1509 @@ Wasserstein-1— se mide sobre cada volumen tal como esta y no depende de esta d
   **no cuantificable** del estrechamiento puede ser patologia.
 - **Tipo:** RESULTADO + LIMITACION. Cierra **#125**. Debilito la redaccion de #122, **ya corregida en
   `main.tex`**, y el criterio de cohorte de **#52 (a)**, **ya declarado en `00-tesis.md`**.
+
+### 133 — PRIMERA MUESTRA SINTETICA del proyecto: la cadena funciona de punta a punta y los dos controles pasan, pero el `ckpt` del piloto genera RUIDO — ABIERTA (cierra la parte ejecutable de #116)
+
+- **Origen:** `experiments/objetivo3/a6_muestra_minima.py`, 2026-10-04. Es la primera vez que se llama a
+  `muestrea_ddim` desde que se escribio el Diseno A.
+- **Corrio en local, sin GPU.** `torch 2.9.1+cpu`. **No hacia falta Khipu**: el `ckpt.pt` (112 MB) y los
+  **23 058 parches** de `outputs/a1b_cache/` ya estaban en disco. Lo que bloqueaba #116 durante dos
+  semanas **no era el computo**: era que nadie llamaba a la funcion.
+- **Coste medido:** **~1.0 s/paso en CPU**, 50 pasos DDIM, **~50 s por muestra**. En GPU eran 0.0923
+  s/paso (#89).
+
+#### Lo que funciona, con control
+
+Dos parches de **validacion** (los que el modelo no vio), uno de banda y uno con metal:
+
+| Parche | `G` del parche | MAE dentro de `G` |
+|---|---|---|
+| `metal_0011_c000 k0240` (**sin metal**, solo banda) | 0.2 % | 1 131 HU |
+| `metal_0011_c011 k0263` (**n_metal = 1 256**) | 18.9 % | 1 519 HU |
+
+- **Control 1:** maximo `|valor generado|` **fuera de `G`** = **0.000e+00** en los dos. `muestrea_ddim`
+  multiplica por `g` en cada paso, como dice #117.
+- **Control 2:** `verificar_composicion` **pasa**: fuera de `G` la salida es identica **bit a bit** al
+  original. **La promesa central del Diseno A —preservacion por construccion, bloque E-A3— se cumple y
+  ahora esta comprobada sobre una imagen real, no supuesta.**
+
+#### Lo que NO funciona, y era de esperar
+
+**Lo generado es ruido de sal y pimienta, no un implante.** Es el `ckpt` del **piloto de 200 pasos**
+(job 52074), corrido para medir coste (#89), **no para converger**. **Nada de esto es un resultado y no
+debe citarse como tal.**
+
+**El techo de 20 000 HU: RESUELTO el 2026-10-04, y NO es un fallo.** El maximo decodificado es
+exactamente **20 000 HU** en los dos parches. Verificado en el codigo: `CONFIG_DISENO_A` es
+**`pub+asinh`** (`ventanas.py`:44), cuyo canal LW es `asinh_canal(-1000.0, **20000.0**)`
+(`e6c_techo_lw.py`:81). **20 000 HU es el techo declarado de la representacion**, elegido en E6c
+precisamente porque un techo de 2 000 no podia codificar el metal que la tesis debe generar (#39).
+
+Un modelo sin converger emite valores repartidos por todo `[-1, 1]`; los que caen cerca de `u = 1` en LW
+decodifican a 20 000 HU **por diseno**. Lo observado **confirma que el decodificador funciona**, no que
+algo este roto.
+
+**Lo que si queda, y es barato:** un control declarado para cuando el modelo si este entrenado. Si un
+modelo convergido sigue emitiendo 20 000 HU **fuera de la mascara de metal**, eso si seria un fallo. Se
+anade como comprobacion de E-A1, no como bloqueo previo.
+
+#### Lo que esto convierte de prediccion en observacion
+
+- **#95, #96, #112, #57** dejan de ser discusiones sobre imagenes que nadie vio. En particular, **#112**
+  (costura en el borde de `B_delta`) ya **se puede mirar**: el panel 4 de la lamina muestra `G` aislada.
+- **La composicion de `val` queda medida:** **553 parches con metal y 343 solo de banda**, de 896. El
+  primer parche del conjunto es **solo banda**, cosa que conviene saber antes de sacar conclusiones de
+  una muestra suelta.
+
+- **Siguiente, en orden:** (1) decidir el techo de 20 000 HU; (2) entrenar de verdad en Khipu, que ahora
+  si necesita GPU; (3) recien entonces E-A1..E-A4.
+- **Tipo:** RESULTADO DE DIAGNOSTICO. Cierra la parte ejecutable de **#116**. **No aplicado a
+  `tesis/main.tex` (regla 14).**
+
+### 134 — Bucle de validacion conectado y checkpoints reanudables: el entrenamiento del Objetivo 3 deja de ser ciego y deja de perderse al cortar la cola — ABIERTA (decision de preinscripcion pendiente)
+
+- **Origen:** peticion de la autora, 2026-10-04. Cierra el pendiente que arrastraba desde el cierre del
+  2026-09-21: *"`a5_manifiesto_val.csv` existe pero nada lo consume"*.
+- **Tres cambios en `src/renderizador/entrenar.py`:**
+  1. **Validacion.** `--manifiesto-val` carga los **896 parches / 3 casos** (#105) y mide la perdida
+     cada `--cada` pasos sobre `--lotes-val` lotes **fijos y sin barajar**: la cifra tiene que ser
+     comparable entre pasos, y con lotes distintos cada vez la curva mezclaria convergencia con que
+     parches tocaron. Sin esto no se ve si converge **ni se puede medir el margen `Delta` de D4**.
+  2. **Checkpoint reanudable** cada `--cada-ckpt` pasos, con **modelo, optimizador y paso**. El estado
+     del optimizador es necesario: sin el, reanudar reinicia los momentos de AdamW y la curva da un
+     salto artificial. `--reanudar` es seguro siempre; si no hay ckpt, arranca de cero.
+  3. **`s_tramo`** en `curva.csv`, el ritmo del ultimo tramo. **Cierra #114.** `s_por_paso` se conserva
+     por comparabilidad con el piloto, pero es el promedio acumulado y **no es la cifra publicable**.
+- **Probado en local** (CPU, modelo de 1.8 M): 4 pasos, corte, reanudacion declarada en el paso 4 y
+  continuacion hasta 8. `curva.csv` se anade **sin duplicar cabecera**; la validacion reporta los 896
+  parches y 3 casos esperados.
+- **Parametros propuestos para la corrida (`a7_entrenar.sbatch`), con su razon:**
+  - **200 000 pasos** (~187 epocas con lote 16; ~5-6 h al ritmo de #89, holgado en las 24 h de cola).
+    La regla de parada real es la **curva de validacion**, y con el ckpt reanudable extender es gratis.
+  - **lote 4 -> 16, `base` intacto en 64.** Responde a #115 (7% de GPU) **sin tocar la arquitectura**:
+    con 17 149 parches de **47 pacientes**, un modelo mas grande memoriza, y en sintesis eso es peor que
+    subajustar. Ademas `base = 64` es lo que midio el piloto y lo que supone la preinscripcion.
+    Memoria estimada: ~13 GB de 48.
+  - **`lr` en 1e-4**, sin escalar con el lote. Es lo conservador; si la perdida baja muy lento en las
+    primeras ~20 000 iteraciones, ahi se revisa, y ahora **se puede ver** en `perdida_val`.
+- **RESUELTO el 2026-10-04: la corrida va SIN `--preinscrito`, y la razon no es de comodidad.**
+  `00-tesis.md`:71-72 dice que `diseno_A.md` sigue en BORRADOR y que **lo unico que falta para
+  congelarlo es medir el margen `Delta` (D4)**. Ese margen **sale de esta corrida**, porque necesita el
+  bucle de validacion que acaba de conectarse. **Preinscribir usando la corrida de la que depende la
+  preinscripcion seria circular.** Esta corrida es la que **habilita** a congelar el diseno, no una que
+  lo suponga congelado.
+  - Consecuencia: la corrida es de **ajuste**, no resultado de tesis, y el script lo imprime
+    (`AVISO: corrida NO preinscrita`). La corrida preinscrita viene **despues**, con `diseno_A.md`
+    congelado y `Delta` ya medido.
+- **Donde corre, y por que importa:** no habia ninguna A6000 libre —g002 y ds001 ocupadas por jobs de
+  24 h y 3 dias—, asi que la corrida pasa a la **A100 entera de ag001** (40 GB), que `--test-only` dio
+  disponible el mismo dia en vez de al siguiente. **#89 y #115 estan medidas sobre A6000**, asi que sus
+  cifras de `s/paso` y de ocupacion **no son comparables** con las de esta corrida; el log registra la
+  tarjeta via `nvidia-smi`. Bajar la pared de 24 h a 8 h **no fue lo que adelanto el arranque**: el
+  cuello era que no habia A6000 libre, no el *backfill*.
+- **Tipo:** METODO + INFRAESTRUCTURA. Cierra **#114** y el pendiente del bucle de validacion.
+  **No aplicado a `tesis/main.tex` (regla 14).**
+
+- **MEDIDO el 2026-10-04 (job 54367, A100-PCIE-40GB de ag001, arranque 13:22:51).** Primera corrida
+  real del Objetivo 3 con el bucle conectado. Cifras tomadas de `data/a7/run01/curva.csv`, no estimadas:
+  - **`s_tramo` = 0.197 s/paso**, estable entre los pasos 500 y 9 000 (0.1934 -> 0.1971).
+  - **`gb_max` = 12.31 GB de 40.** La estimacion de ~13 GB del punto anterior se confirma, pero estaba
+    hecha contra una A6000 de 48 GB; en la A100 **sobra 3x de memoria** con `--lote 16`.
+  - `perdida_val` 0.165986 (paso 500) -> 0.060020 (paso 9 000). La perdida de entrenamiento oscila
+    (0.119, 0.051, 0.105, 0.082) porque cada lote muestrea un `t` distinto; la cifra comparable es
+    `perdida_val`, medida siempre sobre los mismos 16 lotes fijos.
+- **CONSECUENCIA DE PLANIFICACION, que corrige el supuesto del punto anterior.** Se habia escrito
+  "~5-6 h al ritmo de #89, holgado en las 24 h de cola". Con la cifra medida eso **no se sostiene**:
+  200 000 x 0.197 s = **10 h 56 min de computo**, y la pared pedida es de **8 h**. Entran
+  **~145 000 pasos** por turno; el checkpoint que sobrevive es el de **145 000** y se pierden menos de
+  600 pasos. Faltarian **55 000 pasos (~3 h)** en un segundo envio. **La corrida de 200 000 pasos no
+  cabe en un turno de cola.** El ckpt reanudable deja de ser una precaucion y pasa a ser la condicion
+  para que la corrida termine.
+- **DOS DECISIONES QUE QUEDAN ABIERTAS PARA LA AUTORA** (no se aplican aqui, regla 14):
+  1. **Si 200 000 pasos son necesarios.** `perdida_val` ya esta en 0.060 al paso 9 000. Si se aplana
+     antes de los 145 000, el segundo turno de cola es innecesario. El numero de pasos debe pasar de
+     supuesto a **decision medida sobre la curva** antes de congelar `diseno_A.md`.
+  2. **Si la corrida preinscrita entra con un lote mayor.** 12.31 de 40 GB es GPU ociosa. Cambiar
+     `--lote` **a mitad de esta corrida romperia la comparabilidad de la curva** y no debe hacerse;
+     pero la corrida preinscrita, que es la que va al documento, podria dimensionarse a la tarjeta
+     desde el paso 0. Es decision de diseno, no de operacion, y afecta a lo que diga `diseno_A.md`.
+- **SEGUNDA LECTURA, paso 44 000 del job 54367 (2026-10-04, ~15:50).** Ritmo sin cambio
+  (`s_tramo` 0.1971, `gb_max` 12.31). Dos observaciones sobre la curva, ambas con cifra:
+  1. **La validacion esta en arrastre, no en convergencia.** 0.165986 (500) -> 0.060020 (9 000) ->
+     0.054720 (44 000). La segunda caida es de **8.8% en 35 000 pasos**, es decir ~2.5% por cada
+     10 000, contra el 64% de la primera. Sigue bajando, pero poco.
+  2. **La brecha entrenamiento/validacion se invirtio.** Paso 9 000: entrenamiento 0.081805 **por
+     encima** de validacion 0.060020. Paso 44 000: entrenamiento **0.021370** muy **por debajo** de
+     validacion **0.054720**. **Salvedad:** la perdida de entrenamiento es un lote suelto con `t`
+     aleatorio y la de validacion son 16 lotes fijos, asi que **las magnitudes no son estrictamente
+     comparables y el valor puntual no debe citarse como medida de sobreajuste**. Lo que si es
+     interpretable es la **tendencia divergente**.
+  - **Por que importa:** es exactamente el riesgo que **#115** declaro al subir el lote sin tocar
+     `base = 64` —17 149 parches de solo **47 pacientes**, donde un modelo con margen memoriza—. Esta
+     es la primera evidencia medida de ese riesgo en el proyecto, y **confirma la decision de #115 de
+     NO agrandar la arquitectura**: el problema observado es de datos, no de capacidad.
+  - **No se concluye sobreajuste aqui.** Se registra la senal y se deja la lectura para la decada
+     completa al llegar a la pared, que es lo que cierra la decision 1 de esta implicancia.
+- **CORRECCION AL PUNTO ANTERIOR, 2026-10-04 (~16:10). La lectura del paso 44 000 estaba mal hecha y
+  se retira.** Al ver la validacion SUBIR en los pasos 47 000-48 000 (0.071788, 0.064280, 0.067137)
+  despues del 0.054720 del paso 44 000, se reviso **como se mide** la columna en vez de interpretar el
+  salto. Hallazgo: `mide_val()` llamaba a `perdida(...)` **sin pasar `generador`**. Los parches eran
+  fijos, pero `perdida` sortea el nivel de ruido `t` y el ruido mismo del RNG global **en cada
+  medicion**, y la MSE de difusion depende fuertemente de `t`.
+  - **Consecuencia:** `perdida_val` oscilaba **+-15%** por como se midio, no por lo que aprendio el
+    modelo. La perdida de entrenamiento rebota igual (0.021370 -> 0.041864 -> 0.047569 -> 0.068550),
+    por la misma razon y porque ademas es un lote suelto.
+  - **SE RETIRA la "inversion de la brecha"** reportada en el punto anterior. Comparaba dos sorteos de
+    ruido, no dos estados del modelo: el 0.021370 del paso 44 000 fue un sorteo favorable. **No hay
+    evidencia de sobreajuste en este job**, ni a favor ni en contra. Lo que #115 advirtio sigue siendo
+    una prediccion sin medir, no una observacion.
+  - **Arreglado en `src/renderizador/entrenar.py`:** `mide_val()` crea un `torch.Generator` con
+    `SEMILLA_VAL = 20261004` (fija, y distinta de `--semilla` para que la medicion no quede
+    correlacionada con el estado del entrenamiento) y se lo pasa a `perdida`, que **ya aceptaba el
+    parametro y no se estaba usando**. Dos pasos distintos pasan a compararse sobre el MISMO conjunto
+    de (parche, `t`, ruido).
+  - **No se cancela el job 54367.** El defecto es del instrumento de lectura, no del entrenamiento:
+    las pesas nunca vieron esos sorteos, solo los vio el medidor. El arreglo entra en la **reanudacion
+    natural tras el corte de pared de las 21:22**, asi que `curva.csv` tendra una **discontinuidad
+    documentada**: antes del paso de reanudacion la columna es ruidosa, despues es comparable. Al
+    analizar, **los dos tramos no se grafican como una sola curva**.
+  - **Lo ya medido no se pierde:** promediada en bloques de 10 000 pasos (~20 mediciones por bloque) la
+    tendencia se recupera, porque el ruido es de medicion y se promedia. Las filas sueltas de
+    `curva.csv` del tramo previo **no deben citarse individualmente**.
+  - **Metodo, y es la leccion que se repite en este proyecto:** ante una cifra que se mueve, revisar
+    primero como se mide. La version anterior de esta implicancia interpreto el instrumento como si
+    fuera la senal.
+- **CIERRE DEL JOB 54367, 2026-10-04 (~21:22). SOBREAJUSTE CONFIRMADO, y esta vez si supera el ruido
+  de medicion.** El job llego al paso **144 500** y murio en la pared de 8 h, como estaba previsto
+  (144 500 x 0.1988 s = 7 h 58 min; la prediccion fue ~145 000).
+
+  | paso | entrenamiento | validacion |
+  |---|---|---|
+  | 44 000 | 0.021370 | **0.054720** |
+  | 143 500 | 0.022791 | **0.106057** |
+  | 144 000 | 0.056342 | **0.111781** |
+  | 144 500 | 0.017097 | **0.110858** |
+
+  - **Por que esto SI es senal y la lectura retirada NO lo era.** El estimador ruidoso oscila **+-15%**;
+    aqui la validacion esta al **doble**, en **tres mediciones consecutivas y mutuamente consistentes**,
+    mientras el entrenamiento sigue en ~0.02. Un estimador ruidoso pero insesgado no produce un
+    desplazamiento sostenido de 2x. La retractacion del punto anterior sigue siendo correcta para
+    aquellos datos; este es un hallazgo distinto y de otra magnitud.
+  - **#115 PASA DE PREDICCION A OBSERVACION.** Advirtio que 17 149 parches de solo **47 pacientes** son
+    poca gente y que un modelo con margen memoriza. Esta es la medicion. **Refuerza su decision de NO
+    agrandar `base = 64`**: el limite es de pacientes, no de capacidad.
+  - **PERDIDA REAL: las pesas del minimo ya no existen.** `guarda()` escribia siempre al mismo
+    `ckpt.pt`, sobrescrito cada 5 000 pasos, y **no habia logica de mejor modelo**. Lo unico que
+    sobrevive es el paso ~145 000, que es el sobreajustado. El modelo util de esta corrida se perdio.
+  - **Arreglado en `src/renderizador/entrenar.py`:** se anade **`mejor.pt`**, que guarda las pesas del
+    minimo de validacion (sin estado del optimizador: es para inferencia), y al terminar el log imprime
+    el paso del minimo frente al paso final, para que pasarse de largo sea visible.
+  - **NO se lanza el segundo turno de 55 000 pasos.** Ya no es "completar la corrida": seria alejarse
+    mas del minimo. La corrida de 200 000 pasos queda **descartada por medicion**, no por falta de
+    cuota.
+  - **Lo que esta corrida SI deja, y es lo que #134 pedia:** un **criterio de parada medido sobre el
+    propio dato** en lugar del numero escrito a priori. La corrida buena se relanza en `run02` (con
+    `run01` y `--reanudar` continuaria desde las pesas sobreajustadas), con `--pasos` fijado desde la
+    tabla de validacion por bloques de 10 000, el generador de validacion ya sembrado y `mejor.pt`
+    activo. Al ritmo medido, si el minimo esta cerca de los 45 000, son **menos de 4 h: un solo turno**.
+  - **PENDIENTE DE LA AUTORA:** localizar el minimo en la tabla por bloques y fijar `--pasos`. Esa
+    cifra, y no la de 200 000, es la que debe entrar en `diseno_A.md` al congelarlo.
+- **MINIMO LOCALIZADO, 2026-10-04. Es la cifra que cierra la decision 1 de esta implicancia.**
+  Validacion de `run01` promediada en bloques de 10 000 pasos (20 mediciones por bloque, lo que cancela
+  el +-15% del estimador sin sembrar):
+
+  | bloque | val media | | bloque | val media |
+  |---|---|---|---|---|
+  | 0-10 k | 0.08241 | | 70-80 k | 0.07731 |
+  | 10-20 k | 0.06121 | | 80-90 k | 0.08459 |
+  | **20-30 k** | **0.05809** | | 90-100 k | 0.09178 |
+  | 30-40 k | 0.06008 | | 100-110 k | 0.09376 |
+  | 40-50 k | 0.06058 | | 110-120 k | 0.10082 |
+  | 50-60 k | 0.06310 | | 120-130 k | 0.10652 |
+  | 60-70 k | 0.06857 | | 130-140 k | 0.10807 |
+
+  - **Minimo en el bloque 20-30 k (~paso 25 000), val 0.05809**, y de ahi **doce bloques consecutivos
+    subiendo** hasta 0.10807. La forma en U es inequivoca.
+  - **Coste del error:** el minimo esta a **1 h 23 min** de computo. Se corrieron 144 500 pasos, de los
+    cuales ~**119 500 (6 h 34 min de A100) empeoraron el modelo**.
+  - **`--pasos` de la corrida buena: 60 000** (3 h 18 min, un solo turno). No 30 000: el minimo hay que
+    **verlo pasar**, no suponerlo. 60 000 deja 35 000 pasos de subida posterior, da la U completa como
+    figura y justifica el numero en `diseno_A.md`. `mejor.pt` retiene las pesas del minimo aunque la
+    corrida siga.
+  - **HALLAZGO DE FONDO, mas alla de la operacion:** el renderizador **satura a ~25 000 pasos** con 47
+    pacientes y no mejora con mas computo. **La capacidad del renderizador no se decide con la perdida
+    sino con `Delta` (D4), medido sobre las muestras.** Si `Delta` no alcanza, la palanca no son mas
+    pasos ni un modelo mayor (#115): son mas pacientes, y eso se declara como limitacion con esta
+    medicion como respaldo.
+
+#### AMPLIACION 2026-10-05: `run02` TERMINADO. La U se reproduce con el estimador corregido, y el sobreajuste NO era un artefacto de medicion
+
+Job **54498**, nodo `ag001`, 06:38:18 a ~12:55 del 2026-10-05, **60 000 pasos en ~6 h 20** a
+**0.377 s/paso** (9 549 pasos/h) en la particion MIG `a100_3g.20gb`, 12.3 GB de 20. No toco la pared
+de 12 h.
+
+**Tabla por bloques de 10 000 (`data/a7/run02/curva.csv`):**
+
+| Bloque | val media | filas |
+|---|---|---|
+| 0 | 0.08098 | 19 |
+| 10 000 | 0.06271 | 20 |
+| 20 000 | 0.05927 | 20 |
+| **30 000** | **0.05891** | 20 |
+| 40 000 | 0.06132 | 20 |
+| 50 000 | 0.06364 | 20 |
+| 60 000 | 0.06590 | 1 (no se cita) |
+
+`MEJOR VALIDACION: 0.05519 en el paso 37500 (mejor.pt). Ultimo paso: 60000.`
+
+##### Lo que queda establecido
+
+1. **La forma de U es real.** Baja hasta el bloque 30-40 k y sube en los **dos** bloques siguientes.
+   `run01` ya la mostraba, pero con el `mide_val()` defectuoso, asi que cabia la duda de que la subida
+   fuera ruido del estimador. **Con `SEMILLA_VAL` fija la U se reproduce.** El sobreajuste de #134 es
+   un hecho del modelo, no del instrumento.
+2. **`mejor.pt` justifica su existencia.** El minimo esta en 37 500 y la corrida acabo en 60 000:
+   **22 500 pasos de distancia**, el 37.5 % de la corrida gastado despues del optimo. Con el
+   `guarda()` anterior, que sobrescribia un unico `ckpt.pt`, **esas pesas se habrian perdido otra vez**.
+3. **El minimo se corrio mas tarde que en `run01`** (bloque 30-40 k frente a 20-30 k; paso 37 500
+   frente a ~25 000). No se puede decir cuanto de ese corrimiento es real: la posicion del minimo de
+   `run01` tambien la midio el estimador roto.
+
+##### DOS COMPARACIONES QUE NO SE PUEDEN HACER, y conviene dejarlas escritas
+
+- **`0.05519` de `run02` NO es "mejor" que `0.05809` de `run01`.** Salen de instrumentos distintos:
+  `run01` con un estimador que sorteaba `t` y el ruido en cada medicion (oscilacion +-15 %), `run02`
+  con semilla fija. **Enfrentar los dos numeros es exactamente el error de leer el instrumento como
+  si fuera la senal.** Si se quiere comparar corridas, hay que remedir `run01` con `SEMILLA_VAL`, y
+  para eso su `ckpt.pt` final no sirve: haria falta reentrenar.
+- **La magnitud de la subida tampoco se compara.** `run01` subio de 0.05809 a 0.10807 a lo largo de
+  **doce** bloques porque corrio 144 500 pasos; `run02` sube de 0.05891 a 0.06364 en **dos** bloques
+  porque paro en 60 000. La subida mas chica no significa menos sobreajuste: significa menos corrida.
+
+##### CORRECCION a la justificacion documentada de la tabla por bloques
+
+`ESTADO.md` justifica promediar por bloques diciendo que "promediar cancela el ruido del estimador".
+**Para `run02` eso ya no es cierto.** Con `SEMILLA_VAL` fija la medicion es determinista dado el
+modelo: no hay ruido de estimador que cancelar, y **las filas sueltas de `run02` si son comparables
+entre si**. Lo que el promedio por bloques suaviza ahora es la **fluctuacion de las pesas a lo largo
+del descenso**, que es otra cosa. La practica sigue siendo correcta; el motivo escrito, no.
+
+##### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. ~~**B2, el numero de pasos de `diseno_A.md`.**~~ **DECIDIDO el 2026-10-05: 30 000 pasos**, el centro
+   de la meseta, registrado en `docs/01-decisiones.md`. Queda **declarado como eleccion de
+   hiperparametro hecha sobre validacion**, no fijada de antemano: sale del minimo observado en
+   `run01` y `run02`, ninguna de las dos medida sobre test. Esa salvedad tiene que viajar con la cifra
+   a `diseno_A.md` y a la tesis. **Falta aplicarla a `diseno_A.md`**, que sigue en borrador y se
+   congela despues de medir `Delta`.
+2. **B1, la saturacion como limitacion declarada.** Este resultado la **sostiene**: con el estimador
+   bueno, mas computo no mejora nada despues del paso ~37 500. La palanca que queda son mas pacientes,
+   no mas pasos. Sigue sin estar escrito en ninguna parte del documento.
+3. **#115 pasa definitivamente de prediccion a observacion**, y como se declara sigue siendo decision
+   de la autora.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+#### AMPLIACION 2026-10-05 (2): `run01/curva.csv` ya esta en local, y las DOS curvas son la misma
+
+`run01/curva.csv` bajado de Khipu: **289 filas, ultimo paso 144 500**, columnas
+`paso, perdida, perdida_val, s_por_paso, s_tramo, gb_max`. Reproduce **exactamente** lo que esta
+entrada describia: minimo **0.05809** en el bloque 20-30 k y subida sostenida durante **doce** bloques
+hasta **0.10807**.
+
+| Bloque | `run01` (estimador que sorteaba) | `run02` (`SEMILLA_VAL` fija) | diferencia |
+|---|---|---|---|
+| 0 | 0.08241 | 0.08098 | -0.00143 |
+| 10 000 | 0.06121 | 0.06271 | +0.00150 |
+| 20 000 | **0.05809** | 0.05927 | +0.00117 |
+| 30 000 | 0.06008 | **0.05891** | -0.00118 |
+| 40 000 | 0.06058 | 0.06132 | +0.00074 |
+| 50 000 | 0.06310 | 0.06364 | +0.00054 |
+| 60 000 | 0.06857 | 0.06590 (1 fila) | — |
+| 70 000 a 140 000 | 0.07373 -> **0.10807** | no corrio | — |
+
+**Maxima diferencia entre bloques comparables: 0.00150.**
+
+##### 1. Dos corridas independientes trazan la misma curva de validacion
+
+Sobre los 60 000 pasos compartidos, `run01` y `run02` coinciden dentro de **1.5e-3** en **todos** los
+bloques, **medidas con instrumentos distintos**. Eso establece dos cosas que antes eran supuesto:
+
+- **El entrenamiento es reproducible.** No es una corrida con suerte ni una con mala suerte.
+- **El estimador defectuoso NO distorsionaba la curva promediada por bloques.** Su oscilacion de
+  +-15 % era ruido por fila, y el promedio de 20 filas lo cancelaba, que es exactamente para lo que
+  se adopto la tabla por bloques.
+
+##### 2. EL MINIMO NO ES UN PUNTO, ES UNA MESETA de ~20 000 a ~40 000 pasos
+
+`run01` lo pone en el bloque 20-30 k (0.05809) y `run02` en el 30-40 k (0.05891): **los dos bloques
+difieren menos que la diferencia entre las dos corridas**. Juntando ambas, los bloques 20 k, 30 k y
+40 k caen entre **0.05809 y 0.06132**. No hay un optimo agudo que haya que acertar; hay un tramo
+plano, y despues del bloque 40-50 k la subida es monotona en las dos corridas.
+
+**Esto cambia la forma de la respuesta a B2.** La pregunta no es "cual es el paso optimo" sino
+"donde termina la meseta", y la respuesta medida es **alrededor de 40 000**. Fijar 40 000 estaria en
+el extremo alto de la meseta; 30 000 caeria en su centro y costaria un 25 % menos de computo. Las dos
+cifras son defendibles con esta evidencia; **la eleccion es de la autora** (regla 14).
+
+##### 3. REFINAMIENTO de la correccion de metodo de la ampliacion anterior
+
+La ampliacion previa decia que la justificacion escrita del promedio por bloques ("cancela el ruido
+del estimador") estaba **mal**. Con `run01` en la mano, lo correcto es mas fino:
+
+- Para **`run01` era cierta, y ahora esta demostrada**: el promedio por bloques recupero una curva que
+  coincide con la determinista dentro de 1.5e-3 pese al +-15 % por fila.
+- Para **`run02` es obsoleta**: con semilla fija no hay ruido de estimador que cancelar, y sus filas
+  sueltas si son comparables entre si.
+
+Y una asimetria que conviene no perder: el estimador de `run01` **promediaba sobre `t` y sobre el
+ruido**, asi que su media por bloque estima la perdida esperada; el de `run02` usa **un solo sorteo
+fijo** de `t` y de ruido, asi que es comparable entre pasos pero es **una muestra sesgada** de esa
+perdida esperada. Que coincidan dentro de 1.5e-3 es una **observacion empirica sobre este par de
+corridas**, no una prueba de que los dos instrumentos sean intercambiables. La prohibicion de
+comparar **filas sueltas entre corridas** sigue en pie; lo que queda habilitado es comparar **bloques**.
+
+#### AMPLIACION 2026-10-05 (3): el papel de la validacion cambio y `diseno_A.md` dice lo contrario
+
+Al aplicar B2 a `experiments/objetivo3/diseno_A.md` aparecio una contradiccion que la correccion de
+esta misma entrada introdujo sin que nadie la declarara. La seccion 5 del diseno decia:
+
+> Validacion: 5 pacientes con metal; registra curva, **no elige checkpoint** (igual que P1).
+
+**Hoy la validacion hace las dos cosas que esa frase niega:**
+
+1. **Elige el checkpoint.** `guarda()` escribe `mejor.pt` en cada minimo de validacion desde la
+   correccion del 2026-10-04. Eso es seleccion de modelo por validacion.
+2. **Fija un hiperparametro.** Los 30 000 pasos de B2 salen del minimo de validacion de `run01` y
+   `run02`.
+
+**El cambio es correcto y resolvio una perdida real** —en `run01` las pesas del optimo se perdieron
+porque `guarda()` sobrescribia un unico `ckpt.pt`—, y **seleccion de modelo por validacion con test
+intacto es practica estandar**. El problema no es el metodo: es que **aparta al Objetivo 3 del
+precedente del Objetivo 1 (P1, que deliberadamente no elegia checkpoint) y eso no esta declarado en
+ninguna parte**. Un jurado que compare los dos objetivos vera dos protocolos distintos sin
+justificacion escrita.
+
+**Lo que NO cambia:** el aislamiento por paciente. Las dos cosas se deciden sobre los **5 pacientes de
+validacion** y **ninguna toca los 20/14 de test** (`main.tex`:111).
+
+**Pendiente de la autora (regla 14):** decidir como se declara el cambio de papel de la validacion en
+el Objetivo 3, y si el precedente de P1 se menciona como contraste deliberado o se deja sin comentar.
+Marcado como `[DECIDIR]` en `diseno_A.md` seccion 5, al lado de la cifra de B2. **No se resolvio.**
+
+### 135 — #132 se aplico a `tesis/main.tex` pero NO a `overleaf/`, que todavia afirma lo contrario — ABIERTA
+
+- **Origen:** mapeo de pendientes de redaccion, 2026-10-04, al preparar `redaccion/ENCARGO_2026-10-04.md`.
+- **El defecto:** `overleaf/secciones/capitulo3.tex:263`, parrafo de *Validez externa*, dice que la
+  referencia clinica proviene de pelvis fracturadas **"mientras que los corredores de este trabajo se
+  miden en pelvis sin osteosintesis"**, y cierra con **"las pelvis receptoras, sin fractura conocida,
+  no reproducen"**. **#132 (CERRADA) lo desmiente:** el cribado ciego hallo fractura en **20 de 30**
+  pelvis de la cohorte. El criterio de construccion fue "sin osteosintesis" (#52 a), que **no es lo
+  mismo** que "sin fractura", y eso nunca se verifico.
+- **Por que importa mas que una errata:** es una **afirmacion falsa en el documento de entrega**, y
+  sostiene un argumento de validez externa. Un lector que compruebe #132 encuentra la contradiccion.
+- **Lo que no es:** no es un problema de #132, que esta correctamente cerrada y aplicada donde se
+  ordeno. Es un **fallo de propagacion** entre `tesis/main.tex` (boceto, ingles) y `overleaf/`
+  (entrega, espanol), que son dos documentos y no uno.
+- **GAP DE PROCESO QUE ESTO ABRE:** cerrar una implicancia y aplicarla a `main.tex` **no garantiza**
+  que llegue a `overleaf/`. **#124 y #130 estan en la misma situacion**, aplicadas solo en
+  `main.tex`. Convendria que el cierre de una implicancia exija declarar los dos destinos, o que
+  `auditor-trazabilidad` verifique la paridad entre ambos documentos.
+- **Redaccion preparada, NO aplicada** (regla 14): bloque A1 de `redaccion/ENCARGO_2026-10-04.md`.
+  Al corregirlo el argumento **se fortalece**: ya no es solo que las receptoras no reproduzcan la
+  malreduccion, es que **tampoco estan libres de fractura**, y parte de lo atribuido a variabilidad
+  anatomica podria ser patologia no detectada.
+- **Limite que debe acompanar a la cifra:** el cribado lo hizo un **medico recien egresado en SERUM,
+  sin especialidad**, sobre laminas fijas. Cribado valido, **no** lectura de especialista.
+
+### 136 — RECTIFICACION NUMERICA DE #132: la tabla y la seccion 2 contaban el `dudoso` como fractura; los grupos son 10 y 10, no 10 y 11 — **CERRADA el 2026-10-05**: regla decidida por la autora y las cuatro cifras corregidas en #132 (ver tambien #140) — (decision de la autora sobre la regla del `dudoso`)
+
+- **Origen:** verificacion directa contra las fuentes el 2026-10-05, al preparar la redaccion de #135.
+- **Recuento desde `r3_fractura_revisor.csv` cruzado con `r3_fractura_grupos.csv`:**
+
+  | | estrecho (n=15) | control (n=15) | total |
+  |---|---|---|---|
+  | `fractura = si` | **10** | **10** | **20** |
+  | `fractura = no` | 5 | 4 | 9 |
+  | `fractura = dudoso` | 0 | **1** | 1 |
+
+- **Lo que #132 dice mal, en dos sitios:**
+  1. La tabla de la seccion 1: *"Fractura (cualquiera) | 10 (67%) | **11 (73%)**"*. El 11 solo sale
+     contando como fractura el unico `dudoso`, que esta en el grupo control.
+  2. La seccion 2: *"**21 de 30** pelvis (70%) tienen fractura"*. Mismo origen.
+- **El titular de #132 SI es correcto** (*"20 de 30"*), igual que `tesis/main.tex`:109
+  (*"fracture in 20 of the 30 volumes"*). **El error no se propago al documento**; vive solo dentro de
+  la entrada de implicancias, que es lo que leen los agentes de redaccion.
+- **Por que no es defendible contar el `dudoso` como `si`:** el diseno declaro `dudoso` como respuesta
+  valida y distinta (`r3_fractura_revisor.md`, *"`dudoso` es una respuesta valida y util"*), y
+  contarlo como fractura en **un solo brazo** inclina la comparacion justo en la direccion que el
+  cribado queria poner a prueba. Es una decision de analisis tomada despues de ver el dato.
+- **Efecto sobre la conclusion: ninguno, y la refuerza.** Con el criterio correcto los dos grupos son
+  **10 y 10, identicos**. #122 se mantiene, y ahora con una comparacion que no depende de como se
+  clasifique un caso ambiguo.
+- **DECISION PENDIENTE DE LA AUTORA (regla 14):** fijar la regla del `dudoso` antes de que cualquier
+  cifra entre a `overleaf/`. **Recomendacion del asistente:** `dudoso` **no** cuenta como fractura y se
+  reporta aparte -> *"20 de 30 (67%) con fractura confirmada, mas un caso dudoso"*. Es lo que dice el
+  CSV, es la lectura conservadora, y evita tener que justificar en la sustentacion por que un caso
+  ambiguo se resolvio hacia el lado que convenia.
+- **Bloquea el bloque A1 de `redaccion/ENCARGO_2026-10-04.md`:** si los agentes redactan antes de esta
+  decision, escribiran 70% o 73% en el documento de entrega.
+- **RESUELTA el 2026-10-05 por decision de la autora: se adopta la regla recomendada.** `dudoso`
+  **no** cuenta como fractura y se reporta aparte. La cifra unica para el documento es
+  **20 de 30 (67%) con fractura confirmada, mas un caso dudoso**, y la comparacion entre grupos es
+  **10 frente a 10**. El bloque A1 queda desbloqueado.
+- **Verificacion completa contra `r3_fractura_revisor.csv` el 2026-10-05**, para que ninguna otra
+  cifra de #132 se arrastre sin comprobar:
+
+  | | estrecho (n=15) | control (n=15) |
+  |---|---|---|
+  | Fractura confirmada (`si`) | 10 | 10 |
+  | Fractura sacra | 9 | 5 |
+  | Fractura sacra **desplazada** | **7** | **2** |
+  | Casos legibles desde lamina | 8 | 10 |
+
+  Las tres ultimas filas coinciden con lo que #132 ya decia: **solo la fila de fractura
+  *cualquiera* y el total de la seccion 2 estaban mal.**
+- **ESTIMACION PARA LA COHORTE COMPLETA, calculada el 2026-10-05. No requiere leer un caso mas.**
+  Los 30 cribados **no** fueron una muestra al azar: fueron **los 15 estrechos que existen** (censo de
+  ese estrato) mas **15 de los 57 controles**. Es un muestreo estratificado con pesos conocidos, asi
+  que la prevalencia en los 72 se estima por diseno:
+  - estrato estrecho: **10** (censado, 15 de 15);
+  - estrato control: 10/15 -> 57 x 0.667 = **38**;
+  - total: **48 de 72, 67%**. Intervalo ancho, del orden de **47% a 81%** (Wilson sobre 10/15 del
+    estrato control, escalado; sin correccion por poblacion finita, que lo estrecharia algo).
+  - **Consecuencia practica:** para la frase que el documento necesita —que la anatomia receptora
+    **no** es una coleccion de pelvis sanas— el intervalo sobra, y **no hace falta ampliar el
+    cribado**. La cifra puntual citable sigue siendo la medida, **20 de 30**; esta estimacion se usa
+    solo si se quiere hablar de los 72, y entonces va con su intervalo y la palabra "estimada".
+- **DESCARTADO, con motivo, el 2026-10-05: no se cribara todo `dataset6` (99 casos).** El limite de lo
+  que puede afirmarse lo pone **quien lee** —medico recien egresado sin especialidad, sobre laminas
+  fijas—, no el tamano de muestra; 69 lecturas mas darian una estimacion mas precisa **de lo que ve un
+  no especialista**, sin mover el techo. Ademas los 27 casos de `dataset6` fuera de la cohorte del
+  Objetivo 2 **no alimentan nada**: el Objetivo 3 entrena sobre los 47 pacientes con metal.
+- **OPCION QUE QUEDA ABIERTA, no ejecutada:** completar los **42 controles** restantes de la cohorte de
+  72, con **un unico objetivo declarado**: resolver la fractura **sacra desplazada** (7/15 frente a
+  2/15, p = 0.109), que es lo unico que quedo sin potencia y que `reilly2003effect` predice. **Si se
+  hace, no es una segunda ronda ciega:** los 42 restantes son **todos controles**, y el revisor ya
+  conoce la estructura del estudio, asi que seria una **completacion de censo** y todo analisis sobre
+  los 72 es **post-hoc y debe declararse**. La comparacion ciega primaria sigue siendo la de los 30.
+  **No se hace ahora:** el camino critico es `run02` -> `Delta` -> congelar `diseno_A.md`, la auditoria
+  de paridad y la redaccion.
+
+### 137 — El Objetivo 3 no tiene NINGUNA lectura humana prevista: E-A1..E-A4 son todos bloques metricos — ABIERTA
+
+- **Origen:** revision de los bloques de evaluacion del Diseno A el 2026-10-05, al decidir si se podia
+  ensenar una muestra al medico colaborador sin contaminar una evaluacion futura.
+- **El hallazgo:** los cuatro bloques (metricas de Peters, baseline de copia-pega, costura en el borde
+  de `B_delta`, preservacion fuera de la banda) **son todos cuantitativos**. No hay ni una linea de
+  evaluacion por observador humano para la apariencia del implante sintetizado ni de su artefacto.
+- **El contraste con el Objetivo 2 es llamativo:** alli se montaron **tres** revisiones humanas
+  (laminas del corredor, nivel del pico, cribado de fractura, #131 y #132), con protocolo ciego y
+  grupo de comparacion. El Objetivo 3, cuyo producto **es una imagen**, no tiene ninguna.
+- **Por que importa:** la tesis afirma evaluar **coherencia fisica y quirurgica**. Las metricas de
+  Peters miden parecido de artefacto frente a un protocolo de referencia; **ninguna** contesta si un
+  clinico reconoce el resultado como un tornillo en una TC. Un comite puede preguntarlo.
+- **Lo que NO se afirma aqui:** que haga falta un estudio formal de lectura. Puede ser deliberado y
+  defendible —el alcance declara que la evaluacion downstream esta fuera—, pero **hoy no esta
+  declarado como eleccion**, solo esta ausente.
+- **Riesgo operativo, con fecha:** el 2026-10-05 se recomendo a la autora ensenar la primera lamina al
+  medico colaborador y pedirle una opinion de plausibilidad. Es barato y aporta lo que las metricas no
+  dan, **pero quema la ingenuidad de ese lector** para cualquier estudio formal posterior. Si se hace,
+  **declararlo como lectura exploratoria**, no como evaluacion.
+- **DECISION PENDIENTE DE LA AUTORA (regla 14):** o se declara explicitamente que el Objetivo 3 se
+  evalua solo con metricas y por que, o se anade un bloque de lectura. Lo primero es legitimo; el
+  silencio no.
+
+### 138 — El medico confirma que la "parte de atras" aceptada como S1 es la CRESTA SACRA MEDIA; el techo de la etiqueta `vertebrae_S1` no es el platillo superior — ABIERTA
+
+- **Origen:** respuesta del medico colaborador el 2026-10-05, a la pregunta pendiente que bloqueaba el
+  `\GAPDEC` de `overleaf/secciones/capitulo3.tex:97`. **Desambigua** lo que se habia anotado como
+  "tambien se considero la parte de atras": no son las apofisis articulares superiores, es la
+  **cresta sacra media**.
+- **Es coherente con la etiqueta, no un error de lectura.** `vertebrae_S1` de TotalSegmentator es una
+  etiqueta de **vertebra completa**, que incluye el arco posterior. El revisor acepto como S1 una
+  estructura que la mascara efectivamente contiene.
+- **LO QUE ESTO IMPLICA, y es lo que hay que mirar:** el marco de referencia de
+  `kaiser2014dysmorphism` se define **perpendicular al platillo superior de S1**. Si la extension
+  superior de la mascara `vertebrae_S1` la marca la **cresta sacra media** —una estructura
+  **posterior y, segun el caso, mas craneal que el platillo**— entonces "el techo de S1 segun la
+  mascara" y "el platillo superior de S1" **no son la misma superficie**, y cualquier medida anclada
+  al techo de la etiqueta hereda esa diferencia.
+- **NO se afirma aqui que el marco este mal.** Hace falta comprobar, caso por caso, si el voxel mas
+  craneal de `vertebrae_S1` cae en el cuerpo vertebral o en el arco posterior, y con que diferencia en
+  milimetros. **Eso no esta medido.** Mientras no lo este, es una amenaza identificada, no un defecto
+  demostrado.
+- **DESBLOQUEA la redaccion** del `\GAPDEC` de `capitulo3.tex:97`: ya se puede nombrar la estructura.
+  **Lo que NO desbloquea** es afirmar que el nivel S1 este bien o mal determinado: eso depende de la
+  comprobacion anterior.
+- **PENDIENTE DE LA AUTORA (regla 14):** decidir si esa comprobacion se hace antes de la sustentacion
+  o si la diferencia entre el techo de la etiqueta y el platillo se declara como supuesto no medido.
+
+### 139 — LA CADENA COMPLETA NUNCA SE HA EJECUTADO, y la costura de E-A2 queda medida por primera vez (203 frente a 30 HU) — ABIERTA
+
+- **Origen:** la autora miro la lamina de A6 el 2026-10-05 y objeto que el tornillo "no parece estar en
+  S1" y que la imagen "parece un PNG sobrepuesto". Las dos objeciones se verificaron con medicion.
+
+#### 1. EL HALLAZGO PRINCIPAL: muestreador y renderizador nunca se han encadenado
+
+`a6_muestra_minima.py` **no coloca ningun tornillo**. Toma un paciente que **ya tenia** un implante real
+(`CLINIC_metal_0011`, componente 11: `alargado`, 94.3 mm, 8.2 x 3.6 mm), borra `G` y pide al modelo que
+**reconstruya** lo que habia. La pose la decidio el cirujano que opero a ese paciente, **no el
+muestreador del Objetivo 2**.
+
+**Consecuencia:** el Objetivo 2 esta validado por separado (SAP, #131, #132) y el Objetivo 3 esta
+validado por separado (reconstruccion de metal real), pero **la secuencia pelvis limpia de `dataset6`
+-> muestrear pose en S1 -> rasterizar `M` -> generar apariencia NO SE HA EJECUTADO NUNCA**. El producto
+de la tesis **no existe como imagen**, y por eso la lamina no parece presentable: **no es el producto,
+es una prueba de componente**.
+
+- **No esta claro que exista el eslabon de rasterizado** (de pose muestreada a mascara `M` voxelizada).
+  Hay que comprobarlo antes de prometer la demostracion.
+- **Expondra el riesgo #96:** el renderizador aprendio apariencia sobre pacientes que **ya tenian**
+  streaking de implante real; se le pedira generar sobre una pelvis **limpia**. El resultado puede ser
+  malo, y eso tambien es informacion.
+
+#### 2. PRIMERA MEDICION DE LA COSTURA (bloque E-A2), que no tenia ninguna
+
+Salto de HU al cruzar el borde de `G` (mediana del anillo interior frente al exterior, un voxel):
+
+| | HU |
+|---|---|
+| imagen **real** | **30** |
+| imagen **compuesta** | **203** |
+
+Escalon de ~170 HU que no existe en el original. Es el **riesgo #96** y lo que **E-A2** existe para
+medir. **Un solo caso, un solo corte, con un `ckpt` pasado de su optimo**: es una primera medicion, no
+el bloque E-A2.
+
+#### 3. LO QUE LA MEDICION DESMIENTE: el modelo SI respeta la mascara `M`
+
+| | real | generado |
+|---|---|---|
+| HU mediano en `M` | 5 129 | **5 375** |
+| HU mediano en la banda `G\M` | -164 | 13 |
+| **contraste metal menos banda** | **5 293** | **5 362** |
+
+El contraste se reproduce con ~1% de diferencia: el metal se genera **donde `M` dice**. La "cuna
+luminosa de bordes rectos" del cuarto panel es el **recorte por `G`** —ese panel se titula *"solo lo
+generado en G"*—, no la forma del implante. **El asistente tambien leyo mal ese panel antes de medir.**
+
+#### 4. Limitaciones de presentacion, menores pero reales
+
+- El `.nii.gz` es **256 x 256 x 1**: un corte suelto, no navegable. El modelo es 2.5D y puede generar
+  **cortes consecutivos**; apilarlos daria un volumen que un clinico si puede recorrer.
+- **BUG CORREGIDO:** el titulo de la lamina decia *"ckpt del piloto de 200 pasos"*, falso desde que se
+  uso el `ckpt` de `run01`. Se corrigio en `a6_muestra_minima.py`; **cualquier lamina generada antes
+  del 2026-10-05 lleva ese pie falso y no debe mostrarse.**
+
+#### Pendiente de la autora (regla 14)
+
+Decidir si se construye la demostracion de cadena completa y **cuando**. Recomendacion del asistente:
+**si, pero con `mejor.pt` de `run02`**, no con el `ckpt` pasado de `run01`.
+
+### 140 — La auditoria de paridad del BLOQUE 0 encuentra que el fallo de #135 no es un caso aislado (4 sitios, 5 implicancias) y que la rectificacion de #136 quedo incompleta: dos cifras mas no cuadran dentro de entradas CERRADA — ABIERTA
+
+- **Origen:** `auditor-trazabilidad`, BLOQUE 0 del `redaccion/ENCARGO_2026-10-04.md`, ejecutado el
+  2026-10-05. Reporte completo en `redaccion/rondas/paridad-r01-trazabilidad.md`. Alcance: las 36
+  entradas CERRADA de este archivo, mas #130. Dos comprobaciones por entrada: paridad con
+  `overleaf/secciones/` y recuento de cada cifra contra `experiments/`.
+- **Saldo:** 9 hallazgos altos, 8 medios, 3 bajos. Las dos pruebas de control (#135 y #136) se
+  detectaron, y las dos quedaron **ampliadas**.
+
+#### 1. #135 no es un caso aislado: son cuatro sitios y cinco implicancias sin propagar
+
+`overleaf/` sigue en estado pre-#132 en `capitulo3.tex` lineas **263**, **253**, **52** y **209**, y en
+`introduccion.tex:82`. Dos de esos sitios son `\GAPDATO` que **declaran no hecho algo que esta hecho y
+cerrado**: el cribado de fractura (`capitulo3.tex:52`, `introduccion.tex:82`) y la revision del recorte
+de 6 mm (`capitulo3.tex:91`, `introduccion.tex:84`, que son #123 y #131). Lo mismo con #124
+(`capitulo3.tex:97`, `\GAPDEC` ya resuelto) y #130 (`introduccion.tex:39`, `capitulo3.tex:101` y `:196`,
+`capitulo1.tex:72`, `capitulo2.tex:74`).
+
+**Por que importa mas que una omision:** un lector que abra el repositorio ve el CSV lleno mientras el
+documento afirma que el dato no existe.
+
+#### 2. DOS CIFRAS NUEVAS QUE NO CUADRAN, las dos dentro de entradas CERRADA
+
+| Donde | Dice | El recuento da | Criterio del recuento |
+|---|---|---|---|
+| **#122**, encabezado (`:8490`) y cuerpo (`:8503`) | "16 de 72", "22% de la cohorte" | **15 de 72 (20.8%)** | `e13b_estratificado.md:9` dice 72 / 57 / **15**; `tesis/main.tex:109` dice "15 of the 72". El propio cuerpo de #122 explica que el 16 salia de usar `sap.D_SAP_MM` en vez de `D_TS_max`, y que el decimosexto (`CLINIC_0018`) tiene `D_TS_max = 7.0` |
+| **#132 seccion 4** (`:9075`) | "21 casos con `fractura = si` (14 sacro, **7 ilion**)" | **20** (14 sacro, **6** ilion) | cruce de `r3_fractura_revisor.csv` con `r3_fractura_grupos.csv` por `Caso`, con `dudoso` aparte. Y si se contara el `dudoso` para llegar a 21, su columna `donde` esta **vacia**: la frase "no tiene huecos" se cae por los dos lados |
+
+Ademas, en **#132** la tabla de `D_TS` por estado (`:9121-9125`) aplica la regla del `dudoso` **al
+reves** que la fila que #136 corrigio: cuenta el dudoso **dentro** de "sin fractura", con lo que publica
+n = 10 y mediana 6.7 mm donde la regla autorizada da **n = 9 y 5.9 mm**. Y la mediana de "desplazada"
+es **6.25 mm**, no 6.2, sin declarar el redondeo.
+
+**Lo que SI quedo verificado de #132:** el titular (20 de 30, 67%), los grupos (10 y 10), las sacras
+(9 y 5), las desplazadas (7 y 2), las legibles (8 y 10), y **los tres valores p**, recalculados a mano
+por la distribucion hipergeometrica: 0.109, 0.264 y 0.272.
+
+#### 3. Un hallazgo alto que no venia de ninguna implicancia: alcance retirado afirmado como vigente
+
+`overleaf/secciones/introduccion.tex` lineas **13**, **15** y **21** siguen afirmando **sintesis
+condicionada bidimensional** y que **"se evaluara con Dice (DSC) y HD95"**. Las dos cosas estan
+**FUERA DE ALCANCE** por `docs/00-tesis.md` y por el `CLAUDE.md` raiz, y `capitulo3.tex:36` ya lo dice
+bien. El `\GAPDEC` de la linea 28 avisa, pero las tres frases siguen afirmandolo. Es #126, que es
+decision de la autora; mientras se decide, afirmarlo es peor que marcarlo.
+
+#### 4. Dos defectos de procedencia de lector
+
+- `capitulo3.tex:164` dice "un segundo lector ciego a la profundidad medida" sin decir que el lector es
+  **la autora** (`r2_nivel_pico_revisor.csv`, columna `revisor` = `autora` en las 18 filas). El estandar
+  correcto lo fija #124 y esta aplicado en `main.tex:121`.
+- `capitulo3.tex:91` e `introduccion.tex:84` atribuyen la revision del recorte **solo a la autora**;
+  #131 la corrigio el 2026-10-04: fue la autora **con apoyo de un medico egresado (SERUM, sin
+  especialidad)**. El sufijo `_autora` del archivo se conserva por compatibilidad y no acredita autoria
+  unica.
+
+#### 5. Tres problemas de etiqueta, no de contenido
+
+- **#55, #62 y #130** aparecen ABIERTAS en su encabezado y CERRADA en una tabla resumen del mismo
+  archivo. Un redactor que lea el encabezado las trata como GAP; uno que lea la tabla, como hecho.
+  (El contenido de #55 y #62 ya esta propagado y bien matizado; no hay que tocar `overleaf/` por eso.)
+- **El encargo cita la implicancia equivocada en su bloque A3:** atribuye a **#124** lo de "Herman es
+  referencia de distribucion, no de equivalencia de implante". #124 es el 61 de 61 del nivel S1. El
+  contenido de A3 es **#130 punto 3**. El contenido si tiene respaldo (`main.tex:52` lo trae aplicado;
+  `docs/literatura/herman2016.md:167` acredita la mezcla de tipos), pero la cita es falsa.
+- **#131 cita una frase literal que ya no existe en su fuente:** "se reconoce parte de la **medula**
+  como parte de S1" (12 de 16). El CSV dice hoy "cresta sacra media", porque la autora corrigio la
+  nomenclatura el 2026-10-04; el original esta en `e9ts_revision_laminas_autora.raw.csv`. El recuento
+  de 12 si se sostiene.
+
+#### 6. Un dato que no se pudo verificar
+
+Las cifras de E14 que cita #131 (`outputs/e14_relleno.csv`, 152 casos, 0 casos de la cohorte cambian)
+**no estan en disco en este arbol**: `NO ENCONTRADO EN LA FUENTE`. Solo constan en la propia #131.
+
+#### 7. Ningun resultado del Objetivo 2 esta en el documento de entrega
+
+`overleaf/secciones/capitulo4.tex` tiene cuatro secciones vacias. Los seis Wasserstein-1, las cuatro
+distribuciones de grado y el 15/57 viven **solo** en `tesis/main.tex:109` y en `experiments/`. No es
+fallo de #121 ni de #122: el capitulo no se ha redactado. Cuando se redacte, la fuente deben ser
+`e13_sap.md` y `e13b_estratificado.md`, **no** el encabezado de #122 (ver seccion 2).
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. ~~**Corregir en este archivo** el encabezado de #122 y la seccion 4 de #132~~ **HECHO el
+   2026-10-05 por instruccion de la autora.** #122 dice ahora **15 de 72 (20.8%)** en su encabezado y
+   en su cuerpo; #132 tiene sus cuatro cifras corregidas en sitio y su aviso reescrito como tabla de
+   "decia / dice". El recuento se rehizo de forma **independiente** desde los CSV antes de tocar nada,
+   y coincide con el de esta auditoria en todo. Con esto **desaparece el riesgo que motivaba este
+   punto**: un redactor que lea ahora la fuente de autoridad encuentra las cifras buenas. El aviso de
+   #132 se conservo, reescrito como tabla de "decia / dice", porque explica de donde salieron las
+   cifras que ya estan impresas en versiones anteriores del documento.
+2. **Unificar la etiqueta de estado** de #55, #62 y #130.
+3. **Decidir #126** (el alcance afirmado en `introduccion.tex:13`, `:15`, `:21`).
+4. **Decidir si la cadena de custodia de las cifras necesita un control permanente**: dos de las tres
+   cifras falsas halladas hasta hoy (#136, y las dos de esta entrada) estaban dentro de entradas
+   **CERRADA**. `CERRADA` no equivale a verificado, y hoy nada lo comprueba salvo una pasada manual.
+- **Tipo:** REDACCION + RIESGO DE TRAZABILIDAD. **No aplicado.**
+
+### 141 — EL SUELO DE LA REPRESENTACION ESTA EN -1000 HU Y RECORTA LA PARTE DEL *UNDERSHOOT* QUE CAE POR DEBAJO: mediana del **1.0%** de los voxeles de la banda por paciente, pero **19 de 77 pasan del 10%** y uno llega al **44.9%**; y la metrica recortada es **`streak amplitude`** — ABIERTA (toca E-A1, E-A2, D4 y la codificacion congelada del Objetivo 1)
+
+- **Origen:** `experiments/objetivo3/a8_muestra_serie.py`, 2026-10-05. Primera muestra de una **serie
+  completa** de cortes (66 cortes consecutivos, 235 a 300, de `dataset7_CLINIC_metal_0011_data_c011`,
+  paciente de **validacion**). El hallazgo salio de comparar los percentiles de HU, no de mirar la imagen.
+- **No lo causa el modelo. Lo causa la representacion.** Control de ida y vuelta **sin modelo**, sobre
+  el corte `k0263`:
+
+| | real | ida y vuelta de la representacion |
+|---|---|---|
+| minimo de HU en `G` | **-6048** | **-1000** |
+| voxeles por debajo de -1000 HU en `G` | **3148** de 12 408 | **0** |
+| maximo de HU en `G` | 12 472 | **12 472** (exacto) |
+
+  El techo sobrevive intacto; **el suelo destruye todo lo que hay debajo de -1000 HU**. La causa esta en
+  una linea: `CONFIG_DISENO_A = 'pub+asinh'` (`src/common/ventanas.py`:44) es
+  `asinh_canal(-1000.0, 20000.0)` (`experiments/objetivo1/e6c_techo_lw.py`:81), y su `ida` aplica
+  `np.clip(h, low, high)` (`e6c_techo_lw.py`:66). **El recorte inferior es por construccion.**
+
+#### Cuanto se pierde, medido sobre la serie entera
+
+461 380 voxeles en `G` en los 66 cortes:
+
+| Umbral | real | generado |
+|---|---|---|
+| < -1000 HU | **107 851 (23.4%)** | **0** |
+| < -2000 HU | **63 540** | 0 |
+| < -3000 HU | 2 821 | 0 |
+
+Percentil 1 de HU en `G`: **-2605 real frente a -995 generado**. El minimo real de la serie es
+**-7159 HU**.
+
+#### Por que importa, y por que no se habia visto
+
+Los HU muy negativos dentro de `G` **no son ruido ni aire**: son la **inanicion de fotones**, una de las
+tres manifestaciones del artefacto metalico que el `CLAUDE.md` raiz y el glosario nombran explicitamente,
+junto con el endurecimiento del haz y las rayas. **El Diseno A no puede generarla.** Las bandas oscuras
+del artefacto quedan aplanadas al suelo del aire.
+
+**No se habia visto porque E6c nunca lo puso a prueba:** las **nueve** configuraciones candidatas de
+`configuraciones()` (`e6c_techo_lw.py`:73-80) comparten `low = -1000.0`. El suelo **no fue una variable**
+del experimento; solo se estudio el techo, y por eso #39 lo subio de 2 000 a 20 000 HU y nadie miro hacia
+abajo. Y la cifra de ida y vuelta del Objetivo 1 **no podia detectarlo**: se mide sobre **HU de hueso**
+(`p1_compuerta.md`, `e6c_techo_lw.md`), donde el suelo no interviene.
+
+#### Lo que esto NO dice
+
+- **No invalida el Objetivo 1.** Su compuerta pregunta si la representacion conserva los HU **del hueso**,
+  y eso sigue siendo cierto. Lo que queda en evidencia es que el criterio de la compuerta **no cubre** el
+  rango negativo del artefacto.
+- **No es un fallo de implementacion.** El recorte esta donde la decision lo puso. Es un **limite de
+  alcance que hoy no esta declarado en ninguna parte del documento**.
+- **No se midio con `mejor.pt`.** Es el `ckpt` de `run01` (paso 140 000, pasado de su optimo, #134). Pero
+  **eso es irrelevante para este hallazgo**: el control de ida y vuelta no usa el modelo.
+
+#### Lo que la serie completa SI muestra, y es la buena noticia
+
+| | real | generado |
+|---|---|---|
+| voxeles > 2 500 HU en `G` | 28 377 | **26 923** (94.9%) |
+| maximo de HU en `G` | 15 122 | 17 138 |
+| HU mediano en `G` | -375 | -153 |
+
+Los dos controles duros **pasan en los 66 cortes**: el parche del cache coincide voxel a voxel con la
+ventana del volumen original, y la composicion es identica fuera de `G`. El modelo genera metal de rango
+metalico a lo largo de toda la serie, no en un corte aislado.
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. **Decidir si el suelo de -1000 HU se declara como limitacion de alcance o se cambia la
+   representacion.** Cambiarlo no es gratis: reabre la codificacion congelada del Objetivo 1, obliga a
+   recachear los 23 058 parches y a reentrenar. Declararlo cuesta un parrafo en amenazas a la validez de
+   constructo y una frase en el alcance.
+2. **Decidir si E-A1 o E-A2 incorporan una comprobacion del rango negativo.** Hoy ningun bloque mide si
+   la inanicion de fotones se reproduce, asi que el Diseno A puede "pasar" sus cuatro bloques sin generar
+   una de las tres manifestaciones del artefacto.
+3. **Si se decide medir el suelo:** la cifra barata es el percentil 1 de HU dentro de `G`, real frente a
+   generado, que es como se detecto aqui.
+- **Tipo:** SUPUESTO + ALCANCE + RIESGO. **No aplicado.**
+
+#### AMPLIACION 2026-10-05: medido sobre los 77 pacientes, y el titular anterior sobreafirmaba
+
+Las tres correcciones de abajo salen de revisar la recomendacion antes de ejecutarla, por pedido de
+la autora, y de `experiments/objetivo3/a9_suelo_representacion.py` (nuevo). **El titular de esta
+entrada quedo corregido**: decia que el suelo "borra la inanicion de fotones", y eso sobreafirma.
+Recorta **la parte del *undershoot* que cae por debajo de -1000 HU**; las bandas oscuras por encima
+de ese suelo si se representan.
+
+##### 1. La prevalencia, medida sin modelo sobre entrenamiento y validacion
+
+`a9_suelo_representacion.py`: **23 058 parches, 77 pacientes con metal** de los 134 de `train` y
+`val`. **Ningun paciente de test**: el script aborta si se le pide, porque medir ahi para decidir
+diseno violaria la *Strict Isolation Rule* (`main.tex`:111). La medicion es **ida y vuelta por la
+representacion, sin modelo**, asi que no depende de ningun `ckpt`.
+
+| Magnitud, por paciente | p50 | IQR | rango |
+|---|---|---|---|
+| voxeles de `G` bajo el suelo | **1.0 %** | 0.4 a 8.7 % | 0.0 a 43.4 % |
+| voxeles de la **banda `G \ M`** bajo el suelo | **1.0 %** | 0.4 a 9.0 % | 0.0 a **44.9 %** |
+| minimo de HU del parche | -3376 | -5385 a -2048 | -14 319 a **-1020** |
+| fraccion del **vano** que sobrevive (mediana del paciente) | **0.999** | 0.989 a 1.000 | **0.498** a 1.000 |
+| fraccion del vano que sobrevive (p5 del paciente) | 0.914 | 0.851 a 0.983 | **0.084** a 1.000 |
+
+**La lectura es de cola, no de centro.** En el paciente tipico el recorte toca el **1 %** de la banda
+y el vano sobrevive al **99.9 %**: eso solo no justifica tocar la representacion. Pero
+**19 de 77 pacientes pasan del 10 %** de banda recortada, **9 pasan del 20 %**, **11 tienen un vano
+mediano por debajo de 0.95** y **8 por debajo de 0.90**; en el peor (`dataset6_CLINIC_0054_data`) el
+parche mediano pierde **la mitad del vano**. **El 23.4 % que origino esta entrada era un caso de la
+cola alta, no el caso tipico.**
+
+**Dato que impide un atajo:** la correlacion entre el minimo de HU del volumen y la fraccion
+recortada es **-0.12**, practicamente nula. **Saber hasta donde baja un volumen no predice cuanto
+pierde.** Hay 8 pacientes cuyo volumen ya viene recortado en origen (minimo por encima de -1100 HU,
+recorte de 12 bits del propio CT) y para ellos la representacion no cuesta casi nada; y 22 que bajan
+de -5000 HU. La heterogeneidad hay que medirla por paciente, no inferirla.
+
+##### 2. LA METRICA RECORTADA ES `streak amplitude`, y eso es lo que eleva la gravedad
+
+`docs/literatura/peters2025hybrid.md`:56, :173 y :174 la definen literalmente: *"the average over
+the highest and lowest 5% CT number deviation to ground truth in each ROI is calculated"* y *"The
+remaining streak amplitude is then defined as the difference between the two"* (§2.5, p. 5). Es
+**el vano entre el lobulo claro y el lobulo oscuro**. No es una metrica que incidentalmente toque
+los valores bajos: **esta definida como la distancia entre los dos extremos, y el suelo recorta uno
+de los dos**. Peters et al. ademas eligen RMSE en otra metrica *"to avoid errors from light and dark
+streaks canceling each other out"* (:163): el lobulo oscuro es objeto de primera clase en ese
+protocolo.
+
+**Consecuencia que no estaba declarada:** el sesgo es **de direccion conocida y siempre a la baja**,
+y **afecta al brazo del sintetizador y no al brazo fisico**, que reconstruye y no pasa por esta
+codificacion. Un TOST de equivalencia con un lado sesgado por construccion no mide lo que dice
+medir. Eso toca **D4**, no solo la redaccion.
+
+##### 3. SUSTITUCION DECLARADA: lo medido NO es `streak amplitude`
+
+La definicion de Peters se calcula sobre la **desviacion respecto a la verdad de terreno**, que para
+un paciente real con metal **no existe** (es lo que E-A2 resuelve usando casos de test sin metal), y
+la inversion de sus metricas para sintesis sigue siendo `\GAPDEC` abierto (#16, #17). Asi que `a9`
+mide la **forma** del estadistico sobre HU en la banda:
+
+    S = promedio(5 % superior de HU) - promedio(5 % inferior de HU),  dentro de `G \ M`
+
+y compara `S` del parche real contra `S` tras la ida y vuelta. **No es streak amplitude y no debe
+citarse como tal.**
+
+**Y el proxy probablemente SUBESTIMA el problema.** La banda contiene hueso y tejido blando, de modo
+que su vano de HU lo domina el contraste hueso-aire y no el streak; las ROIs de Peters se trazan
+**perpendiculares a los streaks fuertes** y miden desviacion, no HU crudo. Es decir: el 99.9 % de
+supervivencia del paciente tipico es un **limite superior optimista**, no una cota tranquilizadora.
+Medirlo como Peters lo define exige primero cerrar el `\GAPDEC` de la inversion.
+
+##### 4. Lo que esto cambia en la recomendacion que estaba escrita
+
+La version anterior de esta entrada proponia comparar la perdida contra el margen **`Delta`**.
+**Eso era inaplicable:** `diseno_A.md` D4 define `Delta` como la variabilidad propia del metodo
+—dispersion entre semillas DDIM y test-retest del brazo fisico— medida **solo en los 5 pacientes de
+validacion** y escrita **antes** de evaluar, asi que necesita `mejor.pt` de `run02` y hoy no existe.
+La regla correcta es de dos etapas, y su texto se entrego a la autora para `01-decisiones.md`
+(regla 3): `run02` corre sin cambios, **las cifras de arriba se preinscriben hoy, antes de conocer
+`Delta`**, y la comparacion se hace cuando `Delta` exista.
+
+##### 5. DECIDIDA EN PARTE el 2026-10-05: la regla ya esta preinscrita en `01-decisiones.md`
+
+La autora tomo la decision el mismo dia y pidio que se registrara; esta en
+`docs/01-decisiones.md`, entrada **2026-10-05 — Suelo de -1000 HU de la representacion
+multiventana**. Resumen de lo que queda cerrado y lo que sigue abierto:
+
+| | Estado |
+|---|---|
+| `run02` corre con la representacion actual | **CERRADO** |
+| cantidad que decidira, preinscrita antes de conocer `Delta` | **CERRADO** (0.999 mediana; 0.914 p5; 0.498 peor paciente; 19 de 77 sobre el 10 %) |
+| estadistico de decision: percentil 5 del paciente, no la mediana | **CERRADO**, y declarado como eleccion post hoc |
+| declarar o cambiar la representacion | **ABIERTO**: se resuelve al medir `Delta` tras el piloto de `run02` |
+| redaccion en los tres sitios (alcance, amenazas, compuerta del Obj 1) | **ABIERTO**: su texto depende de la regla; hoy hay `\GAPDEC` en el cap. 3 y el cap. 1 |
+| medir el vano como Peters lo define | **ABIERTO**: exige cerrar antes el `\GAPDEC` de la inversion de sus metricas (#16, #17) |
+
+Esta entrada sigue **ABIERTA** porque la decision de fondo —declarar o cambiar— no esta tomada:
+esta *condicionada por una regla escrita*, que es cosa distinta.
+
+### 142 — EL EJE DEL CORREDOR SE BUSCA EN UNA REJILLA DE 5°, y la tolerancia angular que la tesis cita es de 1.53° ± 0.57°: la cuantizacion del eje es mayor que el margen que declara admisible — ABIERTA (toca D_TS_max, SAP y el W1 del Objetivo 2)
+
+- **Origen:** al escribir `a11_rasterizar_tornillo.py` (2026-10-05) aparecieron ejes con componentes
+  exactamente iguales entre casos (`u = [0.9924, 0.0868, 0.0868]` en dos pacientes distintos, y
+  `u = [1, 0, 0]` exacto en un tercero). No era casualidad: `0.0868 = sin(5°)`.
+- **Verificado en el codigo:** `experiments/objetivo2/e9_corredor.py`:80 define
+  `ANGULOS = np.deg2rad(np.arange(-20, 20.01, 5))`, y `e9ts_corredor.py`:179-181 recorre
+  `for a in ANGULOS: for b in ANGULOS: u = [1, tan(a), tan(b)]`. **El eje del corredor se busca en una
+  rejilla de 5° en dos angulos, entre -20° y +20°.**
+
+#### Por que importa
+
+`main.tex` adopta de **`mclaren2021corridor`** las tolerancias angulares transiliosacras como el
+elemento operativo que una descripcion cualitativa de zona segura no da: **1.53° ± 0.57° en S1** y
+1.02° ± 0.33° en S2. Pero el eje sobre el que se construye todo esta determinado con un paso de 5°,
+o sea **±2.5° de error de cuantizacion en el mejor caso**. Ese error es **mayor que la tolerancia
+completa** que la tesis cita como margen angular admisible.
+
+#### Lo que esto NO invalida
+
+- **SAP sigue midiendo bien.** `sap.py` califica la brecha geometricamente sobre el eje que se le da,
+  con un campo signado y un calibre. La medicion es exacta **para esa pose**; lo que es grueso es la
+  afirmacion de que esa pose sea el eje optimo del corredor.
+- **El W1 preinscrito no se recalcula por esto.** La corrida 52175 esta cerrada y su resultado es el
+  que es.
+
+#### Lo que si queda tocado
+
+1. **`D_TS_max` es una COTA INFERIOR del diametro del corredor.** Una rejilla mas fina solo puede
+   encontrar un corredor igual o mas ancho. Eso afecta a **#122** (15 de 72 no admiten el calibre de
+   7.0 mm): parte de esos 15 podrian admitirlo con un eje mejor orientado. **No se toca la cifra**,
+   pero su lectura cambia: es "no admite el calibre **con el eje hallado en la rejilla de 5°**".
+2. **El muestreador perturba alrededor de un eje que ya esta desviado.** Si el eje base esta hasta
+   2.5° fuera del optimo, las poses perturbadas acumulan ese sesgo y sus grados de brecha salen
+   **sistematicamente peores** de lo que serian alrededor del optimo real. La direccion del sesgo es
+   conservadora —el muestreador parece peor, no mejor— pero es un sesgo y no esta declarado.
+3. **La redaccion.** `capitulo3` describe la busqueda del eje del corredor con un `\GAPDATO` por el
+   algoritmo completo; el paso de la rejilla no aparece en ninguna parte del documento.
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. **Decidir si se declara o se refina.** Declararlo cuesta una frase en metodo y otra en amenazas a
+   la validez. Refinarlo exige volver a correr E9-TS con un paso menor (p. ej. 1°), que son
+   **64 veces** mas direcciones si se mantiene el rango de ±20° con paso 0.5°, o 25 veces con 1°.
+   Antes de refinar conviene medir **cuanto cambia `D_TS_max`** en una muestra chica de casos: si no
+   se mueve, la rejilla gruesa esta justificada por los datos y se declara con evidencia.
+2. **Si se refina, afecta al Objetivo 2 entero** (corredor, poses, SAP, W1) y eso reabre una corrida
+   preinscrita y cerrada. Es una decision de alcance, no de implementacion.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+### 143 — LA MASCARA `M` BINARIA TIENE UN SESGO DE VOLUMEN QUE DEPENDE DE LA ORIENTACION DE LA POSE: +0.15 % con eje oblicuo y +7.27 % con eje alineado a la rejilla, y el submuestreo no lo corrige — ABIERTA (toca E-A1, E-A2 y el reclamo C1)
+
+- **Origen:** `experiments/objetivo3/a11_rasterizar_tornillo.py`, nuevo el 2026-10-05, el eslabon que
+  faltaba para que la cadena del Objetivo 3 se pueda ejecutar (#139).
+- **El codigo de la geometria esta bien.** Control separado: el volumen **fraccionario** (ocupacion
+  media con rejilla de 4³ por voxel) coincide con el volumen analitico del solido dentro del
+  **0.05 %** en los dos casos probados. El sesgo no viene de la formula.
+
+#### La medicion
+
+`diseno_A.md` seccion 6 define `M = voxeles cuyo centro cae dentro` y lo marca `[SUPUESTO]`, **sin
+cuantificar su error**. Cuantificado:
+
+| Caso | eje `u` | voxel | volumen binario frente al analitico |
+|---|---|---|---|
+| `dataset6_CLINIC_0101_data` | [0.9924, -0.0868, 0.0868] (oblicuo) | 0.90 mm | **+0.15 %** |
+| `dataset6_CLINIC_0102_data` | [1, 0, 0] (alineado) | 0.98 mm | **+7.27 %** |
+
+**Cincuenta veces mas sesgo, y la unica diferencia es la orientacion de la pose frente a la rejilla
+de voxeles.**
+
+#### Por que el submuestreo NO lo arregla
+
+Se probo ocupacion por mayoria con 1, 2 y 3 subpuntos por lado: **+7.3 %, -2.2 %, +7.1 %**. Oscila,
+no converge. La razon es estructural: el cuerpo tiene **~5 voxeles de ancho** (4.91 mm sobre ~0.98 mm)
+y **ninguna mascara binaria a esa resolucion puede representar una seccion circular de 5 voxeles sin
+un error de area de varios por ciento**. Con el eje oblicuo los errores de cada corte se cancelan en
+parte; con el eje alineado el mismo error se repite en todos y no se cancela. El submuestreo elige
+mejor los voxeles del borde, pero sigue eligiendo voxeles enteros.
+
+#### Con que conecta
+
+- **Es el espejo sintetico de C1.** El reclamo C1 dice que la geometria extraida por umbral de HU
+  esta distorsionada —sobrecobertura en Xie et al., fragmentacion en la auditoria local— y por eso la
+  geometria se modela parametricamente. Pero **la geometria parametrica tambien se discretiza**, y su
+  error no esta medido en ninguna parte del documento. No es del mismo tamano (7 % frente a factores
+  de 2), pero existe y es sistematico.
+- **`main.tex` ya se preocupa por la seccion de metal:** advierte que un cilindro uniforme de
+  6.5-8.0 mm *"would overstate the metal cross-section along the corridor by more than a factor of
+  two"*. Con esa sensibilidad declarada, un sesgo del 7 % correlacionado con la orientacion merece
+  una frase.
+- **Afecta a `metal integrity`** de las metricas de Peters, que es la que mide si el metal esta donde
+  debe: un sesgo de volumen que depende de la pose entra directo en esa metrica.
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. **Decidir si `M` se declara con su error de cuantizacion o si se cambia a una mascara fraccionaria.**
+   Una `M` fraccionaria representaria el volumen con error < 0.1 %, pero **el Diseno A la necesita
+   binaria**: `M` y `G` son canales binarios de la entrada del renderizador y `muestrea_ddim`
+   multiplica por `g`. Cambiarlo no es un parametro, es rediseno.
+2. **Si se declara, hay que decir que el sesgo depende de la orientacion**, no dar un numero unico.
+   La cifra honesta es un rango medido sobre varias poses, no el 7.27 % de un caso.
+3. **Medir el sesgo sobre la distribucion de poses del muestreador**, no sobre el eje central: las
+   poses perturbadas son oblicuas casi siempre, asi que el caso malo (eje alineado) **puede ser raro
+   en la practica**. Eso es barato de medir y cambiaria la gravedad.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+### AMPLIACION a #141, #16 y #17 — 2026-10-05: la definicion operativa de `streak amplitude` esta DECIDIDA, y el suelo pasa a ser una cifra reportada
+
+`docs/01-decisiones.md`, entrada **2026-10-05 (3)**. Lo que cambia para estas tres entradas:
+
+**#141.** El punto 2 de sus pendientes —si E-A1 o E-A2 incorporan una comprobacion del rango
+negativo— queda **CERRADO**: se reporta, junto al endpoint, la **fraccion de voxeles de la ROI de la
+imagen sintetica que quedan exactamente en el suelo de -1000 HU**. Si es apreciable, `streak
+amplitude` se declara **cota inferior**, con numero y no con adjetivo. Ademas, **el brazo fisico
+reconstruye y si puede bajar de -1000 HU**, asi que esa cifra **separa el limite de la representacion
+del limite del modelo**, que es lo que convierte #141 de salvedad en medicion. Sigue ABIERTO su
+punto 1: declarar el suelo como limitacion de alcance o cambiar la representacion, atado a la regla
+contra `Delta`.
+
+**#16 y #17.** El `\GAPDEC` de la **definicion operativa de la inversion de las metricas de Peters
+para sintesis** queda cerrado **para `streak amplitude`**, que era la que bloqueaba a las demas: la
+verdad de terreno es el CT limpio del mismo paciente, las ROIs se derivan de la pose y la unidad de
+agregacion es el paciente. **Sigue abierto para `bone integrity` y `metal integrity`**, que no se
+tocaron.
+
+**Un defecto de diseno corregido por el camino.** `diseno_A.md` §7 listaba `streak amplitude` como
+medible en **E-A1** (20 pacientes con metal). **No lo es**: su definicion exige desviacion respecto a
+una verdad de terreno sin metal, que en un paciente con implante real no existe. La fila de E-A1 ya
+quedo corregida —pasa a medir **discrepancia** frente al CT real— y la de E-A2 ampliada con la
+definicion completa. Ese error llevaba en el documento desde que se escribio la tabla.
+
+**Lo que esta decision NO fija, y por que importa:** faltan cuatro parametros de las ROIs (radios,
+numero y separacion de planos, apertura del arco, guarda alrededor de `M`). **Se fijan sobre
+validacion, nunca sobre test**, al congelar `diseno_A.md`. Hasta entonces la preinscripcion cubre el
+**que** y el **contra que**, no el **con que parametros**, y asi esta escrito en la propia entrada.
+
+**Dependencia nueva y declarada:** el contraste primario y el segundo componente de `Delta`
+necesitan el **brazo fisico de Peters implementado**. La autora decidio implementarlo el 2026-10-05.
+**Implementarlo no es validar XCIST**: la reimplementacion validada sigue fuera de alcance (#8), y lo
+que se hace es reproducir un protocolo publicado documentando revision de codigo, configuracion y
+ajustes de reconstruccion.
+
+### 144 — EL CODIGO DEL BENCHMARK DE PETERS ESTA EN DISCO Y CONTIENE LA DEFINICION EXACTA DE `streak amplitude`: confirma la decision del 2026-10-05 (3) y cierra dos "NO ENCONTRADO EN EL PDF" de su ficha — ABIERTA (decision de la autora sobre como se cita)
+
+- **Origen:** al preparar la implementacion del brazo fisico (2026-10-05) se reviso `repos/`, que la
+  autora ya habia clonado: **`repos/xcist-main`** (commit `4cf3544`, 2026-03-27) y
+  **`repos/xcist-example`** (commit `4993e87`, 2025-10-08), este ultimo con
+  `AAPM_datachallenge/scoring/`.
+- La ficha `docs/literatura/peters2025hybrid.md` dice en dos sitios que el detalle de la metrica
+  *"habria que leerlo del codigo en GitHub"* y marca la licencia como `NO ENCONTRADO EN EL PDF`.
+  **Las dos cosas estan en disco.**
+
+#### 1. La licencia: BSD 3-Clause
+
+`repos/xcist-main/LICENSE` y `repos/xcist-example/LICENSE`: **BSD 3-Clause, Copyright 2024, GE
+Precision HealthCare**. Permite reutilizacion con atribucion y conservando el aviso. Eso **cierra** el
+`NO ENCONTRADO EN EL PDF` de la fila de licencia, y con ello desaparece el riesgo de citar
+reutilizacion sin base.
+
+#### 2. La implementacion de referencia de `streak amplitude`, y CONFIRMA lo decidido hoy
+
+`repos/xcist-example/AAPM_datachallenge/scoring/utils.py`:399, `metric_streak(img_mar, img_ref,
+roi_amplitude)`:
+
+```
+diff_image = img_mar - img_ref
+streak_values = diff_image[roi_amplitude == True]
+streak_values.sort()
+cutoff = int((len(streak_values)/(100/perc)))        # perc = 5
+streak_distance = np.abs(np.mean(streak_values[:cutoff]) - np.mean(streak_values[-cutoff:]))
+```
+
+Cuatro precisiones que el PDF no da y que el codigo si:
+
+| | Lo que dice el codigo | Frente a la decision 2026-10-05 (3) |
+|---|---|---|
+| campo | `img_mar - img_ref`: imagen bajo prueba menos referencia | **coincide**: `Delta = I_sintetica - I_original` |
+| estadistico | `abs(media del 5 % inferior - media del 5 % superior)` sobre **todos** los voxeles de la ROI agrupados | coincide en forma; el codigo toma **valor absoluto**, asi que la metrica es **no negativa por construccion** |
+| dimension | la ROI es **2D**: la funcion documenta *"2D MAR image"* | **precisa** la decision: el estadistico se calcula **por corte** y luego se agrega por paciente, que es justo la regla de agregacion ya fijada |
+| voxeles minimos | `cutoff = int(n/20)`; con `n < 20` el corte vale 0 y la media de una lista vacia es `nan` | coincide con la guarda de `n >= 20` que ya usan `a10` y `a12` |
+
+**Lo que esto cambia en el estatus de la metrica:** deja de ser una parafrasis del texto del paper y
+pasa a ser **la definicion del codigo publicado**, con su commit anotado. La tesis puede decir que
+calcula `streak amplitude` con la definicion de la implementacion de referencia, y eso es mas fuerte
+que citar la frase del articulo.
+
+**Y refuerza #141 con el signo del sesgo demostrado, no argumentado:** el campo es
+`sintetica - referencia`, y el suelo de -1000 HU censura los valores bajos de la sintetica, de modo
+que `media del 5 % inferior` queda **menos negativa** de lo que seria y `streak_distance` sale
+**mas chica**. El sesgo a la baja que #141 declara se sigue de la formula, no de un razonamiento.
+
+#### 3. Lo que el codigo NO resuelve
+
+- **La ROI.** `metric_streak` **recibe** `roi_amplitude` como entrada: el codigo no la construye. Como
+  se traza sigue siendo decision propia, y es lo que la entrada `2026-10-05 (4)` fijo sobre validacion.
+- **La inversion de `bone integrity` y `metal integrity`** para sintesis sigue abierta. Nota de
+  `scoring_metric.md`:15: `metal integrity` umbraliza con *"the highest non-metal value near the metal
+  plus a margin 250 HU"* y mide cambio de volumen mas Dice contra la verdad sin artefacto. Ese umbral
+  **depende del caso** y hay que decidir como se fija en sintesis.
+
+#### Pendiente de la autora (reglas 3, 5, 10 y 14). Esto NO se aplico
+
+1. **Actualizar la ficha `peters2025hybrid.md`** con la licencia BSD-3 y con la definicion del codigo,
+   indicando que no salen del PDF sino del repositorio y con que commit. Por la **regla 10** las fichas
+   se escriben con `lector-papers`, asi que no la toque.
+2. **Decidir como se cita.** Citar codigo no es citar el articulo: hay que fijar si la tesis cita el
+   repositorio con su commit, y si ese commit entra en `refs/raw/` (**regla 9**: ningun campo sin
+   respaldo en el raw).
+3. **Anotar los dos commits en la preinscripcion del brazo fisico**, porque `main.tex` ya promete
+   documentar *"the code revision, configuration, reconstruction settings and access conditions"*.
+- **Tipo:** REDACCION + SUPUESTO. **No aplicado.**
+
+### 145 — LA PERDIDA DE VALIDACION NO ESTA ALINEADA CON LA FIDELIDAD EN HU: el checkpoint "mejor" (`mejor.pt`, paso 37 500) genera la MITAD del metal y DUPLICA la costura frente al sobreajustado (paso 140 000) — ABIERTA (cuestiona el criterio de seleccion de checkpoint y, con el, la decision B2)
+
+- **Origen:** `a8_muestra_serie.py` corrido dos veces sobre **la misma serie, los mismos 66 cortes y la
+  misma semilla**, cambiando **solo** el `ckpt`: `run01/ckpt.pt` (paso 140 000, pasado de su optimo) y
+  `run02/mejor.pt` (paso 37 500, minimo de validacion). Comparacion pareada sobre el mismo ruido.
+  Costura medida con `a10_costura.py`.
+
+#### La medicion
+
+| | `run01` paso 140 000 | `mejor.pt` paso 37 500 | real |
+|---|---|---|---|
+| voxeles > 2500 HU en `G` | **26 923** (94.9 % del real) | **15 540** (54.8 %) | 28 377 |
+| HU mediano dentro del metal real | **4849** | 2922 | 4831 |
+| HU mediano en la banda `G \ M` | -212 | -154 | -491 |
+| MAE en HU dentro del metal real | **1688.1** | 3545.7 | — |
+| MAE en HU en la banda `G \ M` | **534.3** | 571.3 | — |
+| MAE en HU en `G` completa | **605.3** | 754.3 | — |
+| exceso de costura, 3D | **+196.2 HU** | +435.4 HU | — |
+| exceso de costura, mediana por corte | **+50.8 HU** | +62.6 HU | — |
+| cortes con exceso > 100 HU | **16 de 66** | 22 de 66 | — |
+
+**El checkpoint con MEJOR perdida de validacion es PEOR en las ocho filas.**
+
+#### La hipotesis facil es falsa, y conviene dejarla descartada
+
+La primera explicacion que se me ocurrio fue que la perdida esta dominada por la banda: `G` tiene
+461 380 voxeles y solo **28 377 son metal (6.2 %)**, asi que minimizarla optimizaria el 94 % que no es
+metal. **Medido, es falso:** `run01` gana tambien en la banda (534.3 frente a 571.3 HU). No es un
+problema de ponderacion entre regiones.
+
+#### Lo que queda como explicacion
+
+La perdida de validacion mide **error de prediccion de ruido en un paso**, promediado sobre `t` con
+semilla fija. La imagen sale de **50 pasos de DDIM**. Son dos cosas distintas, y que una baje no
+implica que la otra mejore. Es un desacople conocido en difusion —la perdida y la calidad de las
+muestras no ordenan igual los modelos— y aqui aparece medido en el proyecto, no citado.
+
+#### La explicacion alternativa que NO se puede descartar con un paciente
+
+`run01` entreno 107 000 pasos mas y **puede haber memorizado la apariencia de los implantes de
+entrenamiento**. Si el implante de este paciente de validacion se parece a los de entrenamiento, su
+ventaja seria memorizacion y **no generalizaria al test**. Con **una serie de un paciente** no se
+puede separar "la perdida no mide lo que importa" de "el sobreajuste ayuda en este caso concreto".
+**Esa es la pregunta del experimento que falta**, y es barata: repetir esta comparacion pareada sobre
+los **5 pacientes de validacion** y mirar si el orden se mantiene.
+
+#### CONSECUENCIA DIRECTA SOBRE B2, decidida hoy
+
+**B2 (30 000 pasos) se eligio por el minimo de la perdida de validacion.** Si ese criterio no ordena
+los modelos por fidelidad en HU, **la cifra se eligio con el instrumento equivocado**. Esto **no
+invalida** la decision —sigue siendo una eleccion declarada sobre validacion, y 30 000 cae en una
+meseta reproducida en dos corridas— pero **cambia el criterio con el que deberia haberse tomado**.
+Lo honesto es que B2 quede **condicionada**: si la comparacion sobre los 5 pacientes confirma el
+orden, el numero de pasos y la seleccion de checkpoint se deciden con una **metrica de apariencia
+sobre validacion**, no con la perdida.
+
+**Lo mismo vale para `mejor.pt`:** `guarda()` lo escribe en el minimo de la **perdida**. Si el criterio
+cambia, el mecanismo de seleccion de checkpoint cambia con el.
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. **Correr la comparacion pareada en los 5 pacientes de validacion** antes de congelar
+   `diseno_A.md`. Es local, sin GPU, y no toca test. **Es el experimento que decide esto y tambien B1.**
+2. **Decidir el criterio de seleccion de checkpoint.** Seleccionar por una metrica de apariencia medida
+   sobre validacion es legitimo y no toca test; seguir seleccionando por la perdida, sabiendo esto,
+   habria que justificarlo.
+3. **Si el criterio cambia, B2 se revisa**, y la entrada `2026-10-05 (2)` de `01-decisiones.md` necesita
+   una nota que remita aqui.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+### 146 — BRAZO FISICO ARRANCADO: XCIST corre en local, el metal se proyecta JUNTO al paciente por desplazamiento de agua (cierra un pendiente de `main.tex`), y el script publicado NO corre tal como viene — ABIERTA (preinscripcion del brazo fisico)
+
+- **Origen:** 2026-10-05, los cuatro pasos de arranque del brazo fisico, con los repos que la autora
+  ya tenia clonados.
+- **Revision de codigo, para la promesa de `main.tex`** (*"document the code revision, configuration,
+  reconstruction settings and access conditions"*):
+
+| | valor |
+|---|---|
+| `repos/xcist-main` | commit **`4cf3544`**, 2026-03-27 |
+| `repos/xcist-example` | commit **`4993e87`**, 2025-10-08 |
+| paquete | `gecatsim`, `setup.py` declara **1.6.8**, `xc.__version__` dice **0.1.8** |
+| licencia | **BSD 3-Clause**, GE Precision HealthCare 2024, en los dos repos |
+| instalacion | `pip install -e repos/xcist-main`, modo editable; dependencias: matplotlib, numpy, scipy, tqdm, coverage |
+| binario | `libcatsim64.dll` presente; corre en Windows sin compilar |
+| configuracion | `AAPM_MAR_{phantom,protocol,physics,scanner,recon}.cfg` |
+
+**La discrepancia de version es un dato, no una curiosidad:** `1.6.8` frente a `0.1.8` significa que
+**la cadena de citas no puede apoyarse en el numero de version**; el identificador reproducible es el
+commit.
+
+#### 1. PACIENTE Y METAL SE PROYECTAN JUNTOS. Cierra un pendiente declarado de `main.tex`
+
+`main.tex` dice que *"the paper does not state whether patient and metal are projected jointly, which
+this work verifies in the simulator code before reproduction"*. **Verificado** en
+`simulation_scripts/run.py`: el fantoma se arma como **un solo volumen multimaterial de tres
+componentes** y se simula en **una sola pasada** (`CatSim(...)` + `run_all()`):
+
+| | material | mapa | `density_scale` |
+|---|---|---|---|
+| 1 | water | `phantom.vf` (paciente) | **+1.0** |
+| 2 | water | `metal.vf` | **-1.0** (resta el agua donde va el metal) |
+| 3 | `Ti` u otro | `metal.vf` | **+1.0** |
+
+Es **desplazamiento de material antes de la proyeccion**, no pegado en el dominio de imagen. Eso es
+lo que hace "hibrido" al protocolo, y es la receta que nuestro brazo fisico debe reproducir con el
+tornillo parametrico: `M` como mapa de fraccion de volumen, restar agua, anadir la aleacion.
+
+#### 2. El script publicado NO corre tal como viene
+
+`run.py` aborta con `TypeError: Object of type float32 is not JSON serializable` al escribir
+`sim.json`: `metaldiam = 2.*np.sqrt(metal.sum()/np.pi)` es `np.float32` y `mt_pixsize` lo hereda.
+**El clon de `repos/` se deja INTACTO** —misma regla que `refs/raw/`— y el parche de una linea vive en
+`experiments/objetivo3/peters/run.py`, anotado en el sitio exacto y con cabecera que declara de que
+commit sale la copia. Reproducir el protocolo **exige ese parche**, y eso es parte de las "access
+conditions" que `main.tex` promete documentar.
+
+**Coste medido:** 1000 vistas a ~14 it/s, del orden de **70 s por corte** en CPU local.
+
+#### 3. Dos cosas de `data_generation.md` que REFUERZAN el gap de la tesis
+
+- **El metal del entrenamiento son formas fractales aleatorias, no implantes.** *"Metal masks were
+  defined as random shapes synthesized by generating vertices of a random fractal shape"*: hexagono
+  con puntos medios perturbados, mascara binaria de 256x256, diametro efectivo escalado, y
+  *"inserted in random soft tissue or bone locations"*. Materiales: amalgama, acero inoxidable, cobre,
+  cobalto, titanio. **Confirma con detalle lo que `main.tex` ya afirma** sobre colocacion aleatoria, y
+  anade que **la geometria tampoco es realista**: ni colocacion restringida por anatomia (C2) ni
+  geometria de implante (C1).
+- **La geometria es 2D de UNA fila de detector.** *"1 detector row, 900 detector columns, 1000 views"*,
+  con dispersion *"consistent with 64 detector rows"* y reconstruccion FDK con correccion de agua.
+  Eso **cuantifica** por que extenderlo a un tornillo pelvico que abarca ~150 mm axiales es una
+  adaptacion explicita y no una herencia de su validacion.
+- El *"moderate frequency boosting filter"* que `main.tex` menciona como no cubierto por su validacion
+  **esta confirmado** en ese documento.
+
+#### Pendiente de la autora (reglas 3, 9, 10 y 14). Esto NO se aplico
+
+1. **Decidir que se versiona.** `repos/` esta en el arbol sin commit. Un entorno XCIST completo es
+   grande; si entra, con una regla explicita de que si y que no.
+2. **Actualizar la ficha de Peters** con la licencia, la proyeccion conjunta y la discrepancia de
+   version. Por la **regla 10** eso va con `lector-papers`.
+3. **Como se cita el codigo** y si su commit entra en `refs/raw/` (**regla 9**).
+4. **El umbral de `metal integrity`** depende del caso (*"the highest non-metal value near the metal
+   plus a margin 250 HU"*, `scoring_metric.md`:15) y como se fija en sintesis sigue sin decidir.
+- **Tipo:** BASELINE + REDACCION. **No aplicado.**
+
+#### AMPLIACION a #141 y #146 — 2026-10-05: el suelo de -1000 HU afecta al contraste de REALISMO, casi no al TOST. Y corrige una afirmacion del asistente
+
+Primera corrida del brazo fisico en local (#146), reconstruccion de 512x512 con un objeto de titanio,
+comparada con la etiqueta sin metal que el propio repositorio trae. Cuerpo definido como `HU > -500`
+sobre la etiqueta sin metal (93 963 voxeles):
+
+| | con metal | sin metal (etiqueta) |
+|---|---|---|
+| minimo **dentro del cuerpo** | **-1083.8 HU** | -499.6 HU |
+| voxeles < -1000 HU dentro del cuerpo | **9 373** | — |
+| voxeles < -1200 HU en toda la imagen | **0** | 0 |
+| maximo | 9 827.5 HU | 1 443.0 HU |
+
+**El brazo fisico si produce *undershoot* por debajo de -1000 HU** —9 373 voxeles dentro del cuerpo,
+frente a un minimo de -500 en la imagen sin metal: eso es inanicion de fotones, no ruido de aire—
+**pero no baja de -1200 HU**. El CLINIC-metal **real** llega a **-7159 HU** (#141).
+
+##### Lo que esto corrige
+
+El asistente afirmo, al registrar #141 y al proponer la decision `2026-10-05 (3)`, que como el brazo
+fisico reconstruye y puede bajar de -1000 HU, la fraccion censurada **separaria** el limite de la
+representacion del limite del modelo. **Medido, el argumento se sostiene pero es mucho mas chico de lo
+que se dijo:** en esta configuracion el brazo fisico solo usa ~84 HU por debajo de nuestro suelo. El
+suelo **casi no sesga la comparacion contra el brazo fisico**.
+
+##### La consecuencia operativa, que es mas util que la correccion
+
+El sesgo del suelo **no afecta por igual a los dos contrastes** de la jerarquia fijada el 2026-10-05 (3):
+
+| Contraste | Referencia | Cuanto le cuesta el suelo |
+|---|---|---|
+| **Primario, TOST** | brazo fisico, minimo ~-1084 HU | **~84 HU: despreciable** |
+| **Realismo** | distribucion de CLINIC-metal real, minimo -7159 HU | **miles de HU: sustancial** |
+
+Es decir: **el suelo de -1000 HU no pone en riesgo el endpoint primario; pone en riesgo el contraste
+de realismo.** Eso reordena la gravedad de #141 y, de paso, debilita el argumento para cambiar la
+representacion: el contraste que decide el exito del Objetivo 3 apenas lo nota.
+
+##### Lo que NO se puede concluir con esto
+
+**Una sola imagen, un solo objeto, un solo material.** El objeto es una forma fractal de titanio con
+el diametro que fija `tgt_mtdiam` en su script. Acero inoxidable, cobalto o un objeto mas grande
+producen mas inanicion de fotones y podrian bajar mas. **Esto no es una cota**, es una medicion de una
+configuracion. Antes de apoyarse en ella hay que repetirla con los materiales densos de su lista
+(amalgama, acero, cobre, cobalto) y con el diametro del tornillo de la tesis.
+
+**Pendiente de la autora (regla 14):** si la regla de decision de #141 —comparar la perdida de vano
+contra `Delta`— se evalua **contra el brazo fisico** (donde el suelo casi no pesa) o **contra la
+distribucion real** (donde pesa mucho). La entrada `2026-10-05` de `01-decisiones.md` no lo distingue,
+y ahora se sabe que la respuesta cambia segun cual se elija. **No se aplico.**
+
+### 147 — LOS "5 PACIENTES DE VALIDACION CON METAL" SON 3 CON IMPLANTE Y 2 CON OBJETO INCIDENTAL, con un factor 23 entre su contenido metalico; y el `n` del contraste primario no es 14 — ABIERTA (toca `Delta`, D4 y mi propio experimento A13)
+
+- **Origen:** doble, el 2026-10-05. `redactor-tesis` levanto en r07 una discrepancia de recuentos
+  (5 / 8 / 3) al no poder escribir la cifra junto a los 30 000 pasos; y la salida de
+  `a13_comparar_ckpt.py` la confirmo con los numeros.
+
+#### 1. Composicion real del conjunto de validacion
+
+La particion tiene **8 pacientes de validacion**. De ellos, **5 tienen metal cacheado** y solo **3 son
+de `dataset7` CLINIC-metal**:
+
+| Paciente | Cohorte | Metal en la serie elegida |
+|---|---|---|
+| `dataset6_CLINIC_0019_data` | dataset6 | **1 226 vox** |
+| `dataset6_CLINIC_0102_data` | dataset6 | **1 870 vox** |
+| `dataset7_CLINIC_metal_0011_data` | CLINIC-metal | **28 075 vox** |
+| `dataset7_CLINIC_metal_0039_data` | CLINIC-metal | 3 463 vox |
+| `dataset7_CLINIC_metal_0056_data` | CLINIC-metal | 13 011 vox |
+
+`diseno_A.md` seccion 5 dice *"Validacion: 5 pacientes con metal"*. Es literalmente cierto y
+**engañoso**: `dataset6` es la cohorte **sin osteosintesis** de este proyecto, asi que esos dos casos
+aportan **objeto metalico incidental o cuerpo extrano, no un implante de osteosintesis**. Y el
+contenido metalico va de **1 226 a 28 075 voxeles, un factor 23**.
+
+#### 2. Por que importa, y no es cosmetico
+
+- **`Delta` se mide sobre "los 5 pacientes de validacion"** (D4, y la regla preinscrita de #141 lo
+  repite). Si dos de los cinco no tienen implante, **el margen de equivalencia del endpoint primario
+  se calibra en parte sobre metal que no es el objeto de la tesis.**
+- **Mi propio experimento A13 hereda el defecto.** Esta corriendo con los cinco y su recuento de
+  ganadores pesa igual un objeto extrano de 1 226 voxeles que un implante de 28 075. **Es un fallo de
+  diseno mio.** No hace falta relanzarlo: el CSV es por paciente, asi que el analisis se hara **dos
+  veces**, con los 5 y restringido a los 3 de CLINIC-metal, y se reportaran los dos recuentos. Con 3
+  pacientes ninguna prueba de signos dice nada, y eso tambien hay que decirlo.
+- **La seleccion de serie por "mas metal" agrava el desequilibrio**, porque en los dos de `dataset6`
+  el maximo disponible sigue siendo un objeto chico.
+
+#### 3. El `n` del contraste primario NO es 14
+
+Segundo hallazgo del redactor, independiente y del mismo tipo. **D4 fija el TOST sobre n = 14**, los
+pacientes de test sin metal. Pero `main.tex` declara que **el brazo fisico corre sobre un subconjunto
+reducido** de pacientes, y el numero de ese subconjunto sigue en `\GAPDEC` desde capitulo3-r01. El
+contraste es **pareado contra el brazo fisico**, asi que su `n` **no puede ser mayor que el subconjunto
+reducido**. Hoy el documento dice 14 en un sitio y "subconjunto reducido sin numero" en otro.
+
+**Consecuencia:** la declaracion de potencia de D4 —*"n = 14 ... es muy posible que el resultado honesto
+sea no se pudo concluir equivalencia con esta n"*— **esta calculada sobre una n que el diseno no
+garantiza**. Si el subconjunto fisico es, por ejemplo, 6, la conclusion de no equivalencia pasa de
+"posible" a casi segura, y eso cambia como se presenta el objetivo.
+
+#### Pendiente de la autora (reglas 3 y 14). Esto NO se aplico
+
+1. **Decidir si los dos pacientes de `dataset6` cuentan como validacion del renderizador**, o si
+   `Delta` y la seleccion de checkpoint se miden solo sobre los **3** de CLINIC-metal. Las dos
+   opciones son defendibles; lo que no es defendible es decir "5 pacientes con metal" sin decir que
+   dos no llevan implante.
+2. **Fijar el `n` del subconjunto del brazo fisico**, porque de el depende el `n` real del contraste
+   primario y la declaracion de potencia.
+3. **Corregir la frase de `diseno_A.md` seccion 5**, que hoy induce a error.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+#### CORRECCION a #147 — 2026-10-05: el conjunto de validacion del ENTRENAMIENTO son 3 pacientes, todos de CLINIC-metal. La version anterior de esta entrada estaba mal planteada
+
+Recuento directo sobre los manifiestos, que son los artefactos que el entrenamiento **si** consume:
+
+| | parches | pacientes | dataset6 | dataset7 |
+|---|---|---|---|---|
+| `a5_manifiesto_train.csv` | 17 149 | **47** | **0** | **47** |
+| `a5_manifiesto_val.csv` | 896 | **3** | **0** | **3** |
+
+**El entrenamiento y su validacion usan exclusivamente pacientes de `dataset7` CLINIC-metal.** Los
+dos pacientes de `dataset6` con objeto metalico incidental **estan en el cache pero el criterio de
+inclusion R1-R3 los dejo fuera**, y por eso no entran al entrenamiento ni a su validacion.
+
+##### Lo que esto corrige de la version anterior de #147
+
+Se dijo que "los 5 pacientes de validacion son 3 con implante y 2 con objeto incidental". **Mal
+planteado.** Lo correcto:
+
+- **La validacion del entrenamiento son 3 pacientes**, los tres con implante real: `0011`, `0039` y
+  `0056`. No hay contaminacion por objeto incidental.
+- **Los 5 salieron de MIS scripts, no del diseno.** `a9`, `a12` y `a13` cargan `ParchesMetal` **sin
+  manifiesto**, con el argumento —escrito en `a8`— de que "el manifiesto decide que entrena, no que se
+  puede generar". Para generar una muestra eso es correcto; **para medir sobre "el conjunto de
+  validacion" no lo es**, porque el conjunto de validacion del diseno es el del manifiesto.
+- **`diseno_A.md` seccion 5 sigue siendo incorrecta, pero por otra razon:** dice "Validacion: 5
+  pacientes con metal" y el manifiesto da **3**. El 5 corresponde al cache, no al conjunto que se usa.
+
+##### Consecuencias, y una toca a `Delta`
+
+1. **`Delta` (D4) se mediria sobre 3 pacientes, no 5.** La regla preinscrita de #141 dice "los 5
+   pacientes de validacion". Con el manifiesto son **3**, y eso reduce la base sobre la que se calibra
+   el margen de equivalencia del endpoint primario. **Es una decision de la autora**, y es mas estrecha
+   de lo que parecia.
+2. **A13, que esta corriendo, mide sobre los 5.** Dos de esos pacientes **nunca estuvieron en la
+   validacion del entrenamiento**. No hay fuga de test —los cinco son de la particion `val`— pero su
+   recuento de ganadores no es "sobre el conjunto de validacion" en el sentido que D4 usa. **El
+   analisis se hara igualmente dos veces**, y ahora se sabe que la lectura que corresponde al diseno es
+   la de los **3** de CLINIC-metal, no la de los 5.
+3. **El 47 de la saturacion queda confirmado**: son los 47 pacientes del manifiesto de entrenamiento,
+   todos de CLINIC-metal.
+
+**Pendiente de la autora (regla 14):** decidir si `Delta` y la seleccion de checkpoint se miden sobre
+los **3** del manifiesto, o si se amplia la validacion a los 5 del cache declarando que dos aportan
+objeto incidental. Y **corregir `diseno_A.md` seccion 5**, que dice 5 donde el manifiesto dice 3.
+**No se aplico.**
+
+#### CONFIRMACION de #145 — 2026-10-05: el orden se mantiene en los 5 pacientes de validacion. NO era un caso aislado
+
+`a13_comparar_ckpt.py`, 120 generaciones: 12 cortes por paciente, los **mismos** cortes y la **misma
+semilla** en los dos brazos, cambiando solo el `ckpt`.
+
+| Magnitud | Gana | Recuento |
+|---|---|---|
+| MAE en HU dentro del metal | **`run01` (paso 140 000)** | **5 de 5** |
+| MAE en HU en la banda | **`run01`** | **5 de 5** |
+| fraccion del metal real reproducida | **`run01`** | 4 de 5 |
+| exceso de costura | `mejor.pt` | 3 de 5 (mezclado) |
+
+Por paciente, la fraccion del metal real reproducida:
+
+| Paciente | `run01` 140 k | `mejor.pt` 37.5 k |
+|---|---|---|
+| `metal_0011` | **0.950** | 0.550 |
+| `metal_0039` | **0.916** | 0.672 |
+| `metal_0056` | **0.929** | 0.615 |
+| `dataset6_0102` | **0.576** | 0.351 |
+| `dataset6_0019` | 0.535 | **0.592** |
+
+**Restringido a los 3 pacientes con implante real** —que es la lectura que corresponde al diseno, por
+la correccion a #147— `run01` gana **3 de 3** en las tres magnitudes de HU, y por un margen grande:
+reproduce entre el 92 % y el 95 % del metal frente al 55-67 % de `mejor.pt`.
+
+##### Que queda establecido y que no
+
+**Establecido:** lo de #145 **no era un caso aislado**. El checkpoint que la perdida de validacion
+llama "mejor" produce sistematicamente menos metal y mas error en HU. Con 5 de 5 en las dos
+magnitudes de MAE, la prueba de signos de una cola da **p = 0.031**, el limite que este diseno puede
+alcanzar y que estaba declarado **antes** de ver el resultado.
+
+**NO establecido, y sigue sin poder separarse:** si la causa es que **la perdida no mide lo que
+importa** o que **`run01` memorizo** la apariencia de los implantes de entrenamiento y los de
+validacion se le parecen. Los cinco son implantes pelvicos de la misma cohorte, asi que el parecido es
+esperable. Separarlo exigiria un tercer modelo entrenado hasta un punto intermedio, o evaluar sobre
+implantes de otra morfologia.
+
+**La costura va al reves y es el unico contraste mezclado:** `mejor.pt` gana 3 de 5. Es coherente con
+generar menos metal —menos metal, menos salto en el borde— y por eso no contradice lo anterior.
+
+##### Consecuencias
+
+1. **El criterio de seleccion de checkpoint no se puede dejar como esta.** Elegir por la perdida de
+   validacion entrega, en los cinco pacientes, el modelo con mas error en HU.
+2. **B2 (30 000 pasos) se eligio con ese mismo criterio.** La cifra sigue cayendo en una meseta
+   reproducida en dos corridas, pero **el argumento que la sostiene es ahora mas debil**.
+3. **B1 (la saturacion como limitacion declarada) no se puede afirmar con la curva de la perdida.**
+   Esa curva no ordena los modelos por lo que la tesis mide. **Decidir B1 hoy seria declararlo con el
+   instrumento equivocado.**
+
+**Pendiente de la autora (regla 14):** decidir el criterio de seleccion —una metrica de apariencia
+sobre validacion es legitima y no toca test— y si B2 se revisa. **No se aplico.**
+
+### 148 — CORRECCION GRAVE a #134: `run01` y `run02` NO son corridas independientes. Usan la MISMA semilla, los mismos datos y tasa de aprendizaje constante: son la misma trayectoria calculada dos veces — ABIERTA (retira una afirmacion que ya se difundio)
+
+- **Origen:** la autora pregunto por que, si `run02` es "mejor", sus imagenes se ven peor. Al
+  verificarlo aparecio que la premisa de la pregunta —y la mia— estaba mal.
+- **Verificado en los propios `ckpt`:**
+
+| | `run01` | `run02` |
+|---|---|---|
+| `meta['semilla']` | **20260920** | **20260920** |
+| lote | 16 | 16 |
+| tasa de aprendizaje | `AdamW(lr=1e-4)`, **constante, sin planificador** (`entrenar.py`:150) | igual |
+| `--pasos` | 200 000 (cortada en 144 500) | 60 000 |
+
+`torch.manual_seed(args.semilla)` fija la inicializacion y el orden de los datos. **Sin planificador
+de tasa de aprendizaje, `--pasos` solo decide donde se para.** Por lo tanto `run01` y `run02`
+recorren **la misma trayectoria**; lo unico que las separa es la particion de GPU (no determinismo de
+coma flotante), las dos correcciones de codigo —que tocan **como se mide y que se guarda**, no las
+actualizaciones del modelo— y donde se detuvieron.
+
+#### LO QUE HAY QUE RETIRAR
+
+La ampliacion de #134 del 2026-10-05 afirma:
+
+> "Dos corridas independientes trazan la misma curva de validacion" y "**El entrenamiento es
+> reproducible.** No es una corrida con suerte ni una con mala suerte."
+
+**Las dos frases son falsas.** Con la misma semilla no se puede concluir reproducibilidad ni
+descartar que el resultado dependa de la inicializacion. Para eso harian falta **semillas distintas**,
+y eso no se ha corrido.
+
+**Donde se difundio y hay que corregir:** la ampliacion de #134, `docs/ESTADO.md`,
+`docs/SITUACION_ACTUAL.md` (frente 1 y seccion 4) y el material que el asistente preparo para la
+reunion con el asesor del 2026-10-05.
+
+#### LO QUE SIGUE EN PIE, y es mas limpio de lo que se creia
+
+**El estimador defectuoso no distorsionaba la curva promediada por bloques.** Y ahora el argumento es
+**mejor**, no peor: como las dos corridas son la **misma trayectoria**, cualquier diferencia entre sus
+curvas es **puramente de medicion**. Dos instrumentos distintos —el que sorteaba y el de semilla
+fija— midiendo **el mismo modelo en los mismos pasos** coinciden dentro de **1.5e-3** por bloque. Eso
+valida la practica de promediar por bloques de forma mas directa de lo que se habia argumentado.
+
+Tambien sigue en pie que la **forma de U es real**: el estimador corregido la muestra. Lo que **no**
+se puede decir es que se haya observado "dos veces" de forma independiente. **Se observo una vez, con
+un instrumento bueno.**
+
+#### Lo que esto NO cambia
+
+Nada de #145 ni de su confirmacion: esa comparacion es entre **dos checkpoints** —paso 140 000 y paso
+37 500— generando con la misma semilla sobre los mismos cortes. Que vengan de la misma trayectoria
+**no afecta** a ese resultado; al contrario, lo hace mas interpretable, porque los dos puntos estan
+sobre la misma curva y la unica variable es **cuanto se entreno**.
+
+#### Pendiente de la autora (regla 14). Esto NO se aplico
+
+1. **Decidir si se corre una tercera vez con otra semilla.** Es lo unico que sostendria una
+   afirmacion de reproducibilidad. Coste: ~3 h 10 de GPU con los 30 000 pasos decididos.
+2. **Corregir los tres documentos** donde la frase ya esta escrita.
+- **Tipo:** SUPUESTO + RIESGO DE AFIRMACION. **No aplicado.**

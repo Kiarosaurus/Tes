@@ -728,3 +728,13 @@ lectura con `lector-papers`.
 | Fuente de referencia de la distancia de Wasserstein-1 (transporte optimo), sin identificar | capitulo1-r00, §Marco estadistico (`\GAPLIT`) | Definicion y forma para distribuciones sobre una recta (suma de diferencias de las distribuciones acumuladas), que el documento usa como variable del Obj 2 sin fuente | 2 | PENDIENTE |
 | Fuentes de referencia de la prueba de rangos con signo de Wilcoxon, de la equivalencia por dos pruebas unilaterales (TOST) y del intervalo por remuestreo (bootstrap), sin identificar | capitulo1-r00, §Marco estadistico (`\GAPLIT`) | Analisis del Obj 3 (superioridad y equivalencia) y del IC 95 % del Obj 1. Las fichas solo registran su uso por terceros (`wasserthal2023`, `isensee2021`, `zwingmann2009navigated`) | 3 | PENDIENTE |
 | Fuente de anatomia de la pelvis (libro o atlas), sin identificar | capitulo1-r01, §Fijacion iliosacra (`\GAPLIT`, hallazgo guia-1) | Definicion e ilustracion de la cortical osea, el platillo vertebral, el ala sacra, el foramen neural, la tabla externa del ilion y la articulacion sacroiliaca, que el marco teorico usa para definir la brecha cortical, la zona segura y el corredor. Las fichas solo describen la pendiente del ala (`routt1997`) y el glosario no los define | 2 | PENDIENTE |
+
+## Ronda 2026-10-05 — `\GAPLIT` del capitulo 3 (`overleaf`, capitulo3-r07)
+
+> No sale de snowballing: es un hueco de citacion que la redaccion del capitulo 3 encontro al documentar la
+> revision de codigo y las condiciones de acceso del brazo fisico (DEC 2026-10-05 (5)). La regla 9 raiz prohibe
+> inventar la clave y `refs/raw/` no trae el archivo, asi que los datos van en prosa con la marca. Decide la autora.
+
+| Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
+|---|---|---|---|---|
+| Referencia del **software** del protocolo fisico de Peters et al. (los dos repositorios publicados, revisiones `4cf3544` del simulador y `4993e87` de los ejemplos, licencia BSD 3-Clause), sin entrada bibliografica | capitulo3-r07, §Apariencia (`\GAPLIT`) | El capitulo afirma como hechos verificados la proyeccion conjunta de paciente y metal por desplazamiento de agua, las dos revisiones revisadas, la licencia y el parche de una linea que exige el script publicado. Esos hechos salen del codigo y de los archivos del repositorio, no del articulo: la ficha de `peters2025hybrid` registra "Licencia: NO ENCONTRADO EN EL PDF". Sin entrada propia, la revision concreta y sus condiciones de acceso no son citables | 2 | PENDIENTE |

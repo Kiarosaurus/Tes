@@ -2,6 +2,314 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-05 (2) — PRIMERA SERIE SINTETICA COMPLETA y #141: el suelo de la representacion borra la inanicion de fotones. Cap. 3 y cap. 1 corregidos en r06
+
+**Ultimo paso completado.** Tres cosas, en este orden.
+
+1. **BLOQUE 0 del encargo, hecho.** `auditor-trazabilidad` audito las 36 implicancias CERRADA con
+   paridad **y** recuento: `redaccion/rondas/paridad-r01-trazabilidad.md`, **9 altas / 8 medias / 3
+   bajas**. Las dos pruebas de control se detectaron y se **ampliaron**: #135 no era un caso aislado
+   (cuatro sitios de `overleaf/`, cinco implicancias sin propagar) y #136 habia dejado sin marcar una
+   **tercera** cifra falsa de #132. Dos cifras nuevas no cuadran dentro de entradas CERRADA: el
+   encabezado de **#122** (16 de 72, deberia ser **15 de 72 = 20.8%**) y **#132 seccion 4** (21 casos y
+   "7 ilion", deberian ser **20** y **6 ilion**). Todo en **#140**.
+2. **`a8_muestra_serie.py`, nuevo: primera serie COMPLETA de cortes sinteticos.** 66 cortes
+   consecutivos (235 a 300) de `dataset7_CLINIC_metal_0011_data_c011`, paciente de **validacion**, con
+   el `ckpt` de `run01` (paso 140 000, pasado de su optimo). Los dos controles duros **PASAN en los 66
+   cortes**. Salidas en `experiments/objetivo3/outputs/a8/`: dos `.html` navegables (3D con metal real
+   en magenta y generado en verde; recorrido corte a corte con deslizador), tres `.nii.gz`, montaje y
+   `controles.csv`. **De ahi salio #141** (abajo). La **segunda muestra**
+   (`dataset7_CLINIC_metal_0056_data_c001`, 86 cortes) **no corrio**: el sistema mato el proceso por
+   memoria. Es reanudable y no repite nada.
+3. **`/ciclo-redaccion capitulo3` r06 y `capitulo1` r06, las dos cerradas.** Cap. 3: 25 altos/medios
+   aplicados, 0 rechazados, 0 escalados. Cap. 1: 5 altos y 15 medios, 0 rechazados, **2 escalados**.
+   El documento compila: **111 paginas**, 0 errores, 0 citas indefinidas, 0 Overfull. PDF por etapa en
+   `redaccion/.build/etapas/capitulo3-r06.pdf` y `capitulo1-r06.pdf`.
+
+**#141, EL HALLAZGO DE LA SESION.** El suelo de la codificacion multiventana esta en **-1000 HU**
+(`CONFIG_DISENO_A = 'pub+asinh'` es `asinh_canal(-1000.0, 20000.0)`; su `ida` aplica `np.clip`), y el
+**23.4% de los voxeles de `G`** de un caso real con metal cae por debajo. Eso es **inanicion de
+fotones**, y el Diseno A **no puede representarla**. Control de ida y vuelta **sin modelo**: minimo
+real **-6048 HU**, tras ida y vuelta **-1000 HU exacto**; el techo en cambio sobrevive intacto
+(12 472 HU). **Las nueve configuraciones candidatas de E6c comparten `low = -1000.0`**: el suelo nunca
+fue una variable del experimento, solo se estudio el techo. La ida y vuelta del Objetivo 1 no podia
+detectarlo porque se mide sobre **HU de hueso**.
+
+**#141 MEDIDA Y ACOTADA el mismo dia.** `a9_suelo_representacion.py` (nuevo) la midio sin modelo sobre
+**23 058 parches de 77 pacientes** de entrenamiento y validacion, nunca test. La lectura es **de cola,
+no de centro**: en el paciente tipico el recorte toca el **1.0 %** de la banda y el vano entre los
+extremos del 5 % sobrevive al **99.9 %**, pero **19 de 77 pacientes pasan del 10 %**, 9 del 20 %, uno
+llega al **44.9 %**, y en el peor el parche mediano pierde **la mitad del vano**. El 23.4 % que
+origino la entrada era de la cola alta. **La correlacion entre el minimo del volumen y lo recortado es
+-0.12: saber hasta donde baja un volumen no predice cuanto pierde.** Ademas quedo verificado que la
+metrica afectada es **`streak amplitude`**, que Peters et al. definen como el vano entre el 5 %
+superior y el 5 % inferior: el suelo recorta uno de los dos extremos, el sesgo es siempre a la baja y
+**solo afecta al brazo del sintetizador**, no al fisico. Eso toca **D4**, no solo la redaccion. El
+titular de #141 quedo corregido: sobreafirmaba.
+
+**`run02` TERMINADO el 2026-10-05 (#134 ampliada). LA U SE REPRODUCE CON EL ESTIMADOR CORREGIDO.**
+Job **54498**, `ag001`, 06:38:18 a ~12:55, **60 000 pasos en ~6 h 20** a **0.377 s/paso**
+(9 549 pasos/h) en la MIG `a100_3g.20gb`, 12.3 GB de 20; no toco la pared de 12 h. Arranco ~21 h antes
+de lo predicho.
+
+| Bloque | 0 | 10 k | 20 k | **30 k** | 40 k | 50 k | 60 k |
+|---|---|---|---|---|---|---|---|
+| val | 0.08098 | 0.06271 | 0.05927 | **0.05891** | 0.06132 | 0.06364 | 0.06590 (1 fila) |
+
+`MEJOR VALIDACION: 0.05519 en el paso 37500 (mejor.pt). Ultimo paso: 60000.`
+
+**Lo que esto establece:** el sobreajuste **es del modelo, no del instrumento**. `run01` ya mostraba la
+U pero con el `mide_val()` defectuoso; con `SEMILLA_VAL` fija se vuelve a ver. **OJO (#148): `run01` y
+`run02` NO son corridas independientes** —misma semilla 20260920, mismos datos, tasa de aprendizaje
+constante— asi que son **la misma trayectoria medida dos veces**. No se puede concluir
+reproducibilidad: eso exigiria otra semilla, que no se ha corrido. Y `mejor.pt` justifico
+su existencia: el minimo esta **22 500 pasos** antes del final, el 37.5 % de la corrida se gasto despues
+del optimo, y con el `guarda()` anterior esas pesas **se habrian perdido otra vez**.
+
+**DOS COMPARACIONES PROHIBIDAS, escritas para que nadie las repita:** `0.05519` de `run02` **no es
+"mejor"** que `0.05809` de `run01` —instrumentos distintos— y la subida mas chica de `run02` **no es
+menos sobreajuste**, es menos corrida (2 bloques frente a 12). Detalle en #134.
+
+**`run01/curva.csv` YA ESTA EN LOCAL y las DOS curvas son la misma.** 289 filas, ultimo paso 144 500.
+Reproduce lo registrado: minimo 0.05809 en el bloque 20-30 k, subida durante **doce** bloques hasta
+0.10807. Comparadas bloque a bloque sobre los 60 000 pasos compartidos, `run01` y `run02` coinciden
+dentro de **1.5e-3 en todos los bloques**, con instrumentos distintos. De ahi salen dos cosas:
+
+- **El entrenamiento es reproducible**, no fue una corrida afortunada.
+- **El minimo es una MESETA de ~20 000 a ~40 000 pasos**, no un punto: `run01` lo pone en 20-30 k y
+  `run02` en 30-40 k, y esos dos bloques difieren menos que las dos corridas entre si. Despues del
+  bloque 40-50 k la subida es monotona en las dos.
+
+**Eso cambia la forma de B2:** la pregunta no es el paso optimo sino **donde termina la meseta**, y la
+respuesta medida es **~40 000**. 40 000 queda en el extremo alto; **30 000** cae en el centro y cuesta
+un 25 % menos. Las dos son defendibles; la eleccion es de la autora.
+
+**Correccion de metodo, afinada con `run01` en la mano:** la justificacion escrita aqui
+("promediar cancela el ruido del estimador") **era cierta para `run01` y ahora esta demostrada** —el
+promedio recupero una curva que coincide con la determinista dentro de 1.5e-3 pese al +-15 % por
+fila— y es **obsoleta para `run02`**, donde con semilla fija no hay ruido de estimador y las filas
+sueltas si se comparan entre si. Asimetria que no hay que perder: `run01` promediaba sobre `t` y el
+ruido, asi que estima la perdida esperada; `run02` usa **un solo sorteo fijo**, asi que es comparable
+entre pasos pero es una **muestra sesgada** de esa perdida. **Sigue prohibido comparar filas sueltas
+entre corridas; comparar bloques queda habilitado.**
+
+**Siguiente paso. `Delta` (D4) ESTA DESBLOQUEADO: `mejor.pt` existe.** El orden es: traer
+`mejor.pt` y las dos `curva.csv` -> medir `Delta` como lo define D4 (dispersion entre semillas DDIM del
+mismo caso y test-retest del brazo fisico, **solo en los 5 pacientes de validacion**) -> **compararlo
+contra 0.914**, el percentil 5 preinscrito en `01-decisiones.md` el 2026-10-05, que resuelve #141 ->
+recien ahi congelar `diseno_A.md` y correr la corrida preinscrita. Redaccion: `/ciclo-redaccion
+introduccion` (A2 y los tres altos de A-09), `capitulo2` (A3) y el glosario; `capitulo3` r07 y
+`capitulo1` r07 quedan como rondas de verificacion **no corridas**.
+
+**DECIDIDO el 2026-10-05: la definicion operativa de `streak amplitude` para sintesis** (`01-decisiones.md`,
+entrada 2026-10-05 (3)). Cuatro piezas: verdad de terreno = el CT limpio del mismo paciente, lo que
+ancla el endpoint en **E-A2** y no en E-A1; **ROIs derivadas de la pose** (arcos anulares en planos
+perpendiculares a `u` dentro de `B_delta`), identicas para los dos brazos; **la censura por el suelo de
+-1000 HU se reporta como cifra** (fraccion de voxeles de la ROI en el suelo), lo que convierte #141 en
+medicion; y **la unidad de agregacion es el paciente**, lo que cierra un `\GAPDEC` abierto. Jerarquia:
+TOST contra el brazo fisico como **primario**, distancia entre distribuciones frente a CLINIC-metal real
+como **realismo**, y Wilcoxon contra copia y pegado declarado **control de cordura y no evidencia**,
+porque su amplitud vale ~0 por construccion. **Corrigio un defecto de la tabla de evaluacion:**
+`streak amplitude` estaba listada como medible en E-A1, donde no hay verdad de terreno; esa fila ahora
+mide discrepancia. **Faltan cuatro parametros de las ROIs**, que se fijan sobre validacion al congelar
+`diseno_A.md`.
+
+**TARDE DEL 2026-10-05: BRAZO FISICO ARRANCADO, ENDPOINT PREINSCRITO, Y UN HALLAZGO QUE CUESTIONA B2.**
+
+- **`streak amplitude` preinscrita por completo.** `01-decisiones.md` entradas **2026-10-05 (3)** (verdad
+  de terreno = la TC limpia del mismo paciente, lo que ancla el endpoint en **E-A2** y no en E-A1; ROIs
+  derivadas de la pose; censura del suelo reportada como cifra; agregacion por paciente; jerarquia
+  TOST / realismo / cordura) y **(4)** (los cuatro parametros de las ROIs, fijados sobre validacion con
+  `a12_roi_parametros.py`). **Ya no queda ningun parametro del endpoint por decidir cuando lleguen los
+  resultados.** La guarda se fijo **al minimo por argumento** porque dos criterios de medicion fallaron
+  por razones opuestas, y porque una guarda mayor sesga el endpoint a la baja igual que el suelo.
+- **Brazo fisico: corre en local.** `pip install -e repos/xcist-main` (commits `4cf3544` y `4993e87`,
+  licencia BSD 3-Clause). Simulacion mas reconstruccion en **~70 s por corte**. **Paciente y metal se
+  proyectan JUNTOS**, por desplazamiento de agua antes de la proyeccion: eso **cierra un pendiente
+  escrito en `main.tex`**. Su script publicado **no corre tal como viene** y el parche vive en
+  `experiments/objetivo3/peters/`, nunca en el clon. Todo en **#146**, y la decision de **no validar
+  XCIST** en `01-decisiones.md` **2026-10-05 (5)**.
+- **#145, EL HALLAZGO MAS INCOMODO DEL DIA.** Comparando los dos checkpoints sobre la misma serie, los
+  mismos cortes y la misma semilla, **`mejor.pt` (el minimo de la perdida) pierde en las ocho
+  magnitudes de apariencia**: genera el **54.8 %** del metal real frente al **94.9 %** de `run01`,
+  duplica la costura y pierde en MAE dentro del metal y en la banda. La hipotesis facil —que la perdida
+  esta dominada por la banda— se midio y es **falsa**. **Si la perdida no ordena los modelos por
+  fidelidad en HU, B2 se eligio con el instrumento equivocado**, y la evidencia de B1 (la curva de la
+  perdida) tampoco demuestra saturacion.
+- **`a13_comparar_ckpt.py` corriendo**: repite esa comparacion en los **5 pacientes de validacion**,
+  12 cortes por paciente, pareado. **De el dependen B1, B2 y el mecanismo de `mejor.pt`.** Limite
+  declarado de antemano: con n = 5 solo el resultado unanime alcanza significacion (p = 0.031).
+- **#147: el conjunto de validacion no es lo que el diseno dice.** Los "5 pacientes con metal" son
+  **3 con implante y 2 con objeto incidental de `dataset6`**, con un factor **23** entre su contenido
+  metalico (1 226 frente a 28 075 voxeles). `Delta` se calibraria en parte sobre metal que no es el
+  objeto de la tesis, y **A13 hereda el defecto**: su analisis se hara dos veces, con los 5 y con los 3.
+  Ademas **el `n` del contraste primario no es 14**: el brazo fisico corre sobre un subconjunto
+  reducido cuyo numero sigue en `\GAPDEC`.
+- **`/ciclo-redaccion capitulo3` r07 cerrado** (encargo acotado, sin revisores): 11 de 11 puntos
+  aplicados, **114 paginas**, lint de seccion PASA. Cerro 3 `\GAPDEC`, estrecho 2 y abrio 1 mas 1
+  `\GAPLIT` por la referencia del software. PDF en `redaccion/.build/etapas/capitulo3-r07.pdf`.
+- **Implicancias nuevas de la tarde:** #144 (el codigo del benchmark confirma la definicion de la
+  metrica y da su licencia), #145, #146, #147, mas ampliaciones a #134 y a #141.
+
+**Pendientes que surgieron.**
+- **Corregir en `docs/04-implicancias.md`** el encabezado de **#122** (16 -> 15, 22% -> 20.8%) y la
+  **seccion 4 de #132** (21 -> 20, 7 ilion -> 6 ilion), y extender el aviso de #136 a la tabla de
+  `D_TS` (cuenta el `dudoso` al reves que la fila ya corregida: n = 9 y 5.9 mm, no 10 y 6.7 mm). Solo
+  lo escribe la autora (regla 3). **Mientras no se corrija, cada ronda de redaccion necesita las
+  cifras buenas a mano en el encargo del agente.**
+- **Unificar la etiqueta de estado de #55, #62 y #130**: dicen ABIERTA en su encabezado y CERRADA en
+  una tabla resumen del mismo archivo.
+- **Visto bueno a 15 decisiones de redaccion** en `redaccion/BITACORA.md` §2 (4 del cap. 3, 11 del
+  cap. 1). La unica que puede necesitar fuente: **no escribir "SERUM"**, porque su expansion no consta
+  en ningun archivo del repositorio.
+- **Dos escalados vivos del cap. 1:** el **titulo de la seccion 1.5** (desde r01) y nombrar la prueba
+  exacta de Fisher en `capitulo3.tex:265`.
+- **Tres contradicciones entre capitulos** aparecieron en una sola ronda (cap. 1 contra cap. 2 y contra
+  cap. 3). El ciclo no tiene hoy ningun paso que compare capitulos: cada revisor ve una seccion. La
+  pasada **`/ciclo-redaccion documento`** existe para eso y **no se ha corrido nunca**.
+- **HECHO el 2026-10-05: la regla de decision de #141 ya esta en `docs/01-decisiones.md`**, dictada por
+  la autora y registrada por el asistente con instruccion explicita, como la entrada del 2026-09-07.
+  Preinscribe las cifras **antes** de conocer `Delta` (0.999 mediana, 0.914 p5, 0.498 peor paciente) y
+  fija el **percentil 5 del paciente** como estadistico de decision, declarado como eleccion post hoc.
+  **Lo que sigue abierto es el desenlace**, que se resuelve al medir `Delta` tras el piloto de `run02`.
+- **Los pasos 4 y 5 de la recomendacion de #141 NO se aplicaron** (regla 14): declarar el suelo en
+  alcance, en amenazas a la validez de constructo y en el criterio de la compuerta del Objetivo 1, y
+  nombrar el arreglo en trabajos futuros. Entran en `/ciclo-redaccion introduccion` y en la proxima
+  ronda del cap. 3, y su redaccion depende de lo que decida la regla. Hoy el cap. 3 y el cap. 1 ya
+  llevan su `\GAPDEC` del suelo, sin cifras.
+- **Relanzar la muestra 2** cuando la memoria lo permita:
+  `python experiments/objetivo3/a8_muestra_serie.py --serie dataset7_CLINIC_metal_0056_data_c001`
+- **Todo el trabajo sigue sin commit**, incluido el de la sesion anterior.
+
+## 2026-10-04 — OBJETIVO 3: PRIMER ENTRENAMIENTO REAL. Sobreajuste medido; `run02` en cola hasta el lunes 6
+
+**Ultimo paso completado.** Se entreno el renderizador del Diseno A por primera vez con el bucle de
+validacion conectado (job 54367, A100 de ag001, 144 500 pasos, 8 h). Resultado: **sobreajuste
+confirmado**. La validacion toca su minimo en el bloque 20-30 k (**0.05809**, ~paso 25 000) y de ahi
+sube durante **doce bloques consecutivos** hasta 0.10807. Los ~119 500 pasos posteriores al minimo
+(6 h 34 min de A100) **empeoraron el modelo**. Todo en #134.
+
+**Dos defectos encontrados y corregidos en `src/renderizador/entrenar.py`:**
+1. `mide_val()` llamaba a `perdida` **sin `generador`**, asi que sorteaba `t` y el ruido en cada
+   medicion: la columna oscilaba +-15% por COMO se media. Ahora usa `SEMILLA_VAL = 20261004`.
+2. **No habia modelo mejor.** `guarda()` sobrescribia un unico `ckpt.pt`, asi que **las pesas del
+   minimo de `run01` se perdieron**. Ahora se escribe `mejor.pt` con el minimo de validacion.
+
+**Siguiente paso.** `run02` esta en cola con `--gres=gpu:a100_3g.20gb:1` (particion MIG de 20 GB; solo
+se usan 12.31), `--time=12:00:00` y **`--pasos 60000`**. El cluster esta saturado: **arranque predicho
+2026-10-06T04:02**, y todas las alternativas probadas (A6000, tesla, shards, A100 entera) arrancan mas
+tarde. Al terminar: `mejor.pt` -> medir `Delta` (D4) -> congelar `diseno_A.md` -> corrida preinscrita.
+
+**Pendientes que surgieron.**
+- ~~Confirmar 60 000 como `--pasos`~~ **DECIDIDO el 2026-10-05: 30 000 pasos** (B2), centro de la
+  meseta de ~20 000 a ~40 000 que trazan las dos corridas. En `docs/01-decisiones.md`, declarado como
+  eleccion sobre **validacion** y no fijada de antemano. **Falta llevarlo a `diseno_A.md`**, que se
+  congela despues de `Delta`.
+- **Decidir si la saturacion con 47 pacientes entra como limitacion declarada.** El renderizador no
+  mejora con mas computo; si `Delta` no alcanza, la palanca son mas pacientes. Hoy eso no esta escrito
+  en ninguna parte del documento.
+- **#115 pasa de prediccion a observacion** y hay que decidir como se declara.
+- **NO borrar `data/a7/run01/`**: `curva.csv` es la evidencia de la U y `ckpt.pt` la del sobreajuste.
+- **RESUELTO el 2026-10-05:** el medico confirmo que la "parte de atras" aceptada como S1 es la
+  **cresta sacra media** (#138). Desbloquea el `\GAPDEC` de `capitulo3.tex:97` (bloque A4). **Queda
+  abierto** si se mide la diferencia entre el techo de la etiqueta `vertebrae_S1` y el platillo
+  superior de S1, que es a lo que se ancla el marco de Kaiser.
+- **PRIMERA MUESTRA CON MODELO ENTRENADO, 2026-10-05.** Con el `ckpt.pt` de `run01` (**paso 140 000**,
+  el ultimo checkpoint antes del corte; **pasado de su optimo**, ver #134):
+  `experiments/objetivo3/outputs/a6/a6_dataset7_CLINIC_metal_0011_data_c011_k0263.png` y los dos
+  `.nii.gz` (`_original`, `_compuesta`) para ITK-SNAP. Los dos controles de preservacion **pasan
+  exactos** (0.000e+00 fuera de `G`), y el modelo **genera HU de rango metalico, hasta 10 570 HU**
+  frente a 12 472 del real. `a6_muestra_minima.py` gano `--mas-metal` y `--nifti`.
+- **Todo el trabajo del dia sigue sin commit.**
+
+**PARA EL SIGUIENTE AGENTE — leer antes de hacer nada.**
+
+0. **DECISION DE LA AUTORA, 2026-10-05: el `dudoso` del cribado de fractura NO cuenta como fractura
+   y se reporta aparte.** Cifra unica para el documento: **20 de 30 (67%) con fractura confirmada,
+   mas un caso dudoso**; por grupo, **10 frente a 10**. Dos cifras de #132 estaban mal (contaban el
+   dudoso) y quedan rectificadas en **#136**, con un aviso dentro de la propia #132. **No escribir
+   70% ni 73%.** Falta que la autora registre esta decision en `docs/01-decisiones.md`, que solo
+   escribe ella (regla 3); el texto propuesto se le entrego en el chat del 2026-10-05.
+
+0b. **ETAPA DE REDACCION: ESTE ES EL ORDEN. No improvisar otro.**
+
+   | # | Que correr | Que lleva | Por que ahi |
+   |---|---|---|---|
+   | **1** | **BLOQUE 0 del encargo**, `auditor-trazabilidad` sobre TODAS las implicancias CERRADA | paridad `main.tex` vs `overleaf/` **y** recomputo de cifras | #135 mostro que una CERRADA puede no haber llegado a `overleaf/`; #136, que puede traer una cifra falsa. **Redactar antes es arreglar frases sin saber cuantas hay** |
+   | **2** | `/ciclo-redaccion capitulo3` | **A1** (afirmacion FALSA), **A4** (cresta sacra media), **A2** en lineas 101 y 196 | A1 es lo unico que corrige algo falso ya impreso |
+   | **3** | `/ciclo-redaccion capitulo1` | **A2**, resuelve el `\GAPDEC` de la linea 72 | el `\GAPDEC` ya esta escrito y pregunta justo lo que #130 contesta |
+   | **4** | `/ciclo-redaccion introduccion` | **A2**, lineas 32, 39 y 66 | — |
+   | **5** | `/ciclo-redaccion capitulo2` | **A3**, linea 74 | — |
+   | **6** | `docs/03-glosario.md`, lineas 74-75, edicion directa | **A2** | no pasa por `/ciclo-redaccion` |
+
+   **Al cerrar todas las rondas: recompilar y abrir el PDF** (preferencia registrada de la autora).
+
+   **Dos trampas del bloque A2**, que estan detalladas en el encargo: hay menciones que **deben seguir
+   diciendo "iliosacro"** porque describen lo que hicieron Smith, Kaiser, Reilly y Liu; cambiarlas
+   seria atribuirles algo que no dijeron. Y en A1 **no escribir 70% ni 73%**: la cifra es **20 de 30
+   (67%)** mas un caso dudoso aparte.
+
+1. **Redaccion: el encargo ya esta escrito en `redaccion/ENCARGO_2026-10-04.md`.** Tiene un bloque A
+   con cuatro cambios listos para aplicar (cada uno con su fuente, los archivos y lineas exactos, y
+   que menciones NO hay que tocar) y un bloque B con cinco puntos **bloqueados** esperando decision
+   de la autora. No mezclar los dos bloques. El mas urgente es **A1**: `capitulo3.tex:263` afirma
+   que las pelvis receptoras estan "sin fractura conocida", y **#132 lo desmiente** (20 de 30).
+2. **Khipu: no hay nada que hacer hasta el 2026-10-06 ~04:02.** `run02` es el **job 54498**,
+   enviado el 2026-10-04 y en cola con razon `(Priority)`, que es espera normal por turno. Las
+   cuatro lineas del sbatch y la copia de `entrenar.py` en Khipu (con `SEMILLA_VAL` y `mejor.pt`)
+   quedaron verificadas antes de enviar. No reenviar,
+   no cancelar, no bajar la pared: ya se probaron A6000, tesla, shards y A100 entera, y la particion
+   MIG `a100_3g.20gb` es la que arranca antes. Pedir 12 h en vez de 8 no retrasa el arranque.
+3. **ANTES DE ENVIAR CUALQUIER JOB, verificar las CUATRO lineas del sbatch.** El 2026-10-04 se
+   envio el job 54490 con el GRES y la hora corregidos pero con `SALIDA=$DATA/a7/run01` y
+   `--pasos 200000` sin corregir: con `--reanudar` habria **cargado el `ckpt.pt` sobreajustado de
+   `run01`** y entrenado 200 000 pasos mas desde ahi, gastando el turno y sobrescribiendo la
+   evidencia de la U. Se cancelo a tiempo. Un `sed` de varios `-e` puede aplicar unos y otros no, y
+   `squeue` no avisa de nada: lo unico que lo detecta es mirar el archivo.
+
+```
+cd ~/metalsynth && grep -nE "^#SBATCH --(gres|time)|^SALIDA=|--pasos" a7_a100.sbatch
+```
+
+   Las cuatro que tienen que salir: `--gres=gpu:a100_3g.20gb:1`, `--time=12:00:00`,
+   `SALIDA=$DATA/a7/run02`, `--pasos 60000`.
+
+4. **Comandos de seguimiento y de traida de resultados:**
+
+```
+squeue -j <JOBID>
+squeue --start -j <JOBID>
+cd ~/metalsynth && tail -f a7entr_<JOBID>.log
+```
+
+   Tabla de validacion por bloques de 10 000 pasos, que es como se lee la curva (promediar cancela
+   el ruido del estimador; las filas sueltas no se citan):
+
+```
+cd ~/metalsynth && awk -F, 'NR>1 {b=int($1/10000); s[b]+=$3; c[b]++} END {for (i in s) printf "%d\t%.5f\t%d\n", i*10000, s[i]/c[i], c[i]}' data/a7/run02/curva.csv | sort -n
+```
+
+   Traer a local (desde la raiz del repositorio; **la autora no acepta llaves `{}` en los comandos**):
+
+```
+mkdir -p experiments/objetivo3/outputs/a7/run01 experiments/objetivo3/outputs/a7/run02
+scp kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/a7/run01/curva.csv experiments/objetivo3/outputs/a7/run01/
+scp kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/a7/run02/curva.csv experiments/objetivo3/outputs/a7/run02/
+scp kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/data/a7/run02/mejor.pt experiments/objetivo3/outputs/a7/run02/
+scp kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/a7entr_54367.log experiments/objetivo3/outputs/a7/run01/
+```
+
+   **`run01/curva.csv` hay que traerlo ya**: es la evidencia de la U y hoy solo existe en Khipu.
+   `mejor.pt` son ~112 MB y `ckpt.pt` ~340 MB; `ckpt.pt` de `run01` se deja en Khipu, no hace falta
+   en local salvo para reproducir el sobreajuste.
+5. **Cuando `run02` termine**, el orden es: leer la tabla por bloques -> confirmar el paso del minimo
+   que imprime el log (`MEJOR VALIDACION: ... en el paso N`) -> medir `Delta` (D4) con `mejor.pt`
+   -> recien ahi congelar `diseno_A.md` -> corrida preinscrita.
+
+**Advertencia de metodo, repetida.** Dos veces hoy interprete el instrumento como si fuera la senal:
+reporte una "inversion de la brecha" que era ruido de medicion y hubo que retirarla. Ante una cifra que
+se mueve, revisar primero **como se mide**.
+
 ## 2026-10-03 — `/ciclo-redaccion capitulo1` (marco teorico, todas las secciones): TOPE en r05, con decisiones pendientes
 
 - **Hecho:** cap. 1 redactado desde el esqueleto (r00) y corregido en r01 a r05. El lint de la seccion da 0/0/0 y el documento compila (107 pag., 0 Overfull). PDF de cada etapa en `redaccion/.build/etapas/capitulo1-r0*.pdf`. Hallazgos medios de los revisores: 36 en r01, 6 en r05, todos de estilo salvo uno. GAP: 4 lit, 1 dato, 8 dec. Se abrio la #130 (que tornillo representa el corredor medido; Zwingmann et al. lo llaman iliosacro y transiliosacro).

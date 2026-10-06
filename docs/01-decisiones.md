@@ -1575,3 +1575,345 @@ documento cuando se fije.
 (E8/E11), donde la posicion es dato y no salida del muestreador. Implementar el muestreador antes
 obligaria a depurar metrica y muestreador a la vez, con dos fuentes de error simultaneas y ninguna
 referencia externa.
+
+---
+
+## 2026-10-05 — Suelo de -1000 HU de la representación multiventana: `run02` corre sin cambios y la cantidad que decidirá se preinscribe hoy (#141)
+
+**Decisión:** la codificación `pub+asinh` del Objetivo 1 **no se toca para `run02`**, y la cantidad
+que decidirá si se declara o se cambia **se preinscribe en esta entrada, antes de conocer `Delta`**.
+Dictada por la autora tras la recomendación del asistente y registrada por él con instrucción
+explícita el 2026-10-05.
+
+1. **`run02` corre con la representación actual.** Cambiar el suelo exigiría recachear los 23 058
+   parches y reentrenar, cuesta el turno de cola ya asignado (arranque predicho 2026-10-06T04:02 en
+   un clúster saturado) y reabriría una decisión preinscrita del Objetivo 1 **después** de haber
+   visto un resultado.
+
+2. **Cantidad preinscrita.** La fracción del vano entre los extremos del 5 % que **sobrevive a la ida
+   y vuelta por la representación**, medida **sin modelo** sobre la banda `G \ M` de los **77
+   pacientes con metal de entrenamiento y validación**, nunca de test
+   (`experiments/objetivo3/a9_suelo_representacion.py`, 23 058 parches, 2026-10-05):
+
+   | Estadístico, entre pacientes | Valor |
+   |---|---|
+   | mediana de la mediana del paciente | **0.999** |
+   | mediana del percentil 5 del paciente | **0.914** |
+   | peor paciente (mediana) | **0.498** |
+   | pacientes con > 10 % de la banda recortada | **19 de 77** |
+
+   La pérdida atribuible a la representación es `1 -` esos valores.
+
+3. **Regla de decisión, evaluable cuando `Delta` exista** (tras el piloto de `run02` sobre los 5
+   pacientes de validación, D4): si la pérdida de vano atribuible a la representación es **menor**
+   que `Delta`, el suelo de -1000 HU se **declara como limitación de alcance** y la representación no
+   se cambia. Si es **mayor** que `Delta`, la representación es la **restricción activa** del
+   Objetivo 3 y se cambia, con la recacheada y el reentrenamiento que eso implica.
+
+4. **La regla se evalúa en el percentil 5 del paciente, no en la mediana.** El efecto es de cola: en
+   el paciente típico el recorte toca el 1.0 % de la banda y el vano sobrevive al 99.9 %, pero 19 de
+   77 pacientes pasan del 10 % de banda recortada y en el peor el parche mediano pierde la mitad del
+   vano. Evaluar en la mediana haría pasar la regla trivialmente y dejaría fuera justo a los
+   pacientes donde el problema existe. *Este punto lo propuso el asistente después de ver la
+   distribución, y la autora lo adopta; queda declarado como elección post hoc del estadístico de
+   decisión, no como criterio fijado a ciegas.*
+
+5. **Se declara en tres sitios, decida lo que decida la regla:** en el alcance, en las amenazas a la
+   validez de constructo con la dirección del sesgo, y en el criterio de la compuerta del Objetivo 1,
+   cuyo alcance cubre HU de hueso y **no** el rango negativo del artefacto.
+
+6. **Toda cifra del vano que llegue al documento va con su salvedad en la misma oración.** Lo medido
+   **no es `streak amplitude`**: es la forma del estadístico de Peters calculada sobre HU en la banda,
+   porque la desviación respecto a verdad de terreno no existe para un paciente real con metal y la
+   inversión de las métricas de Peters sigue sin definirse (#16, #17). Y el proxy **subestima**: la
+   banda está dominada por el contraste hueso-aire y no por el streak, mientras las ROIs de Peters se
+   trazan perpendiculares a los streaks fuertes. El 0.999 es un **límite superior optimista**.
+
+**Alternativas descartadas:** (a) **cambiar el suelo ahora** —un cuarto canal, o un `asinh` con signo
+sobre un rango simétrico— y relanzar: pierde el turno de cola, deja la tesis sin primer entrenamiento
+válido y convierte una decisión preinscrita en una reacción a un resultado; (b) **declararlo sin
+medirlo**: la cifra que originó el hallazgo (23.4 % de la banda) venía de un solo componente de un
+solo paciente y resultó ser de la cola alta, no el caso típico; (c) **inferir la pérdida del mínimo de
+HU de cada volumen**: la correlación entre ese mínimo y lo recortado es **-0.12**, prácticamente nula,
+así que saber hasta dónde baja un volumen no predice cuánto pierde.
+
+**Por qué:** la métrica afectada es `streak amplitude`, que `peters2025hybrid` define (§2.5, p. 5)
+como la diferencia entre el promedio del 5 % superior y el del 5 % inferior de la desviación, es decir
+el vano entre el lóbulo claro y el oscuro. El suelo recorta uno de los dos extremos, el sesgo es de
+dirección conocida y siempre a la baja, y **afecta al brazo del sintetizador y no al brazo físico**,
+que reconstruye y no pasa por esta codificación. Por eso esto toca **D4** y no solo la redacción: un
+TOST de equivalencia con un lado sesgado por construcción no mide lo que dice medir. Y por eso la
+cantidad se preinscribe hoy: `Delta` se mide después del piloto por diseño, así que fijar ahora el
+número contra el que se comparará es la única forma de que el desenlace —cualquiera de los dos— no
+quede elegido después de verlo.
+
+---
+
+## 2026-10-05 (2) — El entrenamiento del renderizador se fija en 30 000 pasos (B2, #134)
+
+**Decisión:** el número de pasos del entrenamiento del Diseño A es **30 000**. Dictada por la autora
+tras ver las curvas de `run01` y `run02`, y registrada por el asistente con instrucción explícita el
+2026-10-05.
+
+**De dónde sale la cifra, y qué clase de elección es.** Las dos corridas trazan la misma curva de
+validación dentro de **1.5e-3** en todos los bloques compartidos, con instrumentos de medición
+distintos, y las dos muestran que el mínimo **no es un punto sino una meseta** que va de ~20 000 a
+~40 000 pasos:
+
+| Bloque | `run01` | `run02` |
+|---|---|---|
+| 20 000 | **0.05809** | 0.05927 |
+| 30 000 | 0.06008 | **0.05891** |
+| 40 000 | 0.06058 | 0.06132 |
+| 50 000 | 0.06310 | 0.06364 |
+
+30 000 cae en el **centro** de esa meseta. Pasado el bloque 40-50 k la validación sube de forma
+monótona en las dos corridas.
+
+**Esto es una elección de hiperparámetro hecha sobre VALIDACIÓN, y se declara como tal.** No fue
+fijada de antemano: sale del mínimo observado en `run01` y `run02`, las dos medidas sobre los 5
+pacientes de validación y **ninguna sobre test**. Validación existe precisamente para esto y no
+compromete el aislamiento por paciente (`main.tex`:111), pero presentarla en el documento como un
+valor elegido a priori sería falso. En `diseno_A.md` y en la tesis va con esa salvedad.
+
+**Alternativas descartadas:** (a) **40 000**, el extremo alto de la meseta: defendible con la misma
+evidencia, pero cuesta un 33 % más de cómputo para un valor de validación que no mejora;
+(b) **60 000**, lo que corrió `run02`: los últimos 22 500 pasos **empeoraron** el modelo, el 37.5 % de
+la corrida se gastó después del óptimo; (c) **mantener 200 000** como en el borrador original: la
+curva de `run01` sube durante doce bloques consecutivos hasta 0.10807, casi el doble del mínimo.
+
+**Por qué:** con el margen de cómputo que da la meseta, el criterio que queda es el coste. 30 000
+pasos son ~3 h 10 en la partición MIG `a100_3g.20gb` al ritmo medido de 0.377 s/paso, frente a ~4 h 15
+con 40 000 y ~6 h 20 con 60 000. En un clúster saturado, donde el turno es el recurso escaso y la
+corrida preinscrita todavía está por delante, un 25 % menos de tiempo de pared por corrida es la
+diferencia entre caber en un turno y esperar otro. Y `mejor.pt` sigue escribiéndose en cada mínimo de
+validación (#134), así que una corrida que se corte antes de los 30 000 tampoco pierde el modelo.
+
+---
+
+## 2026-10-05 (3) — Definición operativa de `streak amplitude` para síntesis, y jerarquía de contrastes del Objetivo 3 (D4, #16, #17, #141)
+
+**Decisión:** se adopta la definición de `peters2025hybrid` §2.5 con una sola sustitución declarada, y
+se fija la jerarquía de contrastes. Dictada por la autora el 2026-10-05 sobre la recomendación del
+asistente, y registrada por él con instrucción explícita. **Esta entrada es preinscripción: se escribe
+antes de tocar los pacientes de test.**
+
+### 1. La verdad de terreno es el CT limpio del mismo paciente, y eso ancla el endpoint en E-A2
+
+Peters la define como *"the average over the highest and lowest 5% CT number deviation to ground truth
+in each ROI"*, y *"the remaining streak amplitude is then defined as the difference between the two"*.
+En MAR la verdad de terreno existe; en síntesis hay que decir cuál es. Se fija:
+
+> verdad de terreno = el CT original **sin metal** del mismo paciente
+> campo de desviación: Δ(x) = I_sintética(x) − I_original(x), en HU
+
+Eso solo existe en los **14 pacientes de test sin metal**, que es exactamente donde D4 ya pone el
+endpoint primario. La definición no se inventó para encajar: encaja porque el endpoint ya estaba ahí.
+
+**Consecuencia que corrige un defecto de la tabla de evaluación.** `diseno_A.md` §7 lista
+`streak amplitude` como medible en **E-A1** (20 pacientes con metal). **Ahí no hay verdad de terreno y
+no se puede medir.** Lo que E-A1 puede medir es **discrepancia** entre lo sintetizado y el CT real, que
+es otra magnitud y debe llamarse así. La fila de E-A1 se corrige: `bone integrity` y `metal integrity`
+se mantienen, `streak amplitude` sale de E-A1 y pasa a nombrarse discrepancia, con el MAE en HU dentro
+de `G` que ya estaba como descriptivo.
+
+### 2. Las ROIs se derivan de la pose, no se trazan a mano
+
+Peters las coloca manualmente *"perpendicular to strong streak artifacts in the uncorrected images"*, y
+su propio texto declara esa colocación como limitación. Aquí la pose es analítica (`c`, `u`), así que:
+
+> en planos perpendiculares a `u`, **arcos anulares** a radios declarados dentro de `B_δ`, excluyendo
+> `M` y una guarda de un vóxel
+
+Los streaks radian desde la sección de metal, así que un arco tangencial los cruza, que es lo que
+"perpendicular al streak" significa. Tres razones: es reproducible sin lector; es **idéntica para los
+dos brazos**, como `diseno_A.md` ya exige ("misma anatomía y mismas poses"); y se declara como
+**desviación del protocolo publicado**, coherente con que `main.tex` ya diga que extenderlo a síntesis
+exige adaptación explícita y **no hereda su validación**.
+
+### 3. La censura por el suelo de −1000 HU se reporta como cifra, no como salvedad en prosa
+
+El 5 % inferior de la desviación es exactamente lo que el suelo de la representación multiventana
+censura (#141). Junto al endpoint se reporta siempre:
+
+> fracción de vóxeles de la ROI de la imagen sintética que quedan **exactamente en el suelo**
+> (−1000 HU)
+
+Si esa fracción es apreciable, la cola inferior está **censurada** y `streak amplitude` es una **cota
+inferior**, dicho con un número. Esto hace #141 auditable en el momento de la evaluación y permite
+afirmar que el método midió y reportó su propio techo. **El brazo físico reconstruye y sí puede bajar
+de −1000 HU**, así que esta cifra separa lo que es límite de la representación de lo que es límite del
+modelo.
+
+### 4. La unidad de agregación es el paciente
+
+Mediana sobre ROIs y cortes → **un valor por paciente** → pruebas pareadas sobre n = 14. Es obligado
+porque D4 usa Wilcoxon pareado y TOST con n = 14. **Cierra el `\GAPDEC` abierto** sobre cómo se agregan
+poses y regiones de medición antes de Wilcoxon y TOST.
+
+### 5. Jerarquía de contrastes, y por qué el de copia y pegado no es evidencia
+
+| | Contraste | Qué prueba |
+|---|---|---|
+| **Primario** | TOST contra el brazo físico, E-A2, con margen `Delta` | equivalencia |
+| **Realismo** | distancia entre la distribución de amplitudes sintéticas y la medida en CLINIC-metal real | que lo generado se parece a lo que existe |
+| **Cordura** | Wilcoxon de una cola contra copia y pegado | piso, **no** evidencia de calidad |
+
+**El contraste contra copia y pegado es casi vacuo y se declara como tal.** El propio diseño dice que
+la copia y pegado *"no puede producir"* streaking por construcción, así que su amplitud vale ~0 y
+cualquier cosa que genere algo gana. Es un control de cordura.
+
+El de **realismo** entra porque hace que los dos componentes de la tesis se evalúen con la misma
+lógica: el Objetivo 2 compara **distribuciones** de grados contra una referencia clínica externa
+(Zwingmann) y no instancias; el Objetivo 3 hará lo mismo con las amplitudes contra CLINIC-metal real.
+La coherencia metodológica entre los dos objetivos es un argumento del documento, no un adorno.
+
+**Alternativas descartadas:** (a) medir `streak amplitude` en E-A1 usando una referencia
+reconstruida o suavizada como sustituto de la verdad de terreno: introduce un paso sin validación en
+el centro del endpoint primario; (b) colocar las ROIs a mano siguiendo a Peters al pie de la letra:
+hereda una limitación que ellos mismos declaran y hace irreproducible la comparación entre brazos;
+(c) usar el contraste contra copia y pegado como prueba principal: pasaría por construcción y dejaría
+la métrica sin nada que validar, que es el patrón que #76 ya obligó a cerrar en este proyecto.
+
+**Por qué:** `streak amplitude` es la única de las métricas adoptadas que mide lo que el Objetivo 3
+dice generar, y es la que la copia y pegado no puede producir. Si su definición operativa queda
+abierta hasta ver los resultados, el criterio de éxito se vuelve elegible a posteriori, que es
+exactamente el riesgo que D4 existe para cerrar.
+
+### Lo que esta entrada NO fija todavía, y dónde se fija
+
+Para que esto sea preinscripción completa faltan cuatro parámetros, y **se fijan sobre validación,
+nunca sobre test**, en `diseno_A.md` al congelarlo: los **radios** de los arcos anulares dentro de
+`B_δ`; el **número y separación de los planos** perpendiculares a `u`; la **apertura angular** del
+arco; y el **margen de guarda** alrededor de `M`. Hasta que estén escritos, esta decisión fija el
+**qué** y el **contra qué**, no el **con qué parámetros**.
+
+**Dependencia:** el contraste primario y el segundo componente de `Delta` (test-retest) necesitan el
+**brazo físico de Peters implementado**, que la autora decidió implementar el 2026-10-05. Implementar
+su protocolo **no es validar XCIST**: la reimplementación validada sigue fuera de alcance y lo que se
+hace es reproducir un protocolo publicado, documentando revisión de código, configuración y ajustes de
+reconstrucción, como `main.tex` ya promete.
+
+---
+
+## 2026-10-05 (4) — Parámetros de las ROIs de `streak amplitude`, fijados sobre validación (completa la entrada 2026-10-05 (3))
+
+**Decisión:** los cuatro parámetros que la entrada `2026-10-05 (3)` dejó abiertos quedan fijados así.
+Medido con `experiments/objetivo3/a12_roi_parametros.py` sobre los **631 parches con metal de los 5
+pacientes de validación** que los tienen; **ningún paciente de test y ninguna salida del
+sintetizador**. Dictada por la autora y registrada por el asistente con instrucción explícita el
+2026-10-05.
+
+| # | Parámetro | Valor | Cómo se fijó |
+|---|---|---|---|
+| 1 | Apertura del arco | **360°, anillo completo** | argumento |
+| 2 | Planos | **todos los cortes con `M`, menos 8 mm por extremo** | reutilización |
+| 3 | Guarda alrededor de `M` | **un vóxel en plano del propio caso** (mediana en validación: 0.83 mm) | argumento, al mínimo |
+| 4 | Radios de los anillos | **de la guarda a 12.0 mm** | se sigue de `B_δ` |
+
+**1. Anillo completo, y así se elimina un parámetro en vez de fijarlo.** Peters et al. colocan las
+ROIs *"perpendicular to strong streak artifacts"* y a mano, y su propio texto declara esa colocación
+como limitación. Con un estadístico **de colas**, la direccionalidad del streak deja de importar: el
+5 % superior y el 5 % inferior encuentran las rayas claras y oscuras dondequiera que estén en el
+anillo. Es una desviación del protocolo publicado y se declara como tal.
+
+**2. Los 8 mm por extremo se reutilizan, no se inventan.** Es `RECORTE_EXTREMO_MM = 8.0` de
+`e9_corredor.py`, la exclusión de extremos ya decidida para SAP (D-O2.3). Un segundo valor para la
+misma idea geométrica crearía una discrepancia gratuita entre el Objetivo 2 y el 3.
+
+**4. El radio exterior no es un grado de libertad.** El sintetizador escribe solo dentro de `G`, así
+que el campo de desviación es **cero fuera de `G` por construcción** (E-A3, comprobado en cada
+síntesis). El exterior es el ancho de `B_δ`, ya declarado. Buscarlo con una medición habría sido
+fabricar un parámetro que el diseño ya fijó.
+
+**3. LA GUARDA NO SE PUDO FIJAR POR MEDICIÓN, y esto hay que leerlo entero.** Se probaron dos
+criterios y **los dos fallan, por razones opuestas**:
+
+- **Fracción de vóxeles sobre 2500 HU:** da **cero en todas las cáscaras por construcción**. La
+  distancia se mide desde `~metal`, así que las cáscaras excluyen el metal por definición. El
+  criterio no podía detectar nada.
+- **Elevación de la mediana de HU respecto a fuera de `B_δ`:** solo baja de 25 HU **a los 11 mm**, de
+  modo que la guarda se habría comido la banda entera y habría dejado una ROI de 1 mm. Falla porque
+  **la elevación no es contaminación: es el artefacto**, que es la señal que la métrica existe para
+  medir. El criterio excluía justo lo que hay que medir.
+
+En una imagen real, a esta escala, **el volumen parcial del metal y el artefacto de campo cercano son
+la misma señal**, y separarlos exigiría una referencia sin metal del mismo paciente, que es el
+problema que la métrica ya tiene. Por eso la guarda se fija **por argumento y al mínimo**: un vóxel en
+plano, porque el volumen parcial no puede extenderse menos que eso.
+
+**El argumento decisivo es la dirección del sesgo.** Cualquier guarda mayor descarta señal de
+artefacto y sesga `streak amplitude` **a la baja** — la **misma dirección** que la censura por el
+suelo de −1000 HU (#141). Ante dos sesgos del mismo signo, el parámetro se elige para no sumar un
+tercero.
+
+**Evidencia del perfil radial, que se reporta:** la elevación de la mediana de HU cae de **+2330 HU**
+en la cáscara de 0.5–1.0 mm a **+926 HU** en la de 3.0–3.5 mm, y de ahí a los 12 mm decae despacio
+hasta **+2 HU**. La caída abrupta se agota hacia los 3–4 mm; ese tramo lento posterior es artefacto y
+**no se excluye**.
+
+**Alternativas descartadas:** (a) guarda de 3.5 mm, donde se agota la caída abrupta: descartaría el
+campo cercano, que es donde el artefacto es más intenso, y sumaría sesgo a la baja; (b) guarda medida
+por umbral de elevación: produce 11 mm y una ROI de 1 mm, absurda; (c) arcos de apertura fija
+siguiendo a Peters literalmente: hereda una limitación que ellos declaran y hace irreproducible la
+comparación entre brazos.
+
+**Por qué esta entrada existe aparte:** la entrada `2026-10-05 (3)` dijo explícitamente que fijaba el
+**qué** y el **contra qué**, no el **con qué parámetros**, y que estos se fijarían sobre validación.
+Con esta entrada la preinscripción del endpoint primario del Objetivo 3 queda **completa**, y ya no
+hay ningún parámetro del endpoint pendiente de decidir cuando lleguen los resultados.
+
+---
+
+## 2026-10-05 (5) — El brazo físico se reproduce, NO se valida; y lo verificado en su código entra al documento (#8, #146)
+
+**Decisión:** dos partes, las dos dictadas por la autora el 2026-10-05 y registradas por el asistente
+con instrucción explícita.
+
+### 1. No se valida XCIST. Se reafirma el límite de #8
+
+**Validar un simulador es compararlo contra mediciones físicas en un fantoma real escaneado en un
+tomógrafo real.** La tesis no tiene fantoma con material metálico conocido, ni acceso declarado a un
+escáner, ni mediciones de referencia, y conseguirlos no cabe en el alcance. A lo que se suma el
+argumento que #8 ya registró: **el propio artículo de XCIST no contiene ningún estudio de artefacto
+metálico** y declara su validación como *"first-order"* e *"in progress"*. Reclamar una validación que
+el autor del simulador no ha hecho expone la tesis a una pregunta que no puede contestar.
+
+**Lo que sí se hizo, y se nombra distinto: verificación de reproducción.** Se corrió su protocolo en
+local, se obtuvo su salida, y se verificó en su código un supuesto que su artículo no declara. Eso es
+lo que `main.tex` ya promete —*"document the code revision, configuration, reconstruction settings and
+access conditions"*— y es defendible sin mover el alcance.
+
+**Alternativa descartada:** ampliar el alcance a una validación propia. Obligaría a conseguir fantoma
+y escáner, y dejaría la tesis dependiente de un recurso que no está asegurado.
+
+### 2. Lo verificado en el código del brazo físico entra al documento como hecho
+
+Son observaciones directas de fuentes primarias —el código, los archivos de licencia y la
+documentación del repositorio— y quedan autorizadas a escribirse en `overleaf/` con esta entrada,
+con la trazabilidad de #146:
+
+| Hecho verificado | Dónde |
+|---|---|
+| **Paciente y metal se proyectan JUNTOS**, en una pasada, como un volumen de tres materiales: agua con el paciente (+1), agua con la máscara de metal (**−1**, desplaza el agua) y la aleación con la misma máscara (+1). Es desplazamiento de material **antes** de proyectar, no pegado en el dominio de imagen | `simulation_scripts/run.py` |
+| Licencia **BSD 3-Clause**, GE Precision HealthCare 2024 | `LICENSE` de los dos repos |
+| Revisión de código: commits **`4cf3544`** (xcist-main) y **`4993e87`** (xcist-example) | `git log` |
+| El metal de sus datos de entrenamiento son **formas fractales aleatorias** colocadas en posiciones aleatorias de tejido blando o hueso, no implantes | `data_generation.md` |
+| Su geometría es **2D de una sola fila de detector** (900 columnas, 1000 vistas), con dispersión equivalente a 64 filas y reconstrucción FDK con corrección de agua | `data_generation.md` |
+| El **filtro de realce de frecuencias** aplicado a las imágenes de paciente antes de simular está confirmado | `data_generation.md` |
+| Su script publicado **no corre tal como viene**: aborta al serializar `sim.json` porque un valor es `np.float32`. Reproducirlo exige un parche de una línea, que vive en `experiments/objetivo3/peters/` y **no** en el clon de `repos/` | ejecución del 2026-10-05 |
+
+**Cómo se escribe el primer punto, que es el que más pesa.** `main.tex` dice hoy que *"the paper does
+not state whether patient and metal are projected jointly, which this work verifies in the simulator
+code before reproduction"*. Esa frase pasa de promesa a hecho: **se verificó, y la respuesta es que sí,
+por desplazamiento de agua**. Y refuerza el encuadre del protocolo como híbrido, porque la inserción
+ocurre a nivel de material y no de imagen.
+
+**Lo que NO autoriza esta entrada:** afirmar nada sobre el rendimiento del brazo físico, ni sobre la
+profundidad de su *undershoot* más allá de la medición de una sola imagen con un objeto de titanio
+(ampliación a #141 y #146). Esa cifra sigue siendo de una configuración y no una cota.
+
+**Por qué:** los dos refuerzos del gap —que su metal no es un implante y que su geometría es de una
+fila— convierten en concreto y citable lo que el documento afirmaba de forma general. Y la
+verificación de la proyección conjunta cierra un pendiente que estaba escrito en el propio
+`main.tex`, de modo que dejarlo fuera del documento de entrega sería perder trabajo ya hecho.

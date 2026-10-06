@@ -69,8 +69,27 @@
 - U-Net de difusion condicionada por concatenacion (tipo DDPM/ADM), en pixeles, float32. Sin base preentrenada.
 - Objetivo de prediccion de ruido (o `v`) con perdida **solo dentro de `G`** (fuera se copia).
 - Muestreo DDIM, 50 pasos, semillas fijas; varias muestras por caso para medir variabilidad.
-- Validacion: 5 pacientes con metal; registra curva, **no elige checkpoint** (igual que P1).
-- **Presupuesto:** sin medir. Semana 1: prueba corta de 200 pasos en Khipu (s/paso, memoria), como en P1.
+- **Pasos de entrenamiento: 30 000.** DECIDIDO por la autora el 2026-10-05 (B2), registrado en
+  `docs/01-decisiones.md`. **Es una eleccion de hiperparametro hecha sobre VALIDACION, no fijada de
+  antemano, y asi debe declararse en la tesis.** Sale del minimo de validacion de dos corridas que
+  trazan la misma curva dentro de 1.5e-3 en todos los bloques compartidos: el minimo **no es un punto
+  sino una meseta de ~20 000 a ~40 000 pasos** (`run01` lo pone en el bloque 20-30 k con 0.05809,
+  `run02` en el 30-40 k con 0.05891), y 30 000 cae en su centro. Pasado el bloque 40-50 k la validacion
+  sube de forma monotona en las dos corridas. Ninguna de las dos se midio sobre test. Evidencia en
+  `docs/04-implicancias.md` #134 y en `experiments/objetivo3/outputs/a7/run01|run02/curva.csv`.
+- **Coste medido:** 0.377 s/paso en la particion MIG `a100_3g.20gb` (12.3 GB de 20), de donde 30 000
+  pasos son **~3 h 10** de pared. `run02` hizo 60 000 en 6 h 20.
+- **`[DECIDIR]` El papel de la validacion cambio y esta linea lo contradice.** Este documento decia
+  *"registra curva, no elige checkpoint (igual que P1)"*. **Hoy la validacion hace las dos cosas que
+  esa frase niega:** `guarda()` escribe `mejor.pt` en cada minimo de validacion (correccion de #134,
+  2026-10-04), de modo que **elige el checkpoint**, y la cifra de 30 000 pasos sale de ese mismo
+  minimo. El cambio es deliberado y resolvio una perdida real —en `run01` las pesas del optimo se
+  perdieron—, pero **aparta al Objetivo 3 del precedente de P1 y no esta declarado en ninguna parte**.
+  Hace falta decidir como se declara: seleccion de modelo por validacion, con test intacto, es
+  practica estandar y defendible; lo que no se puede es sostener la frase anterior. Anotado por el
+  asistente al aplicar B2; la decision es de la autora (regla 14).
+- **Presupuesto:** medido. Prueba corta de 200 pasos en Khipu (s/paso, memoria), como en P1, y dos
+  corridas completas: `run01` (144 500 pasos, A100 entera) y `run02` (60 000 pasos, MIG).
 
 ## 6. Tornillo sintetico (uso)
 
@@ -112,8 +131,8 @@
 
 | Bloque | Pacientes | Que se mide | Contra que |
 |---|---|---|---|
-| E-A1 Reconstruccion de implante real | 20 de test con metal | Bone integrity, metal integrity, streak amplitude (Peters, nombres publicados) dentro de `G`; MAE en HU dentro de `G` (descriptivo) | El CT real (referencia de apariencia, no ground truth fisico, #73) |
-| E-A2 Tornillo sintetico | 14 de test sin metal | Las mismas metricas de Peters; **costura en el borde de `B_delta`** (salto de HU a traves del borde) | (i) copia-pega ingenua (voxeles de `M` a HU de metal, sin artefacto), baseline que ya promete `main.tex:98`; (ii) brazo fisico de Peters en el subconjunto reducido |
+| E-A1 Reconstruccion de implante real | 20 de test con metal | Bone integrity y metal integrity (Peters, nombres publicados) dentro de `G`; **DISCREPANCIA** frente al CT real, con el MAE en HU dentro de `G`. **`streak amplitude` NO se mide aqui**: su definicion exige desviacion respecto a una verdad de terreno sin metal, que en un paciente con implante real no existe (DECISION 2026-10-05 (3), `01-decisiones.md`) | El CT real (referencia de apariencia, no ground truth fisico, #73) |
+| E-A2 Tornillo sintetico | 14 de test sin metal | Las mismas metricas de Peters, **y aqui si `streak amplitude`**, porque la verdad de terreno es el CT limpio del mismo paciente: `Delta(x) = I_sintetica - I_original`, **anillos completos (360 grados)** derivados de la pose, de **un voxel en plano de guarda** alrededor de `M` hasta los **12 mm** de `B_delta`, en **todos los cortes con `M` menos 8 mm por extremo** (parametros fijados sobre validacion, `01-decisiones.md` 2026-10-05 (4)), mediana por paciente, **mas la fraccion de voxeles de la ROI en el suelo de -1000 HU** como indicador de censura (#141). **costura en el borde de `B_delta`** (salto de HU a traves del borde; medido por `a10_costura.py`). Todo fijado en `01-decisiones.md` 2026-10-05 (3) | (i) copia-pega ingenua, declarada **control de cordura y no evidencia**: su amplitud vale ~0 por construccion; (ii) brazo fisico de Peters, **contraste PRIMARIO por TOST**; (iii) **realismo**: distancia entre la distribucion de amplitudes sinteticas y la medida en CLINIC-metal real |
 | E-A3 Preservacion fuera de `B_delta` | todos | RMSE y SSIM fuera de `G` | **Cero por construccion**; se reporta como tal, no como resultado |
 | E-A4 QC visual | muestra fija | Laminas con el mismo formato de las de E9-TS | Revision de la autora |
 

@@ -68,6 +68,14 @@ USO
 ---
     python a15_cadena_completa.py --caso dataset6_CLINIC_0101_data
     python a15_cadena_completa.py --caso dataset6_CLINIC_0101_data --cortes 0   # todos
+    python a15_cadena_completa.py --caso dataset6_CLINIC_0101_data --cortes 0 --semillas 0 1 2 3 4
+
+COTEJO DE CHECKPOINT (01-decisiones.md 2026-10-07 (2) y 2026-10-08 (2))
+-------------------------------------------------------------------------
+Con `--semillas`, cada checkpoint se genera una vez por semilla y, ademas de lo anterior, escribe
+`_cotejo.csv`: perfil 2D en cascaras de 0.5 mm con la elevacion de la mediana y del p95 sobre el anillo
+de 12-15 mm, agregado corte -> paciente por semilla, y el histograma dentro de `M` sobre voxeles
+> 2500 HU. Lo calcula `common.cotejo`, la misma funcion que mide la referencia real (`a17_cotejo.py`).
 """
 from __future__ import annotations
 
@@ -93,6 +101,7 @@ from difusion import Difusion, muestrea_ddim  # noqa: E402
 from modelo import UNetDifusion  # noqa: E402
 from a11_rasterizar_tornillo import rasteriza, D_CUERPO_MM, BANDA_MM, METAL_HU  # noqa: E402
 from a1b_parches_componente import ventana_coords  # noqa: E402
+from common.cotejo import agrega, bordes, histograma_m, perfil_corte  # noqa: E402
 
 LADO = 256
 
@@ -220,6 +229,8 @@ def main() -> None:
     ap.add_argument('--cortes', type=int, default=24, help='0 = todos los cortes con `M`')
     ap.add_argument('--pasos', type=int, default=50)
     ap.add_argument('--semilla', type=int, default=0)
+    ap.add_argument('--semillas', type=int, nargs='+', default=None,
+                    help='una generacion por semilla y salida `_cotejo.csv` (cotejo de checkpoint)')
     ap.add_argument('--paso-perfil-mm', type=float, default=1.0)
     ap.add_argument('--nifti', action='store_true', default=True)
     ap.add_argument('--sin-nifti', dest='nifti', action='store_false',
@@ -316,9 +327,11 @@ def main() -> None:
 
     canales = canales_diseno_a()
     dif = Difusion()
-    total = len(ks) * len(args.ckpt)
-    print('generaciones: %d (%d cortes x %d checkpoints) | estimado ~%.0f min'
-          % (total, len(ks), len(args.ckpt), total * 52 / 60))
+    semillas = args.semillas if args.semillas else [args.semilla]
+    total = len(ks) * len(args.ckpt) * len(semillas)
+    print('generaciones: %d (%d cortes x %d checkpoints x %d semillas)'
+          % (total, len(ks), len(args.ckpt), len(semillas)))
+    cotejo = []
 
     resumen = []
     t0 = time.time()
@@ -330,56 +343,70 @@ def main() -> None:
         modelo.to(args.dispositivo).eval()
         print('\n--- %s (paso %s) | %s ---' % (et, ck.get('paso'), args.dispositivo), flush=True)
 
-        sal = vol.copy()
-        marcas = {'k': [], 'y': [], 'x': [], 'u': []}   # `u` crudo de los 3 canales dentro de `M` (#152)
-        for k in ks:
-            y0, x0, _ = ventanas[k]
-            cond, g_c, m_c = cond_de(vol, M, G, k, y0, x0, canales)
-            hu_c, _, _ = parche(vol, M, G, k, y0, x0)
-            gt = torch.from_numpy(g_c.astype(np.float32)[None])[None].to(args.dispositivo)
-            with torch.no_grad():
-                gen = muestrea_ddim(modelo, torch.from_numpy(cond)[None].to(args.dispositivo), gt,
-                                    dif, pasos=args.pasos, semilla=args.semilla).cpu()
-            # CONTROL 2: cero exacto fuera de `G`
-            fuera = float(np.abs(gen.numpy()[0][:, ~g_c]).max()) if (~g_c).any() else 0.0
-            if fuera != 0.0:
-                raise RuntimeError('corte %d: lo generado no es cero fuera de G (%.3e)' % (k, fuera))
-            hu_sal = componer(hu_c, a_hu(gen, args.delta), g_c)
-            verificar_composicion(hu_c, hu_sal, g_c)   # CONTROL 3
-            h = min(LADO, vol.shape[1] - y0)
-            w = min(LADO, vol.shape[2] - x0)
-            sal[k, y0:y0 + h, x0:x0 + w] = hu_sal[:h, :w]
-            yy, xx = np.nonzero(m_c[:h, :w])
-            u_c = (gen.numpy()[0] + 1.0) / 2.0                   # (3, LADO, LADO), orden LW, MW, SW
-            marcas['k'].append(np.full(yy.size, k, dtype=np.int32))
-            marcas['y'].append((yy + y0).astype(np.int32))
-            marcas['x'].append((xx + x0).astype(np.int32))
-            marcas['u'].append(u_c[:, yy, xx].T.astype(np.float32))
-            hecho += 1
-            if hecho % 8 == 0:
-                tr = (time.time() - t0) / hecho * (total - hecho) / 60
-                print('  [%d/%d] corte %d | faltan ~%.0f min' % (hecho, total, k, tr), flush=True)
+        for semilla in semillas:
+            sal = vol.copy()
+            marcas = {'k': [], 'y': [], 'x': [], 'u': []}   # `u` crudo de los 3 canales dentro de `M` (#152)
+            for k in ks:
+                y0, x0, _ = ventanas[k]
+                cond, g_c, m_c = cond_de(vol, M, G, k, y0, x0, canales)
+                hu_c, _, _ = parche(vol, M, G, k, y0, x0)
+                gt = torch.from_numpy(g_c.astype(np.float32)[None])[None].to(args.dispositivo)
+                with torch.no_grad():
+                    gen = muestrea_ddim(modelo, torch.from_numpy(cond)[None].to(args.dispositivo), gt,
+                                        dif, pasos=args.pasos, semilla=semilla).cpu()
+                # CONTROL 2: cero exacto fuera de `G`
+                fuera = float(np.abs(gen.numpy()[0][:, ~g_c]).max()) if (~g_c).any() else 0.0
+                if fuera != 0.0:
+                    raise RuntimeError('corte %d: lo generado no es cero fuera de G (%.3e)' % (k, fuera))
+                hu_sal = componer(hu_c, a_hu(gen, args.delta), g_c)
+                verificar_composicion(hu_c, hu_sal, g_c)   # CONTROL 3
+                h = min(LADO, vol.shape[1] - y0)
+                w = min(LADO, vol.shape[2] - x0)
+                sal[k, y0:y0 + h, x0:x0 + w] = hu_sal[:h, :w]
+                yy, xx = np.nonzero(m_c[:h, :w])
+                u_c = (gen.numpy()[0] + 1.0) / 2.0                   # (3, LADO, LADO), orden LW, MW, SW
+                marcas['k'].append(np.full(yy.size, k, dtype=np.int32))
+                marcas['y'].append((yy + y0).astype(np.int32))
+                marcas['x'].append((xx + x0).astype(np.int32))
+                marcas['u'].append(u_c[:, yy, xx].T.astype(np.float32))
+                hecho += 1
+                if hecho % 8 == 0:
+                    tr = (time.time() - t0) / hecho * (total - hecho) / 60
+                    print('  [%d/%d] corte %d | faltan ~%.0f min' % (hecho, total, k, tr), flush=True)
 
-        sel = np.zeros_like(M)
-        sel[ks] = True
-        Ms, Gs = M & sel, G & sel
-        perfil, hist = estadisticos(sal, Ms, Gs, esp3d, args.paso_perfil_mm)
-        print('  HU dentro de `M`: p05 %.0f | p50 %.0f | p95 %.0f | fraccion sobre %.0f HU: %.3f'
-              % (hist['hu_p05'], hist['hu_p50'], hist['hu_p95'], METAL_HU, hist['frac_sobre_2500']))
-        resumen.append(dict(etiqueta=et, paso=ck.get('paso'), **hist))
+            sel = np.zeros_like(M)
+            sel[ks] = True
+            Ms, Gs = M & sel, G & sel
+            perfil, hist = estadisticos(sal, Ms, Gs, esp3d, args.paso_perfil_mm)
+            print('  HU dentro de `M`: p05 %.0f | p50 %.0f | p95 %.0f | fraccion sobre %.0f HU: %.3f'
+                  % (hist['hu_p05'], hist['hu_p50'], hist['hu_p95'], METAL_HU, hist['frac_sobre_2500']))
+            resumen.append(dict(etiqueta=et, paso=ck.get('paso'), semilla=semilla, **hist))
+            if args.semillas:
+                prf = agrega([perfil_corte(sal[k], M[k], esp2d) for k in ks])
+                h2 = histograma_m(sal[Ms])
+                b = bordes()
+                for i in range(len(b) - 1):
+                    cotejo.append({'caso': args.caso, 'etiqueta': et, 'semilla': semilla,
+                                   'r_lo_mm': b[i], 'r_hi_mm': b[i + 1],
+                                   'elev_p50': round(float(prf[i, 0]), 2), 'elev_p95': round(float(prf[i, 1]), 2),
+                                   'M_p50': h2['hu_p50'], 'M_p75': h2['hu_p75'], 'M_p95': h2['hu_p95'],
+                                   'M_frac_sobre_2500': h2['frac_sobre_2500']})
+                print('  cotejo semilla %d: elevacion p95 a 0-0.5 mm %.0f HU | M>2500 p50 %.0f'
+                      % (semilla, prf[0, 1], h2['hu_p50']), flush=True)
 
-        base = args.out_dir / ('a15_%s_%s' % (args.caso, et))
-        resumen_marcas(marcas, canales, sal, str(base) + '_marcas.npz')
-        with open(str(base) + '_perfil.csv', 'w', newline='', encoding='utf-8') as fh:
-            w_ = csv.DictWriter(fh, fieldnames=list(perfil[0].keys()))
-            w_.writeheader()
-            w_.writerows(perfil)
-        if args.nifti:
-            afin = np.diag([esp3d[1], esp3d[2], esp3d[0], 1.0])
-            nib.save(nib.Nifti1Image(np.ascontiguousarray(np.moveaxis(sal, 0, 2),
-                                                          dtype=np.float32), afin),
-                     str(base) + '_sintetica.nii.gz')
-        print('  salidas: %s_*' % base.name)
+            base = args.out_dir / ('a15_%s_%s' % (args.caso, et)
+                                   + ('_s%d' % semilla if args.semillas else ''))
+            resumen_marcas(marcas, canales, sal, str(base) + '_marcas.npz')
+            with open(str(base) + '_perfil.csv', 'w', newline='', encoding='utf-8') as fh:
+                w_ = csv.DictWriter(fh, fieldnames=list(perfil[0].keys()))
+                w_.writeheader()
+                w_.writerows(perfil)
+            if args.nifti:
+                afin = np.diag([esp3d[1], esp3d[2], esp3d[0], 1.0])
+                nib.save(nib.Nifti1Image(np.ascontiguousarray(np.moveaxis(sal, 0, 2),
+                                                              dtype=np.float32), afin),
+                         str(base) + '_sintetica.nii.gz')
+            print('  salidas: %s_*' % base.name)
 
     # --- original y mascaras, una sola vez -------------------------------------------------------
     if args.nifti:
@@ -395,6 +422,13 @@ def main() -> None:
         w_.writeheader()
         w_.writerows(resumen)
     print('\nresumen: %s' % ruta)
+    if cotejo:
+        ruta = args.out_dir / ('a15_%s_cotejo.csv' % args.caso)
+        with open(ruta, 'w', newline='', encoding='utf-8') as fh:
+            w_ = csv.DictWriter(fh, fieldnames=list(cotejo[0].keys()))
+            w_.writeheader()
+            w_.writerows(cotejo)
+        print('cotejo: %s' % ruta)
     print('\nLos dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula\n'
           '`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de\n'
           'seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint\n'

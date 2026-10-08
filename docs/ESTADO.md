@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-08 (3) — Tipo de implante de los 3 pacientes de referencia clasificado (propuesta)
+
+- **Hecho:** `clasificador-metal` sobre `metal_0011/0039/0056` -> `experiments/exploration-3d/propuesta_lote-tipo-ref.csv`: 0011 fijador externo, 0056 tres placas con tornillos, 0039 dos tornillos aislados (uno iliosacro, no transsacro). Registrada #154 ABIERTA.
+- **Siguiente:** autora valida (explorar.py cortes, 0039 primero) y elige opcion de #154 (referencia solo tornillos / por componente / declarar amenaza); despues cotejo y checkpoint.
+- **Pendientes:** los del bloque 2026-10-08 (2) siguen.
+
 ## 2026-10-08 (2) — Decisiones pendientes tomadas por delegacion; codigo, main.tex y overleaf alineados
 
 - **Hecho:** `01-decisiones.md` 2026-10-08 (32 puntos delegados por la autora); aplicados en `overleaf/` (`gaps-r03`: quedan 4 `\GAPDEC`, #90 x3 y tipo de implante), `00-tesis.md` y `tesis/main.tex` (#153 APLICADA: densidad fuera de SAP y de la hipotesis). Codigo: `DELTA_OBJ3` en `common/ventanas.py`, `a15` lee con v2 por omision (`--regla-v1` reproduce lo anterior), nombres de SAP e implante corregidos.

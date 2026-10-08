@@ -11182,3 +11182,34 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   densidad) y *Explicitly out of scope* (condicionar por densidad, motivado por `arand2019pelvicring`, pasa a
   trabajo futuro). Compila: 8 paginas, 0 errores, 0 citas indefinidas. Copias literales de `00-tesis.md`
   alineadas.
+
+### 154 — LOS 3 PACIENTES DE REFERENCIA DEL COTEJO NO SON TORNILLOS AISLADOS: `0011` fijador externo, `0056` placas con tornillos, `0039` dos tornillos (uno iliosacro, no transsacro completo) — ABIERTA (dispara la condicion previa de `01-decisiones.md` 2026-10-07 (2): "si no son tornillos, el cotejo se revisa"; toca #150)
+
+- **Origen:** agente `clasificador-metal`, 2026-10-08, lote `experiments/exploration-3d/propuesta_lote-tipo-ref.csv`
+  (propuesta sin validar; morfologia, no modelo ni material). Laminas a 2500 HU del 2026-09-07; `0056` tambien a
+  1500 HU (`experiments/exploration-3d/outputs/hu1500/`).
+- **Hallazgo propuesto:**
+  - `metal_0039`: (a) dos tornillos intraoseos aislados, confianza alta. comp1 3463 vox / 2639 mm3, cortes 87-156,
+    oblicuo pubis -> acetabulo; comp2 2031 vox / 1548 mm3, cortes 180-205, transverso en sacro, ~82 mm y ~5 mm de
+    diametro equivalente (estimacion grosera). comp2 solo cruza ~14 mm la linea media: forma de tornillo
+    iliosacro, no transiliaco-transsacro. HU max 6778, el mas bajo de los tres.
+  - `metal_0056`: (b) tres placas con tornillos (sinfisis, cresta iliaca, borde pelvico; 13011/12816/10033 vox) +
+    (e) hilera externa de focos pequenos. Ningun tornillo aislado ni a 2500 ni a 1500 HU.
+  - `metal_0011`: (c) fijador externo (barras y bloques extracorporeos, 2 clavos por lado a las alas iliacas;
+    comp1 28075 vox / 15530 mm3). Coincide con el veredicto de la autora en `a3_revision_componentes.csv`
+    ("otro implante").
+- **Por que importa:** la envolvente real del cotejo (min-max de 3 pacientes, perfil radial mediana/p95 e
+  histograma en `M`) mezcla un fijador cuyos clavos cruzan aire y tejido blando, placas con mas metal por
+  componente y solo un tornillo aislado. El perfil de artefacto de una placa o un fijador no es el de un tornillo
+  transiliaco-transsacro: la envolvente puede quedar ensanchada (deja pasar checkpoints malos) o desplazada.
+  Refuerza el supuesto no verificado ya declarado (sintetizador entrenado con todo material, sintetiza solo
+  tornillos; implicancia de guia-3 r03).
+- **Opciones (no decididas, regla 14):** (1) restringir la referencia a componentes tornillo: comp1/comp2 de
+  `0039` y, si existen, tornillos aislados de pacientes de entrenamiento (`a3_revision_componentes.csv`, 5 de 40
+  eran tornillos) — rompe la separacion validacion/entrenamiento si se usan los de entrenamiento; (2) mantener los
+  3 pacientes y cotejar por componente, declarando el tipo; (3) mantener el cotejo como esta y declarar la
+  heterogeneidad como amenaza a la validez (el cotejo ya "descarta, no prueba").
+- **Afecta:** `overleaf/secciones/capitulo3.tex` (cotejo, l.~204; el `\GAPDEC` del tipo de implante),
+  `experiments/objetivo3/a13_comparar_ckpt.py`, #150.
+- **Pendiente de la autora:** validar la propuesta (abrir `explorar.py cortes` en `0039` primero, luego `0056`) y
+  elegir opcion. El cotejo no corre hasta entonces.

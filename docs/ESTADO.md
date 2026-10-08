@@ -7,6 +7,7 @@
 - **Hecho:** `ENCARGO_2026-10-07.md` bloque A aplicado como ronda acotada `capitulo3-r08` (sin revisores): lectura de HU del Obj 3 por mezcla de canales, criterio de seleccion del punto de control con `\GAPDEC` del tipo de implante, y GAP del Obj 3 reformulado en cap. 3, introduccion y cap. 2. Compila (116 pp.), etapa en `BITACORA.md`. Bloque B sin redactar.
 - **Siguiente:** el paso 1 del bloque del 2026-10-07 sigue igual (clasificar `metal_0011/0039/0056`); en redaccion, una ronda con los tres revisores sobre `capitulo3` cuando la autora lo pida.
 - **Tambien hecho:** `docs/SITUACION_ACTUAL.md` reescrito como guia pedagogica para la exposicion (decisiones en orden, su porque y alternativas; opinion del profesor marcada como tal). Sin cifras nuevas.
+- **Tambien hecho (gaps-r01):** cerrados o estrechados los GAP de `overleaf/` cuya fuente ya existia (11 de 12; 54 `\GAPDEC` quedan, todos de decision real de la autora o de dato). Pendiente de la autora: si se mantiene la contingencia de plazo de #90 sobre el brazo fisico; 3 decisiones de redaccion nuevas en BITACORA §2; soporte del cribado de fractura (cap. 3 dice laminas, `00-tesis.md` dice 18 laminas + 12 volumen).
 - **Pendientes nuevos:** visto bueno de 5 decisiones de redaccion (BITACORA §2, 2026-10-08; entre ellas *checkpoint* = "punto de control"); Overfull de 4 pt en `capitulo3.tex`:200; tension 30 000 pasos frente a los candidatos 37 500 / 140 000 (`capitulo3-r08-respuesta.md`).
 
 ## 2026-10-07 — TRASPASO. Leer este bloque y nada mas para arrancar

@@ -12,11 +12,33 @@ artifacts in pelvic CT scan volumes using Multi-Window Image-Domain Diffusion.
 
 ## Pregunta de investigacion
 
-<pegar del main.tex>
+> Copiada literal de `tesis/main.tex` (seccion *Research Question*) el 2026-10-08. El documento de
+> entrega (`overleaf/introduccion.tex`) todavia no la alinea con los cuatro objetivos (`\GAPDEC`, #126).
+
+What improvement does a surgical admissibility-constrained (bone density and cortical containment) 3D
+placement sampler, a multi-window image-domain diffusion model conditioned on the rigid implant geometries
+and an extended generation band ($B_{\delta}$), have in terms of distributional physical-coherence of the
+synthesized pelvic osteosynthesis implants and their local artifacts, when compared with both naive
+copy-paste insertion and the adopted physics-based simulation protocol of \citet{peters2025hybrid}?
+Downstream segmentation impact is deliberately excluded from this study and is stated as out of scope below.
 
 ## Hipotesis
 
-<pegar del main.tex>
+> Copiada literal de `tesis/main.tex` (seccion *Hypothesis*) el 2026-10-08.
+
+The synthetic generation of medical anomalies and metallic implants using a rigid geometry and extended
+spatial boundaries, HU-conditioned diffusion model and whose placement is surgically enforced via a
+density-based placement sampler is more physically-coherent than unconstrained generative baseline methods
+and on the same footing as the adopted explicit physics-based simulation protocol \citep{peters2025hybrid}.
+Placement coherence is quantified by Surgical Admissibility of Placement (SAP), the single metric introduced
+by this work, which emulates the measured ordinal distribution of real-world implant placement. Appearance
+coherence is quantified with the metrics of the adopted protocol under their published names, not with newly
+coined ones.
+
+> **Nota de alcance (2026-10-08):** la hipotesis dice *"density-based placement sampler"*, pero el
+> muestreador preinscrito perturba el eje del corredor y **no** condiciona por densidad: la fraccion por
+> zona de densidad es componente **reportado** de SAP, no condicionante (D-O2.6, 2026-09-22). Alinear la
+> redaccion es decision de la autora.
 
 ## Alcance MINIMO VIABLE (lo que garantizo defender)
 
@@ -36,6 +58,17 @@ artifacts in pelvic CT scan volumes using Multi-Window Image-Domain Diffusion.
   `zwingmann2009navigated`, condicionadas por tecnica quirurgica **solo en S1**.
   S1/S2 se conserva como variable geometrica del muestreador; S2 se evalua
   descriptivamente (geometria y grados de brecha), sin prior ordinal clinico disponible.
+  **EJECUTADO (E13) y CERRADO.** Distribucion de poses y SAP preinscritas el 2026-09-22 (D-O2.1 a
+  D-O2.7) antes del primer Wasserstein-1; ningun parametro se tomo de Zwingmann. Resultado
+  (`tesis/main.tex`, *Expected Results* y *Placement result*): **72 volumenes, 3 600 poses**, grados
+  0-3 = 51.5 / 31.4 / 11.1 / 6.0 %, **W1 = 0.206** frente a la serie navegada y 0.230 frente a la
+  convencional; sensibilidad, 49 volumenes: 0.186 y 0.299. Post hoc declarado: en los 57 volumenes cuyo
+  corredor admite 7.0 mm, grado 0 = 64.2 % y W1 = 0.183; en los 15 estrechos, 3.3 % y 1.122.
+- **Implante: tornillo transiliaco-transsacro (transiliosacro)**, por decision de la autora del
+  2026-10-04 (#130): el corredor medido va de la cortical externa de un ilion a la del otro y cruza
+  ambas articulaciones sacroiliacas. "Iliosacro" queda para describir trabajos ajenos.
+- **Envolvente osea vigente:** cierre de 2 mm **sin** relleno de cavidades (correccion de D-O2.3 del
+  2026-10-04; con mascaras de TotalSegmentator el relleno no cambia ningun caso de la cohorte).
 
 > **Tres geometrias para tres preguntas distintas** (decision 2026-09-20 pto 5; D3 del 2026-09-20 (2);
 > D-O2.4 del 2026-09-22). No se mezclan, y cada una se nombra por su proposito:
@@ -69,13 +102,42 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   - **Es una decision POSTERIOR al resultado del Objetivo 1 y asi se declara.** La compuerta se fijo
     antes y no se modifico.
   - El diseno (`experiments/objetivo3/diseno_A.md`) **se preinscribe antes de entrenar**; hoy sigue en
-    BORRADOR y lo unico que falta para congelarlo es medir el margen `Delta` (D4).
+    BORRADOR. Para congelarlo faltan (orden de la decision 2026-10-05 (6), punto 5): **elegir el
+    checkpoint**, la **sonda de viabilidad** del brazo fisico y medir el margen `Delta` (D4).
   - La unidad de entrenamiento es el **componente conexo**, no el corte (D2, #102). Conjunto congelado
     el 2026-09-21: **17 149 parches, 241 componentes, 47 casos** (`train`) y **896 parches, 3 casos**
     (`val`, #105); `Delta` se medira sobre **n = 3 pacientes**, y se declara.
   - **Tres desplazamientos de dominio declarados**, no supuestos ausentes: mascara de entrenamiento por
     umbral frente a cilindro parametrico liso; contexto con streaking real frente a paciente limpio;
     y parches de solo banda menos frecuentes de lo que predice la geometria del corredor.
+  - **Decisiones de octubre (todas en `01-decisiones.md`; anadido el 2026-10-08):**
+    - **Entrenamiento: 30 000 pasos** (2026-10-05 (2)), eleccion de hiperparametro **sobre validacion**,
+      no fijada de antemano. Su argumento quedo debilitado y su revision **aplazada** hasta medir el
+      criterio de seleccion (2026-10-05 (6), punto 3).
+    - **El checkpoint NO se elige por la perdida de validacion** (2026-10-05 (6)), sino por un cotejo de
+      apariencia **sobre la tarea de sintesis**: tornillo parametrico en pelvis limpias de validacion,
+      perfil radial de HU (mediana y p95 como elevacion sobre el anillo de 12-15 mm) e histograma
+      dentro de `M` sobre voxeles > 2500 HU, contra los implantes reales de los 3 pacientes de
+      validacion; regla por envolvente real; con n = 3 descarta, no prueba (2026-10-07 (2)).
+      **Condicion previa PENDIENTE:** verificar el tipo de implante de esos 3 pacientes.
+    - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
+      60 % de los parches (2026-10-05 (6), punto 2).
+    - **Lectura de HU del Objetivo 3: `regla_suave` (v2), `delta = 0.05`** (2026-10-07). La `regla` v1
+      sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
+    - **Endpoint primario `streak amplitude` preinscrito por completo** (2026-10-05 (3) y (4)): verdad de
+      terreno = TC limpia del mismo paciente, asi que solo se mide en los **14 de test sin metal**
+      (E-A2); en los 20 con metal se mide **discrepancia**. ROIs = anillos completos de un voxel de
+      guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
+      fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
+      (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura**.
+    - **Suelo de -1000 HU** (2026-10-05): regla preinscrita; si la perdida atribuible a la
+      representacion (percentil 5 del paciente, eleccion post hoc declarada) es menor que `Delta`, se
+      declara como limitacion de alcance; si es mayor, se cambia la representacion.
+    - **Brazo fisico: se reproduce, NO se valida** (2026-10-05 (5)). Verificado en su codigo: paciente
+      y metal se proyectan **juntos**; geometria 2D de una fila de detector; su metal son formas
+      fractales, no implantes.
+    - **Orden de trabajo** (2026-10-05 (6), punto 5): cadena completa -> sonda de viabilidad de Peters
+      -> Peters completo -> `Delta` -> congelar `diseno_A.md` -> corrida final.
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
 - ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`

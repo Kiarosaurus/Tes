@@ -12,7 +12,7 @@
 
 - **Hecho:** 4 agentes `clasificador-metal` revisaron los 65 pacientes con material (`experiments/exploration-3d/tornillos_candidatos.md`): 26 con tornillo aislado IS/TS (censo `e8`: 17); en val solo `0039`. Autora eligio opcion 1 de #154 con solo `0039`: `01-decisiones.md` 2026-10-08 (2), `00-tesis.md`, `capitulo3.tex` (compila, 116 pp). Registrada #155 ABIERTA.
 - **Siguiente:** autora valida en cortes `0053`/`0054` (posible fuga test/train) y `0039`; decide #155 (2) referencia de realismo; luego cotejo con 2 tornillos de `0039`.
-- **Pendientes:** los de bloques anteriores siguen.
+- **Pendientes:** los de bloques anteriores siguen. Veredictos de la autora van en `experiments/exploration-3d/tornillos_revision_autora.csv` (6 casos, 0039 primero).
 
 ## 2026-10-08 (3) — Tipo de implante de los 3 pacientes de referencia clasificado (propuesta)
 

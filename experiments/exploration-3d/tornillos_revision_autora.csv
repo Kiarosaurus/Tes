@@ -1,0 +1,7 @@
+﻿orden,Caso,particion,por que,pregunta,veredicto_autora,nota_autora,fecha
+1,dataset7_CLINIC_metal_0039_data,val,referencia del cotejo (bloquea),"¿comp e8 1 (sacro, cortes ~180-205) y comp e8 2 (pubis->acetabulo, cortes ~87-156) son tornillos aislados, sin placa?",,,
+2,dataset7_CLINIC_metal_0053_data,test,posible fuga test/train (#155),¿misma placa y misma anatomia que 0054? (mismo paciente: si/no),,,
+3,dataset7_CLINIC_metal_0054_data,train,posible fuga test/train (#155),comparar con 0053,,,
+4,dataset7_CLINIC_metal_0040_data,train,unico TS claro,¿barra de ilion a ilion dentro del hueso? (corte ~242),,,
+5,dataset7_CLINIC_metal_0066_data,test,TS dudoso; 2D decia ortopedico=no,¿barra transversa dentro del hueso o por detras del sacro? (cortes ~205-225),,,
+6,dataset7_CLINIC_metal_0055_data,train,IS dudoso,¿los transversos ilion->S1 estan sueltos o unidos a la placa? (cortes ~195-240),,,

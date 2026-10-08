@@ -96,6 +96,11 @@ Cuenta: `--account=tesis`.
 8. **Límite de envíos (2026-09-17):** con 5 jobs propios en cola o corriendo (P1: 51667-51671), el sexto `sbatch`
    fue rechazado con `QOSMaxSubmitJobPerUserLimit`, y `$E` quedó vacío sin error aparente. Aparte de `MaxJobsPU=3`
    (corriendo), hay un tope de jobs **enviados**. Un job con `--dependency` también ocupa cupo mientras espera.
+9. **Elegir GPU cuando todo está lleno (2026-10-08):** lo que importa es la hora de **fin**, no la de inicio, y
+   un `--time` realista adelanta el inicio (backfill). `scripts/khipu_elegir_gpu.sh` prueba cada `--gres` con
+   `--test-only`, suma la duración esperada según la velocidad aproximada de cada GPU y da el comando de envío:
+   `bash khipu_elegir_gpu.sh <x.sbatch> <min_en_A100> [GB_min]`. Ese día la A100 entera y las A6000 estaban
+   tomadas hasta el día siguiente y la MIG `a100_1g.5gb` dedicada empezaba en horas (job a15 cotejo).
 
 ## Correr la cohorte completa
 

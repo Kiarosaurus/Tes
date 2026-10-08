@@ -18,7 +18,9 @@ QUE EXPONE
 - `configuraciones()`  las nueve configuraciones de canales (cada canal: `(codifica, decodifica)`).
 - `CONFIG_DISENO_A`    la que usa el Diseno A: `pub+asinh` (seccion 4 de `diseno_A.md`, `[SUPUESTO]`).
 - `codifica_bloque()`  HU -> `u` en [0, 1], un canal por plano.
-- `regla()`            `u` -> HU sin usar la verdad (canal mas estrecho no saturado).
+- `regla()`            `u` -> HU sin usar la verdad (canal mas estrecho no saturado). v1, congelada.
+- `regla_suave()`      v2 del Objetivo 3 (#152): mezcla con LW como ancla. Nueva aqui, no viene del Objetivo 1:
+                       solo la usa el Objetivo 3 y el Objetivo 1 no la conoce.
 - `BONE_HU`, `METAL_HU`, `EPS`  umbrales, con el mismo valor que en los experimentos.
 
 Nada de este archivo decide nada: la eleccion de `pub+asinh` es un `[SUPUESTO]` de `diseno_A.md`.
@@ -44,7 +46,8 @@ from e6b_vae_sd15 import EPS, regla  # noqa: E402
 CONFIG_DISENO_A = 'pub+asinh'
 
 __all__ = ['BONE_HU', 'METAL_HU', 'EPS', 'CONFIG_DISENO_A', 'configuraciones', 'regla',
-           'canales_diseno_a', 'codifica_bloque', 'verificar']
+           'canales_diseno_a', 'codifica_bloque', 'decodifica_bloque', 'peso_borde', 'regla_suave',
+           'verificar']
 
 
 def canales_diseno_a() -> dict[str, tuple]:
@@ -61,14 +64,47 @@ def codifica_bloque(hu: np.ndarray, canales: dict[str, tuple] | None = None) -> 
     return np.stack([canales[n][0](hu) for n in ('LW', 'MW', 'SW')], axis=0)
 
 
-def decodifica_bloque(u: np.ndarray, canales: dict[str, tuple] | None = None) -> np.ndarray:
-    """`u` apilado (canal, ...) -> HU por la `regla` de P1 (sin usar la verdad)."""
+def peso_borde(u: np.ndarray, delta: float) -> np.ndarray:
+    """Confianza en un canal estrecho segun su distancia al borde: 0 hasta `EPS`, 1 desde `delta`.
+
+    Rampa lineal entre `EPS` y `delta` en la distancia `min(u, 1 - u)`. Con `delta = EPS` es el
+    escalon de la `regla` v1.
+    """
+    d = np.minimum(u, 1.0 - u)
+    if delta <= EPS:
+        return (d >= EPS).astype(np.float64)
+    return np.clip((d - EPS) / (delta - EPS), 0.0, 1.0)
+
+
+def regla_suave(us: dict[str, np.ndarray], canales: dict, delta: float) -> np.ndarray:
+    """`regla` v2 del Objetivo 3 (#152): mezcla suave con LW como ancla.
+
+    Parte de LW y refina primero con MW y luego con SW, cada uno pesado por `peso_borde`. Un canal
+    estrecho casi saturado (p.ej. `u = 0.989`) ya no sustituye a LW por su techo: pesa poco. Con
+    codificacion exacta todos los canales no saturados dan el mismo HU y la mezcla lo conserva, asi que
+    la identidad de `verificar()` no depende de `delta`. **No toca la `regla` del Objetivo 1.**
+    """
+    hu = np.asarray(canales['LW'][1](us['LW']), dtype=np.float64)
+    for nombre in ('MW', 'SW'):
+        w = peso_borde(us[nombre], delta)
+        hu = w * np.asarray(canales[nombre][1](us[nombre]), dtype=np.float64) + (1.0 - w) * hu
+    return hu
+
+
+def decodifica_bloque(u: np.ndarray, canales: dict[str, tuple] | None = None,
+                      delta: float | None = None) -> np.ndarray:
+    """`u` apilado (canal, ...) -> HU sin usar la verdad.
+
+    `delta=None` aplica la `regla` congelada de P1 (v1, por omision: reproduce todo lo ya corrido).
+    Un `delta` aplica `regla_suave` (v2, #152).
+    """
     canales = canales_diseno_a() if canales is None else canales
     us = {n: u[i] for i, n in enumerate(('LW', 'MW', 'SW'))}
-    return regla(us, canales)
+    return regla(us, canales) if delta is None else regla_suave(us, canales, delta)
 
 
-def verificar(n: int = 100_000, semilla: int = 0, tol: float = 1e-6) -> dict[str, float]:
+def verificar(n: int = 100_000, semilla: int = 0, tol: float = 1e-6,
+              delta: float | None = None) -> dict[str, float]:
     """Control: ida y vuelta sin modelo debe devolver los HU de entrada dentro de `tol`.
 
     Es el analogo del control de identidad de E6b/P1, sobre valores sinteticos que cubren el rango
@@ -82,7 +118,7 @@ def verificar(n: int = 100_000, semilla: int = 0, tol: float = 1e-6) -> dict[str
         np.array([-1000.0, 0.0, BONE_HU, 1000.0, METAL_HU, 20000.0]),
         rng.uniform(-1000.0, 20000.0, n - n // 2 - n // 4 - 6),
     ])
-    vuelta = decodifica_bloque(codifica_bloque(hu))
+    vuelta = decodifica_bloque(codifica_bloque(hu), delta=delta)
     err = np.abs(vuelta - hu)
     peor = float(err.max())
     assert peor <= tol, f'identidad multi-ventana rota: peor error {peor:.6g} HU > {tol:g}'

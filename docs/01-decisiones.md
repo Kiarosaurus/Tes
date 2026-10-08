@@ -1917,3 +1917,143 @@ profundidad de su *undershoot* más allá de la medición de una sola imagen con
 fila— convierten en concreto y citable lo que el documento afirmaba de forma general. Y la
 verificación de la proyección conjunta cierra un pendiente que estaba escrito en el propio
 `main.tex`, de modo que dejarlo fuera del documento de entrega sería perder trabajo ya hecho.
+
+---
+
+## 2026-10-05 (6) — Criterio de selección del modelo, conjunto de validación, aplazamiento de B1 y B2, y orden de trabajo (#145, #147, #142, #143)
+
+**Decisión:** seis puntos, adoptados por la autora el 2026-10-05 sobre la recomendación del asistente
+y con una corrección que ella aceptó (punto 1). Registrada por él con instrucción explícita.
+
+### 1. El modelo final NO se elige por la pérdida de validación
+
+**Lo que queda establecido por medición y ya no se discute:** la pérdida de validación **no ordena los
+modelos por fidelidad en HU**. Comparación pareada sobre los 5 pacientes de validación, mismos cortes
+y misma semilla: el checkpoint del mínimo de la pérdida pierde **5 de 5** en error de HU dentro del
+metal y **5 de 5** en la banda, y reproduce el 55-67 % del metal real frente al 92-95 % del otro
+(#145 y su confirmación). Prueba de signos de una cola, p = 0.031, declarada antes de ver el resultado.
+
+**El criterio pasa a ser una métrica de APARIENCIA medida sobre validación.** Eso es legítimo —para
+eso existe validación— y **no toca los pacientes de prueba**.
+
+**CORRECCIÓN IMPORTANTE, aceptada por la autora.** La primera versión de esta recomendación proponía
+elegir con la fracción de metal reproducida y el error en HU sobre la tarea de **reconstruir implantes
+reales**. Se descartó: esa tarea **premia memorizar**, porque los implantes de validación se parecen a
+los de entrenamiento, y elegir así seleccionaría el checkpoint más sobreentrenado por una razón que
+**no se traslada** al uso real de la tesis, que es colocar un tornillo donde no había nada.
+
+**El criterio adoptado se mide sobre la tarea de SÍNTESIS:**
+
+> Se coloca el tornillo paramétrico en una pelvis **limpia** de validación, se genera con cada
+> checkpoint candidato, y se comparan dos estadísticos del resultado contra los mismos estadísticos
+> medidos en los **implantes reales** de los pacientes de validación:
+>
+> 1. el **perfil radial de HU** alrededor del metal, por cáscaras de distancia; y
+> 2. el **histograma de HU dentro de la máscara del implante**.
+>
+> Gana el checkpoint cuyo artefacto sintético se parezca más al real.
+
+**Por qué estos dos y no la amplitud de rayas.** La amplitud de rayas exige una verdad de terreno sin
+metal, y **en un paciente con implante real esa verdad no existe**. El perfil radial y el histograma
+**sí se miden sobre la imagen real sin ninguna referencia**, y de hecho ya se midieron
+(`a12_roi_parametros.py`). Esto además **cierra un hueco de la decisión `2026-10-05 (3)`**, cuyo
+contraste de realismo estaba especificado contra una magnitud que no es calculable en los pacientes
+reales.
+
+**Coherencia metodológica:** es la misma lógica del Objetivo 2, que compara **distribuciones** contra
+una referencia clínica externa en vez de instancias.
+
+**Cuándo se mide:** después de la prueba de la cadena completa (punto 5). **No espera a Peters.**
+
+### 2. El conjunto de validación son los **3 pacientes de CLINIC-metal**
+
+`dataset7_CLINIC_metal_0011`, `_0039` y `_0056`. Son los que el manifiesto de entrenamiento usa de
+verdad (896 parches), y los únicos con implante real. Los dos de `dataset6` que aparecieron en
+`a9`, `a12` y `a13` tienen **objeto metálico incidental** y entraron por un descuido del asistente,
+que cargó el caché en vez del manifiesto (#147).
+
+**Se declara con ellos el desbalance:** de los 896 parches, **`0011` aporta 538 (60 %)** y el **65 %
+del metal**. La validación está dominada por un paciente, y toda cifra medida sobre ese conjunto lo
+lleva escrito al lado.
+
+**Consecuencia:** `Delta` se calibra sobre **3** pacientes, no 5. La regla de #141 decía "los 5
+pacientes de validación" y queda corregida aquí.
+
+### 3. B1 y B2 quedan APLAZADOS, y se declara por qué
+
+- **B1** (si la saturación con 47 pacientes entra como limitación): su evidencia es la curva de la
+  pérdida de validación, que acaba de mostrarse que no ordena los modelos por lo que la tesis mide.
+  **Declararlo hoy sería declararlo con el instrumento equivocado.**
+- **B2** (los 30 000 pasos): se eligió por el mínimo de esa misma curva. La cifra **sigue en pie** —cae
+  en una meseta reproducida— pero **el argumento que la sostiene es más débil**, y la entrada
+  `2026-10-05 (2)` queda remitida a esta.
+
+Los dos se reabren en cuanto el criterio del punto 1 esté medido.
+
+### 4. #142 y #143 se DECLARAN, no se rehacen
+
+- **#142** (el eje del corredor se busca en una rejilla de 5°, mientras la tolerancia angular citada es
+  de 1.53°): **declarar**. Refinarlo reabriría el Objetivo 2 completo, que está cerrado con una corrida
+  preinscrita. El sesgo es además **conservador**: el muestreador aparece peor de lo que sería con un
+  eje mejor orientado.
+- **#143** (la máscara binaria tiene un sesgo de volumen que depende de la orientación): **declarar**,
+  y **medirlo antes sobre las poses perturbadas del muestreador**, que son oblicuas casi siempre. El
+  7.27 % del caso malo corresponde a un eje alineado con la rejilla y **puede ser raro en la práctica**.
+  Ninguna cifra entra al documento antes de esa medición.
+
+### 5. Orden de trabajo: la cadena completa ANTES que Peters
+
+1. **Ejecutar la cadena completa sobre una pelvis limpia de validación.** Nunca se ha hecho. Es el
+   único experimento que puede invalidar el Objetivo 3 entero, y es barato. Se corre con **los dos
+   checkpoints candidatos**, pareado, para que sirva también al punto 1.
+2. **Sonda de viabilidad de Peters, no la implementación completa.** Su protocolo es **bidimensional y
+   de una sola fila de detector**, y el tornillo de esta tesis mide 138 mm en el eje axial. Si esa
+   extensión resulta inviable, **el contraste primario se queda sin brazo** y D4 hay que replantearlo.
+   Eso se descubre con un corte, no con tres semanas de ingeniería.
+3. Recién después: Peters completo, `Delta`, congelar `diseno_A.md`, corrida final.
+
+**Por qué no empezar por Peters:** es lo más caro en tiempo, es ingeniería y no investigación, y **su
+valor depende por completo de que el sintetizador produzca algo usable**. Si la cadena falla sobre una
+pelvis limpia, el brazo de comparación no tiene con qué compararse.
+
+### 6. Lo que esta entrada NO decide
+
+El criterio del punto 1 fija **qué se mide y contra qué**. Los detalles de la comparación —ancho de
+las cáscaras del perfil radial, número de cortes, cómo se resume la distancia entre distribuciones—
+se fijan **sobre validación** antes de medir, igual que se hizo con los parámetros de las ROIs en la
+entrada `2026-10-05 (4)`. Hasta entonces, **ningún checkpoint está elegido**.
+
+## 2026-10-07 — Lectura de HU del Objetivo 3: `regla_suave` (v2) con `delta = 0.05` (#152)
+
+> Escrita por el asistente con autorizacion explicita de la autora en el chat del 2026-10-07, que
+> acepto el texto propuesto. Excepcion puntual a la regla 3 de `CLAUDE.md`.
+
+El Objetivo 3 lee los HU con la `regla_suave` (v2): mezcla suave con LW como ancla, `delta = 0.05`,
+fijado en `a16` sobre validación (5 pacientes, 2 checkpoints) con un criterio registrado antes del
+resultado (#152, adendas 4 y 5). La `regla` v1 sigue siendo la del Objetivo 1, cuyas cifras y texto
+no cambian. Con `delta = EPS`, la v2 es idéntica a la v1.
+
+## 2026-10-07 (2) — Definición común de los estadísticos del criterio de selección de checkpoint (#150)
+
+> Escrita por el asistente con autorización explícita de la autora en el chat del 2026-10-07, que
+> aprobó la propuesta. Excepción puntual a la regla 3 de `CLAUDE.md`.
+
+Detalla la decisión `2026-10-05 (6)`, punto 6 ("lo que esta entrada NO decide").
+
+- **Perfil radial:** distancia 2D en el plano del corte, cáscaras de 0.5 mm de 0 a 12 mm, anillo
+  completo. En cada cáscara, la **mediana y el p95** de HU, expresados como **elevación** respecto a la
+  mediana del anillo de 12–15 mm del mismo paciente. Agregación por corte -> por paciente -> entre
+  pacientes.
+- **Histograma dentro de `M`:** p50, p75 y p95 de HU sobre los vóxeles > 2500 HU, por paciente. La
+  fracción sintética > 2500 se reporta como **control**, no se compara con lo real (cuya máscara se
+  define con ese umbral, `a1b_parches_componente.py:100`).
+- **Referencia real:** los 3 pacientes de validación con implante; se excluyen los 2 con objeto
+  incidental (#147).
+- **Lectura sintética:** `regla_suave` con `delta = 0.05` (entrada 2026-10-07).
+- **Regla de decisión:** gana el checkpoint con más cáscaras dentro de la envolvente real (mínimo a
+  máximo de los 3 pacientes) en las dos curvas; desempata la distancia a la mediana real en p50 y p95
+  dentro de `M`; un empate persistente lo decide la autora.
+- **Alcance:** con n = 3 el cotejo **descarta**, no prueba.
+- **Condición previa, PENDIENTE:** verificar el tipo de implante de los 3 pacientes de referencia con
+  el agente `clasificador-metal` (propuesta preliminar) antes de cotejar. Si no son tornillos, el
+  cotejo se revisa.

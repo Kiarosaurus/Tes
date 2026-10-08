@@ -10691,3 +10691,470 @@ sobre la misma curva y la unica variable es **cuanto se entreno**.
    afirmacion de reproducibilidad. Coste: ~3 h 10 de GPU con los 30 000 pasos decididos.
 2. **Corregir los tres documentos** donde la frase ya esta escrita.
 - **Tipo:** SUPUESTO + RIESGO DE AFIRMACION. **No aplicado.**
+
+### 149 — LA CADENA COMPLETA SE EJECUTO POR PRIMERA VEZ (cierra la parte ejecutable de #139), y el orden de los checkpoints SE INVIERTE respecto de la reconstruccion — ABIERTA (resultado preliminar, 2 cortes)
+
+- **Origen:** `experiments/objetivo3/a15_cadena_completa.py`, nuevo el 2026-10-05. Encadena por primera
+  vez **pelvis limpia -> pose del muestreador -> rasterizado de `M` -> `B_delta` -> generacion ->
+  composicion**. Ninguna pieza es nueva: se importan `a11.rasteriza`, `a1b.ventana_coords`,
+  `common.ventanas`, `common.region` y `difusion.muestrea_ddim`, de modo que la cadena usa **las
+  mismas convenciones que el entrenamiento**.
+- **Caso:** `dataset6_CLINIC_0101_data`, paciente de **validacion sin metal**, corredor de 10.6 mm,
+  tornillo parametrico de 4.91 mm sobre el eje del corredor medido.
+
+#### 1. La cadena FUNCIONA. Los tres controles pasan
+
+| Control | Resultado |
+|---|---|
+| receptor limpio: voxeles del original en `G` sobre 2500 HU | **0** |
+| lo generado es cero exacto fuera de `G` | **0.000e+00** |
+| composicion identica fuera de `G` | **PASA** |
+
+`M` = 4 788 voxeles, `G` = 173 182, diametro medido sobre la mascara 5.12 mm frente a 4.91 nominal.
+El tornillo abarca **25 cortes axiales**, coherente con un tornillo transiliaco-transsacro: corre casi
+en el plano, asi que su extension axial es la del diametro mas la inclinacion (~20 mm), no su longitud.
+
+#### 2. EL DESPLAZAMIENTO DE DOMINIO ES SEVERO, y era lo que habia que medir
+
+HU **dentro de la mascara del tornillo**, que es donde deberia haber metal (miles de HU):
+
+| | `run01` paso 140 000 | `mejor.pt` paso 37 500 |
+|---|---|---|
+| HU mediano dentro de `M` | **471** | **472** |
+| HU p95 dentro de `M` | 2 739 | 3 678 |
+| **fraccion de `M` sobre 2500 HU** | **0.105** | **0.316** |
+
+**Un HU mediano de ~471 dentro del tornillo no es metal: es densidad de hueso.** En la tarea de
+reconstruccion, sobre implantes reales, `run01` reproducia el **95 %** del metal. Aqui, sobre una
+pelvis limpia y con una mascara de cilindro liso, produce el **10.5 %**.
+
+Las dos causas estaban registradas y **ninguna estaba medida**: el modelo aprendio apariencia en
+pacientes que **ya tenian** streaking, y con mascaras de implantes **reales**, irregulares y recortadas
+por umbral; aqui recibe una pelvis **limpia** y una mascara **parametrica lisa**.
+
+#### 3. EL ORDEN DE LOS CHECKPOINTS SE INVIERTE
+
+| Tarea | Gana |
+|---|---|
+| **reconstruir** un implante real (#145, 5 de 5 pacientes) | **`run01` paso 140 000** |
+| **sintetizar** sobre pelvis limpia (esta entrada) | **`mejor.pt` paso 37 500**, 0.316 frente a 0.105 |
+
+**Es exactamente la hipotesis que motivo la correccion del criterio de seleccion** en
+`01-decisiones.md` 2026-10-05 (6): la ventaja de `run01` venia de **memorizar** la apariencia de
+implantes parecidos a los de entrenamiento, y **no se traslada** al caso de uso de la tesis.
+
+**Si se hubiera adoptado la primera version de esa recomendacion** —elegir por la fraccion de metal
+reproducida en reconstruccion— **se habria elegido el checkpoint peor para sintetizar**. La correccion
+evito ese error, y ahora hay medicion que lo respalda.
+
+#### 4. Lo que NO se puede concluir todavia
+
+**Son 2 cortes de 1 paciente.** La corrida completa de los 25 cortes esta en marcha. Y aunque
+confirme el orden, sigue siendo **un paciente y una pose**. Antes de decidir el checkpoint hace falta
+repetirlo sobre mas pacientes limpios de validacion y, segun la decision (6), **cotejar el perfil
+radial y el histograma contra implantes reales**, no solo mirar la fraccion sobre 2500 HU.
+
+**Y hay una lectura alternativa que no se puede descartar:** que **ningun** checkpoint sirva para
+sintesis, y que la diferencia entre 10 % y 32 % sea la diferencia entre dos resultados igualmente
+malos. Un 31.6 % de la mascara con HU de metal sigue estando lejos de un implante.
+
+#### Pendiente de la autora (regla 14). Esto NO se aplico
+
+1. **Decidir si el desplazamiento de dominio se ataca o se declara.** Opciones conocidas, ninguna
+   gratis: entrenar con mascaras suavizadas o parametricas (reabre el conjunto de entrenamiento),
+   anadir un brazo de sensibilidad con contexto recortado (#96 ya lo contempla), o declararlo como
+   limitacion y reportar la cifra.
+2. **Repetir sobre los otros pacientes limpios de validacion** antes de cualquier conclusion.
+3. **Esta entrada cierra la parte ejecutable de #139**: la cadena ya no es un hueco. Lo que queda
+   abierto es su **calidad**, que es otra cosa.
+- **Tipo:** SUPUESTO + RIESGO. **No aplicado.**
+
+#### CORRECCION a #149 — 2026-10-05: las fracciones 10.5 % y 31.6 % salen de **19 voxeles**. No sostienen la comparacion que el asistente hizo con ellas
+
+Al parar la corrida se leyo el CSV de la prueba de humo y aparecio la columna `n_M`:
+
+| etiqueta | `n_M` | frac sobre 2500 HU |
+|---|---|---|
+| `run01_140k` | **19** | 0.1053 |
+| `mejor_37k` | **19** | 0.3158 |
+
+**`n_M = 19`**: la prueba genero **2 cortes**, y en esos dos cortes la mascara del tornillo tiene
+**19 voxeles**. Asi que el 10.5 % son **2 voxeles** y el 31.6 % son **6**. La diferencia entre los dos
+checkpoints es **de cuatro voxeles**.
+
+##### Lo que hay que retirar de #149
+
+- **La tabla de la seccion 3 y la afirmacion de que "el orden de los checkpoints se invierte".** Con
+  19 voxeles no se sostiene ninguna comparacion. El asistente la presento como un hallazgo y
+  **la escribio tambien en el chat con la autora**.
+- **La frase de que la correccion del criterio de seleccion "evito ese error" con medicion que lo
+  respalda.** La hipotesis sigue siendo razonable y la correccion sigue siendo correcta por su
+  argumento, pero **la medicion que se invoco no la respalda**.
+
+##### Lo que SI se sostiene de #149
+
+- **La cadena se ejecuto y los tres controles pasan.** Eso no depende del tamano de la muestra: el
+  receptor esta limpio, lo generado es cero exacto fuera de `G` y la composicion es identica fuera de
+  `G`. **La parte ejecutable de #139 sigue cerrada.**
+- **El HU mediano dentro de `M` es ~471 en los dos checkpoints**, que es densidad de hueso y no de
+  metal. La mediana sobre 19 voxeles es debil, pero **los dos coinciden** y el valor esta a un orden de
+  magnitud del metal real: como senal de que hay un problema, vale; como cifra citable, no.
+- La geometria: 25 cortes con `M`, 4 788 voxeles en el volumen completo, diametro medido 5.12 mm.
+
+##### Por que paso, y como se evita
+
+La fraccion se calcula **solo sobre los cortes generados** (`sel` restringe `M` a `ks`). Con
+`--cortes 2` eso deja 19 voxeles, y el script **no avisa** de que la muestra es insuficiente. Dos
+arreglos, ninguno hecho:
+
+1. **`a15` deberia negarse a emitir estadisticos con `n_M` por debajo de un minimo declarado**, igual
+   que `a10` y `a12` exigen 20 voxeles por anillo.
+2. **La corrida completa de 25 cortes no llego a escribir nada**: el script no guarda por corte, asi
+   que al pararlo se perdio lo avanzado. **No es reanudable**, a diferencia de `a8`.
+
+**Pendiente de la autora (regla 14):** nada que decidir aqui; es deuda tecnica del script y una
+correccion de registro. **No se aplico.**
+
+#### Segunda correccion a #149 (2026-10-05, corrida completa de `a15`, PARCIAL: solo `run01_140k`)
+
+**Retira el bullet "el HU mediano dentro de `M` es ~471 en los dos checkpoints" de "Lo que SI se
+sostiene".** La corrida completa sobre `dataset6_CLINIC_0101_data` (25 de 25 cortes con `M`, 4 788
+voxeles en el volumen; el `n_M` exacto lo confirmara `..._resumen.csv` al terminar) da, para
+`run01_140k`:
+
+| | prueba de humo (2 cortes, `n_M = 19`) | corrida completa (25 cortes) |
+|---|---|---|
+| HU p05 dentro de `M` | 468 | **2384** |
+| HU p50 dentro de `M` | 471 | **3409** |
+| HU p95 dentro de `M` | 2739 | **4853** |
+| fraccion sobre 2500 HU | 0.105 | **0.938** |
+
+Fuente: `experiments/objetivo3/outputs/a15/a15_0101.log`, linea `HU dentro de M: p05 2384 | p50 3409
+| p95 4853 | fraccion sobre 2500 HU: 0.938`. La prueba de humo se archivo en `outputs/a15/humo_2cortes/`.
+
+**Lectura:** el ~471 no era una propiedad del checkpoint sino de los 2 cortes que tocaron (probablemente
+los extremos del tornillo, donde `M` es una seccion parcial: hipotesis NO verificada). Con la muestra
+completa, `run01_140k` **si** genera densidad de metal dentro de `M`. Es el mismo error de muestra chica
+que ya registro la primera correccion, ahora en la cifra que esa correccion habia dejado en pie.
+
+**Lo que NO se puede decir todavia:** nada sobre `mejor_37k` ni sobre el orden entre checkpoints; su
+generacion esta en curso. Tampoco que 3409 HU sea "correcto": el criterio de la decision (6) es el
+cotejo contra el perfil radial y el histograma de implantes reales (`a12`), que no se ha hecho.
+
+**Afecta:** `docs/ESTADO.md` (bloque de traspaso, "Lo que si se sostiene") repite el ~471; se corrige
+ahi. No se ha propagado a `overleaf/` ni a `tesis/main.tex` (verificado con grep).
+
+**Pendiente de la autora (regla 14):** nada que decidir; correccion de registro. Estado de #149 sigue
+ABIERTA.
+
+### 150 — CADENA COMPLETA SOBRE `0101` (25 cortes, los dos checkpoints) y EL COTEJO DE LA DECISION (6) NO ES CALCULABLE CON LO QUE HAY: el perfil de `a15` y el de `a12` miden cosas distintas — ABIERTA (toca el criterio de seleccion de checkpoint; supuesto sin documentar)
+
+- **Origen:** `a15_cadena_completa.py --caso dataset6_CLINIC_0101_data --cortes 0`, 2026-10-05,
+  ~70 min de CPU (el estimado del script, 43 min, se quedo corto). Salidas en
+  `experiments/objetivo3/outputs/a15/`. Codigo de salida 0: **los controles 1, 2 y 3 pasan** en los
+  50 cortes generados (2 y 3 abortan si fallan).
+
+#### La medicion (un paciente, un tornillo, `n_M = 4 788` voxeles en los dos checkpoints)
+
+Fuente: `a15_dataset6_CLINIC_0101_data_resumen.csv`.
+
+| HU dentro de `M` | `run01_140k` | `mejor_37k` |
+|---|---|---|
+| p05 | 2384 | **235** |
+| p25 | 2978 | **472** |
+| p50 | 3409 | 3014 |
+| p95 | 4853 | 4602 |
+| fraccion > 2500 HU | 0.938 | **0.676** |
+
+Perfil radial (cascaras de 1 mm desde `M`, dentro de `G`), mediana de HU, fuente `..._perfil.csv`:
+0-1 mm: `run01_140k` 1644, `mejor_37k` 873. A partir de 2 mm los dos perfiles difieren en menos de
+~25 HU en la mediana (p.ej. 3-4 mm: 62.5 frente a 62.7).
+
+**Lo que se sostiene:** con el mismo tornillo y la misma semilla, `mejor_37k` deja **al menos un cuarto
+de `M` en densidad de hueso** (p25 = 472 HU), y `run01_140k` no (p05 = 2384). Es la misma direccion que
+#145 midio con `a8` sobre otro paciente (`0011`), ahora en la cadena completa con pose sintetica.
+
+**Lo que NO se sostiene todavia:**
+- Nada generalizable: **un paciente**, y los 4 788 voxeles **no son independientes** (un solo solido,
+  una sola semilla). La unidad es el paciente (decision (3)); `n = 1`. `0102` en curso.
+- **Que `run01_140k` sea "mejor"**: el criterio de (6) es el parecido con implantes reales, no tener
+  mas HU. Ese cotejo no se ha hecho, y por lo de abajo no se puede hacer tal como esta.
+
+#### El problema: los dos perfiles no son comparables
+
+`a12_perfil_radial_val.csv` (la referencia real) y el perfil de `a15` difieren en definicion:
+
+| | `a12` (real) | `a15` (sintetico) |
+|---|---|---|
+| distancia a `M` | **2D**, en el plano del corte | **3D** (`distance_transform_edt` sobre el volumen) |
+| region del anillo | anillo completo, sin restringir | interseccion con `G` (por su tamano, 173 182 voxeles, parece ser casi toda la banda de 12 mm: NO verificado) |
+| ancho de cascara | 0.5 mm (`--paso-mm 0.5`) | 1.0 mm |
+| agregacion | mediana por parche -> por paciente -> entre pacientes | todos los voxeles juntos, un paciente |
+| pacientes | 5 de validacion, **incluidos los 2 con objeto incidental** (#147) | 1 |
+| histograma dentro de `M` | **no lo calcula** | si |
+
+Consecuencia visible: lejos del metal, `a12` baja a ~ -500 HU y `a15` se queda en ~13 HU. **La causa
+no esta verificada**: puede ser la anatomia distinta alrededor de implantes reales (placas, objetos
+incidentales cerca de piel) frente a un tornillo dentro del corredor, o la diferencia 2D/3D. Mientras
+no se separe, comparar esas curvas mezcla diferencia de ROI con diferencia de artefacto. Y para el histograma dentro de `M` **no existe hoy referencia real** en `a12`
+(el 4 831 HU de #145 es otra medida: dentro del metal real de un paciente, con `a8`).
+
+**Supuesto que falta (regla 8):** la decision (6) dice "perfil radial e histograma dentro de `M`
+contra implantes reales" pero no fija **una definicion comun** de los dos estadisticos (2D/3D, region,
+ancho, agregacion, que pacientes cuentan como "implante real"). Sin eso, cualquier eleccion la hace el
+script por defecto.
+
+**Pendiente de la autora (regla 14):** decidir la definicion comun; texto propuesto en el chat. **No se
+aplico nada:** no se modifico `a12` ni `a15`.
+
+### 151 — `a15` PASA A GPU EN KHIPU: con la misma semilla CPU y GPU generan ruido distinto, asi que `0101` se REPITE en GPU y la corrida CPU queda solo como control — ABIERTA (comparabilidad entre pacientes del cotejo de la decision (6))
+
+- **Origen:** `0102` murio en la laptop por memoria baja (2026-10-05); la autora pidio correr en Khipu
+  (2026-10-06). `a15` era solo CPU; se le anadio `--dispositivo` (por omision `cpu`, el comportamiento
+  previo no cambia) y `experiments/objetivo3/a15_cadena.sbatch`, que corre `0101` y `0102` en `cuda`.
+- **Por que importa:** `muestrea_ddim` crea `torch.Generator(device=...)`; el generador de CUDA no
+  reproduce la secuencia del de CPU. **Mismas semillas, distintas muestras.** Si un cotejo mezclara
+  `0101` en CPU con `0102` en GPU, parte de la diferencia entre pacientes seria del dispositivo.
+- **Regla operativa:** un solo dispositivo por cotejo. Salidas GPU en `$DATA/a15_gpu/` ->
+  `outputs/a15_gpu/`; las CPU siguen en `outputs/a15/`. **Las cifras de #150 son CPU.**
+- **Lo que se gana:** `0101` CPU frente a `0101` GPU es una comparacion de **dos semillas efectivas**
+  sobre el mismo tornillo; dice algo de la variabilidad entre muestras (insumo de `Delta`, D4), aunque
+  con `n = 1` paciente no la estima.
+- **Pendiente de la autora (regla 14):** confirmar que el cotejo se hace con las corridas GPU. **No se
+  aplico nada** a `00-tesis.md` ni a `main.tex`.
+
+#### Adenda a #150 (2026-10-06): corrida GPU en Khipu, job 54619 — PRELIMINAR, fuente: log
+
+Fuente: `~/metalsynth/a15cad_54619.log` (Khipu), pegado por la autora; **los CSV aun no estan en
+local y el `n_M` no esta verificado** (el log no lo imprime). Job `COMPLETED`, rc=0, **3 min 58 s**
+para los dos pacientes en A6000 (frente a ~70 min de CPU para `0101` solo). CONTROL 1 PASA en ambos.
+
+| HU dentro de `M` | `0101` CPU (#150) | `0101` GPU | `0102` GPU |
+|---|---|---|---|
+| `run01_140k` p05 / p50 / frac>2500 | 2384 / 3409 / 0.938 | 472 / 3360 / 0.911 | 2629 / 3179 / 0.973 |
+| `mejor_37k` p05 / p50 / frac>2500 | 235 / 3014 / 0.676 | 234 / 2642 / 0.526 | 234 / 2858 / 0.642 |
+
+**Lo que sugiere (sin cerrar):**
+- En las tres corridas `mejor_37k` deja menos de `M` sobre 2500 HU que `run01_140k`, y su p05 cae a
+  ~234 HU en las tres. La direccion de #145 se repite en un segundo paciente.
+- **La variabilidad entre semillas efectivas no es despreciable.** `0101` CPU frente a GPU es el mismo
+  tornillo con otro ruido (#151): la fraccion de `mejor_37k` pasa de 0.676 a 0.526 y el p05 de
+  `run01_140k` de 2384 a 472. Cualquier diferencia entre checkpoints hay que leerla contra ese
+  margen, que es el insumo de `Delta` (D4) y **no esta estimado** con dos muestras.
+- **Coste:** con ~2 min por paciente en GPU, repetir con varias semillas por paciente es barato. Eso
+  cambia lo que es factible para estimar `Delta`; la decision de hacerlo es de la autora.
+
+**Lo que NO se sostiene:** ninguna eleccion de checkpoint (el cotejo de la decision (6) sigue
+bloqueado por la definicion comun, arriba), ni cifra citable hasta leer los CSV con su `n_M`.
+
+### 152 — EL "HUESO DENTRO DE `M`" ES UN EFECTO DE LA DECODIFICACION MULTI-VENTANA: los voxeles bajos de `M` se apilan exactamente en los techos de SW (236 HU) y MW (472 HU) — ABIERTA (toca #145, #149, #150, la metrica `frac_sobre_2500` y la `regla` del Objetivo 1)
+
+- **Origen:** lectura de los CSV del job 54619 (GPU, `outputs/a15_gpu/`). Valores casi identicos
+  (~234 y ~471 HU) se repetian como percentiles en pacientes, semillas y dispositivos distintos.
+- **Mecanismo (verificado en el codigo):** `regla` (`e6b_vae_sd15.py:111`) decodifica con el canal
+  mas estrecho cuyo `u` este en `[EPS, 1-EPS]`, `EPS = 0.01`. Con SW = (-160, 240) y MW = (-320, 480)
+  (`e6c_techo_lw.py:42-43`), un `u` justo por debajo de 0.99 da **236 HU** (SW) o **472 HU** (MW),
+  aunque LW diga metal. Un canal "casi saturado" gana sobre LW.
+- **Medicion (histograma de HU dentro de `M` en los `.nii.gz` sinteticos GPU):**
+
+| | `n_M` | en [200, 236.5] (techo SW) | en [440, 472.5] (techo MW) | > 2500 | resto |
+|---|---|---|---|---|---|
+| `0101` `run01_140k` | 4788 | 0.000 | 0.069 | 0.911 | 0.020 |
+| `0101` `mejor_37k` | 4788 | **0.359** | 0.078 | 0.526 | 0.037 |
+| `0102` `run01_140k` | 4657 | 0.000 | 0.018 | 0.973 | 0.008 |
+| `0102` `mejor_37k` | 4657 | **0.222** | 0.083 | 0.642 | 0.052 |
+
+  En `mejor_37k` el bin de 8 HU mas poblado por debajo de 600 es **232-240** (1669 y 1001 voxeles);
+  entre los techos y el metal casi no hay nada (`resto` <= 5 %). La distribucion es trimodal por
+  construccion del decodificador, no un continuo de densidades.
+
+#### Lo que hay que retirar o requalificar
+
+- **"Densidad de hueso, no de metal"** (#149, ESTADO): esos valores son techos de ventana. Tambien el
+  ~471 de la prueba de humo era el techo de MW.
+- **#145 "`mejor.pt` genera la mitad del metal"** y la fraccion > 2500 de #150: miden **modelo +
+  `regla`**, no solo el modelo. La diferencia entre checkpoints puede estar en cuantos voxeles dejan
+  SW/MW *casi* saturados, no en si generan metal en LW.
+
+#### Lo que NO se sabe todavia
+
+- **Que dice LW en esos voxeles.** Los `.nii.gz` guardan HU ya decodificado; los `u` crudos no se
+  guardaron. Si LW marca metal, el modelo genero metal y la `regla` lo borro; si LW tambien es bajo, el
+  modelo no lo genero. **Es la verificacion que decide** y requiere regenerar guardando `u` (en GPU,
+  ~2 min por paciente).
+- Si pasa igual en datos reales: en el Objetivo 1 la `regla` se valido en ida y vuelta por el VAE,
+  donde un canal saturado suele quedar en 1.0 y no en 0.98. La difusion puede dejar mas valores en esa
+  franja.
+
+**Pendiente de la autora (regla 14):** autorizar la verificacion de LW (cambio en `a15` para guardar
+`u`, regenerar). Cualquier cambio de `EPS` o de la `regla` toca un componente congelado del Objetivo 1
+y es decision suya. **No se aplico nada.**
+
+#### Adenda a #152 (2026-10-07): QUE MARCA LW en los voxeles de techo — respondido para `0101` (CPU)
+
+- **Origen:** `a15` con las marcas crudas (`--sin-nifti`, CPU, laptop), `0101`, 25 cortes, los dos
+  checkpoints. Salidas: `outputs/a15_marcas/` (`_marcas.npz`, `_resumen.csv`), log
+  `outputs/a15_marcas_0101.log`. **Reproduce bit a bit el resumen CPU de #150** (0.9382 y 0.6761):
+  la corrida CPU es determinista y las marcas corresponden a las mismas muestras.
+
+| `0101`, CPU, `n_M = 4788` | `run01_140k` | `mejor_37k` |
+|---|---|---|
+| voxeles en techo SW | 0 | 773 (0.161) |
+| ... de ellos con LW > 2500 HU | — | **0.957** (LW p50 3219 HU) |
+| voxeles en techo MW | 169 (0.035) | 617 (0.129) |
+| ... de ellos con LW > 2500 HU | **0.959** (LW p50 3091 HU) | **0.951** (LW p50 3108 HU) |
+| `frac_sobre_2500` con la `regla` | 0.938 | 0.676 |
+| `frac_sobre_2500` con **LW sola** | **0.972** | **0.953** |
+
+Fuente: lineas `techo SW: ...`, `techo MW: ...` y `LW sola en toda M: ...` del log. En los voxeles de
+techo, el canal estrecho elegido queda justo bajo el umbral (`u_MW` p50 0.989, `u_SW` p50 0.989).
+
+**Lectura:** en ~95 % de los voxeles de techo **LW marca metal**: el modelo genero metal y la `regla`
+lo sustituyo por el techo de un canal casi saturado. La diferencia entre checkpoints en
+`frac_sobre_2500` pasa de **26 puntos con la `regla`** a **2 puntos con LW sola**. La mayor parte de
+"`mejor.pt` genera la mitad del metal" (#145) es **del decodificador, no del modelo**.
+
+**Lo que NO se sostiene todavia:** un paciente, una semilla, CPU; los voxeles no son independientes.
+`0102` y las corridas GPU no tienen marcas. "LW sola" es un diagnostico, **no una propuesta de
+decodificador**: cambiar `regla` o `EPS` toca el Objetivo 1 congelado y es decision de la autora.
+Tampoco se sabe si el mismo efecto ocurre en los voxeles **fuera** de `M` (en `B_delta`, donde el
+artefacto real vive en el rango de MW y SW).
+
+**Memoria (laptop, 12 GB):** pico de python 3.77 GB al cerrar el primer checkpoint; **minimo de RAM
+libre 327 MB** a las 00:04, con python en 1.2 GB (otro proceso del sistema). Paso cerca del corte.
+
+#### Adenda 2 a #152 (2026-10-07): propuesta de `regla` v2 — SIN DECIDIR
+
+La autora quiere cambiar la `regla`. Propuesta del asistente (texto completo en el chat): **LW como
+ancla**; MW/SW solo si no saturan **y** `|hu_canal - hu_lw| <= tau_canal`. Se descarta bajar `EPS`
+(traslada el problema y sacrifica SW en 220-240 HU). Lo que abre:
+- **`tau_canal` NO esta medido**: depende de la imprecision de LW por rango, a sacar de datos del
+  Objetivo 1. Hasta medirlo, cualquier valor seria inventado.
+- **Toca la redaccion del Objetivo 1** si P1 se reevalua con la v2 (propuesta: conservar v1 como
+  resultado de O1 y reportar ambas).
+- **Riesgo de circularidad:** la v2 no puede elegirse por el resultado de `a15`; solo por identidad
+  exacta e ida y vuelta sobre CT reales.
+**Pendiente de la autora (regla 14):** aprobar o no; texto de decision propuesto en el chat. No se
+aplico nada.
+
+#### Adenda 3 a #152 (2026-10-07): `regla_suave` (v2) IMPLEMENTADA, `delta` SIN FIJAR
+
+- La autora eligio la **mezcla suave** (no la de tolerancia `tau`). Implementada en
+  `src/common/ventanas.py` (`peso_borde`, `regla_suave`); `decodifica_bloque(..., delta=None)` sigue
+  aplicando la v1 por omision. `a15` gano `--delta`. **`e6b_vae_sd15.py` (Objetivo 1) no se toco.**
+- **No modifica lo publicado del Objetivo 1:** sus cifras salen de `e6b_vae_sd15.regla` via
+  `p1_decodificador_sd15.py:217`, y su descripcion ("canal mas estrecho no saturado",
+  `capitulo3.tex:62`, `main.tex:77`) sigue siendo exacta para O1. **Si cambia:** el Objetivo 3 debera
+  declarar que lee con la v2 (redaccion pendiente, decision de la autora).
+- **Controles:** identidad exacta pasa para `delta` en {0.01, 0.02, 0.05, 0.10, 0.20}, peor error
+  1.27e-11 HU, igual que la v1; con `delta = EPS` la v2 es identica a la v1 (max |dif| = 0.0 sobre
+  200 000 `u` aleatorios). La v1 es un caso particular de la v2.
+- **Abierto:** el valor de `delta`. Fija la zona de confianza plena de cada canal estrecho:
+  SW en HU `[-160 + 400*delta, 240 - 400*delta]`, MW en `[-320 + 800*delta, 480 - 800*delta]`. No debe
+  elegirse por el resultado de `a15` (circular).
+
+#### Adenda 4 a #152 (2026-10-07): criterio para fijar `delta`, REGISTRADO ANTES DEL RESULTADO
+
+La autora delego la eleccion de `delta` "tras una eleccion minuciosa". `a16_calibrar_delta.py`:
+- **Datos:** reconstruccion sobre los 5 pacientes de validacion con metal real (serie de mas metal,
+  6 cortes repartidos, como `a13`), los dos checkpoints, semilla 0, 50 pasos. Verdad = `x0`.
+  **`a15` no interviene** (seria circular).
+- **Grilla:** `delta` en {0.01 (= v1), 0.02, 0.03, 0.05, 0.075, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50}.
+- **Criterio:** (1) argmin de la mediana entre pacientes del MAE de HU en `G`; (2) parsimonia: el menor
+  `delta` a <= 1 HU de ese minimo; (3) salvaguarda: MAE fuera del metal real no peor que la v1.
+- **Cota reportada:** `1 - u` del modelo donde la verdad satura (p50/p95/p99).
+- **Ajuste declarado:** la grilla hasta 0.5 y la regla de parsimonia se anadieron tras una prueba de
+  humo con 2 pasos de DDIM (cifras sin valor: no se leyeron), porque el argmin caia en el borde de la
+  grilla original. Ninguna cifra valida se habia visto.
+- **Limite:** reconstruccion puede premiar memoria (decision (6)); `n = 5`; criterio por checkpoint, y
+  si los dos difieren decide la autora.
+
+#### Adenda 5 a #152 (2026-10-07): RESULTADO de `a16` — `delta = 0.05` por el criterio, en los dos checkpoints
+
+Fuente: `experiments/objetivo3/outputs/a16.log`, `a16/a16_delta_val.csv`. 60 generaciones (5 pacientes
+de validacion x 6 cortes x 2 ckpt), CPU, rc=0. Memoria: pico python 860 MB, minimo libre 3.1 GB.
+
+| mediana entre pacientes | `run01_140k` v1 -> v2(0.05) | `mejor_37k` v1 -> v2(0.05) |
+|---|---|---|
+| MAE de HU en `G` | 326.6 -> **295.5** | 376.9 -> **344.1** |
+| MAE fuera del metal real | 247.2 -> **241.8** | 277.2 -> **261.6** |
+| MAE en metal real | 1584.9 -> 1223.0 | 2692.9 -> 1781.0 |
+| metal real recuperado (> 2500 HU) | 0.864 -> **0.956** | 0.534 -> **0.883** |
+
+- **Criterio aplicado tal como se registro (adenda 4):** argmin 0.075 (`run01`) y 0.050 (`mejor`);
+  parsimonia -> **0.050 en los dos**; salvaguarda cumplida (el MAE fuera del metal **mejora**, no
+  empeora). A partir de 0.03-0.05 la curva es plana: ningun `delta` mayor gana mas de 1 HU.
+- **Por paciente:** la v2 con 0.05 mejora el MAE en `G`, el MAE fuera del metal y el metal recuperado en
+  **10 de 10** pares paciente x checkpoint (prueba de signos por checkpoint: 5 de 5, p = 0.031, una
+  cola; `n = 5`).
+- **Por que 0.05 tiene sentido fisico, no solo estadistico:** donde la verdad satura, la distancia al
+  tope `1 - u` que deja el modelo se reparte asi (MW / SW): **[0, 0.01) 0.596 / 0.618** (la v1 ya lee
+  bien), **[0.01, 0.05) 0.118 / 0.128** (la franja que la v1 lee como techo: el caso de `a15`,
+  `u ~ 0.989`), **[0.05, 0.10) 0.019 / 0.015** (valle), y **>= 0.10: 0.267 / 0.239** (errores del modelo
+  en el canal estrecho, que ninguna lectura corrige). **0.05 cae justo en el valle** entre "casi
+  saturado" y "de verdad no saturado".
+- **La brecha entre checkpoints en metal recuperado** baja de 33 a 7 puntos con la v2, en linea con lo
+  medido sobre `a15` (adenda a #152).
+- **Lo que NO dice:** nada sobre que checkpoint elegir (decision (6), bloqueada por #150), y nada sobre
+  el streaking en `B_delta` (el MAE fuera del metal incluye la banda, pero no mide amplitud de rayas).
+  El ~25 % de voxeles saturados con `1 - u >= 0.10` es error del modelo y queda como esta.
+
+**Pendiente de la autora (regla 3):** registrar en `01-decisiones.md` la v2 con `delta = 0.05`; texto
+propuesto en el chat. **No se aplico como omision en ningun script**: `a15 --delta 0.05` lo usa solo
+si se pide.
+
+**Actualizacion (2026-10-07):** la v2 con `delta = 0.05` quedo registrada en `01-decisiones.md` (entrada 2026-10-07), escrita por el asistente con autorizacion explicita de la autora. #152 sigue ABIERTA por el streaking en `B_delta`.
+
+#### Adenda 6 a #152 (2026-10-07): `a15` con la v2 (`delta = 0.05`) sobre `0101` y `0102` — y la v1 RECORTABA las rayas claras en la banda
+
+Fuente: `outputs/a15_v2.log`, `outputs/a15_v2/*_resumen.csv` y `*_perfil.csv`. CPU, laptop, semilla 0,
+`--sin-nifti`, rc=0 en los dos. Memoria: pico python 3.2 GB, minimo libre 2.7 GB.
+
+**Dentro de `M`** (`n_M` 4788 y 4657; techos SW/MW: **0 voxeles** en las 4 corridas):
+
+| frac > 2500 HU | `0101` v1 CPU | `0101` v2 | `0102` v2 |
+|---|---|---|---|
+| `run01_140k` | 0.938 | **0.972** | **0.992** |
+| `mejor_37k` | 0.676 | **0.932** | **0.928** |
+
+Brecha entre checkpoints con la v2: 4.0 puntos (`0101`) y 6.4 (`0102`). (No hay v1 CPU de `0102`.)
+
+**Hallazgo nuevo — la v1 tambien afectaba `B_delta`.** Mismo `0101`, mismas muestras (CPU
+determinista), solo cambia la lectura. Perfil radial:
+- **Medianas: identicas desde 2 mm** en los dos checkpoints. Cambian solo a 0-2 mm (`mejor_37k` 0-1 mm:
+  873 -> 1572 HU).
+- **p95: sube hasta 9 mm.** `mejor_37k`: 4-5 mm 555 -> 624; 5-6 mm **470 -> 547**; 7-8 mm **237 -> 339**;
+  8-9 mm **235 -> 270**. `run01_140k`: 4-5 mm **471 -> 511**.
+- **Varios p95 de la v1 coinciden con los techos** (471.2, 470.4 ~ MW 472; 237.4, 234.7 ~ SW 236): la v1
+  **aplastaba la cola clara del streaking** contra los techos de ventana. Mecanismo coherente con #152;
+  **no verificado voxel a voxel** (las marcas se guardan solo dentro de `M`).
+
+**Por que importa mas que lo de `M`:** el endpoint primario (`streak amplitude`, decision (3), estilo
+Peters) es un estadistico **de colas**: media del 5 % superior menos la del 5 % inferior. Con la v1 la
+cola superior quedaba recortada, asi que **cualquier amplitud de rayas medida con la v1 esta
+subestimada**. Antes de medir el endpoint, la version del decodificador tiene que estar fijada (ya lo
+esta: v2, `01-decisiones.md` 2026-10-07) y declarada.
+
+**Lo que NO se sostiene:** dos pacientes, una semilla; `0102` sin pareja v1 en CPU. Ninguna eleccion
+de checkpoint (sigue bloqueada por #150). Las cifras GPU de #150/#151 son v1 y no se comparan con estas.
+
+**Alcance hacia atras (adenda 6):** todo lo medido sobre salidas del modelo con `decodifica_bloque` antes del 2026-10-07 uso la v1: `a6`, `a8` (#141, #145), `a10` (costura), `a13`, `a15` (#149, #150, #151). Sus cifras de colas y de metal deben leerse como v1. **No afecta** a `a12` (perfil de implantes reales: HU del CT, sin decodificador) ni al Objetivo 1. `a9` decodifica codificacion exacta (identidad): tampoco cambia.
+
+#### Adenda 2 a #150 (2026-10-07): dos problemas nuevos del cotejo, y propuesta revisada — SIN DECIDIR
+
+- **La fraccion > 2500 HU no se puede comparar contra lo real.** En los implantes reales la mascara de
+  metal SE DEFINE como `arr > METAL_HU` (`a1b_parches_componente.py:100`): lo real da 1.0 por
+  construccion. El histograma dentro de `M` tiene que compararse sobre los voxeles > 2500 en ambos
+  lados (p50/p75/p95), y la fraccion sintetica solo como control.
+- **El tipo de implante de los 3 pacientes de referencia no esta verificado.** Si son placas o
+  protesis y no tornillos, su perfil puede no ser comparable con un tornillo. Hay que mirarlo antes del
+  cotejo.
+- **La mediana sola es ciega al streaking** (adenda 6 a #152: lo que cambia en `B_delta` es el p95). El
+  perfil debe incluir el p95. Y el HU crudo esta dominado por la anatomia: comparar **elevacion**
+  respecto al anillo de 12-15 mm del mismo paciente.
+- Texto de decision propuesto en el chat (2026-10-07). **Pendiente de la autora (regla 14).**
+
+**Actualizacion a #150 (2026-10-07):** la definicion comun quedo registrada en `01-decisiones.md`
+2026-10-07 (2), escrita por el asistente con autorizacion explicita de la autora. **Pendiente por
+orden de la autora:** clasificar con `clasificador-metal` el tipo de implante de los 3 pacientes de
+referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.

@@ -2,6 +2,209 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-07 — TRASPASO. Leer este bloque y nada mas para arrancar
+
+> Escrito para una sesion **sin historial** (la autora hace `/clear`). Sesion del 2026-10-06/07:
+> cadena completa en CPU y GPU, descubrimiento del fallo del decodificador (#152), decodificador v2
+> fijado y registrado, criterio de seleccion de checkpoint registrado.
+
+### En una frase
+
+La cadena del Objetivo 3 corre sobre dos pacientes de validacion y, con el **decodificador v2**, los
+dos checkpoints generan metal de forma parecida; **lo siguiente es el cotejo contra implantes reales**
+para elegir checkpoint, y antes hay que **clasificar el tipo de implante** de los 3 pacientes de
+referencia.
+
+### Lo que se decidio (`01-decisiones.md`, ambas escritas por el asistente con autorizacion explicita)
+
+| Entrada | Que fija |
+|---|---|
+| **2026-10-07** | El Obj 3 lee los HU con `regla_suave` (v2), `delta = 0.05`. La `regla` v1 sigue siendo la del Obj 1, **cuyo texto y cifras no cambian** |
+| **2026-10-07 (2)** | Definicion comun del cotejo (#150): perfil 2D, cascaras de 0.5 mm, **mediana y p95 como elevacion** sobre el anillo de 12-15 mm; histograma en `M` sobre voxeles > 2500; referencia = `metal_0011`, `metal_0039`, `metal_0056`; regla por envolvente real |
+
+### Lo que se descubrio (todo en `04-implicancias.md`, ABIERTAS)
+
+- **#152 (la mas importante):** la `regla` v1 convertia en techo de SW (~236 HU) o MW (~472 HU) el
+  metal que el canal ancho si marcaba. La idea de que `mejor.pt` "genera la mitad del metal" (#145) era
+  **casi toda del decodificador**. Peor: la v1 **recortaba la cola clara del streaking en `B_delta`**,
+  asi que toda amplitud de rayas medida con ella saldria subestimada (adenda 6). Lista de resultados
+  anteriores afectados al final de #152.
+- **#150:** el perfil de `a12` y el de `a15` no eran comparables; resuelto con la decision (2). Ademas:
+  la fraccion > 2500 HU **no se compara con lo real** (su mascara se define con ese umbral).
+- **#151:** con la misma semilla, CPU y GPU no dan el mismo ruido: **un solo dispositivo por cotejo**.
+
+### Donde estan los resultados
+
+| Carpeta (`experiments/objetivo3/outputs/`) | Que es | Lectura |
+|---|---|---|
+| `a15_v2/` | **0101 y 0102, CPU, v2 `delta=0.05`** — los que valen hoy | v2 |
+| `a15_marcas/` | 0101 CPU con `u` crudo dentro de `M` (prueba de #152) | v1 |
+| `a15/` | 0101 CPU (#150); `humo_2cortes/` no son resultados | v1 |
+| `a15_gpu/` | 0101 y 0102 GPU, Khipu job 54619 (#151) | v1 |
+| `a16/` | calibracion de `delta` sobre validacion | v1 y v2 |
+
+### Siguiente paso, en orden
+
+1. **Clasificar el tipo de implante de `metal_0011`, `metal_0039`, `metal_0056`** con el agente
+   `clasificador-metal` (propuesta preliminar; ordenado por la autora como PENDIENTE). Si no son
+   tornillos, el cotejo se revisa.
+2. **Ajustar `a12` (real) y el perfil de `a15` (sintetico) a la decision 2026-10-07 (2)** y correr el
+   cotejo con lo de `a15_v2/`. Para el perfil sintetico en 2D con elevacion **no hace falta regenerar**
+   si se escriben los volumenes: hoy `a15_v2` se corrio con `--sin-nifti`, asi que o se recalcula
+   dentro de `a15` o se regenera con `--nifti` (en Khipu, ~4 min).
+3. Despues: sonda de viabilidad de Peters (orden de la decision 2026-10-05 (6)).
+
+### Redaccion: encargo listo
+
+**`redaccion/ENCARGO_2026-10-07.md`** para `/ciclo-redaccion`: A1 declarar el decodificador v2 en el
+cap. 3 (sin tocar el Obj 1), A2 escribir el criterio de seleccion de checkpoint, A3 el GAP del Obj 3
+quedo desfasado (la cadena SI se ejecuto; sigue sin resultado citable). Bloque B = ABIERTAS, no se
+redactan como hecho. `MAPA.md` actualizado.
+
+### Lo tecnico que conviene saber
+
+- **`a15`** gano: `--dispositivo {cpu,cuda}`, `--delta`, `--sin-nifti`, y escribe `_marcas.npz`.
+  **No es reanudable.** `a15_cadena.sbatch` lo corre en Khipu (GPU; ~4 min dos pacientes).
+- **`src/common/ventanas.py`**: `regla_suave`, `peso_borde`; `decodifica_bloque(u, delta=None)` sigue en
+  v1 por omision (reproduce lo ya corrido). **Para el Obj 3, pasar siempre `delta=0.05`.**
+- **`a16_calibrar_delta.py`**: nuevo; eligio el `delta`.
+- **Memoria de la laptop (12 GB):** `a15` con `--sin-nifti` llega a ~3.8 GB de python; una vez quedaron
+  solo 327 MB libres por otro proceso. `0102` con `.nii.gz` murio por memoria el 2026-10-05.
+  Para corridas largas: Khipu, o laptop con `--sin-nifti` y registro de memoria.
+- **Khipu:** la autora corre los comandos ella misma; el asistente se los da. `KHIPU.md` tiene todo.
+
+### Pendientes de la autora
+
+- Commit: hay mucho sin commitear (`01-decisiones.md`, `04-implicancias.md`, `ESTADO.md`, `ventanas.py`,
+  `a15`, `a16`, `a15_cadena.sbatch`, `redaccion/`).
+- Si las corridas GPU de #151 se rehacen con la v2 (hoy son v1).
+- Lo que ya estaba: #55, #62, #130, #126; las 15 decisiones de redaccion de `BITACORA.md` §2; titulo de
+  la seccion 1.5; el 91 % del entrenamiento sin tipo de implante clasificado.
+
+### Advertencia de metodo, otra vez
+
+Esta sesion repitio el patron: el "~471 HU = hueso" de #149 era **el techo de MW** y se habia
+presentado como senal fisica. Lo destapo ver el mismo valor repetirse en pacientes y semillas
+distintos. **Un valor que se repite exacto en condiciones distintas es un artefacto de medicion hasta
+que se demuestre lo contrario.**
+
+## 2026-10-05 (3) — traspaso anterior (superado por el del 2026-10-07)
+
+> Escrito para una sesion **sin historial**. La sesion del 2026-10-05 fue larga: siete entradas nuevas
+> en `04-implicancias.md` (#141 a #149), seis en `01-decisiones.md`, cinco scripts nuevos y dos
+> capitulos corregidos. Esto es lo que hace falta para seguir.
+
+### En una frase
+
+El Objetivo 3 **ya entrena, ya genera y ya ejecuto su cadena completa**, pero **ningun checkpoint esta
+elegido** porque el criterio con que se elegia resulto no medir lo que importa; lo siguiente es correr
+`a15` en serio y cotejar contra implantes reales.
+
+### LO PRIMERO AL ARRANCAR: relanzar la corrida que quedo a medias
+
+La autora pidio **pausar** la corrida de la cadena completa para cerrar el chat. Se mato el proceso.
+
+```
+cd /d/UTEC/CICLOX/PFCII/metalsynth-pelvis
+python -u experiments/objetivo3/a15_cadena_completa.py --caso dataset6_CLINIC_0101_data --cortes 0
+```
+
+**25 cortes x 2 checkpoints, ~43 min de CPU.** Dos avisos:
+
+1. **`a15` NO es reanudable.** No guarda por corte, asi que la corrida interrumpida **no dejo nada**:
+   empieza de cero. (`a8` si es reanudable; `a15` deberia serlo y es deuda tecnica anotada en #149.)
+2. **Lo que hay hoy en `outputs/a15/` es la prueba de humo de 2 cortes**, con `n_M = 19` voxeles. **No
+   son resultados.** Ver la correccion a #149.
+
+### LO SEGUNDO: un error de lectura que quedo corregido y hay que no repetir
+
+El asistente reporto que "el orden de los checkpoints se invierte" entre reconstruir y sintetizar, con
+10.5 % frente a 31.6 %. **Esas fracciones salen de 19 voxeles**: son 2 voxeles frente a 6. La
+afirmacion **se retiro** (correccion a #149) y **tambien se le dijo a la autora en el chat**, asi que
+si ella la menciona, esta retirada.
+
+Lo que **si** se sostiene: la cadena corre y los tres controles pasan. **El "~471 HU dentro de `M`"
+tambien quedo RETIRADO** (segunda correccion a #149): con los 25 cortes, `run01_140k` da p50 = 3409 HU.
+
+### Las seis decisiones que la autora tomo el 2026-10-05 (`01-decisiones.md`)
+
+| Entrada | Que fija |
+|---|---|
+| **(2)** | **30 000 pasos** de entrenamiento, declarado como eleccion sobre validacion. **Aplazada su revision**, ver (6) |
+| **(3)** | Definicion operativa de `streak amplitude`: verdad de terreno = la TC limpia del mismo paciente, lo que ancla el endpoint en **E-A2**; ROIs derivadas de la pose; censura del suelo reportada como cifra; agregacion por paciente; jerarquia TOST / realismo / cordura |
+| **(4)** | Los cuatro parametros de las ROIs, fijados sobre validacion. **La preinscripcion del endpoint primario quedo completa** |
+| **(5)** | El brazo fisico **se reproduce, NO se valida**; y lo verificado en su codigo entra al documento |
+| **(6)** | **El modelo final NO se elige por la perdida de validacion.** Se elige comparando el perfil radial de HU y el histograma dentro de `M` de lo sintetico contra implantes reales. Validacion = **3 pacientes** de CLINIC-metal. **B1 y B2 aplazados.** #142 y #143 se **declaran**, no se rehacen. **Cadena completa ANTES que Peters** |
+
+**La (6) es la que manda sobre el trabajo tecnico.** Y contiene una correccion que la autora acepto:
+la primera version proponia elegir con metricas de **reconstruccion**, y se descarto porque esa tarea
+**premia memorizar** y no se traslada al uso real.
+
+### El orden de trabajo acordado
+
+1. **Correr `a15` completo** sobre `dataset6_CLINIC_0101_data` (comando arriba).
+2. **Repetir sobre los otros pacientes limpios de validacion.** Candidatos verificados: `0101`
+   (corredor 10.6 mm) y `0102` (12.4 mm). **`0019` NO sirve**: su corredor mide 1.6 mm y el tornillo
+   lo perforaria por construccion.
+3. **Cotejar** el perfil radial y el histograma de lo sintetico contra los de implantes **reales**, que
+   calcula `a12_roi_parametros.py`. **Ese cotejo es el criterio de seleccion de checkpoint.**
+4. **Sonda de viabilidad de Peters**, no la implementacion completa: un corte, con el tornillo y la
+   anatomia de esta tesis. Su protocolo es **2D de una sola fila de detector** y el tornillo mide
+   138 mm en el eje: si esa extension es inviable, **el contraste primario se queda sin brazo**.
+5. Peters completo -> `Delta` -> congelar `diseno_A.md` -> corrida final.
+
+### Los cinco scripts nuevos del 2026-10-05
+
+| Script | Que hace | Estado |
+|---|---|---|
+| `a8_muestra_serie.py` | genera una **serie completa** de cortes y escribe HTML navegables, `.nii.gz`, montaje y controles | usado; **reanudable** |
+| `a9_suelo_representacion.py` | mide cuanto recorta el suelo de -1000 HU, **sin modelo** | corrido sobre 23 058 parches |
+| `a10_costura.py` | salto de HU al cruzar el borde de `G`, en 3D y por corte | corrido sobre las dos muestras |
+| `a11_rasterizar_tornillo.py` | **pose -> `M`, `B_delta`, `G`**. Era el eslabon que faltaba | verificado en 3 casos |
+| `a12_roi_parametros.py` | perfil radial del artefacto **real**, y los parametros de las ROIs | **su salida es la referencia del paso 3** |
+| `a13_comparar_ckpt.py` | compara dos checkpoints pareado sobre validacion | corrido, 5 pacientes |
+| `a14_curvas.py` | grafico de las curvas de entrenamiento | `outputs/a7/a14_curvas_run01_run02.png` |
+| `a15_cadena_completa.py` | **la cadena entera**: pelvis limpia -> pose -> `M` -> generacion | **a medio correr; relanzar** |
+
+### Lo que hay que saber de los dos entrenamientos
+
+- `run02` termino: **60 000 pasos en 6 h 20**, minimo de validacion en el paso **37 500**.
+- **`run01` y `run02` NO son corridas independientes** (#148): misma semilla 20260920, mismos datos,
+  tasa de aprendizaje constante. Son **la misma trayectoria medida dos veces**. **No se puede afirmar
+  reproducibilidad**; eso exigiria otra semilla y no se ha corrido.
+- Los dos `curva.csv` estan en local, y el grafico en `outputs/a7/a14_curvas_run01_run02.png`.
+
+### Pendientes de la autora, por urgencia
+
+1. **Nada bloquea el paso 1.** Se puede correr `a15` ya.
+2. **El hueco del contraste de realismo:** la decision (3) lo especifico contra "la amplitud de rayas
+   medida en CLINIC-metal real", y **esa magnitud no es calculable** en pacientes con implante real
+   porque exige una imagen sin metal del mismo paciente. La decision (6) lo resolvio **para la
+   seleccion de checkpoint**, pero **sigue vivo en el criterio de exito D4**.
+3. **#142 y #143 estan decididas pero sin redactar**, y #143 necesita antes medirse sobre poses
+   **perturbadas**, que son oblicuas casi siempre.
+4. **El 91 % del conjunto de entrenamiento no tiene clasificado su tipo de implante** (15 558 parches
+   de 216 componentes sin revisar; de los 25 revisados, solo 6 son tornillos). Sin registrar como
+   implicancia: la autora no lo pidio.
+5. **La validacion esta dominada por un paciente:** `0011` aporta el 60 % de los parches y el 65 % del
+   metal de los tres.
+6. Sigue pendiente: etiquetas de estado de #55, #62 y #130; **#126**; las **15 decisiones de
+   redaccion** de `BITACORA.md` §2; el **titulo de la seccion 1.5**; y la **segunda muestra de `a8`**
+   (`dataset7_CLINIC_metal_0056_data_c001`), que el sistema mato por memoria y nunca se relanzo.
+
+### Estado del repositorio
+
+Hay un commit nuevo del 2026-10-05, `c786b9a` ("obj 3 exps"). **Sin commit quedan**:
+`docs/01-decisiones.md`, `docs/04-implicancias.md` y `experiments/objetivo3/a15_cadena_completa.py`.
+
+### Advertencia de metodo, que esta sesion volvio a confirmar
+
+**Tres veces** en el dia se reporto como hallazgo una cifra que venia de una muestra de la cola o
+demasiado chica: el 23.4 % del suelo (un componente de un paciente), el +196 HU de costura (un corte),
+y el 10.5 % frente a 31.6 % de la cadena (**19 voxeles**). Las tres se corrigieron, pero **ninguna la
+detecto el asistente por su cuenta**: dos las destapo una pregunta de la autora y la tercera aparecio
+al leer el CSV para cerrar. **Ante una cifra nueva, mirar primero cuantos datos la sostienen.**
+
 ## 2026-10-05 (2) — PRIMERA SERIE SINTETICA COMPLETA y #141: el suelo de la representacion borra la inanicion de fotones. Cap. 3 y cap. 1 corregidos en r06
 
 **Ultimo paso completado.** Tres cosas, en este orden.

@@ -15,7 +15,7 @@ por eje, con spacing en mm y dimensiones en vóxeles, en la orientación nativa.
 
 Los archivos locales corresponden a dataset6 y dataset7 de CTPelvic1K. El inventario
 local no equivale a toda la colección publicada. La tabla anterior en
-`experiments/exploration/dataset_summary.csv` incluía carpetas de máscaras que no
+`experiments/obsoletos/exploration-2d/dataset_summary.csv` incluía carpetas de máscaras que no
 deben sumarse a las CT ni asumirse todavía disponibles en este equipo.
 
 ## Resultados medidos al cierre (2026-09-07)

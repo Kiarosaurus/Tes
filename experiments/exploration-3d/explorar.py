@@ -46,7 +46,7 @@ def antecedents(rows: list[dict]) -> None:
     notes = defaultdict(list)
     for filename, fields in [('excluded_clinic_ids.csv', ['estado', 'notas']),
                              ('caracterizacion_metal_d7.csv', ['tipo', 'ortopedico', 'nota'])]:
-        for old in read_csv(ROOT / 'experiments/exploration' / filename):
+        for old in read_csv(ROOT / 'experiments/obsoletos/exploration-2d' / filename):
             text = '; '.join(f'{key}={old[key]}' for key in fields if old.get(key))
             if text:
                 notes[old['file']].append(f'{filename}: {text}')

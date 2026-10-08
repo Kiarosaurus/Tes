@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-08 (5) — `experiments/` ordenado: carpeta `obsoletos/` e indice por carpeta
+
+- **Hecho:** `git mv` a `experiments/obsoletos/` de lo superado que nadie importa (P1-MAISI, `r1_mosaico`, `r1_revision_itksnap_revisor.*`, `r1_landmarks.v*`, `r2_...ANTERIOR.md`, `a2_entrenar.sbatch`, `a6_muestra_minima.py`, y `exploration/` como `exploration-2d/`); inventario con ruta anterior en `obsoletos/README.md` (las citas viejas de `docs/` no se reescribieron). `KHIPU.md` pasa a `experiments/KHIPU.md` (uno solo, con indice por objetivo). Nuevos `EXPERIMENTOS.md` en `objetivo1/`, `objetivo3/`, `exploration-3d/` y mapa `experiments/README.md`. `verificar_coherencia.py` 104/104.
+- **Siguiente:** sin cambio respecto del bloque (4).
+- **Pendientes:** autora revisa la lista de archivados y hace commit.
+
 ## 2026-10-08 (4) — Censo visual de tornillos en los 65 pacientes; cotejo con solo `0039`
 
 - **Hecho:** 4 agentes `clasificador-metal` revisaron los 65 pacientes con material (`experiments/exploration-3d/tornillos_candidatos.md`): 26 con tornillo aislado IS/TS (censo `e8`: 17); en val solo `0039`. Autora eligio opcion 1 de #154 con solo `0039`: `01-decisiones.md` 2026-10-08 (2), `00-tesis.md`, `capitulo3.tex` (compila, 116 pp). Registrada #155 ABIERTA.

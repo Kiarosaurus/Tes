@@ -148,7 +148,6 @@ dataset7_CLINIC_metal_0049_data,dataset7/dataset7_CLINIC_metal_0049_data.nii.gz,
 dataset7_CLINIC_metal_0050_data,dataset7/dataset7_CLINIC_metal_0050_data.nii.gz,dataset7,P149,si,train
 dataset7_CLINIC_metal_0051_data,dataset7/dataset7_CLINIC_metal_0051_data.nii.gz,dataset7,P150,si,train
 dataset7_CLINIC_metal_0052_data,dataset7/dataset7_CLINIC_metal_0052_data.nii.gz,dataset7,P151,si,train
-dataset7_CLINIC_metal_0053_data,dataset7/dataset7_CLINIC_metal_0053_data.nii.gz,dataset7,P153,si,excluido
 dataset7_CLINIC_metal_0054_data,dataset7/dataset7_CLINIC_metal_0054_data.nii.gz,dataset7,P153,si,train
 dataset7_CLINIC_metal_0055_data,dataset7/dataset7_CLINIC_metal_0055_data.nii.gz,dataset7,P154,si,train
 dataset7_CLINIC_metal_0056_data,dataset7/dataset7_CLINIC_metal_0056_data.nii.gz,dataset7,P155,si,val

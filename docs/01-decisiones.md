@@ -2185,3 +2185,15 @@ de revisar los 65 pacientes con material ortopedico (`experiments/exploration-3d
 - **Alcance:** 1 paciente y 2 tornillos. El cotejo sigue descartando, no probando; con n = 1 paciente la
   envolvente es mas estrecha y puede descartar checkpoints que solo difieren de ese paciente.
 - **Condicion previa:** la autora valida en cortes que los 2 elementos de `0039` son tornillos aislados.
+
+## 2026-10-08 (3) — Cotejo de checkpoint: 5 semillas por checkpoint y paciente
+
+Escrito por el asistente por orden explicita de la autora ("usa 5 semillas").
+
+- **5 semillas DDIM** (0-4) por checkpoint (`run01_140k`, `mejor_37k`) y por pelvis limpia de validacion
+  (`0101`, `0102`), todo en GPU (#151), lectura v2. Igual que el punto 4 de la entrada 2026-10-08.
+- **Detalle de implementacion propuesto por el asistente, a confirmar por la autora:** agregacion corte ->
+  semilla -> paciente -> checkpoint por medianas; la regla suma las cascaras dentro de la envolvente en las
+  dos curvas (p50 y p95); solo cuentan las cascaras con valor en lo real y en lo sintetico (con cascaras de
+  0.5 mm y pixel de 0.7-1 mm algunas quedan vacias). Codigo: `src/common/cotejo.py`, `a15 --semillas`,
+  `a17_cotejo.py`.

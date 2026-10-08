@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-08 (6) — `00-tesis`/`main.tex` alineados (#156); cotejo con 5 semillas listo para Khipu
+
+- **Hecho:** `main.tex` (sensibilidad Obj 1 sin 0053, 64 pacientes; 9 pp) y `00-tesis.md` alineados. `01-decisiones.md` 2026-10-08 (3): 5 semillas. Codigo: `src/common/cotejo.py` (perfil 2D 0.5 mm con elevacion, histograma > 2500), `a15 --semillas`, `a15_cotejo.sbatch`, `a17_cotejo.py` (referencia real 0039 + regla). Fila de 0053 retirada de `p1_particion.csv` (el control de particion abortaba).
+- **Siguiente:** autora corre `a15_cotejo.sbatch` en Khipu, trae `$DATA/a15_cotejo` a `experiments/objetivo3/outputs/a15_cotejo/` y corre `a17_cotejo.py`; confirma el detalle de agregacion (01-decisiones 2026-10-08 (3)).
+- **Pendientes:** #155 (2) referencia de realismo; `revision.csv` 0053 -> P153.
+
 ## 2026-10-08 (5) — `experiments/` ordenado: carpeta `obsoletos/` e indice por carpeta
 
 - **Hecho:** `git mv` a `experiments/obsoletos/` de lo superado que nadie importa (P1-MAISI, `r1_mosaico`, `r1_revision_itksnap_revisor.*`, `r1_landmarks.v*`, `r2_...ANTERIOR.md`, `a2_entrenar.sbatch`, `a6_muestra_minima.py`, y `exploration/` como `exploration-2d/`); inventario con ruta anterior en `obsoletos/README.md` (las citas viejas de `docs/` no se reescribieron). `KHIPU.md` pasa a `experiments/KHIPU.md` (uno solo, con indice por objetivo). Nuevos `EXPERIMENTOS.md` en `objetivo1/`, `objetivo3/`, `exploration-3d/` y mapa `experiments/README.md`. `verificar_coherencia.py` 104/104.

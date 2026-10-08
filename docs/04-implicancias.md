@@ -11250,7 +11250,8 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   femoral y un FOV mas alto). Tenian grupos de paciente distintos (P152/P153).
 - **Regla aplicada (sin decision nueva):** `01-decisiones.md` 2026-09-10, adquisiciones distintas del mismo
   paciente: primaria la de menor spacing en plano -> `0054` (0.785 frente a 0.820 mm), que sigue en train; `0053`
-  secundaria, fuera de cohortes. Cambios: `p1_particion.csv` (`0053`: P153, `excluido`), `grupos.csv`
+  secundaria, fuera de cohortes. Cambios: `p1_particion.csv` (fila de `0053` retirada, como `0065`: el
+  control de `leer_particion` aborta si un paciente aparece en dos particiones), `grupos.csv`
   (reproducibilidad), `exclusiones.csv` (fila nueva). `revision.csv` (archivo de la autora) sigue con P152.
 - **Objetivo 1:** el decodificador `afinado` se entreno con train (incluye `0054`) y se evaluo en `0053`: fuga. La
   compuerta preinscrita se ejecuto con 34 y no se reescribe. Sensibilidad sin `0053`
@@ -11262,5 +11263,5 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Objetivo 3:** el sintetizador se entreno con `0054` (train): correcto. Prueba 34 -> **33** (con implante 20 ->
   **19**; sin metal 14). Nada de test se ha medido aun.
 - **Aplicado en `overleaf/secciones/capitulo3.tex`** (ronda `tornillos-r01`).
-- **Pendiente de la autora:** orden para alinear `00-tesis.md` y `tesis/main.tex` (20 de test, 65 pacientes con
-  material); si `revision.csv` se corrige a P153.
+- **Alineados el 2026-10-08** por orden de la autora: `00-tesis.md` y `tesis/main.tex` (sensibilidad del Obj 1,
+  64 pacientes, 19 de prueba con implante). Queda: si `revision.csv` se corrige a P153.

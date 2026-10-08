@@ -47,7 +47,9 @@ coined ones.
 - Objetivo 1: validacion de la representacion multi-ventana (Go/No-Go, MAE < 25 HU en hueso).
   **EJECUTADO el 2026-09-19. Resultado: NO-GO**, y se reporta como resultado (#91, decision
   2026-09-19 pto 1). Mejor de las seis combinaciones preinscritas: **61.72 HU** (IC95 bootstrap
-  [55.12, 68.99]), **34/34 pacientes** por encima del umbral. MAISI se descarto sin correr: recorta
+  [55.12, 68.99]), **34/34 pacientes** por encima del umbral. **Sensibilidad sin `metal_0053`** (otra
+  adquisicion de `metal_0054`, de train; #156): 60.95 HU (IC95 [54.28, 68.19]), 33/33; el veredicto no
+  cambia (`experiments/objetivo1/p1_sin_0053.md`). MAISI se descarto sin correr: recorta
   a [-1000, 1000] HU y ese recorte solo ya da 42.24 HU (#93). El criterio no se movio.
 - Objetivo 2: muestreador de colocacion quirurgicamente restringido, expresado en el
   marco de referencia de `kaiser2014dysmorphism` (reformateo por el eje sacro perpendicular
@@ -132,7 +134,8 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
     - **Endpoint primario `streak amplitude` preinscrito por completo** (2026-10-05 (3) y (4)): verdad de
       terreno = TC limpia del mismo paciente, asi que solo se mide en los **14 de test sin metal**
-      (E-A2); en los 20 con metal se mide **discrepancia**. ROIs = anillos completos de un voxel de
+      (E-A2); en los **19** con metal se mide **discrepancia** (eran 20: `metal_0053` sale por ser otra
+      adquisicion de `metal_0054`, de train; #156; prueba = 33 pacientes). ROIs = anillos completos de un voxel de
       guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
       fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
       (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura**.
@@ -235,7 +238,8 @@ Por tanto:
   CT con implantes que oscurecen la union lumbosacra, que es justo donde estan los tres
   landmarks y donde pega el streaking. **Se cierra midiendo en casa**, no leyendo:
   cuantificar en cuantos volumenes locales con metal se pueden ubicar los tres landmarks.
-  **MEDIDO el 2026-09-11 y escrito en `main.tex`:** de 65 pacientes con material
+  **MEDIDO el 2026-09-11 y escrito en `main.tex`:** de 65 pacientes con material (64 tras #156;
+  `metal_0053` no tenia marco computable, asi que 57/48/29 no cambian)
   ortopedico, marco computable con S1 confirmado por revisor clinico en 49 y sin
   contaminacion en 30. La perdida la explican mas el FOV (7) y la localizacion que el
   artefacto. **El pendiente de los 7 con FOV cortado queda CERRADO el 2026-09-22** (D-O2.2, #119):

@@ -1,462 +1,590 @@
-# Situación actual de MetalSynth-Pelvis
+# Situación actual de MetalSynth-Pelvis, explicada para defenderla
 
-> Corte del estado: 5 de octubre de 2026. Este documento explica el proyecto en lenguaje simple. Distingue entre lo que ya se ejecutó, lo que todavía necesita revisión y lo que solo está planeado. Sus fuentes principales son [`ESTADO.md`](ESTADO.md) y [`04-implicancias.md`](04-implicancias.md).
+> **Corte del estado: 8 de octubre de 2026.** Este documento es una clase, no un registro. Está
+> escrito como lo explicaría un profesor del área a una estudiante de computación que sabe IA pero no
+> imagen médica, para que pueda **exponer y defender** la tesis. Pone el acento en **por qué** se tomó
+> cada decisión y en **qué alternativa había**. Las cifras salen de [`01-decisiones.md`](01-decisiones.md),
+> [`04-implicancias.md`](04-implicancias.md), [`ESTADO.md`](ESTADO.md), [`00-tesis.md`](00-tesis.md) y
+> `tesis/main.tex`. Donde opino como profesor, lo digo: esas partes son juicio, no resultado.
+>
+> Convención: **HECHO** = ejecutado y registrado. **ABIERTO** = medido pero sin decisión, o con muy
+> pocos datos para afirmarlo. **PENDIENTE** = todavía no existe.
 
-## Resumen en pocas palabras
+---
 
-La tesis intenta hacer dos cosas:
+## 0. La tesis en un minuto
 
-1. proponer una posición razonable para un tornillo en una pelvis; y
-2. modificar una tomografía para que parezca que ese tornillo está realmente allí, con las rayas y zonas oscuras que suele producir el metal.
+**El problema.** Las redes que segmentan hueso en tomografías (TC) fallan cerca de los implantes
+metálicos: el metal produce rayas claras y oscuras que tapan los bordes del hueso. Para entrenar redes
+robustas a eso harían falta muchas TC con metal y con anotaciones, y hay pocas.
 
-La primera parte ya tiene una corrida completa. El programa propuso **3,600 posiciones de tornillo en 72 pelvis** y las calificó automáticamente según cuánto saldría el tornillo del hueso. También se hizo una segunda corrida de sensibilidad con **2,450 posiciones en 49 pelvis**.
+**La idea.** Fabricar esos ejemplos: tomar una pelvis **sin** metal, decidir **dónde** iría un tornillo
+de forma quirúrgicamente creíble y **pintar** el tornillo con su artefacto alrededor.
 
-Eso no significa todavía que un médico haya validado las 3,600 posiciones. Significa que el programa funciona y que sus resultados se pueden comparar con una distribución clínica publicada.
+**Lo que la tesis evalúa de verdad.** Evalúa la **coherencia física y quirúrgica** de lo fabricado: si
+las posiciones se parecen a las de la cirugía real y si el artefacto se parece al de la física. **No**
+mide si esos ejemplos mejoran a una red de segmentación. Eso está **fuera de alcance**, decidido y
+justificado (sección 3.1). Es lo primero que tienes que tener claro, porque un jurado lo va a preguntar.
 
-La segunda parte, la que debe crear la apariencia del metal, **cambió mucho en las últimas dos semanas**. Pasó de no tener ninguna imagen a tener dos entrenamientos completos en el clúster y varias muestras sintéticas que se pueden abrir y mirar. Lo que todavía **no** existe es la cadena completa: hoy el modelo *reconstruye* el metal en pacientes que ya lo tenían, pero nunca se ha colocado un tornillo en una pelvis limpia de punta a punta.
+**La frase que resume el estado hoy:**
 
-Y aparecieron tres cosas que no estaban previstas: el entrenamiento **se degrada** si se prolonga, la representación de la imagen **no puede expresar** una parte del artefacto, y el criterio con que se elige el mejor modelo **puede estar midiendo lo que no importa**. Las tres están medidas y registradas; ninguna estaba en el plan.
+> La ruta latente se puso a prueba y no pasó (resultado negativo, y es un resultado). El muestreador de
+> posiciones está implementado, ejecutado y cerrado. El sintetizador de apariencia ya entrena, genera y
+> ya ejecutó la cadena completa sobre dos pacientes de validación, pero **todavía no tiene modelo
+> elegido ni resultado evaluado**.
 
-## Lo que avanzó en las últimas dos semanas (21 de septiembre al 5 de octubre)
+---
 
-Es el tramo con más experimentos de todo el proyecto. Conviene leerlo como tres frentes.
+## 1. Lo mínimo de imagen médica para entender el resto
 
-### Frente 1: el sintetizador pasó de no existir a entrenar dos veces
+No hace falta más que esto para seguir el documento.
 
-**Antes de la tabla, de dónde salen los datos**, porque es fácil confundirlo con otra parte de la tesis:
-
-- **La entrada son tomografías de `dataset7` (CLINIC-metal), o sea pacientes que SÍ tienen un implante metálico real.** Eso es a propósito: el renderizador tiene que aprender cómo se ve el metal y su artefacto, así que necesita ejemplos donde el metal exista. Son **47 pacientes** para entrenar y **3 pacientes** para vigilar el entrenamiento, **todos con implante**.
-- **Nada de esto tiene que ver con el cribado de fracturas.** Ese cribado (20 de 30, sección 6) se hizo sobre la cohorte del **Objetivo 2**, que es la contraria: pelvis **sin** osteosíntesis, las que reciben el tornillo sintético. Son dos conjuntos de pacientes distintos y dos preguntas distintas. En los pacientes de `dataset7` **no se midió** el porcentaje de fracturas, y no hacía falta: ahí no se coloca ningún tornillo, solo se aprende la apariencia del que ya está.
-
-| Paso | Qué hizo | Resultado |
+| Concepto | Qué es, en una línea | Por qué importa aquí |
 |---|---|---|
-| Preparación de ejemplos | Recortó y guardó los parches de entrenamiento, uno por implante y corte | **23,058 parches** en el disco, de los cuales el criterio de inclusión admite **17,149** |
-| Criterio de inclusión | Fijó por escrito **antes** de entrenar qué parches entran | Lista congelada y auditable: **47 pacientes** de entrenamiento y **3** de validación |
-| Primera muestra | Llamó por primera vez a la función que genera | **La cadena funciona**: los dos controles de preservación pasan exactos |
-| Primer entrenamiento real | 144,500 pasos, 8 horas de GPU | **Sobreajuste**: el modelo empeoró durante las últimas 6 h 30 |
-| Segundo entrenamiento | 60,000 pasos, 6 h 20 | Confirmó el sobreajuste **con el instrumento corregido** |
-| Muestra de serie completa | 66 cortes consecutivos de un paciente | Dos páginas web navegables y volúmenes para abrir en un visor médico |
+| **TC y HU** | Una TC es un volumen 3D; cada vóxel guarda un número en **unidades Hounsfield (HU)**: aire ≈ −1000, agua = 0, hueso denso ≈ cientos a miles, metal miles | La red trabaja con **valores físicos**, no con colores. Un error de 50 HU en hueso es un error de medición, no de estética |
+| **Ventana** | Un rango de HU que se "estira" a la escala de gris visible (p. ej. de −160 a 240 para tejido blando) | Una sola ventana no puede mostrar a la vez aire, hueso y metal. Por eso se usan **varias** |
+| **Artefacto metálico** | Rayas claras (*streaking*), endurecimiento del haz y zonas negras por **inanición de fotones** | No queda dentro del tornillo: **se derrama** alrededor. Es lo que la tesis quiere generar |
+| **Corredor óseo** | El "túnel" de hueso por donde puede pasar el tornillo sin salirse | Define dónde es razonable colocar el tornillo |
+| **Brecha cortical** | Cuánto se sale el tornillo del hueso, en 4 grados: 0 (nada), 1 (< 2 mm), 2 (2–4 mm), 3 (> 4 mm) | Es la escala con que los cirujanos reportan malposiciones |
+| **Difusión** | Modelo generativo que aprende a quitar ruido paso a paso; al revés, genera desde ruido | Es la familia de modelos del sintetizador |
+| ***Inpainting*** | Rellenar solo una región de la imagen, dejando el resto intacto | Es la formulación del sintetizador: solo se toca la zona del tornillo |
 
-**Aquí "validación" significa una cosa muy concreta, y conviene fijarla.** En aprendizaje automático, *validación* son pacientes que el modelo **no usa para aprender** y que sirven para vigilar si va mejorando o empeorando. Aquí son **3 pacientes con implante**, apartados desde el principio. No tiene nada que ver con "validar clínicamente" ni con el cribado de fracturas: es un termómetro del entrenamiento.
+Dos regiones que aparecen todo el tiempo:
 
-**El dato más importante del primer entrenamiento no fue el modelo, fueron dos defectos encontrados.** El primero: ese termómetro sorteaba datos distintos cada vez que medía, así que la cifra oscilaba un 15 % por *cómo* se medía y no por cómo iba el modelo. El segundo, peor: el programa guardaba un solo archivo y lo sobrescribía, así que **las pesas del mejor momento del entrenamiento se perdieron**. Las dos cosas están corregidas y el segundo entrenamiento ya guarda el mejor modelo aparte.
+- **`M`**: la máscara del implante (los vóxeles del tornillo).
+- **`B_δ`**: una **banda de ~12 mm** alrededor de `M`. **`G = M ∪ B_δ`** es la región que el modelo
+  puede modificar. La banda existe para que las rayas puedan aparecer **fuera** del metal.
 
-**Y el sobreajuste resultó real, no un error de medición.** Con el termómetro arreglado, la calidad mejora hasta cerca de los 30,000 pasos y de ahí **empeora**. Entrenar más tiempo no ayuda; lo estropea. Eso llevó a fijar el entrenamiento en **30,000 pasos**.
+---
 
-**Una precisión que hay que hacer, porque antes aquí decía otra cosa.** Las dos corridas **no son independientes**: usan la misma semilla, los mismos datos y la misma tasa de aprendizaje, así que son **la misma trayectoria recorrida dos veces**, una más larga que la otra. Que sus curvas coincidan **no prueba** que el resultado sea reproducible con otra semilla; eso no se ha probado. Lo que sí prueba, y de forma más limpia, es que **el termómetro roto no deformaba la curva promediada**: dos instrumentos distintos midiendo el mismo modelo dan lo mismo.
+## 2. El mapa: dos componentes, cuatro objetivos
 
-### Frente 2: tres hallazgos que no estaban previstos
+El pipeline tiene **dos piezas que se diseñan y evalúan por separado**:
 
-**a) La representación de la imagen tiene un suelo, y recorta parte del artefacto.** El metal produce rayas claras y también **zonas muy oscuras** donde casi no pasa radiación. En las tomografías reales esas zonas bajan hasta −7,159 unidades. La representación que usa el sintetizador **no puede bajar de −1,000**: todo lo que esté por debajo queda aplanado. Medido sobre los 23,058 parches, en el paciente típico afecta al **1 %** de la zona, pero **19 de 77 pacientes pasan del 10 %** y uno llega al **44.9 %**. No es un error de programación: el recorte está donde la decisión de diseño lo puso. Lo que faltaba era saber cuánto cuesta, y ahora se sabe.
+```
+pelvis sin metal ──► [MUESTREADOR] ──► pose del tornillo ──► máscara M ──► [SINTETIZADOR] ──► TC con tornillo y artefacto
+                     ¿dónde va?                                             ¿cómo se ve?
+```
 
-**b) El criterio para elegir el mejor modelo puede estar midiendo lo que no importa.** Al comparar los dos modelos guardados sobre la misma serie, con los mismos cortes y la misma semilla, el que la medición de validación llama "mejor" genera **la mitad del metal** que el otro y duplica el salto de valores en el borde de la zona editada. Si la cifra con que se elige el modelo no ordena bien, entonces la cifra de 30,000 pasos se eligió con el instrumento equivocado. **Hay un experimento corriendo ahora mismo para saber si eso pasa en un paciente o en los cinco.**
+**¿Por qué separarlas?** Porque son dos preguntas con **referencias distintas**. Si la posición es
+creíble se juzga contra series clínicas (cirujanos). Si la apariencia es creíble se juzga contra
+física. Mezclarlas en una sola métrica haría imposible saber qué pieza falla.
 
-**c) El conjunto de validación no es lo que el diseño decía.** El diseño dice "5 pacientes con metal". El archivo que el entrenamiento realmente consume dice **3**, los tres con implante real. Los otros dos tienen un objeto metálico incidental y el criterio de inclusión los dejó fuera, pero aparecieron igual en tres de mis mediciones porque las escribí leyendo el disco y no ese archivo. Importa porque sobre esos pacientes se va a calibrar el margen con que se declara si el método funciona, y la base es **más estrecha** de lo que el diseño sugiere: tres pacientes, no cinco.
+| Objetivo | Pregunta | Estado |
+|---|---|---|
+| **1. Compuerta de la representación** | ¿Se puede comprimir la TC con un autoencoder preentrenado sin perder los HU del hueso? | **HECHO. Resultado: No-Go** |
+| **2. Muestreador de colocación** | ¿Se pueden proponer posiciones de tornillo cuya distribución de errores se parezca a la cirugía real? | **HECHO y cerrado** |
+| **3. Sintetizador** | ¿Se puede generar el tornillo y su artefacto con apariencia físicamente coherente? | **En curso**: entrena y genera; sin modelo elegido ni evaluación |
+| **4. Métricas** | ¿Con qué se mide todo esto? | SAP (propia) **HECHA**; apariencia: métricas de Peters et al., con su definición operativa **decidida** |
 
-### Frente 3: se cerró el Objetivo 2 y arrancó el brazo de comparación
+---
 
-- **La revisión de los 16 casos del recorte: hecha.** 14 correctos, 2 con error de segmentación y **ninguno** por culpa del recorte. La decisión del recorte de 6 mm se mantiene.
-- **El cribado ciego de fracturas: hecho.** Un médico revisó 30 casos sin saber los grupos. **20 de 30 (67 %) tienen fractura confirmada**, y están repartidas por igual: 10 y 10. La fractura **no** explica los corredores estrechos. Eso obligó a reescribir un párrafo de la tesis que afirmaba lo contrario.
-- **El tipo de tornillo: decidido.** La trayectoria cruza las dos articulaciones sacroilíacas, así que es un **tornillo transilíaco-transsacro**, y no un iliosacro.
-- **El rasterizador del tornillo: escrito.** Era el eslabón que faltaba para que la cadena completa se pueda ejecutar: convierte una posición en una máscara de vóxeles. Antes, el programa calificaba posiciones sin construir nunca la máscara.
-- **El brazo de comparación física: corriendo en esta computadora.** Ver la sección siguiente.
+## 3. Las decisiones, en el orden en que se tomaron
 
-### Frente 4: la redacción del documento de entrega
+Te las cuento **en orden cronológico**, porque casi todas son consecuencia de la anterior: el
+proyecto cambió de modelo por un resultado, y ese cambio arrastró a todo lo demás. Para cada una:
+**qué se decidió, por qué, y qué alternativa había**.
 
-Los capítulos 1, 2 y 3 y parte de la introducción están redactados y el documento compila en **114 páginas**. Y se hizo una auditoría que valía la pena: se revisaron **las 36 decisiones ya cerradas** para comprobar si de verdad habían llegado al documento. **No todas habían llegado**, y dos contenían cifras equivocadas. Nueve hallazgos graves, que se están corrigiendo.
+### 3.1 Primero, recortar el alcance (septiembre)
 
-## 1. ¿Qué problema quiere resolver?
+**Decisión: la evaluación de segmentación (Dice, HD95) queda fuera.**
 
-Un tornillo metálico no aparece en una tomografía como una pieza limpia y aislada. También produce rayas claras y oscuras alrededor. Por eso no basta con dibujar un tornillo encima de una imagen.
+- **Por qué.** No es por falta de tiempo, y conviene decirlo así. Son **dos condiciones de los datos**,
+  auditables: del subconjunto con metal (CLINIC-metal, 75 volúmenes) la publicación anota solo 14, y en
+  local hay **178 de los 1 184** volúmenes publicados de CTPelvic1K. Un resultado de segmentación
+  descansaría en una cohorte demasiado pequeña y mal anotada para sostener una afirmación de robustez.
+- **Alternativa.** Hacer el experimento igual, con pocos casos. Se descartó porque un resultado débil
+  en el experimento que más le importa al lector sería peor que declararlo trabajo futuro.
+- **Cómo defenderlo.** "La tesis valida lo que se puede validar con los datos disponibles: que lo
+  sintetizado sea coherente. Sin eso, medir utilidad no tendría sentido; con eso, queda como siguiente
+  paso." (Ojo: el documento todavía tiene abierto *por qué* la coherencia debe establecerse antes de la
+  utilidad; es un `\GAPDEC` de la introducción. Prepárate esa respuesta.)
 
-El proyecto busca una cadena como esta:
+**Decisión: no inventar métricas nuevas de apariencia.** Se retiraron dos métricas propias (BFC, ISC)
+y se adoptaron las del protocolo de **Peters et al. (2025)** con sus nombres publicados: *bone
+integrity*, *metal integrity*, *streak amplitude*.
 
-`pelvis sin metal -> posición del tornillo -> máscara del tornillo -> apariencia del metal y su artefacto`
+- **Por qué.** Renombrar medidas ajenas y llamarlas contribución es un punto débil clásico frente a un
+  jurado. La única métrica propia que queda es **SAP** (colocación).
 
-La idea es que la posición respete la anatomía de cada paciente y que la imagen final conserve la anatomía que no debería cambiar.
+**Decisión: el brazo de comparación física es el protocolo de Peters, no una reimplementación propia
+de un simulador (XCIST/CatSim).**
 
-El uso futuro sería crear más ejemplos para entrenar sistemas médicos. Sin embargo, esta tesis **no evaluará si esos ejemplos mejoran un segmentador óseo**. Solo intenta evaluar la coherencia geométrica, quirúrgica y visual de lo sintetizado.
+- **Por qué.** Validar un simulador propio es una tesis en sí misma. Peters et al. publicaron un
+  protocolo **híbrido** (imágenes clínicas + simulación) con código, y se puede reproducir.
+- **Matiz que hay que saber decir:** **reproducir no es validar.** Validar un simulador exige
+  compararlo contra un fantoma real escaneado en un tomógrafo real, y aquí no hay eso. Además, el
+  artículo del simulador describe su propia validación como preliminar. Lo que se hace se llama
+  **verificación de reproducción** (decisión 2026-10-05 (5)).
 
-## 2. Las palabras más importantes, sin jerga
+### 3.2 El plan original: difusión latente con Stable Diffusion 1.5 + ControlNet
 
-### Corredor óseo
+Este es **el modelo de IA que se pensaba usar al principio**, y conviene entender por qué tenía sentido.
 
-Es el “túnel” de hueso por el que podría pasar un tornillo. El programa busca una línea y calcula el cilindro más grueso que cabría alrededor de ella sin salir del hueso.
+- **Qué era.** *Latent diffusion*: un **autoencoder (VAE)** comprime la imagen a un espacio latente
+  pequeño, la difusión trabaja ahí, y el decodificador vuelve a la imagen. **Stable Diffusion 1.5** da
+  el autoencoder y la red de difusión ya entrenados; **ControlNet** añade el condicionamiento (la
+  máscara del tornillo) sin reentrenar la base.
+- **Por qué tenía sentido.** Con pocos datos médicos, **partir de un modelo preentrenado** es la jugada
+  estándar: no hay que aprender desde cero qué es una imagen. Y el latente abarata mucho el cómputo.
+- **El riesgo que nadie había medido.** Ese autoencoder se entrenó con **fotos naturales**. Nada
+  garantizaba que conservara **números físicos** (HU) al comprimir y descomprimir una TC.
 
-### `Dmax`
+**Decisión clave: poner una compuerta Go/No-Go antes de construir nada encima (Objetivo 1).** La regla
+se fijó **por escrito antes de correr la prueba** (2026-09-17 (3)):
 
-Es el diámetro máximo de ese cilindro. No es el diámetro de toda la pelvis ni el de un tornillo real. Es una estimación del espacio disponible en la mejor trayectoria encontrada.
+- error medio absoluto (MAE) en hueso **< 25 HU**, promediado por paciente sobre **34 pacientes de
+  prueba**;
+- seis combinaciones: autoencoder preentrenado o con **decodificador afinado** (encoder congelado) ×
+  tres codificaciones multiventana;
+- **basta con que pase una**; si no pasa ninguna, el Objetivo 3 no se ejecuta por esa ruta.
 
-### Pose
+**¿Por qué 25 HU?** No hay umbral publicado de "aprobado" para la precisión en HU. Se ancló en el error
+que alcanzan los métodos de reducción de artefactos sobre la misma escala (RMSE de 20.2 HU para NMAR;
+12.3 y 12.74 HU para métodos aprendidos). Es un **orden de magnitud**, no una equivalencia, y así está
+declarado.
 
-Es la posición completa de un tornillo: punto por el que pasa, dirección, longitud y diámetro.
+**¿Por qué varias ventanas (codificación multiventana)?** Una TC va de −1000 a miles de HU; un modelo
+de imagen trabaja con tres canales en [0, 1]. Meter todo ese rango en un canal aplasta el hueso. La
+solución, tomada de trabajos de **reducción** de artefactos, es usar **tres ventanas** como tres
+canales: una ancha (LW) para todo el rango, una media (MW, −320 a 480 HU) y una estrecha (SW, −160 a
+240 HU). La ancha se comprime con **arcoseno hiperbólico (asinh)** hasta 20 000 HU para que quepa el
+metal. Importante: **la tesis no reclama la multiventana como invento**; reclama **usarla para generar**
+artefactos en vez de para quitarlos, junto con la banda `B_δ`.
 
-### Brecha cortical
+**Resultado: No-Go.** La mejor combinación (decodificador afinado + asinh) dio **61.72 HU** (IC95
+[55.12, 68.99]); los **34 de 34** pacientes quedaron por encima de 25 HU en todas las combinaciones. Los
+controles descartaron que fuera falta de entrenamiento. Dentro de la banda, 69.89 HU.
 
-Es cuánto sobresale el tornillo del límite exterior del hueso. El proyecto usa cuatro grados:
+- **Lectura:** los latentes de imágenes naturales **no transportan** los HU del hueso denso con esa
+  tolerancia.
+- **¿Y un autoencoder entrenado con TC?** Se miró **MAISI**, que sí es de TC. Se descartó **sin
+  correrlo**: su propio código recorta la salida a [−1000, 1000] HU, y solo ese recorte, sin ningún
+  modelo, ya da **42.24 HU** de error. Ningún peso puede bajar de esa cota.
+- **Por qué esto es un buen resultado para la tesis.** Porque la regla se fijó antes, el criterio no se
+  movió y el negativo se reporta como resultado. Es exactamente lo que un jurado quiere ver: el
+  proyecto **se puso una prueba que podía fallar, y falló**.
 
-- grado 0: no sobresale;
-- grado 1: sobresale menos de 2 mm;
-- grado 2: sobresale entre 2 y 4 mm;
-- grado 3: sobresale más de 4 mm.
+**Alternativas que había y por qué no:**
 
-Estos cortes son una convención geométrica tomada de literatura previa. No deben presentarse como una garantía universal de seguridad clínica.
-
-### SAP
-
-SAP significa *Surgical Admissibility of Placement*. Es la forma en que el proyecto resume si las posiciones propuestas se parecen a posiciones quirúrgicamente admisibles.
-
-Hoy su resultado más sólido es la distribución de grados de brecha y su comparación con datos clínicos publicados. SAP **no sustituye el juicio de un cirujano**.
-
-### Máscara anatómica
-
-Es un volumen en el que cada vóxel dice si pertenece o no a una estructura, por ejemplo el sacro o un ilion. El proyecto usa máscaras creadas por TotalSegmentator para representar el hueso.
-
-### Banda de generación
-
-Es la región que el sintetizador puede modificar. Incluye el tornillo y unos 12 mm alrededor para permitir que aparezca parte del artefacto metálico fuera del tornillo.
-
-## 3. Estado real de cada objetivo
-
-### Objetivo 1: comprobar si el autoencoder conserva los HU — ejecutado, resultado negativo
-
-Primero se quería usar difusión latente. En ese enfoque, un autoencoder comprime la tomografía antes de generar la imagen.
-
-La prueba exigía un error menor de **25 HU** en hueso. Se evaluaron seis combinaciones en 34 pacientes de prueba. Ninguna pasó. La mejor obtuvo **61.72 HU**.
-
-Por eso el resultado fue **No-Go**: se abandonó la ruta latente con ese autoencoder y el sintetizador se rediseñó para trabajar directamente sobre los valores de la tomografía.
-
-Una aclaración importante: la conversión entre HU y la representación de varias ventanas, cuando se prueba **sin** autoencoder, sí vuelve al valor original prácticamente sin error. El problema medido fue la compresión del autoencoder, no la idea de usar varias ventanas.
-
-### Objetivo 2: proponer posiciones de tornillo — corrida hecha, cierre metodológico pendiente
-
-El programa ya:
-
-- localiza referencias anatómicas;
-- usa máscaras del sacro, S1 y ambos iliones;
-- busca un corredor óseo;
-- propone posiciones alrededor de ese corredor; y
-- calcula la brecha cortical de cada posición.
-
-La corrida principal produjo:
-
-| Resultado | Valor |
-|---|---:|
-| Pelvis | 72 |
-| Posiciones | 3,600 |
-| Grado 0 | 51.5% |
-| Grado 1 | 31.4% |
-| Grado 2 | 11.1% |
-| Grado 3 | 6.0% |
-| Distancia a la serie navegada | 0.206 |
-| Distancia a la serie convencional | 0.230 |
-
-La distancia usada es Wasserstein-1: cuanto menor es, más parecidas son las distribuciones. El resultado completo quedó un poco más cerca de la serie navegada, pero **no se definió antes de la corrida qué valor contaría como aprobar o fallar**. Por eso no corresponde decir simplemente “el muestreador fue validado”.
-
-También se encontró que **15 de las 72 pelvis** tienen un corredor menor que 7 mm. En esas pelvis, hasta el eje ideal puede producir brecha si se evalúa con un tornillo de 7 mm.
-
-Al mirar solo las 57 pelvis cuyo corredor sí admite ese calibre, el grado 0 sube a **64.2%**, cerca del **69%** publicado para colocación navegada, y la distancia baja a **0.183**. Este análisis se hizo después de ver el resultado y está declarado como análisis *post hoc*.
-
-La corrida de sensibilidad usó 49 pelvis y 2,450 posiciones. Produjo una distribución parecida y una distancia de **0.186** frente a la serie navegada.
-
-### Objetivo 3: crear la apariencia del metal — entrenado dos veces, con muestras, pero la cadena completa sigue sin ejecutarse
-
-Esto es lo que más cambió. Hace dos semanas no había ninguna imagen; hoy hay dos entrenamientos completos y varias muestras que se pueden abrir.
-
-**Lo que ya se ejecutó:**
-
-| | Detalle |
+| Alternativa | Por qué no |
 |---|---|
-| Ejemplos de entrenamiento | **23,058 parches** preparados, uno por implante y corte |
-| Primer entrenamiento | 144,500 pasos, 8 h de GPU. Encontró **sobreajuste** y dos defectos del código |
-| Segundo entrenamiento | 60,000 pasos, 6 h 20. **Confirmó** el sobreajuste con la medición corregida |
-| Muestras | Un corte suelto, y después **66 cortes consecutivos** de un paciente, con páginas web navegables y volúmenes para visor médico |
-| Mediciones nuevas | El suelo de la representación, el salto en el borde de la zona editada y la comparación entre los dos modelos guardados |
+| Subir el umbral a 70 HU después de ver el resultado | Mover el criterio tras ver los datos invalida la prueba |
+| Usar igual el decodificador afinado "como exploratorio" | Mostraría imágenes que la propia compuerta rechazó |
+| MedVAE u otro latente médico | Excluye metal en su entrenamiento (#94) |
+| Quedarse solo con Objetivos 1 y 2 | La autora quiso mantener la generación; el asesor (asistente) propuso recortar y ella lo rechazó (2026-09-17) |
 
-**Cuánto cuesta entrenar, ya medido de verdad:** **0.377 segundos por paso** en la partición de GPU que usa el clúster, o sea unas **3 h 10 para los 30,000 pasos** decididos. El piloto de 200 pasos de septiembre proyectaba 0.77 h porque corría en una GPU entera; la cifra real es la de arriba.
+### 3.3 El rediseño: difusión directamente sobre la imagen (Objetivo 3, "Diseño A")
 
-**Lo que todavía falta, y es lo importante:**
+**Decisión (2026-09-19): quitar el autoencoder y hacer difusión en el espacio de la imagen, por
+parches alrededor del implante.** Es una decisión **posterior** al resultado del Objetivo 1, y así se
+declara.
 
-- **la cadena completa nunca se ha ejecutado.** Hoy el modelo *reconstruye* el metal en pacientes que **ya lo tenían**. Nunca se ha hecho el recorrido entero: pelvis limpia → posición propuesta → máscara del tornillo → apariencia generada. El rasterizador que faltaba ya está escrito, así que esto es ahora el siguiente paso y no un hueco;
-- definir el banco final de geometrías de tornillo;
-- las métricas de apariencia implementadas (su **definición** ya está decidida, ver abajo); y
-- la comparación contra copia y pegado y contra el protocolo físico.
+- **Por qué.** Si no hay compresión, **no hay error de ida y vuelta**: lo que el modelo no toca queda
+  idéntico vóxel a vóxel. La multiventana, sin autoencoder, vuelve al valor original con error ~0
+  (medido).
+- **Consecuencia que tienes que saber explicar:** sin latente preentrenado, **ControlNet pierde su
+  objeto** (ControlNet existe para condicionar una base congelada). Y como no hay una base preentrenada
+  de TC en píxeles, **el modelo se entrena desde cero**. Eso no es una preferencia: es una consecuencia
+  del No-Go.
 
-**Un aviso que conviene tener presente al mirar las muestras.** Están hechas con pacientes que ya tenían implante. Cuando se le pida generar sobre una pelvis **limpia**, el modelo estará trabajando en una situación que no vio al entrenar, porque aprendió la apariencia en imágenes que **ya** tenían rayas. El resultado puede ser malo, y saberlo ahora es mejor que descubrirlo en la sustentación.
+#### El modelo concreto, pieza por pieza
 
-### Objetivo 4: métricas — SAP existe, y la métrica de apariencia ya está definida por escrito
+| Pieza | Qué es | Por qué |
+|---|---|---|
+| **Red** | **U-Net de difusión** tipo DDPM/ADM, cuatro niveles (64, 128, 256, 512 canales), con atención; float32 | Es la arquitectura estándar y probada de difusión en píxeles; nada exótico que defender |
+| **Entrada: 11 canales** | 3 cortes axiales contiguos × 3 ventanas = 9 canales de imagen, + `M` + `G` | Es **2.5D**: ve los cortes vecinos para tener continuidad en 3D, pero genera solo el **corte central** (3 canales de salida). Un modelo 3D completo costaría mucho más memoria y datos |
+| **Condicionamiento** | Por **concatenación**: las máscaras y el contexto entran como canales extra | Es lo más simple y no requiere una base congelada (que ya no existe) |
+| **Formulación** | ***Inpainting* de `G`**: la red recibe el parche con `G` borrada y rellena solo `G`. Fuera de `G` se **copia** el original | La preservación del resto de la anatomía vale **por construcción**, no por medición. Es una garantía fuerte y fácil de defender |
+| **Pérdida** | Error cuadrático **solo dentro de `G`**, promediado por imagen | Fuera de `G` no hay nada que aprender. Y promediar por imagen evita que las prótesis grandes dominen el aprendizaje |
+| **Objetivo de predicción** | Predicción de **`v`** (en vez de ruido `ε`) | Más estable cuando la señal tiene un rango dinámico grande, como aquí, donde el metal satura las ventanas estrechas |
+| **Planificador de ruido** | **Coseno** (Nichol y Dhariwal), 1 000 pasos | Estándar para imágenes; reparte mejor el ruido que el lineal |
+| **Muestreo** | **DDIM determinista**, 50 pasos, semilla fija | Rápido y reproducible: misma semilla, misma imagen (en el mismo dispositivo, ver 3.8) |
+| **Optimizador** | AdamW, tasa 1e-4, lote 4, parches de 256 × 256 | Valores por omisión del código; **no** están congelados en un registro (es un `\GAPDEC` abierto) |
 
-SAP ya tiene código, controles y resultados.
+**Alternativas que había, en mi opinión de profesor:**
 
-**Y lo que estaba abierto desde el principio se cerró el 5 de octubre:** cómo se mide la "amplitud de las rayas" cuando el objetivo es **crear** el artefacto y no quitarlo. Las métricas se tomaron de un protocolo publicado que fue diseñado para lo contrario, así que había que decidir cómo se invierten. Lo decidido, en lenguaje simple:
+- **Difusión 3D completa.** Más fiel al artefacto, que es 3D. Pero con 47 pacientes de entrenamiento y
+  GPU compartida, era inviable. El 2.5D es un compromiso razonable y declarado.
+- **Modelos más ligeros (GAN, U-Net de regresión).** Una U-Net que prediga directamente la imagen
+  sería más barata, pero promedia: produce rayas borrosas. La difusión genera **variabilidad** (varias
+  muestras por caso), que es justo lo que se quiere para aumento de datos.
+- **No usar IA: solo simulación física (Peters) sobre las poses del muestreador.** Esta es **la
+  pregunta más peligrosa de tu defensa**, y el documento todavía la tiene abierta como `\GAPDEC`:
+  *si la física puede correrse sobre las mismas poses, ¿para qué un sintetizador aprendido?* Los
+  argumentos que el repositorio sí permite: el protocolo físico es **2D de una sola fila de detector**,
+  cuesta **~70 s por corte**, y su validación no cubre implantes pélvicos en 3D. Pero la respuesta
+  completa (coste por volumen, escala, generalidad) **no está escrita ni medida**. Prepárala con la
+  autora y el asesor antes de exponer.
 
-- **La referencia es la tomografía limpia del mismo paciente.** Eso solo existe en los 14 pacientes de prueba **sin** metal, y ahí es donde se mide. En los pacientes que sí tienen implante no hay referencia limpia, así que ahí **no se mide amplitud**, se mide **discrepancia** contra la imagen real. Esa confusión estaba en el diseño y se corrigió.
-- **Las zonas donde se mide se calculan solas a partir de la posición del tornillo**, en vez de dibujarse a mano como hace el protocolo original. Es más reproducible y permite que los dos métodos comparados se midan exactamente igual.
-- **Se reporta además cuánta señal quedó aplanada contra el suelo de la representación.** Así el límite conocido del método se publica con un número al lado del resultado, en lugar de quedar como una advertencia en prosa.
-- **El contraste contra "copia y pegado" se declara control de cordura y no evidencia de calidad**, porque ese método no produce rayas por construcción y cualquier cosa le gana. El contraste que de verdad decide es el de equivalencia contra la simulación física.
+### 3.4 Con qué datos aprende el sintetizador
 
-Lo que sigue pendiente es la **implementación**, y decidir cómo se invierten las otras dos métricas de apariencia.
+El sintetizador aprende de pacientes que **ya tienen** metal: ahí el implante real da a la vez la
+máscara y la apariencia objetivo. Luego, en uso, se le pide pintar un tornillo en una pelvis **limpia**.
 
-## Lo esperado de aquí en adelante: Peters y el clúster
+**Decisión D1: la máscara de entrenamiento se obtiene con umbral de 2500 HU** (el semimáximo local queda
+como sensibilidad). Por qué: es el único umbral validado en esta cohorte (0 falsos negativos en 113
+candidatos). Consecuencia aceptada: a 2500 HU algunos tornillos salen fragmentados, mientras que la
+máscara sintética es un cilindro liso. Eso es un **desplazamiento de dominio declarado**.
 
-Son los dos frentes que deciden si el Objetivo 3 llega a tener un resultado.
+**Decisión D2: la unidad de entrenamiento es el *componente* de metal, no el corte.** Este es un buen
+ejemplo de **decisión forzada por una medición**:
 
-### El brazo de comparación física (protocolo de Peters et al.)
+- Primero se recortaba un parche de 256 × 256 por corte. Se midió: **en el 20.1 % de los cortes** la
+  región `G` no cabía en el parche.
+- La causa no era el tamaño del parche: algunos pacientes tienen metal repartido por toda la pelvis
+  (hasta 380 mm). `G` estaba mal definida.
+- El argumento de fondo: en síntesis se coloca **un** tornillo. Entrenar con varios implantes a la vez
+  y usar con uno es otra brecha. Con un parche por componente, **0 de 1 217** parches se salían en el
+  peor caso.
+- Alternativa descartada: agrandar el parche (el cómputo crece con el cuadrado del lado y aun así no
+  cubría 380 mm).
 
-**Qué es.** La tesis necesita comparar su sintetizador contra algo mejor que "pegar un tornillo". Ese algo es un simulador de física de tomografía, con un protocolo ya publicado que lo usa. La comparación es: ¿se parece lo que genera el modelo a lo que produce la física simulada?
+**Criterio de inclusión (R1–R4), fijado antes de entrenar:**
 
-**Qué se logró el 5 de octubre.** El simulador **corre en esta computadora**. Se instaló, se ejecutó su ejemplo completo —simulación más reconstrucción— y produjo su imagen. Cuesta unos **70 segundos por corte**.
+- **R1**: el componente está **dentro del cuerpo** (fuera quedan cremalleras, electrodos).
+- **R2**: el caso tiene **material ortopédico declarado** en la auditoría.
+- **R3**: el parche contiene metal del componente, más **todos** los parches de "solo banda"
+  disponibles.
+- **R4**: tamaño y forma **no** filtran: se reportan.
 
-**Y se verificó algo que su artículo no dice.** Al meter un objeto metálico en una tomografía de paciente, hay dos formas de hacerlo: proyectar paciente y metal **juntos**, como un solo objeto físico, o proyectarlos por separado y combinar después. La primera es la correcta y la segunda es un atajo. El artículo no lo declara, y la tesis prometía por escrito revisarlo en el código antes de reproducirlo. **Revisado: se proyectan juntos.** El metal se inserta restando agua y añadiendo la aleación en el mismo sitio, antes de proyectar.
+La idea más importante de esta decisión: la pregunta no es *"¿esto es un tornillo?"*, sino **"¿este
+ejemplo enseña algo que en síntesis será falso?"**. El modelo aprende la relación *máscara →
+artefacto*, que es física. Filtrar por forma tiraba datos: en una muestra revisada, solo **5 de 40**
+componentes eran tornillos. Sobre esas mismas láminas, el criterio nuevo coincidió con la revisión
+humana en **36 de 39** decisiones de incluir o excluir; el anterior, basado en forma, acertaba el tipo
+en **16 de 40**.
 
-**Dos avisos honestos:**
+**Resultado:** **241 componentes de 47 pacientes** para entrenar; **validación = 3 pacientes** con
+implante real (`metal_0011`, `metal_0039`, `metal_0056`). Ojo con dos cosas:
 
-1. **Su script publicado no corre tal como viene.** Falla al escribir su propia configuración. Reproducirlo exige un parche de una línea, aplicado en una copia local y nunca en el clon original, para que quede claro qué se ejecutó y en qué se diferencia de lo publicado.
-2. **Lo hecho NO es validar el simulador, y no se va a llamar así.** Validar significa comparar contra mediciones físicas en un maniquí real escaneado en un tomógrafo real, y no hay maniquí, ni tomógrafo, ni mediciones. Además, el propio artículo del simulador no contiene ningún estudio de artefacto metálico y describe su validación como preliminar. Reclamar una validación que sus autores no hicieron sería indefendible. Lo que se hizo se llama **verificación de reproducción**, y eso sí es defendible.
+- **La validación es pequeña y desbalanceada**: `0011` aporta el **60 %** de los parches.
+- **"Validación" aquí es el término de aprendizaje automático**: pacientes que el modelo no usa para
+  aprender y que sirven para vigilarlo. No tiene nada que ver con validar clínicamente.
 
-**Qué se espera ahora.** Reproducir su protocolo con **el tornillo y la anatomía de esta tesis**, usando la misma receta verificada: la máscara del tornillo como mapa de material, restando agua y añadiendo la aleación. Es trabajo de ingeniería, no de investigación, y el riesgo principal es el tiempo: a 70 segundos por corte, un volumen entero no es gratis.
+**Tres desplazamientos de dominio, declarados (no escondidos):**
 
-**Y una advertencia de alcance.** El protocolo original es **bidimensional, de una sola fila de detector**. El tornillo de esta tesis mide unos 138 mm a lo largo de su eje. Extenderlo a eso es una adaptación explícita que **no hereda** la validación del protocolo original, y así debe escribirse.
+1. Máscara de entrenamiento por umbral (irregular) frente a cilindro liso en síntesis.
+2. El contexto de entrenamiento **ya tiene rayas** del implante real; la pelvis limpia no.
+3. Los parches de solo banda son **menos frecuentes** en entrenamiento (0.62 por parche con metal) que lo
+   que la geometría predice para la síntesis (1.40). 1.40 no era alcanzable con los datos que hay.
 
-### El entrenamiento en el clúster (Khipu)
+Saber nombrar estos tres desplazamientos es de lo que más te va a proteger en la defensa: un jurado
+que los encuentra solo piensa que no los viste; uno que los ve declarados piensa que los mediste.
 
-**Dónde está.** Las dos corridas ya se hicieron. La segunda terminó el 5 de octubre a mediodía, en una partición de GPU compartida, sin tocar el límite de tiempo.
+### 3.5 El tornillo: tres geometrías para tres preguntas
 
-**Lo que ya no es un problema.** El tiempo de cómputo. Los 30,000 pasos decididos son unas **3 h 10**, y la cola del clúster —que en septiembre parecía el cuello de botella— dejó de serlo: la última corrida arrancó **21 horas antes** de lo previsto.
+Un detalle que parece menor y que es de los más finos del proyecto:
 
-**Lo que sí es un problema, y es más interesante.** El modelo **no mejora con más cómputo**. Las dos corridas muestran que la calidad toca su mejor punto cerca de los 30,000 pasos y de ahí empeora. Si el resultado final no alcanza, **la palanca no es entrenar más tiempo: son más pacientes**. Hoy el entrenamiento usa 47. Esa es una limitación real del trabajo y todavía no está escrita en la tesis.
+| Geometría | Para qué | Por qué ese valor |
+|---|---|---|
+| Envolvente **6.5–8.0 mm** | ¿**Cabe** un tornillo en este corredor? | Calibre nominal publicado |
+| Cilindro **~4.91 mm** | Lo que se **sintetiza** | El cuerpo real del tornillo es más fino que su rosca. Medido sobre los tornillos reales del dataset (mediana 4.91 mm), y coincide con el catálogo (4.8 mm) dentro de un cuarto de vóxel |
+| Cilindro **7.0 mm** | Con qué se **mide** la brecha cortical | Es el calibre de la serie clínica de referencia. Medir con otro calibre metería un sesgo dentro de la comparación |
 
-**Lo que falta decidir antes de la corrida final**, y depende de un experimento que está corriendo:
+El tipo de tornillo se fijó como **transilíaco-transsacro**: la trayectoria cruza las dos articulaciones
+sacroilíacas, de cortical a cortical. Cuando el texto describe trabajos ajenos, sigue diciendo
+"iliosacro", porque cambiarlo les atribuiría algo que no dijeron.
 
-1. **Si el criterio con que se elige el mejor modelo es válido.** Hoy se elige por una cifra de validación, y hay indicios de que esa cifra no ordena bien los modelos por calidad de imagen. Si se confirma, hay que cambiar el criterio **antes** de congelar el diseño.
-2. **Si la saturación con 47 pacientes entra como limitación declarada.** Su evidencia es la misma cifra del punto anterior, así que las dos decisiones se resuelven juntas.
+**Alternativa descartada:** un cilindro de 6.5–8.0 mm en todo el trayecto **sobreestima el metal en más
+del doble** de área. La lección: no se elige "el número del catálogo"; se elige **el número que
+corresponde a la pregunta**.
 
-**Qué falta en el clúster, en orden:** medir el margen con que se declarará si el método funciona —sobre los pacientes de validación, nunca sobre los de prueba—, congelar el diseño por escrito, y recién entonces lanzar la corrida final y la evaluación.
+### 3.6 El muestreador de posiciones (Objetivo 2): cómo y por qué
 
-## 4. Lo que sí se puede afirmar hoy
+**Qué hace.** Para cada pelvis: segmenta el hueso, busca el corredor de S1, y propone **50 posiciones**
+perturbando ese eje. Luego mide cuánto se sale cada posición del hueso (grado de brecha).
 
-- La base local fue auditada y los duplicados se manejaron por paciente para evitar mezclar a la misma persona entre entrenamiento y prueba.
-- TotalSegmentator se ejecutó y sus máscaras se sometieron a controles de calidad.
-- El error del autoencoder se midió y la ruta latente no cumplió la regla fijada.
-- El muestreador y SAP existen, corren y produjeron resultados reproducibles.
-- Se generaron miles de posiciones y, desde el 4 de octubre, **también imágenes**: un corte suelto y luego una serie de 66 cortes consecutivos, con sus controles de preservación pasando exactos.
-- El renderizador **se entrenó dos veces, con la misma semilla**: la calidad toca su mejor punto cerca de los 30,000 pasos y después empeora. **No** se ha comprobado qué pasa con otra semilla.
-- El tiempo de cómputo **no es el problema**. Los 30,000 pasos son unas 3 h 10. El problema es ejecutar y evaluar la cadena completa, y decidir con qué criterio se elige el mejor modelo.
-- El simulador de física **corre en local** y se verificó en su código que inserta el metal proyectándolo junto al paciente. Eso cierra un pendiente que la propia tesis tenía escrito.
-- La definición de la métrica de apariencia **está decidida y escrita antes de ver los resultados**, con sus parámetros fijados sobre los pacientes de validación.
-- El cribado de fracturas está hecho: **20 de 30 pelvis (67 %) tienen fractura confirmada**, repartidas por igual entre los dos grupos, así que la fractura **no** explica los corredores estrechos.
-- Los capítulos 1, 2 y 3 y parte de la introducción están redactados y el documento compila en **114 páginas**, con decisiones todavía marcadas como pendientes.
+**El modelo de IA que usa: TotalSegmentator (v2.18.0, basado en nnU-Net).** Es un segmentador
+preentrenado y público; aquí no se entrena nada.
 
-## 5. Lo que todavía no se debe afirmar
+- **Por qué no un umbral de HU para el hueso.** Se intentó y falló: dentro del sacro, la mediana de la
+  fracción de vóxeles por debajo de 150 HU sobre el eje del corredor era **0.42**. El hueso esponjoso
+  tiene HU bajos, y un umbral lo "ahueca".
+- **Precaución declarada:** su publicación no reporta precisión para la etiqueta de S1 que se usa, así
+  que esa precisión no se asume; las máscaras pasan control de calidad por caso.
 
-- No se debe decir que el sistema completo ya sintetiza tomografías con metal. **Hay imágenes, pero son reconstrucciones sobre pacientes que ya tenían implante.** La cadena completa, desde una pelvis limpia, nunca se ejecutó.
-- No se debe decir que las 3,600 posiciones fueron aprobadas por un médico.
-- No se debe decir que SAP demuestra seguridad clínica.
-- No se debe decir que las pelvis usadas estaban libres de fractura. **Ya está medido: 20 de 30 tienen fractura.** La selección comprobó ausencia de osteosíntesis, no de fractura.
-- No se debe decir que el corredor estrecho siempre es una variación anatómica normal.
-- No se debe decir que el modelo mejora la segmentación ósea; esa evaluación está fuera del alcance actual.
-- **No se debe decir que un modelo es mejor que otro.** La comparación entre los dos modelos guardados dio un resultado contraintuitivo y está en verificación; con un paciente no alcanza.
-- **No se debe decir que se validó el simulador de física.** Se reprodujo su protocolo y se verificó su código. Validar exigiría un maniquí y un tomógrafo real, que no hay.
-- **No se debe decir que el renderizador puede generar todo el artefacto.** La representación tiene un suelo que aplana las zonas más oscuras, y eso está medido.
+**La decisión más importante del Objetivo 2 (D-O2.1): el muestreador NO se calibra contra la serie
+clínica.** Este es el razonamiento que más vale la pena que domines:
 
-## 6. Las revisiones que condicionaban el Objetivo 2: las cuatro, resueltas
+- La referencia clínica es **Zwingmann et al. (2009)**: dos distribuciones de grados de brecha, una con
+  **navegación** (69 % grado 0) y otra **convencional** (40 % grado 0).
+- La tentación: ajustar los parámetros del muestreador hasta reproducir esos porcentajes.
+- **Por qué no:** si ajustas a los datos y luego te comparas con los mismos datos, la comparación no
+  prueba nada. SAP, la única métrica propia, se quedaría vacía.
+- **Lo que se hizo:** la perturbación sale de una **fuente independiente** (la holgura cortical de 5 mm
+  de Kaiser et al.), bajo la convención declarada de que 5 mm = 2σ. De ahí σ = **2.5 mm** de traslación
+  y un σ angular por caso (**2.07°** en la mediana). **Nada** se tomó de Zwingmann, ni siquiera la
+  tolerancia de 4° que ese artículo cita. Todo se escribió **antes** de calcular la primera distancia.
+- **Se aceptó de antemano** que la distancia podía salir alta. Un resultado alto honesto vale más que
+  uno bajo forzado.
 
-> **Cambio importante respecto de la version anterior de este documento.** Las cuatro entradas de esta
-> seccion estaban abiertas el 3 de octubre y **las cuatro se resolvieron**. Se conservan con su
-> historia porque explican de donde salen las cifras que hoy se citan, y porque dos de ellas obligaron
-> a corregir frases que ya estaban escritas en la tesis.
+**¿Por qué Wasserstein-1?** Porque los grados son **ordinales**: confundir grado 0 con 1 es menos grave
+que confundir 0 con 3. Wasserstein-1 mide cuánta "masa" hay que mover y **cuán lejos**, en unidades de
+grado. Otras distancias (KL, χ²) tratarían los grados como categorías sin orden.
 
-### Revisión de 16 casos por diferencias entre dos recortes
+**Resultado (HECHO):**
 
-Todas las cifras principales del Objetivo 2 usan las máscaras obtenidas con un recorte de 6 mm. Hay 16 casos en los que el resultado difiere de manera importante frente al recorte de 3 mm o aparece una estructura desplazada.
+| | Grado 0 | 1 | 2 | 3 | W1 a navegada | W1 a convencional |
+|---|---|---|---|---|---|---|
+| **Muestreador, 72 pelvis, 3 600 poses** | 51.5 % | 31.4 % | 11.1 % | 6.0 % | **0.206** | 0.230 |
+| Zwingmann, navegada | 69 % | 15 % | 8 % | 8 % | — | — |
+| Zwingmann, convencional | 40 % | 37 % | 11.5 % | 11.5 % | — | — |
 
-**RESUELTO.** La revisión se completó: **16 de 16 casos revisados, 14 correctos, 2 con error de segmentación y ninguno por culpa del recorte.** La decisión del recorte de 6 mm se mantiene, y la condición que podía reabrirla quedó evaluada. La revisión la hizo la autora con apoyo de un médico recién egresado y sin especialidad. Quedan anotados los dos casos con error de segmentación, sin decidir qué se hace con ellos.
+**Lo que hay detrás del agregado.** En **15 de las 72** pelvis el corredor mide menos de 7 mm, así que
+hasta el eje ideal perfora: el grado 0 es **inalcanzable por la anatomía**, no por el muestreador.
+Separando (análisis *post hoc*, declarado como tal): en las **57** pelvis viables, el grado 0 sube a
+**64.2 %** y W1 a la navegada baja a **0.183**; en las 15 estrechas, el grado 0 es 3.3 %. **El resultado
+que se defiende es el agregado preinscrito**; la estratificación va al lado para explicar de dónde sale
+la distancia. Restringir la cohorte a las viables se rechazó: sería seleccionar pacientes por una
+variable ligada al resultado.
 
-Archivos:
+**El cribado de fracturas.** ¿Por qué hay corredores tan estrechos? Un médico (licenciado, sin
+especialidad) revisó a ciegas 30 pelvis: **20 de 30 tienen fractura**, 10 y 10 en cada grupo. La
+fractura sacra **desplazada** aparece en 7 de 15 estrechos frente a 2 de 15 controles (p = 0.109). La
+lectura honesta: una fracción **no cuantificable** del estrechamiento puede ser patología. Y una frase
+que **no** debes decir nunca: "pelvis sanas" o "intactas". Son pelvis **sin osteosíntesis**.
 
-- [`e9ts_revision_laminas.md`](../experiments/objetivo2/e9ts_revision_laminas.md)
-- [`e9ts_revision_laminas_autora.csv`](../experiments/objetivo2/e9ts_revision_laminas_autora.csv)
+**Límites que ya están declarados:** el eje se busca en una rejilla de 5° mientras la tolerancia citada
+es de 1.53° (sesgo conservador: el muestreador parece peor de lo que sería); SAP mide sobre una máscara
+de hueso, no sobre una cortical segmentada.
 
-### Cribado ciego de fracturas en 30 casos
+**Alternativa que había, en mi opinión:** un planificador que optimice "la mejor trayectoria". Se
+descartó con razón: la cirugía real **no** produce una sola trayectoria, sino una distribución de
+errores, y la variabilidad anatómica entre personas es grande. Para aumento de datos, la variabilidad
+es lo que interesa.
 
-Se confirmó una fractura en `CLINIC_0060`. Ese caso está entre los corredores estrechos. Si las fracturas fueran más frecuentes en ese grupo, parte del estrechamiento atribuido a anatomía normal podría deberse a patología.
+### 3.7 El entrenamiento del sintetizador (octubre)
 
-Por eso se preparó una revisión ciega de:
+**Dos corridas en el clúster (Khipu):** `run01` (144 500 pasos, 8 h) y `run02` (60 000 pasos, 6 h 20,
+a 0.377 s/paso).
 
-- los 15 casos con corredor menor de 7 mm; y
-- 15 controles escogidos entre los corredores que sí admiten 7 mm.
+**Hallazgo: sobreajuste.** La pérdida de validación baja hasta una **meseta entre ~20 000 y ~40 000
+pasos** y luego sube. Entrenar más **empeora** el modelo.
 
-**RESUELTO.** El cribado se hizo a ciegas. Resultado: **20 de 30 (67 %) con fractura confirmada, más un caso dudoso que se reporta aparte**, y repartidas **por igual**: 10 de 15 en los corredores estrechos y 10 de 15 en los controles. **La fractura no explica el estrechamiento.**
+**Decisión (2026-10-05 (2)): 30 000 pasos**, el centro de la meseta.
 
-Hay un matiz que sí es sugerente y no concluyente: la fractura **sacra desplazada** aparece en 7 de 15 estrechos frente a 2 de 15 controles, con p = 0.109. Eso obliga a matizar una frase de la tesis que atribuía el estrechamiento a la anatomía normal, pero no autoriza a concluir lo contrario.
+- **Qué tipo de elección es:** una elección de hiperparámetro **hecha sobre validación**, no fijada de
+  antemano. Es legítimo (para eso existe validación) y no toca los pacientes de prueba, pero hay que
+  decirlo así.
+- **Matiz que un jurado puede atacar:** las dos corridas **no son independientes** (misma semilla, mismos
+  datos). Que sus curvas coincidan no prueba reproducibilidad con otra semilla.
 
-Un límite que hay que declarar con la cifra: lo revisó un **médico recién egresado y sin especialidad**, sobre láminas fijas. Es un cribado válido, **no** una lectura de especialista.
+**Dos defectos de ingeniería que se encontraron por el camino**, y que vale la pena contar como
+lecciones: el medidor de validación sorteaba datos distintos cada vez (la cifra oscilaba ~15 % por
+*cómo* se medía), y el programa sobrescribía un solo archivo, de modo que **las pesas del mejor momento
+se perdieron** en la primera corrida. Ambos se corrigieron; ahora se guarda `mejor.pt` en cada mínimo
+(en `run02`, el paso 37 500).
 
-Archivos:
+### 3.8 Tres hallazgos incómodos, y cómo cambiaron el plan
 
-- [`r3_fractura_revisor.md`](../experiments/objetivo2/r3_fractura_revisor.md)
-- [`r3_fractura_revisor.csv`](../experiments/objetivo2/r3_fractura_revisor.csv)
+Este tramo es el más instructivo del proyecto, porque muestra **cómo se corrige un diseño midiendo**.
 
-### Diferencia entre la envolvente decidida y la implementada
+**a) El suelo de −1000 HU (#141).** La codificación multiventana no puede bajar de −1000 HU, pero las
+zonas negras del artefacto (inanición de fotones) bajan mucho más. Medido sin modelo: en el paciente
+típico se recorta ~1 % de la banda, pero **19 de 77** pacientes pasan del 10 % y uno llega al 44.9 %.
 
-La decisión escrita decía aplicar un cierre y también rellenar cavidades cerradas dentro de la máscara de hueso. El código que produjo los resultados aplicó el cierre, pero no ese relleno.
+- **Por qué no se detectó antes:** el Objetivo 1 solo estudió el **techo** de la representación (el
+  metal), y medía error en **hueso**. El suelo nunca fue variable.
+- **Decisión:** no cambiar la representación a mitad de camino (habría que rehacer todo), sino
+  **preinscribir la regla** que decidirá si se declara como limitación o se cambia, y **reportar como
+  cifra** la fracción de vóxeles aplastados junto al resultado. El sesgo es siempre **a la baja** y solo
+  afecta al sintetizador, no al brazo físico.
+- **Alternativa, en mi opinión:** si se hubiera previsto, una compresión asinh **simétrica** (que cubra
+  también el negativo) lo habría evitado desde el principio. Es una buena línea de "trabajo futuro".
 
-Hay que decidir entre:
+**b) La pérdida de validación no sirve para elegir el modelo (#145, decisión 2026-10-05 (6)).**
+Comparando los dos checkpoints sobre los mismos cortes y la misma semilla, el de **menor pérdida**
+(`mejor.pt`) parecía generar mucho menos metal. Conclusión: la pérdida de difusión **no ordena** los
+modelos por lo que la tesis mide (fidelidad de HU, apariencia).
 
-1. corregir la descripción para que diga exactamente lo que se ejecutó; o
-2. corregir el código y repetir la medición del corredor y SAP.
+- **Decisión:** el modelo se elegirá por **apariencia**, no por pérdida.
+- **Una corrección que vale oro, y que debes saber contar:** la primera propuesta era elegir por qué tan
+  bien **reconstruye implantes reales**. Se descartó porque esa tarea **premia memorizar**: los
+  implantes de validación se parecen a los de entrenamiento, y el modelo más sobreentrenado ganaría por
+  una razón que no sirve para el uso real (poner un tornillo **donde no había nada**).
+- **Criterio adoptado:** generar sobre pelvis **limpias** de validación con cada checkpoint candidato, y
+  comparar dos estadísticos contra los implantes reales: el **perfil radial de HU** alrededor del metal
+  (mediana y percentil 95, como elevación sobre el anillo de 12–15 mm) y el **histograma de HU dentro
+  de `M`**. Gana el que más cáscaras tenga dentro del rango real de los 3 pacientes de referencia. Con
+  n = 3, el cotejo **descarta**, no prueba.
+- **Por qué el percentil 95:** las rayas viven en las **colas** de la distribución; la mediana sola no
+  las ve.
 
-**Medición preliminar (2026-10-03).** Sobre los dos únicos casos que tienen máscaras en esta
-computadora, añadir el relleno cambia muy poco o nada: 0 vóxeles en uno y 394 en el otro
-(0.025 % del hueso, 0.17 cm³), y el diámetro del corredor **no se movió** en ninguno de los dos.
+**c) El decodificador estaba borrando metal (#152, la más importante de la última semana).** Al
+generar, varios valores se repetían **exactos** en pacientes y semillas distintos (~236 y ~472 HU).
 
-Hay una razón: el relleno existía para tapar el hueco interno de una máscara hecha por umbral de
-densidad, que queda como una cáscara. Las máscaras que se usan ahora vienen de un segmentador que ya
-entrega el hueso macizo, así que no hay hueco que tapar. Eso apunta a la opción 1, corregir el texto.
+- **La causa:** la regla de lectura del Objetivo 1 toma "el canal más estrecho no saturado". Si el
+  modelo deja un canal estrecho **casi** saturado (p. ej. 0.989 en vez de 1.0), la regla cree que no
+  está saturado y devuelve **el techo de esa ventana**, aunque el canal ancho diga "metal". En ~95 % de
+  esos vóxeles el canal ancho marcaba metal: **el modelo sí generaba metal; el decodificador lo borraba.**
+- **Consecuencia:** buena parte de "el modelo de menor pérdida genera la mitad del metal" era **del
+  decodificador, no del modelo**. Y peor: también recortaba la cola clara de las rayas en la banda, así
+  que cualquier amplitud de rayas medida así saldría subestimada.
+- **Decisión (2026-10-07):** para el Objetivo 3, una **mezcla suave**: se parte del canal ancho y cada
+  canal estrecho pesa menos cuanto más cerca está de saturar (rampa entre 0.01 y 0.05). La regla del
+  Objetivo 1 es un **caso particular** de esta, así que **el Objetivo 1 no cambia ni una cifra**. El
+  valor 0.05 se fijó sobre validación con un criterio escrito antes del resultado.
+- **La lección de método, que la propia bitácora subraya:** *un valor que se repite exacto en
+  condiciones distintas es un artefacto de medición hasta que se demuestre lo contrario.*
 
-**RESUELTO.** La medición se corrió sobre los 152 casos y **ningún caso de la cohorte cambia**: la diferencia mediana del diámetro del corredor es de 0.000 mm. Ninguna cifra publicada depende del relleno, así que se corrige el texto y **no** se repite la medición. Las cifras actuales corresponden a la envolvente **sin relleno de cavidades**, y eso ahora está respaldado con evidencia y no solo supuesto.
+### 3.9 La cadena completa ya corrió (ABIERTO)
 
-### Nombre y tipo exacto del tornillo
+Por primera vez se encadenó todo: **pelvis limpia → pose sobre el corredor → rasterizado de `M` →
+generación**, sobre **dos pacientes de validación** (`0101` y `0102`), con los dos checkpoints
+candidatos.
 
-La trayectoria implementada va desde la cortical externa de un ilion hasta la cortical externa del otro. Es decir, cruza ambas articulaciones sacroilíacas.
+- **Los tres controles pasan:** la pelvis receptora no tenía metal en `G`; fuera de `G` no se toca nada;
+  la composición es idéntica al original fuera de `G`.
+- **Con el decodificador nuevo, los dos checkpoints generan metal de forma parecida** dentro de `M`
+  (fracción de `M` sobre 2500 HU entre 0.928 y 0.992 en las cuatro corridas). Antes, con el decodificador viejo,
+  parecían muy distintos.
+- **Por qué esto todavía no es un resultado:** dos pacientes, una semilla, un tornillo por paciente, y
+  las implicancias siguen ABIERTAS. Además, **CPU y GPU no dan el mismo ruido con la misma semilla**
+  (#151): todo cotejo debe hacerse en un solo dispositivo.
 
-**RESUELTO.** Los documentos usaban de manera inconsistente "iliosacro", "transsacro" y "transiliosacro". La decisión: es un **tornillo transilíaco-transsacro**, y las tolerancias angulares de la fuente que las publica **sí** le aplican, porque se midieron sobre ese mismo corredor. La serie clínica con la que se compara se conserva como **referencia de distribución**, no como prueba de que su implante fuera el mismo.
+### 3.10 Cómo se evaluará el sintetizador (decidido, sin ejecutar)
 
-Con una regla que hay que respetar al corregir el documento: donde el texto describe **lo que hicieron otros autores**, sigue diciendo "iliosacro", porque cambiarlo sería atribuirles algo que no dijeron.
+Esto ya está **preinscrito** (2026-10-05 (3) y (4)): se fijó antes de tocar los pacientes de prueba.
 
-## 7. Aclaración sobre “el último experimento de ver la posición de los tornillos”
+- **Endpoint primario único: *streak amplitude*** (Peters et al.): la diferencia entre el promedio del
+  5 % superior y el del 5 % inferior de la desviación respecto a la imagen sin metal. Mide **el vano
+  entre rayas claras y oscuras**, que es justo lo que el sintetizador dice generar.
+- **Dónde se puede medir:** solo donde hay **verdad de terreno sin metal**, es decir, en los **14
+  pacientes de prueba sin metal** (se compara la imagen sintética contra la original del mismo
+  paciente). En los 20 pacientes de prueba con implante real no existe esa referencia: ahí se mide
+  **discrepancia**, que es otra cosa y se llama distinto.
+- **Las regiones de medición se derivan de la pose**, no se dibujan a mano como en el artículo
+  original: anillos completos de un vóxel de guarda hasta 12 mm, en todos los cortes con metal menos
+  8 mm por extremo. Es más reproducible y es idéntico para los dos métodos comparados.
+- **Jerarquía de contrastes:**
 
-Hoy hay tres tareas distintas que podrían confundirse:
+| Contraste | Prueba | Qué demuestra |
+|---|---|---|
+| **Primario**: contra el brazo físico | **TOST** de equivalencia con margen `Δ` | Que el sintetizador es comparable a la física |
+| **Realismo**: contra artefactos reales | distancia entre distribuciones | Que lo generado se parece a lo que existe |
+| **Cordura**: contra copia y pegado | Wilcoxon de una cola | Solo un piso. **No es evidencia de calidad** |
 
-| Tarea | Qué se mira | Quién la hace | Estado |
+**¿Por qué TOST y no un test de diferencia?** Este es un punto de estadística que puede salvarte en la
+defensa: con n = 14, un p > 0.05 en un test de diferencia significa casi siempre **falta de potencia**,
+no igualdad. Para afirmar "comparable" hace falta un test de **equivalencia**: se concluye solo si el
+intervalo de confianza del 90 % de la diferencia cae entero dentro de [−Δ, +Δ].
+
+**¿De dónde sale Δ?** No hay un margen publicado. Se definirá como la **variabilidad propia del método**
+(entre semillas del mismo caso y entre repeticiones del brazo físico), medida **solo en validación**.
+La idea: si el método no se distingue de la física más de lo que se distingue de sí mismo, "comparable"
+está justificado. **Δ todavía no está medido**, y con 3 pacientes de validación la n es pequeña; eso se
+declara.
+
+**¿Por qué el contraste contra copia y pegado es "cordura"?** Porque copiar y pegar un tornillo no
+produce rayas por construcción: su amplitud vale ~0, y **cualquier cosa** que genere algo le gana.
+Presentarlo como evidencia sería tramposo, y la tesis lo dice explícitamente.
+
+**Se acepta de antemano** que el resultado honesto puede ser *"no se pudo concluir equivalencia con esta
+n"*. El Objetivo 1 ya demostró que un negativo bien hecho es reportable.
+
+---
+
+## 4. ¿Qué modelos de IA se usan, en una tabla?
+
+| Modelo | Dónde | Estado | Por qué este |
 |---|---|---|---|
-| E13 / SAP | Las 3,600 posiciones y cuánto salen del hueso | El programa | Ejecutada |
-| Revisión de 16 casos | Si las máscaras y el corredor cambian por el recorte | Autora con apoyo médico | **Hecha**: 14 correctos, 2 errores de segmentación, 0 por el recorte |
-| Cribado de 30 casos | Si hay fractura y dónde | Médico recién egresado, sin especialidad | **Hecho**: 20 de 30 con fractura, repartidas por igual |
+| **VAE de Stable Diffusion 1.5** (preentrenado y con decodificador afinado) | Objetivo 1 | **Probado y descartado** (No-Go, 61.72 HU) | Era la base natural de la difusión latente con ControlNet |
+| **MAISI** (autoencoder de TC) | Objetivo 1, extensión | **Descartado sin correr** (su recorte ya da 42.24 HU) | Era el candidato "de TC" para el latente |
+| **TotalSegmentator 2.18.0** (nnU-Net) | Objetivo 2 | **En uso** | Un umbral de HU no representa el hueso esponjoso |
+| **U-Net de difusión propia** (DDPM/ADM, predicción `v`, DDIM) | Objetivo 3 | **En uso**, entrenada desde cero | No existe base preentrenada de TC en píxeles; sin autoencoder no hay error de ida y vuelta |
+| **ControlNet** | Objetivo 3 (plan original) | **Retirado** | Necesita una base congelada que ya no existe |
 
-**No hay todavía en el repositorio una planilla terminada para que un médico califique directamente una muestra de las posiciones sintéticas.** Si eso es lo que se quiere hacer, debe prepararse como una evaluación nueva y no presentarse como si ya formara parte de E13.
+Aparte, el proyecto usa agentes de lenguaje como **herramientas de apoyo** (leer artículos, proponer
+una clasificación visual preliminar de metal, revisar la redacción). Ninguno produce resultados de la
+tesis por sí solo: sus propuestas las revisa la autora.
 
-### Qué tarea le corresponde a quién
+---
 
-De las dos revisiones preparadas, **solo una necesita a un médico**:
+## 5. Lo que se puede afirmar hoy, y lo que no
 
-- **La revisión de 16 casos (recorte) no es clínica.** Se juzga si la máscara del hueso quedó cortada o
-  incompleta, comparando dos versiones de la misma imagen. Es un juicio sobre el procesamiento, no sobre
-  el paciente, y lo hace la autora.
-- **El cribado de 30 casos sí es clínico**, y es la tarea que encaja con un médico general o recién
-  egresado: decir si ve fractura, dónde, y si la imagen permite juzgarlo. `dudoso` es respuesta válida.
-  La planilla ya pide la especialidad del revisor, precisamente para que el resultado se reporte con su
-  nivel de formación y no como lectura de especialista.
+**Se puede afirmar:**
 
-La revisión de las **posiciones de los tornillos** —la que sí querría un traumatólogo de pelvis— todavía
-no está preparada, y la sección 8 describe lo que haría falta para montarla.
+- La compuerta del Objetivo 1 se fijó antes, se corrió, y dio **No-Go**; los latentes disponibles, incluido
+  uno de TC, no cubren el rango del hueso denso y el metal.
+- El muestreador y SAP existen, corren y produjeron **3 600 posiciones en 72 pelvis**, con W1 = 0.206 a la
+  serie navegada, sin ningún parámetro ajustado a esa serie.
+- El cribado de fracturas está hecho (20 de 30), y la fractura no explica por sí sola los corredores
+  estrechos.
+- El sintetizador **entrena** (meseta entre ~20 000 y ~40 000 pasos), **genera**, y la **cadena completa
+  corrió** sobre dos pacientes de validación con sus controles en verde.
+- El brazo físico **corre en local**, y se verificó en su código que proyecta paciente y metal **juntos**.
+- El endpoint primario del Objetivo 3 está **definido por completo antes de ver resultados**.
 
-## 8. Cómo pedirle ayuda a un médico para revisar las posiciones
+**No se debe afirmar:**
 
-### ¿A qué médico conviene pedirle?
+- Que el sistema "ya sintetiza TC con metal" como resultado: **no hay modelo elegido ni evaluación**.
+- Que un checkpoint es mejor que otro.
+- Que las posiciones fueron aprobadas por un médico, o que SAP demuestra seguridad clínica.
+- Que las pelvis son sanas o sin fractura.
+- Que se **validó** el simulador físico (se **reprodujo**).
+- Que el sintetizador genera **todo** el artefacto (el suelo de −1000 HU lo impide).
+- Que el entrenamiento es reproducible con otra semilla (no se ha probado).
+- Que los ejemplos mejoran la segmentación (fuera de alcance).
 
-Para juzgar si una trayectoria es quirúrgicamente razonable, la mejor persona sería un **traumatólogo u ortopedista con experiencia en cirugía de pelvis y acetábulo**.
+---
 
-Un **radiólogo** puede ayudar muy bien a identificar el nivel anatómico, la salida del tornillo fuera del hueso y su relación con el canal o los forámenes. Sin embargo, no conviene atribuirle una validación de técnica quirúrgica si esa no es su experiencia.
+## 6. ¿Pudo hacerse mejor? Mi lectura como profesor
 
-Si solo se consigue un médico general, su revisión todavía puede registrarse, pero hay que escribir claramente su grado de formación y no llamarla revisión de especialista.
+Esto es **opinión**, no resultado. Sirve para que no te tomen por sorpresa.
 
-### Qué pedirle exactamente
+1. **El orden de la apuesta fue correcto.** Poner la compuerta del autoencoder **antes** de construir
+   encima ahorró semanas. Muchos proyectos descubren ese problema al final.
+2. **Lo que yo habría medido antes: el suelo de la representación.** El Objetivo 1 estudió el techo
+   (metal) y el error en hueso, pero no el rango negativo del artefacto. Con una compresión simétrica
+   desde el inicio, #141 no existiría. Es un aprendizaje legítimo y una línea clara de trabajo futuro.
+3. **Lo que yo habría decidido antes: cómo se elige el modelo.** Que la pérdida de difusión no ordene
+   bien la calidad es conocido en la práctica; definir el criterio de apariencia antes de entrenar
+   habría evitado elegir 30 000 pasos con un instrumento que después se vio débil.
+4. **La debilidad estructural más grande: el desplazamiento de dominio.** El modelo aprende en
+   pacientes que ya tienen rayas y con máscaras irregulares, y se usa en pelvis limpias con máscaras
+   lisas. Alternativas posibles: entrenar con máscaras suavizadas o paramétricas, o con contexto
+   recortado. Ninguna es gratis y la decisión sigue abierta.
+5. **La pregunta que más te conviene preparar:** *¿por qué un sintetizador aprendido si existe la
+   simulación física?* La tesis todavía no la tiene escrita (`\GAPDEC`). Sin una respuesta cuantitativa
+   (coste por volumen, escala, cobertura 3D), es el flanco más expuesto.
+6. **Lo que está muy bien hecho y debes enfatizar:** la preinscripción sistemática (compuerta,
+   muestreador, criterio de inclusión, endpoint), la negativa a calibrar contra la referencia, y que los
+   tres hallazgos incómodos se encontraron **midiendo** y están registrados. Un trabajo que mide su
+   propio techo es más defendible que uno que no lo buscó.
 
-No conviene decir solamente “¿puede ver si los tornillos están bien?”. Esa pregunta es ambigua. La tarea debe separar, por caso:
+---
 
-1. **¿La imagen permite juzgar la trayectoria?** `sí / no / dudoso`.
-2. **¿El nivel anatómico es el esperado?** Por ejemplo, S1 u otro nivel.
-3. **¿El tornillo permanece dentro del corredor óseo?** `sí / no / dudoso`.
-4. **Si sale del hueso, por dónde y cuánto aproximadamente?** Canal, foramen, parte anterior, parte superior u otra dirección.
-5. **¿La orientación, el punto de entrada y la longitud parecen plausibles para la técnica que se quiere representar?**
-6. **¿Hay alguna estructura en riesgo que el cálculo automático no esté representando?**
-7. **Comentario libre.**
+## 7. Próximos pasos, en orden
 
-No se le debe mostrar de antemano el grado calculado por SAP si se quiere una lectura independiente. Las posiciones deberían estar barajadas y mostrar solo un identificador anónimo.
+1. **Clasificar el tipo de implante** de los 3 pacientes de referencia (`metal_0011`, `0039`, `0056`).
+   Si no son tornillos, el cotejo para elegir checkpoint se revisa.
+2. **Correr el cotejo** del perfil radial y del histograma (sintético frente a real) y **elegir
+   checkpoint**.
+3. **Sonda de viabilidad de Peters**: un corte con el tornillo y la anatomía de esta tesis. Su protocolo
+   es 2D de una fila de detector y el tornillo mide unos 138 mm a lo largo de su eje (la longitud
+   mediana del corredor): si esa extensión no es
+   viable, el contraste primario se queda sin brazo y hay que replantearlo.
+4. **Medir `Δ`** sobre validación, **congelar** `diseno_A.md`, y recién entonces la corrida final y la
+   evaluación sobre los pacientes de prueba.
+5. **Redacción**: el capítulo 3 ya declara el decodificador nuevo y el criterio de selección
+   (`capitulo3-r08`); quedan las decisiones marcadas como `\GAPDEC` en todo el documento, el capítulo de
+   resultados y el resumen.
 
-Tampoco conviene pedirle que revise las 3,600 posiciones. Primero hay que fijar por escrito el propósito de la revisión y seleccionar una muestra que lo responda. Por ejemplo, comprobar si el grado automático coincide con el juicio humano requiere incluir casos de todos los grados; estimar la frecuencia real de posiciones aceptables requiere otro tipo de muestreo. Esa selección debe decidirse antes de mirar los resultados del médico.
+---
 
-### Mensaje listo para copiar
+## 8. Archivos para profundizar
 
-> Hola, Dr./Dra. [apellido]. Soy Kiara y estoy desarrollando una tesis sobre generación de tomografías pélvicas con tornillos de fijación. Una parte del proyecto propone automáticamente trayectorias de tornillo a partir de la anatomía de cada pelvis. Ya puedo medir con un programa cuánto se sale cada trayectoria del hueso, pero necesito una revisión clínica independiente para saber si las posiciones mostradas también parecen anatómica y quirúrgicamente razonables.
->
-> ¿Podría ayudarme revisando una muestra de casos anonimizados? En cada caso le mostraría la tomografía en varios planos con el eje y el volumen del tornillo superpuestos. Le pediría indicar si el caso es evaluable, si la trayectoria permanece en el corredor óseo, si existe perforación y en qué dirección, y si la orientación, entrada y longitud le parecen plausibles para la técnica representada. “Dudoso” sería una respuesta válida; no necesito que fuerce una decisión.
->
-> La revisión es para investigación: no corresponde a pacientes en atención, no busca emitir diagnósticos ni pedirle que certifique la seguridad del programa. Su evaluación se reportaría con su especialidad y nivel de experiencia, según usted autorice. Antes de empezar le enseñaría unos pocos ejemplos para confirmar que las imágenes y las preguntas sean suficientes.
->
-> Si este tipo de fijación no está dentro de su práctica habitual, ¿podría indicarme qué especialista sería el más adecuado?
-
-Antes de enviar el mensaje, se debe reemplazar “tornillo de fijación” por el nombre anatómico ya resuelto y comprobar que las imágenes estén anonimizadas y que su uso y transferencia cumplan las reglas de la universidad y del conjunto de datos.
-
-### Qué material habría que preparar para esa revisión
-
-- una explicación de una página, sin código ni jerga de aprendizaje automático;
-- una definición exacta del tornillo y de la técnica que se representa;
-- cortes axial, coronal y sagital, idealmente con posibilidad de recorrer el volumen;
-- el eje y el grosor real del tornillo superpuestos;
-- una planilla con opciones cerradas y un campo de comentario;
-- una muestra definida antes de recibir respuestas;
-- casos barajados, sin mostrar el resultado de SAP;
-- nombre, especialidad y experiencia del revisor, con su autorización; y
-- una regla para resolver casos `dudoso` o imágenes no evaluables.
-
-Si es posible, dos revisores permitirían medir cuánto concuerdan entre sí. Si solo participa uno, también sirve, pero debe declararse como limitación.
-
-## 9. El experimento medico que estaba preparado: YA SE HIZO
-
-> **Esta seccion es historica.** El cribado de fracturas se ejecuto y su resultado esta en la seccion 6:
-> 20 de 30 con fractura confirmada, repartidas por igual entre los dos grupos. Se conserva el mensaje
-> de abajo porque sirve de plantilla si hay que pedir una segunda lectura, esta vez de especialista.
-
-El único paquete médico listo hoy no pregunta por la calidad de las posiciones. Pregunta si existe **fractura** en 30 casos ciegos. Para esa tarea el mensaje correcto sería:
-
-> Hola, Dr./Dra. [apellido]. En mi tesis medí automáticamente el espacio disponible para un tornillo en tomografías pélvicas. Encontré algunos corredores muy estrechos, pero la base fue seleccionada por no tener material de osteosíntesis, no por estar libre de fractura. Necesito una revisión ciega de 30 casos anonimizados para registrar si se observa fractura (`sí`, `no` o `dudoso`), dónde se encuentra y si las imágenes permiten juzgarla. Los casos están mezclados y no le diría cuáles tienen corredor estrecho para no influir en su lectura. ¿Podría ayudarme con esta revisión o recomendarme un radiólogo o traumatólogo que pueda hacerla?
-
-Las instrucciones exactas ya están en [`r3_fractura_revisor.md`](../experiments/objetivo2/r3_fractura_revisor.md). No debe entregarse al revisor el archivo `r3_fractura_grupos.csv`, porque revelaría los grupos y rompería el cegamiento.
-
-## 10. Próximos pasos, en orden práctico
-
-Los cuatro primeros puntos de la versión anterior de esta lista **ya están hechos**: el tipo de tornillo está decidido, la envolvente quedó medida sobre los 152 casos, la revisión de los 16 casos se completó y el cribado de fracturas se hizo. Lo que queda, en orden:
-
-1. **Esperar el experimento que está corriendo**: la comparación de los dos modelos guardados sobre los cinco pacientes de validación. De él dependen tres decisiones a la vez: con qué criterio se elige el mejor modelo, si los 30,000 pasos se eligieron bien, y si la saturación con 47 pacientes entra como limitación declarada. **Es el cuello de botella actual, y es barato.**
-2. **Ejecutar la cadena completa por primera vez**, sobre un paciente de validación **sin** metal: posición propuesta, máscara del tornillo, apariencia generada. Todas las piezas existen; nunca se encadenaron.
-3. **Medir el margen con que se declarará si el método funciona**, usando solo pacientes de validación. Tiene una parte bloqueada: necesita el brazo de física funcionando sobre esta anatomía.
-4. **Reproducir el protocolo de física con el tornillo de esta tesis**, con la receta ya verificada en su código.
-5. **Congelar el diseño del Objetivo 3 por escrito** y recién entonces lanzar la corrida final y la evaluación.
-6. **Decidir las dos cosas del conjunto de validación**: si los dos pacientes con objeto incidental cuentan, y cuántos pacientes tendrá el subconjunto del brazo físico, porque de eso depende el número real de la prueba estadística principal.
-7. **Resolver las decisiones de redacción marcadas** en los capítulos y alinear título, pregunta, objetivos y alcance.
-8. **Corregir dos cifras equivocadas** que la auditoría encontró dentro de decisiones ya cerradas.
-
-## 11. Lectura honesta del progreso
-
-El proyecto tiene un resultado defendible del Objetivo 1, aunque negativo, y un resultado cuantitativo grande del Objetivo 2 **que en estas dos semanas quedó cerrado**: los tres controles que lo condicionaban —la revisión de los 16 casos, el cribado de fracturas y la envolvente— están resueltos con evidencia.
-
-El Objetivo 3 dejó de ser un hueco. Tiene dos entrenamientos, muestras que se pueden mirar y una métrica definida por escrito antes de ver resultados. Pero sigue sin ejecutar su caso de uso: **colocar un tornillo en una pelvis limpia**.
-
-Y hay algo que conviene decir con claridad, porque es el patrón de estas dos semanas: **los tres hallazgos más importantes del tramo son problemas, no logros.** El entrenamiento se degrada si se prolonga. La representación no puede expresar parte del artefacto. El criterio con que se elige el mejor modelo puede estar midiendo lo que no importa. Los tres se encontraron midiendo, no suponiendo, y los tres están registrados con su evidencia.
-
-Eso **no** es mala señal. Un trabajo que mide su propio techo y lo publica es más defendible que uno que no lo buscó. Lo que sería mala señal es que aparecieran en la sustentación.
-
-La forma más precisa de decirlo hoy es:
-
-> La representación latente fue puesta a prueba y no pasó. El muestreador de posiciones está implementado, ejecutado y **cerrado**, con sus controles humanos resueltos. El sintetizador de apariencia ya entrena, ya genera imágenes y ya tiene su métrica definida, pero **todavía no ha ejecutado la cadena completa ni evaluado nada**, y antes de hacerlo hay que resolver con qué criterio se elige el modelo.
-
-## 12. Archivos clave para retomar
-
-- Estado general: [`ESTADO.md`](ESTADO.md)
-- Hallazgos y riesgos: [`04-implicancias.md`](04-implicancias.md)
-- Mapa de experimentos del Objetivo 2: [`EXPERIMENTOS.md`](../experiments/objetivo2/EXPERIMENTOS.md)
-- Resultado principal de SAP: [`e13_sap.md`](../experiments/objetivo2/e13_sap.md)
-- Análisis por corredor viable/estrecho: [`e13b_estratificado.md`](../experiments/objetivo2/e13b_estratificado.md)
-- Revisión de los 16 casos: [`e9ts_revision_laminas.md`](../experiments/objetivo2/e9ts_revision_laminas.md)
-- Cribado de fracturas: [`r3_fractura_revisor.md`](../experiments/objetivo2/r3_fractura_revisor.md)
-- Documento de entrega: [`overleaf/`](../overleaf/)
-- Decisiones tomadas, con su fundamento: [`01-decisiones.md`](01-decisiones.md)
-- Diseño del sintetizador: [`diseno_A.md`](../experiments/objetivo3/diseno_A.md)
-- Muestras sintéticas que se pueden abrir: `experiments/objetivo3/outputs/a8/` y `a8_mejor/` (páginas web navegables y volúmenes para visor médico)
-- El suelo de la representación, medido: `experiments/objetivo3/a9_suelo_representacion.py`
-- Rasterizador del tornillo, el eslabón que faltaba: `experiments/objetivo3/a11_rasterizar_tornillo.py`
-- Parámetros de las zonas de medición: `experiments/objetivo3/a12_roi_parametros.py`
-- Brazo de física, copia ejecutable y parcheada: `experiments/objetivo3/peters/`
-- Auditoría de las decisiones ya cerradas: `redaccion/rondas/paridad-r01-trazabilidad.md`
+| Para | Archivo |
+|---|---|
+| Por dónde va el proyecto | [`ESTADO.md`](ESTADO.md) |
+| Cada decisión con su porqué | [`01-decisiones.md`](01-decisiones.md) |
+| Hallazgos y riesgos | [`04-implicancias.md`](04-implicancias.md) (#141 suelo, #145 pérdida, #149–#152 cadena y decodificador) |
+| Alcance | [`00-tesis.md`](00-tesis.md) |
+| Diseño del sintetizador | [`diseno_A.md`](../experiments/objetivo3/diseno_A.md) |
+| Código del modelo | `src/renderizador/modelo.py`, `difusion.py`, `entrenar.py` |
+| Lectura de HU (decodificador) | `src/common/ventanas.py` |
+| Resultado del muestreador | [`e13_sap.md`](../experiments/objetivo2/e13_sap.md), [`e13b_estratificado.md`](../experiments/objetivo2/e13b_estratificado.md) |
+| Cribado de fracturas | [`r3_fractura_revisor.md`](../experiments/objetivo2/r3_fractura_revisor.md) |
+| Brazo físico (copia parcheada) | `experiments/objetivo3/peters/` |
+| Documento de entrega | [`overleaf/`](../overleaf/) |

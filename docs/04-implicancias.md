@@ -11158,3 +11158,27 @@ de checkpoint (sigue bloqueada por #150). Las cifras GPU de #150/#151 son v1 y n
 2026-10-07 (2), escrita por el asistente con autorizacion explicita de la autora. **Pendiente por
 orden de la autora:** clasificar con `clasificador-metal` el tipo de implante de los 3 pacientes de
 referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
+
+## Ronda 2026-10-08 — decisiones delegadas al asistente
+
+### 153 — `tesis/main.tex` queda desalineado con las decisiones delegadas del 2026-10-08: la hipotesis y el Objetivo 2 siguen hablando de densidad — APLICADA el 2026-10-08
+
+- **Origen:** `01-decisiones.md`, entrada 2026-10-08 (decisiones delegadas), aplicada a `overleaf/` y a
+  `docs/00-tesis.md` en la ronda `gaps-r03`. `tesis/main.tex` no se toco (regla 4: solo con orden explicita).
+- **Que queda desalineado en `main.tex`:** (1) la Hipotesis (*"density-based placement sampler"*) y el
+  Objetivo 2 (*"constrained by bone density read from the CT numbers"*), cuando el muestreador preinscrito no
+  condiciona por densidad y la fraccion por zona de densidad salio de SAP (punto 14); (2) la fila *Surgical
+  Admissibility* de la tabla de resultados, que lista *"density-zone fraction"* como componente; (3) la
+  Pregunta de investigacion conserva *"bone density"* entre parentesis.
+- **Tipo:** REDACCION / coherencia entre `main.tex` (fuente de contenido) y `overleaf/` (entrega). No cambia
+  ninguna cifra ni ningun experimento.
+- **Pendiente de la autora:** orden explicita para editar `main.tex`, o confirmar que `main.tex` queda como
+  boceto historico y la fuente vigente es `overleaf/`.
+- **APLICADA el 2026-10-08 por orden explicita de la autora** ("edita main.tex tambien para alinearlo"):
+  Problem Statement (el muestreo queda acotado por la viabilidad del corredor), Research Question
+  (*"osseous corridor and cortical containment"*), Hypothesis (*"corridor-constrained placement sampler"*),
+  Objetivo 2 (restringido por la holgura cortical de 5 mm y la viabilidad del corredor), fila *Surgical
+  Admissibility* (solo perforacion; viabilidad a 7.0 mm con 1 mm de holgura, descriptiva; sin fraccion de
+  densidad) y *Explicitly out of scope* (condicionar por densidad, motivado por `arand2019pelvicring`, pasa a
+  trabajo futuro). Compila: 8 paginas, 0 errores, 0 citas indefinidas. Copias literales de `00-tesis.md`
+  alineadas.

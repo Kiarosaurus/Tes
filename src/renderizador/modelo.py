@@ -8,10 +8,12 @@ DDPM/ADM, float32), no una decision de la tesis.
 
 ENTRADA (11 canales, seccion 4 de `diseno_A.md`)
 ------------------------------------------------
-- 9 canales de imagen: 3 cortes axiales contiguos x 3 ventanas (LW asinh, MW, SW) de `pub+asinh`.
-  En los cortes de contexto la region `G` va borrada, igual que en el corte central.
+- 3 canales: el corte central **con ruido** (`x_t`), en sus 3 ventanas (LW asinh, MW, SW) de
+  `pub+asinh`, multiplicado por `G` (fuera de `G` vale 0).
+- 6 canales de contexto: los 2 cortes axiales vecinos x 3 ventanas, con la region `G` borrada.
 - 2 canales de mascara: `M` (metal) y `G` (metal mas banda).
-Se genera **solo el corte central**, en sus 3 ventanas -> 3 canales de salida.
+El ensamblado esta en `difusion.perdida` y `difusion.muestrea_ddim` (`cat([x_t, cond])`).
+Se genera **solo el corte central**, en sus 3 ventanas -> 3 canales de salida (el objetivo `v`).
 
 POR QUE SIN BASE PREENTRENADA
 -----------------------------

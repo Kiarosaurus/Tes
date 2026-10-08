@@ -1,4 +1,6 @@
-"""SAP — Surgical Admissibility Profile. Unica metrica introducida por esta tesis (`00-tesis.md`).
+"""SAP — Surgical Admissibility of Placement (admisibilidad quirurgica de la colocacion).
+
+Unica metrica introducida por esta tesis (`00-tesis.md`).
 
 POR QUE ESTE MODULO NO REIMPLEMENTA NADA DE LA GEOMETRIA DEL CORREDOR
 ---------------------------------------------------------------------
@@ -25,8 +27,8 @@ La comparacion es **Wasserstein-1** contra las dos distribuciones ordinales de
 DECISIONES QUE ESTE MODULO IMPLEMENTA (no las toma: estan en `docs/01-decisiones.md`, 2026-09-22)
 -------------------------------------------------------------------------------------------------
 - **D-O2.3** — la brecha es la profundidad de protrusion fuera de la envolvente osea, medida sobre el
-  campo de distancia euclidea **signada** (ver `campo_signado`), con 8 mm recortados por extremo. Ese recorte es
-  clinico, no numerico: un tornillo iliosacro entra y sale por la cortical del ilion **por diseno**, y
+  campo de distancia euclidea **signada** (ver `campo_signado`), con 8 mm recortados por extremo del
+  propio implante (correccion de D-O2.3, 2026-10-04). Ese recorte es clinico, no numerico: el tornillo transiliaco-transsacro (#130) entra y sale por la cortical del ilion **por diseno**, y
   sin el recorte toda trayectoria valida puntuaria grado 3 por sus propios puntos de entrada y salida.
 - **D-O2.4** — el diametro de SAP es **7.0 mm**, porque es el calibre del benchmark:
   *"the screws using a 7.0-mm cannulated screw"* (`zwingmann2009navigated`, Materials and Methods,

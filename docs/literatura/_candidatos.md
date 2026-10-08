@@ -738,3 +738,13 @@ lectura con `lector-papers`.
 | Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
 |---|---|---|---|---|
 | Referencia del **software** del protocolo fisico de Peters et al. (los dos repositorios publicados, revisiones `4cf3544` del simulador y `4993e87` de los ejemplos, licencia BSD 3-Clause), sin entrada bibliografica | capitulo3-r07, §Apariencia (`\GAPLIT`) | El capitulo afirma como hechos verificados la proyeccion conjunta de paciente y metal por desplazamiento de agua, las dos revisiones revisadas, la licencia y el parche de una linea que exige el script publicado. Esos hechos salen del codigo y de los archivos del repositorio, no del articulo: la ficha de `peters2025hybrid` registra "Licencia: NO ENCONTRADO EN EL PDF". Sin entrada propia, la revision concreta y sus condiciones de acceso no son citables | 2 | PENDIENTE |
+
+## Ronda 2026-10-08 — `\GAPLIT` del capitulo 3 (`overleaf`, gaps-r03)
+
+> No sale de snowballing: es un hueco de citacion que abrio la redaccion de la arquitectura del sintetizador
+> fijada en `docs/01-decisiones.md` 2026-10-08 (punto 3, "prediccion `v`"). Ninguna ficha del repositorio define
+> ni cita esa parametrizacion. No se busco ni se descargo nada. Decide la autora.
+
+| Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
+|---|---|---|---|---|
+| Fuente de la parametrizacion de prediccion `v` del objetivo de entrenamiento de difusion, sin identificar | gaps-r03, `capitulo3` §Sintetizador (`\GAPLIT`) | El sintetizador se entrena con prediccion `v` (DEC 2026-10-08 pto 3), mientras el marco teorico (`capitulo1` §Modelos de difusion) solo presenta la prediccion del ruido de Ho et al.; sin fuente, el objetivo de entrenamiento del Obj 3 queda sin definir en el documento | 2 | PENDIENTE |

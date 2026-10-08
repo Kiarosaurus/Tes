@@ -26,7 +26,9 @@ DE DONDE SALE CADA PIEZA, y por que no se reimplementa ninguna
   coordenadas de SAP. Se importa, no se copia.
 - **La ventana de 256 x 256** la calcula `a1b_parches_componente.ventana_coords`, la misma que recorto
   los parches de entrenamiento.
-- **La codificacion multiventana** es `common.ventanas`, con la regla congelada del Objetivo 1.
+- **La codificacion multiventana** es `common.ventanas`. La lectura de HU es, por omision, la `regla_suave`
+  decidida para el Objetivo 3 (`DELTA_OBJ3 = 0.05`, 01-decisiones.md 2026-10-07); `--regla-v1` reproduce
+  las corridas anteriores, que leian con la `regla` congelada del Objetivo 1 (#152).
 - **La composicion y su control** son `common.region`.
 
 EL CONDICIONAMIENTO, replicado EXACTAMENTE como en el entrenamiento
@@ -85,7 +87,7 @@ sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo1'))
 sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo2'))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common.ventanas import canales_diseno_a, codifica_bloque, decodifica_bloque  # noqa: E402
+from common.ventanas import DELTA_OBJ3, canales_diseno_a, codifica_bloque, decodifica_bloque  # noqa: E402
 from common.region import componer, verificar_composicion  # noqa: E402
 from difusion import Difusion, muestrea_ddim  # noqa: E402
 from modelo import UNetDifusion  # noqa: E402
@@ -223,8 +225,10 @@ def main() -> None:
     ap.add_argument('--sin-nifti', dest='nifti', action='store_false',
                     help='no escribe los volumenes .nii.gz (ahorra memoria; perfil, resumen y marcas si)')
     ap.add_argument('--out-dir', type=Path, default=aqui / 'outputs' / 'a15')
-    ap.add_argument('--delta', type=float, default=None,
-                    help='lectura `regla_suave` (v2, #152) con esta rampa; sin el, `regla` v1 del Objetivo 1')
+    ap.add_argument('--delta', type=float, default=DELTA_OBJ3,
+                    help='rampa de la lectura `regla_suave` (v2, #152); por omision la decidida, 0.05')
+    ap.add_argument('--regla-v1', dest='delta', action='store_const', const=None,
+                    help='lee con la `regla` v1 del Objetivo 1, solo para reproducir corridas anteriores')
     ap.add_argument('--dispositivo', default='cpu',
                     help="'cpu' o 'cuda'. Con la misma semilla CPU y GPU NO dan el mismo ruido: "
                          'no mezclar dispositivos entre pacientes de un mismo cotejo')

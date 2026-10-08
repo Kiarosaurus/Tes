@@ -37,7 +37,7 @@
 
 - **Particion:** la de P1 (`experiments/objetivo1/p1_particion.csv`, semilla 20260917), para cumplir la *Strict
   Isolation Rule* (`main.tex:111`) y reutilizar un test ya fijado. Con metal: **74 pacientes de entrenamiento**
-  (52 dataset7 + 22 dataset6), 5 de validacion, **20 de test**. Sin metal en test: 14 (dataset6).
+  (52 dataset7 + 22 dataset6), 5 de validacion (**3 tras R2**: `metal_0011`, `_0039`, `_0056`; 2026-09-21 (2) y 2026-10-05 (6)), **20 de test**. Sin metal en test: 14 (dataset6).
 - **Unidad de entrenamiento (DECIDIDA 2026-09-20, D2/#102):** parches 2.5D por **COMPONENTE** de implante, no por
   corte. Cada componente conexo de `M` lleva su propia `B_delta` y su propio parche; los canales `M` y `G`
   contienen **solo el componente objetivo**, y el metal de otros componentes que caiga en el parche se queda en
@@ -56,7 +56,10 @@
 
 - **`[SUPUESTO]` Codificacion `pub+asinh`** (3 canales: LW asinh [-1000, 20000], MW, SW). Identidad exacta en hueso y
   metal (E6c: 0.00 HU a float; P1: 0.00 en identidad), y es la primera del orden a priori de #76.
-- **Lectura de HU del resultado:** `regla` de P1 (canal mas estrecho no saturado). Mismo codigo (`e6b_vae_sd15.regla`).
+- **Lectura de HU del resultado: DECIDIDA el 2026-10-07** (`01-decisiones.md`): `regla_suave` (v2) con
+  `delta = 0.05` (`common.ventanas.DELTA_OBJ3`). Antes se leia con la `regla` de P1 (canal mas estrecho no
+  saturado), que borraba metal casi saturado y recortaba la cola clara de las rayas (#152). La `regla` v1
+  sigue siendo la del Objetivo 1 y es caso particular de la v2.
 - **2.5D:** 3 cortes axiales contiguos -> 9 canales de imagen + 2 de mascara (`M`, `G`) en la entrada; se genera el
   corte central. `[SUPUESTO]`.
 - **`[DECIDIR]` Tamano del parche.** Un tornillo iliosacro cruza el corte axial casi de lado a lado: su largo es el
@@ -93,7 +96,10 @@
 
 ## 6. Tornillo sintetico (uso)
 
-- **Geometria (ya decidida, `main.tex:113`, #41 via c):** cilindro liso rigido; diametro 6.5-8.0 mm
+- **ACTUALIZACION 2026-10-08: lo que sigue en esta vineta esta SUPERADO.** La geometria de sintesis es el
+  cilindro de **~4.91 mm** (D3, 2026-09-20 (2)); 6.5-8.0 mm queda solo para la viabilidad del corredor y 7.0 mm
+  para medir la brecha en SAP (D-O2.4). El implante es un **tornillo transiliaco-transsacro** (#130). Texto
+  original: **Geometria (ya decidida, `main.tex:113`, #41 via c):** cilindro liso rigido; diametro 6.5-8.0 mm
   (`gardner2010safezones`) y 6.3-8 mm (`kaiser2014dysmorphism`); largo acotado por el corredor medido en cada volumen.
   Rosca, canulacion, cabeza y arandela: sin fuente textual -> simplificacion declarada.
 - **Rasterizacion:** cilindro a la resolucion del CT; `M` = voxeles cuyo centro cae dentro. `[SUPUESTO]`

@@ -11183,7 +11183,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   trabajo futuro). Compila: 8 paginas, 0 errores, 0 citas indefinidas. Copias literales de `00-tesis.md`
   alineadas.
 
-### 154 — LOS 3 PACIENTES DE REFERENCIA DEL COTEJO NO SON TORNILLOS AISLADOS: `0011` fijador externo, `0056` placas con tornillos, `0039` dos tornillos (uno iliosacro, no transsacro completo) — ABIERTA (dispara la condicion previa de `01-decisiones.md` 2026-10-07 (2): "si no son tornillos, el cotejo se revisa"; toca #150)
+### 154 — LOS 3 PACIENTES DE REFERENCIA DEL COTEJO NO SON TORNILLOS AISLADOS: `0011` fijador externo, `0056` placas con tornillos, `0039` dos tornillos (uno iliosacro, no transsacro completo) — APLICADA el 2026-10-08 (opcion 1 con solo `0039`, `01-decisiones.md` 2026-10-08 (2); toca #150)
 
 - **Origen:** agente `clasificador-metal`, 2026-10-08, lote `experiments/exploration-3d/propuesta_lote-tipo-ref.csv`
   (propuesta sin validar; morfologia, no modelo ni material). Laminas a 2500 HU del 2026-09-07; `0056` tambien a
@@ -11213,3 +11213,28 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `experiments/objetivo3/a13_comparar_ckpt.py`, #150.
 - **Pendiente de la autora:** validar la propuesta (abrir `explorar.py cortes` en `0039` primero, luego `0056`) y
   elegir opcion. El cotejo no corre hasta entonces.
+- **Resolucion (2026-10-08):** la autora eligio la opcion 1 usando solo `0039`, previa revision de los 65 pacientes
+  (`experiments/exploration-3d/tornillos_candidatos.md`). Aplicada en `00-tesis.md` y `capitulo3.tex` (cotejo).
+
+### 155 — EL CENSO `e8` SUBCUENTA LOS TORNILLOS CANDIDATOS (26 de 65 pacientes a ojo frente a 17) y LA REFERENCIA DE REALISMO DEL OBJETIVO 3 MEZCLA TIPOS DE IMPLANTE; posible paciente repetido entre test y train (`0053`/`0054`) — ABIERTA
+
+- **Origen:** revision visual de los 65 pacientes con material ortopedico, 4 agentes `clasificador-metal`,
+  2026-10-08 (`experiments/exploration-3d/propuesta_lote-tornillos-{A,B,C,D}.csv`, resumen en
+  `tornillos_candidatos.md`). Propuesta sin validar.
+- **(1) Censo `e8` (#41, #13):** 26 pacientes con tornillo aislado candidato IS/TS a ojo frente a 17 del censo.
+  No detecta 9 (vastago bajo 2500 HU o fragmentado) y subestima L en los fragmentados (`0040` 33 frente a
+  ~145 mm). Toda cifra de `e8` (17 de 65, medianas de L y d de alargados) es un minimo o esta sesgada a
+  tornillos densos y enteros. **Afecta:** el cuerpo de 4.91 mm (mediana de 79 alargados del censo morfologico,
+  `capitulo3.tex` l.~127) si sale de este mismo filtro; revisar si el sesgo cambia la mediana.
+- **(2) Realismo del Objetivo 3 (`capitulo3.tex` l.~248):** las muestras sinteticas se comparan con "los
+  implantes reales de los 20 pacientes de prueba con implante", que incluyen placas, fijadores y protesis;
+  solo 5 de ellos tienen tornillo aislado candidato (`0009`, `0024`, `0048`, `0049`, `0066`). Mismo problema
+  que #154 para el cotejo. Opciones: restringir a componentes tornillo aislado de test, estratificar por tipo,
+  o declarar la heterogeneidad.
+- **(3) Particion:** `0053` (test) y `0054` (train) tienen una placa del anillo anterior casi identica y grupos de
+  paciente distintos. Si son el mismo paciente, hay **fuga train/test** (`p1_particion.csv`). Otros posibles
+  repetidos sin registrar, solo en train: `0025`/`0026`, `0027`/`0028`, `0037`/`0038`, `0019`/`0020`.
+- **(4) Datos previos:** `0066` estaba como "ortopedico = no" en la revision 2D y las laminas muestran clavos y
+  barra transversa.
+- **Pendiente de la autora:** validar en cortes (`0053`/`0054` primero por la fuga), decidir (2) y si se rehace
+  `e8` con umbral menor o union de fragmentos colineales.

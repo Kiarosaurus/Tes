@@ -2170,3 +2170,18 @@ datos, no decisiones; (iii) el texto de `tesis/main.tex` (regla 4): estas decisi
     2009, #113), citada solo de forma descriptiva.
 32. **Cifras de Jacob et al.: no se citan** (la ficha registra cifras discrepantes); se describe el trabajo sin
     numeros.
+
+## 2026-10-08 (2) — Referencia del cotejo de checkpoint: solo los tornillos aislados de `metal_0039` (#154, opcion 1)
+
+Escrito por el asistente por orden explicita de la autora ("Aplica la opcion 1 usando solo 0039"), despues
+de revisar los 65 pacientes con material ortopedico (`experiments/exploration-3d/tornillos_candidatos.md`).
+
+- **Referencia real del cotejo** (2026-10-07 (2)): solo los **2 tornillos intraoseos aislados de `metal_0039`**
+  (comp `e8` 1, IS, L 76.9 mm, d 4.93 mm; comp `e8` 2, pubis -> acetabulo, L 97.1 mm, d 5.76 mm). Salen
+  `metal_0011` (fijador externo) y `metal_0056` (placas con tornillos).
+- **No se usan tornillos de train ni de test** como referencia: se mantiene la separacion de particiones.
+- **Envolvente real:** minimo a maximo de esos 2 componentes en cada cascara; el resto de la regla (desempate
+  por p50/p95 dentro de `M`, empate persistente lo decide la autora) no cambia.
+- **Alcance:** 1 paciente y 2 tornillos. El cotejo sigue descartando, no probando; con n = 1 paciente la
+  envolvente es mas estrecha y puede descartar checkpoints que solo difieren de ese paciente.
+- **Condicion previa:** la autora valida en cortes que los 2 elementos de `0039` son tornillos aislados.

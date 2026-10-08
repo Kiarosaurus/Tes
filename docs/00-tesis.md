@@ -123,9 +123,9 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
     - **El checkpoint NO se elige por la perdida de validacion** (2026-10-05 (6)), sino por un cotejo de
       apariencia **sobre la tarea de sintesis**: tornillo parametrico en pelvis limpias de validacion,
       perfil radial de HU (mediana y p95 como elevacion sobre el anillo de 12-15 mm) e histograma
-      dentro de `M` sobre voxeles > 2500 HU, contra los implantes reales de los 3 pacientes de
-      validacion; regla por envolvente real; con n = 3 descarta, no prueba (2026-10-07 (2)).
-      **Condicion previa PENDIENTE:** verificar el tipo de implante de esos 3 pacientes.
+      dentro de `M` sobre voxeles > 2500 HU, contra los **2 tornillos aislados de `metal_0039`**, unico
+      paciente de validacion con tornillo aislado (`0011` fijador externo, `0056` placas; 2026-10-08 (2),
+      #154); regla por envolvente real; con 1 paciente descarta, no prueba (2026-10-07 (2)).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
       60 % de los parches (2026-10-05 (6), punto 2).
     - **Lectura de HU del Objetivo 3: `regla_suave` (v2), `delta = 0.05`** (2026-10-07). La `regla` v1

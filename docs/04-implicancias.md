@@ -11238,3 +11238,29 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   barra transversa.
 - **Pendiente de la autora:** validar en cortes (`0053`/`0054` primero por la fuga), decidir (2) y si se rehace
   `e8` con umbral menor o union de fragmentos colineales.
+- **Actualizacion (2026-10-08):** la autora reviso en cortes (`tornillos_revision_autora.csv`). (3) **Confirmado:**
+  `0053` y `0054` son el mismo paciente -> se resuelve en #156. (4) `0066`: barra de ilion a ilion. `0040`: barra
+  de ilion a ilion dentro del hueso. `0055`: 3 tornillos transversos sueltos. En los tres, dentro del hueso el fuste
+  tiene HU bajo y se confunde con el hueso (confirma (1)). (2) queda como `\GAPDEC` en `capitulo3.tex` (realismo:
+  19 pacientes de prueba con implante, 5 con tornillo aislado).
+
+### 156 — `metal_0053` (test) y `metal_0054` (train) SON EL MISMO PACIENTE: fuga train/test; `0053` sale de las cohortes por la regla del 2026-09-10 — APLICADA en datos y `overleaf/` el 2026-10-08; PENDIENTE en `00-tesis.md` y `tesis/main.tex`
+
+- **Origen:** revision en cortes de la autora, 2026-10-08 (misma placa y anatomia; `0053` tiene ademas un implante
+  femoral y un FOV mas alto). Tenian grupos de paciente distintos (P152/P153).
+- **Regla aplicada (sin decision nueva):** `01-decisiones.md` 2026-09-10, adquisiciones distintas del mismo
+  paciente: primaria la de menor spacing en plano -> `0054` (0.785 frente a 0.820 mm), que sigue en train; `0053`
+  secundaria, fuera de cohortes. Cambios: `p1_particion.csv` (`0053`: P153, `excluido`), `grupos.csv`
+  (reproducibilidad), `exclusiones.csv` (fila nueva). `revision.csv` (archivo de la autora) sigue con P152.
+- **Objetivo 1:** el decodificador `afinado` se entreno con train (incluye `0054`) y se evaluo en `0053`: fuga. La
+  compuerta preinscrita se ejecuto con 34 y no se reescribe. Sensibilidad sin `0053`
+  (`experiments/objetivo1/p1_sin_0053.md`): mejor combinacion 61.72 -> 60.95 HU (IC95 [54.28, 68.19]); maxima
+  diferencia 2.25 HU; **NO-GO igual**. La cota de MAISI (42.24 HU) no entrena nada: sin fuga, solo cambia n.
+- **Objetivo 2:** el marco de Kaiser sobre metal pasa a 64 pacientes; `0053` no tenia marco computable (S1 no
+  hallado, crestas fuera de FOV): 57 sigue, 8 -> 7, 7 -> 6; 48, 29 y 17 no cambian. La cohorte primaria (sin
+  osteosintesis) no se toca.
+- **Objetivo 3:** el sintetizador se entreno con `0054` (train): correcto. Prueba 34 -> **33** (con implante 20 ->
+  **19**; sin metal 14). Nada de test se ha medido aun.
+- **Aplicado en `overleaf/secciones/capitulo3.tex`** (ronda `tornillos-r01`).
+- **Pendiente de la autora:** orden para alinear `00-tesis.md` y `tesis/main.tex` (20 de test, 65 pacientes con
+  material); si `revision.csv` se corrige a P153.

@@ -8,6 +8,12 @@
 - **Siguiente:** sin cambio respecto del bloque (4).
 - **Pendientes:** autora revisa la lista de archivados y hace commit.
 
+## 2026-10-08 (5) — Revision en cortes de la autora aplicada: 0039 confirmado; 0053 = 0054 (fuga)
+
+- **Hecho:** veredictos normalizados en `tornillos_revision_autora.csv`. `0039`: 2 tornillos aislados (referencia del cotejo, firme). `0053` (test) = `0054` (train): `0053` fuera por la regla 2026-09-10 (#156); prueba 33 (19 con implante); Obj 1 sin 0053 sigue NO-GO (`p1_sin_0053.md`). `capitulo3.tex` actualizado (ronda `tornillos-r01`, 117 pp).
+- **Siguiente:** confirmar 5 semillas -> preparar a15 (perfil 0.5 mm con elevacion), perfil real de 0039 y sbatch del cotejo.
+- **Pendientes:** orden para alinear `00-tesis.md`/`main.tex` (#156); decidir referencia de realismo (#155 (2), GAPDEC).
+
 ## 2026-10-08 (4) — Censo visual de tornillos en los 65 pacientes; cotejo con solo `0039`
 
 - **Hecho:** 4 agentes `clasificador-metal` revisaron los 65 pacientes con material (`experiments/exploration-3d/tornillos_candidatos.md`): 26 con tornillo aislado IS/TS (censo `e8`: 17); en val solo `0039`. Autora eligio opcion 1 de #154 con solo `0039`: `01-decisiones.md` 2026-10-08 (2), `00-tesis.md`, `capitulo3.tex` (compila, 116 pp). Registrada #155 ABIERTA.

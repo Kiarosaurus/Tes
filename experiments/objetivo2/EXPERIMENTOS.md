@@ -12,7 +12,8 @@
 > si se puede usar.
 >
 > **Regla de mantenimiento:** al anadir un experimento, anadir su fila. Al superar uno, no borrarlo:
-> moverlo a *Superados* con el motivo.
+> moverlo a *Superados* con el motivo; si ya nadie lo importa, `git mv` a `experiments/obsoletos/objetivo2/`
+> y anadir su fila en `experiments/obsoletos/README.md`. Manual del cluster: `experiments/KHIPU.md`.
 
 ## Leyenda de `Origen`
 
@@ -32,15 +33,15 @@
 |---|---|---|---|
 | `r1_landmarks.py` / `.csv` | deteccion de los cinco landmarks; 179 filas | script | **VIGENTE** |
 | `r1_resumen.py` / `r1_estados.csv` | estado por volumen; 179 filas, 78 col | script | **VIGENTE** |
-| `r1_landmarks.md`, `r1_landmarks.v2a.md` | notas de la deteccion | asistente | **VIGENTE** |
-| `r1_mosaico.py` | mosaico sagital de +-60 mm para revisar S1 | script | **SUPERADO** (ver 6) |
+| `r1_landmarks.md` | nota de la deteccion (la de v2a esta en `../obsoletos/objetivo2/`) | asistente | **VIGENTE** |
+| `../obsoletos/objetivo2/r1_mosaico.py` | mosaico sagital de +-60 mm para revisar S1 | script | **ARCHIVADO** (ver 7) |
 | `r1_auditoria_s1_agente.csv` | juicio del nivel de S1 sobre el mosaico; 70 filas | agente | **VIGENTE** como contraste |
 | `r1_auditoria_s1_clinico.csv` | juicio del nivel de S1; **65 de 65 llenas** | revisor clinico | **VIGENTE — es la referencia que cita `main.tex`** |
 | `r1_auditoria_s1.md` | procedencia y acuerdo entre los dos juicios | asistente | **VIGENTE** |
 | `r1_cortes_itksnap.py` / `.csv` | posicion del punto de S1 en indices del archivo; 65 filas | script | **VIGENTE**; lo reusa R2 |
-| `r1_revision_itksnap_revisor.csv` / `.md` | 2da vuelta de S1 en ITK-SNAP; **0 de 61 llenas** | revisor clinico | **SUPERADO, NO BORRAR** (ver 6) |
+| `../obsoletos/objetivo2/r1_revision_itksnap_revisor.csv` / `.md` | 2da vuelta de S1 en ITK-SNAP; **0 de 61 llenas** | revisor clinico | **ARCHIVADO, NO BORRAR** (ver 7) |
 | `r1_revision_laminas_revisor.csv` | 2da vuelta de S1 sobre laminas; 61 filas | pendiente | **ABIERTO** |
-| `r1_landmarks.v1-parcial.csv`, `.v2a.csv`, `r1_estados.v2a.csv` | versiones previas | script | **SUPERADOS**, se conservan por trazabilidad |
+| `../obsoletos/objetivo2/r1_landmarks.v1-parcial.csv`, `.v2a.csv`, `r1_estados.v2a.csv` | versiones previas | script | **ARCHIVADOS**, se conservan por trazabilidad |
 
 ## 2. TS — cohorte de TotalSegmentator
 
@@ -71,7 +72,8 @@
 | `e9ts_ejes.sbatch` | segunda pasada para el eje por altura; `--out-dir` propio | — | **ABIERTO**: sin lanzar |
 | `e9ts_resumen.py` / `.md` | tablas por cohorte | script | **VIGENTE** |
 | `e9ts_repetibilidad.py` | repetibilidad | script | **VIGENTE** |
-| `e9ts_revision_laminas.md` / `_autora.csv` | condicion de reapertura del recorte de 6 mm; **0 de 16 llenas** | autora | **ABIERTO Y SIN SEGUIR — ver #123** |
+| `e9ts_revision_laminas.md` / `_autora.csv` (`.raw.csv` y `.sin_revisor.csv`: entregas originales) | condicion de reapertura del recorte de 6 mm; 16 de 16 revisadas, **0 `fallo_6mm`** | autora + medico | **CERRADO** (#131, 2026-10-04): no reabre la decision de 6 mm |
+| `e9ts_revision_laminas_agente.csv` / `.raw.csv` | veredicto preliminar del agente `revisor-laminas-corredor` | agente | **VIGENTE** como contraste |
 | `maintex_cifras.py` / `.md` | cifras que van al documento | script | **VIGENTE** |
 
 ## 5. SAP y muestreador — Objetivo 2 propiamente dicho
@@ -86,7 +88,9 @@
 | `e13_poses_g3.csv` / `e13_sap_g3.md` | sensibilidad, 49 casos | Khipu 52175 | **VIGENTE** |
 | `e13_poses_piloto.csv` / `e13_sap_piloto.md` | 2 casos de grupo 1, prueba del camino | script | **NO ES RESULTADO**: fuera de cohorte |
 | `e13b_estratificado.py` / `.md` | W1 por viabilidad del corredor | script | **VIGENTE — post hoc declarado** (#122) |
-| `verificar_coherencia.py` | 78 comprobaciones: codigo, preinscripcion, controles y `main.tex` dicen lo mismo | script | **VIGENTE — correr antes de cerrar sesion** |
+| `e14_relleno_envolvente.py` / `e14_relleno.sbatch` -> `outputs/e14_relleno.csv` | envolvente con cierre frente a cierre + relleno; 152 casos | Khipu | **CERRADO** (#131): 0 casos cambian; cierra #127 pto 13 |
+| `e11_componentes.csv` | componentes medidos por E11 | script | **VIGENTE** (ver 3) |
+| `verificar_coherencia.py` | 104 comprobaciones (2026-10-08): codigo, preinscripcion, controles y `main.tex` dicen lo mismo | script | **VIGENTE — correr antes de cerrar sesion** |
 
 ## 6. R2 — verificacion del nivel del segundo corredor (#121)
 
@@ -94,11 +98,30 @@
 |---|---|---|---|
 | `r2_nivel_pico_itksnap.py` / `.csv` | muestra de 18 casos e indices | script | **ABIERTO** |
 | `r2_nivel_pico_laminas.py` | laminas sagitales alargadas, con indices al pie | script | **VIGENTE** |
-| `r2_nivel_pico_revisor.md` | instrucciones de la revision de S2 | asistente | **ABIERTO — en pausa**: la linea marca una altura y con el sacro inclinado admite dos respuestas. Esperar al eje por altura |
+| `r2_nivel_pico_revisor.md` (la version previa, `.ANTERIOR.md`, en `../obsoletos/objetivo2/`) | instrucciones de la revision de S2 | asistente | **ABIERTO — en pausa**: la linea marca una altura y con el sacro inclinado admite dos respuestas. Esperar al eje por altura |
 | `outputs/r2_s1_revalidacion/` | 61 laminas con la cruz de S1 | script | **ABIERTO**: listas para revisar |
 | `outputs/r2_nivel_pico/` | 18 laminas con la altura del pico | script | **EN PAUSA** |
 
-## 7. Superados, y por que no se borran
+## 6 bis. R3 — cribado de fractura (#125)
+
+| Artefacto | Que es | Origen | Estado |
+|---|---|---|---|
+| `r3_fractura_grupos.csv` | reparto ciego, 15 estrechos + 15 control; **no se entrega al revisor** | script | **VIGENTE** |
+| `r3_fractura_revisor.csv` / `.md` (`.raw.csv`: entrega original) | juicio de fractura por caso | revisor clinico | **VIGENTE** — recuento verificado el 2026-10-05 en `04-implicancias.md` |
+
+## 7. Superados y archivados, y por que no se borran
+
+Desde el 2026-10-08 lo superado que **nadie importa** vive en `experiments/obsoletos/objetivo2/` (inventario
+y ruta anterior en `../obsoletos/README.md`). Lo superado que **todavia se importa** se queda aqui.
+
+| Artefacto | Donde esta | Motivo |
+|---|---|---|
+| `e9_corredor.py` | aqui | **lo importan** `e9ts_corredor.py`, `e12_sap_control.py`, `e14_relleno_envolvente.py` y `src/muestreador/sap.py` |
+| `ts_piloto_qc.py` / `.csv` | aqui | congelado como evidencia de #49/#50; lo importan `ts_qc.py`, `e9ts_corredor.py`, `e12`, `e14` |
+| `e13_poses_piloto.csv` | aqui | lo lee `verificar_coherencia.py` |
+| `r1_mosaico.py`, `r1_revision_itksnap_revisor.*`, `r1_landmarks.v*`, `r1_estados.v2a.csv`, `r2_nivel_pico_revisor.ANTERIOR.md` | `../obsoletos/objetivo2/` | ver tabla de abajo |
+
+Detalle historico:
 
 | Artefacto | Por que quedo fuera | Por que se conserva |
 |---|---|---|

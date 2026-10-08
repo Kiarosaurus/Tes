@@ -4,6 +4,22 @@ Todo lo verificado al correr TotalSegmentator (TS) en el clúster, para no repet
 decisiones de método no se toman aquí: están en `docs/04-implicancias.md` (#29, #48, #49, #50).
 El estado del proyecto está en `docs/ESTADO.md`.
 
+> **Ubicacion (2026-10-08):** este manual vivia en `experiments/objetivo2/KHIPU.md` y se movio a
+> `experiments/KHIPU.md` porque sirve a los tres objetivos: el cluster es uno solo y las lecciones valen
+> para todos. Las citas antiguas a la ruta vieja (en `docs/`) apuntan a este archivo.
+
+## Indice
+
+| Parte | Secciones | Objetivo |
+|---|---|---|
+| General | Acceso y estructura, Entorno, Colas y limites, **Lecciones** | todos: leer antes de escribir cualquier `.sbatch` |
+| Recetas Obj 2 | Correr la cohorte completa (TS), E10, Noche automatica, E9-TS 3 mm, E10b | `experiments/objetivo2/` |
+| Recetas Obj 1 | E6b, P1, P1-MAISI (**archivado**) | `experiments/objetivo1/` |
+| Recetas Obj 3 | A2 (**archivado**: piloto superado por A7) | `experiments/objetivo3/` |
+
+Lo que no tiene receta aqui (A7, `a15_cadena.sbatch`, `e13_muestreo_sap.sbatch`, `e14_relleno.sbatch`) lleva
+sus comandos en la cabecera del propio `.sbatch`.
+
 ## Acceso y estructura en el clúster
 
 - `ssh kiara.balcazar@khipu.utec.edu.pe`. Tienen internet el nodo de acceso y `ds001`; **los nodos
@@ -697,6 +713,9 @@ scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_*.log" experiments\objetiv
 
 ## P1-MAISI: ida y vuelta con el VAE 3D de MAISI (extension del Objetivo 1, decision 2026-09-19)
 
+> **ARCHIVADO (2026-10-08).** MAISI quedo descartado por diseno el 2026-09-20 (#93 CERRADA). Sus scripts
+> estan en `experiments/obsoletos/objetivo1/`; los comandos de abajo usan la ruta de entonces.
+
 Subordinado a la opcion A: **si compite con el renderizador por GPU o por tiempo, va primero A**. Su resultado
 **no cambia** el diseno del Objetivo 3. Script: `experiments/objetivo1/p1_maisi.py` (subcomandos `inspeccionar` y
 `evaluar`) y `p1_maisi.sbatch`. Regla: la misma de P1 (#76), media por paciente del MAE en hueso < 25 HU en los 34 de
@@ -790,6 +809,9 @@ scp "kiara.balcazar@khipu.utec.edu.pe:~/metalsynth/p1_maisi_*.log" experiments\o
 solo contra la columna de HU reconstruidos. El veredicto se escribe en `p1_maisi.md` con el mismo umbral de 25 HU.
 
 ## A2: piloto de 200 pasos del renderizador del Diseno A (#89, #100; 2026-09-20)
+
+> **ARCHIVADO (2026-10-08).** Piloto ya analizado (job 52074, #89 medida); el entrenamiento real es
+> `a7_entrenar.sbatch`. `a2_entrenar.sbatch` esta en `experiments/obsoletos/objetivo3/`.
 
 **Que mide y que no.** Mide **s/paso y memoria GPU** del renderizador de difusion en espacio de imagen, para
 convertir el presupuesto de computo de #89 (hoy estimado con cifras de P1, que era otro modelo) en una cifra

@@ -1,7 +1,7 @@
 # Exploración 3D
 
 Un script, **un CSV editable** (`revision.csv`) y un resumen regenerable (`resumen.md`).
-No modifica `experiments/exploration` ni los NIfTI. Cada imagen significa un volumen CT.
+No modifica la exploración 2D previa (`experiments/obsoletos/exploration-2d/`) ni los NIfTI. Cada imagen significa un volumen CT.
 
 **Ya ejecutado al 2026-09-07:** 178 CT, sin errores; 38 candidatos HU en dataset6 y
 75 en dataset7. Seis grupos duplicados, 172 contenidos únicos. El CSV está listo

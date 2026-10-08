@@ -7,6 +7,7 @@
 - **Hecho:** `main.tex` (sensibilidad Obj 1 sin 0053, 64 pacientes; 9 pp) y `00-tesis.md` alineados. `01-decisiones.md` 2026-10-08 (3): 5 semillas. Codigo: `src/common/cotejo.py` (perfil 2D 0.5 mm con elevacion, histograma > 2500), `a15 --semillas`, `a15_cotejo.sbatch`, `a17_cotejo.py` (referencia real 0039 + regla). Fila de 0053 retirada de `p1_particion.csv` (el control de particion abortaba).
 - **Siguiente:** autora corre `a15_cotejo.sbatch` en Khipu, trae `$DATA/a15_cotejo` a `experiments/objetivo3/outputs/a15_cotejo/` y corre `a17_cotejo.py`; confirma el detalle de agregacion (01-decisiones 2026-10-08 (3)).
 - **Pendientes:** #155 (2) referencia de realismo; `revision.csv` 0053 -> P153.
+- **Correccion:** prueba = 11 con material ortopedico + 8 con objetos + 14 sin metal; cap. 3 decia "19 con implante" (corregido, #156).
 - **Khipu:** GPUs llenas; job del cotejo enviado a la MIG `a100_1g.5gb` (inicio ~01:58). Nuevo `scripts/khipu_elegir_gpu.sh` (elige GPU por hora de fin; KHIPU.md leccion 9).
 
 ## 2026-10-08 (5) — `experiments/` ordenado: carpeta `obsoletos/` e indice por carpeta

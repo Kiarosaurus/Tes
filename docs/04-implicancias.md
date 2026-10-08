@@ -11265,3 +11265,6 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Aplicado en `overleaf/secciones/capitulo3.tex`** (ronda `tornillos-r01`).
 - **Alineados el 2026-10-08** por orden de la autora: `00-tesis.md` y `tesis/main.tex` (sensibilidad del Obj 1,
   64 pacientes, 19 de prueba con implante). Queda: si `revision.csv` se corrige a P153.
+- **Correccion (2026-10-08):** los 19 de prueba "con metal" son 11 con material ortopedico (grupo 1) y 8 con
+  objetos no ortopedicos (grupo 2). `capitulo3.tex` decia "19 con implante real" (y antes "20"): corregido. La
+  referencia de realismo (#155 (2)) son los 11, no los 19. La `discrepancia` se mide en los 19 con metal.

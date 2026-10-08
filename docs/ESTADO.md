@@ -9,7 +9,7 @@
 - **Tambien hecho:** `docs/SITUACION_ACTUAL.md` reescrito como guia pedagogica para la exposicion (decisiones en orden, su porque y alternativas; opinion del profesor marcada como tal). Sin cifras nuevas.
 - **Tambien hecho (gaps-r01):** cerrados o estrechados los GAP de `overleaf/` cuya fuente ya existia (11 de 12; 54 `\GAPDEC` quedan, todos de decision real de la autora o de dato). Pendiente de la autora: si se mantiene la contingencia de plazo de #90 sobre el brazo fisico; 3 decisiones de redaccion nuevas en BITACORA §2; soporte del cribado de fractura (cap. 3 dice laminas, `00-tesis.md` dice 18 laminas + 12 volumen).
 - **Tambien hecho (gaps-r02):** `00-tesis.md` puesto al dia (pregunta e hipotesis copiadas de `main.tex`, resultado del Obj 2, implante transiliaco-transsacro, envolvente, decisiones de octubre del Obj 3); cap. 3 corregido (soporte del cribado 18 laminas + 12 volumen; Overfull resuelto); visto bueno de la autora a las 3 decisiones de gaps-r01.
-- **Pendientes nuevos:** visto bueno de 5 decisiones de redaccion (BITACORA §2, 2026-10-08; entre ellas *checkpoint* = "punto de control"); Overfull de 4 pt en `capitulo3.tex`:200; tension 30 000 pasos frente a los candidatos 37 500 / 140 000 (`capitulo3-r08-respuesta.md`).
+- **Pendientes nuevos:** (resueltos el 2026-10-08: visto bueno a las 5 decisiones de r08 y Overfull corregido en gaps-r02); tension 30 000 pasos frente a los candidatos 37 500 / 140 000 (`capitulo3-r08-respuesta.md`).
 
 ## 2026-10-07 — TRASPASO. Leer este bloque y nada mas para arrancar
 

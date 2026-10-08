@@ -23,7 +23,8 @@ QUE EXPONE
                        solo la usa el Objetivo 3 y el Objetivo 1 no la conoce.
 - `BONE_HU`, `METAL_HU`, `EPS`  umbrales, con el mismo valor que en los experimentos.
 
-Nada de este archivo decide nada: la eleccion de `pub+asinh` es un `[SUPUESTO]` de `diseno_A.md`.
+La eleccion de `pub+asinh` es un `[SUPUESTO]` de `diseno_A.md`. La lectura del Objetivo 3 SI esta decidida:
+`regla_suave` con `DELTA_OBJ3 = 0.05` (`docs/01-decisiones.md`, entrada 2026-10-07).
 """
 from __future__ import annotations
 
@@ -44,8 +45,11 @@ except ModuleNotFoundError:
 from e6b_vae_sd15 import EPS, regla  # noqa: E402
 
 CONFIG_DISENO_A = 'pub+asinh'
+# Rampa de `regla_suave` decidida para el Objetivo 3 (01-decisiones.md, 2026-10-07; #152, adenda 5).
+# `decodifica_bloque` sigue en v1 por omision para reproducir lo ya corrido: pasar este valor.
+DELTA_OBJ3 = 0.05
 
-__all__ = ['BONE_HU', 'METAL_HU', 'EPS', 'CONFIG_DISENO_A', 'configuraciones', 'regla',
+__all__ = ['BONE_HU', 'METAL_HU', 'EPS', 'CONFIG_DISENO_A', 'DELTA_OBJ3', 'configuraciones', 'regla',
            'canales_diseno_a', 'codifica_bloque', 'decodifica_bloque', 'peso_borde', 'regla_suave',
            'verificar']
 
@@ -109,7 +113,7 @@ def verificar(n: int = 100_000, semilla: int = 0, tol: float = 1e-6,
 
     Es el analogo del control de identidad de E6b/P1, sobre valores sinteticos que cubren el rango
     util (aire, tejido, hueso y metal). **Lanza** `AssertionError` si no cierra: si esto falla, nada
-    de lo que produzca el renderizador es comparable con las cifras del Objetivo 1.
+    de lo que produzca el sintetizador (renderizador) es comparable con las cifras del Objetivo 1.
     """
     rng = np.random.default_rng(semilla)
     hu = np.concatenate([

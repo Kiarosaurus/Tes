@@ -15,7 +15,7 @@ artifacts in pelvic CT scan volumes using Multi-Window Image-Domain Diffusion.
 > Copiada literal de `tesis/main.tex` (seccion *Research Question*) el 2026-10-08. El documento de
 > entrega (`overleaf/introduccion.tex`) todavia no la alinea con los cuatro objetivos (`\GAPDEC`, #126).
 
-What improvement does a surgical admissibility-constrained (bone density and cortical containment) 3D
+What improvement does a surgical admissibility-constrained (osseous corridor and cortical containment) 3D
 placement sampler, a multi-window image-domain diffusion model conditioned on the rigid implant geometries
 and an extended generation band ($B_{\delta}$), have in terms of distributional physical-coherence of the
 synthesized pelvic osteosynthesis implants and their local artifacts, when compared with both naive
@@ -28,17 +28,19 @@ Downstream segmentation impact is deliberately excluded from this study and is s
 
 The synthetic generation of medical anomalies and metallic implants using a rigid geometry and extended
 spatial boundaries, HU-conditioned diffusion model and whose placement is surgically enforced via a
-density-based placement sampler is more physically-coherent than unconstrained generative baseline methods
+corridor-constrained placement sampler is more physically-coherent than unconstrained generative baseline methods
 and on the same footing as the adopted explicit physics-based simulation protocol \citep{peters2025hybrid}.
 Placement coherence is quantified by Surgical Admissibility of Placement (SAP), the single metric introduced
 by this work, which emulates the measured ordinal distribution of real-world implant placement. Appearance
 coherence is quantified with the metrics of the adopted protocol under their published names, not with newly
 coined ones.
 
-> **Nota de alcance (2026-10-08):** la hipotesis dice *"density-based placement sampler"*, pero el
-> muestreador preinscrito perturba el eje del corredor y **no** condiciona por densidad: la fraccion por
-> zona de densidad es componente **reportado** de SAP, no condicionante (D-O2.6, 2026-09-22). Alinear la
-> redaccion es decision de la autora.
+> **Nota de alcance (2026-10-08):** la hipotesis decia *"density-based placement sampler"*, pero el
+> muestreador preinscrito perturba el eje del corredor y **no** condiciona por densidad. **DECIDIDO el
+> 2026-10-08** (`01-decisiones.md`, entrada delegada, punto 14): la fraccion por zona de densidad **sale de
+> SAP** (su fuente, E9b, quedo retirada por #50) y el muestreador se describe como restringido por el
+> **corredor oseo medido**. `main.tex` se alineo el mismo dia por orden explicita de la autora (#153), y la
+> copia de arriba con el.
 
 ## Alcance MINIMO VIABLE (lo que garantizo defender)
 
@@ -67,6 +69,10 @@ coined ones.
 - **Implante: tornillo transiliaco-transsacro (transiliosacro)**, por decision de la autora del
   2026-10-04 (#130): el corredor medido va de la cortical externa de un ilion a la del otro y cruza
   ambas articulaciones sacroiliacas. "Iliosacro" queda para describir trabajos ajenos.
+- **SAP tiene dos componentes** (decision delegada 2026-10-08, puntos 14-17): grado de brecha cortical,
+  solo dimension de perforacion, comparado por W1 sin regla de fallo y con la distancia entre los dos brazos
+  de Zwingmann (0.395, calculo propio post hoc) como escala de lectura; y viabilidad del corredor a 7.0 mm con
+  holgura de 1 mm, descriptiva. La fraccion por zona de densidad queda fuera.
 - **Envolvente osea vigente:** cierre de 2 mm **sin** relleno de cavidades (correccion de D-O2.3 del
   2026-10-04; con mascaras de TotalSegmentator el relleno no cambia ningun caso de la cohorte).
 
@@ -138,6 +144,12 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       fractales, no implantes.
     - **Orden de trabajo** (2026-10-05 (6), punto 5): cadena completa -> sonda de viabilidad de Peters
       -> Peters completo -> `Delta` -> congelar `diseno_A.md` -> corrida final.
+    - **Diseno fijado por delegacion (2026-10-08, puntos 1-13):** `pub+asinh` en float32; 3 cortes 2.5D;
+      arquitectura tal como corrio (U-Net `base = 64`, `v`, coseno, DDIM 50); 5 semillas por caso; copia y
+      pegado = HU constante (mediana del metal real de entrenamiento); `bone/metal integrity` descriptivas, leidas
+      contra el brazo fisico; realismo = perfil radial e histograma frente a E-A1; brazo fisico sobre los 14
+      de E-A2, test-retest con otra semilla de ruido. Para congelar `diseno_A.md` solo faltan datos: checkpoint,
+      sonda de Peters y `Delta`.
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
 - ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`

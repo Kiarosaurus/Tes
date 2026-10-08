@@ -1,5 +1,12 @@
 """A13 - compara DOS checkpoints sobre los 5 pacientes de validacion, pareado (#145, B1, B2).
 
+NOTA (2026-10-08). Script ya corrido; se conserva como evidencia y no se cambia su logica. Dos
+lecturas posteriores que hay que tener presentes al citar su salida:
+- La validacion del entrenamiento son **3** pacientes de CLINIC-metal; los otros 2 de `dataset6`
+  llevan objeto incidental (#147; `01-decisiones.md` 2026-10-05 (6), punto 2).
+- Lee con la `regla` v1 del Objetivo 1, que borraba metal casi saturado (#152): sus cifras de metal
+  y de colas son v1. La lectura vigente del Objetivo 3 es `regla_suave` con `DELTA_OBJ3`.
+
 LA PREGUNTA
 -----------
 #145 midio, en **un** paciente, que el checkpoint del minimo de la perdida de validacion

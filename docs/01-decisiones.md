@@ -2057,3 +2057,116 @@ Detalla la decisión `2026-10-05 (6)`, punto 6 ("lo que esta entrada NO decide")
 - **Condición previa, PENDIENTE:** verificar el tipo de implante de los 3 pacientes de referencia con
   el agente `clasificador-metal` (propuesta preliminar) antes de cotejar. Si no son tornillos, el
   cotejo se revisa.
+
+---
+
+## 2026-10-08 — Decisiones pendientes delegadas al asistente en rol de asesor (cierre de las marcas GAPDEC de diseno y redaccion)
+
+**Delegacion** (de la autora, chat del 2026-10-08): *"Sobre las decisiones mias pendientes, evalua en la
+posicion de un experto en tesis IA con aplicaciones medicas la mejor opcion y mas respaldable en la tesis
+actual, y toma las decisiones mas recomendables."* Mismo procedimiento que la entrada 2026-09-17. Escrita por el
+asistente; **la autora puede revertir cualquier punto**. Criterio aplicado en todas: preferir lo que ya esta
+medido o preinscrito, no elegir nada mirando resultados de test, y declarar como convencion lo que no tiene
+fuente en vez de buscarle una.
+
+**Lo que NO se decide aqui, y por que:** (i) **#90**, si el brazo TOST pasa a trabajo futuro por plazo: depende
+del plazo real, que solo conoce la autora; (ii) el **tipo de implante** de `metal_0011/0039/0056`, la
+**constancia de la revision multiplanar**, el **desenlace de la regla del suelo** y el **margen `Delta`**: son
+datos, no decisiones; (iii) el texto de `tesis/main.tex` (regla 4): estas decisiones se aplican a `overleaf/` y a
+`docs/`, y `main.tex` queda pendiente de una orden explicita.
+
+### A. Sintetizador (Objetivo 3)
+
+1. **Codificacion y precision: `pub+asinh` en float32.** Es la de todas las corridas (`run01`, `run02`), la
+   primera del orden a priori de #76, y su ida y vuelta sin modelo es 0.00 HU en hueso (`p1_compuerta.md`,
+   columna identidad). Cambiarla exigiria recachear y reentrenar sin evidencia de mejora. Alternativa
+   descartada: `LW20000` (identica en hueso; no aporta nada y rompe la continuidad con lo entrenado).
+2. **Entrada 2.5D: 3 cortes axiales contiguos.** Es lo entrenado; un modelo 3D no cabe en datos ni en computo.
+3. **Arquitectura congelada tal como corrio:** U-Net `base = 64`, multiplicadores (1, 2, 4, 8), atencion en la
+   resolucion mas baja, prediccion `v`, planificador coseno de 1000 pasos, AdamW lr 1e-4, lote 4, parche 256
+   (`src/renderizador/`). Se declara que **no** se hizo busqueda de arquitectura.
+4. **Muestreo: DDIM determinista (eta = 0), 50 pasos; 5 semillas por caso** para medir la variabilidad que
+   entra en `Delta`. 5 es una convencion declarada (coste bajo: la generacion por paciente es de minutos).
+5. **Procedimiento de muestreo frente a RePaint y LeFusion:** se describe lo implementado y se dice que **no es
+   ninguno de los dos**: condicionamiento por concatenacion del contexto conocido y de `M`, `G`; perdida solo en
+   `G`; composicion exacta fuera de `G`; sin remuestreo de la region conocida (#117).
+6. **Desplazamiento de dominio de la mascara (umbral frente a cilindro): se cuantifica con lo ya medido**, sin
+   metrica nueva: fragmentacion de tornillos a 2500 HU (E8, 9 de 57) y diametro de cuerpo (E11, mediana 4.91 mm).
+7. **Continuidad en el borde de `B_delta`: se mide con `a10_costura.py`** (salto de HU al cruzar el borde de
+   `G`), en E-A2, para los dos brazos, **descriptiva y sin umbral**.
+8. **Insercion por copia y pegado:** `M` recibe un valor **constante** de HU igual a la mediana de los voxeles
+   > 2500 HU dentro de las mascaras de los implantes reales de **entrenamiento** (nunca test); fuera de `M`, el
+   CT intacto. El valor se mide una vez y se reporta (dato pendiente).
+9. **Evaluacion del Objetivo 3 solo con metricas**, mas el QC visual de la autora (E-A4) declarado como control
+   y no como evaluacion. No hay lector clinico disponible; inventarlo seria peor que declararlo.
+10. **`bone integrity` y `metal integrity` en sintesis: no se invierte la formula, se invierte la lectura.** Se
+    calculan como en Peters et al., en E-A2, contra la TC limpia del mismo paciente y en las mismas regiones que
+    la `streak amplitude`, para los dos brazos. Un valor alejado del ideal **no** es "peor": la referencia de
+    lectura es el valor del brazo fisico. Siguen siendo **descriptivas** (D4).
+11. **Contraste de realismo (resuelve el hueco que dejo 2026-10-05 (3)):** la `streak amplitude` no es
+    calculable en implantes reales, asi que el realismo se mide con los **estadisticos sin referencia de la
+    decision 2026-10-07 (2)** —perfil radial (mediana y p95 como elevacion) e histograma dentro de `M`—, de lo
+    sintetizado en E-A2 frente a los implantes reales de E-A1, resumido como **fraccion de cascaras dentro de la
+    envolvente real**. Descriptivo, sin prueba de hipotesis.
+12. **Regla del suelo de -1000 HU:** se evalua contra el **contraste primario** (su umbral es `Delta`, el margen
+    del TOST). El sesgo en el contraste de realismo se declara de forma cualitativa.
+13. **Subconjunto del brazo fisico: los 14 pacientes de E-A2.** El TOST es pareado y necesita los 14; a ~70 s por
+    corte (#146) cabe en CPU local. **Test-retest del brazo fisico:** dos corridas identicas salvo la semilla del
+    ruido del simulador.
+
+### B. Muestreador y SAP (Objetivos 2 y 4)
+
+14. **Fraccion por zona de densidad: SE RETIRA de SAP.** Su unica fuente (E9b) quedo retirada como evidencia de
+    densidad por #50, y D-O2.6 ya la dejaba fuera del muestreo. SAP queda con **dos** componentes: grado de
+    brecha (comparado) y viabilidad del corredor (descriptiva). Donde el texto diga *"density-based placement
+    sampler"* debe decir que el muestreador se restringe por el **corredor oseo medido**; la densidad pasa a
+    motivacion y a trabajo futuro.
+15. **Dimension angular de Smith et al.: no entra.** La referencia clinica (Zwingmann et al.) gradua solo
+    perforacion, y la escala angular de Smith tiene un grado 1 no definido en el texto (#11). SAP declara que usa
+    solo la dimension de perforacion.
+16. **Calibre de viabilidad: 7.0 mm con holgura c = 1 mm** (`D_TS_max >= 9 mm`), el mismo calibre de la brecha
+    (D-O2.4) y dentro del nominal 6.5-8.0 mm; 4.91 y 7.3 mm, sensibilidad. Es lo que reporta E13.
+17. **Wasserstein-1 sin regla de fallo**, porque fijarla ahora seria post hoc. Se da una **escala de lectura**,
+    declarada post hoc: la distancia entre los dos brazos clinicos de Zwingmann et al., calculada de sus cifras
+    publicadas (69/15/8/8 frente a 40/37/11.5/11.5 %), es **0.395 grados**; el muestreador queda a 0.206 del
+    brazo navegado.
+18. **Intervalo por remuestreo de pacientes para W1: SI**, como analisis no preinscrito y descriptivo (dato
+    pendiente; CPU).
+19. **Convencion h = 2 sigma:** se justifica por su consecuencia, no por una fuente: con perturbacion
+    semi-normal, ~95 % de las magnitudes quedan dentro de la holgura de 5 mm de Kaiser et al. Sigue siendo
+    convencion y asi se declara.
+20. **Exclusion de 8 mm por extremo:** convencion heredada del codigo del corredor y reutilizada en SAP y en las
+    ROIs para no tener dos valores de la misma idea. Sin fuente; se declara.
+21. **Umbral de 10 mm y holgura de Kaiser para el corredor transiliaco-transsacro: SI aplican, como
+    convencion.** McLaren et al. aplican ese mismo criterio a corredores transiliosacros, y su justificacion es
+    dimensional (holgura alrededor del diametro), no dependiente del tipo de trayectoria.
+22. **Los dos casos con error de segmentacion (`CLINIC_0022`, `CLINIC_0024`): se mantienen** en la cohorte
+    preinscrita (excluirlos despues de verlos seria seleccion post hoc) y se anade una sensibilidad sin ellos
+    (dato pendiente).
+23. **Objetivo 4:** se declara **objetivo de definicion**, verificado por los controles de implementacion
+    (identidad, monotonia, resolucion) y ejercido en el Objetivo 2; no se evalua experimentalmente por separado,
+    y la adopcion de las metricas de Peters et al. no se presenta como contribucion evaluada.
+
+### C. Encuadre del documento
+
+24. **Pregunta de investigacion:** se alinea con la de `tesis/main.tex` (sin segmentacion; comparacion contra
+    copia y pegado y contra Peters) y con los cuatro objetivos. Se mantiene el orden actual de la introduccion.
+25. **Por que un sintetizador aprendido si hay simulacion fisica:** el protocolo fisico necesita simular
+    proyecciones por pose, es 2D de una sola fila de detector y su metal son formas fractales; el sintetizador
+    opera sobre cualquier TC sin proyecciones. **Si alcanza la equivalencia con la fisica es exactamente lo que
+    pone a prueba el Objetivo 3**: se presenta como pregunta de la tesis, no como premisa.
+26. **Coherencia antes que utilidad:** medir la utilidad para segmentacion de ejemplos cuya plausibilidad fisica
+    no se conoce confundiria las dos cosas; y la cohorte anotada no alcanza (punto 1 de Fuera de alcance).
+27. **Restriccion al tornillo transiliaco-transsacro:** es el unico implante con corredor oseo medible por
+    volumen y con distribucion clinica publicada de grados de brecha; placas y otros tornillos no tienen ninguna
+    de las dos.
+28. **Ablaciones fuera de alcance:** se enuncian como las de los componentes del muestreador vigente (anclaje al
+    eje del corredor, escala de la perturbacion), no como restricciones de densidad.
+29. **Revision de literatura:** se declara **narrativa y dirigida**, con busquedas fechadas y snowballing, no
+    sistematica. No se inventa un protocolo que no se siguio.
+30. **Novedad:** se estrecha a la combinacion objeto metalico rigido + codificacion multiventana + banda
+    `B_delta` + copia exacta fuera de `G` (#56).
+31. **Zwingmann et al. 2010: fuera de la referencia clinica** (grado 4 sin definir, posible solapamiento con
+    2009, #113), citada solo de forma descriptiva.
+32. **Cifras de Jacob et al.: no se citan** (la ficha registra cifras discrepantes); se describe el trabajo sin
+    numeros.

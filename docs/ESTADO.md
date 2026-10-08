@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-08 (2) — Decisiones pendientes tomadas por delegacion; codigo, main.tex y overleaf alineados
+
+- **Hecho:** `01-decisiones.md` 2026-10-08 (32 puntos delegados por la autora); aplicados en `overleaf/` (`gaps-r03`: quedan 4 `\GAPDEC`, #90 x3 y tipo de implante), `00-tesis.md` y `tesis/main.tex` (#153 APLICADA: densidad fuera de SAP y de la hipotesis). Codigo: `DELTA_OBJ3` en `common/ventanas.py`, `a15` lee con v2 por omision (`--regla-v1` reproduce lo anterior), nombres de SAP e implante corregidos.
+- **Siguiente:** clasificar tipo de implante de `metal_0011/0039/0056` -> cotejo y eleccion de checkpoint -> sonda de Peters -> `Delta`.
+- **Pendientes de la autora:** #90 (plazo real); revisar puntos 14 (densidad) y 17 (escala 0.395); `\GAPDATO` nuevos (HU de copia y pegado, IC de W1, sensibilidad sin 2 casos); `latexmk` no corre en esta maquina (MiKTeX sin Perl): compilar `tesis/` con pdflatex + bibtex.
+
 ## 2026-10-08 — `overleaf/` al dia con el traspaso del 2026-10-07 (capitulo3-r08)
 
 - **Hecho:** `ENCARGO_2026-10-07.md` bloque A aplicado como ronda acotada `capitulo3-r08` (sin revisores): lectura de HU del Obj 3 por mezcla de canales, criterio de seleccion del punto de control con `\GAPDEC` del tipo de implante, y GAP del Obj 3 reformulado en cap. 3, introduccion y cap. 2. Compila (116 pp.), etapa en `BITACORA.md`. Bloque B sin redactar.

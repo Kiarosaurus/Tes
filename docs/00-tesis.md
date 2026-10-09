@@ -110,8 +110,9 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   - **Es una decision POSTERIOR al resultado del Objetivo 1 y asi se declara.** La compuerta se fijo
     antes y no se modifico.
   - El diseno (`experiments/objetivo3/diseno_A.md`) **se preinscribe antes de entrenar**; hoy sigue en
-    BORRADOR. Para congelarlo faltan (orden de la decision 2026-10-05 (6), punto 5): **elegir el
-    checkpoint**, la **sonda de viabilidad** del brazo fisico y medir el margen `Delta` (D4).
+    BORRADOR. Para congelarlo faltan (orden de la decision 2026-10-05 (6), punto 5): la **sonda de
+    viabilidad** del brazo fisico (preinscrita en `experiments/objetivo3/sonda_peters.md`, 2026-10-09 (2)) y
+    medir el margen `Delta` (D4). El checkpoint ya esta elegido (2026-10-09).
   - La unidad de entrenamiento es el **componente conexo**, no el corte (D2, #102). Conjunto congelado
     el 2026-09-21: **17 149 parches, 241 componentes, 47 casos** (`train`) y **896 parches, 3 casos**
     (`val`, #105); `Delta` se medira sobre **n = 3 pacientes**, y se declara.
@@ -119,15 +120,25 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
     umbral frente a cilindro parametrico liso; contexto con streaking real frente a paciente limpio;
     y parches de solo banda menos frecuentes de lo que predice la geometria del corredor.
   - **Decisiones de octubre (todas en `01-decisiones.md`; anadido el 2026-10-08):**
-    - **Entrenamiento: 30 000 pasos** (2026-10-05 (2)), eleccion de hiperparametro **sobre validacion**,
-      no fijada de antemano. Su argumento quedo debilitado y su revision **aplazada** hasta medir el
-      criterio de seleccion (2026-10-05 (6), punto 3).
+    - **Entrenamiento (B2, cerrada 2026-10-09 (2)):** la cifra de 30 000 pasos (2026-10-05 (2)) deja de
+      describir el modelo usado. El checkpoint se elige por cotejo entre **dos candidatos**: ~37 000 pasos
+      (minimo de la perdida de validacion de `run02`) y 140 000 (`run01`). Sin reentrenar; no se afirma que
+      ~37 000 sea optimo.
+    - **B1 (2026-10-09 (2)):** no se afirma saturacion con 47 pacientes; el efecto de anadir pacientes no se
+      midio. Solo se midio que 4 veces mas pasos no mejoran el cotejo: eso habla de la duracion, no de la
+      cohorte. Se declara como limitacion.
     - **El checkpoint NO se elige por la perdida de validacion** (2026-10-05 (6)), sino por un cotejo de
       apariencia **sobre la tarea de sintesis**: tornillo parametrico en pelvis limpias de validacion,
       perfil radial de HU (mediana y p95 como elevacion sobre el anillo de 12-15 mm) e histograma
       dentro de `M` sobre voxeles > 2500 HU, contra los **2 tornillos aislados de `metal_0039`**, unico
       paciente de validacion con tornillo aislado (`0011` fijador externo, `0056` placas; 2026-10-08 (2),
       #154); regla por envolvente real; con 1 paciente descarta, no prueba (2026-10-07 (2)).
+    - **Checkpoint elegido: `mejor_37k`** (2026-10-09, #157).
+      - Cascaras de **1 mm**. El cambio desde 0.5 mm es posterior al resultado y se declara: con 0.5 mm ganaba
+        `run01_140k` por 8 frente a 7 de 46; con 1 mm gana `mejor_37k` por 11 frente a 5 de 24.
+      - 2 receptores (`0101`, `0102`) x 5 semillas; resultado reproducible.
+      - **Hallazgo declarado:** en los dos checkpoints, el p95 sintetico queda bajo lo real (10-11 de 12
+        cascaras; unos 900 HU bajo en `M`).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
       60 % de los parches (2026-10-05 (6), punto 2).
     - **Lectura de HU del Objetivo 3: `regla_suave` (v2), `delta = 0.05`** (2026-10-07). La `regla` v1
@@ -151,8 +162,8 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       arquitectura tal como corrio (U-Net `base = 64`, `v`, coseno, DDIM 50); 5 semillas por caso; copia y
       pegado = HU constante (mediana del metal real de entrenamiento); `bone/metal integrity` descriptivas, leidas
       contra el brazo fisico; realismo = perfil radial e histograma frente a E-A1; brazo fisico sobre los 14
-      de E-A2, test-retest con otra semilla de ruido. Para congelar `diseno_A.md` solo faltan datos: checkpoint,
-      sonda de Peters y `Delta`.
+      de E-A2, test-retest con otra semilla de ruido. Para congelar `diseno_A.md` solo faltan datos: sonda
+      de Peters y `Delta` (checkpoint elegido el 2026-10-09).
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
 - ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`

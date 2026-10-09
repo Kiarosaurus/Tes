@@ -227,6 +227,8 @@ def main() -> None:
                     help='usa una pose perturbada del muestreador en vez del eje central del corredor')
     ap.add_argument('--semilla-pose', type=int, default=0)
     ap.add_argument('--cortes', type=int, default=24, help='0 = todos los cortes con `M`')
+    ap.add_argument('--incluir-banda', action='store_true',
+                    help='genera tambien los cortes de solo banda (todos los que toca `G`; #160)')
     ap.add_argument('--pasos', type=int, default=50)
     ap.add_argument('--semilla', type=int, default=0)
     ap.add_argument('--semillas', type=int, nargs='+', default=None,
@@ -309,18 +311,21 @@ def main() -> None:
     if n_sobre:
         raise SystemExit('el receptor no esta limpio: no sirve para el caso de uso de sintesis')
 
-    ks = [k for k in range(vol.shape[0]) if M[k].any()]
-    if not ks:
+    if not any(M[k].any() for k in range(vol.shape[0])):
         raise SystemExit('`M` no toca ningun corte')
+    # Por omision, solo los cortes con `M` (como hasta el 2026-10-09). `--incluir-banda` genera todos los que
+    # toca `G`, incluidos los de solo banda: es lo que define el diseno ("genera HU solo dentro de G", #160).
+    ks = [k for k in range(vol.shape[0]) if (G[k].any() if args.incluir_banda else M[k].any())]
     if args.cortes:
         idx = np.linspace(0, len(ks) - 1, min(args.cortes, len(ks))).round().astype(int)
         ks = [ks[i] for i in sorted(set(idx))]
-    print('cortes con `M`: %d | se generan %d' % (sum(1 for k in range(vol.shape[0]) if M[k].any()),
-                                                  len(ks)))
+    print('cortes con `M`: %d | con `G`: %d | se generan %d%s'
+          % (sum(1 for k in range(vol.shape[0]) if M[k].any()), sum(1 for k in range(vol.shape[0]) if G[k].any()),
+             len(ks), ' (incluye solo banda)' if args.incluir_banda else ''))
 
     ventanas = {}
     for k in ks:
-        ys, xs = np.nonzero(M[k])
+        ys, xs = np.nonzero(M[k] if M[k].any() else G[k])     # corte de solo banda: ventana sobre `G`
         y0, x0, cabe = ventana_coords(ys, xs, vol.shape[1], vol.shape[2], LADO)
         ventanas[k] = (y0, x0, cabe)
     n_no_cabe = sum(1 for v in ventanas.values() if not v[2])

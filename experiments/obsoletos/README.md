@@ -37,5 +37,21 @@ hermanos). Para reproducir uno, copiarlo de vuelta a su carpeta original o ajust
 | `objetivo3/a6_muestra_minima.py` | `experiments/objetivo3/` | primera muestra sintetica, UN corte (#116) | `a8_muestra_serie.py` (serie) y `a15_cadena_completa.py` (cadena) |
 | `exploration-2d/` (carpeta entera) | `experiments/exploration/` | exploracion 2D inicial (cribado por PNG, resumen del dataset, duplicados): superada por `exploration-3d/` | `exploration-3d/`. `explorar.py` aun lee de aqui `excluded_clinic_ids.csv` y `caracterizacion_metal_d7.csv` para la columna `Antecedente 2D` (ruta ya actualizada) |
 
+### Scripts de `exploration-2d/` recuperados (2026-10-09)
+
+Los 6 `.py` de `exploration-2d/` no estaban versionados. Vivian solo en Khipu, en `~/metalsynth/scripts/`,
+desde el repo anterior (ya borrado). Se trajeron al convertir `~/metalsynth` en clon de este repo. Son
+los que produjeron los CSV de esta carpeta. Leen de `~/metalsynth/data/extracted` y escriben en
+`~/metalsynth/outputs` (rutas fijas de Khipu).
+
+| Script | Produce |
+|---|---|
+| `describe_data.py` | `per_volume_stats.csv`, `dataset_summary.csv` |
+| `screen_metal.py` | `metal_screening.csv`, `metal_png/` |
+| `finalize_screening.py` | `duplicados.csv`, `excluded_clinic_ids.csv`, `ejemplos_seleccion.csv` |
+| `check_dups.py` | verifica 3 pares de duplicados dataset6/dataset7; solo imprime |
+| `gen_caracterizacion.py` | `caracterizacion_metal_d7.csv` |
+| `reporte_semana.py` | `reporte_semana.md`, `cohorte_A_ids.txt`, `cohorte_B_ids.txt`, `macros_datos.tex` (reporte del 3 de septiembre). Lee `test_ids.txt` y `excluded_metal_ids.csv`, que no estan versionados |
+
 Las salidas pesadas de cada experimento (`*/outputs/`) **no se movieron**: no estan versionadas y los
 `.sbatch` las buscan en su sitio.

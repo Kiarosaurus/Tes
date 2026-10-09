@@ -115,6 +115,39 @@ def geometria_af(caso: str, particiones: list[str]):
     return vol, M, esp3d, u_af, esp2d[0]
 
 
+def calcula_delta(ruta: Path, etiqueta: str) -> None:
+    """`Delta = max(s, r)` (autora, 2026-10-09; fijada antes de ver los numeros).
+
+    s = rango de la amplitud del difusor entre sus semillas, por paciente, promediado sobre los pacientes.
+    r = |amplitud Fe_A - amplitud Fe_B| de Peters, por paciente, promediado sobre los pacientes.
+    Solo pacientes con los dos brazos medidos.
+    """
+    with open(ruta, newline='', encoding='utf-8') as fh:
+        filas = list(csv.DictReader(fh))
+    dif, fis = {}, {}
+    for f in filas:
+        if f['brazo'] == 'difusor' and f['condicion'].startswith(etiqueta + '_s'):
+            dif.setdefault(f['caso'], []).append(float(f['amp_HU']))
+        if f['brazo'] == 'peters' and f['condicion'] in ('Fe_A', 'Fe_B'):
+            fis.setdefault(f['caso'], {})[f['condicion']] = float(f['amp_HU'])
+    casos = sorted(c for c in dif if c in fis and len(fis[c]) == 2)
+    if not casos:
+        raise SystemExit('sin pacientes con los dos brazos en %s' % ruta)
+    s_p = {c: max(dif[c]) - min(dif[c]) for c in casos}
+    r_p = {c: abs(fis[c]['Fe_A'] - fis[c]['Fe_B']) for c in casos}
+    s, r = float(np.mean(list(s_p.values()))), float(np.mean(list(r_p.values())))
+    delta = max(s, r)
+    for c in casos:
+        print('%s | difusor: %d semillas, rango %.1f HU | Peters Fe: |A-B| = %.1f HU' % (c, len(dif[c]), s_p[c], r_p[c]))
+    print('s = %.1f HU | r = %.1f HU | Delta = max(s, r) = %.1f HU (lo fija %s)'
+          % (s, r, delta, 'el difusor' if s >= r else 'Peters'))
+    out = ruta.with_name('a20_delta.json')
+    out.write_text(json.dumps({'s_HU': s, 'r_HU': r, 'Delta_HU': delta, 'casos': casos, 's_por_caso': s_p,
+                               'r_por_caso': r_p, 'formula': 'Delta = max(s, r), 01-decisiones 2026-10-09 (4)'},
+                              indent=2), encoding='utf-8')
+    print('-> %s' % out)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='brazo', required=True)
@@ -126,10 +159,16 @@ def main() -> None:
     d.add_argument('--etiqueta', default='mejor_37k')
     d.add_argument('--semillas', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     d.add_argument('--interseccion', type=Path, default=None, help='npz de a19: usar solo sus cortes simulados')
+    dl = sub.add_parser('delta', help='calcula Delta = max(s, r) desde el CSV (formula fijada 2026-10-09)')
+    dl.add_argument('--csv', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
+    dl.add_argument('--etiqueta', default='mejor_37k')
     for q in (p, d):
         q.add_argument('--corrida-final', action='store_true', help='permite test (tras congelar diseno_A.md)')
         q.add_argument('--out', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
     args = ap.parse_args()
+    if args.brazo == 'delta':
+        calcula_delta(args.csv, args.etiqueta)
+        return
     parts = ['val', 'test'] if args.corrida_final else ['val']
     args.out.parent.mkdir(parents=True, exist_ok=True)
     filas = []

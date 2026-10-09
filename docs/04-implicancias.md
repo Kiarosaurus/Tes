@@ -11268,3 +11268,33 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Correccion (2026-10-08):** los 19 de prueba "con metal" son 11 con material ortopedico (grupo 1) y 8 con
   objetos no ortopedicos (grupo 2). `capitulo3.tex` decia "19 con implante real" (y antes "20"): corregido. La
   referencia de realismo (#155 (2)) son los 11, no los 19. La `discrepancia` se mide en los 19 con metal.
+
+### 157 — COTEJO DE CHECKPOINT (a17, 2026-10-09): `run01_140k` gana por UNA cascara (8 frente a 7 de 46), y LOS DOS CHECKPOINTS QUEDAN POR DEBAJO DE LO REAL EN p95 en 20 de 23 cascaras — ABIERTA (toca #150, #154, eleccion del checkpoint, realismo del Objetivo 3)
+
+- **Origen:** job Khipu 55130 (`a15_cotejo.sbatch`, particion `all`, MIG 3g; 2 receptores `0101`/`0102`, 5 semillas,
+  GPU), `a17_cotejo.py` en local. Agregacion corte -> semilla -> paciente -> checkpoint por medianas, confirmada por
+  la autora el 2026-10-09. Detalle: `experiments/objetivo3/a17_cotejo_resultado.md`.
+- **Hallazgo:**
+  - Por la regla gana `run01_140k` (8 cascaras dentro de la envolvente, 5 en p50 + 3 en p95) frente a `mejor_37k` (7).
+    Margen de una cascara sobre 46 comparables: en la practica, empate. Desempate (no aplica por la regla):
+    distancia de histograma 1159 (`run01`) frente a 1125 (`mejor`). Rango entre semillas: 238 HU frente a 643.
+  - p95 sintetico por debajo de la envolvente real en 20 de 23 cascaras en los dos checkpoints; mas alla de 3 mm, la
+    mediana de la diferencia con el borde inferior es -212 HU (`run01`) y -193 HU (`mejor`).
+  - El p50 se reparte a ambos lados de la envolvente: 10/5/8 cascaras bajo/dentro/sobre en `run01` y 13/4/6 en
+    `mejor`.
+  - En `M`: p50 sintetico 3280/3194 HU dentro del rango real (3092-3838); p95 sintetico 4309/4429 HU, unos
+    900 HU bajo lo real (5262-5304).
+  - El perfil p50 sintetico alterna entre cascaras pares e impares (p. ej. 141, 332, 112, 216 HU de 3.0 a 5.0 mm).
+    Explicacion probable, NO verificada: cascaras de 0.5 mm con pixel de 0.896 mm en los receptores (0.976 mm en
+    `0039`). Puede inflar o desinflar el conteo de cascaras dentro.
+- **Por que importa:** (1) la regla elige por un margen que la alternancia de cascaras puede cambiar; (2) lo
+  sintetico subestima la cola alta del artefacto alrededor del tornillo y el pico de HU del metal: es una
+  diferencia sistematica con lo real que aplica a los dos checkpoints. Con 1 paciente de referencia, el cotejo
+  descarta y no prueba.
+- **Opciones (no decididas, regla 14):** (1) aceptar `run01_140k` por la regla y declarar el empate practico y el
+  sesgo de p95; (2) antes de elegir, rehacer `a17` con cascaras de 1 mm como sensibilidad; si el ganador cambia,
+  declararlo; (3) usar la estabilidad entre semillas como criterio adicional, lo que cambia la regla y exige una
+  nueva entrada en `01-decisiones.md`.
+- **Afecta:** eleccion del checkpoint del Objetivo 3; `overleaf/secciones/capitulo3.tex` (cotejo) cuando haya
+  resultado; la discusion de realismo (#155 (2)).
+- **Pendiente de la autora:** elegir la opcion y confirmar el checkpoint.

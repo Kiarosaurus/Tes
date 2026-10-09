@@ -2260,3 +2260,26 @@ revisa.
    - Hipotesis de mecanismo, sin verificar: que el modelo aprenda mal la cola alta cerca de los techos de los
      canales estrechos (#152).
    - Si la autora quiere verificarlo, es un diagnostico aparte y no cambia el orden de trabajo.
+
+## 2026-10-09 (3) — Brazo fisico: Fe preinscrito + Ti como sensibilidad (#159, opcion 2)
+
+Escrito por el asistente por orden explicita de la autora ("Pega tu la decision en 01-decisiones"). La opcion la
+eligio la autora ("Me quedo con tu recomendacion 2").
+
+1. **El brazo completo de Peters corre con `Fe` y con `Ti`.**
+   - `Fe` es el material preinscrito: sustituye al acero, que no esta en el catalogo de XCIST.
+   - `Ti` es la sensibilidad.
+   - Los dos llevan test-retest A/B, y la geometria y la `M` son identicas a las del difusor.
+2. **Cortes:** uno de cada `k = 2` entre los cortes axiales que toca `G`. Es la salida preinscrita de la sonda
+   (`sonda_peters.md`) para el fallo solo por coste.
+3. **Particiones:** el brazo corre primero solo en validacion (`0101`, `0102`) para medir `Delta`. Test entra
+   solo en la corrida final, despues de congelar `diseno_A.md` (`--corrida-final`).
+4. **Se declara como limitacion del brazo fisico:**
+   - El metal simulado es mucho mas brillante que el real de CLINIC-metal (mediana en `M`: Fe ~9900 HU,
+     Ti ~5400 HU, frente a 3100-3800 HU en `metal_0039`). No se sabe si viene del material, de la
+     reconstruccion o del escaner.
+   - El TOST compara el difusor con una referencia que puede estar desplazada respecto de lo real, y en sentido
+     contrario al sesgo del difusor (#157).
+5. **Pendiente del equipo:** mejorar la subexposicion del difusor (p95 bajo lo real, #157). No esta programado y no
+   bloquea `Delta`.
+6. **Codigo:** `experiments/objetivo3/a19_peters_completo.py` y `a19_peters.sbatch` (CPU, sin GPU).

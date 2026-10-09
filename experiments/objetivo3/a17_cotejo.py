@@ -22,6 +22,11 @@ que el elegido lo reproduzca. **Este script no elige**: escribe el resultado de 
 USO
 ---
     python experiments/objetivo3/a17_cotejo.py --dir-sintetico experiments/objetivo3/outputs/a15_cotejo
+    python experiments/objetivo3/a17_cotejo.py --dir-sintetico experiments/objetivo3/outputs/a15_cotejo_1mm --paso-mm 1
+
+`--paso-mm` (por omision 0.5) fija el ancho de cascara en los dos lados. Del sintetico usa las filas con ese
+`paso_mm` (un CSV sin la columna se toma como 0.5 mm). Con un paso distinto de 0.5, la salida va a
+`outputs/a17_paso<p>mm/`.
 """
 from __future__ import annotations
 
@@ -37,13 +42,14 @@ _RAIZ = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_RAIZ / 'src'))
 sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo1'))
 
-from common.cotejo import METAL_HU, agrega, bordes, histograma_m, perfil_corte  # noqa: E402
+from common.cotejo import METAL_HU, PASO_MM, agrega, bordes, histograma_m, perfil_corte  # noqa: E402
 
 CASO_REF = 'dataset7_CLINIC_metal_0039_data'
 MIN_MM3 = 500.0
 
 
-def referencia_real(data: list[Path], particion: Path) -> tuple[list[np.ndarray], list[dict]]:
+def referencia_real(data: list[Path], particion: Path,
+                    paso: float = PASO_MM) -> tuple[list[np.ndarray], list[dict]]:
     """Perfil (n_cascaras, 2) e histograma de cada tornillo real de `metal_0039`."""
     import nibabel as nib
     from scipy import ndimage as ndi
@@ -76,7 +82,7 @@ def referencia_real(data: list[Path], particion: Path) -> tuple[list[np.ndarray]
         m3 = lab == c
         otro = metal & ~m3
         ks = [k for k in range(vol.shape[0]) if m3[k].any()]
-        prf = agrega([perfil_corte(vol[k], m3[k], esp2d, excluir=otro[k]) for k in ks])
+        prf = agrega([perfil_corte(vol[k], m3[k], esp2d, excluir=otro[k], paso=paso) for k in ks])
         h = histograma_m(vol[m3])
         h.update(componente=int(c), vol_mm3=round(float(tam[c - 1]), 1), cortes=len(ks))
         perfiles.append(prf)
@@ -86,10 +92,10 @@ def referencia_real(data: list[Path], particion: Path) -> tuple[list[np.ndarray]
     return perfiles, hists
 
 
-def lee_sintetico(directorio: Path) -> dict:
+def lee_sintetico(directorio: Path, paso: float = PASO_MM) -> dict:
     """{etiqueta: {caso: {semilla: (perfil, hist)}}} desde los `a15_*_cotejo.csv`."""
     datos: dict = defaultdict(lambda: defaultdict(dict))
-    n_casc = len(bordes()) - 1
+    n_casc = len(bordes(paso)) - 1
     rutas_csv = sorted(directorio.glob('a15_*_cotejo.csv'))
     if not rutas_csv:
         raise SystemExit('no hay a15_*_cotejo.csv en %s' % directorio)
@@ -97,6 +103,9 @@ def lee_sintetico(directorio: Path) -> dict:
         with open(ruta, newline='', encoding='utf-8') as fh:
             filas = list(csv.DictReader(fh))
         grupos = defaultdict(list)
+        filas = [f for f in filas if abs(float(f.get('paso_mm') or PASO_MM) - paso) < 1e-6]
+        if not filas:
+            raise SystemExit('%s: sin filas con paso_mm = %g' % (ruta.name, paso))
         for f in filas:
             grupos[(f['etiqueta'], f['caso'], int(f['semilla']))].append(f)
         for (et, caso, sem), fs in grupos.items():
@@ -115,18 +124,21 @@ def main() -> None:
     ap.add_argument('--dir-sintetico', type=Path, default=aqui / 'outputs' / 'a15_cotejo')
     ap.add_argument('--data', type=Path, nargs='+', default=[_RAIZ / 'data'])
     ap.add_argument('--particion', type=Path, default=aqui.parent / 'objetivo1' / 'p1_particion.csv')
-    ap.add_argument('--out-dir', type=Path, default=aqui / 'outputs' / 'a17')
+    ap.add_argument('--out-dir', type=Path, default=None)
+    ap.add_argument('--paso-mm', type=float, default=PASO_MM, help='ancho de cascara (mm)')
     args = ap.parse_args()
+    if args.out_dir is None:
+        args.out_dir = aqui / 'outputs' / ('a17' if args.paso_mm == PASO_MM else 'a17_paso%gmm' % args.paso_mm)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    reales, hists = referencia_real(list(args.data), args.particion)
+    reales, hists = referencia_real(list(args.data), args.particion, args.paso_mm)
     R = np.stack(reales)                                   # (2, n_cascaras, 2)
     lo, hi = np.min(R, axis=0), np.max(R, axis=0)          # NaN si falta en algun componente
     med_p50 = float(np.median([h['hu_p50'] for h in hists]))
     med_p95 = float(np.median([h['hu_p95'] for h in hists]))
-    b = bordes()
+    b = bordes(args.paso_mm)
 
-    datos = lee_sintetico(args.dir_sintetico)
+    datos = lee_sintetico(args.dir_sintetico, args.paso_mm)
     filas, tabla = [], []
     for et in sorted(datos):
         por_caso = []
@@ -169,7 +181,8 @@ def main() -> None:
         w.writerows({k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items()} for f in filas)
     L = ['# A17 — cotejo de checkpoint contra los tornillos reales de `metal_0039`', '',
          'Generado por `a17_cotejo.py`. Referencia: 2 tornillos aislados de `metal_0039` (validacion; '
-         '01-decisiones.md 2026-10-08 (2)). Regla: 01-decisiones.md 2026-10-07 (2). **No elige: informa.**', '',
+         '01-decisiones.md 2026-10-08 (2)). Regla: 01-decisiones.md 2026-10-07 (2). Cascaras de %g mm. '
+         '**No elige: informa.**' % args.paso_mm, '',
          '## Referencia real', '', '| componente | mm3 | cortes | M p50 | M p75 | M p95 |', '|---|---|---|---|---|---|']
     L += ['| %d | %.0f | %d | %.0f | %.0f | %.0f |' % (h['componente'], h['vol_mm3'], h['cortes'],
                                                     h['hu_p50'], h['hu_p75'], h['hu_p95']) for h in hists]
@@ -186,7 +199,7 @@ def main() -> None:
     L += ['', ('**Empate persistente: lo decide la autora.**' if empate else
                '**Gana por la regla: `%s`.** La eleccion la confirma la autora.' % tabla[0]['etiqueta']),
           '', 'Con 1 paciente de referencia el cotejo descarta, no prueba. Cascaras comparables = con valor '
-          'en lo real y en lo sintetico (con 0.5 mm y pixel de 0.7-1 mm, algunas cascaras quedan vacias). '
+          'en lo real y en lo sintetico (con cascaras mas finas que el pixel, de 0.7-1 mm, algunas quedan vacias). '
           'Perfiles por cascara: `a17_perfiles.csv`.']
     (args.out_dir / 'a17_cotejo.md').write_text('\n'.join(L) + '\n', encoding='utf-8')
     print('\n'.join(L))

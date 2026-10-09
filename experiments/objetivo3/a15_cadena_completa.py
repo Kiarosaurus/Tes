@@ -73,7 +73,7 @@ USO
 COTEJO DE CHECKPOINT (01-decisiones.md 2026-10-07 (2) y 2026-10-08 (2))
 -------------------------------------------------------------------------
 Con `--semillas`, cada checkpoint se genera una vez por semilla y, ademas de lo anterior, escribe
-`_cotejo.csv`: perfil 2D en cascaras de 0.5 mm con la elevacion de la mediana y del p95 sobre el anillo
+`_cotejo.csv`: perfil 2D en cascaras de 0.5 mm (o las de `--pasos-cotejo-mm`, columna `paso_mm`) con la elevacion de la mediana y del p95 sobre el anillo
 de 12-15 mm, agregado corte -> paciente por semilla, y el histograma dentro de `M` sobre voxeles
 > 2500 HU. Lo calcula `common.cotejo`, la misma funcion que mide la referencia real (`a17_cotejo.py`).
 """
@@ -232,6 +232,8 @@ def main() -> None:
     ap.add_argument('--semillas', type=int, nargs='+', default=None,
                     help='una generacion por semilla y salida `_cotejo.csv` (cotejo de checkpoint)')
     ap.add_argument('--paso-perfil-mm', type=float, default=1.0)
+    ap.add_argument('--pasos-cotejo-mm', type=float, nargs='+', default=[0.5],
+                    help='ancho de las cascaras del `_cotejo.csv` (columna `paso_mm`); varios a la vez')
     ap.add_argument('--nifti', action='store_true', default=True)
     ap.add_argument('--sin-nifti', dest='nifti', action='store_false',
                     help='no escribe los volumenes .nii.gz (ahorra memoria; perfil, resumen y marcas si)')
@@ -382,17 +384,19 @@ def main() -> None:
                   % (hist['hu_p05'], hist['hu_p50'], hist['hu_p95'], METAL_HU, hist['frac_sobre_2500']))
             resumen.append(dict(etiqueta=et, paso=ck.get('paso'), semilla=semilla, **hist))
             if args.semillas:
-                prf = agrega([perfil_corte(sal[k], M[k], esp2d) for k in ks])
                 h2 = histograma_m(sal[Ms])
-                b = bordes()
-                for i in range(len(b) - 1):
-                    cotejo.append({'caso': args.caso, 'etiqueta': et, 'semilla': semilla,
-                                   'r_lo_mm': b[i], 'r_hi_mm': b[i + 1],
-                                   'elev_p50': round(float(prf[i, 0]), 2), 'elev_p95': round(float(prf[i, 1]), 2),
-                                   'M_p50': h2['hu_p50'], 'M_p75': h2['hu_p75'], 'M_p95': h2['hu_p95'],
-                                   'M_frac_sobre_2500': h2['frac_sobre_2500']})
-                print('  cotejo semilla %d: elevacion p95 a 0-0.5 mm %.0f HU | M>2500 p50 %.0f'
-                      % (semilla, prf[0, 1], h2['hu_p50']), flush=True)
+                for paso_c in args.pasos_cotejo_mm:
+                    prf = agrega([perfil_corte(sal[k], M[k], esp2d, paso=paso_c) for k in ks])
+                    b = bordes(paso_c)
+                    for i in range(len(b) - 1):
+                        cotejo.append({'caso': args.caso, 'etiqueta': et, 'semilla': semilla, 'paso_mm': paso_c,
+                                       'r_lo_mm': b[i], 'r_hi_mm': b[i + 1],
+                                       'elev_p50': round(float(prf[i, 0]), 2),
+                                       'elev_p95': round(float(prf[i, 1]), 2),
+                                       'M_p50': h2['hu_p50'], 'M_p75': h2['hu_p75'], 'M_p95': h2['hu_p95'],
+                                       'M_frac_sobre_2500': h2['frac_sobre_2500']})
+                print('  cotejo semilla %d: cascaras de %s mm | M>2500 p50 %.0f'
+                      % (semilla, '/'.join('%g' % x for x in args.pasos_cotejo_mm), h2['hu_p50']), flush=True)
 
             base = args.out_dir / ('a15_%s_%s' % (args.caso, et)
                                    + ('_s%d' % semilla if args.semillas else ''))

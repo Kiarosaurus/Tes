@@ -33,3 +33,30 @@ para `mejor_37k`.
 
 El p50 sintetico alterna entre cascaras vecinas. Explicacion probable, sin verificar: cascaras de 0.5 mm con
 pixel de 0.896 mm.
+
+## Sensibilidad: cascaras de 1 mm (2026-10-09, job 55171)
+
+- **Reproducibilidad:** las cascaras de 0.5 mm del job 55171 son identicas a las del 55130 (misma GPU, mismas
+  semillas; diferencia maxima 0.0 HU).
+- **Salida:** `outputs/a17_paso1mm/`, generada con
+  `a17_cotejo.py --dir-sintetico outputs/a15_cotejo_1mm --paso-mm 1`.
+
+| checkpoint | dentro p50 | dentro p95 | dentro total | comparables | rango entre semillas (HU) |
+|---|---|---|---|---|---|
+| mejor_37k | 9 | 2 | 11 | 24 | 324 |
+| run01_140k | 4 | 1 | 5 | 24 | 162 |
+
+**A 1 mm gana `mejor_37k`: el ganador cambia con el ancho de cascara.**
+
+Cascaras respecto de la envolvente real:
+
+| checkpoint | curva | bajo | dentro | sobre |
+|---|---|---|---|---|
+| mejor_37k | p50 | 1 | 9 | 2 |
+| mejor_37k | p95 | 10 | 2 | 0 |
+| run01_140k | p50 | 0 | 4 | 8 |
+| run01_140k | p95 | 11 | 1 | 0 |
+
+- A 1 mm los perfiles son suaves: la alternancia de 0.5 mm era discretizacion.
+- El p95 bajo lo real se mantiene con los dos anchos.
+- Decision pendiente de la autora: opciones (a), (b) y (c) de #157.

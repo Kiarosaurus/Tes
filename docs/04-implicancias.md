@@ -11303,3 +11303,24 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - El `.sbatch` calcula 0.5 y 1 mm en la misma corrida. Repetir 0.5 mm sirve ademas para comprobar que la GPU
     reproduce el job 55130 con las mismas semillas.
   - Salida en Khipu: `$DATA/a15_cotejo_1mm`.
+- **Resultado de la opcion 2 (2026-10-09, job Khipu 55171, `a17 --paso-mm 1`):**
+  - **Reproducibilidad:** con las mismas semillas y la misma GPU (MIG `3g.20gb`), las cascaras de 0.5 mm salen
+    identicas al job 55130 (diferencia maxima 0.0 HU en las 480 filas; las unicas filas distintas son NaN en los
+    dos lados).
+  - **Con cascaras de 1 mm el ganador CAMBIA: gana `mejor_37k`**, 11 de 24 cascaras dentro (9 p50 + 2 p95), frente
+    a 5 de 24 de `run01_140k` (4 + 1). Rango entre semillas: 324 HU frente a 162.
+  - A 1 mm los perfiles son suaves y desaparece la alternancia par/impar de 0.5 mm, que era entonces un efecto de
+    discretizacion (cascara mas fina que el pixel de 0.896 mm). El p50 de `mejor_37k` sigue la envolvente real;
+    el de `run01_140k` queda apenas por encima (8 de 12 cascaras sobre, por pocas decenas de HU).
+  - El p95 bajo lo real se confirma con los dos anchos: 10 y 11 de 12 cascaras por debajo; mas alla de 3 mm, la
+    mediana de la diferencia es -148 HU (`mejor`) y -197 HU (`run01`). **Este hallazgo no depende del ancho.**
+- **Lectura:** la eleccion de checkpoint por la regla no es robusta al ancho de cascara. La regla fijada antes de
+  mirar (0.5 mm) da `run01_140k`. El ancho que respeta el pixel (1 mm) da `mejor_37k`. Pasar a 1 mm despues de ver
+  los resultados es un cambio post hoc. Tiene una justificacion independiente del resultado (cascara >= pixel; la
+  alternancia observada a 0.5 mm), pero hay que declararlo como tal.
+- **Opciones nuevas (no decididas, regla 14):**
+  - (a) adoptar 1 mm por el argumento del pixel, declarar el cambio post hoc y elegir `mejor_37k`. Requiere una
+    entrada nueva en `01-decisiones.md`.
+  - (b) mantener la regla de 0.5 mm, elegir `run01_140k` y declarar que a 1 mm cambia.
+  - (c) declarar el cotejo no discriminante entre los dos y elegir por otro criterio fijado antes, o reportar los
+    dos checkpoints.

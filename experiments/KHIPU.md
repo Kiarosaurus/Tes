@@ -918,3 +918,10 @@ por que.**
 sbatch a2_entrenar.sbatch 200 --base 96 --lote 2     # mas capacidad, menos lote
 sbatch a2_entrenar.sbatch 200 --base 64 --lote 8     # mas lote
 ```
+10. **`--time` inflado bloquea el backfill (2026-10-09):** el job 55171 quedo en `PD` con `ReqNodeNotAvail, May
+    be reserved for other job` aunque la MIG `3g` estaba libre (`scontrol show node ag001 -d | grep GresUsed`).
+    El nodo estaba `MIXED+PLANNED`: tenia una reserva para otro job a las 06:16, y el `--time` de 1 h 58 no
+    cabia en el hueco. Se arreglo bajando el limite del job en cola con
+    `scontrol update JobId=<id> TimeLimit=00:50:00`; el usuario puede bajarlo, no subirlo, y el job arranco.
+    El cotejo `a15_cotejo.sbatch` tarda ~15-25 min en la `3g`: a `khipu_elegir_gpu.sh` pasarle **11** minutos
+    en A100, no 25.

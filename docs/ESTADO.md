@@ -6,7 +6,8 @@
 
 - **Hecho:** `experiments/exploration-3d/tornillos_conteo.csv` (65 casos x 5 preguntas; columna `agente` llena desde `propuesta_lote-tornillos-*`, `autora` y `evaluador_externo` vacias) y `tornillos_conteo.md` (definiciones). Agente, 64 pacientes: 54 con tornillo intraoseo, 23-26 con IS o TS.
 - **Siguiente:** autora llena su columna en cortes; luego se decide como reportarlo en cap. 3 (descriptivo, ningun objetivo lo pide).
-- **Khipu (10-09):** job 54951 del cotejo FALLO en 8 s porque Khipu tenia la `p1_particion.csv` vieja; `~/metalsynth` no es clon git (se copia con scp). Archivos copiados; falta reenviar. `khipu_elegir_gpu.sh` ahora recorre todas las particiones y GRES de `sinfo`.
+- **Khipu (10-09):** job 54951 del cotejo FALLO en 8 s porque Khipu tenia la `p1_particion.csv` vieja; `~/metalsynth` no es clon git (se copia con scp). Archivos copiados; falta reenviar. `khipu_elegir_gpu.sh` ahora recorre todas las particiones y GRES de `sinfo`. Job 55130 (particion `all`, MIG 3g) COMPLETO; resultados traidos a `objetivo3/outputs/a15_cotejo/`. **`~/metalsynth` ya es clon de `Tes`** (deploy key de solo lectura; actualizar con `git pull`); `.git` viejo en `~/metalsynth_git_viejo`. 6 scripts de la exploracion 2D recuperados a `obsoletos/exploration-2d/`.
+- **Pendiente antes de `a17_cotejo.py`:** que la autora confirme la agregacion (01-decisiones 2026-10-08 (3)). Solo 2 pacientes receptores.
 
 ## 2026-10-08 (6) — `00-tesis`/`main.tex` alineados (#156); cotejo con 5 semillas listo para Khipu
 

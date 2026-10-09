@@ -1,74 +1,74 @@
 Caso,particion,cuenta,pregunta,valores,agente,autora,evaluador_externo,nota_agente,nota_autora,nota_externo,fuente_agente
-dataset7_CLINIC_metal_0000_data,train,si,1_tornillo,si / no / incierto,si,,,IS partido en 2 fragmentos; el censo e8 no lo detecta,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0000_data,train,si,2_n_IS,entero / incierto,1,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0000_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0000_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0000_data,train,si,5_clases,letras a-e separadas por ;,a;c;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0001_data,train,si,1_tornillo,si / no / incierto,si,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0001_data,train,si,2_n_IS,entero / incierto,1,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0001_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0001_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0001_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0002_data,train,si,1_tornillo,si / no / incierto,si,,,pasa ~20 mm la linea media,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0002_data,train,si,2_n_IS,entero / incierto,1,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0002_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0002_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0002_data,train,si,5_clases,letras a-e separadas por ;,a;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0003_data,train,si,1_tornillo,si / no / incierto,si,,,alargados craneocaudales; aislamiento de la placa por determinar,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0003_data,train,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0003_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0003_data,train,si,4_n_otros_aislados,entero / incierto,incierto,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0003_data,train,si,5_clases,letras a-e separadas por ;,b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0004_data,train,si,1_tornillo,si / no / incierto,si,,,IS partido; el censo solo ve la punta,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0004_data,train,si,2_n_IS,entero / incierto,1,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0004_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0004_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0004_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0005_data,train,si,1_tornillo,si / no / incierto,si,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0005_data,train,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0005_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0005_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0005_data,train,si,5_clases,letras a-e separadas por ;,b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0006_data,test,si,1_tornillo,si / no / incierto,si,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0006_data,test,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0006_data,test,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0006_data,test,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0006_data,test,si,5_clases,letras a-e separadas por ;,b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0007_data,train,si,1_tornillo,si / no / incierto,si,,,supraacetabular->rama pubica y otro craneocaudal en ala iliaca,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0007_data,train,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0007_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0007_data,train,si,4_n_otros_aislados,entero / incierto,2,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0007_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0008_data,train,si,1_tornillo,si / no / incierto,si,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0008_data,train,si,2_n_IS,entero / incierto,2,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0008_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0008_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0008_data,train,si,5_clases,letras a-e separadas por ;,a,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0009_data,test,si,1_tornillo,si / no / incierto,si,,,1 o 2 IS paralelos; cuerpo bajo 2500 HU,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0009_data,test,si,2_n_IS,entero / incierto,incierto,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0009_data,test,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0009_data,test,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0009_data,test,si,5_clases,letras a-e separadas por ;,a;c,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0010_data,test,si,1_tornillo,si / no / incierto,no,,,masas densas parasinfisarias; metal incierto,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0010_data,test,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0010_data,test,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0010_data,test,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0010_data,test,si,5_clases,letras a-e separadas por ;,e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0011_data,val,si,1_tornillo,si / no / incierto,no,,,solo clavos de fijador,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0011_data,val,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0011_data,val,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0011_data,val,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0011_data,val,si,5_clases,letras a-e separadas por ;,c,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0012_data,train,si,1_tornillo,si / no / incierto,si,,,cuerpo bajo 2500 HU,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0012_data,train,si,2_n_IS,entero / incierto,1,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0012_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0012_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0012_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0013_data,train,si,1_tornillo,si / no / incierto,no,,,solo clavos de fijador,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0013_data,train,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0013_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0013_data,train,si,4_n_otros_aislados,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
-dataset7_CLINIC_metal_0013_data,train,si,5_clases,letras a-e separadas por ;,c;e,,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0000_data,train,si,1_tornillo,si / no / incierto,si,si,,IS partido en 2 fragmentos; el censo e8 no lo detecta,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0000_data,train,si,2_n_IS,entero / incierto,1,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0000_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0000_data,train,si,4_n_otros_aislados,entero / incierto,0,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0000_data,train,si,5_clases,letras a-e separadas por ;,a;c;e,a;c;e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0001_data,train,si,1_tornillo,si / no / incierto,si,si,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0001_data,train,si,2_n_IS,entero / incierto,1,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0001_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0001_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0001_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,a;b;e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0002_data,train,si,1_tornillo,si / no / incierto,si,si,,pasa ~20 mm la linea media,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0002_data,train,si,2_n_IS,entero / incierto,1,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0002_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0002_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0002_data,train,si,5_clases,letras a-e separadas por ;,a;e,a;c,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0003_data,train,si,1_tornillo,si / no / incierto,si,si,,alargados craneocaudales; aislamiento de la placa por determinar,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0003_data,train,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0003_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0003_data,train,si,4_n_otros_aislados,entero / incierto,incierto,2,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0003_data,train,si,5_clases,letras a-e separadas por ;,b;e,a;b,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0004_data,train,si,1_tornillo,si / no / incierto,si,si,,IS partido; el censo solo ve la punta,el tornillo no tiene de inicio a fin un HU "estable" y su zona intermedia puede considerarse erróneamente como hueso,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0004_data,train,si,2_n_IS,entero / incierto,1,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0004_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0004_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0004_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,a;b;e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0005_data,train,si,1_tornillo,si / no / incierto,si,si,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0005_data,train,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0005_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0005_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0005_data,train,si,5_clases,letras a-e separadas por ;,b;e,b;e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0006_data,test,si,1_tornillo,si / no / incierto,si,si,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0006_data,test,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0006_data,test,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0006_data,test,si,4_n_otros_aislados,entero / incierto,0,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0006_data,test,si,5_clases,letras a-e separadas por ;,b;e,a;b;e,,,hay un tornillo muy cerca de una placa pero no parece ser parte de la placa,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0007_data,train,si,1_tornillo,si / no / incierto,si,si,,supraacetabular->rama pubica y otro craneocaudal en ala iliaca,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0007_data,train,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0007_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0007_data,train,si,4_n_otros_aislados,entero / incierto,2,2,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0007_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,a;b;e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0008_data,train,si,1_tornillo,si / no / incierto,si,si,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0008_data,train,si,2_n_IS,entero / incierto,2,2,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0008_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0008_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0008_data,train,si,5_clases,letras a-e separadas por ;,a,a,,,los tornillos no tienen de inicio a fin un HU "estable" y su zona intermedia puede considerarse erróneamente como hueso,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0009_data,test,si,1_tornillo,si / no / incierto,si,si,,1 o 2 IS paralelos; cuerpo bajo 2500 HU,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0009_data,test,si,2_n_IS,entero / incierto,incierto,2,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0009_data,test,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0009_data,test,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0009_data,test,si,5_clases,letras a-e separadas por ;,a;c,a;c,,,los tornillos no tienen de inicio a fin un HU "estable" y su zona intermedia puede considerarse erróneamente como hueso,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0010_data,test,si,1_tornillo,si / no / incierto,no,no,,masas densas parasinfisarias; metal incierto,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0010_data,test,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0010_data,test,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0010_data,test,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0010_data,test,si,5_clases,letras a-e separadas por ;,e,e,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0011_data,val,si,1_tornillo,si / no / incierto,no,no,,solo clavos de fijador,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0011_data,val,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0011_data,val,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0011_data,val,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0011_data,val,si,5_clases,letras a-e separadas por ;,c,c,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0012_data,train,si,1_tornillo,si / no / incierto,si,si,,cuerpo bajo 2500 HU,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0012_data,train,si,2_n_IS,entero / incierto,1,1,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0012_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0012_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0012_data,train,si,5_clases,letras a-e separadas por ;,a;b;e,a;b;e,,,ay un tornillo muy cerca de una placa pero no parece ser parte de la placa y este tornillo aislado no tiene de inicio a fin un HU "estable" así que su zona intermedia puede considerarse erróneamente como hueso,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0013_data,train,si,1_tornillo,si / no / incierto,no,no,,solo clavos de fijador,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0013_data,train,si,2_n_IS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0013_data,train,si,3_n_TS,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0013_data,train,si,4_n_otros_aislados,entero / incierto,0,0,,,,,propuesta_lote-tornillos-A.csv
+dataset7_CLINIC_metal_0013_data,train,si,5_clases,letras a-e separadas por ;,c;e,c;e,,,,,propuesta_lote-tornillos-A.csv
 dataset7_CLINIC_metal_0014_data,train,si,1_tornillo,si / no / incierto,si,,,,,,propuesta_lote-tornillos-A.csv
 dataset7_CLINIC_metal_0014_data,train,si,2_n_IS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv
 dataset7_CLINIC_metal_0014_data,train,si,3_n_TS,entero / incierto,0,,,,,,propuesta_lote-tornillos-A.csv

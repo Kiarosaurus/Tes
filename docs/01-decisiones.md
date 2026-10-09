@@ -2197,3 +2197,30 @@ Escrito por el asistente por orden explicita de la autora ("usa 5 semillas").
   dos curvas (p50 y p95); solo cuentan las cascaras con valor en lo real y en lo sintetico (con cascaras de
   0.5 mm y pixel de 0.7-1 mm algunas quedan vacias). Codigo: `src/common/cotejo.py`, `a15 --semillas`,
   `a17_cotejo.py`.
+
+## 2026-10-09 — Checkpoint del Objetivo 3: `mejor_37k`, con cascaras de 1 mm en el cotejo (#157, opcion a)
+
+Escrito por el asistente por orden explicita de la autora ("Elige (a) y redacta en 01-decisiones lo elegido").
+
+1. **Agregacion del cotejo confirmada por la autora** (pendiente en 2026-10-08 (3)): corte -> semilla ->
+   paciente -> checkpoint por medianas; se suman las cascaras dentro de la envolvente en las dos curvas
+   (p50 y p95); solo cuentan las cascaras con valor en lo real y en lo sintetico.
+2. **Ancho de cascara del perfil radial: 1 mm** (antes 0.5 mm). Razon: una cascara mas fina que el pixel
+   (0.896 mm en los receptores, 0.976 mm en `metal_0039`) produce una alternancia par/impar en el perfil
+   sintetico. Esa alternancia se observo a 0.5 mm y desaparece a 1 mm. **Es un cambio POSTERIOR a ver el
+   resultado y asi se declara:** con 0.5 mm la regla daba `run01_140k` (8 frente a 7 de 46 cascaras); con
+   1 mm da `mejor_37k` (11 frente a 5 de 24). Se reportan los dos.
+3. **Checkpoint elegido: `mejor_37k`** (`$DATA/a7/run02/mejor.pt`). Con 1 mm, su mediana sigue la envolvente
+   real en 9 de 12 cascaras. En contra, y se declara: varia mas entre semillas (324 HU frente a 162).
+4. **Se declara como hallazgo, no se corrige:** con cualquier ancho de cascara y en los dos checkpoints, el
+   p95 sintetico queda bajo la envolvente real en 10-11 de 12 cascaras (unos 150-200 HU mas alla de 3 mm),
+   y el p95 dentro de `M` queda unos 900 HU bajo lo real. Lo sintetico subestima la cola alta del artefacto
+   y el pico del metal.
+5. **Alcance sin cambios:** 1 paciente de referencia y 2 tornillos; 2 receptores limpios (`0101`, `0102`).
+   El cotejo descarta, no prueba.
+6. **Reproducibilidad verificada:** misma GPU (MIG `a100_3g.20gb`) y mismas semillas dan resultados
+   identicos (jobs 55130 y 55171).
+7. **Evidencia:** `experiments/objetivo3/a17_cotejo_resultado.md`; codigo `src/common/cotejo.py`,
+   `a15 --pasos-cotejo-mm`, `a17 --paso-mm`.
+8. **Reabre B1 y B2** (2026-10-05 (6), punto 3: "se reabren en cuanto el criterio del punto 1 este medido").
+   No se deciden aqui.

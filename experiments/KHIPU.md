@@ -101,6 +101,16 @@ Cuenta: `--account=tesis`.
    `--test-only`, suma la duración esperada según la velocidad aproximada de cada GPU y da el comando de envío:
    `bash khipu_elegir_gpu.sh <x.sbatch> <min_en_A100> [GB_min]`. Ese día la A100 entera y las A6000 estaban
    tomadas hasta el día siguiente y la MIG `a100_1g.5gb` dedicada empezaba en horas (job a15 cotejo).
+   **2026-10-09:** el script ya no usa una lista fija. Lee de `sinfo` todas las particiones y todos los GRES y
+   prueba cada par.
+   - Las mismas GPUs están en varias particiones: `all`, `supermicro`, `lenovo`, `data-science`, `hpe` y
+     `debug-gpu`, además de `gpu`.
+   - Faltaban los shards de `a100`, `3g`, `2g` y `tesla`.
+   - La QoS a-tesis limita los shards a 40 por usuario, la CPU a 32, la memoria a 98 GB y el tiempo a 24 h; no
+     limita las GPUs enteras.
+   - No había reservas: el inicio tardío se debía solo a la cola.
+
+   Para limitar las particiones probadas: `PARTICIONES="gpu all" bash ...`.
 
 ## Correr la cohorte completa
 

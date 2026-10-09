@@ -11402,7 +11402,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - **Queda pendiente "para nosotros"**, palabras de la autora: mejorar la subexposicion del difusor (p95 bajo lo
     real, #157). No esta programado y no bloquea Peters ni `Delta`.
 
-### 160 — EL DIFUSOR (`a15`) SOLO GENERA LOS CORTES AXIALES CON `M`, NO LOS DE SOLO BANDA: en E-A2 la mitad de las ROIs caeria en cortes no generados (desviacion cero por construccion) — ABIERTA (toca E-A2, D4, `Delta`, el cotejo y el endpoint primario)
+### 160 — EL DIFUSOR (`a15`) SOLO GENERA LOS CORTES AXIALES CON `M`, NO LOS DE SOLO BANDA: en E-A2 la mitad de las ROIs caeria en cortes no generados (desviacion cero por construccion) — DECIDIDA el 2026-10-09 por la autora: opcion 1, `--incluir-banda` (toca E-A2, D4, `Delta`, el cotejo y el endpoint primario)
 
 - **Origen:** al escribir el evaluador comun de E-A2 (`a20_evaluador_ea2.py`, 2026-10-09).
 - **Hallazgo:**
@@ -11424,3 +11424,11 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - (2) Restringir la evaluacion de los dos brazos a los cortes con `M`, declarando que las ROIs quedan
     recortadas.
 - **Pendiente de la autora:** elegir antes de correr `a15_delta.sbatch`.
+- **2026-10-09, decisiones de la autora:**
+  - **#160 opcion 1:** E-A2 y `Delta` se miden con `a15 --incluir-banda`.
+  - **Formula de `Delta` = max(s, r)**, fijada antes de ver los numeros (`a20_evaluador_ea2.py delta`):
+    - `s` = rango de la amplitud del difusor entre sus 5 semillas, por paciente, promediado sobre `0101` y
+      `0102`;
+    - `r` = |amplitud Fe_A - Fe_B| de Peters, por paciente, promediado sobre los mismos pacientes.
+  - **Se declara:** si `s > r`, el margen lo fija la variabilidad del propio difusor, y un `Delta` mayor facilita
+    concluir equivalencia.

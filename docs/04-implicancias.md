@@ -11324,3 +11324,9 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - (b) mantener la regla de 0.5 mm, elegir `run01_140k` y declarar que a 1 mm cambia.
   - (c) declarar el cotejo no discriminante entre los dos y elegir por otro criterio fijado antes, o reportar los
     dos checkpoints.
+- **2026-10-09 (2), por delegacion (`01-decisiones.md` 2026-10-09 (2)):**
+  - El sesgo del p95 se declara y no bloquea.
+  - Hipotesis de mecanismo, SIN verificar: los techos de los canales estrechos (MW 472 HU, SW 236 HU; #152)
+    estan en el rango absoluto del p95 de la banda, unos 350-600 HU. El modelo podria estar aprendiendo mal la
+    cola alta ahi.
+  - Diagnostico posible, no programado: fraccion de voxeles sinteticos de la banda junto a esos techos.

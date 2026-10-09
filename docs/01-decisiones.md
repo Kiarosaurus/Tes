@@ -2224,3 +2224,39 @@ Escrito por el asistente por orden explicita de la autora ("Elige (a) y redacta 
    `a15 --pasos-cotejo-mm`, `a17 --paso-mm`.
 8. **Reabre B1 y B2** (2026-10-05 (6), punto 3: "se reabren en cuanto el criterio del punto 1 este medido").
    No se deciden aqui.
+
+## 2026-10-09 (2) — Delegadas: sonda de Peters preinscrita, B2 cerrada, B1 declarada
+
+Escrito por el asistente por orden explicita de la autora ("Evalua la mejor decision a realizar para estos
+pendientes, y realiza las redacciones pertinentes"). Son decisiones tomadas por delegacion: la autora las
+revisa.
+
+1. **Sonda de viabilidad de Peters: protocolo y criterios fijados antes de correr**
+   (`experiments/objetivo3/sonda_peters.md`).
+   - Un corte de `0101` con el tornillo de `a15`.
+   - Material principal: acero inoxidable, por la Tabla 2 de Peters (implantes espinales de 2.5-10 mm).
+     Titanio solo como sensibilidad.
+   - Criterios:
+     - V1: corre sin truncamiento y el brazo completo cuesta 72 h o menos.
+     - V2: sin metal, sesgo de +/-20 HU o menos frente al original.
+     - V3: el artefacto es al menos 3 veces el ruido test-retest.
+   - **Salida fijada ahora:** si fallan V2, V3 o el truncamiento, el TOST contra Peters baja a secundario
+     descriptivo y el realismo frente a CLINIC-metal pasa a primario. Si solo falla el coste, se submuestrean
+     los cortes y se declara.
+   - La sonda no compara amplitudes con el difusor: eso seria mirar el contraste primario.
+2. **B2 (30 000 pasos) se CIERRA sin reentrenar.**
+   - El modelo de la tesis es `mejor_37k` (2026-10-09). La cifra de 30 000 pasos deja de describir el modelo
+     usado y se reemplaza por: "checkpoint elegido por cotejo de apariencia entre dos candidatos (paso ~37 000,
+     minimo de la perdida de validacion de `run02`, y paso 140 000 de `run01`)".
+   - Se declara que solo se evaluaron dos candidatos. No se afirma que ~37 000 sea optimo.
+   - Que el cotejo prefiera el candidato cercano al minimo de validacion es coherente con la meseta de B2,
+     no lo prueba.
+3. **B1 (saturacion con 47 pacientes) se DECLARA como limitacion, sin afirmar saturacion.**
+   - No se midio el efecto de anadir pacientes.
+   - Lo unico medido es que **4 veces mas pasos** (140 000 frente a ~37 000) no mejoraron el cotejo a 1 mm
+     (5 frente a 11 de 24 cascaras).
+   - Eso habla de la duracion del entrenamiento, no del tamano de la cohorte, y se escribe asi.
+4. **El sesgo del p95 (#157) se declara y NO bloquea** la sonda ni Peters.
+   - Hipotesis de mecanismo, sin verificar: que el modelo aprenda mal la cola alta cerca de los techos de los
+     canales estrechos (#152).
+   - Si la autora quiere verificarlo, es un diagnostico aparte y no cambia el orden de trabajo.

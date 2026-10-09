@@ -3,6 +3,19 @@
 Para el texto de la tesis (contexto para los evaluadores). **No lo pide ningun objetivo** y no cambia
 ningun resultado. Archivo a llenar: `tornillos_conteo.csv`.
 
+## Procedencia
+
+- **Pedido:** la autora, 2026-10-08. Quiere reportar cuantos pacientes reales tienen tornillos (IS en
+  particular) y clasificarlos, con una columna por evaluador.
+- **Preguntas y categorias:** las redacto Claude a partir de:
+  - la taxonomia (a)-(e) de `tornillos_candidatos.md`;
+  - las definiciones de IS y TS de esa misma ronda (pedido de la autora tras #154).
+  La autora no las ha validado como definicion final. Si cambian, se anota aqui con fecha.
+- **Columna `agente`:** transcrita a mano por Claude desde `propuesta_lote-tornillos-{A,B,C,D}.csv`.
+  Esos archivos son la revision de 4 agentes `clasificador-metal` sobre laminas a 2500 HU. La columna
+  `fuente_agente` indica el lote. Si hay duda, manda el lote, no este CSV.
+- **Generado con** un script temporal, no versionado. Si hay que regenerarlo, se rehace desde los lotes.
+
 ## Formato
 
 Una fila por paciente y pregunta: 65 casos x 5 preguntas. Tres columnas de respuesta:
@@ -41,6 +54,33 @@ Quedan 64 pacientes.
 
 "Aislado" significa que el tornillo no esta unido a una placa ni a una barra. Las categorias describen
 morfologia, no un diagnostico.
+
+## Como llenar (autora o evaluador externo)
+
+1. Abre el CSV en Excel y filtra la columna `pregunta` para responder una pregunta a la vez. Si solo
+   quieres IS, empieza por `2_n_IS`.
+2. Revisa cada caso en cortes: `python experiments/exploration-3d/explorar.py cortes <Caso>`. Las
+   laminas sirven de apoyo, no bastan.
+3. Escribe en tu columna solo los valores de `valores`:
+   - `si` / `no` / `incierto`;
+   - un entero;
+   - letras a-e separadas por `;`, sin espacios.
+4. Responde sin mirar la columna `agente`, o al menos sin copiarla. Si tu respuesta no coincide con
+   la del agente, explica por que en tu `nota_*`.
+5. Usa `incierto` cuando no lo puedas decidir. No adivines.
+6. Anota la fecha de tu revision en `nota_*` de la pregunta `1_tornillo` de cada caso, por ejemplo
+   `2026-10-15: ...`.
+7. No cambies `Caso`, `pregunta`, `valores`, `agente` ni `fuente_agente`.
+8. El evaluador externo llena solo `evaluador_externo` y `nota_externo`. Anota tambien su
+   especialidad y la fecha en la seccion de abajo.
+
+## Registro de evaluadores
+
+| Evaluador | Especialidad | Fecha | Casos revisados |
+|---|---|---|---|
+| agente (`clasificador-metal` x4) | no clinico | 2026-10-08 | 65 |
+| autora | no clinica | | |
+| externo | | | |
 
 ## Lo que dice el agente (64 pacientes, sin validar)
 

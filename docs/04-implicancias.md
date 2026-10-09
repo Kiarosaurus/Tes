@@ -11432,3 +11432,4 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     - `r` = |amplitud Fe_A - Fe_B| de Peters, por paciente, promediado sobre los mismos pacientes.
   - **Se declara:** si `s > r`, el margen lo fija la variabilidad del propio difusor, y un `Delta` mayor facilita
     concluir equivalencia.
+- **Registrado en `01-decisiones.md` 2026-10-09 (4)** (#160 y formula de `Delta`).

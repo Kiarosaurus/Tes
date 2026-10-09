@@ -2283,3 +2283,25 @@ eligio la autora ("Me quedo con tu recomendacion 2").
 5. **Pendiente del equipo:** mejorar la subexposicion del difusor (p95 bajo lo real, #157). No esta programado y no
    bloquea `Delta`.
 6. **Codigo:** `experiments/objetivo3/a19_peters_completo.py` y `a19_peters.sbatch` (CPU, sin GPU).
+
+## 2026-10-09 (4) — E-A2 con cortes de solo banda (#160) y formula de `Delta` (D4)
+
+Escrito por el asistente por orden explicita de la autora ("Escribe sobre 01-decisiones.md"). Las dos decisiones
+son de la autora ("Usa --incluir-banda y Delta = max(s, r)").
+
+1. **El difusor genera todos los cortes axiales que toca `G`** (`a15 --incluir-banda`).
+   - Antes solo generaba los cortes con `M`, y la mitad de las ROIs de E-A2 caia en cortes no generados, con
+     desviacion cero por construccion: en `0101`, 51 cortes con ROI frente a 25 generados.
+   - Es lo que describe el diseno: el modelo genera dentro de `G` y entreno con parches de solo banda.
+   - Por omision `a15` sigue sin la opcion, para reproducir lo ya corrido. El cotejo (`a17`) no cambia, porque
+     solo mide cortes con `M`.
+2. **`Delta = max(s, r)`**, fijada antes de ver ningun numero:
+   - `s` = rango (maximo menos minimo) de la `streak amplitude` del difusor (`mejor_37k`) entre sus 5 semillas
+     DDIM;
+   - `r` = |`streak amplitude` Fe_A - Fe_B| del brazo fisico (test-retest);
+   - cada uno por paciente y promediado sobre los receptores de validacion (`0101`, `0102`).
+   - Se mide con el evaluador comun `a20_evaluador_ea2.py` (`peters`, `difusor`, `delta`).
+3. **Se declara:** si `s > r`, el margen lo fija la variabilidad del propio difusor. Un `Delta` mayor facilita
+   concluir equivalencia en el TOST.
+4. **Alcance:** 2 pacientes de validacion. El diseno hablaba de "los 5 pacientes de validacion", pero solo `0101`
+   y `0102` tienen receptor limpio con corredor viable (`0019` no cabe: corredor de 1.6 mm).

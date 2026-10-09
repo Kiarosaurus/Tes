@@ -11401,3 +11401,26 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     validacion, porque `Delta` se mide solo ahi; test exige `--corrida-final`.
   - **Queda pendiente "para nosotros"**, palabras de la autora: mejorar la subexposicion del difusor (p95 bajo lo
     real, #157). No esta programado y no bloquea Peters ni `Delta`.
+
+### 160 — EL DIFUSOR (`a15`) SOLO GENERA LOS CORTES AXIALES CON `M`, NO LOS DE SOLO BANDA: en E-A2 la mitad de las ROIs caeria en cortes no generados (desviacion cero por construccion) — ABIERTA (toca E-A2, D4, `Delta`, el cotejo y el endpoint primario)
+
+- **Origen:** al escribir el evaluador comun de E-A2 (`a20_evaluador_ea2.py`, 2026-10-09).
+- **Hallazgo:**
+  - `a15` elige `ks = cortes con M`. Las ROIs de E-A2 son anillos de hasta 12 mm en planos perpendiculares a
+    `u`, y cruzan tambien cortes axiales donde solo hay banda.
+  - En `0101`, las ROIs tocan **51** cortes axiales y `a15` genera **25**. En `0102`, **36** frente a **10**.
+  - Sin corregir, la `streak amplitude` del difusor saldria sesgada a la baja: Delta = 0 en esos cortes.
+  - El cotejo (`a17`) no se ve afectado: mide perfiles 2D solo en cortes con `M`.
+  - El diseno dice que el modelo "genera HU solo dentro de `G`" y entrena con parches de solo banda, asi que
+    generar esos cortes es lo previsto. `a15` no lo hacia.
+- **Hecho (sin cambiar lo ya corrido):**
+  - `a15 --incluir-banda` genera todos los cortes que toca `G`; la ventana sale de `G` cuando el corte no tiene
+    `M`. Por omision sigue apagado, para reproducir las corridas anteriores.
+  - Humo local en `0102`: 38 cortes generados.
+  - `a15_delta.sbatch` lo usa.
+  - `a20 --interseccion` permite ademas restringir los dos brazos a los cortes comunes.
+- **Opciones (no decididas, regla 14):**
+  - (1) E-A2 y `Delta` con `--incluir-banda`. Es la recomendada, porque es lo que el diseno describe.
+  - (2) Restringir la evaluacion de los dos brazos a los cortes con `M`, declarando que las ROIs quedan
+    recortadas.
+- **Pendiente de la autora:** elegir antes de correr `a15_delta.sbatch`.

@@ -11330,3 +11330,68 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     estan en el rango absoluto del p95 de la banda, unos 350-600 HU. El modelo podria estar aprendiendo mal la
     cola alta ahi.
   - Diagnostico posible, no programado: fraccion de voxeles sinteticos de la banda junto a esos techos.
+
+### 158 — EL PDF DE PETERS NO DEFINE COMO SE CONVIERTE LA TC CLINICA EN FANTOMA NI COMO ENTRA EL METAL; el brazo fisico se apoya en el repositorio AAPM, no en el articulo — ABIERTA (toca #8, #17, D4, la redaccion del brazo fisico)
+
+- **Origen:** relectura con `lector-papers` (2026-10-09, ficha `peters2025hybrid`, seccion "Protocolo hibrido:
+  detalle para reproducir"). Hay 25 `NO ENCONTRADO EN EL PDF`.
+- **Hallazgo:**
+  - El articulo da la geometria, el espectro y la reconstruccion FDK.
+  - No da:
+    - la conversion HU -> material;
+    - el tratamiento del tejido bajo el metal;
+    - el espesor en z;
+    - el kernel de la generacion;
+    - si el par con y sin metal comparte ruido.
+  - Lo que falta lo fija el repositorio oficial del reto AAPM:
+    - densidad relativa `(HU + 1000)/1000` en agua;
+    - realce de frecuencias por imagen (`AAPM_freq_boost.docx`).
+  - El metal del articulo es una mascara binaria 2D.
+  - Error de cita del propio PDF: la ref. 45 de la Discussion, p. 9, es Fan 2022, no software.
+- **Por que importa:**
+  - `main.tex` y el capitulo 3 atribuyen el brazo fisico al "protocolo de Peters". Parte de ese protocolo
+    solo existe en el repositorio, que no es una fuente revisada por pares.
+  - La sonda (`a18`) ademas se desvia en cuatro puntos, declarados en `sonda_peters.md` (enmiendas):
+    - tejido bajo el metal a 0;
+    - `Fe` por acero;
+    - FOV de 459 mm;
+    - ruido independiente.
+- **Opciones (no decididas, regla 14):**
+  - (1) citar el repositorio como fuente de la implementacion, junto a Peters como fuente del protocolo, y
+    declarar las desviaciones;
+  - (2) ademas, leer la ref. 38 (kernel) antes de la corrida completa.
+- **Afecta:** la redaccion del brazo fisico en `main.tex` y en el capitulo 3, y #17.
+
+### 159 — SONDA DE PETERS (a18, 2026-10-09): VIABLE con submuestreo, pero el METAL DEL BRAZO FISICO ES MUCHO MAS BRILLANTE QUE EL REAL (Fe ~9900 HU, Ti ~5400 HU frente a 3100-3800 HU en `metal_0039`) — ABIERTA (toca D4, #158, el material del brazo fisico, el realismo del Objetivo 3)
+
+- **Origen:** `a18_sonda_peters.py`, corrida 2; protocolo y enmiendas en `experiments/objetivo3/sonda_peters.md`.
+- **Hallazgo:**
+  - **Viabilidad:**
+    - V1: el cuerpo no queda truncado (pasa); el coste es de 108.9 h, sobre 72 h, asi que se aplica la salida
+      preinscrita: un corte de cada `k = 2`.
+    - V2: +3.9 y +6.5 HU (pasa).
+    - V3: 72.8 veces el ruido (pasa).
+    - D4 se mantiene: el TOST contra Peters sigue siendo el contraste primario.
+  - **Corrida 1, conservada:** fallo por dos errores de implementacion, diagnosticados y corregidos sin tocar
+    criterios:
+    - el relleno de -2048 HU entro en el realce;
+    - la camilla quedo dentro de la mascara del cuerpo.
+  - **Descriptivo:**
+    - La mediana de HU dentro de `M` del brazo fisico es Fe 9895 y Ti 5390, frente a 3092-3838 HU en los dos
+      tornillos reales de validacion (`a17`).
+    - El material preinscrito (acero -> `Fe`) da un metal unas 2.6 veces mas brillante que el real de esta
+      cohorte.
+    - No se sabe si eso viene del material, de la reconstruccion o del escaner de CLINIC (escala o
+      procesamiento propio).
+- **Por que importa:**
+  - El brazo fisico es la referencia de equivalencia del endpoint primario. Si su metal y, con el, su artefacto
+    son mas intensos que los de CLINIC, la TOST compara el difusor contra una referencia que puede estar
+    desplazada respecto de lo real.
+  - Se suma al p95 del difusor, que queda bajo lo real (#157). Los dos brazos pueden quedar a lados opuestos
+    de lo real.
+  - **No se comparo con el difusor:** hacerlo seria mirar el contraste primario.
+- **Opciones (no decididas, regla 14):**
+  - (1) mantener `Fe` como se preinscribio y declarar la diferencia de brillo como limitacion del brazo fisico;
+  - (2) correr el brazo completo con los dos materiales y reportar el titanio como sensibilidad;
+  - (3) reabrir el material. Seria un cambio posterior al resultado y habria que declararlo.
+- **Pendiente de la autora:** elegir la opcion antes de implementar Peters completo.

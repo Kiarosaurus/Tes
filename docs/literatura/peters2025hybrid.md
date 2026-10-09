@@ -71,6 +71,20 @@ or drilled holes within the patient cannot be covered" (Discussion, p. 9). Terce
 | Tabla 3: metal integrity NMAR/DDPM caso 1 | Tabla 3, "Metal integrity 2.06/1.92" (Caso 1, gold markers) | Tabla 3, p. 8 |
 | Tabla 3: overall score caso 1 | Tabla 3, "Overall score 1.78/1.24" | Tabla 3, p. 8 |
 | DDPM: 250 pasos de difusion | "repeated for a total of 250 diffusion steps until the final corrected sinogram is obtained" | 2.6, p. 6 |
+| (2026-10-09) Generacion: 1 fila, 900 columnas, 1000 vistas | "1 detector row with 900 columns was simulated, with a total of 1000 views" | 2.1, p. 3 |
+| (2026-10-09) Celda de detector 1 x 1 mm, 90% de llenado, offset 1.25 columnas | "a 90% fill factor and a 1.25 column detector offset" | 2.1, p. 3 |
+| (2026-10-09) Foco 1 x 1 mm, bimodal, ancho y largo como FWHM | "bimodal focal shape, with width and length both set as full-width-at-half-maximum" | 2.1, p. 3 |
+| (2026-10-09) Espectro en 12 energias | "The source spectrum was sampled at 12 energies." | 2.1, p. 3 |
+| (2026-10-09) 8 submuestras (2 x 2 x 2) | "for a total of eight subsamples (2 × 2 × 2)" | 2.1, p. 3 |
+| (2026-10-09) Correccion de senal: e^-13, e^-10.5, e^-8 | "High-frequency noise components for all values below e^-10.5 and e^-8 are corrected" | 2.1, p. 3 |
+| (2026-10-09) Recorte final a e^-13 | "all values below e^-13 are clipped to e^-13" | 2.1, p. 3 |
+| (2026-10-09) Flujo 2 x 10^6 fotones/mA/mm^2/s a 1 m (modelo Lightspeed) | "a flux density of 2 * 10^6 photons/mA/mm^2/s at 1 m distance" | 2.1, p. 2 |
+| (2026-10-09) Ruido electronico 2.98 fotones, ganancia 0.1 e/keV (modelo Lightspeed) | "an electronic noise equivalent to 2.98 X-ray photons" | 2.1, p. 2 |
+| (2026-10-09) Rejilla 9.8, kernel de scatter 49 columnas (modelo Lightspeed) | "aspect ratio of 9.8, resulting in a scatter kernel width of 49 detector columns" | 2.1, p. 2 |
+| (2026-10-09) Filtro de realce promediado en 64 cortes | "then averaged over 64 slices in the volume" | 2.3, p. 3 |
+| (2026-10-09) Fantoma fisico: rotacion 1.0 s (solo escaneo real) | "scanned with a 1.0-second rotation, a tube voltage of 120 kVp" | 2.2, p. 3 |
+| (2026-10-09) Densidad del acero de validacion 8.00 g/cm3 (solo fantoma) | "stainless steel (density 8.00 g/cm3, diameter 12.70 mm) was used" | 2.2, p. 3 |
+| (2026-10-09) Ejemplo pelvico/abdominal: dos metales de acero de 8.0 y 7.4 mm | "Two stainless steel metals with 8.0 and 7.4 mm in effective diameter" | 3.2, p. 6 |
 
 ## Donde entra en mi tesis
 - Objetivo de metricas: es la fuente primaria (no `haneda2025aapm`) de las definiciones de las
@@ -92,6 +106,9 @@ or drilled holes within the patient cannot be covered" (Discussion, p. 9). Terce
    Eso hace que las metricas sean transferibles pero no los escenarios. Se documenta como gap?
 4. El paper valida realismo en fantoma fisico, no en paciente. Podemos replicar algo asi sin
    fantoma, o el realismo del renderizador se valida solo con lector experto?
+5. (2026-10-09) El PDF no describe como se convierte el corte clinico en fantoma (materiales,
+   umbrales HU, densidades) ni como entra el metal en z. La sonda preinscrita tomara esos pasos
+   del codigo XCIST/AAPM. Basta con declararlo, o se exige otra fuente citable para esa conversion?
 
 ## Evidencia textual
 
@@ -225,6 +242,24 @@ or drilled holes within the patient cannot be covered" (Discussion, p. 9). Terce
 | Modelo unico para todo el cuerpo | "the dataset was formed to train a single model in all body parts" | 4 Discussion, p. 10 |
 | Financiamiento | "supported by the NIH/NIBIB grant R01EB031102" | Acknowledgments, p. 10 |
 | Conflicto de interes | "The authors have no relevant conflicts of interest to disclose" | COI, p. 10 |
+| (2026-10-09) Offset de detector en generacion | "a 90% fill factor and a 1.25 column detector offset" | 2.1, p. 3 |
+| (2026-10-09) Forma del foco en generacion | "bimodal focal shape, with width and length both set as full-width-at-half-maximum" | 2.1, p. 3 |
+| (2026-10-09) Proyector | "A distance-driven projector was used to model the finite detector cell size" | 2.1, p. 3 |
+| (2026-10-09) Correccion de agua en generacion | "water beam hardening correction was applied to all sinograms" | 2.1, p. 3 |
+| (2026-10-09) Herencia de parametros Lightspeed | "All other parameters were the same as for the Lightspeed VCT model" | 2.1, p. 3 |
+| (2026-10-09) Kernel (solo dicho para Lightspeed) | "A standard reconstruction kernel was used, see Zhang et al." | 2.1, p. 2 |
+| (2026-10-09) Fuente del espectro (Lightspeed) | "For noise modeling, we used the realistic spectra reported in Ref. 37" | 2.1, p. 2 |
+| (2026-10-09) Scatter en una fila escalado a 64 | "scatter was computed for a single detector row and scaled to mimic scatter" | 2.1, p. 3 |
+| (2026-10-09) Umbrales de correccion de ruido de alta frecuencia | "High-frequency noise components for all values below e^-10.5 and e^-8 are corrected" | 2.1, p. 3 |
+| (2026-10-09) Recorte final | "all values below e^-13 are clipped to e^-13" | 2.1, p. 3 |
+| (2026-10-09) Motivo de la correccion: starvation | "Highly attenuating metal objects significantly reduce the detector signal to the point of photon starvation" | 2.1, p. 3 |
+| (2026-10-09) Filtro aplicado a toda entrada | "which was applied to all images used as input to the simulations" | 2.3, pp. 3-4 |
+| (2026-10-09) Suavizado de bordes del metal | "Edges were then smoothed with a moving average filter." | 2.3, p. 4 |
+| (2026-10-09) Mascaras binarias | "The resulting metal masks were binary images of size 256 × 256." | 2.3, p. 4 |
+| (2026-10-09) Benchmark: par de cortes clinicos | "Each dataset contains a clinical CT slice with and one without a metal object" | 2.4, p. 4 |
+| (2026-10-09) Benchmark: geometria por fabricante | "Metal geometries were estimated from clinical CT scans and manufacturer information." | 2.4, p. 4 |
+| (2026-10-09) Realizaciones de ruido (solo en validacion de fantoma) | "since every case represents a different noise realization" | 3.1, p. 6 |
+| (2026-10-09) Codigo de proyeccion/reconstruccion (llamada a ref. 45 = Fan 2022) | "forward projection and reconstruction code distributed via the XCIST GitHub website" | 4 Discussion, p. 9 |
 | Licencia de datos/codigo | NO ENCONTRADO EN EL PDF | — |
 | Numero de version del toolkit | NO ENCONTRADO EN EL PDF | — |
 | Metrica cuantitativa de realismo de tipo perceptual (FID, lectura humana) | NO ENCONTRADO EN EL PDF | — |
@@ -429,6 +464,13 @@ citar solo el ancla NMAR = 2.
 | 56. Bhadra S, Kelkar VA, Brooks FJ, Anastasio MA. On hallucinations in tomographic image reconstruction. IEEE Trans Med Imaging. 2021;40(11):3249-3260 | Riesgo de alucinacion de features en regiones peri-metal generadas por deep learning. Ataca de frente la validez del renderizador; puede obligar a un control explicito en la evaluacion. |
 | 58. Zhang Y, Mao Y, Lu X, et al. From single to universal: tiny lesion detection in medical imaging. Artif Intell Rev. 2024;57(8):192 | Citado como el sustituto algoritmico de la inspeccion visual para features pequenos. Podria aportar una metrica que cubra el hueco que Peters declara abierto. |
 | 59. Ho J, Salimans T. Classifier-Free Diffusion Guidance. 2022. http://arxiv.org/abs/2207.12598 | El paper lo propone explicitamente como via para condicionar la generacion por region corporal. Compite o complementa el condicionamiento por ControlNet de la tesis. |
+| (2026-10-09) 38. Zhang J, Wu M, FitzGerald P, Araujo S, De Man B. Development and tuning of models for accurate simulation of CT spatial resolution using CatSim. Phys Med Biol. 2024;69(4):045014. doi:10.1088/1361-6560/ad2122 | Unica fuente que el PDF da para el "standard reconstruction kernel" (2.1, p. 2). El kernel del brazo hibrido no esta en el PDF; si la sonda lo fija, esta es la referencia candidata. |
+| (2026-10-09) 39. Zhang J, Wu M, FitzGerald P, Araujo S, De Man B. Accurate modeling of CT noise with CatSim. 2024. pending. | Peters remite aqui el detalle del modelo de ruido ("More details are provided in Ref. 39", 2.1, p. 2). Fuente del ruido del brazo fisico. Aviso: la referencia figura como "pending", sin revista ni DOI. |
+| (2026-10-09) 37. FitzGerald P, Araujo S, Wu M, De Man B. Semiempirical, parameterized spectrum estimation for x-ray computed tomography. Med Phys. 2021;48(5):2199-2213 | Fuente de los espectros usados para el ruido. **Ya registrada** en `_candidatos.md` desde `wu2022xcist` (PENDIENTE); Peters es una segunda lectura independiente que la cita. |
+
+Nota 2026-10-09: estas tres filas nuevas NO se trasladaron a `_candidatos.md` en esta pasada (el
+subagente solo escribe esta ficha). Queda pendiente copiarlas alli como PENDIENTE.
+**Trasladadas** por la sesion principal el 2026-10-09 (`_candidatos.md`, ronda 2026-10-09).
 
 ## Verificacion 2026-09-16
 
@@ -485,3 +527,114 @@ citar solo el ancla NMAR = 2.
 | 6d. Solo insercion de metal | Sin cambios anatomicos quirurgicos | "all simulations are limited to the insertion of metal objects" | 4 Discussion, p. 9 |
 | 6e. Sesgo de geometria vendor-neutral | Declarado | "vendor-neutral geometry was used for the metal simulation, potentially introducing a bias" | 4 Discussion, p. 9 |
 | 6f. Imperfecciones del modelo fisico | Declaradas como secundarias para entrenamiento/evaluacion MAR | "play a secondary role for the purpose of AI-based MAR training" | 4 Discussion, p. 9 |
+
+## Protocolo hibrido: detalle para reproducir (2026-10-09)
+
+Relectura completa del PDF (12 paginas) para la sonda preinscrita en
+`experiments/objetivo3/sonda_peters.md`. Regla: solo lo que el PDF dice. Lo que el PDF no dice se
+marca `NO ENCONTRADO EN EL PDF`, aunque el codigo publicado de XCIST/AAPM lo resuelva: esa
+informacion sale del repositorio, no del articulo, y no es citable desde esta ficha.
+
+### P1. Del corte de TC clinica al fantoma
+
+| Item | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| Fuente de los cortes de pelvis | DeepLesion | "clinical CT slices in the pelvis and thorax region were collected from the NIH DeepLesion" | 2.3, p. 3 |
+| Seleccion de cortes | Extraccion aleatoria de cortes 2D | "obtained by randomly extracting 2-D slices from CT scans" | 4 Discussion, p. 9 |
+| Unico preprocesado explicitado | Filtro de realce de frecuencias sobre toda imagen de entrada | "which was applied to all images used as input to the simulations" | 2.3, pp. 3-4 |
+| Segmentacion o descomposicion en materiales (agua, hueso, aire, otros) | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Umbrales HU de la conversion | NO ENCONTRADO EN EL PDF. Los 150 HU del PDF son de la metrica bone integrity, no del fantoma | NO ENCONTRADO EN EL PDF | — |
+| Escalado de densidad por HU | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Fracciones de volumen o mapas binarios (paciente) | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Tratamiento del aire / fuera del cuerpo en el fantoma | NO ENCONTRADO EN EL PDF. Solo el ROI de scoring excluye el aire, no el fantoma | "excluding the surrounding air as well as the metal object itself" | 2.5, p. 5 |
+| Tamano de pixel del corte de entrada | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Matriz | Solo se da para las mascaras de metal: 256 x 256. La matriz de la imagen clinica de entrada y de la reconstruccion no se declara aparte | "The resulting metal masks were binary images of size 256 × 256." | 2.3, p. 4 |
+| Espesor de corte de la entrada | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+
+### P2. Insercion del metal
+
+| Item | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| Representacion del metal | Mascara binaria 256 x 256 (no fraccion de volumen) | "The resulting metal masks were binary images of size 256 × 256." | 2.3, p. 4 |
+| Bordes | Suavizados con media movil durante la generacion de la forma | "Edges were then smoothed with a moving average filter." | 2.3, p. 4 |
+| Fraccion de volumen del metal | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| `density_scale` negativo / resta del tejido desplazado | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Material por tipo de objeto (cuerpo) | Cadera: titanio o cobalto; espinal: acero inoxidable; fiducial: oro | Tabla 2, "Spinal implant (40%) / Stainless steel / 2.5-10 mm / 2-4" | Tabla 2, p. 4 |
+| Densidad de los metales del entrenamiento | NO ENCONTRADO EN EL PDF. Las densidades del PDF (p. ej., acero 8.00 g/cm3) son de las varillas del fantoma fisico | "stainless steel (density 8.00 g/cm3, diameter 12.70 mm) was used" | 2.2, p. 3 |
+| Espesor del metal en z | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Posicion | Aleatoria en tejido blando u hueso, hasta 5 objetos | "inserted in random soft tissue or bone positions" | 2.3, p. 4 |
+| Tamano | Diametro efectivo en voxeles a partir del area | "An effective diameter d (in voxels) was computed" | 2.3, p. 4 |
+| Paciente y metal en la misma proyeccion | NO ENCONTRADO EN EL PDF (ver tambien 1a-1b de la Verificacion 2026-09-16) | NO ENCONTRADO EN EL PDF | — |
+
+### P3. Imagen "sin metal" del par
+
+| Item | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| Se genera un sinograma sin metal | Si: "label sinogram" | "a sinogram with metal, a label sinogram (no metals)" | 3.2, p. 6 |
+| La imagen sin metal es la reconstruccion de ese sinograma | El PDF habla de "the respective reconstructions" y de "a label reconstructed image (no metals)". Lo literal es que el par sin metal incluye sinograma y reconstruccion; el PDF no dice en una frase "la TC original no se usa como ground truth" | "each containing a sinogram with and without metal, the respective reconstructions" | 2.3, p. 4 |
+| (cont.) | Imagen etiqueta | "a label reconstructed image (no metals), and a metal-only mask" | 3.2, p. 6 |
+| (cont.) Figura | Figura 4 muestra imagen y sinograma "wo/ metals" del caso abdominal | "(a) Image wo/ metals" ; "(d) Sinogram wo/ metals" | Fig. 4, p. 7 |
+| Misma realizacion de ruido en el par con/sin metal | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Ruido anadido al sinograma sin metal | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Benchmark (no entrenamiento) | Corte clinico con y sin metal, con sus sinogramas | "Each dataset contains a clinical CT slice with and one without a metal object" | 2.4, p. 4 |
+
+### P4. Adquisicion y reconstruccion del conjunto hibrido de pelvis
+
+| Item | Valor | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| Geometria | Vendor-neutral, fuente-iso 550 mm, fuente-detector 950 mm | "a source-to-iso distance of 550 mm and a source-to-detector distance of 950 mm" | 2.1, p. 3 |
+| kVp / mA | 120 kVp, 500 mA | "an X-ray tube voltage of 120 kVp and a tube current of 500 mA" | 2.3, p. 4 |
+| Tiempo de rotacion (generacion) | NO ENCONTRADO EN EL PDF (el 1.0 s es del escaneo del fantoma real) | "scanned with a 1.0-second rotation" | 2.2, p. 3 |
+| Vistas | 1000 | "with a total of 1000 views" | 2.1, p. 3 |
+| Detector | 1 fila, 900 columnas | "1 detector row with 900 columns was simulated" | 2.1, p. 3 |
+| Celda de detector | 1 x 1 mm, 90% de llenado, offset de 1.25 columnas | "detector cell size was 1 × 1 mm with a 90% fill factor" | 2.1, p. 3 |
+| Foco | 1 x 1 mm, bimodal, FWHM | "Focal spot size (bimodal focal shape ... ) was set to 1 × 1 mm" | 2.1, p. 3 |
+| Espectro | 12 energias | "The source spectrum was sampled at 12 energies." | 2.1, p. 3 |
+| Submuestreo | 2 (ancho foco) x 2 (largo foco) x 2 (rotacion) | "for a total of eight subsamples (2 × 2 × 2)" | 2.1, p. 3 |
+| Proyector | Distance-driven | "A distance-driven projector was used to model the finite detector cell size" | 2.1, p. 3 |
+| Reconstruccion | FDK | "filtered back projection by Feldkamp, Davis & Kress algorithm (FDK) was used" | 2.1, p. 3 |
+| Correccion | Beam hardening de agua en todos los sinogramas | "water beam hardening correction was applied to all sinograms" | 2.1, p. 3 |
+| Kernel / filtro de reconstruccion (generacion) | NO ENCONTRADO EN EL PDF de forma explicita. Solo se dice para Lightspeed; para la generacion el PDF dice que el resto de parametros se heredan | "A standard reconstruction kernel was used, see Zhang et al." ; "All other parameters were the same as for the Lightspeed VCT model" | 2.1, pp. 2-3 |
+| Bowtie (generacion) | NO ENCONTRADO EN EL PDF (el "large body bowtie" es del escaneo real del fantoma) | "a large body bowtie filter, a field of view of 400 mm" | 2.2, p. 3 |
+| FOV de reconstruccion, pelvis | 400 mm | "field of views were set to 400 mm for the pelvis and thorax datasets" | 2.3, p. 4 |
+| Matriz de reconstruccion | NO ENCONTRADO EN EL PDF como tal; solo mascaras de 256 x 256 | "binary images of size 256 × 256" | 2.3, p. 4 |
+| Tamano de pixel de reconstruccion | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Espesor de corte | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Modelo de ruido | Del modelo Lightspeed (heredado): espectros de la ref. 37, flujo 2 x 10^6, ruido electronico 2.98 fotones, ganancia 0.1 e/keV; detalle en ref. 39 | "For noise modeling, we used the realistic spectra reported in Ref. 37" | 2.1, p. 2 |
+| Scatter | Convolucional, una fila escalada a 64 filas; rejilla 9.8, kernel de 49 columnas (Lightspeed) | "scatter was computed for a single detector row and scaled to mimic scatter" | 2.1, p. 3 |
+| Crosstalk | Del modelo Lightspeed (heredado): 2.5%/2% rayos X, 4%/4.5% opticos | "Crosstalk between columns/rows was set to 2.5%/2% for X-ray photons" | 2.1, p. 2 |
+| Mas de una realizacion de ruido por caso | NO ENCONTRADO EN EL PDF. La unica mencion de "noise realization" es en la validacion con fantoma | "since every case represents a different noise realization" | 3.1, p. 6 |
+
+Aviso de herencia: los valores marcados "Lightspeed (heredado)" estan escritos para el modelo
+Lightspeed VCT; su aplicacion a la generacion descansa solo en la frase generica "All other
+parameters were the same as for the Lightspeed VCT model" (2.1, p. 3). El PDF no enumera cuales.
+
+### P5. Criterios de control de calidad o descarte de casos
+
+| Item | Respuesta | Frase original (<15 palabras) | Seccion/pagina |
+|---|---|---|---|
+| Descarte por truncamiento / FOV | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Descarte por saturacion / fotones | NO ENCONTRADO EN EL PDF. Hay correccion (no descarte) de senal en starvation | "To stabilize the signal, a correction before reconstruction is necessary" | 2.1, p. 3 |
+| Correccion de valores negativos | Convolucion 3-tap [0.5, 0, 0.5] | "replaced by values obtained from a one-dimensional 3-tap [0.5, 0, 0.5] filter" | 2.1, p. 3 |
+| Valores bajo e^-13 | Reemplazo por e^-13 * (1 + 50x) y recorte final a e^-13 | "all values below e^-13 are clipped to e^-13" | 2.1, p. 3 |
+| Ruido de alta frecuencia bajo e^-10.5 y e^-8 | Resta de filtros 7-tap y 5-tap | "High-frequency noise components for all values below e^-10.5 and e^-8 are corrected" | 2.1, p. 3 |
+| Exclusion de cortes o pacientes de DeepLesion | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+| Control de calidad del par simulado frente a la TC original | NO ENCONTRADO EN EL PDF | NO ENCONTRADO EN EL PDF | — |
+
+### Observaciones para la sonda (lectura del asistente, no del paper)
+
+- La sonda introduce el metal como **fraccion de volumen** sobre una mascara 3D supermuestreada. El
+  PDF describe mascaras **binarias** 2D de 256 x 256. Es una desviacion del protocolo publicado, no
+  una replica; conviene declararla como tal.
+- La sonda usa matriz 512 y FOV de 459 mm; el PDF fija FOV de 400 mm para pelvis y no da tamano de
+  pixel. La diferencia de FOV ya esta declarada en la sonda; la de matriz/pixel no se puede comparar
+  contra el PDF porque el PDF no la da.
+- `Delta_fis` en la sonda usa la misma semilla para el par con/sin metal. El PDF no dice si el par de
+  Peters comparte realizacion de ruido (`NO ENCONTRADO EN EL PDF`), asi que "el par de Peters" en la
+  sonda describe una eleccion propia, no un dato del articulo.
+- La conversion HU -> materiales, la resta del tejido desplazado y el espesor en z quedan todos sin
+  respaldo en el PDF; si se toman del codigo, la fuente citable es el repositorio (fila PENDIENTE
+  de la ronda 2026-10-05 en `_candidatos.md`), no este articulo.
+- Inconsistencia de cita en el PDF: la frase sobre el codigo de proyeccion y reconstruccion de XCIST
+  (Discussion, p. 9) lleva la ref. 45, que es Fan, Pack y De Man 2022 (estudio de blooming cardiaco),
+  no un repositorio de software.

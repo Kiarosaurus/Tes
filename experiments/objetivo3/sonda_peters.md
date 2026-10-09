@@ -81,3 +81,72 @@ Si la respuesta es no, D4 se replantea **ahora**, antes de invertir en Peters co
 - 2D: el artefacto que en un escaner real llega desde fuera del corte (haz conico, cortes vecinos) no se
   modela. Peters tiene la misma limitacion (*"only covers two-dimensional MAR developments"*, Discussion,
   p. 9).
+
+## Enmiendas antes de correr (2026-10-09, sin haber visto ningun resultado)
+
+`lector-papers` encontro que el PDF de Peters **no** describe como se convierte el corte clinico en fantoma
+ni como entra el metal en z (25 `NO ENCONTRADO EN EL PDF` en la ficha). Se resuelve con el repositorio
+oficial del reto AAPM, que es la implementacion publicada del mismo protocolo:
+
+- **Fantoma:** agua con densidad relativa `(HU + 1000) / 1000`.
+  - Fuente: `repos/xcist-example/AAPM_datachallenge/simulation_scripts/readme.md`, *"the relative density
+    with respect to water, calculated by (HU_map + 1000)/1000"*.
+  - Antes, **realce de frecuencias** por imagen (`AAPM_freq_boost.docx`): cociente de las medias radiales de
+    la FFT original/reconstruida, aplicado en 2D. El tope del cociente, [0.5, 3], es propio; el documento no
+    da ninguno.
+- **Metal: la `M` binaria del difusor**, no una fraccion de volumen. Peters tambien usa mascaras binarias
+  (*"binary images of size 256 × 256"*, 2.3, p. 4), y asi la geometria es identica en los dos brazos.
+  Sustituye a la fraccion de volumen de la seccion "Entrada".
+- **Tejido bajo el metal:** dentro de `M` la densidad del paciente se pone a 0. `run.py` resta densidad 1,
+  lo que deja hueso residual bajo el metal. Desviacion declarada.
+- **Acero -> `Fe`:** el catalogo de materiales de XCIST no trae acero (`gecatsim/material/`: hay `Fe`, `Cr`,
+  `Ni` y `Ti`).
+- **Reconstruccion:** FOV = 512 x 0.896 mm (459 mm), para que la reconstruccion caiga sobre la rejilla del
+  original. La orientacion de la salida se alinea con el original por correlacion. Es geometria, no
+  resultado.
+- **Anillo de V3:** en el plano axial del corte, de una guarda de un pixel a 12 mm. En E-A2 los anillos estan
+  en planos perpendiculares a `u`; con un solo corte axial no hay otro.
+- **Par con y sin metal con la misma semilla:** es una eleccion propia. El PDF no dice si el par de Peters
+  comparte la realizacion de ruido.
+- **Coste de V1:** se usan los cortes evaluables del receptor de validacion como proxy de los de test, que
+  no se tocan.
+
+Script: `a18_sonda_peters.py`.
+- **Enmienda 2, tras un fallo de ejecucion y sin ningun resultado de simulacion:**
+  - **Ruido independiente en todas las simulaciones.** La DLL de XCIST en Windows no exporta `setall`, asi que
+    no se puede fijar la semilla del ruido de Poisson. `Delta_fis = Fe - sin metal A` y la referencia de ruido
+    `sin metal A - sin metal B` llevan las dos dos realizaciones independientes, y V3 las compara con la misma
+    estructura de ruido.
+  - **Coste de V1:** se cuentan todos los cortes axiales que toca `G`. El tornillo va casi en el plano axial,
+    asi que ocupa pocos cortes axiales, pero las ROIs de E-A2 estan en planos perpendiculares a `u` y
+    necesitan el volumen simulado entero alrededor de `G`.
+- **Corrida 1 (2026-10-09), conservada en `outputs/a18_corrida1/`:** NO VIABLE (V1 y V2 fallan; V3 pasa,
+  39 veces el ruido). El diagnostico encontro **dos errores de implementacion**, no limites del protocolo:
+  - **V2 (+237/+276 HU):** el original trae relleno de -2048 HU fuera del FOV del escaner, y el realce de
+    frecuencias se calculo con ese relleno. La pasada de calibracion sin realce da +4 HU en tejido blando y +6 HU
+    en hueso. **Correccion:** el relleno se lleva a -1000 HU, que es aire, antes de construir el fantoma y el
+    realce.
+  - **Truncamiento de V1:** los 10 pixeles fuera del circulo de reconstruccion pertenecen a componentes
+    separados del cuerpo (7467 y 1925 px, frente a 62 547), compatibles con la camilla. **Correccion:**
+    cuerpo = componente conexo mayor.
+  - **Coste de V1 (114.7 h > 72 h):** no es error. Se aplica la salida preinscrita: submuestrear los cortes.
+  - **Los criterios y umbrales no cambian.** Se corre una sola vez mas (corrida 2) y se reportan las dos.
+
+## Resultado (corrida 2, 2026-10-09; salida en `outputs/a18/`)
+
+| | Medida | Corrida 1 | Corrida 2 | Umbral | Corrida 2 |
+|---|---|---|---|---|---|
+| V1 | truncamiento del cuerpo | si (era la camilla) | no | no | PASA |
+| V1 | coste del brazo completo | 114.7 h | 108.9 h (127 s x 55 cortes con `G` x 14 x 2 x 2) | <= 72 h | FALLA |
+| V2 | sesgo sin metal, anillo 12-15 mm | +237 HU | **+3.9 HU** | +/-20 HU | PASA |
+| V2 | sesgo sin metal, tejido blando | +276 HU | **+6.5 HU** | +/-20 HU | PASA |
+| V3 | amplitud Fe / ruido | 39x | **72.8x** (10 166 / 140 HU) | >= 3x | PASA |
+
+- **Veredicto por la regla preinscrita: VIABLE con submuestreo.** Solo falla el coste, y su salida estaba
+  fijada: un corte de cada `k = 2`, unas 54 h, dentro de 72 h. D4 no cambia: el TOST contra Peters sigue como
+  contraste primario.
+- El script imprime "NO VIABLE" porque cuenta cualquier fallo de V1. La regla de `sonda_peters.md` separa el
+  fallo solo por coste, y esa regla manda.
+- La reconstruccion sin metal correlaciona 0.997 con el original.
+- **Descriptivo, no es criterio:** mediana dentro de `M`, Fe 9895 HU y Ti 5390 HU. Los tornillos reales de
+  `metal_0039` dan 3092-3838 HU (`a17`). Ver #159. La amplitud del difusor **no** se calculo.

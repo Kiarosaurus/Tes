@@ -748,3 +748,14 @@ lectura con `lector-papers`.
 | Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
 |---|---|---|---|---|
 | Fuente de la parametrizacion de prediccion `v` del objetivo de entrenamiento de difusion, sin identificar | gaps-r03, `capitulo3` §Sintetizador (`\GAPLIT`) | El sintetizador se entrena con prediccion `v` (DEC 2026-10-08 pto 3), mientras el marco teorico (`capitulo1` §Modelos de difusion) solo presenta la prediccion del ruido de Ho et al.; sin fuente, el objetivo de entrenamiento del Obj 3 queda sin definir en el documento | 2 | PENDIENTE |
+
+## Ronda 2026-10-09 — relectura de `peters2025hybrid` para la sonda del brazo fisico
+
+> Salieron de la relectura dirigida de `peters2025hybrid` (protocolo hibrido; seccion nueva de su ficha). La
+> lectora no pudo editar este archivo; las traslada la sesion principal. No se busco ni se descargo nada.
+
+| Cita (como aparece) | Salio de | Por que podria importar | Nivel sugerido | Estado |
+|---|---|---|---|---|
+| Zhang J, Wu M, FitzGerald P, Araujo S, De Man B. Development and tuning of models for accurate simulation of CT spatial resolution using CatSim. Phys Med Biol. 2024;69(4):045014 | peters2025hybrid (ref. 38) | Es la unica fuente que el PDF da para el "standard reconstruction kernel" (2.1, p. 2). El kernel del brazo hibrido no esta en el PDF, y la sonda (`a18`) usa el `standard` de XCIST | 2 | PENDIENTE |
+| Zhang et al., "Accurate modeling of CT noise with CatSim" (figura como pending en la lista de referencias) | peters2025hybrid (ref. 39) | Modelo de ruido del brazo fisico; respaldaria V3 de la sonda (ruido test-retest) | 3 | PENDIENTE |
+| FitzGerald P, et al. Semiempirical, parameterized spectrum estimation for x-ray computed tomography. Med Phys 2021;48(5):2199-2213 | peters2025hybrid (ref. 37); ya registrada desde wu2022xcist | Segunda lectura independiente que la cita (espectros del ruido). Ver la fila PENDIENTE existente; no se duplica el estado | — | ver fila de wu2022xcist |

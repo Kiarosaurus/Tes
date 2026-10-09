@@ -11362,7 +11362,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - (2) ademas, leer la ref. 38 (kernel) antes de la corrida completa.
 - **Afecta:** la redaccion del brazo fisico en `main.tex` y en el capitulo 3, y #17.
 
-### 159 — SONDA DE PETERS (a18, 2026-10-09): VIABLE con submuestreo, pero el METAL DEL BRAZO FISICO ES MUCHO MAS BRILLANTE QUE EL REAL (Fe ~9900 HU, Ti ~5400 HU frente a 3100-3800 HU en `metal_0039`) — ABIERTA (toca D4, #158, el material del brazo fisico, el realismo del Objetivo 3)
+### 159 — SONDA DE PETERS (a18, 2026-10-09): VIABLE con submuestreo, pero el METAL DEL BRAZO FISICO ES MUCHO MAS BRILLANTE QUE EL REAL (Fe ~9900 HU, Ti ~5400 HU frente a 3100-3800 HU en `metal_0039`) — DECIDIDA el 2026-10-09 por la autora: opcion 2 (brazo completo con Fe preinscrito + Ti como sensibilidad; `a19_peters_completo.py`). La diferencia de brillo se declara (toca D4, #158, el material del brazo fisico, el realismo del Objetivo 3)
 
 - **Origen:** `a18_sonda_peters.py`, corrida 2; protocolo y enmiendas en `experiments/objetivo3/sonda_peters.md`.
 - **Hallazgo:**
@@ -11395,3 +11395,9 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - (2) correr el brazo completo con los dos materiales y reportar el titanio como sensibilidad;
   - (3) reabrir el material. Seria un cambio posterior al resultado y habria que declararlo.
 - **Pendiente de la autora:** elegir la opcion antes de implementar Peters completo.
+- **2026-10-09, la autora elige la opcion 2:** el brazo completo usa `Fe`, el material preinscrito, y `Ti` como
+  sensibilidad, con test-retest para los dos.
+  - Implementado en `experiments/objetivo3/a19_peters_completo.py` y `a19_peters.sbatch`. Corre en CPU y en
+    validacion, porque `Delta` se mide solo ahi; test exige `--corrida-final`.
+  - **Queda pendiente "para nosotros"**, palabras de la autora: mejorar la subexposicion del difusor (p95 bajo lo
+    real, #157). No esta programado y no bloquea Peters ni `Delta`.

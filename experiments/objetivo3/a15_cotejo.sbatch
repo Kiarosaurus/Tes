@@ -12,7 +12,9 @@
 #
 # Requiere lo mismo que `a15_cadena.sbatch` mas `src/common/cotejo.py` y la `p1_particion.csv` nueva
 # (sin `metal_0053`, #156). Checkpoints en $DATA/a7/run01/ckpt.pt y $DATA/a7/run02/mejor.pt.
-# Salida: $DATA/a15_cotejo/
+# Salida: $DATA/a15_cotejo/, u otra con `SALIDA`:
+#   sbatch --export=ALL,SALIDA=$HOME/metalsynth/data/a15_cotejo_1mm ...
+# El mismo `_cotejo.csv` lleva cascaras de 0.5 y de 1 mm (columna `paso_mm`; sensibilidad #157).
 #SBATCH --job-name=a15cot
 #SBATCH --partition=gpu
 #SBATCH --account=tesis
@@ -27,7 +29,7 @@ set -o pipefail
 
 DATA=$HOME/metalsynth/data
 REPO=$HOME/metalsynth
-SALIDA=$DATA/a15_cotejo
+SALIDA=${SALIDA:-$DATA/a15_cotejo}
 CASOS=("$@")
 [ ${#CASOS[@]} -eq 0 ] && CASOS=(dataset6_CLINIC_0101_data dataset6_CLINIC_0102_data)
 
@@ -51,7 +53,7 @@ rc=0
 for caso in "${CASOS[@]}"; do
     echo; echo "=== $caso  $(date -Is) ==="
     python -u "$REPO/experiments/objetivo3/a15_cadena_completa.py" \
-        --caso "$caso" --cortes 0 --dispositivo cuda --semillas 0 1 2 3 4 --sin-nifti \
+        --caso "$caso" --cortes 0 --dispositivo cuda --semillas 0 1 2 3 4 --sin-nifti --pasos-cotejo-mm 0.5 1.0 \
         --data "$DATA/extracted" \
         --ckpt "$DATA/a7/run01/ckpt.pt" "$DATA/a7/run02/mejor.pt" \
         --etiquetas run01_140k mejor_37k \

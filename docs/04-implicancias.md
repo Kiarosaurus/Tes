@@ -11298,3 +11298,8 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Afecta:** eleccion del checkpoint del Objetivo 3; `overleaf/secciones/capitulo3.tex` (cotejo) cuando haya
   resultado; la discusion de realismo (#155 (2)).
 - **Pendiente de la autora:** elegir la opcion y confirmar el checkpoint.
+- **2026-10-09, la autora elige la opcion 2** (sensibilidad con cascaras de 1 mm antes de elegir).
+  - `a15 --pasos-cotejo-mm` y `a17 --paso-mm` agregados.
+  - El `.sbatch` calcula 0.5 y 1 mm en la misma corrida. Repetir 0.5 mm sirve ademas para comprobar que la GPU
+    reproduce el job 55130 con las mismas semillas.
+  - Salida en Khipu: `$DATA/a15_cotejo_1mm`.

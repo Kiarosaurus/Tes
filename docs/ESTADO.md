@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-08 (7) — Plantilla de conteo de tornillos para la tesis (agente / autora / evaluador externo)
+
+- **Hecho:** `experiments/exploration-3d/tornillos_conteo.csv` (65 casos x 5 preguntas; columna `agente` llena desde `propuesta_lote-tornillos-*`, `autora` y `evaluador_externo` vacias) y `tornillos_conteo.md` (definiciones). Agente, 64 pacientes: 54 con tornillo intraoseo, 23-26 con IS o TS.
+- **Siguiente:** autora llena su columna en cortes; luego se decide como reportarlo en cap. 3 (descriptivo, ningun objetivo lo pide).
+
 ## 2026-10-08 (6) — `00-tesis`/`main.tex` alineados (#156); cotejo con 5 semillas listo para Khipu
 
 - **Hecho:** `main.tex` (sensibilidad Obj 1 sin 0053, 64 pacientes; 9 pp) y `00-tesis.md` alineados. `01-decisiones.md` 2026-10-08 (3): 5 semillas. Codigo: `src/common/cotejo.py` (perfil 2D 0.5 mm con elevacion, histograma > 2500), `a15 --semillas`, `a15_cotejo.sbatch`, `a17_cotejo.py` (referencia real 0039 + regla). Fila de 0053 retirada de `p1_particion.csv` (el control de particion abortaba).

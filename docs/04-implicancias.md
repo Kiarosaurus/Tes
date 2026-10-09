@@ -11269,7 +11269,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   objetos no ortopedicos (grupo 2). `capitulo3.tex` decia "19 con implante real" (y antes "20"): corregido. La
   referencia de realismo (#155 (2)) son los 11, no los 19. La `discrepancia` se mide en los 19 con metal.
 
-### 157 — COTEJO DE CHECKPOINT (a17, 2026-10-09): `run01_140k` gana por UNA cascara (8 frente a 7 de 46), y LOS DOS CHECKPOINTS QUEDAN POR DEBAJO DE LO REAL EN p95 en 20 de 23 cascaras — DECIDIDA el 2026-10-09: opcion (a), cascaras de 1 mm y checkpoint `mejor_37k` (`01-decisiones.md` 2026-10-09). SIGUE ABIERTO el sesgo del p95, que se declara; PENDIENTE de aplicar en `00-tesis.md`, `tesis/main.tex` y `overleaf/` (toca #150, #154, realismo del Objetivo 3)
+### 157 — COTEJO DE CHECKPOINT (a17, 2026-10-09): `run01_140k` gana por UNA cascara (8 frente a 7 de 46), y LOS DOS CHECKPOINTS QUEDAN POR DEBAJO DE LO REAL EN p95 en 20 de 23 cascaras — DECIDIDA el 2026-10-09: opcion (a), cascaras de 1 mm y checkpoint `mejor_37k` (`01-decisiones.md` 2026-10-09). SIGUE ABIERTO el sesgo del p95, que se declara; APLICADA en `00-tesis.md`, `tesis/main.tex` y `overleaf/` el 2026-10-09 (checkpoint-r01) (toca #150, #154, realismo del Objetivo 3)
 
 - **Origen:** job Khipu 55130 (`a15_cotejo.sbatch`, particion `all`, MIG 3g; 2 receptores `0101`/`0102`, 5 semillas,
   GPU), `a17_cotejo.py` en local. Agregacion corte -> semilla -> paciente -> checkpoint por medianas, confirmada por

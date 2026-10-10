@@ -2347,3 +2347,23 @@ en la tesis.
   - Reemplaza el punto 1 de 2026-10-09 (3) en lo que toca al material primario.
   - Los dos materiales exageran el artefacto respecto de los tornillos reales. Se declara como limitacion del brazo
     fisico.
+
+## 2026-10-09 (6) — `diseno_A.md` CONGELADO (#161, opciones 1 + 3; #155 (2))
+
+Escrito por el asistente por orden explicita de la autora ("Congela el diseno con la opcion 1 + 3"). La referencia
+de realismo la eligio la autora en el chat ("Solo tornillos aislados").
+
+1. **`experiments/objetivo3/diseno_A.md` queda CONGELADO**, seccion 0, antes de tocar ningun paciente de test.
+   - Se declara que el modelo se entreno antes de congelar.
+   - Lo que se congela es la corrida final y su evaluacion.
+2. **#161, opcion 1:** sin trabajar antes la subexposicion del difusor.
+   - Primario: TOST pareado difusor frente a Peters **Ti**, IC90 con *t*, n = 14, margen **+/-188.7 HU**.
+   - Sensibilidad: el mismo TOST frente a Fe.
+   - Cordura: Wilcoxon de una cola frente a copia y pegado.
+   - Valor por paciente: mediana de las 5 semillas (difusor) y de las replicas A y B (fisico).
+3. **#161, opcion 3, y #155 (2):** contraste de realismo descriptivo frente a los **tornillos aislados reales de
+   test** (`0009`, `0024`, `0048`, `0049`, `0066`), con los estadisticos sin referencia de 1 mm. No depende del
+   material del brazo fisico.
+4. **Mejorar la subexposicion** (#157) queda como trabajo del equipo **posterior y declarado**. No entra en la
+   corrida final congelada.
+5. Ningun script toca test sin `--corrida-final`.

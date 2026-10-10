@@ -11434,7 +11434,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     concluir equivalencia.
 - **Registrado en `01-decisiones.md` 2026-10-09 (4)** (#160 y formula de `Delta`).
 
-### 161 — `Delta` = 188.7 HU, fijado por el difusor; EN VALIDACION EL DIFUSOR QUEDA MUY LEJOS DEL BRAZO FISICO CON Fe (diferencia de 980 a 4570 HU), lo que anticipa que el TOST primario NO concluira equivalencia — ABIERTA (toca D4, el resultado esperado del Objetivo 3, #157, #159)
+### 161 — `Delta` = 188.7 HU, fijado por el difusor; EN VALIDACION EL DIFUSOR QUEDA MUY LEJOS DEL BRAZO FISICO CON Fe (diferencia de 980 a 4570 HU), lo que anticipa que el TOST primario NO concluira equivalencia — DECIDIDA el 2026-10-09: opciones 1 + 3, `diseno_A.md` CONGELADO (`01-decisiones.md` 2026-10-09 (6)) (toca D4, el resultado esperado del Objetivo 3, #157, #159)
 
 - **Origen:** `a20_evaluador_ea2.py` sobre `a19` (Peters) y `a15_delta` (difusor `mejor_37k`, 5 semillas,
   `--incluir-banda`), validacion `0101` y `0102`, 2026-10-09. Detalle en
@@ -11473,3 +11473,6 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     falle.
   - Los dos materiales exageran el artefacto respecto de lo real (Ti queda sobre lo real en 13 de 24 cascaras): el
     brazo fisico no es "la verdad", y se declara.
+- **2026-10-09: #155 (2) decidida por la autora:** el realismo del Objetivo 3 se compara solo con los tornillos
+  aislados reales de test (`0009`, `0024`, `0048`, `0049`, `0066`). Registrado en `01-decisiones.md` 2026-10-09 (6).
+  - Pendiente de aplicar en `capitulo3.tex`, donde hoy hay un `\GAPDEC` sobre la referencia de realismo.

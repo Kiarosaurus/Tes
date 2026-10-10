@@ -84,16 +84,22 @@ def rois(M: np.ndarray, esp3d, u_af: np.ndarray, guarda_mm: float) -> np.ndarray
 def evalua(delta: np.ndarray, lab: np.ndarray, validos: np.ndarray, img: np.ndarray | None = None) -> dict:
     """Mediana sobre ROIs de la amplitud de colas de `delta`; solo voxeles de cortes axiales `validos`."""
     usable = (lab >= 0) & validos[:, None, None]
-    ids = np.unique(lab[usable])
+    pos = np.flatnonzero(usable)                      # una sola pasada por el volumen; luego se agrupa por ROI
+    et = lab.ravel()[pos]
+    orden = np.argsort(et, kind='stable')
+    pos, et = pos[orden], et[orden]
+    ids, ini = np.unique(et, return_index=True)
+    fin = np.append(ini[1:], et.size)
+    d_ = delta.ravel()[pos]
+    i_ = img.ravel()[pos] if img is not None else None
     amps, n_vox, suelo = [], [], []
-    for i in ids:
-        s = usable & (lab == i)
-        if s.sum() < MIN_VOX:
+    for a, b in zip(ini, fin):
+        if b - a < MIN_VOX:
             continue
-        amps.append(amplitud(delta[s]))
-        n_vox.append(int(s.sum()))
-        if img is not None:
-            suelo.append(float((img[s] <= SUELO_HU + 0.5).mean()))
+        amps.append(amplitud(d_[a:b]))
+        n_vox.append(int(b - a))
+        if i_ is not None:
+            suelo.append(float((i_[a:b] <= SUELO_HU + 0.5).mean()))
     if not amps:
         return {'amp_HU': float('nan'), 'n_rois': 0, 'n_vox': 0, 'suelo_frac': float('nan')}
     return {'amp_HU': float(np.median(amps)), 'n_rois': len(amps), 'n_vox': int(np.sum(n_vox)),

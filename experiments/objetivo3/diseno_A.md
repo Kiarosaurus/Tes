@@ -47,18 +47,53 @@
   - fisico: mediana (= media) de las replicas A y B.
 - Se reporta siempre la fraccion de la ROI en el suelo de -1000 HU.
 
-**Contrastes sobre los 14 pacientes de test sin metal:**
+**Pacientes de E-A2** (aclaracion 2026-10-09 (8), antes de correr):
+- **13 de test sin metal**: los 14 menos `dataset6_CLINIC_0034_data`, que no tiene eje del corredor en E9-TS (pixel
+  de 1.62 mm). Se excluye y se declara.
+- En `0016` (3.1 mm), `0047` (3.6 mm) y `0022` (4.7 mm) el corredor es mas angosto que el tornillo (4.91 mm), que
+  perfora la cortical por construccion. **Entran**, declarado: E-A2 mide el artefacto, no la validez de la
+  colocacion (eso es el Objetivo 2), y los dos brazos usan la misma pose.
+- **Sensibilidad:** el TOST sin esos 3 (n = 10).
+
+**Contrastes sobre los 13 pacientes de E-A2:**
 
 | | Contraste | Prueba | Criterio |
 |---|---|---|---|
-| **Primario** | difusor frente a Peters **Ti** | **TOST pareado**: IC90 de la diferencia media pareada con *t* de Student, n = 14 | equivalencia solo si el IC90 cae entero en **[-188.7, +188.7] HU** (`Delta`, 2026-10-09 (4)) |
+| **Primario** | difusor frente a Peters **Ti** | **TOST pareado**: IC90 de la diferencia media pareada con *t* de Student, n = 13 | equivalencia solo si el IC90 cae entero en **[-188.7, +188.7] HU** (`Delta`, 2026-10-09 (4)) |
 | Sensibilidad | difusor frente a Peters Fe | el mismo TOST | descriptivo |
-| Cordura | difusor frente a copia y pegado (HU constante) | Wilcoxon de rangos con signo, una cola, alfa 0.05 | piso, **no** evidencia de calidad |
+| Cordura | difusor frente a copia y pegado (HU constante = **5373 HU**, mediana del metal de entrenamiento, `a22`) | Wilcoxon de rangos con signo, una cola, alfa 0.05 | piso, **no** evidencia de calidad |
 
-- **Declaracion de potencia (preaceptada, 2026-10-05 (6)):** con n = 14 el resultado honesto puede ser "no se pudo
+- **Declaracion de potencia (preaceptada, 2026-10-05 (6)):** con n = 13 el resultado honesto puede ser "no se pudo
   concluir equivalencia", y asi se reporta.
 - **Esperable a la vista de validacion (#161):** el difusor quedo unos 1240 HU bajo Ti en `0101` y unos 50 HU en
   `0102`.
+
+**Metricas de Peters adaptadas, descriptivas, en E-A1 y E-A2** (2026-10-09 (8); Peters 2.5, pp. 5-6; #16):
+- **`bone integrity`:**
+  - hueso = voxeles > 150 HU fuera de `M`, dentro de `G`;
+  - se comparan la imagen generada y la referencia: SDC (`2|X∩Y|/(|X|+|Y|)`) y cambio relativo de volumen oseo.
+- **`metal integrity`:** lo mismo con la mascara de metal (> 2500 HU, el umbral de metal del proyecto; Peters usa
+  el maximo del ROI + 250 HU, que en un paciente con metal real no tiene equivalente directo).
+- Se reportan **los componentes crudos** (SDC y cambio de volumen). **No** la escala 0-4 de Peters, que se calibra
+  con NMAR y no es reproducible aqui.
+- Referencia:
+  - en E-A2, el CT limpio original (hueso) y la `M` parametrica (metal);
+  - en E-A1, el CT real con su implante.
+
+**E-A1, reconstruccion de implante real (descriptivo):**
+- **Pacientes:** los **19 de test con metal**: 11 con material ortopedico y 8 con objetos no ortopedicos (#156).
+  Se reportan por separado; los 8 con objetos quedan fuera de la distribucion de entrenamiento, que solo uso casos
+  con material ortopedico.
+- **Unidad:** el componente conexo de metal (> 2500 HU, >= 500 mm3), con su `B_delta`, igual que en el
+  entrenamiento (D2, `a1b`).
+- **Sintesis:** `mejor_37k`, 5 semillas, el mismo pipeline que E-A2 con la `M` real.
+- **Medidas, dentro de `G` y frente al CT real:**
+  - **discrepancia** (MAE en HU), tambien desglosada en `M` y en `B_delta`;
+  - `bone integrity` y `metal integrity` adaptadas;
+  - costura en el borde de `B_delta` (`a10`).
+  - Aqui **no** hay `streak amplitude`: no hay verdad de terreno sin metal (2026-10-05 (3)).
+- **Agregacion:** mediana sobre componentes y cortes -> paciente (mediana de semillas) -> mediana entre pacientes
+  con su rango.
 
 **Realismo (opcion 3, descriptivo, sin prueba de hipotesis):**
 - Estadisticos sin referencia (perfil radial de 1 mm e histograma dentro de `M`) de lo sintetizado en E-A2, frente a
@@ -89,10 +124,11 @@ poses perturbadas del muestreador; mejora de la subexposicion (pendiente del equ
 posterior declarada).
 
 **Orden de la corrida final** (exige `--corrida-final` en los scripts; ninguno toca test sin esa bandera):
-1. `a15` sobre los 14 de test.
-2. `a19` sobre los 14.
+1. `a15` sobre los 13 de E-A2 (`a15_final.sbatch`).
+2. `a19` sobre los 13 (`a19_final.sbatch`).
 3. Copia y pegado.
 4. `a20` y los contrastes.
+5. E-A1 sobre los 19 de test con metal.
 
 ## 1. Que resuelve y que no
 

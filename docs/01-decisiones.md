@@ -2415,3 +2415,13 @@ fija antes de correr nada en test.**
    - Es la mediana de 1 978 270 voxeles de metal en los 17 149 parches de entrenamiento (47 casos, criterio R2),
      en el corte central y en la mascara del componente.
    - Ningun paciente de validacion ni de test interviene.
+6. **Errata y tope de E-A1, corregidos antes de correr:**
+   - El punto 1 decia "componentes >= 500 mm3, igual que en el entrenamiento", pero el entrenamiento (`a1b`)
+     admitia >= 10 mm3.
+   - Se mantiene **500 mm3**, el umbral de la referencia del cotejo (`a17`): deja fuera fragmentos que son sobre
+     todo islas de artefacto.
+   - Se fija un tope de **24 cortes por componente**, repartidos uniformemente; sin el, el coste supera 15 h de GPU.
+7. **Scripts de la corrida final:**
+   - `a23_ea1.py` (E-A1) y `a23_final.sbatch`;
+   - `a24_contrastes.py`: TOST con *t*, sensibilidades Fe y n = 10, Wilcoxon de cordura;
+   - `a20` con `bone integrity` y `metal integrity` adaptadas, y la via de copia y pegado.

@@ -84,8 +84,12 @@
 - **Pacientes:** los **19 de test con metal**: 11 con material ortopedico y 8 con objetos no ortopedicos (#156).
   Se reportan por separado; los 8 con objetos quedan fuera de la distribucion de entrenamiento, que solo uso casos
   con material ortopedico.
-- **Unidad:** el componente conexo de metal (> 2500 HU, >= 500 mm3), con su `B_delta`, igual que en el
-  entrenamiento (D2, `a1b`).
+- **Unidad:** el componente conexo de metal (> 2500 HU, **>= 500 mm3**), con su `B_delta`, extraido con la misma
+  funcion del entrenamiento (`a1b.analizar`). El entrenamiento admitia >= 10 mm3; aqui se usa 500 mm3, el umbral de
+  la referencia del cotejo (`a17`), para dejar fuera fragmentos que son sobre todo islas de artefacto (errata
+  corregida antes de correr, 2026-10-09 (8)).
+- **Muestra:** hasta **24 cortes por componente**, repartidos uniformemente (el `--cortes` por omision de `a15`).
+  Sin tope, E-A1 pasaria de 15 h de GPU.
 - **Sintesis:** `mejor_37k`, 5 semillas, el mismo pipeline que E-A2 con la `M` real.
 - **Medidas, dentro de `G` y frente al CT real:**
   - **discrepancia** (MAE en HU), tambien desglosada en `M` y en `B_delta`;

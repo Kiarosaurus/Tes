@@ -2339,3 +2339,11 @@ en la tesis.
 7. **Se declara:** con 1 paciente de referencia el cotejo descarta, no prueba. El material real de los tornillos
    de CLINIC es desconocido (el dataset no lo registra). La literatura ficheada muestra los dos materiales en uso
    clinico: Ti en Acumed y DoubleMedical; acero en Berk 2023; los dos en Synthes.
+- **Resultado (`a21_cotejo_material.py`, despues del commit f9d27cc):**
+  - **gana `Ti`**: 7 de 24 cascaras dentro de la envolvente real, frente a 0 de 24 con `Fe` (Fe queda sobre lo
+    real en las 24);
+  - distancia de histograma: 3986 HU con Ti, 14 005 HU con Fe;
+  - **por la regla, `Ti` pasa a ser el material primario del TOST y `Fe` la sensibilidad.**
+  - Reemplaza el punto 1 de 2026-10-09 (3) en lo que toca al material primario.
+  - Los dos materiales exageran el artefacto respecto de los tornillos reales. Se declara como limitacion del brazo
+    fisico.

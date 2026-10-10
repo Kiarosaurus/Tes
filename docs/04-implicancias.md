@@ -11464,3 +11464,12 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - (3) reportar ademas la comparacion difusor frente a CLINIC-metal real (contraste de realismo) como la
     evidencia que no depende del material del brazo fisico.
 - **Pendiente de la autora:** decidir antes de congelar `diseno_A.md`.
+- **2026-10-09, cotejo del material (`a21`, regla 01-decisiones 2026-10-09 (5), escrita antes):**
+  - **Gana Ti** (7 frente a 0 de 24 cascaras dentro de lo real). Ti pasa a ser el primario del TOST y Fe la
+    sensibilidad. El criterio no uso el difusor.
+  - **Consecuencia para #161:** frente a Peters con Ti, el difusor queda unos 1240 HU por debajo en `0101`
+    (6.6 veces `Delta`) y unos 50 HU en `0102` (dentro de `Delta`).
+  - Que el TOST concluya equivalencia sigue siendo improbable con `0101` como referencia, pero ya no es seguro que
+    falle.
+  - Los dos materiales exageran el artefacto respecto de lo real (Ti queda sobre lo real en 13 de 24 cascaras): el
+    brazo fisico no es "la verdad", y se declara.

@@ -2367,3 +2367,30 @@ de realismo la eligio la autora en el chat ("Solo tornillos aislados").
 4. **Mejorar la subexposicion** (#157) queda como trabajo del equipo **posterior y declarado**. No entra en la
    corrida final congelada.
 5. Ningun script toca test sin `--corrida-final`.
+
+## 2026-10-09 (7) — Aclaracion del congelamiento: la referencia de realismo se define por REGLA, no por lista (#155 (2))
+
+Escrito por el asistente por orden explicita de la autora ("Si, escribe la regla"). Se escribe **antes** de que la
+autora termine su revision en cortes de los pacientes de test, y **antes** de cualquier resultado de sintesis en
+test. Sustituye a la lista del punto 3 de 2026-10-09 (6).
+
+**Motivo.** La lista congelada (`0009`, `0024`, `0048`, `0049`, `0066`) venia de la propuesta sin validar del
+agente (`tornillos_candidatos.md`).
+- La autora solo habia revisado 3 de los 11 pacientes de test con material, y en uno de ellos (`0006`) encontro un
+  tornillo aislado que el agente no vio.
+- La lista dejaba fuera los tornillos aislados que no son IS, aunque el cotejo de checkpoint uso los dos tornillos
+  de `metal_0039`, uno de pubis a acetabulo.
+
+**Regla:**
+1. **Entra** en la referencia de realismo cada paciente de test con al menos un tornillo intraoseo aislado (IS, TS u
+   otro), segun la **columna `autora`** de `experiments/exploration-3d/tornillos_conteo.csv`: preguntas `2_n_IS`,
+   `3_n_TS` o `4_n_otros_aislados` con un entero >= 1.
+2. **Queda fuera, y se declara**, el paciente con `incierto` en esas preguntas y ningun entero >= 1.
+3. **Referencia:** solo los componentes tornillo aislado de esos pacientes; el metal de placas o fijadores del mismo
+   paciente se excluye de las cascaras.
+4. **Reporte:** fraccion de cascaras dentro de la envolvente real, mas el desglose descriptivo por tipo (IS/TS
+   frente a otros).
+5. **Condicion previa:** la autora completa su columna para los 11 pacientes de test con material antes de calcular
+   el realismo. Hoy faltan 8: `0023`, `0024`, `0031`, `0032`, `0048`, `0049`, `0066` y `0072`.
+6. La corrida final de E-A2 (`a15` y `a19` sobre los 14 sin metal) no depende de esta lista y puede avanzar en
+   paralelo.

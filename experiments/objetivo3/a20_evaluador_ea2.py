@@ -107,6 +107,29 @@ def evalua(delta: np.ndarray, lab: np.ndarray, validos: np.ndarray, img: np.ndar
             'suelo_frac': float(np.median(suelo)) if suelo else float('nan')}
 
 
+def sdc(a: np.ndarray, b: np.ndarray) -> float:
+    """Sorensen-Dice, `2|A∩B|/(|A|+|B|)` (Peters 2.5, p. 6); NaN si las dos mascaras estan vacias."""
+    n = int(a.sum()) + int(b.sum())
+    return float(2 * int((a & b).sum()) / n) if n else float('nan')
+
+
+def integridad(img: np.ndarray, ref: np.ndarray, M: np.ndarray, G: np.ndarray, validos: np.ndarray,
+               metal_ref: np.ndarray | None = None) -> dict:
+    """`bone integrity` y `metal integrity` adaptadas (01-decisiones 2026-10-09 (8)), en los cortes `validos`.
+
+    Hueso = > 150 HU fuera de `M` dentro de `G`. Metal = > 2500 HU dentro de `G`; la referencia de metal es
+    `metal_ref` (la `M` parametrica en E-A2) o, si es None, el umbral sobre `ref`. Componentes crudos: SDC y
+    cambio relativo de volumen. No la escala 0-4 de Peters.
+    """
+    v = validos[:, None, None]
+    zona = G & v
+    hb, rb = (img > 150) & zona & ~M, (ref > 150) & zona & ~M
+    hm = (img > 2500) & zona
+    rm = (metal_ref & v) if metal_ref is not None else (ref > 2500) & zona
+    dv = lambda x, y: float((x.sum() - y.sum()) / y.sum()) if y.sum() else float('nan')  # noqa: E731
+    return {'hueso_sdc': sdc(hb, rb), 'hueso_dvol': dv(hb, rb), 'metal_sdc': sdc(hm, rm), 'metal_dvol': dv(hm, rm)}
+
+
 def geometria_af(caso: str, particiones: list[str]):
     """`M` completa, espaciado y `u` en orden axial-primero, con la misma pose que `a15`/`a19`."""
     from a19_peters_completo import geometria
@@ -118,7 +141,7 @@ def geometria_af(caso: str, particiones: list[str]):
     orden = [eje] + list(plano)
     esp3d = [z[i] for i in orden]
     u_af = np.array(pose['u'])[orden]
-    return vol, M, esp3d, u_af, esp2d[0]
+    return vol, M, esp3d, u_af, esp2d[0], G
 
 
 def calcula_delta(ruta: Path, etiqueta: str) -> None:
@@ -165,10 +188,13 @@ def main() -> None:
     d.add_argument('--etiqueta', default='mejor_37k')
     d.add_argument('--semillas', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     d.add_argument('--interseccion', type=Path, default=None, help='npz de a19: usar solo sus cortes simulados')
+    cp = sub.add_parser('copiapega', help='control de cordura: M con HU constante (a22), resto identico')
+    cp.add_argument('--casos', nargs='+', required=True)
+    cp.add_argument('--hu', type=float, default=None, help='por omision, outputs/a22/a22_hu_copiapega.json')
     dl = sub.add_parser('delta', help='calcula Delta = max(s, r) desde el CSV (formula fijada 2026-10-09)')
     dl.add_argument('--csv', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
     dl.add_argument('--etiqueta', default='mejor_37k')
-    for q in (p, d):
+    for q in (p, d, cp):
         q.add_argument('--corrida-final', action='store_true', help='permite test (tras congelar diseno_A.md)')
         q.add_argument('--out', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
     args = ap.parse_args()
@@ -179,11 +205,25 @@ def main() -> None:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     filas = []
 
-    if args.brazo == 'peters':
+    if args.brazo == 'copiapega':
+        hu = args.hu if args.hu is not None else json.loads(
+            (_AQUI / 'outputs' / 'a22' / 'a22_hu_copiapega.json').read_text(encoding='utf-8'))['HU_copiapega']
+        for caso in args.casos:
+            vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
+            lab = rois(M, esp3d, u_af, guarda)
+            validos = G.reshape(G.shape[0], -1).any(1)
+            orig = vol.astype(np.float32)
+            sint = orig.copy()
+            sint[M] = hu
+            res = evalua(sint - orig, lab, validos, img=sint)
+            res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
+            filas.append({'brazo': 'copiapega', 'caso': caso, 'condicion': 'HU_%.0f' % hu, **res})
+            print('%s copiapega: amp %.1f HU | %d ROIs' % (caso, res['amp_HU'], res['n_rois']))
+    elif args.brazo == 'peters':
         for ruta in args.npz:
             z = np.load(ruta)
             caso = json.loads(ruta.with_suffix('.json').read_text(encoding='utf-8'))['caso']
-            vol, M, esp3d, u_af, guarda = geometria_af(caso, parts)
+            vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
             lab = rois(M, esp3d, u_af, guarda)
             validos = np.zeros(M.shape[0], bool)
             validos[z['ks']] = True
@@ -195,13 +235,14 @@ def main() -> None:
             for mat in ('Fe', 'Ti'):
                 for r in ('A', 'B'):
                     res = evalua(full['%s_%s' % (mat, r)] - full['limpia_%s' % r], lab, validos)
+                    res.update(integridad(full['%s_%s' % (mat, r)], full['limpia_%s' % r], M, G, validos, metal_ref=M))
                     filas.append({'brazo': 'peters', 'caso': caso, 'condicion': '%s_%s' % (mat, r), **res})
                     print('%s peters %s_%s: amp %.0f HU | %d ROIs' % (caso, mat, r, res['amp_HU'], res['n_rois']))
             ruido = evalua(full['limpia_A'] - full['limpia_B'], lab, validos)
             filas.append({'brazo': 'peters', 'caso': caso, 'condicion': 'ruido_A-B', **ruido})
     else:
         import nibabel as nib
-        vol, M, esp3d, u_af, guarda = geometria_af(args.caso, parts)
+        vol, M, esp3d, u_af, guarda, G = geometria_af(args.caso, parts)
         lab = rois(M, esp3d, u_af, guarda)
         ruta_g = args.dir / ('a15_%s_G.nii.gz' % args.caso)
         if ruta_g.exists():                                   # con --incluir-banda, a15 genera todos los cortes con `G`
@@ -223,12 +264,14 @@ def main() -> None:
         for s in args.semillas:
             sint = lee(args.dir / ('a15_%s_%s_s%d_sintetica.nii.gz' % (args.caso, args.etiqueta, s)))
             res = evalua(sint - orig, lab, validos, img=sint)
+            res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
             filas.append({'brazo': 'difusor', 'caso': args.caso, 'condicion': '%s_s%d' % (args.etiqueta, s), **res})
             print('%s difusor %s s%d: amp %.0f HU | %d ROIs | suelo %.3f'
                   % (args.caso, args.etiqueta, s, res['amp_HU'], res['n_rois'], res['suelo_frac']))
 
     nuevo = not args.out.exists()
-    claves = ['brazo', 'caso', 'condicion', 'amp_HU', 'amp_p25', 'amp_p75', 'n_rois', 'n_vox', 'suelo_frac']
+    claves = ['brazo', 'caso', 'condicion', 'amp_HU', 'amp_p25', 'amp_p75', 'n_rois', 'n_vox', 'suelo_frac',
+              'hueso_sdc', 'hueso_dvol', 'metal_sdc', 'metal_dvol']
     with open(args.out, 'a', newline='', encoding='utf-8') as fh:
         w = csv.DictWriter(fh, fieldnames=claves, extrasaction='ignore')
         if nuevo:

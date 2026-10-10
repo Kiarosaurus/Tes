@@ -227,6 +227,8 @@ def main() -> None:
                     help='usa una pose perturbada del muestreador en vez del eje central del corredor')
     ap.add_argument('--semilla-pose', type=int, default=0)
     ap.add_argument('--cortes', type=int, default=24, help='0 = todos los cortes con `M`')
+    ap.add_argument('--corrida-final', action='store_true',
+                    help='permite test; solo con diseno_A.md CONGELADO (01-decisiones 2026-10-09 (6))')
     ap.add_argument('--incluir-banda', action='store_true',
                     help='genera tambien los cortes de solo banda (todos los que toca `G`; #160)')
     ap.add_argument('--pasos', type=int, default=50)
@@ -251,8 +253,8 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     if len(args.etiquetas) != len(args.ckpt):
         raise SystemExit('--etiquetas y --ckpt tienen que tener la misma longitud')
-    if 'test' in [p.lower() for p in args.particiones]:
-        raise SystemExit('CONTROL: se pidio test. Abortado (Strict Isolation Rule, main.tex:111).')
+    if 'test' in [p.lower() for p in args.particiones] and not args.corrida_final:
+        raise SystemExit('CONTROL: se pidio test sin --corrida-final. Abortado (Strict Isolation Rule, main.tex:111).')
 
     import nibabel as nib
     from p1_decodificador_sd15 import leer_particion, rutas

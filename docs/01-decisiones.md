@@ -2394,3 +2394,24 @@ agente (`tornillos_candidatos.md`).
    el realismo. Hoy faltan 8: `0023`, `0024`, `0031`, `0032`, `0048`, `0049`, `0066` y `0072`.
 6. La corrida final de E-A2 (`a15` y `a19` sobre los 14 sin metal) no depende de esta lista y puede avanzar en
    paralelo.
+
+## 2026-10-09 (8) — Enmiendas del congelamiento antes de correr: E-A1, n = 13 y corredores angostos
+
+Escrito por el asistente por orden explicita de la autora ("Si, agrega E-A1 y prepara la corrida final"). Las dos
+decisiones sobre pacientes las tomo la autora en el chat ("Excluir y declarar", "Entran, declarado"). **Todo se
+fija antes de correr nada en test.**
+
+1. **E-A1 entra en la seccion 0 de `diseno_A.md`.**
+   - Faltaba por omision del asistente al congelar.
+   - Abarca los 19 de test con metal, reportados como 11 ortopedicos y 8 con objetos.
+   - Unidad: el componente. Medidas: discrepancia MAE en `G`, `M` y `B_delta`, mas `bone integrity` y `metal
+     integrity` adaptadas, mas la costura. Sin `streak amplitude`.
+2. **Metricas de Peters adaptadas:** se reportan SDC y cambio de volumen (hueso > 150 HU fuera de `M`; metal
+   > 2500 HU), no la escala 0-4, que se calibra con NMAR. Es la adaptacion que pedia #16.
+3. **E-A2 con n = 13:** se excluye `dataset6_CLINIC_0034_data` porque no tiene eje del corredor (pixel de 1.62 mm).
+4. **Corredores mas angostos que el tornillo** (`0016`, `0047`, `0022`): entran, declarados. La sensibilidad sin
+   ellos tiene n = 10.
+5. **HU de la copia y pegado: 5373 HU** (`a22_hu_copiapega.py`).
+   - Es la mediana de 1 978 270 voxeles de metal en los 17 149 parches de entrenamiento (47 casos, criterio R2),
+     en el corte central y en la mascara del componente.
+   - Ningun paciente de validacion ni de test interviene.

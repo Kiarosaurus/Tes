@@ -156,7 +156,7 @@ def main() -> None:
                 'sesgo_blando_HU_max_abs': float(np.nanmax(np.abs([r['sesgo_blando_HU'] for r in res]))),
                 'segundos_por_corte_mediana': float(np.median([r['segundos'] for r in res])),
                 'segundos_total': time.time() - t0, 'condiciones': [c[0] for c in CONDICIONES],
-                'gecatsim': __import__('gecatsim').__version__ if hasattr(__import__('gecatsim'), '__version__') else 'sin __version__',
+                'gecatsim': __import__('importlib.metadata', fromlist=['version']).version('gecatsim'),
                 'orden_ok': idx == sorted(idx)}
         (args.out_dir / ('a19_%s.json' % caso)).write_text(json.dumps(meta, indent=2), encoding='utf-8')
         aviso = '' if min(corr) >= 0.95 else '  AVISO: algun corte con correlacion de calibracion < 0.95'

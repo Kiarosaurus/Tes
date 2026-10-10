@@ -2,6 +2,44 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-09 (CIERRE) — TRASPASO. Corrida final del Objetivo 3 corriendo en Khipu
+
+- **Corriendo (lanzados el 2026-10-09 ~23:00):**
+  - `a19fin` **55453**: Peters, 13 pacientes de test, big-mem, ~5-6 h.
+  - `a15fin` **55454**: difusor E-A2, shard rtxa6000, ~4 h.
+  - `a23fin` **55455**: E-A1, 19 pacientes con metal, shard rtxa6000, ~7 h.
+  - Revisar con `sacct -u $USER -S 2026-10-09` y los logs `a19fin_55453.log`, `a15fin_55454.log`,
+    `a23fin_55455.log`.
+- **Al terminar:**
+  1. Traer `$DATA/a19_final`, `$DATA/a15_final` y `$DATA/a23_final` a `experiments/objetivo3/outputs/`.
+  2. `a20` sobre test: `peters --npz outputs/a19_final/*.npz`, `difusor --dir outputs/a15_final` por cada caso de
+     `casos_ea2_test.txt`, y `copiapega --casos ...`, todos con `--corrida-final --out outputs/a20/a20_ea2_test.csv`.
+  3. `a24_contrastes.py --csv outputs/a20/a20_ea2_test.csv`.
+  4. Leer `a23_pacientes.csv` (E-A1).
+- **Diseno congelado:** `experiments/objetivo3/diseno_A.md` seccion 0; `01-decisiones.md` 2026-10-09 (1)-(8).
+  - Checkpoint `mejor_37k`.
+  - Primario: TOST difusor frente a Peters **Ti**, +/-**188.7 HU**, n = 13.
+  - Sensibilidades: Fe y n = 10.
+  - Cordura: copia y pegado con 5373 HU.
+  - Realismo: por regla (tornillos aislados de test segun la columna autora de `tornillos_conteo.csv`).
+- **Pendiente de la autora:**
+  - Revisar en cortes los 8 pacientes de test de `tornillos_conteo.csv` (0023, 0024, 0031, 0032, 0048, 0049, 0066,
+    0072). Es condicion para el realismo.
+  - Decidir #158: como citar el repositorio AAPM.
+- **Pendiente del equipo:** subexposicion del difusor (#157), como version posterior declarada.
+- **Redaccion PENDIENTE, no aplicada (regla 14; solo si la autora la pide).** Hay que llevar a cap. 3, `main.tex` y
+  `00-tesis`:
+  - Peters con Ti primario y Fe como sensibilidad (#159), y la regla del material;
+  - `Delta` = 188.7 HU y su formula;
+  - `--incluir-banda` (#160);
+  - E-A2 con n = 13 (0034 fuera; corredores angostos dentro);
+  - E-A1 y las metricas adaptadas (SDC, cambio de volumen);
+  - referencia de realismo por regla (#155 (2): cerrar el `\GAPDEC`);
+  - el fantoma del repositorio AAPM (#158);
+  - la sonda de Peters;
+  - el `\GAPDATO` del HU de copia y pegado, que se cierra con 5373 HU.
+  - Hoy el cap. 3 solo tiene el checkpoint, las cascaras de 1 mm, B1 y B2 (checkpoint-r01).
+
 ## 2026-10-08 (7) — Plantilla de conteo de tornillos para la tesis (agente / autora / evaluador externo)
 
 - **Hecho:** `experiments/exploration-3d/tornillos_conteo.csv` (65 casos x 5 preguntas; columna `agente` llena desde `propuesta_lote-tornillos-*`, `autora` y `evaluador_externo` vacias) y `tornillos_conteo.md` (definiciones). Agente, 64 pacientes: 54 con tornillo intraoseo, 23-26 con IS o TS.

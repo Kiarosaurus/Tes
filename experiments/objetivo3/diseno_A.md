@@ -6,10 +6,83 @@
 > sensibilidad (E11, #101); D4 = forma del contraste fijada, margen `Delta` tras el piloto sobre validacion.
 > **Lo unico que falta para preinscribir es el margen `Delta`**, que por construccion se mide despues.
 >
-> **Estado: BORRADOR para revision de la autora. NO preinscrito.** Decision que lo origina: `01-decisiones.md`,
+> **Estado: CONGELADO el 2026-10-09 (ver seccion 0). Lo que sigue en este bloque es historico: BORRADOR para revision de la autora. NO preinscrito.** Decision que lo origina: `01-decisiones.md`,
 > 2026-09-19 (tras el No-Go de P1, #91). Se preinscribe (se congela y se registra) **antes de entrenar**. Todo lo marcado
 > `[DECIDIR]` necesita respuesta de la autora; lo marcado `[SUPUESTO]` es propuesta del asistente como asesor y queda
 > declarado. Nada de este documento esta medido salvo donde se cita un experimento.
+
+> ## CONGELADO el 2026-10-09 (`01-decisiones.md` 2026-10-09 (6)), ANTES de tocar ningun paciente de test
+>
+> La seccion 0 manda sobre todo lo que sigue. Las secciones 1-9 quedan como **registro historico** de como se llego
+> aqui: sus `[DECIDIR]` y `[SUPUESTO]` estan resueltos por la seccion 0. **Se declara:** el modelo se entreno antes de
+> congelar (2026-09/10). Lo que se congela antes de tocar test es la **evaluacion**, y el checkpoint se eligio sobre
+> validacion.
+
+## 0. Diseno congelado para la corrida final
+
+**Sintetizador** (`a15_cadena_completa.py`):
+- Checkpoint `mejor_37k` (`$DATA/a7/run02/mejor.pt`), elegido por cotejo de 1 mm (2026-10-09).
+- Representacion `pub+asinh`; lectura `regla_suave` con `delta = 0.05`; 2.5D de 3 cortes; parche de 256.
+- DDIM de 50 pasos, **5 semillas (0-4)** por paciente.
+- Tornillo: cilindro de 4.91 mm con cabeza, como en `a11`/`a15` (D3), en la pose del eje del corredor de E9-TS
+  (`default6mm`, sin perturbar).
+- **Todos los cortes axiales que toca `G` (`--incluir-banda`, #160).**
+- Contexto intacto fuera de `G`. Todo en GPU, un mismo tipo de GPU en toda la corrida (#151).
+
+**Brazo fisico** (`a19_peters_completo.py`):
+- Protocolo de la sonda (fantoma `(HU+1000)/1000` con realce del repositorio AAPM; `M` binaria identica a la del
+  difusor).
+- Cortes alternos (`k = 2`) entre los que toca `G`.
+- **Material primario: `Ti`** (cotejo frente a lo real, 2026-10-09 (5)). **`Fe`, sensibilidad.**
+- Replicas A y B.
+
+**E-A2, endpoint primario** (`a20_evaluador_ea2.py`):
+- `streak amplitude` con la definicion de 2026-10-05 (3) y (4): anillos completos en planos perpendiculares a `u`,
+  de una guarda de un voxel en plano a 12 mm, recorte de 8 mm por extremo, rebanadas del espesor de la guarda,
+  minimo 20 voxeles por ROI, mediana sobre ROIs.
+- Cada brazo se mide en sus cortes producidos: el difusor en todos los que toca `G`; Peters en los alternos. Es el
+  mismo dominio con que se midio `Delta`.
+- **Valor por paciente:**
+  - difusor: mediana de las 5 semillas;
+  - fisico: mediana (= media) de las replicas A y B.
+- Se reporta siempre la fraccion de la ROI en el suelo de -1000 HU.
+
+**Contrastes sobre los 14 pacientes de test sin metal:**
+
+| | Contraste | Prueba | Criterio |
+|---|---|---|---|
+| **Primario** | difusor frente a Peters **Ti** | **TOST pareado**: IC90 de la diferencia media pareada con *t* de Student, n = 14 | equivalencia solo si el IC90 cae entero en **[-188.7, +188.7] HU** (`Delta`, 2026-10-09 (4)) |
+| Sensibilidad | difusor frente a Peters Fe | el mismo TOST | descriptivo |
+| Cordura | difusor frente a copia y pegado (HU constante) | Wilcoxon de rangos con signo, una cola, alfa 0.05 | piso, **no** evidencia de calidad |
+
+- **Declaracion de potencia (preaceptada, 2026-10-05 (6)):** con n = 14 el resultado honesto puede ser "no se pudo
+  concluir equivalencia", y asi se reporta.
+- **Esperable a la vista de validacion (#161):** el difusor quedo unos 1240 HU bajo Ti en `0101` y unos 50 HU en
+  `0102`.
+
+**Realismo (opcion 3, descriptivo, sin prueba de hipotesis):**
+- Estadisticos sin referencia (perfil radial de 1 mm e histograma dentro de `M`) de lo sintetizado en E-A2, frente a
+  los **tornillos aislados reales de los pacientes de test**: `0009`, `0024`, `0048`, `0049` y `0066`, este ultimo
+  como barra de ilion a ilion (#155 (2), decidido por la autora el 2026-10-09).
+- Resumen: fraccion de cascaras dentro de la envolvente real, por paciente. No depende del material del brazo
+  fisico.
+
+**Limitaciones declaradas, no corregidas:**
+- p95 del difusor bajo lo real (#157).
+- El brazo fisico exagera el artefacto respecto de lo real, aun con Ti (#159, `a21`).
+- Fantoma de Peters tomado del repositorio y no del articulo (#158).
+- `Delta` fijado por la variabilidad del difusor; 2 pacientes de validacion (2026-10-09 (4)).
+- Material real de CLINIC desconocido.
+
+**Lo que NO entra en la corrida final:** variantes de rosca, arandela o canulacion (D3, sensibilidad no programada);
+poses perturbadas del muestreador; mejora de la subexposicion (pendiente del equipo; si se hace, sera una version
+posterior declarada).
+
+**Orden de la corrida final** (exige `--corrida-final` en los scripts; ninguno toca test sin esa bandera):
+1. `a15` sobre los 14 de test.
+2. `a19` sobre los 14.
+3. Copia y pegado.
+4. `a20` y los contrastes.
 
 ## 1. Que resuelve y que no
 

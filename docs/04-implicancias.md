@@ -11433,3 +11433,34 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   - **Se declara:** si `s > r`, el margen lo fija la variabilidad del propio difusor, y un `Delta` mayor facilita
     concluir equivalencia.
 - **Registrado en `01-decisiones.md` 2026-10-09 (4)** (#160 y formula de `Delta`).
+
+### 161 — `Delta` = 188.7 HU, fijado por el difusor; EN VALIDACION EL DIFUSOR QUEDA MUY LEJOS DEL BRAZO FISICO CON Fe (diferencia de 980 a 4570 HU), lo que anticipa que el TOST primario NO concluira equivalencia — ABIERTA (toca D4, el resultado esperado del Objetivo 3, #157, #159)
+
+- **Origen:** `a20_evaluador_ea2.py` sobre `a19` (Peters) y `a15_delta` (difusor `mejor_37k`, 5 semillas,
+  `--incluir-banda`), validacion `0101` y `0102`, 2026-10-09. Detalle en
+  `experiments/objetivo3/a20_resultados.md`.
+- **Hallazgo:**
+  - `s` = 188.7 HU (rango entre semillas del difusor). `r` = 23.2 HU (test-retest de Peters con Fe).
+    **`Delta` = 188.7 HU**, fijado por el difusor, como se habia advertido.
+  - **Lectura descriptiva en validacion, no es el contraste primario:** la amplitud del difusor (mediana entre
+    semillas) es 815 HU en `0101` y 1229 HU en `0102`. La de Peters con Fe es 5380 y 2205 HU.
+    - La diferencia es de unos 4570 y 980 HU: entre 5 y 24 veces `Delta`.
+    - Con Ti la diferencia es menor, unos 1240 y 50 HU; en `0102` cae dentro de `Delta`.
+  - La fraccion de la ROI en el suelo de -1000 HU es 0.000 en todas las semillas: no hay censura (#141 no muerde).
+- **Por que importa:**
+  - Si en test se repite el patron, el TOST contra Peters con Fe **no** concluira equivalencia: el difusor
+    produce un artefacto varias veces mas debil que el fisico.
+  - Es coherente con #157 (el p95 del difusor queda bajo lo real) y con #159 (el metal Fe del brazo fisico es
+    unas 2.6 veces mas brillante que el real). La verdad probablemente esta entre los dos brazos.
+  - El resultado honesto previsto en D4 ("no se pudo concluir equivalencia") esta preaceptado
+    (01-decisiones 2026-10-05 (6), declaracion de potencia).
+- **Riesgo a evitar:** con esta informacion sería tentador pasar el contraste primario a Ti, que se acerca mas.
+  Seria un cambio posterior a ver la comparacion. El material primario quedo fijado el 2026-10-09 (3) (Fe) antes
+  de ver esto; Ti solo es sensibilidad.
+- **Opciones (no decididas, regla 14):**
+  - (1) mantener el diseno tal cual (Fe primario, Ti sensibilidad) y correr test; reportar lo que salga;
+  - (2) antes de la corrida final, trabajar la subexposicion del difusor (pendiente del equipo, #157), sabiendo
+    que mejorarla con esta informacion a la vista es un cambio del metodo, no del analisis, y debe declararse;
+  - (3) reportar ademas la comparacion difusor frente a CLINIC-metal real (contraste de realismo) como la
+    evidencia que no depende del material del brazo fisico.
+- **Pendiente de la autora:** decidir antes de congelar `diseno_A.md`.

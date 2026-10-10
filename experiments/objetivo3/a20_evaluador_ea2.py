@@ -203,7 +203,12 @@ def main() -> None:
         import nibabel as nib
         vol, M, esp3d, u_af, guarda = geometria_af(args.caso, parts)
         lab = rois(M, esp3d, u_af, guarda)
-        validos = M.reshape(M.shape[0], -1).any(1)          # a15 genera solo los cortes con `M` (#160)
+        ruta_g = args.dir / ('a15_%s_G.nii.gz' % args.caso)
+        if ruta_g.exists():                                   # con --incluir-banda, a15 genera todos los cortes con `G`
+            Gv = np.moveaxis(nib.load(str(ruta_g)).get_fdata(dtype=np.float32), 2, 0) > 0.5
+            validos = Gv.reshape(Gv.shape[0], -1).any(1)
+        else:
+            validos = M.reshape(M.shape[0], -1).any(1)      # corridas sin --incluir-banda: solo cortes con `M` (#160)
         if args.interseccion:
             ks = np.load(args.interseccion)['ks']
             v2 = np.zeros_like(validos)

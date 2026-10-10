@@ -2305,3 +2305,37 @@ son de la autora ("Usa --incluir-banda y Delta = max(s, r)").
    concluir equivalencia en el TOST.
 4. **Alcance:** 2 pacientes de validacion. El diseno hablaba de "los 5 pacientes de validacion", pero solo `0101`
    y `0102` tienen receptor limpio con corredor viable (`0019` no cabe: corredor de 1.6 mm).
+
+## 2026-10-09 (5) — Regla para elegir el material del brazo fisico: el que mas se parezca a los tornillos REALES (#161)
+
+Escrito por el asistente por orden explicita de la autora ("Si, escribe la regla y corre el cotejo de Peters").
+**Se escribe y se sube ANTES de correr el cotejo.**
+
+**Contexto que se declara.** El material primario (Fe, 2026-10-09 (3)) se habia elegido por una analogia de
+tamano (Peters, Tabla 2). Despues se vio en validacion que el difusor queda mucho mas cerca del brazo con Ti
+que del brazo con Fe (#161). Cambiar el material **porque favorece al difusor** convertiria el TOST en una
+eleccion de referencia. Por eso el criterio que sigue **no usa el difusor en ningun paso**: compara el brazo
+fisico con los tornillos reales. El cambio es posterior a ver la comparacion en validacion, y asi se declarara
+en la tesis.
+
+1. **Pregunta:** que material, Fe o Ti, hace que el brazo fisico de Peters reproduzca mejor los tornillos reales
+   de CLINIC-metal.
+2. **Datos:**
+   - simulaciones `a19` de `0101` y `0102`, las dos replicas A y B, en los cortes simulados que contienen `M`;
+   - referencia real: los 2 tornillos aislados de `metal_0039` (2026-10-08 (2)).
+3. **Estadisticos:** los del cotejo de checkpoint (`src/common/cotejo.py`, 2026-10-07 (2)), con cascaras de **1 mm**
+   (2026-10-09):
+   - perfil radial 2D por corte: elevacion de la mediana y del p95 sobre el anillo de 12-15 mm, de 0 a 12 mm;
+   - histograma dentro de `M`: p50, p75 y p95 de los voxeles > 2500 HU.
+4. **Agregacion:** corte -> replica -> paciente -> material, por medianas. Es la misma estructura que el cotejo de
+   checkpoint, con las replicas A y B en el lugar de las semillas.
+5. **Regla:** igual a la del checkpoint.
+   - Gana el material con mas cascaras dentro de la envolvente real (minimo a maximo de los 2 tornillos), sumando
+     las curvas p50 y p95.
+   - Desempate: menor |p50 - mediana real| + |p95 - mediana real| dentro de `M`.
+   - Empate persistente: lo decide la autora.
+6. **Consecuencia fijada ahora:** el material ganador pasa a ser el **primario** del TOST; el otro queda como
+   sensibilidad. Se reportan los dos.
+7. **Se declara:** con 1 paciente de referencia el cotejo descarta, no prueba. El material real de los tornillos
+   de CLINIC es desconocido (el dataset no lo registra). La literatura ficheada muestra los dos materiales en uso
+   clinico: Ti en Acumed y DoubleMedical; acero en Berk 2023; los dos en Synthes.

@@ -11476,3 +11476,6 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **2026-10-09: #155 (2) decidida por la autora:** el realismo del Objetivo 3 se compara solo con los tornillos
   aislados reales de test (`0009`, `0024`, `0048`, `0049`, `0066`). Registrado en `01-decisiones.md` 2026-10-09 (6).
   - Pendiente de aplicar en `capitulo3.tex`, donde hoy hay un `\GAPDEC` sobre la referencia de realismo.
+- **2026-10-09 (7), aclaracion:** la referencia de realismo pasa de lista a regla (columna `autora` de
+  `tornillos_conteo.csv`, al menos un tornillo aislado de cualquier tipo, `incierto` fuera). La lista del agente
+  queda sustituida. Faltan 8 pacientes de test por revisar.

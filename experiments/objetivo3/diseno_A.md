@@ -62,8 +62,18 @@
 
 **Realismo (opcion 3, descriptivo, sin prueba de hipotesis):**
 - Estadisticos sin referencia (perfil radial de 1 mm e histograma dentro de `M`) de lo sintetizado en E-A2, frente a
-  los **tornillos aislados reales de los pacientes de test**: `0009`, `0024`, `0048`, `0049` y `0066`, este ultimo
-  como barra de ilion a ilion (#155 (2), decidido por la autora el 2026-10-09).
+  los **tornillos aislados reales de los pacientes de test** (#155 (2), decidido por la autora el 2026-10-09).
+- **Quien entra se define por una REGLA, no por una lista** (aclaracion del 2026-10-09, `01-decisiones.md`
+  2026-10-09 (7)). La regla se escribio antes de que la autora terminara su revision de test y antes de cualquier
+  resultado de sintesis en test:
+  - **Entra** cada paciente de test con al menos un tornillo intraoseo aislado (IS, TS u otro), segun la **columna
+    `autora`** de `experiments/exploration-3d/tornillos_conteo.csv`: `2_n_IS`, `3_n_TS` o `4_n_otros_aislados`
+    con un entero >= 1.
+  - **Queda fuera, y se declara**, el paciente con `incierto` en esas preguntas y ningun entero >= 1. No se adivina.
+  - **Componentes de referencia:** los tornillos aislados de esos pacientes. Placas y fijadores quedan excluidos de
+    las cascaras, como el otro tornillo de `0039` en `a17`.
+  - Se reporta ademas el desglose por tipo (IS/TS frente a otros), solo descriptivo.
+  - La lista anterior (`0009`, `0024`, `0048`, `0049`, `0066`) era la propuesta del agente; queda sustituida.
 - Resumen: fraccion de cascaras dentro de la envolvente real, por paciente. No depende del material del brazo
   fisico.
 

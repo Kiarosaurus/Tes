@@ -1,7 +1,7 @@
 #!/bin/bash
 # CORRIDA FINAL E-A2, difusor: los 13 pacientes de test sin metal (casos_ea2_test.txt), diseno CONGELADO
 # (diseno_A.md seccion 0; 01-decisiones 2026-10-09 (6) y (8)). mejor_37k, 5 semillas, --incluir-banda, NIfTI.
-# Un mismo tipo de GPU para los 13 (#151): no mezclar; si hay que relanzar un paciente, misma --gres.
+# GPU: shard:rtxa6000:4 en particion all, la MISMA en que se midio `s` de Delta (a15_delta). No mezclar (#151).
 #
 # USO (desde ~/metalsynth, tras `git pull`):
 #   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a15_final.sbatch 70 4    # ~13 x 5 min en A100
@@ -9,10 +9,10 @@
 #   Relanzar solo algunos:  sbatch ... experiments/objetivo3/a15_final.sbatch dataset6_CLINIC_0012_data ...
 # Salida: $DATA/a15_final/
 #SBATCH --job-name=a15fin
-#SBATCH --partition=gpu
+#SBATCH --partition=all
 #SBATCH --account=tesis
 #SBATCH --qos=a-tesis
-#SBATCH --gres=gpu:a100_3g.20gb:1
+#SBATCH --gres=shard:rtxa6000:4
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=06:00:00

@@ -1,15 +1,15 @@
 #!/bin/bash
 # CORRIDA FINAL E-A1: reconstruccion del implante real en los 19 de test con metal (diseno_A.md seccion 0).
-# Componentes >= 500 mm3, hasta 24 cortes por componente, mejor_37k, 5 semillas. Mismo tipo de GPU que a15_final.
+# Componentes >= 500 mm3, hasta 24 cortes por componente, mejor_37k, 5 semillas. GPU: shard:rtxa6000:4, como a15_final.
 #
 # USO (desde ~/metalsynth, tras `git pull`):
 #   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a23_final.sbatch 120 4
 # Salida: $DATA/a23_final/ (a23_parches.csv, a23_pacientes.csv y el cache de parches de test)
 #SBATCH --job-name=a23fin
-#SBATCH --partition=gpu
+#SBATCH --partition=all
 #SBATCH --account=tesis
 #SBATCH --qos=a-tesis
-#SBATCH --gres=gpu:a100_3g.20gb:1
+#SBATCH --gres=shard:rtxa6000:4
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=08:00:00

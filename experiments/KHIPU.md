@@ -925,3 +925,8 @@ sbatch a2_entrenar.sbatch 200 --base 64 --lote 8     # mas lote
     `scontrol update JobId=<id> TimeLimit=00:50:00`; el usuario puede bajarlo, no subirlo, y el job arranco.
     El cotejo `a15_cotejo.sbatch` tarda ~15-25 min en la `3g`: a `khipu_elegir_gpu.sh` pasarle **11** minutos
     en A100, no 25.
+11. **Arreglos y tope de jobs (2026-10-09):** `a19_final` como arreglo de 13 tareas fue rechazado con
+    `QOSMaxSubmitJobPerUserLimit`: **cada tarea de un arreglo cuenta como un job enviado**. Ademas la QoS a-tesis
+    limita la SUMA de lo que corre a la vez (`cpu=32`, `mem=98G`). Regla practica: un job por brazo, que recorra
+    los pacientes en serie, y repartir CPU y RAM entre los jobs que van a coexistir (2 GPU x 4 CPU/32G + 1 CPU x
+    24 CPU/30G = 32 CPU/94G).

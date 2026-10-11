@@ -11827,3 +11827,24 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Ademas (planificacion, no tesis):** el ritmo fue 0.672 s/paso de media (0.62 en el tramo final) en
   `shard:rtxa6000:4`, frente a 0.49 en rtxa6000 entera (run03). 60 000 pasos tardaron ~11 h, no ~8.
 - **Pendiente de la autora:** nada antes del cotejo. Al redactar: declarar el paso del minimo y el patron de la curva.
+
+
+### 169 — COTEJO DE run04 (a17, 2026-10-11): gana `run04_mejor` por DOS cascaras (12 frente a 10 de 24), pero dentro de `M` el final de 60k se parece mucho mas a lo real (810 frente a 160 HU de distancia): perfil e histograma apuntan a checkpoints distintos — ABIERTA (toca la eleccion de checkpoint 2026-10-11 (2), #168, #157 (sesgo del p95), el HU del metal sintetico en E-A2 y E-A1)
+
+- **Origen:** job 55820 + `a17_cotejo.py --paso-mm 1` en local, 2026-10-11. Detalle:
+  `experiments/objetivo3/a17_cotejo_resultado_run04.md`.
+- **Resultado de la regla (preinscrita):** `run04_mejor` 12 cascaras dentro (9 p50 + 3 p95), `run04_60k` 10
+  (9 + 1), de 24 comparables. Sin empate: el desempate por histograma no entra. **Por la regla gana `run04_mejor`.**
+- **Lo que la regla no mira:** dentro de `M`, `run04_mejor` da p50/p95 = 3297/4641 HU y `run04_60k` 3500/5157,
+  frente a la mediana real 3465/5283. Distancia (|dp50| + |dp95|): **810 HU** frente a **160 HU**. El checkpoint
+  temprano genera metal ~640 HU mas oscuro en el p95.
+- **p95 del perfil bajo lo real (#157):** sigue con los dos (8 y 10 de 12 cascaras bajo la envolvente). Con
+  `mejor_37k` eran 10 de 12: run04 no lo arregla.
+- **Margen:** 2 cascaras con 1 paciente y 2 tornillos. En el cotejo de run02 a 1 mm el margen fue 11 frente a 5,
+  y a 0.5 mm el ganador cambiaba (#157).
+- **Opciones para la autora:**
+  (a) aplicar la regla tal cual: `run04_mejor`, y declarar el metal mas oscuro dentro de `M` como limitacion;
+  (b) `run04_mejor` y ademas reportar E-A2 con `run04_60k` como sensibilidad (cuesta 1 corrida mas de `a15_final`);
+  (c) cambiar la regla para incluir el histograma: **no recomendado**, ya se vio el resultado y seria eleccion
+  post hoc.
+  Recomendacion de Claude: (a), con la cifra de 810/160 HU declarada; (b) si el plazo lo permite.

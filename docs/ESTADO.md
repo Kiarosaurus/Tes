@@ -2,11 +2,32 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## 2026-10-11 — Fuga 0003/0072 (#166): entrenamientos archivados y run04 preparado
+## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu
 
-- **Hecho:** `metal_0003` (train) = `metal_0072` (test), confirmado por la autora; regla (a): `0003` sale (`exclusiones`, `revision` P167, `grupos`, `p1_particion`, `tornillos_conteo` = 56). Todo lo del difusor viejo archivado en `experiments/obsoletos/objetivo3/outputs/` (inventario en su README). 2da pasada de `tornillos_conteo` sin mas duplicados; #165 actualizada, **#167 ABIERTA** (19 de 39 casos de train tienen algun segmento no ortopedico, en general fuera del cuerpo; cuantos parches: no medido; HU inestable en 20 pacientes).
-- **Siguiente:** la autora cancela run03 (55663) y relanza `a7_run04.sbatch` (`a5_manifiesto_train_run04.csv`, 14 182 parches, 39 casos: sin repetidos y sin los 3 componentes no ortopedicos de #109/#167) con la GPU que elija `khipu_elegir_gpu.sh` (55676 quedo en cola por Resources). Antes de mirar resultados: decidir candidatos de checkpoint, `Delta` y HU de copia y pegado (#166, ultima viñeta). Luego `a15`/`a16`/`a17`, `a20`, `a24`, `a23`.
-- **Pendiente:** pegar en `01-decisiones.md` el texto de #166; `1_tornillo` vacio en `0040`/`0056`; sensibilidad P1 sin `0072`; #162-#167 abiertas; cifras del Objetivo 3 en la redaccion quedan desfasadas.
+**Lo que cambio hoy (todo commiteado y con push; ultimo commit `22c6247`):**
+- **#166:** `metal_0003` (train) = `metal_0072` (test), mismo paciente antes/despues de cirugia (autora). Regla (a): primaria `0072` (queda en test); `0003` fuera (`exclusiones.csv`, `revision.csv` P106->P167, `grupos.csv` -> reproducibilidad, `p1_particion.csv` sin su fila, `tornillos_conteo` `cuenta = no`). Grupo 1 = 59. 2da pasada de la autora en `tornillos_conteo`: **no hay mas duplicados**; 56 pacientes.
+- **Modelo viejo superado:** run01/run02 (`mejor_37k`) y todo lo generado o medido con ellos (`a2`, `a6`, `a7`, `a7_prueba`, `a8*`, `a13`, `a15*`, `a16`, `a17*`, `a20`, `a23_final`, `a24`) **archivado, no borrado**, en `experiments/obsoletos/objetivo3/outputs/` (inventario en `experiments/obsoletos/README.md`). Siguen en su sitio (no usan el difusor): `a1*`, `a3`, `a5`, `a9`, `a11`, `a12`, `a18*`, `a19*` (Peters, incl. `a19_final`), `a21`, `a22`. Las cifras de #164 son ahora "version con fuga": no citarlas como resultado.
+- **run04 preparado:** `experiments/objetivo3/a7_run04.sbatch` + `a5_manifiesto_train_run04.csv` (**14 182 parches, 39 casos**): run02 sin los 7 secundarios de #163, sin `0003` (#166) y sin los 3 componentes no ortopedicos ya conocidos de #109 (`0045` c0/c1 pulsera, `0062` c2 DIU; decision de la autora, #167). Mismos hiperparametros que run02 (60 000 pasos). Ritmo esperado ~8 h (run03 iba a 0.49 s/paso).
+- **#165** (TS 0 de 56; IS en 25 pacientes, 38 tornillos) y **#167 ABIERTA** (19 de 39 casos de train con algun segmento no ortopedico, por caso, no por componente; HU inestable a lo largo del tornillo en 20 pacientes, liga con #46/#111).
+- **`scripts/khipu_elegir_gpu.sh`:** lee el tope de la QoS/particion (nota `TOPE`/`EXCEDE`), marca `GB?` y avisa con el comando `nvidia-smi` para tipos de GPU sin memoria conocida; tesla = T4 15 GB. No probado aun en Khipu.
+
+**Khipu — al abrir la proxima sesion, pedir a la autora:**
+1. `squeue -u $USER; sacct -u $USER -S 2026-10-11 --format=JobID,JobName,Partition,AllocTRES%60,State,Elapsed`. run03 (55663) y el primer run04 (55676, manifiesto viejo) debian cancelarse. Si run04 no esta enviado: `bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a7_run04.sbatch 300 20` y revisar la tabla con ella (QoS `a-tesis`: tope 24 h por job, 3 jobs). La ultima tabla favorecia `-p all --time=14:00:00 --gres=shard:rtxa6000:4` (arranque inmediato).
+2. Al terminar: `grep "MEJOR VALIDACION\|^fin" a7run04_<J>.log` y traer `$DATA/a7/run04/{curva.csv,mejor.pt,ckpt.pt}` + el log a `experiments/objetivo3/outputs/a7/run04/`. `ckpt.pt` final = checkpoint de 60 000 pasos.
+
+**Decisiones de la autora ANTES de mirar resultados de run04 (#166, ultima vineta; recomendacion de Claude entre parentesis):**
+1. Candidatos de checkpoint para el cotejo (`mejor.pt` y el final de 60k; misma regla de 2026-10-05 (6)/2026-10-09, cascaras de 1 mm, 5 semillas, receptores `0101`/`0102`, referencia `0039`).
+2. `Delta = max(s, r)`: recalcular `s` con el checkpoint elegido (en validacion, antes de test); `r` de Peters no cambia.
+3. HU de copia y pegado (`a22`): recalcular con el train nuevo (perdio 8 volumenes).
+
+**Cadena a rehacer despues (en este orden):** `a15 --pasos-cotejo-mm 1` con los candidatos + `a17` -> checkpoint -> `a16`/`a20 delta` (Delta) -> `a22` -> `a15_final` (E-A2 test, 13 pacientes dataset6) -> `a20` -> `a24` -> `a23` (E-A1, 13 pacientes de test con metal, `0072` incluido y ya sin fuga). Los `.sbatch`/`.py` de `a15`, `a16`, `a20`, `a23`, `a24`, `a10`, `a13` traen `run02`/`mejor_37k` como valor por omision: **parametrizar a `run04` antes de lanzar**. Peters (`a19_final`) no se repite. Ademas: sensibilidad de la compuerta P1 sin `0072` (como `objetivo1/p1_sin_0053.md`; el `afinado` se entreno con `0003`).
+
+**Redaccion (no tocar sin pedido; reglas 4 y 14):**
+- `overleaf/secciones/capitulo3.tex` cita `Delta` = 188.7 HU (lineas ~320, 322, 345): cambiara con el modelo nuevo. `docs/00-tesis.md` :136-138 nombra `mejor_37k` como checkpoint elegido. El resultado del Objetivo 3 (#164) no debe redactarse hasta tener run04.
+- El cap. 3 debe declarar: reentrenamiento por fuga (#166), los 2 cambios del conjunto respecto de run02 (repetidos + 3 componentes), #167 como limitacion del entrenamiento, y #165 (TS ausente en el dataset).
+- Siguen pendientes de la ronda del 10-10: 16 `\GAPDEC` del cap. 3 (`redaccion/rondas/capitulo3-r13-respuesta.md`), pasada `documento` (introduccion :48/:56, capitulo1 :122 desfasados).
+
+**Pendiente de la autora:** pegar en `docs/01-decisiones.md` el texto de #166 (aprobado por ella, AUN NO pegado: "2026-10-11 — `metal_0003` y `metal_0072` son el mismo paciente (antes y despues de la cirugia). Se aplica la regla del 2026-09-10 sin excepcion: primaria `metal_0072` (spacing 0.820 frente a 0.854 mm), que queda en test; `metal_0003` sale de train y de las cohortes. Se reentrena todo lo que uso `metal_0003`. Implicancia #166."); y quiza una linea para la exclusion de los 3 componentes (#167). Decidir #162, #163 (a/b), #164, #165 (a/b), #167. `1_tornillo` vacio en `0040`/`0056` (`tornillos_conteo.csv`). T03: `00-tesis.md`, `EXPERIMENTOS.md`, `02-datos.md` desfasados (conteos 168 -> menos pacientes tras #163/#166). **No correr `grupo_paciente.py`** (renumera IDs); los `Grupo paciente` de #163 siguen sin unificar.
 
 ## 2026-10-10 — /ciclo-redaccion capitulo3 (diseno congelado) TERMINADO por tope (r09-r13)
 

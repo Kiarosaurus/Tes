@@ -18,7 +18,7 @@
 # La cuenta y la QoS salen del .sbatch (#SBATCH --account / --qos); este script no las cambia.
 #
 # AVISO: las velocidades relativas son APROXIMADAS (fraccion de A100 para las MIG; RTX A6000 ~0.6; la
-# tesla no esta medida y se toma 0.3; un tipo desconocido tambien 0.3). Los shards comparten la GPU con
+# tesla (T4, 15 GB) no esta medida y se toma 0.3; un tipo desconocido tambien 0.3). Los shards comparten la GPU con
 # otros jobs: su velocidad real depende de quien mas este corriendo, y se penalizan (x0.5). Un shard
 # no reserva memoria de GPU: la columna GB es la de la GPU entera, no la garantizada. La hora de inicio
 # de `--test-only` es una estimacion de Slurm basada en los limites de tiempo de los demas: puede
@@ -52,7 +52,7 @@ datos_tipo() {
         a100_3g.20gb)  echo "20 0.43" ;;
         a100_2g.10gb)  echo "10 0.28" ;;
         a100_1g.5gb)   echo "5 0.14" ;;
-        tesla)         echo "0 0.30" ;;
+        tesla)         echo "15 0.30" ;;   # Tesla T4, 15360 MiB (nvidia-smi en g001, 2026-10-11); velocidad NO medida
         *)             echo "0 0.30" ;;
     esac
 }
@@ -139,6 +139,19 @@ echo "$filas" | grep -v '^$' | sort -t'|' -k1,1n | while IFS='|' read -r _ p g g
     printf '%-12s %-22s %4s %7s %-12s %-12s %-11s %s\n' "$p" "$g" "$gb" "$d" "$i" "$f" "$t" "$n"
 done
 [ -n "$rechazos" ] && { echo; printf '%s' "$rechazos"; }
+
+# Tipos de GPU sin memoria conocida en datos_tipo(): comando para medirla y pasarselo a Claude.
+CUENTA=$(grep -m1 -oP '^#SBATCH\s+(--account|-A)[= ]\K\S+' "$SB")
+desconocidos=$(echo "$opciones" | awk -F'|' '$3 == 0 {split($2, g, ":"); if (!(g[2] in v)) {v[g[2]] = 1; print $1 "|" g[1] "|" g[2]}}')
+if [ -n "$desconocidos" ]; then
+    echo
+    echo "AVISO: tipos de GPU sin memoria conocida (salen con GB?). Corre esto y pasale la salida a Claude"
+    echo "para agregarlos a datos_tipo() en scripts/khipu_elegir_gpu.sh:"
+    while IFS='|' read -r pt cl tp; do
+        if [ "$cl" = shard ]; then gr="shard:$tp:1"; else gr="gpu:$tp:1"; fi
+        echo "  srun -p $pt ${CUENTA:+-A $CUENTA }--gres=$gr -t 5 nvidia-smi --query-gpu=name,memory.total --format=csv"
+    done <<< "$desconocidos"
+fi
 
 # Se recomienda la que termina antes entre las que caben en el tope y tienen memoria conocida.
 mejor=$(echo "$filas" | grep -v '^$' | awk -F'|' '$9 == "-" || $9 == "TOPE"' | sort -t'|' -k1,1n | head -n 1)

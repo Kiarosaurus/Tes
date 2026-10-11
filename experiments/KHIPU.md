@@ -69,7 +69,8 @@ Cuenta: `--account=tesis`.
 **Actualizacion 2026-09-14 (`sinfo`, `scontrol show node`, `sacctmgr`):**
 - ag001 declara ademas una **A100 entera** (`gpu:a100:1`, `shard:a100:16`) junto a las MIG (`3g.20gb`,
   `2g.10gb`, `1g.5gb` x2); `gres/gpu=5`, `gres/shard=80`.
-- g001 `tesla` = 1 GPU, `shard:16`; modelo y memoria sin verificar (`nvidia-smi` dentro de un job).
+- g001 `tesla` = 1 GPU, `shard:16`: **Tesla T4, 15360 MiB** (`nvidia-smi` en `debug-gpu`, autora 2026-10-11).
+  Velocidad sin medir. `khipu_elegir_gpu.sh` avisa con el comando a correr cuando aparece un tipo sin memoria conocida.
 - `a-tesis` muestra `MaxTRESPU=cpu=32,gres/shard=40,mem=98G`, `MaxJobsPU=3`, `MaxWall=1-00:00:00`: **no pone
   tope a `gres/gpu`**. Pedir `--gres=gpu:rtxa6000:1` no descuenta shards; confirmar con `sbatch --test-only`
   antes del primer uso.

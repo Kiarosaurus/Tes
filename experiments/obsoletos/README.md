@@ -55,3 +55,29 @@ los que produjeron los CSV de esta carpeta. Leen de `~/metalsynth/data/extracted
 
 Las salidas pesadas de cada experimento (`*/outputs/`) **no se movieron**: no estan versionadas y los
 `.sbatch` las buscan en su sitio.
+
+### Salidas del difusor con fuga (archivadas 2026-10-11, #166)
+
+`metal_0003` (train) y `metal_0072` (test) son el mismo paciente (autora, 2026-10-11; regla (a): `0003`
+sale de train). Todo modelo entrenado con `0003` y todo lo generado o medido con el queda superado. Por orden
+de la autora se **movio** (no se borro; no versionado) de `experiments/objetivo3/outputs/` a
+`experiments/obsoletos/objetivo3/outputs/`:
+
+| Carpeta o archivo | Que es |
+|---|---|
+| `a2/` | piloto de entrenamiento de 200 pasos (job 52074) |
+| `a7/` (`run01`, `run02` con `mejor.pt` = `mejor_37k`, `a14_curvas_run01_run02.png`) | entrenamientos del difusor |
+| `a7_prueba/` | entrenamiento de prueba |
+| `a6/`, `a8/`, `a8_mejor/` | muestras generadas con esos modelos |
+| `a13/` | comparacion de checkpoints sobre validacion |
+| `a15*` (`a15`, `a15_cotejo`, `a15_cotejo_1mm`, `a15_delta`, `a15_final`, `a15_gpu`, `a15_marcas`, `a15_v2`) y sus `.log`/`_memoria.csv`, `a15fin_55454.log` | cadena completa del difusor: cotejo, `Delta`, corrida final de E-A2 (#164) |
+| `a16/`, `a16.log`, `a16_memoria.csv` | calibracion de `Delta` con el difusor |
+| `a17/`, `a17_paso1mm/`, `a17_rep05/` | cotejo de checkpoint que eligio `mejor_37k` |
+| `a20/`, `a24/` | E-A2 y contrastes (#164). E-A2 usa solo dataset6: la fuga no lo toca, pero el modelo se reemplaza |
+| `a23_final/`, `a23fin_55455.log` | E-A1 (#164), incluye `0072` |
+
+**Siguen en su sitio** porque no usan el difusor: `a1`, `a1b` (y caches), `a3`, `a5`, `a9` (mide sin modelo),
+`a11`, `a12`, `a18*` y `a19*` incluido `a19_final` (Peters), `a21`, `a22`, `peters_run*.log`.
+
+Los `.md` versionados que citan esas cifras (`objetivo3/a17_cotejo_resultado.md`, `a20_resultados.md`, #157,
+#164) quedan como registro fechado. Las copias en Khipu (`$DATA/...`) no se tocaron.

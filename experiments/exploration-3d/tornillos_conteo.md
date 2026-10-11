@@ -35,7 +35,8 @@ agente, explica por que en tu nota. El agente vio 16 cortes y proyecciones, no t
 `cuenta = no` en `0053` (misma persona que `0054`, #156), `0020` (misma persona que `0019`), `0026` (misma persona que
 `0025`), `0027` (misma persona que `0028`), `0038` y `0005` (misma persona que `0037`),
 `0052` (misma persona que `0054`) y `0041` (misma persona que `0007`); estos siete por #163, 2026-10-10.
-Se listan, pero no suman. Quedan 57 pacientes.
+`0003` (misma persona que `0072`, antes y despues de la cirugia; #166, 2026-10-11).
+Se listan, pero no suman. Quedan 56 pacientes. (La tabla del agente de abajo se calculo con 57.)
 
 ## Preguntas
 
@@ -56,6 +57,14 @@ Se listan, pero no suman. Quedan 57 pacientes.
 
 "Aislado" significa que el tornillo no esta unido a una placa ni a una barra. Las categorias describen
 morfologia, no un diagnostico.
+
+**Etiquetas de la clase (e)** (2026-10-11, propuestas por Claude, usadas por la autora en la 2da pasada).
+Van al inicio de la nota de `5_clases`, separadas por ` | ` si hay varias:
+
+- `e-noorto`: objeto claramente no ortopedico (cremallera, coils, cateter, ...).
+- `e-dudoso`: objeto unido al hueso del que no se sabe si es ortopedico.
+- `e-borde`: algo cortado en el borde del FOV que no se puede identificar. Si se reconoce, va su letra y
+  `borde FOV` en la nota.
 
 ## Como llenar (autora o evaluador externo)
 

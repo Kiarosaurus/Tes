@@ -11672,3 +11672,124 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   los 7 secundarios (los 7 estaban dentro: 1 983 de 17 149 parches, 11.6 %; quedan 15 166 en 40 casos; resto de
   filas identico) y `a7_run03.sbatch` (mismos hiperparametros que run02: semilla, lote 16, lr 1e-4, 60 000 pasos,
   `mejor.pt` por validacion). La seleccion de checkpoint usa solo validacion. Sin lanzar.
+
+### 165 — EN CLINIC-metal EL TORNILLO TRANSILIACO-TRANSSACRO NO APARECE (0 de 57 pacientes, columna autora) Y EL ILIOSACRO ES COMUN (24 pacientes, 36 tornillos): la tesis sintetiza un tipo que el propio dataset no contiene — ABIERTA (toca la motivacion, #130 punto 4, la referencia de realismo #155 (2), el supuesto de entrenamiento de #154)
+
+- **Origen:** pregunta de la autora, 2026-10-11, al terminar `tornillos_conteo.csv`. Conteo de Claude sobre
+  `cuenta = si` (57 pacientes), columna `autora`:
+  - `2_n_IS` > 0 en 24 pacientes, 36 tornillos. 5 de test (`0009`, `0024`, `0048`, `0049`, `0066`).
+  - `3_n_TS` = 0 en todos (autora, 2026-10-11): `0040` (train) tampoco es TS, son dos tornillos que simulan uno,
+    igual que `0066`. (`0063` decia `si`; corregido a 0.) **El CSV de `0040` aun dice `3_n_TS` = 1: pendiente.** `0066` (test): nota de la
+    autora, "dos tornillos en paralelo que juntos simulan un solo tornillo transiliaco-transsacro".
+  - Conteo de una observadora no clinica, sin evaluador externo.
+- **Que NO cambia:** la eleccion del TS (#130, 01-decisiones punto 27) se justifico por medibilidad (corredor
+  oseo de ilion a ilion y distribucion de grados publicada), no por prevalencia. El Objetivo 2 (72 volumenes,
+  3 600 poses) y E-A2 (difusor frente a Peters con la MISMA geometria TS) no dependen de que existan TS reales.
+- **Que SI toca:**
+  1. **Motivacion:** el valor como aumentacion es para un implante que en este dataset no aparece. Hay que
+     decirlo asi; no afirmar nada sobre prevalencia clinica general sin fuente (regla 1).
+  2. **Realismo (#155 (2)):** la referencia real son tornillos aislados de test que son IS, no TS. Comparacion
+     de apariencia local entre tipos distintos (longitud, extremo en el cuerpo de S1 frente a cortical
+     contralateral).
+  3. **Entrenamiento:** el difusor aprendio de material real sin ningun TS; sintetizar un TS de ilion a
+     ilion es extrapolacion en longitud y en recorrido. Refuerza el supuesto no verificado de #154.
+  4. **Observacion descriptiva (autora, 2 casos):** `0040` y `0066` llevan pares de tornillos que juntos recorren
+     el corredor transversal de ilion a ilion. Puede citarse como observado en este dataset, sin generalizar.
+- **Opciones (no decididas, regla 14):**
+  (a) **mantener TS y declararlo** (recomendacion de Claude): motivacion y amenaza a la validez en cap. 3/4;
+      rehacer el implante ahora rompe el diseno congelado y repite Objetivo 2 y la corrida final.
+  (b) (a) + **variante IS como trabajo futuro declarado**: geometricamente un IS sigue el mismo eje S1 y termina
+      en el cuerpo del sacro, es decir, es un tramo del TS; el muestreador podria truncar el tornillo sin
+      rehacer el corredor. #130 punto 4 descarto *reemplazar* el modelo, no agregar una variante posterior.
+  (c) cambiar a IS ahora: no recomendado (repite Objetivo 2, `a15`, `a19`, `a20`, `a24`).
+- **Corregido (2026-10-11):** `0063` con `2_n_IS` = `3_n_TS` = 0 (autora).
+
+### 166 — `metal_0003` (TRAIN) Y `metal_0072` (TEST) PODRIAN SER EL MISMO PACIENTE: si se confirma, es fuga entre train y test, la primera desde #156 — ABIERTA, IDENTIDAD CONFIRMADA POR LA AUTORA 2026-10-11 (toca E-A1 de #164, la compuerta P1, run03, `tornillos_conteo`, `Grupo paciente`)
+
+- **Origen:** la autora, 2026-10-11, en la segunda pasada de `tornillos_conteo.csv`: "0003 y 0072 parecen ser
+  el mismo paciente". Todavia no esta confirmado.
+- **Lo que vio Claude (MIP coronal y sagital, lamina temporal fuera del repo). Es compatible, no prueba identidad:**
+  - **`0072`:** fractura del ala iliaca, sin placa. Tiene un objeto fino, ramificado y curvo junto al sacro
+    del mismo lado.
+  - **`0003`:** placa con tornillos sobre esa misma ala y una hilera de grapas en la piel. Junto al sacro
+    tambien aparecen elementos finos similares.
+  - **Lectura posible:** un estudio antes y otro despues de la osteosintesis. Que es el objeto fino lo decide
+    la autora.
+  - **Distintas adquisiciones:** spacing 0.854 frente a 0.820 mm, HU minimo -4964 frente a -2048 y origen z
+    distinto. No es el mismo escaneo, asi que el hash por corte (#45) no podia detectarlo.
+- **Estado actual de cada volumen:**
+
+  | Volumen | `Grupo paciente` | Particion | Grupo | Uso |
+  |---|---|---|---|---|
+  | `0003` | P106 | train | grupo 1 | en `a5_manifiesto_train.csv` (run02/`mejor_37k`) y en `a5_manifiesto_train_sin163.csv` (run03, en curso) |
+  | `0072` | P167 | test | grupo 2 | en E-A1 (`a23_final`, n = 13) y en la evaluacion de test de la compuerta P1 (`p1_control.csv`) |
+- **Si se confirma:**
+  1. **E-A2 no cambia:** sus 13 pacientes son de dataset6, sin `0072`.
+  2. **E-A1 (#164):** `0072` se evaluo con un difusor que vio la anatomia de ese paciente en `0003`. La fuga
+     solo puede favorecer al difusor. Sensibilidad: E-A1 con 12 pacientes y grupo 2 con 3.
+  3. **Compuerta P1:** el decodificador `afinado` se entreno con train, igual que en `0053`. Corresponde una
+     sensibilidad como `p1_sin_0053.md`. Con 0053 la diferencia maxima fue de 2.25 HU y el NO-GO no podia
+     cambiar, porque la fuga solo favorece al afinado.
+  4. **Que volumen queda, regla del 2026-09-10:** la regla elige como primaria la adquisicion de menor
+     spacing en plano, y esa es **`0072` (0.820 mm), el de test**. Aplicarla literalmente saca a `0003` de
+     train y obliga a reentrenar. La regla tambien manda dejar al paciente de un solo lado del split, y para
+     `0053`/`0054` se retiro el de test. En ese caso la primaria por spacing coincidia con train; aqui no.
+     **Decide la autora**:
+     - (a) aplicar la regla tal cual: `0003` sale y run03 queda desfasado;
+     - (b) retirar el volumen de test, `0072`, para no tocar el entrenamiento, y declararlo como desviacion de
+       la regla. La regla dice "nunca se elige por como se ve el metal", y esta opcion no elige por eso.
+  5. **`tornillos_conteo`:** uno de los dos pasa a `cuenta = no` y quedan 56 pacientes. Si cuenta `0072`
+     (opcion a), hay un paciente menos con tornillo (`0003`: si; `0072`: no).
+  6. **`Grupo paciente`:** unificar P106/P167 a mano, en filas. **No correr `grupo_paciente.py`**, porque
+     renumera los IDs.
+- **No aplicado nada:** no se toco `revision.csv`, `exclusiones.csv`, `grupos.csv`, la particion ni run03.
+- **Confirmado y decidido (autora, 2026-10-11):** "Se trata del mismo paciente antes y despues de la cirugia,
+  aplicare la regla a". Primaria = `0072` (test); `0003` sale de train. La autora relanzara el entrenamiento de
+  todo lo afectado (difusor; run03 queda desfasado porque incluye `0003`). **Aplicacion en espera:** la autora
+  esta revisando todos los casos otra vez por si hay otro par igual; se aplica todo junto al terminar.
+- **Archivado (autora, 2026-10-11):** entrenamientos `a2/`, `a7/` (run01, run02 = `mejor_37k`), `a7_prueba/` y todo
+  lo generado o medido con ellos (`a6`, `a8`, `a8_mejor`, `a13`, `a15*`, `a16`, `a17*`, `a20`, `a23_final`, `a24`)
+  movidos a (corregido el mismo dia: `a9` y `a19_final` no usan el difusor y volvieron a su sitio)
+  `experiments/obsoletos/objetivo3/outputs/` (inventario en `experiments/obsoletos/README.md`). Nada borrado.
+  Las cifras de #164 quedan como registro de la version con fuga; E-A2 hay que repetirlo con el modelo nuevo.
+- **Aplicado (2026-10-11, tras la 2da pasada de la autora, sin mas duplicados):** `exclusiones.csv` (fila nueva,
+  `0003` secundario de `0072`), `revision.csv` (`0003`: `Grupo paciente` P106 -> P167 y `Procedencia paciente`),
+  `grupos.csv` regenerado (solo cambia la fila de `0003`: grupo 1 -> reproducibilidad; grupo 1 = 59),
+  `p1_particion.csv` (fila de `0003` retirada, como `0053`), `tornillos_conteo.csv` (`0003`: `cuenta = no`,
+  particion `excluido`; quedan 56). Manifiesto `a5_manifiesto_train_sin166.csv` (14 320 parches, 39 casos) y
+  `a7_run04.sbatch`. Pendiente: sensibilidad P1 sin `0072`.
+- **Lo que el modelo nuevo obliga a rehacer, y las decisiones que eso abre (no decididas, regla 14):**
+  1. **Checkpoint:** `mejor_37k` se eligio por cotejo (2026-10-05 (6), 2026-10-09) entre `run01_140k` y
+     `mejor_37k`. Para run04 hay que fijar los candidatos ANTES de mirar. Propuesta de Claude: `mejor.pt`
+     (minimo de validacion) y el final de 60 000 pasos (`ckpt.pt`), con la misma regla y cascaras de 1 mm.
+  2. **`Delta`:** la formula `max(s, r)` (2026-10-09 (4)) se conserva, pero `s` se midio con `mejor_37k`.
+     Propuesta: recalcular `s` con el checkpoint elegido, sobre `0101`/`0102`, antes de tocar test. `r`
+     (Peters) no cambia.
+  3. **HU de copia y pegado (`a22`):** es la mediana del metal real de ENTRENAMIENTO, y el entrenamiento
+     perdio 8 volumenes (#163, #166). Propuesta: recalcularla con el conjunto nuevo.
+  4. **Se rehacen con el checkpoint elegido:** `a15` (corrida final de E-A2), `a20`, `a24`, `a23` (E-A1).
+     Peters (`a19_final`) y el material del brazo fisico (`a21`) no cambian.
+
+### 167 — SEGUNDA PASADA DE `tornillos_conteo` (autora, 2026-10-11): en 19 de los 39 casos de entrenamiento hay ademas objetos NO ortopedicos, y en 20 pacientes el tornillo no mantiene HU estable de punta a punta — ABIERTA (toca el criterio de entrenamiento #104/#109 (R2 es por caso, no por componente), la fragmentacion por umbral #46/#111, #95)
+
+- **Origen:** la autora termino la 2da pasada el 2026-10-11 con las etiquetas `e-noorto` / `e-borde` / `e-dudoso`
+  en `nota_autora` de `5_clases` (convencion propuesta por Claude ese dia). No encontro mas duplicados.
+- **Objetos no ortopedicos en train:** del manifiesto de run04 (`a5_manifiesto_train_sin166.csv`, 39 casos,
+  14 320 parches), **19 casos llevan `e-noorto`** y aportan **7 187 parches** (50 %). Eso NO significa que esos
+  parches esten centrados en el objeto no ortopedico: R2 de `a5_criterio_inclusion.py` decide por **caso**
+  ("tiene material ortopedico"), y R1 solo saca lo que queda fuera del cuerpo. Un objeto no ortopedico
+  **dentro** del cuerpo (en un caso de grupo 1) puede entrar como componente de entrenamiento. Cuantos lo
+  hacen: NO MEDIDO (haria falta etiqueta por componente).
+- **HU inestable a lo largo del tornillo:** la autora anota en 20 pacientes (19 en `2_n_IS`, 1 en
+  `4_n_otros_aislados`; 4 de test: `0009`, `0024`, `0048`, `0066`, y 1 de val: `0039`) que "los tornillos no tienen de
+  inicio a fin un HU estable y su zona intermedia puede considerarse erroneamente como hueso". Es la
+  observacion visual de la fragmentacion por umbral de #46/#111 (E8 midio 9 de 57 con otra definicion; las
+  dos cifras no son comparables). Consecuencia: la mascara `M` a 2500 HU puede partir un tornillo y tratar su
+  tramo medio como contexto oseo.
+- **Que hacer (no decidido, regla 14):** run04 se lanza con el mismo criterio que run02 para que la unica
+  diferencia sea quitar los repetidos (recomendacion de Claude). Filtrar componentes no ortopedicos exige una
+  revision por componente y seria una version posterior. Ambas cosas se declaran como limitacion del
+  entrenamiento.
+- **Conteo vigente (autora, 56 pacientes `cuenta = si`):** IS > 0 en 25 pacientes, 38 tornillos (test: `0009`,
+  `0024`, `0048`, `0049`, `0066`); TS 0; otros aislados en 17 pacientes, 31 tornillos. `1_tornillo` vacio en
+  `0040` y `0056`. Actualiza las cifras de #165 (24 pacientes, 36 tornillos, 0 de 57).

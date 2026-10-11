@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-11 (2) — run04 terminado (job 55706, 60 000 pasos); cotejo de checkpoint preparado
+
+- **Hecho:** run04 llego a 60 000 pasos (0.62 s/paso en shard; val 0.0718 al final). Autora acepto las 3 propuestas de #166 (candidatos `mejor.pt` + `ckpt.pt` 60k; `s` de `Delta` recalculado; `a22` recalculado); texto para `01-decisiones.md` dado en el chat, AUN NO pegado. Nuevo `experiments/objetivo3/a15_cotejo_run04.sbatch`. Ramas viejas borradas; solo `main`.
+- **Siguiente:** traer `run04/` a local, `sbatch --test-only` y lanzar `a15_cotejo_run04.sbatch`, luego `a17 --paso-mm 1` en local.
+- **Pendientes:** los del bloque de abajo.
+
 ## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu
 
 **Lo que cambio hoy (todo commiteado y con push; ultimo commit `22c6247`):**

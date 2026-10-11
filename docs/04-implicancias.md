@@ -11853,3 +11853,10 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   propuesto en el chat, no pegado.
 - **HU de copia y pegado con run04 (`a22`, 2026-10-11):** **5371 HU** (mediana de 1 781 741 voxeles en 14 182
   parches, 39 casos; p25/p75 = 3553/7915). Antes 5373 (47 casos): cambio de 2 HU.
+- **`Delta` con run04 (2026-10-11, job 55825, `experiments/objetivo3/a20_resultados_run04.md`):** `run04_mejor`
+  `s` = 163.8 HU -> **`Delta` = 163.8 HU** (antes 188.7 con `mejor_37k`); `run04_60k` `s` = 100.3 -> `Delta` = 100.3.
+  `r` = 23.2 sin cambio. **Consecuencia para la sensibilidad (b):** los dos checkpoints se juzgan con margenes
+  distintos, y el de 60k es ~40 % mas estrecho; si la sensibilidad "falla" donde la principal "pasa", puede deberse
+  al margen y no al realismo. Al redactar hay que reportar el `Delta` de cada uno. Opcion a considerar por la
+  autora ANTES de test: juzgar tambien `run04_60k` con el `Delta` principal (163.8), como segunda lectura.
+

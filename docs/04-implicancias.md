@@ -11770,16 +11770,19 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   4. **Se rehacen con el checkpoint elegido:** `a15` (corrida final de E-A2), `a20`, `a24`, `a23` (E-A1).
      Peters (`a19_final`) y el material del brazo fisico (`a21`) no cambian.
 
-### 167 — SEGUNDA PASADA DE `tornillos_conteo` (autora, 2026-10-11): en 19 de los 39 casos de entrenamiento hay ademas objetos NO ortopedicos, y en 20 pacientes el tornillo no mantiene HU estable de punta a punta — ABIERTA (toca el criterio de entrenamiento #104/#109 (R2 es por caso, no por componente), la fragmentacion por umbral #46/#111, #95)
+### 167 — SEGUNDA PASADA DE `tornillos_conteo` (autora, 2026-10-11): 19 de los 39 casos de entrenamiento tienen ademas ALGUN objeto no ortopedico (en general fuera del cuerpo), y en 20 pacientes el tornillo no mantiene HU estable de punta a punta — ABIERTA (toca el criterio de entrenamiento #104/#109 (R2 es por caso, no por componente), la fragmentacion por umbral #46/#111, #95)
 
 - **Origen:** la autora termino la 2da pasada el 2026-10-11 con las etiquetas `e-noorto` / `e-borde` / `e-dudoso`
   en `nota_autora` de `5_clases` (convencion propuesta por Claude ese dia). No encontro mas duplicados.
-- **Objetos no ortopedicos en train:** del manifiesto de run04 (`a5_manifiesto_train_sin166.csv`, 39 casos,
-  14 320 parches), **19 casos llevan `e-noorto`** y aportan **7 187 parches** (50 %). Eso NO significa que esos
-  parches esten centrados en el objeto no ortopedico: R2 de `a5_criterio_inclusion.py` decide por **caso**
-  ("tiene material ortopedico"), y R1 solo saca lo que queda fuera del cuerpo. Un objeto no ortopedico
-  **dentro** del cuerpo (en un caso de grupo 1) puede entrar como componente de entrenamiento. Cuantos lo
-  hacen: NO MEDIDO (haria falta etiqueta por componente).
+- **Objetos no ortopedicos en train:** en el manifiesto de run04 (`a5_manifiesto_train_sin166.csv`, 39 casos,
+  14 320 parches), **19 casos llevan `e-noorto`**. Es una etiqueta por CASO: dice que el caso tiene algun
+  segmento no ortopedico, no que su metal lo sea. Segun la autora (2026-10-11) esos segmentos estan **en general
+  fuera del cuerpo**, y R1 de `a5_criterio_inclusion.py` ya saca los componentes que quedan fuera del cuerpo.
+  **Riesgo residual:** un objeto no ortopedico DENTRO del cuerpo en un caso de grupo 1 puede entrar como
+  componente de entrenamiento (R2 decide por caso). Cuantos parches son: NO MEDIDO (haria falta etiqueta por
+  componente). *Corregido el mismo dia:* una version anterior de esta entrada decia que esos casos "aportan
+  7 187 parches (50 %)"; esa cifra es el total de parches de los 19 casos, no los parches con objeto no
+  ortopedico, y no debe citarse.
 - **HU inestable a lo largo del tornillo:** la autora anota en 20 pacientes (19 en `2_n_IS`, 1 en
   `4_n_otros_aislados`; 4 de test: `0009`, `0024`, `0048`, `0066`, y 1 de val: `0039`) que "los tornillos no tienen de
   inicio a fin un HU estable y su zona intermedia puede considerarse erroneamente como hueso". Es la

@@ -20,7 +20,7 @@
 #SBATCH --gres=gpu:a100_3g.20gb:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --time=08:00:00
+#SBATCH --time=04:00:00
 #SBATCH --output=%x_%j.log
 
 set -o pipefail

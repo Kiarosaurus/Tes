@@ -2455,3 +2455,24 @@ entrenamiento.
    2026-10-09 (8) punto 5 (5373 HU) era de 47 casos con `metal_0003` y los 7 secundarios de #163; deja de valer.
 4. **Se rehacen con el checkpoint elegido:** `a15_final` (E-A2), `a20`, `a24`, `a23` (E-A1). Peters
    (`a19_final`) y el material del brazo fisico (`a21`) no cambian.
+
+## 2026-10-11 (3) — Checkpoint de run04 y lectura de la sensibilidad (#169, opciones (b) y (2))
+
+Escrito por el asistente con permiso explicito de la autora ("Realiza la redaccion sobre 01-decisiones.md"). Las
+dos elecciones son de ella en el chat: "Elijo la opcion b" y "Elijo la opcion 2". **Todo se fija antes de tocar
+test con run04.**
+
+1. **Checkpoint principal: `run04_mejor`** (`run04/mejor.pt`, paso 16 500). Gana por la regla preinscrita
+   (2026-10-11 (2)): 12 frente a 10 cascaras dentro de la envolvente real, de 24 comparables
+   (`experiments/objetivo3/a17_cotejo_resultado_run04.md`).
+2. **Sensibilidad de checkpoint en E-A2: `run04_60k`** (`run04/ckpt.pt`, 60 000 pasos). Motivo: dentro de `M` el
+   final queda mucho mas cerca de lo real (distancia de histograma 160 frente a 810 HU), y la regla no lo mira.
+   Mismo pipeline y mismos 13 pacientes. E-A1 va solo con el principal.
+3. **`Delta`** (`experiments/objetivo3/a20_resultados_run04.md`): **163.8 HU** para `run04_mejor` (sustituye a
+   188.7); 100.3 HU para `run04_60k`. `r` (Peters) = 23.2 HU, sin cambio.
+4. **Lectura de la sensibilidad:** `run04_60k` se juzga con su propio `Delta` (100.3 HU) y, como segunda lectura,
+   con el principal (163.8 HU), para separar el efecto del margen del efecto del modelo.
+5. **HU de copia y pegado:** **5371 HU** (`a22`, conjunto de run04; sustituye a 5373).
+6. **GPU fija** para `Delta`, `a15_final` y `a23_final`: `gpu:a100_3g.20gb:1` en `all` (#151).
+
+Registrado tambien como ENMIENDA 2026-10-11 (run04) en `experiments/objetivo3/diseno_A.md`.

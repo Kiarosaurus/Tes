@@ -1,7 +1,12 @@
-"""A24 - contrastes de E-A2 tal como se congelaron (diseno_A.md seccion 0; 01-decisiones 2026-10-09 (6) y (8)).
+"""A24 - contrastes de E-A2 tal como se congelaron (diseno_A.md seccion 0 + ENMIENDA 2026-10-11 (run04);
+01-decisiones 2026-10-09 (6) y (8), 2026-10-11 (3)).
 
 Entrada: el CSV de `a20_evaluador_ea2.py` de la corrida final (difusor, Peters y copia y pegado sobre los pacientes
-de `casos_ea2_test.txt`) y `Delta` de validacion (`outputs/a20/a20_delta.json`).
+de `casos_ea2_test.txt`) y el `Delta` de validacion del checkpoint (`outputs/a20_run04/a20_delta_<etiqueta>.json`).
+
+Checkpoints (#169, opcion (b)): `run04_mejor` es el principal; `run04_60k` es sensibilidad y se lee DOS veces
+(opcion (2)): con su propio `Delta` (100.3 HU) y con el principal (163.8 HU), pasado con `--delta-json-2`. Cada
+lectura aplica los mismos 4 contrastes. Salida en `outputs/a24_run04/<etiqueta>/`.
 
 Valor por paciente: difusor = mediana de las 5 semillas; Peters = mediana de las replicas A y B (por material);
 copia y pegado = su unica corrida.
@@ -17,7 +22,9 @@ Se reporta siempre la fraccion de la ROI en el suelo de -1000 HU, y las metricas
 
 USO
 ---
-    python experiments/objetivo3/a24_contrastes.py --csv experiments/objetivo3/outputs/a20/a20_ea2_test.csv
+    python experiments/objetivo3/a24_contrastes.py --csv experiments/objetivo3/outputs/a20_run04/a20_ea2_test.csv
+    python experiments/objetivo3/a24_contrastes.py --csv experiments/objetivo3/outputs/a20_run04/a20_ea2_test.csv \\
+        --etiqueta run04_60k --delta-json-2 experiments/objetivo3/outputs/a20_run04/a20_delta_run04_mejor.json
 """
 from __future__ import annotations
 
@@ -48,11 +55,20 @@ def tost(d: np.ndarray, delta: float) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--csv', type=Path, required=True)
-    ap.add_argument('--delta-json', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_delta.json')
+    ap.add_argument('--etiqueta', default='run04_mejor')
+    ap.add_argument('--delta-json', type=Path, default=None,
+                    help='por omision, outputs/a20_run04/a20_delta_<etiqueta>.json')
+    ap.add_argument('--delta-json-2', type=Path, default=None,
+                    help='segunda lectura con otro Delta (#169, opcion (2)); para run04_60k, el de run04_mejor')
     ap.add_argument('--casos', type=Path, default=_AQUI / 'casos_ea2_test.txt')
-    ap.add_argument('--etiqueta', default='mejor_37k')
+    ap.add_argument('--out-dir', type=Path, default=None, help='por omision, outputs/a24_run04/<etiqueta>/')
     args = ap.parse_args()
-    delta = json.loads(args.delta_json.read_text(encoding='utf-8'))['Delta_HU']
+    if args.delta_json is None:
+        args.delta_json = _AQUI / 'outputs' / 'a20_run04' / ('a20_delta_%s.json' % args.etiqueta)
+    if args.out_dir is None:
+        args.out_dir = _AQUI / 'outputs' / 'a24_run04' / args.etiqueta
+    lecturas = [('propio', args.delta_json)] + ([('segunda', args.delta_json_2)] if args.delta_json_2 else [])
+    deltas = {n: json.loads(r.read_text(encoding='utf-8'))['Delta_HU'] for n, r in lecturas}
     casos = [c.strip() for c in args.casos.read_text(encoding='utf-8').split() if c.strip()]
     with open(args.csv, newline='', encoding='utf-8') as fh:
         filas = list(csv.DictReader(fh))
@@ -79,38 +95,48 @@ def main() -> None:
         print('AVISO: semillas o replicas incompletas en %s' % incompletos)
 
     D = np.array([t['difusor'] for t in tabla])
-    prim = tost(D - np.array([t['peters_Ti'] for t in tabla]), delta)
-    fe = tost(D - np.array([t['peters_Fe'] for t in tabla]), delta)
+    Ti = np.array([t['peters_Ti'] for t in tabla])
+    Fe = np.array([t['peters_Fe'] for t in tabla])
     sel = np.array([not t['angosto'] for t in tabla])
-    sin_ang = tost(D[sel] - np.array([t['peters_Ti'] for t in tabla])[sel], delta)
     cp = np.array([t['copiapega'] for t in tabla])
     w = stats.wilcoxon(D, cp, alternative='greater', zero_method='wilcox')
+    cordura = {'n': int(D.size), 'estadistico': float(w.statistic), 'p_una_cola': float(w.pvalue),
+               'difusor_mayor': bool(w.pvalue < 0.05)}
 
-    out = _AQUI / 'outputs' / 'a24'
+    def contrastes(delta: float) -> dict:
+        return {'Delta_HU': delta, 'primario_Ti': tost(D - Ti, delta), 'sensibilidad_Fe': tost(D - Fe, delta),
+                'sensibilidad_sin_angostos': tost(D[sel] - Ti[sel], delta)}
+
+    res = {'etiqueta': args.etiqueta, 'lecturas': {}, 'cordura_wilcoxon': cordura}
+    for nombre, ruta in lecturas:
+        res['lecturas'][nombre] = {'delta_json': str(ruta), **contrastes(deltas[nombre])}
+
+    out = args.out_dir
     out.mkdir(parents=True, exist_ok=True)
     with open(out / 'a24_por_paciente.csv', 'w', newline='', encoding='utf-8') as fh:
         wr = csv.DictWriter(fh, fieldnames=list(tabla[0].keys()))
         wr.writeheader()
         wr.writerows(tabla)
-    res = {'Delta_HU': delta, 'primario_Ti': prim, 'sensibilidad_Fe': fe, 'sensibilidad_sin_angostos': sin_ang,
-           'cordura_wilcoxon': {'n': int(D.size), 'estadistico': float(w.statistic), 'p_una_cola': float(w.pvalue),
-                                'difusor_mayor': bool(w.pvalue < 0.05)}}
     (out / 'a24_contrastes.json').write_text(json.dumps(res, indent=2), encoding='utf-8')
 
     fmt = lambda r: ('n = %d | diferencia media %+.1f HU | IC90 [%+.1f, %+.1f] | p TOST %.4f | %s'  # noqa: E731
                      % (r['n'], r['media_HU'], r['ic90_lo'], r['ic90_hi'], r['p_tost'],
                         'EQUIVALENTE' if r['equivalente'] else 'no se concluye equivalencia'))
-    L = ['# A24 — contrastes de E-A2 (corrida final, diseno congelado)', '',
-         '`Delta` = %.1f HU (validacion, 01-decisiones 2026-10-09 (4)).' % delta, '',
-         '- **PRIMARIO, difusor frente a Peters Ti:** ' + fmt(prim),
-         '- Sensibilidad, frente a Peters Fe: ' + fmt(fe),
-         '- Sensibilidad, sin corredores angostos: ' + fmt(sin_ang),
-         '- Cordura, difusor > copia y pegado (Wilcoxon, una cola): n = %d | p = %.4g | %s'
-         % (D.size, w.pvalue, 'supera el piso' if w.pvalue < 0.05 else 'NO supera el piso'),
-         '', 'Fraccion de la ROI en el suelo de -1000 HU (difusor, mediana por paciente): max %.3f.'
-         % np.nanmax([t['suelo_frac'] for t in tabla]),
-         '', 'Por paciente: `a24_por_paciente.csv`. Con n = %d, "no se concluye equivalencia" puede ser falta de '
-         'potencia (declaracion preaceptada, 2026-10-05 (6)).' % D.size]
+    L = ['# A24 — contrastes de E-A2 (corrida final, diseno congelado + enmienda 2026-10-11)', '',
+         'Checkpoint: `%s`.' % args.etiqueta]
+    for nombre, ruta in lecturas:
+        r = res['lecturas'][nombre]
+        L += ['', '## Lectura %s: `Delta` = %.1f HU (`%s`)' % (nombre, r['Delta_HU'], ruta.name), '',
+              '- **PRIMARIO, difusor frente a Peters Ti:** ' + fmt(r['primario_Ti']),
+              '- Sensibilidad, frente a Peters Fe: ' + fmt(r['sensibilidad_Fe']),
+              '- Sensibilidad, sin corredores angostos: ' + fmt(r['sensibilidad_sin_angostos'])]
+    L += ['', '## Cordura (no depende de `Delta`)', '',
+          '- Difusor > copia y pegado (Wilcoxon, una cola): n = %d | p = %.4g | %s'
+          % (D.size, w.pvalue, 'supera el piso' if w.pvalue < 0.05 else 'NO supera el piso'),
+          '', 'Fraccion de la ROI en el suelo de -1000 HU (difusor, mediana por paciente): max %.3f.'
+          % np.nanmax([t['suelo_frac'] for t in tabla]),
+          '', 'Por paciente: `a24_por_paciente.csv`. Con n = %d, "no se concluye equivalencia" puede ser falta de '
+          'potencia (declaracion preaceptada, 2026-10-05 (6)).' % D.size]
     (out / 'a24_contrastes.md').write_text('\n'.join(L) + '\n', encoding='utf-8')
     print('\n'.join(L))
 

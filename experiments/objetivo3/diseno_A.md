@@ -28,6 +28,7 @@
 > - **Checkpoint principal:** `run04_mejor` (`$DATA/a7/run04/mejor.pt`, paso 16 500), elegido por el cotejo de 1 mm
 >   (12 frente a 10 cascaras; `a17_cotejo_resultado_run04.md`). Sustituye a `mejor_37k`.
 > - **Sensibilidad de checkpoint:** `run04_60k` (`$DATA/a7/run04/ckpt.pt`), mismo pipeline, mismos 13 pacientes.
+>   Solo en E-A2: **E-A1 va con `run04_mejor`** (`a23_final_run04.sbatch`).
 > - **`Delta`:** principal **163.8 HU** (`s` de `run04_mejor`; `r` = 23.2). Sustituye a 188.7. Para `run04_60k`
 >   se reportan **dos lecturas**: con su propio `Delta` (100.3 HU) y con el principal (163.8 HU), para separar el
 >   efecto del margen del efecto del modelo (`a20_resultados_run04.md`).

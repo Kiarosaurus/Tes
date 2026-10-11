@@ -5,7 +5,8 @@ QUE HACE
 Para cada paciente con metal de la particion pedida:
 1. Extrae los parches por **componente** con la misma funcion del entrenamiento (`a1b.analizar`): componentes
    de metal > 2500 HU de al menos **500 mm3**, cada uno con su `B_delta`.
-2. Por componente, hasta `--cortes` cortes repartidos (24 por omision). Genera `G` con `mejor_37k`, 5 semillas, y
+2. Por componente, hasta `--cortes` cortes repartidos (24 por omision). Genera `G` con `run04_mejor` (por omision;
+   `mejor_37k` hasta la ENMIENDA 2026-10-11 de `diseno_A.md`), 5 semillas, y
    lee con `regla_suave` (`delta = 0.05`), como `a15`.
 3. Mide, dentro de `G` y frente al CT real:
    - **discrepancia**: MAE en HU en `G`, en `M` y en `B_delta`;
@@ -90,7 +91,7 @@ def main() -> None:
     ap.add_argument('--corrida-final', action='store_true', help='permite test (diseno_A.md CONGELADO)')
     ap.add_argument('--particion', type=Path, default=_AQUI.parent / 'objetivo1' / 'p1_particion.csv')
     ap.add_argument('--data', type=Path, nargs='+', default=[_RAIZ / 'data'])
-    ap.add_argument('--ckpt', type=Path, default=_AQUI / 'outputs' / 'a7' / 'run02' / 'mejor.pt')
+    ap.add_argument('--ckpt', type=Path, default=_AQUI / 'outputs' / 'a7' / 'run04' / 'mejor.pt')
     ap.add_argument('--cortes', type=int, default=24, help='maximo de cortes por componente, repartidos')
     ap.add_argument('--semillas', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     ap.add_argument('--pasos', type=int, default=50)

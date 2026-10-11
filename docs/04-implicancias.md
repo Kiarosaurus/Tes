@@ -11859,4 +11859,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   distintos, y el de 60k es ~40 % mas estrecho; si la sensibilidad "falla" donde la principal "pasa", puede deberse
   al margen y no al realismo. Al redactar hay que reportar el `Delta` de cada uno. Opcion a considerar por la
   autora ANTES de test: juzgar tambien `run04_60k` con el `Delta` principal (163.8), como segunda lectura.
+- **Lectura de la sensibilidad decidida (autora, 2026-10-11): opcion (2).** `run04_60k` se juzga con su propio
+  `Delta` (100.3 HU) y, como segunda lectura, con el principal (163.8 HU). Registrado en `diseno_A.md` (ENMIENDA
+  2026-10-11 (run04)), antes de tocar test.
 

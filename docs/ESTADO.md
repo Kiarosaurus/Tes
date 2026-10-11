@@ -8,7 +8,8 @@
 - **Cotejo hecho:** job 55820 (a100_3g, rc=0) + `a17 --paso-mm 1` local -> gana `run04_mejor` 12 a 10 de 24 (`experiments/objetivo3/a17_cotejo_resultado_run04.md`); pero en `M` el 60k esta mucho mas cerca de lo real -> #169 ABIERTA.
 - **#169 decidida (b):** `run04_mejor` + `run04_60k` como sensibilidad. `a22` = 5371 HU (`outputs/a22_run04/`). `a20 peters` rehecho en `outputs/a20_run04/a20_ea2.csv` (r sin cambio). Nuevo `a15_delta_run04.sbatch` (los 2 ckpt, `a100_3g` en `all`).
 - **`Delta` hecho (job 55825):** `run04_mejor` 163.8 HU, `run04_60k` 100.3 HU (`experiments/objetivo3/a20_resultados_run04.md`); adenda en #169 (margenes distintos).
-- **Siguiente:** autora decide Delta de la sensibilidad (propio o 163.8) y pega decision de #169; luego preparar `a15_final` run04 (2 ckpt, MISMA GPU `a100_3g`, #151) -> `a20` test -> `a24` -> `a23`. Falta traer `a15del04_55825.log`.
+- **Lectura (2) elegida:** `run04_60k` con su `Delta` (100.3) y con el principal (163.8). `diseno_A.md` lleva ENMIENDA 2026-10-11 (run04). Nuevo `a15_final_run04.sbatch` (CKPT=mejor|60k, GPU fija `a100_3g`).
+- **Siguiente:** lanzar los 2 jobs de `a15_final_run04`; traer; `a20 --corrida-final` -> `a24` (adaptar a 2 ckpt y 2 lecturas) -> `a23`. Pegar en `01-decisiones.md` la decision de #169 + lectura (2) (texto en el chat).
 - **Pendientes:** los del bloque de abajo (salvo pegar #166, ya hecho).
 
 ## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu

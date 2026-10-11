@@ -18,6 +18,24 @@
 > congelar (2026-09/10). Lo que se congela antes de tocar test es la **evaluacion**, y el checkpoint se eligio sobre
 > validacion.
 
+> ## ENMIENDA 2026-10-11 (run04), ANTES de tocar ningun paciente de test con el modelo nuevo
+>
+> Origen: fuga `metal_0003` = `metal_0072` (#166) -> reentrenamiento (run04, job 55706). La version anterior
+> de la corrida final (`mejor_37k`, #164) queda archivada como "version con fuga". Decisiones: `01-decisiones.md`
+> 2026-10-11 (2) y #169 (opcion (b) y lectura (2) de la autora, 2026-10-11). **Solo cambia lo que sigue; el resto
+> de la seccion 0 sigue valiendo.**
+>
+> - **Checkpoint principal:** `run04_mejor` (`$DATA/a7/run04/mejor.pt`, paso 16 500), elegido por el cotejo de 1 mm
+>   (12 frente a 10 cascaras; `a17_cotejo_resultado_run04.md`). Sustituye a `mejor_37k`.
+> - **Sensibilidad de checkpoint:** `run04_60k` (`$DATA/a7/run04/ckpt.pt`), mismo pipeline, mismos 13 pacientes.
+> - **`Delta`:** principal **163.8 HU** (`s` de `run04_mejor`; `r` = 23.2). Sustituye a 188.7. Para `run04_60k`
+>   se reportan **dos lecturas**: con su propio `Delta` (100.3 HU) y con el principal (163.8 HU), para separar el
+>   efecto del margen del efecto del modelo (`a20_resultados_run04.md`).
+> - **HU de copia y pegado:** **5371 HU** (`a22`, conjunto de run04). Sustituye a 5373.
+> - **GPU:** `gpu:a100_3g.20gb:1` en `all`, la misma de `Delta` (job 55825) y del cotejo (#151). Sustituye a
+>   `shard:rtxa6000:4`.
+> - Pacientes de E-A2, contrastes, Peters (`a19_final`) y material primario `Ti`: **sin cambios**.
+
 ## 0. Diseno congelado para la corrida final
 
 **Sintetizador** (`a15_cadena_completa.py`):

@@ -931,3 +931,8 @@ sbatch a2_entrenar.sbatch 200 --base 64 --lote 8     # mas lote
     limita la SUMA de lo que corre a la vez (`cpu=32`, `mem=98G`). Regla practica: un job por brazo, que recorra
     los pacientes en serie, y repartir CPU y RAM entre los jobs que van a coexistir (2 GPU x 4 CPU/32G + 1 CPU x
     24 CPU/30G = 32 CPU/94G).
+12. **GPU fija para `Delta` y la corrida final (2026-10-11):** `a15_delta_run04.sbatch` y el `a15_final` de run04
+    llevan la GPU escrita en el `.sbatch` (`-p all`, `gpu:a100_3g.20gb:1`, la del cotejo, job 55820). **No pasar
+    por `khipu_elegir_gpu.sh`** ni cambiar `--gres` al enviar: con la misma semilla otra GPU da otro ruido (#151) y
+    `s` dejaria de describir la corrida final. Si la espera es larga, se espera. El selector sigue valiendo para
+    jobs que no comparan semillas entre corridas (entrenamiento, cotejo, Peters).

@@ -2,11 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## 2026-10-11 (2) — run04 terminado (job 55706, 60 000 pasos); cotejo de checkpoint preparado
+## 2026-10-11 (2) — run04 terminado (job 55706); decisiones escritas; cotejo de checkpoint preparado
 
-- **Hecho:** run04 llego a 60 000 pasos (0.62 s/paso en shard; val 0.0718 al final). Autora acepto las 3 propuestas de #166 (candidatos `mejor.pt` + `ckpt.pt` 60k; `s` de `Delta` recalculado; `a22` recalculado); texto para `01-decisiones.md` dado en el chat, AUN NO pegado. Nuevo `experiments/objetivo3/a15_cotejo_run04.sbatch`. Ramas viejas borradas; solo `main`.
-- **Siguiente:** traer `run04/` a local, `sbatch --test-only` y lanzar `a15_cotejo_run04.sbatch`, luego `a17 --paso-mm 1` en local.
-- **Pendientes:** los del bloque de abajo.
+- **Hecho:** run04 a 60 000 pasos; `mejor.pt` = paso 16 500 (val 0.0540), final val 0.0718 -> #168 ABIERTA. Archivos en `experiments/objetivo3/outputs/a7/run04/`. `01-decisiones.md` 2026-10-11 y 2026-10-11 (2) escritas por Claude con permiso explicito (#166 + preinscripcion del cotejo). Nuevo `a15_cotejo_run04.sbatch`. Solo rama `main`.
+- **Siguiente:** `--test-only` en `gpu` daba inicio el 10-14: elegir GPU con `khipu_elegir_gpu.sh ... 11 4`, lanzar, traer `data/a15_cotejo_run04/` y correr `a17 --paso-mm 1` en local.
+- **Pendientes:** los del bloque de abajo (salvo pegar #166, ya hecho).
 
 ## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu
 

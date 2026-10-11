@@ -2425,3 +2425,33 @@ fija antes de correr nada en test.**
    - `a23_ea1.py` (E-A1) y `a23_final.sbatch`;
    - `a24_contrastes.py`: TOST con *t*, sensibilidades Fe y n = 10, Wilcoxon de cordura;
    - `a20` con `bone integrity` y `metal integrity` adaptadas, y la via de copia y pegado.
+
+## 2026-10-11 — `metal_0003` y `metal_0072` son el mismo paciente (#166)
+
+Escrito por el asistente con permiso explicito de la autora ("Realiza tu la redaccion en 01-decisiones.md, te doy
+permiso explicito"). Texto aprobado por ella el mismo dia.
+
+`metal_0003` y `metal_0072` son el mismo paciente (antes y despues de la cirugia). Se aplica la regla del
+2026-09-10 sin excepcion: primaria `metal_0072` (spacing 0.820 frente a 0.854 mm), que queda en test;
+`metal_0003` sale de train y de las cohortes. Se reentrena todo lo que uso `metal_0003`. Implicancia #166.
+
+Ademas (autora, 2026-10-11, antes de que run04 arrancara; #167): se quitan del manifiesto de entrenamiento los 3
+componentes no ortopedicos ya conocidos de #109 (`metal_0045` comp 0 y 1, pulsera; `metal_0062` comp 2, DIU).
+Manifiesto de run04: `a5_manifiesto_train_run04.csv`, 14 182 parches, 39 casos.
+
+## 2026-10-11 (2) — Preinscripcion del cotejo de run04, antes de mirar resultados (#166)
+
+Escrito por el asistente con el mismo permiso explicito. Las propuestas son de Claude (#166, ultima vineta) y la
+autora las acepto en el chat ("Me quedo con las decisiones [...] que hiciste"). Se fijan con run04 terminado
+(job 55706) pero **antes de generar ni medir nada con el**; lo unico visto es `curva.csv` y el log de
+entrenamiento.
+
+1. **Candidatos de checkpoint:** `run04/mejor.pt` (minimo de validacion, paso 16 500) y `run04/ckpt.pt` (final,
+   60 000 pasos). Misma regla de 2026-10-05 (6) / 2026-10-09: cascaras de 1 mm, 5 semillas, receptores
+   `0101`/`0102`, referencia `metal_0039`. Script: `experiments/objetivo3/a15_cotejo_run04.sbatch`.
+2. **`Delta = max(s, r)`** se conserva (2026-10-09 (4)). `s` se recalcula con el checkpoint elegido, en
+   validacion, antes de tocar test. `r` (Peters, `a19_final`) no cambia.
+3. **HU de copia y pegado (`a22`):** se recalcula con el conjunto de entrenamiento nuevo. El valor de
+   2026-10-09 (8) punto 5 (5373 HU) era de 47 casos con `metal_0003` y los 7 secundarios de #163; deja de valer.
+4. **Se rehacen con el checkpoint elegido:** `a15_final` (E-A2), `a20`, `a24`, `a23` (E-A1). Peters
+   (`a19_final`) y el material del brazo fisico (`a21`) no cambian.

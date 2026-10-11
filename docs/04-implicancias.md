@@ -11806,3 +11806,24 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Conteo vigente (autora, 56 pacientes `cuenta = si`):** IS > 0 en 25 pacientes, 38 tornillos (test: `0009`,
   `0024`, `0048`, `0049`, `0066`); TS 0; otros aislados en 17 pacientes, 31 tornillos. `1_tornillo` vacio en
   `0040` y `0056`. Actualiza las cifras de #165 (24 pacientes, 36 tornillos, 0 de 57).
+
+
+### 168 — run04 toca su minimo de validacion MUY pronto (paso 16 500 de 60 000) y el final queda un 33 % por encima: los dos candidatos del cotejo son modelos muy distintos — ABIERTA (toca la eleccion de checkpoint 2026-10-11 (2), la tension 30 000 / 37 500 / 140 000 pasos de `capitulo3-r08-respuesta.md`, `00-tesis.md` :136-138, el texto del cap. 3 sobre el entrenamiento)
+
+- **Origen:** log del job 55706 y `experiments/objetivo3/outputs/a7/run04/curva.csv`, 2026-10-11. Visto
+  DESPUES de fijar los candidatos (2026-10-11 (2)); no cambia la preinscripcion.
+- **Evidencia textual (log):** "MEJOR VALIDACION: 0.05403 en el paso 16500 (mejor.pt). Ultimo paso: 60000."
+- **Curva (`perdida_val`):** 0.0642 (paso 5 000), 0.0591 (10 000), **0.0540 (16 500, minimo)**, 0.0582 (20 000),
+  0.0585 (30 000), 0.0598 (40 000), 0.0633 (50 000), **0.0718 (60 000)**. La perdida de train sigue bajando
+  (0.0459 en 16 500, 0.0232 en 60 000): patron de sobreajuste a partir de ~20 000 pasos.
+- **Diferencia con run02:** el minimo de run02 estaba en ~37 000 pasos (`mejor_37k`); el de run04 llega a menos
+  de la mitad. run04 entreno con 14 182 parches en 39 casos frente a 17 149 en 47 (#163, #166, #167). Que la
+  caida de datos explique el adelanto es una hipotesis NO MEDIDA.
+- **Por que importa:** `mejor.pt` y el final no son "dos puntos cercanos" de la misma curva; el cotejo elige entre
+  un modelo temprano y uno sobreajustado en validacion. La perdida de validacion es error de ruido, no realismo del
+  metal: el cotejo puede preferir cualquiera de los dos, y eso no contradice la curva. Si gana el final, la tesis
+  debe explicar por que se elige un checkpoint con peor validacion; si gana `mejor.pt`, que se entreno 3.6 veces
+  mas de lo que hacia falta.
+- **Ademas (planificacion, no tesis):** el ritmo fue 0.672 s/paso de media (0.62 en el tramo final) en
+  `shard:rtxa6000:4`, frente a 0.49 en rtxa6000 entera (run03). 60 000 pasos tardaron ~11 h, no ~8.
+- **Pendiente de la autora:** nada antes del cotejo. Al redactar: declarar el paso del minimo y el patron de la curva.

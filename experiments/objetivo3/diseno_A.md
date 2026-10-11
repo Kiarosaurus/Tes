@@ -35,6 +35,8 @@
 > - **HU de copia y pegado:** **5371 HU** (`a22`, conjunto de run04). Sustituye a 5373.
 > - **GPU:** `gpu:a100_3g.20gb:1` en `all`, la misma de `Delta` (job 55825) y del cotejo (#151). Sustituye a
 >   `shard:rtxa6000:4`.
+>   Por ocupacion de esa porcion, la corrida final se lanzo en `shard:a100_3g.20gb` (la MISMA porcion, compartida);
+>   control sobre `0101`: salida identica bit a bit a la exclusiva (#170).
 > - Pacientes de E-A2, contrastes, Peters (`a19_final`) y material primario `Ti`: **sin cambios**.
 
 ## 0. Diseno congelado para la corrida final

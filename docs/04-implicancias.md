@@ -11877,3 +11877,9 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Riesgos declarados:** el shard no reserva memoria de GPU (20 GB compartidos; uso de `a15` NO MEDIDO): si falta,
   el job cae con error y se relanza. Ritmo mas lento que en exclusiva.
 - **Pendiente:** resultado del control; si pasa, anotar en la enmienda de `diseno_A.md` que la GPU fue el shard.
+- **Control hecho (2026-10-11): PASA.** Los 13 NIfTI de `0101` del job 55858 (shard) son **identicos bit a bit** a
+  los del job 55825 (exclusiva): `original`, `M`, `G` y las 10 sinteticas (`run04_mejor` y `run04_60k`, semillas
+  0-4), 0 voxeles distintos. El shard de la misma porcion no cambia el ruido: `Delta` vale para la corrida final.
+  Ritmo: 21.2 min por `0101` (2 checkpoints) frente a 18.7 en exclusiva. Comparacion con un script temporal (no
+  versionado) que lee los dos directorios con nibabel y compara con `np.array_equal`.
+

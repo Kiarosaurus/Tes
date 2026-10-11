@@ -26,6 +26,15 @@
 #
 # TRUCO QUE MAS AYUDA: pedir un --time realista. Slurm mete jobs cortos en los huecos (backfill). Este
 # script ya pide para cada opcion --time = 2 x la duracion estimada (minimo 30 min).
+#
+# TOPES DE TIEMPO (2026-10-11): `sbatch --test-only` NO aplica el MaxWall de la QoS (run03 quedo en espera
+# por QOSMaxWallDurationPerJobLimit con una opcion que el script daba por buena). El tope se lee de
+# `sacctmgr show qos <qos del .sbatch>` y del MaxTime de cada particion (`sinfo %l`); manda el menor.
+# Si no se puede leer, se fija a mano: TOPE_MIN=1440 bash scripts/khipu_elegir_gpu.sh ...
+# Nada se descarta; la columna NOTA dice que pasa:
+#   TOPE    el doble de la duracion no cabe, pero la duracion si: --time se recorta al tope.
+#   EXCEDE  la duracion estimada ya pasa el tope: no se recomienda (solo con --reanudar y varios jobs).
+#   GB?     memoria de GPU desconocida para ese tipo: no se recomienda (verificar con nvidia-smi).
 
 set -u
 SB=${1:?falta el .sbatch}
@@ -68,14 +77,51 @@ done | sort -u)
 
 [ -z "$opciones" ] && { echo "sinfo no devolvio GPUs."; exit 1; }
 
+# Duracion de Slurm (infinite, M, H:M:S, D-H:M:S, D-H) -> minutos; vacio si no hay tope.
+a_min() {
+    local v=${1:-}
+    case "$v" in ''|infinite|UNLIMITED|INVALID|Partition_Limit) echo ""; return ;; esac
+    local d=0 h=0 m=0 conDia=0
+    if [[ "$v" == *-* ]]; then d=${v%%-*}; v=${v#*-}; conDia=1; fi
+    IFS=':' read -ra p <<< "$v"
+    case ${#p[@]} in
+        1) if [ "$conDia" = 1 ]; then h=${p[0]}; else m=${p[0]}; fi ;;
+        2) if [ "$conDia" = 1 ]; then h=${p[0]}; m=${p[1]}; else m=${p[0]}; fi ;;
+        *) h=${p[0]}; m=${p[1]} ;;
+    esac
+    echo $(( 10#$d * 1440 + 10#$h * 60 + 10#$m ))
+}
+
+QOS=$(grep -m1 -oP '^#SBATCH\s+--qos[= ]\K\S+' "$SB")
+if [ -n "${TOPE_MIN:-}" ]; then
+    TOPE_QOS=$TOPE_MIN; origen="TOPE_MIN"
+elif [ -n "$QOS" ]; then
+    TOPE_QOS=$(a_min "$(sacctmgr -n -P show qos "$QOS" format=MaxWall 2>/dev/null | head -1)"); origen="QoS $QOS"
+else
+    TOPE_QOS=""; origen=""
+fi
+if [ -n "$TOPE_QOS" ]; then
+    echo "Tope de tiempo: $TOPE_QOS min ($origen), y el MaxTime de cada particion."
+else
+    echo "AVISO: no se pudo leer el tope de la QoS. Fijalo con TOPE_MIN=<minutos> si lo conoces."
+fi
+
 ahora=$(date +%s)
-printf '%-12s %-22s %4s %7s %-12s %-12s %s\n' PARTICION OPCION GB DUR_MIN INICIO FIN TIME_PEDIDO
+printf '%-12s %-22s %4s %7s %-12s %-12s %-11s %s\n' PARTICION OPCION GB DUR_MIN INICIO FIN TIME_PEDIDO NOTA
 filas=""
 rechazos=""
 while IFS='|' read -r part gres gb vel; do
     if [ "$gb" != 0 ] && [ "$gb" -lt "$GB_MIN" ]; then continue; fi
     dur=$(awk -v m="$MIN_A100" -v v="$vel" 'BEGIN{printf "%d", m/v + 0.999}')
     pedir=$(( dur * 2 < 30 ? 30 : dur * 2 ))
+    tope=$TOPE_QOS
+    tp=$(a_min "$(sinfo -h -p "$part" -o %l | head -1)")
+    if [ -n "$tp" ] && { [ -z "$tope" ] || [ "$tp" -lt "$tope" ]; }; then tope=$tp; fi
+    nota=""
+    if [ -n "$tope" ] && [ "$pedir" -gt "$tope" ]; then
+        if [ "$dur" -le "$tope" ]; then pedir=$tope; nota="TOPE"; else nota="EXCEDE"; fi
+    fi
+    [ "$gb" = 0 ] && nota="${nota:+$nota,}GB?"
     t=$(printf '%02d:%02d:00' $((pedir / 60)) $((pedir % 60)))
     salida=$(sbatch --test-only -p "$part" --time="$t" --gres="$gres" "$SB" "${EXTRA[@]}" 2>&1)
     inicio=$(echo "$salida" | grep -o 'start at [0-9T:-]*' | awk '{print $3}')
@@ -86,17 +132,18 @@ while IFS='|' read -r part gres gb vel; do
     ini_s=$(date -d "$inicio" +%s)
     [ "$ini_s" -lt "$ahora" ] && ini_s=$ahora
     fin_s=$(( ini_s + dur * 60 ))
-    filas+="$fin_s|$part|$gres|$gb|$dur|$(date -d @"$ini_s" '+%m-%d %H:%M')|$(date -d @"$fin_s" '+%m-%d %H:%M')|$t"$'\n'
+    filas+="$fin_s|$part|$gres|$gb|$dur|$(date -d @"$ini_s" '+%m-%d %H:%M')|$(date -d @"$fin_s" '+%m-%d %H:%M')|$t|${nota:--}"$'\n'
 done <<< "$opciones"
 
-echo "$filas" | grep -v '^$' | sort -t'|' -k1,1n | while IFS='|' read -r _ p g gb d i f t; do
-    printf '%-12s %-22s %4s %7s %-12s %-12s %s\n' "$p" "$g" "$gb" "$d" "$i" "$f" "$t"
+echo "$filas" | grep -v '^$' | sort -t'|' -k1,1n | while IFS='|' read -r _ p g gb d i f t n; do
+    printf '%-12s %-22s %4s %7s %-12s %-12s %-11s %s\n' "$p" "$g" "$gb" "$d" "$i" "$f" "$t" "$n"
 done
 [ -n "$rechazos" ] && { echo; printf '%s' "$rechazos"; }
 
-mejor=$(echo "$filas" | grep -v '^$' | sort -t'|' -k1,1n | head -n 1)
-[ -z "$mejor" ] && { echo "Ninguna opcion valida."; exit 1; }
-IFS='|' read -r _ p g _ _ _ f t <<< "$mejor"
+# Se recomienda la que termina antes entre las que caben en el tope y tienen memoria conocida.
+mejor=$(echo "$filas" | grep -v '^$' | awk -F'|' '$9 == "-" || $9 == "TOPE"' | sort -t'|' -k1,1n | head -n 1)
+[ -z "$mejor" ] && { echo "Ninguna opcion recomendable (todas EXCEDE o GB?)."; exit 1; }
+IFS='|' read -r _ p g _ _ _ f t _ <<< "$mejor"
 echo
 echo "Recomendada: -p $p $g (termina ~$f). Para enviarla:"
 echo "  J=\$(sbatch --parsable -p $p --time=$t --gres=$g $SB ${EXTRA[*]}); echo \$J"

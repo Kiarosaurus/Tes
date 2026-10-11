@@ -6,7 +6,8 @@
 
 - **Hecho:** run04 a 60 000 pasos; `mejor.pt` = paso 16 500 (val 0.0540), final val 0.0718 -> #168 ABIERTA. Archivos en `experiments/objetivo3/outputs/a7/run04/`. `01-decisiones.md` 2026-10-11 y 2026-10-11 (2) escritas por Claude con permiso explicito (#166 + preinscripcion del cotejo). Nuevo `a15_cotejo_run04.sbatch`. Solo rama `main`.
 - **Cotejo hecho:** job 55820 (a100_3g, rc=0) + `a17 --paso-mm 1` local -> gana `run04_mejor` 12 a 10 de 24 (`experiments/objetivo3/a17_cotejo_resultado_run04.md`); pero en `M` el 60k esta mucho mas cerca de lo real -> #169 ABIERTA.
-- **Siguiente:** autora decide #169 (a/b/c) y confirma checkpoint; luego `s` de `Delta` y `a22` (parametrizar los `.sbatch` a run04).
+- **#169 decidida (b):** `run04_mejor` + `run04_60k` como sensibilidad. `a22` = 5371 HU (`outputs/a22_run04/`). `a20 peters` rehecho en `outputs/a20_run04/a20_ea2.csv` (r sin cambio). Nuevo `a15_delta_run04.sbatch` (los 2 ckpt, `a100_3g` en `all`).
+- **Siguiente:** lanzar `a15_delta_run04`, traer NIfTI, `a20 difusor` x2 etiquetas + `a20 delta` x2 -> `s` y `Delta`. Luego `a15_final` con la MISMA GPU (#151). Pegar decision de #169 en `01-decisiones.md`.
 - **Pendientes:** los del bloque de abajo (salvo pegar #166, ya hecho).
 
 ## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu

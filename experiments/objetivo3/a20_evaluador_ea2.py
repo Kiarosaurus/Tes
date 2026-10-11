@@ -190,7 +190,7 @@ def main() -> None:
     d.add_argument('--interseccion', type=Path, default=None, help='npz de a19: usar solo sus cortes simulados')
     cp = sub.add_parser('copiapega', help='control de cordura: M con HU constante (a22), resto identico')
     cp.add_argument('--casos', nargs='+', required=True)
-    cp.add_argument('--hu', type=float, default=None, help='por omision, outputs/a22/a22_hu_copiapega.json')
+    cp.add_argument('--hu', type=float, default=None, help='por omision, outputs/a22_run04/a22_hu_copiapega.json (run04, 01-decisiones 2026-10-11 (2))')
     dl = sub.add_parser('delta', help='calcula Delta = max(s, r) desde el CSV (formula fijada 2026-10-09)')
     dl.add_argument('--csv', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
     dl.add_argument('--etiqueta', default='mejor_37k')
@@ -207,7 +207,7 @@ def main() -> None:
 
     if args.brazo == 'copiapega':
         hu = args.hu if args.hu is not None else json.loads(
-            (_AQUI / 'outputs' / 'a22' / 'a22_hu_copiapega.json').read_text(encoding='utf-8'))['HU_copiapega']
+            (_AQUI / 'outputs' / 'a22_run04' / 'a22_hu_copiapega.json').read_text(encoding='utf-8'))['HU_copiapega']
         for caso in args.casos:
             vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
             lab = rois(M, esp3d, u_af, guarda)

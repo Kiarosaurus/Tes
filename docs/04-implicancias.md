@@ -11829,7 +11829,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Pendiente de la autora:** nada antes del cotejo. Al redactar: declarar el paso del minimo y el patron de la curva.
 
 
-### 169 — COTEJO DE run04 (a17, 2026-10-11): gana `run04_mejor` por DOS cascaras (12 frente a 10 de 24), pero dentro de `M` el final de 60k se parece mucho mas a lo real (810 frente a 160 HU de distancia): perfil e histograma apuntan a checkpoints distintos — ABIERTA (toca la eleccion de checkpoint 2026-10-11 (2), #168, #157 (sesgo del p95), el HU del metal sintetico en E-A2 y E-A1)
+### 169 — COTEJO DE run04 (a17, 2026-10-11): gana `run04_mejor` por DOS cascaras (12 frente a 10 de 24), pero dentro de `M` el final de 60k se parece mucho mas a lo real (810 frente a 160 HU de distancia): perfil e histograma apuntan a checkpoints distintos — DECIDIDA el 2026-10-11 por la autora: opcion (b), `run04_mejor` + `run04_60k` como sensibilidad de E-A2 (toca la eleccion de checkpoint 2026-10-11 (2), #168, #157 (sesgo del p95), el HU del metal sintetico en E-A2 y E-A1)
 
 - **Origen:** job 55820 + `a17_cotejo.py --paso-mm 1` en local, 2026-10-11. Detalle:
   `experiments/objetivo3/a17_cotejo_resultado_run04.md`.
@@ -11848,3 +11848,8 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   (c) cambiar la regla para incluir el histograma: **no recomendado**, ya se vio el resultado y seria eleccion
   post hoc.
   Recomendacion de Claude: (a), con la cifra de 810/160 HU declarada; (b) si el plazo lo permite.
+- **Decidido (autora, 2026-10-11): opcion (b).** Checkpoint principal `run04_mejor`; `run04_60k` se corre en E-A2
+  como sensibilidad, con su propio `s`. `a15_delta_run04.sbatch` genera los dos. Texto para `01-decisiones.md`
+  propuesto en el chat, no pegado.
+- **HU de copia y pegado con run04 (`a22`, 2026-10-11):** **5371 HU** (mediana de 1 781 741 voxeles en 14 182
+  parches, 39 casos; p25/p75 = 3553/7915). Antes 5373 (47 casos): cambio de 2 HU.

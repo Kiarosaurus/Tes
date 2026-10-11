@@ -11668,3 +11668,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   Texto propuesto para `01-decisiones.md` (lo pega la autora): "2026-10-10: se reentrena el difusor sin los
   volumenes repetidos de #163 como version posterior declarada; la corrida final y los resultados de E-A1/E-A2
   reportados siguen siendo los de `mejor_37k`."
+- **Preparado (2026-10-10):** `experiments/objetivo3/a5_manifiesto_train_sin163.csv` = el manifiesto de run02 sin
+  los 7 secundarios (los 7 estaban dentro: 1 983 de 17 149 parches, 11.6 %; quedan 15 166 en 40 casos; resto de
+  filas identico) y `a7_run03.sbatch` (mismos hiperparametros que run02: semilla, lote 16, lr 1e-4, 60 000 pasos,
+  `mejor.pt` por validacion). La seleccion de checkpoint usa solo validacion. Sin lanzar.

@@ -5,9 +5,12 @@
 # es el mismo paciente que `metal_0072` (test); por la regla del 2026-09-10 (opcion (a) de #166) `0003` sale
 # de train. run01/run02 quedaron archivados en `experiments/obsoletos/objetivo3/outputs/a7/`.
 #
-# UNICA DIFERENCIA con run02 (job 54498): el manifiesto. `a5_manifiesto_train_sin166.csv` es
-# `a5_manifiesto_train.csv` sin los 7 secundarios de #163 (metal_0020, 0026, 0027, 0038, 0005, 0052, 0041)
-# y sin metal_0003 (#166): 17 149 -> 14 320 parches, 47 -> 39 casos. El resto de filas es identico.
+# UNICA DIFERENCIA con run02 (job 54498): el manifiesto. `a5_manifiesto_train_run04.csv` es
+# `a5_manifiesto_train.csv` sin los 7 secundarios de #163 (metal_0020, 0026, 0027, 0038, 0005, 0052, 0041),
+# sin metal_0003 (#166) -> `a5_manifiesto_train_sin166.csv` (14 320 parches, 39 casos), y sin los 3
+# componentes no ortopedicos que la autora marco en `a3_revision_componentes.csv` (metal_0045 comp 0 y 1,
+# pulsera; metal_0062 comp 2, DIU; los falsos positivos de #109; autora 2026-10-11, #167): 14 182 parches,
+# 39 casos. El resto de filas es identico.
 # Mismos hiperparametros que run02 (#148): semilla 20260920 (por omision), lote 16, base 64, lado 256,
 # lr 1e-4 constante, 60 000 pasos, validacion cada 500 sobre 16 lotes fijos (SEMILLA_VAL),
 # `mejor.pt` por minimo de validacion. Validacion = el mismo `a5_manifiesto_val.csv`. Test no se toca.
@@ -35,7 +38,7 @@ set -o pipefail
 DATA=$HOME/metalsynth/data
 REPO=$HOME/metalsynth
 SALIDA=$DATA/a7/run04
-MAN=$REPO/experiments/objetivo3/a5_manifiesto_train_sin166.csv
+MAN=$REPO/experiments/objetivo3/a5_manifiesto_train_run04.csv
 
 module load miniconda/3.0
 source "$(conda info --base)/etc/profile.d/conda.sh"
@@ -44,7 +47,7 @@ python -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is
     || { echo "ERROR: falta torch"; exit 1; }
 [ -f "$MAN" ] || { echo "ERROR: falta $MAN (git pull)"; exit 1; }
 n=$(($(wc -l < "$MAN") - 1))
-[ "$n" -eq 14320 ] || { echo "ERROR: el manifiesto tiene $n parches, se esperaban 14320"; exit 1; }
+[ "$n" -eq 14182 ] || { echo "ERROR: el manifiesto tiene $n parches, se esperaban 14182"; exit 1; }
 grep -q "^dataset7_CLINIC_metal_0003_data," "$MAN" && { echo "ERROR: metal_0003 sigue en el manifiesto"; exit 1; }
 
 echo "inicio $(date -Is)  nodo $(hostname)  gpu $CUDA_VISIBLE_DEVICES  parches $n"

@@ -5,7 +5,7 @@
 ## 2026-10-11 — Fuga 0003/0072 (#166): entrenamientos archivados y run04 preparado
 
 - **Hecho:** `metal_0003` (train) = `metal_0072` (test), confirmado por la autora; regla (a): `0003` sale (`exclusiones`, `revision` P167, `grupos`, `p1_particion`, `tornillos_conteo` = 56). Todo lo del difusor viejo archivado en `experiments/obsoletos/objetivo3/outputs/` (inventario en su README). 2da pasada de `tornillos_conteo` sin mas duplicados; #165 actualizada, **#167 ABIERTA** (19 de 39 casos de train tienen algun segmento no ortopedico, en general fuera del cuerpo; cuantos parches: no medido; HU inestable en 20 pacientes).
-- **Siguiente:** la autora cancela run03 (55663) y lanza `a7_run04.sbatch` (`a5_manifiesto_train_sin166.csv`, 14 320 parches, 39 casos). Antes de mirar resultados: decidir candidatos de checkpoint, `Delta` y HU de copia y pegado (#166, ultima viñeta). Luego `a15`/`a16`/`a17`, `a20`, `a24`, `a23`.
+- **Siguiente:** la autora cancela run03 (55663) y relanza `a7_run04.sbatch` (`a5_manifiesto_train_run04.csv`, 14 182 parches, 39 casos: sin repetidos y sin los 3 componentes no ortopedicos de #109/#167) con la GPU que elija `khipu_elegir_gpu.sh` (55676 quedo en cola por Resources). Antes de mirar resultados: decidir candidatos de checkpoint, `Delta` y HU de copia y pegado (#166, ultima viñeta). Luego `a15`/`a16`/`a17`, `a20`, `a24`, `a23`.
 - **Pendiente:** pegar en `01-decisiones.md` el texto de #166; `1_tornillo` vacio en `0040`/`0056`; sensibilidad P1 sin `0072`; #162-#167 abiertas; cifras del Objetivo 3 en la redaccion quedan desfasadas.
 
 ## 2026-10-10 — /ciclo-redaccion capitulo3 (diseno congelado) TERMINADO por tope (r09-r13)

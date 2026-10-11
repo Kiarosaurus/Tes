@@ -11783,6 +11783,16 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   componente). *Corregido el mismo dia:* una version anterior de esta entrada decia que esos casos "aportan
   7 187 parches (50 %)"; esa cifra es el total de parches de los 19 casos, no los parches con objeto no
   ortopedico, y no debe citarse.
+- **Cota con la muestra revisada por componente (`a3_revision_componentes.csv`, 2026-10-11, pedido de la autora):**
+  de los 40 componentes que la autora reviso, **20 estan en el manifiesto de run04** (1 284 parches). **3 son no
+  ortopedicos** segun su veredicto: `metal_0045` comp 0 y comp 1 (`externo`, nota "fragmento de pulsera"; 65 y 33
+  parches) y `metal_0062` comp 2 (`diu`, 40 parches): **138 parches, ~1 % del manifiesto**. Son los mismos 3
+  falsos positivos de R1+R2 que #109 ya identifico y declaro (2026-09-21), y **siguen en el manifiesto** (tambien
+  estaban en run02). La muestra es estratificada por volumen con sobremuestreo de 100-500 mm3: **3 de 20 no se
+  extrapola** a los 206 componentes del manifiesto; los otros 186 no tienen veredicto por componente.
+  **Decidido (autora, 2026-10-11, antes de que run04 arrancara):** se quitan. Manifiesto
+  `a5_manifiesto_train_run04.csv` = `..._sin166.csv` sin esos 3 componentes: **14 182 parches, 39 casos**. Es un
+  segundo cambio respecto de run02 y se declara. Los 186 componentes sin veredicto siguen sin revisar.
 - **HU inestable a lo largo del tornillo:** la autora anota en 20 pacientes (19 en `2_n_IS`, 1 en
   `4_n_otros_aislados`; 4 de test: `0009`, `0024`, `0048`, `0066`, y 1 de val: `0039`) que "los tornillos no tienen de
   inicio a fin un HU estable y su zona intermedia puede considerarse erroneamente como hueso". Es la

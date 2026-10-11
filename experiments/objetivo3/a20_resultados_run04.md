@@ -27,7 +27,7 @@ Decisiones: `01-decisiones.md` 2026-10-11 (2) punto 2; #169 opcion (b).
 | run04_60k (sensibilidad) | 100.3 | 23.2 | **100.3** | el difusor |
 | *mejor_37k (archivado, con fuga)* | *188.7* | *23.2* | *188.7* | *el difusor* |
 
-- `run04_mejor` genera rayas mas intensas que `run04_60k` (~+200 HU en `0101`, ~+180 HU en `0102`, medianas
+- `run04_mejor` genera rayas mas intensas que `run04_60k` (+228 HU en `0101`, +162 HU en `0102`, medianas
   de semillas) y varia mas entre semillas.
 - Cada checkpoint lleva su propio `Delta`: la sensibilidad de E-A2 con `run04_60k` se juzga con 100.3 HU, un
   margen mas estrecho. Ver #169.

@@ -11863,3 +11863,17 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `Delta` (100.3 HU) y, como segunda lectura, con el principal (163.8 HU). Registrado en `diseno_A.md` (ENMIENDA
   2026-10-11 (run04)), antes de tocar test.
 
+
+
+### 170 — LA UNICA `a100_3g` DEL CLUSTER ESTA EN SHARD POR OTRO USUARIO (~23 h): la corrida final de E-A2 se lanza en `shard:a100_3g.20gb:8` (misma porcion de GPU, compartida) en vez de `gpu:a100_3g.20gb:1` (exclusiva), con un control de equivalencia sobre `0101` — ABIERTA (toca #151, la validez de `Delta` para la corrida final, ENMIENDA 2026-10-11 de `diseno_A.md` punto GPU)
+
+- **Origen:** 2026-10-11, jobs 55842/55843 en `PD` (`ReqNodeNotAvail`); `sinfo`: `a100_3g.20gb` existe solo en
+  `ag001`, y el job 55539 de otro usuario ocupa un shard de ella con 23 h 23 min por delante. Esperar = ~27 h.
+- **Eleccion de la autora (2026-10-11):** opcion 2 de Claude: cancelar y relanzar en shard de la MISMA porcion.
+  Jobs: 55858 (control, `0101` en shard -> `$DATA/a15_delta_run04_shard`), 55859 (`CKPT=mejor`), 55860 (`CKPT=60k`).
+- **Supuesto que se verifica, no se asume:** que la misma porcion de GPU, compartida, genera lo mismo que en
+  exclusiva. #151 midio CPU frente a GPU, no esto. **Control:** comparar los 10 NIfTI de `0101` del job 55858 con los
+  del job 55825 (exclusiva). Si difieren mas que trivialmente, la corrida final en shard se descarta y se espera.
+- **Riesgos declarados:** el shard no reserva memoria de GPU (20 GB compartidos; uso de `a15` NO MEDIDO): si falta,
+  el job cae con error y se relanza. Ritmo mas lento que en exclusiva.
+- **Pendiente:** resultado del control; si pasa, anotar en la enmienda de `diseno_A.md` que la GPU fue el shard.

@@ -32,8 +32,10 @@ agente, explica por que en tu nota. El agente vio 16 cortes y proyecciones, no t
 `nota_autora` ya trae tu revision anterior (`tornillos_revision_autora.csv`) en 0039, 0040, 0053, 0054,
 0055 y 0066, solo como recordatorio. La columna `autora` sigue vacia.
 
-`cuenta = no` solo en `0053`: es la misma persona que `0054` (#156). Se lista, pero no suma.
-Quedan 64 pacientes.
+`cuenta = no` en `0053` (misma persona que `0054`, #156), `0020` (misma persona que `0019`), `0026` (misma persona que
+`0025`), `0027` (misma persona que `0028`), `0038` y `0005` (misma persona que `0037`),
+`0052` (misma persona que `0054`) y `0041` (misma persona que `0007`); estos siete por #163, 2026-10-10.
+Se listan, pero no suman. Quedan 57 pacientes.
 
 ## Preguntas
 
@@ -82,15 +84,15 @@ morfologia, no un diagnostico.
 | autora | no clinica | | |
 | externo | | | |
 
-## Lo que dice el agente (64 pacientes, sin validar)
+## Lo que dice el agente (57 pacientes, sin validar)
 
 | Indicador | Pacientes |
 |---|---|
-| Con algun tornillo intraoseo | 54, mas 1 incierto (`0035`) |
-| Con al menos un IS seguro | 22, mas 2 inciertos (`0009`, `0055`) |
+| Con algun tornillo intraoseo | 47, mas 1 incierto (`0035`) |
+| Con al menos un IS seguro | 21, mas 2 inciertos (`0009`, `0055`) |
 | Con TS | 1 (`0040`), mas 1 incierto (`0066`) |
-| Con IS o TS | entre 23 y 26 |
-| Tornillos IS contados en los 22 seguros | 30 |
+| Con IS o TS | entre 22 y 25 |
+| Tornillos IS contados en los 21 seguros | 29 |
 
 Tus revisiones previas ya resuelven en parte tres inciertos:
 

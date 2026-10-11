@@ -12,6 +12,8 @@ Lo que SI esta decidido y se aplica tal cual
   ortopedico (`metal_0036`, `metal_0061`, `metal_0064`).
 - **`metal_0068` SIN material ortopedico** (2026-09-10): excepcion observada a la regla
   "fila vacia en dataset7 = material ortopedico".
+- **`metal_0010`, `metal_0046`, `metal_0072`, `metal_0073` SIN material ortopedico** (autora,
+  2026-10-10, al llenar `tornillos_conteo.csv`; #164).
 - **Union `metal_0059` + `metal_0071`** (2026-09-10): el volumen derivado es la unidad del
   paciente `P158`.
 
@@ -44,6 +46,10 @@ SIN_ORTOPEDICO: dict[str, str] = {
     'dataset7_CLINIC_metal_0036_data': 'representante de duplicado cruzado (2026-09-07)',
     'dataset7_CLINIC_metal_0064_data': 'representante de duplicado cruzado (2026-09-07)',
     'dataset7_CLINIC_metal_0068_data': 'observado por la autora (2026-09-10)',
+    'dataset7_CLINIC_metal_0010_data': 'observado por la autora (2026-10-10, tornillos_conteo; #164)',
+    'dataset7_CLINIC_metal_0046_data': 'observado por la autora (2026-10-10, tornillos_conteo; #164)',
+    'dataset7_CLINIC_metal_0072_data': 'observado por la autora (2026-10-10, tornillos_conteo; #164)',
+    'dataset7_CLINIC_metal_0073_data': 'observado por la autora (2026-10-10, tornillos_conteo; #164)',
 }
 DERIVADOS: list[dict[str, str]] = [{
     'Caso': 'dataset7_CLINIC_metal_0059u0071_union',

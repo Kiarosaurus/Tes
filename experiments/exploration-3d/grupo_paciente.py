@@ -1,5 +1,9 @@
 """Llena `Grupo paciente` en `revision.csv` (implicancias #20 y #45; autorizado 2026-09-10).
 
+NO VOLVER A CORRER sin revisar (2026-10-10, #163/#164): `revision.csv` tiene ediciones a mano posteriores
+(`metal_0053` -> P153, #156). Los IDs se numeran por orden de primera aparicion, asi que unir grupos nuevos
+renumera todos los IDs siguientes (y `p1_particion.csv` los usa); ademas reescribe todo el CSV.
+
 Decision de la autora (2026-09-10): la unidad de independencia es el paciente. Mismo
 paciente = mismo `Grupo paciente` = mismo lado del split.
 

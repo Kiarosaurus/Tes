@@ -11479,3 +11479,192 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **2026-10-09 (7), aclaracion:** la referencia de realismo pasa de lista a regla (columna `autora` de
   `tornillos_conteo.csv`, al menos un tornillo aislado de cualquier tipo, `incierto` fuera). La lista del agente
   queda sustituida. Faltan 8 pacientes de test por revisar.
+
+### 162 — LA REDACCION DEL DISENO CONGELADO (cap. 3, r09-r13) ENCUENTRA TRES CONFLICTOS DE FUENTE: lote 4 frente a 16, `CLINIC_0066` sin metal frente a grupo 2, y TRES elecciones fijadas sobre los MISMOS dos receptores de validacion — ABIERTA (toca D4, `Delta`, el TOST primario, DEC 2026-10-08 A.3)
+
+- **Origen:** `/ciclo-redaccion capitulo3`, rondas r12 y r13 (2026-10-10), auditor de trazabilidad y revisor de guia.
+  Reportes: `redaccion/rondas/capitulo3-r12-trazabilidad.md` (T01, T02), `capitulo3-r12-guia.md` (guia-1),
+  `capitulo3-r13-trazabilidad.md` (T02).
+- **(1) Lote de entrenamiento:** DEC 2026-10-08 A.3 registra lote 4 como "lo que se corrio"; `a7_entrenar.sbatch`:60,
+  #134 y los metadatos de los checkpoints (#148) dan lote 16. El cap. 3 describe 16 y deja `\GAPDEC`. DEC solo lo
+  corrige la autora.
+- **(2) `CLINIC_0066` (validacion):** DEC 2026-09-21 (2) y #105 lo registran sin metal; `grupos.csv`:67 y
+  `ts_nivel_s1.csv`:64 lo ponen en grupo 2 (objeto no ortopedico en el borde del FOV, incierto). El cap. 3 usa
+  `grupos.csv` en otras lineas. No cambia los receptores de `Delta` (`0066` queda fuera por corredor de 8.9 mm < 9 mm,
+  DEC 2026-10-09 (4) pto 4, `e9ts_corredor.csv`), pero si cualquier conteo por grupo de validacion.
+- **(3) Sesgo conjunto sobre los dos receptores:** el punto de control (`mejor_37k`), el material del protocolo
+  fisico (Ti) y `Delta` se fijaron todos sobre `0101` y `0102`, y `0102` lleva una cremallera (#105). Dos sentidos
+  estan registrados y empujan hacia concluir equivalencia: Ti acerco el protocolo fisico al difusor (#161,
+  DEC 2026-10-09 (5)) y un `Delta` fijado por la variabilidad del difusor facilita la equivalencia (DEC (4) pto 3).
+  El efecto conjunto no esta declarado en ningun documento. Se suma a lo que ya advertia #105 sobre medir `Delta` en
+  validacion sin implante.
+- **Por que importa:** (1) es un error de registro en DEC; (2) es una discrepancia de datos sin fuente que mande;
+  (3) toca la lectura del contraste primario: si el TOST concluye equivalencia, un revisor puede atribuirlo a estas
+  tres elecciones.
+- **Opciones (no decididas, regla 14):**
+  - (1): corregir DEC A.3 con una nota fechada, o declararlo como desviacion.
+  - (2): decidir que fuente manda (`revision.csv`/DEC o `grupos.csv`) y alinear la otra.
+  - (3): (a) declarar en amenazas que el sesgo conjunto va hacia concluir equivalencia, con los dos sentidos
+    registrados; (b) ademas, reportar el TOST con un `Delta` alternativo no fijado por el difusor como sensibilidad
+    descriptiva (seria analisis anadido post congelamiento, y se declararia asi).
+- **Estado en el documento:** tres `\GAPDEC` en `overleaf/secciones/capitulo3.tex` (l. ~192, ~208, ~362).
+
+### 163 — `metal_0019` Y `metal_0020` SON EL MISMO PACIENTE (mismo equipo interno; `0019` tiene ademas grapas en la columna), pero `Grupo paciente` los separa (P122 y P123) — ABIERTA (toca el conteo de pacientes de `02-datos.md`, `tornillos_conteo`, la unidad de independencia de #45/#21)
+
+- **Origen:** observacion de la autora en el chat, 2026-10-10. Anotado en `nota_autora` de `1_tornillo` de ambos casos
+  en `experiments/exploration-3d/tornillos_conteo.csv`.
+- **Lo que hay hoy:** `revision.csv`, `grupos.csv` y `objetivo1/p1_particion.csv` les dan `Grupo paciente` P122 y
+  P123, con `Procedencia paciente` = "sin vinculo detectado" (no comparten SHA256 y tienen spacing distinto: 0.631 frente
+  a 0.740 mm en el plano). `grupo_paciente.py` ya tiene el mecanismo para un vinculo visual de la autora
+  (`VINCULO_AUTORA_VISUAL`, hoy solo `metal_0065`/`0066`).
+- **Lo que NO cambia:** los dos estan en `train` en `p1_particion.csv`, asi que no hay fuga entre particiones; ninguno
+  esta en `casos_ea2_test.txt` (E-A2) ni entre los receptores de validacion de `Delta`.
+- **Lo que si cambia:**
+  - `02-datos.md`: "178 volumenes = 168 pacientes" pasaria a 167 pacientes y 11 grupos con mas de un volumen.
+  - Cualquier conteo por paciente con metal (p. ej. "64 pacientes" de `tornillos_conteo.md`, cohorte de dataset7).
+  - El entrenamiento del difusor (`a5_manifiesto_train.csv`) y los corredores de Objetivo 2 (`e9ts_corredor.csv`)
+    cuentan el mismo montaje dos veces; es un peso doble de un paciente, no una fuga.
+  - Si E-A1 o el realismo cuentan pacientes con metal de train, revisar que no los cuenten como dos.
+- **Ya aplicado (2026-10-10, a pedido de la autora):** `tornillos_conteo.csv` marca `0020` con
+  `cuenta = no (misma persona que 0019, #163)`, como `0053`/#156; `tornillos_conteo.md` pasa de 64 a 63 pacientes
+  (53 con tornillo intraoseo segun el agente). `0019` queda como el que cuenta.
+- **Segundo par (2026-10-10, autora; revisado por Claude):** `metal_0025` (P127) y `metal_0026` (P128), ambos `train`,
+  "sin vinculo detectado". Mismo montaje en las proyecciones (`outputs/laminas/*/proyecciones.png`) y los 3 componentes
+  mayores casi iguales en `revision.csv`: 11856 frente a 12457 mm3 (bbox 56.7x86.3x108.0 frente a 57.9x87.9x108.8 mm),
+  6652 frente a 7163 mm3 y 559 frente a 571 mm3. Difieren en adquisicion: spacing en plano 0.846 frente a 1.072 mm,
+  350 frente a 314 cortes. `0026` tiene ademas 4 focos de 7-26 voxeles sobre 2500 HU en la periferia lateral
+  (x RAS ~-174 mm), fuera del cuerpo segun la autora; `0025` tiene un objeto extracorporeo punteado visible en la MIP
+  pero no sobre 2500 HU. Cuenta `0025` (autora, 2026-10-10: mejor resolucion, sin focos extracorporeos sobre 2500 HU,
+  ya revisado); `tornillos_conteo.csv` marca `0026` con `cuenta = no` y `tornillos_conteo.md` pasa a 62 pacientes.
+  Conteo de pacientes de `02-datos.md`: 167 -> 166 (pendiente de aplicar).
+- **Tercer par (2026-10-10, autora; revisado por Claude):** `metal_0027` (P129) y `metal_0028` (P130), ambos `train`,
+  "sin vinculo detectado". Mismo montaje en las proyecciones: placa curva anterior (pubis), placa con tornillos en una
+  hemipelvis, placa sacroiliaca contralateral y elemento transverso a la altura del sacro. Volumen total de los
+  componentes mayores parecido (15132 + 4660 frente a 11733 + 5324 + 4109 mm3, `hallazgos.json`); la particion en
+  componentes difiere con el spacing (0.999 frente a 0.740 mm en plano). `0027` tiene componentes perifericos sobre
+  2500 HU sobre la linea de la mesa (comp3 y comp5, 323 y 144 voxeles, i ~449-450) y cables punteados en la MIP;
+  en `0028` los componentes chicos estan alineados con el elemento transverso (intracorporeos). Cuenta `0028`
+  (autora, 2026-10-10: mejor resolucion, sin objetos de la mesa sobre 2500 HU); `tornillos_conteo.csv` marca `0027` con
+  `cuenta = no` y `tornillos_conteo.md` pasa a 61 pacientes (resumen del agente recalculado desde el CSV).
+  Conteo de pacientes de `02-datos.md`: 166 -> 165 (pendiente de aplicar).
+- **Cuarto par (2026-10-10, autora; revisado por Claude):** `metal_0037` (P137) y `metal_0038` (P138), ambos `train`,
+  "sin vinculo detectado". (La autora nombro primero `0038`/`0039` por error; `0039` queda fuera de esto.) Las dos
+  placas posteriores de `0038` aparecen en `0037` con la misma forma en las MIP y casi las mismas medidas
+  (`hallazgos.json`): 4562 frente a 4111 mm3 (bbox 54.0x62.6x42.4 frente a 53.2x61.5x42.4 mm) y 3883 frente a 3480 mm3
+  (46.7x71.2x17.6 frente a 49.0x69.8x17.6 mm). `0037` tiene ademas un fijador externo con pines supraacetabulares
+  bilaterales (5 componentes grandes, 179296 voxeles sobre umbral en total frente a 7029) y un cable. Spacing en plano
+  0.831 frente a 1.228 mm. Cuenta `0037` (autora, 2026-10-10: ya revisado, mejor resolucion, estado completo del
+  paciente); `tornillos_conteo.csv` marca `0038` con `cuenta = no` y `tornillos_conteo.md` pasa a 60 pacientes.
+  Conteo de pacientes de `02-datos.md`: 165 -> 164 (pendiente de aplicar).
+- **Patron (2026-10-10):** cuatro pares en dataset7 (`0019`/`0020`, `0025`/`0026`, `0027`/`0028`, `0037`/`0038`), todos con indices
+  consecutivos y spacing distinto. `grupo_paciente.py` solo vincula por SHA256, cortes compartidos o vinculo visual
+  declarado, asi que NO detecta dos reconstrucciones distintas del mismo estudio. Puede haber mas pares no detectados
+  en dataset7 (y en otros datasets). Posible barrido: comparar indices consecutivos de dataset7 por volumen y bbox de los
+  componentes mayores de `hallazgos.json`, y que la autora confirme en las MIP.
+- **Barrido de Claude (2026-10-10, a pedido de la autora):** firma por componentes metalicos >= 200 mm3 de
+  `outputs/laminas/*/hallazgos.json` (113 casos con metal: 75 de dataset7, 38 de dataset6), emparejamiento voraz por
+  volumen y bbox ordenada, todos los pares (no solo consecutivos). Script temporal en el scratchpad, no versionado.
+  Calibracion: los 7 pares de copias exactas ya conocidos salen 1.00 (puestos 1-7); de los pares de la autora,
+  `0019`/`0020`, `0025`/`0026`, `0037`/`0038` y `0053`/`0054` salen en el top 15; `0065`/`0066` (puesto 51) y
+  `0027`/`0028` (puesto 110) salen bajo, porque sus componentes se parten distinto. Por eso el metodo NO es exhaustivo.
+  - **Nuevos, confirmados por Claude en las MIP (pendiente confirmacion de la autora), todos `train`:**
+    - `0005` (P108) = `0037`/`0038`: mismas dos placas posteriores (4582 y 3901 mm3 frente a 4562 y 3883 de `0038`).
+      Tres volumenes del mismo paciente.
+    - `0052` (P151) = `0053`/`0054`: misma placa anterior curva con 2 tornillos inferiores (10544 frente a 9944 mm3,
+      bbox 175x62x90 frente a 174x64x90 mm); `0054` tiene ademas un clavo femoral. Tres volumenes.
+    - `0007` (P110) = `0041` (P141): placa de cresta, placa con tornillos hacia la sacroiliaca y tornillo de columna
+      anterior (7710/4474/2557 frente a 8018/4466/2987 mm3); `0007` tiene ademas un tornillo contralateral.
+  - **Descartados en las MIP:** `0009`-`0017`-`0022` comparten solo un fijador externo anterior estandar (resto del metal
+    distinto); `0015` frente a `0025`/`0026` (otro lado); `0032` frente a `0057` (otro lado); pares de dataset6 (objetos
+    extracorporeos chicos y genericos, ~270-300 mm3, sin valor de identidad).
+  - **Dudosos que CRUZAN particiones (Claude se inclina por distintos; pide mirada de la autora):**
+    - `0033` (train) / `0039` (val): misma configuracion de 2 tornillos aislados (iliosacro transverso + columna
+      anterior, mismo lado), pero el transverso mide ~108 frente a ~78 mm (bbox mayor).
+    - `0031` (test) / `0057` (train): placa del reborde pelvico y tornillo suelto en la cresta del mismo lado; volumen
+      principal 14061 frente a 15228 mm3, pero bbox y curvatura distintas (`0031` cortado por abajo).
+    - `0009` (test) / `0022` (train): fijador externo con distancia entre pinzas parecida (~201 frente a ~194 mm);
+      `0009` tiene ademas tornillos IS y placa anterior. Solo seria el mismo paciente si fuera cirugia por etapas.
+    - Medida osea gruesa (ancho maximo del esqueleto principal, 250-2500 HU): 279-297 mm en los seis casos; no
+      discrimina.
+  - **No cubierto:** casos sin metal (no hay firma) y vinculos entre datasets sin metal comun.
+  - **Decision de la autora (2026-10-10):** confirma los tres grupos nuevos y elige quien cuenta: `0037` (de `0005`/
+    `0037`/`0038`), `0054` (de `0052`/`0053`/`0054`) y `0007` (de `0007`/`0041`). `tornillos_conteo.csv` marca `0005`,
+    `0052` y `0041` con `cuenta = no`; `tornillos_conteo.md` queda en 57 pacientes (47 con tornillo intraoseo segun el
+    agente; IS/TS sin cambio). Descarta los tres dudosos: `0033`/`0039`, `0031`/`0057` y `0009`/`0022` NO son el mismo
+    paciente. **Ninguna fuga entre particiones encontrada:** todos los grupos confirmados estan enteros en `train`.
+  - **Total de la #163 hasta hoy:** 7 grupos nuevos (`0019`/`0020`, `0025`/`0026`, `0027`/`0028`, `0005`/`0037`/`0038`,
+    `0052`/`0053`/`0054` con `0053`/`0054` ya en #156, `0007`/`0041`). Volumenes eliminados como pacientes: `0020`, `0026`,
+    `0027`, `0038`, `0005`, `0052`, `0041` (7). Conteo de `02-datos.md`: 168 -> 161 pacientes (pendiente de aplicar;
+    verificar contra la tabla de `02-datos.md`, que ya descuenta `0053`/`0054`).
+- **Opciones (no decididas, regla 14):** (a) agregar el par a `VINCULO_AUTORA_VISUAL` en `grupo_paciente.py`,
+  regenerar `Grupo paciente` y actualizar los conteos de `02-datos.md`; (b) ademas, declarar en el cap. 3 el peso doble
+  en el entrenamiento como limitacion menor. Decision para `01-decisiones.md` (la escribe la autora).
+- **Gap abierto (2026-10-10, Claude):** el barrido compara metal; no cubre si algun paciente de **test** (los 13 de
+  E-A2 son de dataset6, con poco o ningun metal) tiene otra adquisicion en `train` (p. ej. pre/postoperatoria). Los
+  hashes solo ven copias exactas. Eso si seria fuga. Propuesta: revision manual dirigida (test contra train, por
+  anatomia), no de todo el dataset; si aparece un caso, excluirlo de test y repetir `a24` (n - 1), sin reentrenar.
+- **Recomendacion de Claude sobre reentrenar:** no. Sin fuga, los 7 grupos solo dan peso doble en train; reentrenar
+  rompe el diseno congelado (2026-10-09), obliga a reelegir checkpoint y `Delta`, y seria post hoc tras ver test.
+
+### 164 — CORRIDA FINAL DEL OBJETIVO 3 (E-A2 y E-A1, test): el TOST primario NO concluye equivalencia y el IC90 queda ENTERO por debajo de `-Delta` (no es solo falta de potencia); E-A1 queda con 13 pacientes, no 19 — ABIERTA (toca D4, el resultado del Objetivo 3, la declaracion de potencia 2026-10-05 (6), #157, #159, #156)
+
+- **Origen:** 2026-10-10, Claude corre en local `a20` (`--corrida-final`, sin `--interseccion`, segun ESTADO
+  2026-10-09) sobre las salidas de Khipu (`a19_final`, `a15_final`, `a23_final`; jobs 55453-55455, rc = 0) y luego
+  `a24_contrastes.py`. Salidas: `experiments/objetivo3/outputs/a20/a20_ea2_test.csv` (143 filas: 65 difusor,
+  65 Peters, 13 copia y pegado) y `outputs/a24/` (`a24_contrastes.md`, `.json`, `a24_por_paciente.csv`).
+- **E-A2 (n = 13, `Delta` = 188.7 HU):**
+  - PRIMARIO, difusor frente a Peters Ti: diferencia media -497.9 HU, IC90 [-787.7, -208.1], p TOST 0.959. No
+    equivalente.
+  - Sensibilidad Fe: -4319.9 HU, IC90 [-4970.7, -3669.1]. No equivalente.
+  - Sensibilidad n = 10 (sin 0016, 0047, 0022): -413.8 HU, IC90 [-763.5, -64.0]. No equivalente.
+  - Cordura: difusor > copia y pegado, Wilcoxon una cola p = 0.00012 (copia y pegado = 0.0 HU en los 13). Supera el piso.
+  - Suelo de -1000 HU: maximo 0.015 (0100).
+  - Por paciente, el difusor queda bajo Peters Ti en 10 de 13 (sobre en 0012, 0018, 0021).
+- **Por que importa la lectura:** la declaracion preaceptada dice que "no equivalente" con n chico puede ser falta
+  de potencia. Aqui el IC90 primario queda **entero fuera** de [-188.7, +188.7] y por debajo: los datos indican que
+  el difusor genera **menos** amplitud de streaking que Peters Ti, no solo que falta n. Consistente con la
+  subexposicion del difusor (#157) y con que el brazo fisico exagera respecto de lo real (#159, `a21`). Redactarlo
+  como "falta de potencia" seria inexacto.
+- **E-A1:** `a23_pacientes.csv` tiene 13 pacientes, no los 19 del diseno: 6 de dataset6 (0001, 0036, 0041, 0052,
+  0072, 0089) no tienen ningun componente >= 500 mm3 y no generan parches. Quedan grupo 1 (ortopedico) n = 11 y
+  grupo 2 (objetos) n = 2 (`metal_0036`, `metal_0068`), frente a 11 + 8 previstos. Medianas: grupo 1 MAE_G 206 HU,
+  hueso SDC 0.756, metal SDC 0.948; grupo 2 MAE_G 306 HU, hueso SDC 0.606.
+- **Conflicto de fuente:** `grupos.csv` pone `metal_0010` y `metal_0072` en grupo 1 ("material ortopedico",
+  `autora-regla`), pero en `tornillos_conteo.csv` la autora les marca solo (e) y `1_tornillo = no` (agente: "masas
+  densas parasinfisarias; metal incierto" y "trayecto fino curvo, no tornillo"). Si no son ortopedicos, E-A1 seria
+  9 + 4.
+- **Opciones (no decididas, regla 14):** (a) reportar E-A2 como no equivalencia con diferencia en una direccion
+  (difusor por debajo), sin invocar falta de potencia como explicacion principal; (b) declarar en E-A1 el n efectivo
+  13 y el motivo (umbral de 500 mm3 fijado antes de correr); (c) la autora resuelve si `0010`/`0072` son grupo 1 o
+  grupo 2 (solo cambia el reparto descriptivo; no hay que volver a correr). Decision para `01-decisiones.md`.
+- **Decision de la autora (2026-10-10):** `metal_0010`, `metal_0072`, `metal_0046` y `metal_0073` NO son ortopedicos.
+  Aplicado por Claude: los cuatro van a `SIN_ORTOPEDICO` en `exploration-3d/grupos.py` y sus filas de `grupos.csv`
+  pasan a grupo 2 (Elegible Obj2 = si). Solo se sustituyeron esas 4 filas: la regeneracion completa cambiaria
+  ademas la fila de `metal_0053` (P152 frente a P153 y el motivo), una deriva previa no tocada. `revision.csv` no
+  se toco; para 0010/0072 dice "material ortopedico" y el motivo de `grupos.csv` lo deja dicho. Recuento: grupo 1
+  64 -> 60, grupo 2 37 -> 41.
+  - **E-A1 recalculado (sin volver a correr; mediana [min, max]):** grupo 1, n = 9: MAE_G 220 [114, 401], hueso
+    SDC 0.76, metal SDC 0.951. Grupo 2, n = 4 (0010, 0036, 0068, 0072): MAE_G 158 [95.3, 399], hueso SDC 0.631,
+    metal SDC 0.919. `a23_pacientes.csv` conserva la columna `grupo` original (11 + 2): al reportar, usar 9 + 4.
+  - **Entrenamiento no afectado:** `a5_manifiesto_train.csv` tiene 47 casos, todos grupo 1, y ninguno de los cuatro
+    (0046 y 0073 estan en train pero no entraron al manifiesto). La frase de `diseno_A.md` ("el entrenamiento solo
+    uso casos con material ortopedico") se sostiene.
+  - **Objetivo 2 no afectado:** usa el grupo guardado en `e9ts_corredor.csv`; `verificar_coherencia.py` pasa 104/104.
+    Pero la cohorte de 72 se armo con estos cuatro en grupo 1: ahora serian elegibles y no estan. Declararlo si se
+    menciona la elegibilidad; no reabrir la cohorte congelada sin decision de la autora.
+  - Pendiente: `02-datos.md` y cap. 3 si citan 64/37 o 11 + 8 / 11 + 2.
+- **Aplicado (2026-10-10, pedido de la autora) en las fuentes:** `revision.csv`: `metal_0010`/`metal_0072` con
+  `Tipo` = "objeto no ortopedico (sin describir)" y nota; `metal_0053` con `Grupo paciente` P152 -> P153 y su
+  procedencia (#156). `exclusiones.csv`: motivo de `metal_0053` sin "0053 tiene ademas un implante femoral" (el
+  clavo femoral es de `0054`) y estado con la confirmacion del 2026-10-08. `grupos.py` regenera ahora `grupos.csv`
+  completo sin deriva (la fila de 0053 sale igual a la del commit c995eee).
+- **Advertencia para #163 opcion (a):** `grupo_paciente.py` numera los IDs por orden de aparicion: unir grupos con
+  `VINCULO_AUTORA_VISUAL` y regenerar RENUMERA todos los `P###` siguientes, que `p1_particion.csv` usa, y reescribe
+  `revision.csv` entero. Alternativa segura: asignar a mano al secundario el ID del representante, como en 0053.
+  El script lleva ahora esa advertencia en su docstring.
+- **Reentrenamiento (autora, 2026-10-10):** se reentrenara SIN los volumenes repetidos, en paralelo, mientras se
+  avanza con `mejor_37k`. Para la tesis: la corrida final congelada sigue siendo la de `mejor_37k`; el modelo
+  reentrenado es una version posterior declarada (como #157) y su seleccion de checkpoint no puede usar test.
+  Texto propuesto para `01-decisiones.md` (lo pega la autora): "2026-10-10: se reentrena el difusor sin los
+  volumenes repetidos de #163 como version posterior declarada; la corrida final y los resultados de E-A1/E-A2
+  reportados siguen siendo los de `mejor_37k`."

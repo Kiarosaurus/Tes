@@ -2,12 +2,24 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-10 — /ciclo-redaccion capitulo3 (diseno congelado) TERMINADO por tope (r09-r13)
+
+- **Hecho:** encargo `redaccion/ENCARGO_2026-10-10.md` (D1-D9, solo diseno) aplicado y revisado en r10-r13. Lint PASA, 130 pp, PDF por etapa en `redaccion/.build/etapas/`. Estado en MAPA: **con decisiones pendientes**. Registrada **#162 ABIERTA** (lote 4/16, `0066`, sesgo conjunto sobre los 2 receptores).
+- **Siguiente:** la autora resuelve los 16 `\GAPDEC` del cap. 3 (lista en `capitulo3-r13-respuesta.md`) y revisa los 8 pacientes de test; luego otra ronda corta de cap. 3 y una pasada `documento` (introduccion :48/:56 y capitulo1 :122 desfasados).
+- **2026-10-10 (tarde):** pares de mismo paciente no detectados (**#163 ABIERTA**): 7 grupos confirmados por la autora (0019/0020, 0025/0026, 0027/0028, 0005/0037/0038, 0052/0053/0054, 0007/0041), todos en train (sin fuga); 3 dudosos train/val/test descartados por ella. `tornillos_conteo` = 57 pacientes. Pendiente: regenerar `Grupo paciente` (`grupo_paciente.py`) y `02-datos.md` (168 -> ~161). Corrida final: transferencia `scp` en curso.
+- **2026-10-10 (noche): corrida final evaluada (#164 ABIERTA).** `a20` test + `a24`: TOST primario difusor vs Peters Ti -497.9 HU, IC90 [-787.7, -208.1] (entero bajo `-Delta`), no equivalente; Fe y n = 10 tampoco; cordura p = 0.00012. E-A1 con 13 pacientes (11 + 2), no 19. Salidas en `objetivo3/outputs/a20/a20_ea2_test.csv` y `outputs/a24/`. #163: gap test-contra-train sin metal; recomendacion no reentrenar.
+- **Grupos (10-10 noche):** 0010, 0046, 0072, 0073 -> grupo 2 (autora); `revision.csv`/`exclusiones.csv` corregidos (0053 = P153); grupo 1 = 60, grupo 2 = 41; E-A1 = 9 + 4. **No correr `grupo_paciente.py`** (renumera IDs). Reentrenar sin repetidos: version posterior, en paralelo (falta preparar manifiesto).
+- **Pendiente:** T03 (`00-tesis.md`, `EXPERIMENTOS.md`, `02-datos.md` desfasados); autora decide #162, #163, #164; `tornillos_conteo.csv`: 0040 y 0056 `1_tornillo` vacios, 0048 `a;E`.
+
 ## 2026-10-09 (CIERRE) — TRASPASO. Corrida final del Objetivo 3 corriendo en Khipu
 
 - **Corriendo (lanzados el 2026-10-09 ~23:00):**
   - `a19fin` **55453**: Peters, 13 pacientes de test, big-mem, ~5-6 h.
   - `a15fin` **55454**: difusor E-A2, shard rtxa6000, ~4 h.
   - `a23fin` **55455**: E-A1, 19 pacientes con metal, shard rtxa6000, ~7 h.
+  - **Ritmo medido (10-10 00:32):** `a15fin` ~15 min/paciente -> fin ~02:30; `a23fin` ~2.5 h -> fin ~01:30;
+    `a19fin` 0.4-0.6 h/paciente -> fin ~05:00-06:30. Todos bajo su tope. Respaldo opcional `~/a15_resto.sh`
+    (job `a15fin2`, `afterany:55454`, corre solo los casos sin `a15_<caso>_resumen.csv`).
   - Revisar con `sacct -u $USER -S 2026-10-09` y los logs `a19fin_55453.log`, `a15fin_55454.log`,
     `a23fin_55455.log`.
 - **Al terminar:**

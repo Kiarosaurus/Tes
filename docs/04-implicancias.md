@@ -11883,3 +11883,22 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   Ritmo: 21.2 min por `0101` (2 checkpoints) frente a 18.7 en exclusiva. Comparacion con un script temporal (no
   versionado) que lee los dos directorios con nibabel y compara con `np.array_equal`.
 
+
+
+### 171 — EL CONJUNTO DE TEST YA SE EVALUO UNA VEZ CON EL MODELO CON FUGA (#164) ANTES DE LAS ENMIENDAS DE run04: hay que declararlo; y la tesis reporta SOLO run04 — ABIERTA (toca la redaccion de metodos y limitaciones del cap. 3, `diseno_A.md` ENMIENDA 2026-10-11, #164, #166, #169)
+
+- **Origen:** pregunta de la autora, 2026-10-11: "no solo podemos hablar de la run04?" y si convendria una run05 con
+  duplicados dentro de la misma division.
+- **Hecho:** la corrida final de E-A2 y E-A1 con `mejor_37k` se evaluo en test el 2026-10-10 (#164: TOST primario
+  no equivalente, IC90 [-787.7, -208.1] HU). Despues se detecto la fuga (#166) y se fijaron, ya con ese resultado
+  visto, el reentrenamiento, la eleccion de checkpoint (#169), la sensibilidad `run04_60k` y el nuevo `Delta`.
+- **Atenuantes (verificables):** las enmiendas salen de la fuga y de reglas registradas antes (regla de duplicados
+  2026-09-10, regla de cotejo 2026-10-05 (6) / 2026-10-09, formula de `Delta` 2026-10-09 (4)), y se midieron en
+  validacion. La sensibilidad `run04_60k` genera rayas MAS DEBILES que `run04_mejor` (a20_resultados_run04.md), asi
+  que no acerca el difusor a Peters.
+- **Recomendacion de Claude:** (1) reportar solo run04; runs anteriores fuera del texto, salvo 1-2 frases de
+  transparencia (auditoria de duplicados -> reentrenamiento -> ninguna cifra del modelo afectado). (2) Declarar en
+  limitaciones que test se evaluo una vez con el modelo afectado y que las enmiendas se fijaron sobre validacion y por
+  reglas previas. (3) **No hacer run05** (duplicados en la misma division): no responde una pregunta de la tesis,
+  viola la regla de un volumen por paciente, abre un camino alternativo con test ya visto. A lo sumo, trabajo futuro.
+- **Pendiente de la autora:** aceptar o no (1)-(3); el texto exacto va en la ronda de redaccion del cap. 3.

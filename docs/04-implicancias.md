@@ -11922,3 +11922,6 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   aplicado sin cambios); (b) recalibrar `a16` con `run04_mejor` en validacion antes de evaluar test (la corrida final
   ya esta generada; si el valor cambia, solo cambia la lectura de HU de los NIfTI, que habria que rehacer).
   Recomendacion de Claude: (a), y si hay plazo correr `a16` con run04 como verificacion: si da 0.05, se cierra.
+- **Adenda a #166 (2026-10-11): sensibilidad de la compuerta P1 sin `0072` HECHA** (`experiments/objetivo1/p1_sin_0072.md`,
+  pendiente desde el traspaso; senalado por `revisor-guia-cs` en capitulo3-r16). n = 32 (sin `0053` ni `0072`): la mejor
+  combinacion (`afinado`, `pub+asinh`) da 61.08 HU, IC95 [54.23, 68.57], frente a 60.95 con n = 33. **NO-GO sin cambio.**

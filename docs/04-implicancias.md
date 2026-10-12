@@ -11925,3 +11925,14 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Adenda a #166 (2026-10-11): sensibilidad de la compuerta P1 sin `0072` HECHA** (`experiments/objetivo1/p1_sin_0072.md`,
   pendiente desde el traspaso; senalado por `revisor-guia-cs` en capitulo3-r16). n = 32 (sin `0053` ni `0072`): la mejor
   combinacion (`afinado`, `pub+asinh`) da 61.08 HU, IC95 [54.23, 68.57], frente a 60.95 con n = 33. **NO-GO sin cambio.**
+- **Recalibracion hecha (2026-10-11, decision de la autora: recalibrar; `a16_calibrar_delta.py` con run04, local, mismo
+  criterio preinscrito, log `experiments/objetivo3/outputs/a16_run04.log`):**
+  - `run04_mejor`: **0.030** (argmin de la mediana del MAE en `G`, 393.9 HU; con 0.05, 400.1 HU; salvaguarda cumple).
+  - `run04_60k`: **0.050** (argmin 0.5 pero a menos de 1 HU; parsimonia -> 0.050; salvaguarda cumple).
+  - **Consecuencia:** todo lo de `run04_60k` (cotejo, `Delta` = 100.3, corrida final 55911) se leyo con su valor
+    calibrado y sigue valiendo. Lo de `run04_mejor` se leyo con 0.05, no con su 0.03: su cotejo (12 de 24), su `s`
+    (163.8 HU) y su corrida final (55859) dejan de describir el modelo con su lectura calibrada. **Como el cotejo
+    elige el punto de control, la eleccion misma podria cambiar.** Los NIfTI guardan HU ya leidos (el `u` crudo solo
+    dentro de `M`), asi que hay que regenerar, no releer.
+  - **Pendiente de la autora:** como aplicar el resultado (opciones en el chat del 2026-10-11).
+

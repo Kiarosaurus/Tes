@@ -4,7 +4,7 @@
 #   2. final  - 13 de test de E-A2 (`casos_ea2_test.txt`): Ti (primario) y Fe (sensibilidad), replicas A/B
 # El CONTROL pose de `a19.geometria` aborta si el tornillo no cae en el corredor.
 #
-# Recursos como `a19_final.sbatch` (big-mem, 24 CPU, 30G; ~20-30 min por paciente). QoS a-tesis: suma de CPU/RAM
+# Recursos como `obsoletos/objetivo3/a19_final.sbatch` (big-mem, 24 CPU, 30G; ~20-30 min por paciente). QoS a-tesis: suma de CPU/RAM
 # compartida con los jobs de GPU (KHIPU.md nota 11).
 #
 # USO (desde ~/metalsynth, tras `git pull`):

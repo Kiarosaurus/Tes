@@ -10,6 +10,11 @@
 > `objetivo2/e13_poses_piloto.csv` (lo lee `verificar_coherencia.py`). Moverlos romperia imports.
 >
 > **Regla del proyecto:** no se borra evidencia. Archivar no es borrar.
+> **Excepcion por espacio (2026-10-12, pedido de la autora; disco D: lleno):** de las salidas no versionadas
+> (`*/outputs/`) se BORRARON los archivos pesados: `.nii.gz`, `.pt`, `.html`, `.npz` > 2 MB (Peters con pose
+> espejada), intermedios de XCIST (`.scan/.prep/.vf/.raw`) y `a23_final/cache` (~36.6 GB). Se CONSERVAN CSV, JSON,
+> logs, PNG, `.md` y `.npz` de marcas: sostienen la trazabilidad de las cifras viejas. Los volumenes no se pueden
+> recuperar sin volver a correr en Khipu. Los inventarios de abajo describen lo que hubo, no lo que queda en disco.
 
 ## Citas con la ruta vieja
 
@@ -118,6 +123,7 @@ sobre el array crudo (LPS) sin convertir, y el tornillo quedaba reflejado en x e
 | `objetivo3/a20_resultados_run04.md` | `Delta` (163.8 / 100.3 HU) | `Delta` con la pose corregida |
 | `objetivo3/a21_resultado.md` | eleccion del material (Ti primario) | `a21` sobre `peters_val` de `a19_pose.sbatch` |
 | `objetivo3/a15_cotejo_run04.sbatch`, `a15_delta_run04.sbatch`, `a15_final_run04.sbatch` | cotejo, `Delta` y corrida final de run04 | `a15_cadena_pose.sbatch` (las tres etapas en un job) |
+| `objetivo3/a19_peters.sbatch`, `a19_final.sbatch` (archivados despues, 2026-10-12) | brazo de Peters en val (arreglo) y final de E-A2 | `a19_pose.sbatch` (etapas `val` y `final` en un job) |
 
 **No versionados, en `objetivo3/outputs/pose_espejada/`:** `a11`, `a15_cotejo_run04`, `a15_delta_run04` (con sus
 `html/`), `a15_delta_run04_shard`, `a15_final_run04` (con `html/`), `a18`, `a18_corrida1`, `a19`, `a19_final`,

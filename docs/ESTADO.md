@@ -2,10 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
-## 2026-10-12 (3) — Transferencia de obj3_pose ROTA por disco lleno; limpieza de obsoletos
+## 2026-10-12 (3) — obj3_pose completo en local; logs de Khipu perdidos; limpieza de obsoletos
 
-- **Hecho:** D: estaba lleno (8 KB libres): la copia de `data/obj3_pose/` quedo a medias. Validos en local (`experiments/objetivo3/outputs/obj3_pose/`): `cotejo/` y `delta/` (los 2 ckpt) y `final/run04_mejor` (13 pacientes, 260 archivos). Borrados los 28 archivos de 0 bytes. Por pedido de la autora se borraron las salidas pesadas de `experiments/obsoletos/*/outputs/` (~36.6 GB; se conservan CSV/JSON/log/PNG/npz de marcas; excepcion escrita en `obsoletos/README.md`). D: con 35 GB libres. `a19_peters`/`a19_final.sbatch` archivados (reemplazados por `a19_pose`).
-- **Siguiente:** volver a traer `final/run04_60k`, `peters_val`, `peters_final` y los 3 logs (`a15pose_56243/56244`, `a19pose_56245`, en `~/metalsynth/`); confirmar en `sacct` que los 3 jobs terminaron. Luego `a17` (cotejo) -> `a20` val -> `a21` -> `a20` test -> `a24` -> `a23`.
+- **Hecho:** `data/obj3_pose/` traido completo a `experiments/objetivo3/outputs/obj3_pose/` (`cotejo`, `delta`, `final` x2 ckpt, `peters_val`, `peters_final`); tamanos = Khipu (diferencias solo de bloques de directorio). D: se habia llenado: borradas salidas pesadas de `experiments/obsoletos/*/outputs/` (~36.6 GB; se conservan CSV/JSON/log/PNG/npz de marcas; excepcion escrita en `obsoletos/README.md`). `a19_peters`/`a19_final.sbatch` archivados.
+- **Logs 56243/56244/56245 PERDIDOS** (truncados a 0 bytes en Khipu por un scp mal pegado, 14:40). CONTROL pose recalculado en local para los 15 pacientes: todos PASAN (`obj3_pose/logs/control_pose_local.txt`; 0101 = 84 vs 68 HU, igual al log original). Falta `sacct -j 56243,56244,56245` para dejar `State`/`ExitCode`.
+- **Siguiente:** `a17` (cotejo) -> `a20` val -> `a21` -> `a20` test -> `a24` -> `a23`.
 - **Pendiente de la autora:** decidir si registra en `01-decisiones.md` la excepcion a "archivar no es borrar" (texto propuesto en el chat).
 
 ## 2026-10-11 (2) — run04 terminado (job 55706); decisiones escritas; cotejo de checkpoint preparado

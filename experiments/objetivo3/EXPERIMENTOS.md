@@ -12,7 +12,7 @@
 > archivado en `experiments/obsoletos/objetivo3/outputs/` y **no es citable** (#166, #171). Resultados citables del
 > Objetivo 3: solo los de la corrida final con run04 y la pose corregida (#173: `a15_cadena_pose`, `a19_pose`,
 > `a23_final_run04`, `a24`), cuando existan.
-> Las salidas (`outputs/`) no estan versionadas. Actualizado el 2026-10-11.
+> Las salidas (`outputs/`) no estan versionadas. Actualizado el 2026-10-12.
 
 ## 1. Diseno y datos de entrenamiento
 
@@ -54,7 +54,7 @@
 |---|---|---|---|
 | `a11_rasterizar_tornillo.py` | pose -> `M`, `B_delta`, `G`; `pose_a_marco_crudo` (RAS+ del Obj 2 -> array crudo) y `control_pose` (#173) | script | **VIGENTE, CORREGIDO 2026-10-12**; lo importan `a15`, `a18`, `a19` |
 | `a15_cadena_completa.py` | pelvis limpia -> pose -> `M` -> generacion; **no reanudable** | script | **VIGENTE** |
-| `a15_cadena_pose.sbatch` + `a17_cotejo.py` + `a20_evaluador_ea2.py` | con la pose corregida (#173), un job por punto de control: cotejo (0101/0102) -> `s` de `Delta` -> corrida final de E-A2 (13 de test); cada uno con su limite calibrado (#172 (A)) | Khipu + local | **LISTO PARA LANZAR** (2026-10-12) |
+| `a15_cadena_pose.sbatch` + `a17_cotejo.py` + `a20_evaluador_ea2.py` | con la pose corregida (#173), un job por punto de control: cotejo (0101/0102) -> `s` de `Delta` -> corrida final de E-A2 (13 de test); cada uno con su limite calibrado (#172 (A)) | Khipu 56243/56244 + local | **CORRIDO** (2026-10-12, rtxa6000 g002, rc=0). Cotejo: `run04_mejor` 13 frente a 7 (#174); `Delta` 196.3 / 115.8 HU (#175). Salidas en `outputs/obj3_pose/`; resumen versionado `resultados_validacion_pose.md` |
 | `../obsoletos/objetivo3/outputs/pose_espejada/` | todo lo generado con la pose espejada: cotejo, `Delta`, control shard (identico bit a bit, #170: la conclusion sobre la GPU sigue valiendo), corrida final, Peters, material | Khipu | **ARCHIVADO** 2026-10-12 (#173) |
 | `../obsoletos/objetivo3/a15_cadena.sbatch`, `a15_cotejo.sbatch`, `a15_delta.sbatch` | versiones con `mejor_37k`/`run01` | Khipu | **ARCHIVADOS** 2026-10-12 |
 | `../obsoletos/objetivo3/a17_cotejo_resultado.md`, `a20_resultados.md` | resultados con `mejor_37k` | local | **ARCHIVADOS** 2026-10-12 (Peters, repetido en `a20_resultados_run04.md`) |
@@ -65,8 +65,8 @@
 |---|---|---|---|
 | `peters/` | configuracion y parche del script publicado de XCIST, fuera del clon (#146) | script | **VIGENTE** |
 | `sonda_peters.md`, `a18_sonda_peters.py` | sonda de viabilidad preinscrita (2026-10-09 (2)) | script | **CORRIDA CON POSE ESPEJADA** (#173); `a18` corregido, no se repite (la viabilidad la cubre `a19_pose`) |
-| `a19_peters_completo.py`, `a19_pose.sbatch` | brazo fisico con la pose corregida: validacion (0101/0102, `r` y material) -> 13 de test | Khipu | **LISTO PARA LANZAR** (2026-10-12). `a19_peters.sbatch`, `a19_final.sbatch`: pose espejada |
-| `a21_cotejo_material.py` | material primario frente a tornillos reales (regla 2026-10-09 (5)) | script (local) | **POR REHACER** sobre `peters_val` de `a19_pose`; el resultado anterior (Ti) esta archivado (#173) |
+| `a19_peters_completo.py`, `a19_pose.sbatch` | brazo fisico con la pose corregida: validacion (0101/0102, `r` y material) -> 13 de test | Khipu 56245 | **CORRIDO** (2026-10-12, n006, rc=0; `r` = 6.1 HU). `a19_peters.sbatch`, `a19_final.sbatch`: pose espejada |
+| `a21_cotejo_material.py` | material primario frente a tornillos reales (regla 2026-10-09 (5)) | script (local) | **REHECHO** 2026-10-12 sobre `peters_val` (`--dir-a19`): Ti 2 frente a 0 de 24 (#174, DECIDIDA: ningun material reproduce lo real; Ti el menos alejado) |
 
 ## 6. Corrida final (test, diseno congelado + enmienda)
 
@@ -74,9 +74,9 @@
 |---|---|---|---|
 | `casos_ea2_test.txt` | los 13 pacientes de test sin metal de E-A2 | script | **VIGENTE** |
 | (corrida final del difusor) | ahora es la etapa `final` de `a15_cadena_pose.sbatch` | — | ver seccion 4 |
-| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal (no usa la pose sintetica: #173 no lo toca) | Khipu | **LISTO, sin lanzar**: va con el punto de control que gane el cotejo, con su `--delta` |
+| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal (no usa la pose sintetica: #173 no lo toca) | Khipu 56355 | **CORRIDO** 2026-10-12 (`run04_mejor`, 0.030, shard rtxa6000, rc=0, 13 pacientes) -> `outputs/obj3_pose/a23_final_run04_d003/`; resumen PENDIENTE |
 | `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **LISTO**, probado con datos de juguete |
-| `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Probado en validacion (`0102`) |
+| `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Corrido 2026-10-12 sobre `obj3_pose/{final,delta}` (60 HTML) |
 | `../obsoletos/objetivo3/a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **ARCHIVADOS** 2026-10-12 (fuga); no citables (#164, #171) |
 
 ## 7. Archivados

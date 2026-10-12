@@ -11943,7 +11943,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 
 
 
-### 173 — EL TORNILLO SINTETICO SE COLOCO EN UN MARCO DE COORDENADAS EQUIVOCADO: la pose del corredor (Obj 2) esta en el array reorientado a RAS+, y `a11`/`a15`/`a18`/`a19` la rasterizan sobre el array CRUDO (LPS en dataset6), sin convertir: el tornillo queda reflejado en x e y, fuera del sacro — ABIERTA, CORRECCION APLICADA EN CODIGO 2026-10-12 (plan aprobado por la autora; falta rehacer las corridas) (toca TODO lo que genera o simula con la pose: cotejo de punto de control, `Delta` (s y r), eleccion del material (a21), sonda de Peters (a18), corrida final de E-A2 (a15_final, a19_final, a20); NO toca E-A1 (implantes reales), a16, a22, ni los Objetivos 1 y 2)
+### 173 — EL TORNILLO SINTETICO SE COLOCO EN UN MARCO DE COORDENADAS EQUIVOCADO: la pose del corredor (Obj 2) esta en el array reorientado a RAS+, y `a11`/`a15`/`a18`/`a19` la rasterizan sobre el array CRUDO (LPS en dataset6), sin convertir: el tornillo queda reflejado en x e y, fuera del sacro — ABIERTA, CORRECCION APLICADA EN CODIGO 2026-10-12 (plan aprobado por la autora); CORRIDAS REHECHAS el 2026-10-12 (56243, 56244, 56245; ver #174, #175); redactada en capitulo3-r18 (toca TODO lo que genera o simula con la pose: cotejo de punto de control, `Delta` (s y r), eleccion del material (a21), sonda de Peters (a18), corrida final de E-A2 (a15_final, a19_final, a20); NO toca E-A1 (implantes reales), a16, a22, ni los Objetivos 1 y 2)
 
 - **Origen:** la autora, 2026-10-12, viendo los HTML de `a25`: "ninguno de los tornillos [...] estan colocados
   directamente sobre S1 ni los ilios"; solo `0102` (validacion) parecia sobre hueso.

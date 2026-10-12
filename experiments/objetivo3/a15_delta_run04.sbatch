@@ -13,6 +13,8 @@
 #   sbatch --test-only experiments/objetivo3/a15_delta_run04.sbatch
 #   J=$(sbatch --parsable experiments/objetivo3/a15_delta_run04.sbatch); echo $J
 # Salida: $DATA/a15_delta_run04/ (un .nii.gz por semilla, checkpoint y paciente, mas original, M y G)
+# DELTA y CKPT (#172, opcion (A), 2026-10-11): cada punto de control se lee con su limite calibrado.
+#   sbatch --export=ALL,CKPT=mejor,DELTA=0.03 <este .sbatch>   -> salida con sufijo _d003
 #SBATCH --job-name=a15del04
 #SBATCH --partition=all
 #SBATCH --account=tesis
@@ -27,7 +29,15 @@ set -o pipefail
 
 DATA=$HOME/metalsynth/data
 REPO=$HOME/metalsynth
-SALIDA=${SALIDA:-$DATA/a15_delta_run04}
+DELTA=${DELTA:-0.05}           # #172 (A): run04_mejor 0.03, run04_60k 0.05
+case "${CKPT:-ambos}" in
+    mejor) PTS=("$DATA/a7/run04/mejor.pt"); ETS=(run04_mejor) ;;
+    60k)   PTS=("$DATA/a7/run04/ckpt.pt");  ETS=(run04_60k) ;;
+    ambos) PTS=("$DATA/a7/run04/mejor.pt" "$DATA/a7/run04/ckpt.pt"); ETS=(run04_mejor run04_60k) ;;
+    *) echo "ERROR: CKPT debe ser mejor, 60k o ambos"; exit 1 ;;
+esac
+SUF=""; [ "$DELTA" != "0.05" ] && SUF="_d${DELTA/./}"
+SALIDA=${SALIDA:-$DATA/a15_delta_run04$SUF}
 CASOS=("$@")
 [ ${#CASOS[@]} -eq 0 ] && CASOS=(dataset6_CLINIC_0101_data dataset6_CLINIC_0102_data)
 
@@ -58,7 +68,7 @@ for caso in "${CASOS[@]}"; do
         --caso "$caso" --cortes 0 --incluir-banda --dispositivo cuda --semillas 0 1 2 3 4 \
         --pasos-cotejo-mm 1.0 \
         --data "$DATA/extracted" \
-        --ckpt "$DATA/a7/run04/mejor.pt" "$DATA/a7/run04/ckpt.pt" --etiquetas run04_mejor run04_60k \
+        --ckpt "${PTS[@]}" --etiquetas "${ETS[@]}" --delta "$DELTA" \
         --out-dir "$SALIDA" \
         || { echo "ERROR en $caso"; rc=1; }
 done

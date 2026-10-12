@@ -10,6 +10,8 @@
 #   sbatch --test-only experiments/objetivo3/a23_final_run04.sbatch
 #   J=$(sbatch --parsable experiments/objetivo3/a23_final_run04.sbatch); echo $J
 # Salida: $DATA/a23_final_run04/ (a23_parches.csv, a23_pacientes.csv y el cache de parches de test)
+# DELTA y CKPT (#172, opcion (A), 2026-10-11): cada punto de control se lee con su limite calibrado.
+#   sbatch --export=ALL,CKPT=mejor,DELTA=0.03 <este .sbatch>   -> salida con sufijo _d003
 #SBATCH --job-name=a23fin04
 #SBATCH --partition=all
 #SBATCH --account=tesis
@@ -22,6 +24,8 @@
 
 set -o pipefail
 DATA=$HOME/metalsynth/data
+DELTA=${DELTA:-0.05}           # #172 (A): run04_mejor 0.03
+SUF=""; [ "$DELTA" != "0.05" ] && SUF="_d${DELTA/./}"
 REPO=$HOME/metalsynth
 module load miniconda/3.0
 source "$(conda info --base)/etc/profile.d/conda.sh"
@@ -37,7 +41,7 @@ done
 echo "inicio $(date -Is)  nodo $(hostname)"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 python -u "$REPO/experiments/objetivo3/a23_ea1.py" --particiones test --corrida-final --dispositivo cuda \
-    --data "$DATA/extracted" --ckpt "$DATA/a7/run04/mejor.pt" --out-dir "$DATA/a23_final_run04"
+    --data "$DATA/extracted" --ckpt "$DATA/a7/run04/mejor.pt" --delta "$DELTA" --out-dir "$DATA/a23_final_run04$SUF"
 rc=$?
 echo "fin $(date -Is)  rc=$rc"
 exit $rc

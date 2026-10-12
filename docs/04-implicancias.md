@@ -11912,7 +11912,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 
 
 
-### 172 — EL LIMITE `delta = 0.05` DE `regla_suave` (lectura de HU del Obj 3) SE CALIBRO CON UN MODELO ARCHIVADO (`a16`, pre-run04) Y NO SE RECALIBRO CON run04 — ABIERTA (toca la frase de transparencia de #171 "ninguna cifra proviene del modelo afectado", 2026-10-07, #152)
+### 172 — EL LIMITE `delta = 0.05` DE `regla_suave` (lectura de HU del Obj 3) SE CALIBRO CON UN MODELO ARCHIVADO (`a16`, pre-run04) Y NO SE RECALIBRO CON run04 — DECIDIDA el 2026-10-11 por la autora: opcion (A), cada punto de control con su valor calibrado (`run04_mejor` 0.030, `run04_60k` 0.050); se rehace lo de `run04_mejor` (toca la frase de transparencia de #171 "ninguna cifra proviene del modelo afectado", 2026-10-07, #152)
 
 - **Origen:** `redactor-tesis`, capitulo3-r14 (2026-10-11): las salidas de `a16` estan en
   `experiments/obsoletos/objetivo3/outputs/a16/`; el valor 0.05 se fijo el 2026-10-07 sobre un modelo con fuga.
@@ -11935,4 +11935,9 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     elige el punto de control, la eleccion misma podria cambiar.** Los NIfTI guardan HU ya leidos (el `u` crudo solo
     dentro de `M`), asi que hay que regenerar, no releer.
   - **Pendiente de la autora:** como aplicar el resultado (opciones en el chat del 2026-10-11).
+- **Decision de la autora (2026-10-11): opcion (A)** ("Me quedo con tu recomendacion (A)"). Cada punto de control se
+  lee con su `delta` calibrado: `run04_mejor` 0.030, `run04_60k` 0.050. Lo de `run04_60k` (cotejo, `Delta` = 100.3,
+  corrida final 55911) vale tal cual. Se rehace con `--delta 0.03` lo de `run04_mejor`: cotejo -> (si sigue ganando)
+  `s` de `Delta` -> corrida final -> `a23`. Si el cotejo cambia de ganador, el principal pasa a ser `run04_60k` por la
+  misma regla preinscrita, y `run04_mejor` queda como sensibilidad.
 

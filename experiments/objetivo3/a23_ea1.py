@@ -7,7 +7,7 @@ Para cada paciente con metal de la particion pedida:
    de metal > 2500 HU de al menos **500 mm3**, cada uno con su `B_delta`.
 2. Por componente, hasta `--cortes` cortes repartidos (24 por omision). Genera `G` con `run04_mejor` (por omision;
    `mejor_37k` hasta la ENMIENDA 2026-10-11 de `diseno_A.md`), 5 semillas, y
-   lee con `regla_suave` (`delta = 0.05`), como `a15`.
+   lee con `regla_suave` (`--delta`; por omision 0.05; `run04_mejor` usa 0.03, #172 opcion (A)), como `a15`.
 3. Mide, dentro de `G` y frente al CT real:
    - **discrepancia**: MAE en HU en `G`, en `M` y en `B_delta`;
    - **`bone integrity`**: SDC y cambio relativo de volumen del hueso (> 150 HU fuera de `M`);
@@ -93,6 +93,8 @@ def main() -> None:
     ap.add_argument('--data', type=Path, nargs='+', default=[_RAIZ / 'data'])
     ap.add_argument('--ckpt', type=Path, default=_AQUI / 'outputs' / 'a7' / 'run04' / 'mejor.pt')
     ap.add_argument('--cortes', type=int, default=24, help='maximo de cortes por componente, repartidos')
+    ap.add_argument('--delta', type=float, default=DELTA_OBJ3,
+                    help='rampa de `regla_suave`; calibrada por punto de control (#172): run04_mejor 0.03, run04_60k 0.05')
     ap.add_argument('--semillas', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     ap.add_argument('--pasos', type=int, default=50)
     ap.add_argument('--dispositivo', default='cpu')
@@ -145,7 +147,7 @@ def main() -> None:
                 gen = muestrea_ddim(modelo, it['cond'][None].to(args.dispositivo), it['g'][None].to(args.dispositivo),
                                     dif, pasos=args.pasos, semilla=sem).cpu()
             u = (gen.numpy()[0] + 1.0) / 2.0
-            sal = componer(real, decodifica_bloque(u, delta=DELTA_OBJ3), g)
+            sal = componer(real, decodifica_bloque(u, delta=args.delta), g)
             verificar_composicion(real, sal, g)
             filas.append({'caso': caso, 'grupo': gr.get(caso, '?'), 'serie': serie, 'corte': k, 'semilla': sem,
                           'n_M': int(M.sum()), 'n_G': int(g.sum()), **metricas(sal, real, M, g)})

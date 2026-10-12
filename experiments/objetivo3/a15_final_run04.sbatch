@@ -13,6 +13,8 @@
 #   J2=$(sbatch --parsable --export=ALL,CKPT=60k   experiments/objetivo3/a15_final_run04.sbatch); echo $J2
 #   Relanzar solo algunos:  sbatch --export=ALL,CKPT=mejor ... a15_final_run04.sbatch dataset6_CLINIC_0012_data ...
 # Salida: $DATA/a15_final_run04/run04_<CKPT>/
+# DELTA y CKPT (#172, opcion (A), 2026-10-11): cada punto de control se lee con su limite calibrado.
+#   sbatch --export=ALL,CKPT=mejor,DELTA=0.03 <este .sbatch>   -> salida con sufijo _d003
 #SBATCH --job-name=a15fin04
 #SBATCH --partition=all
 #SBATCH --account=tesis
@@ -32,7 +34,9 @@ case "${CKPT:-}" in
     *) echo "ERROR: falta CKPT=mejor o CKPT=60k (sbatch --export=ALL,CKPT=...)"; exit 1 ;;
 esac
 ETIQ=run04_$CKPT
-SALIDA=${SALIDA:-$DATA/a15_final_run04/$ETIQ}
+DELTA=${DELTA:-0.05}           # #172 (A): run04_mejor 0.03, run04_60k 0.05
+SUF=""; [ "$DELTA" != "0.05" ] && SUF="_d${DELTA/./}"
+SALIDA=${SALIDA:-$DATA/a15_final_run04/$ETIQ$SUF}
 CASOS=("$@")
 [ ${#CASOS[@]} -eq 0 ] && mapfile -t CASOS < "$REPO/experiments/objetivo3/casos_ea2_test.txt"
 
@@ -59,7 +63,7 @@ for caso in "${CASOS[@]}"; do
     python -u "$REPO/experiments/objetivo3/a15_cadena_completa.py" \
         --caso "$caso" --particiones test --corrida-final \
         --cortes 0 --incluir-banda --dispositivo cuda --semillas 0 1 2 3 4 --pasos-cotejo-mm 1.0 \
-        --data "$DATA/extracted" --ckpt "$PT" --etiquetas "$ETIQ" \
+        --data "$DATA/extracted" --ckpt "$PT" --etiquetas "$ETIQ" --delta "$DELTA" \
         --out-dir "$SALIDA" \
         || { echo "ERROR en $caso"; rc=1; }
 done

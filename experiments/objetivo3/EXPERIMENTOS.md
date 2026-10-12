@@ -32,7 +32,7 @@
 | Artefacto | Que es | Origen | Estado |
 |---|---|---|---|
 | `a7_run04.sbatch` | entrenamiento de run04 (60 000 pasos, mismos hiperparametros que run02) | Khipu 55706 | **VIGENTE**. Salida en `outputs/a7/run04/`; minimo de validacion en el paso 16 500 (#168) |
-| `a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **SUPERADOS** (fuga, #166). Salidas archivadas |
+| `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |
 | `a13_comparar_ckpt.py` | dos checkpoints pareados sobre validacion | script | herramienta; sus salidas con run01/run02 estan archivadas |
 
@@ -56,8 +56,8 @@
 | `a15_cotejo_run04.sbatch` + `a17_cotejo.py` | cotejo de checkpoint (1 mm, 5 semillas, `0101`/`0102`, ref. `metal_0039`) | Khipu 55820 + local | **CORRIDO**: gana `run04_mejor` 12 a 10 -> `a17_cotejo_resultado_run04.md` (#169) |
 | `a15_delta_run04.sbatch` + `a20_evaluador_ea2.py` | `s` de `Delta` para los 2 checkpoints | Khipu 55825 + local | **CORRIDO**: `Delta` 163.8 / 100.3 HU -> `a20_resultados_run04.md` |
 | `outputs/a15_delta_run04_shard/` | control shard frente a exclusiva sobre `0101` | Khipu 55858 | **CORRIDO**: identico bit a bit (#170) |
-| `a15_cadena.sbatch`, `a15_cotejo.sbatch`, `a15_delta.sbatch` | versiones con `mejor_37k`/`run01` | Khipu | **SUPERADOS** por los `_run04` |
-| `a17_cotejo_resultado.md`, `a20_resultados.md` | resultados con `mejor_37k` | local | **SUPERADOS** (salvo las filas de Peters de `a20_resultados.md`, que no usan el difusor) |
+| `../obsoletos/objetivo3/a15_cadena.sbatch`, `a15_cotejo.sbatch`, `a15_delta.sbatch` | versiones con `mejor_37k`/`run01` | Khipu | **ARCHIVADOS** 2026-10-12 |
+| `../obsoletos/objetivo3/a17_cotejo_resultado.md`, `a20_resultados.md` | resultados con `mejor_37k` | local | **ARCHIVADOS** 2026-10-12 (Peters, repetido en `a20_resultados_run04.md`) |
 
 ## 5. Brazo fisico (Peters / XCIST)
 
@@ -77,7 +77,7 @@
 | `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal, `run04_mejor` | Khipu | **LISTO, sin lanzar** |
 | `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **LISTO**, probado con datos de juguete |
 | `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Probado en validacion (`0102`) |
-| `a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **SUPERADOS** (fuga); resultados archivados, no citables (#164, #171) |
+| `../obsoletos/objetivo3/a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **ARCHIVADOS** 2026-10-12 (fuga); no citables (#164, #171) |
 
 ## 7. Archivados
 

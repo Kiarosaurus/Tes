@@ -14,7 +14,8 @@
 ## 2026-10-12 — Esperando el cotejo de `run04_mejor` con 0.03
 
 - **Hecho:** traidos `a15_final_run04/run04_60k` (completo, rc=0, 13 pacientes; VALE, leido con su 0.05) y `run04_mejor` (job 55859 CORTADO por tiempo en `0100`; igual se rehace con 0.03). En shard tardo ~3.5 h, no ~2.3: pedir >= 5 h al rehacerlo.
-- **Siguiente:** job 56133 (cotejo `CKPT=mejor DELTA=0.03`, shard `a100_3g`) en PD, inicio estimado 2026-10-12 07:58 -> traer `a15_cotejo_run04_d003` -> combinar con el cotejo de 60k y aplicar `a17`. NO evaluar test con `run04_60k` antes de fijar el principal (#171).
+- **Limpieza (2026-10-12):** 9 archivos de run01-run03/`mejor_37k` movidos con `git mv` a `experiments/obsoletos/objetivo3/` (inventario en su README); salidas locales de `run04_mejor` con 0.05 y `a22` de run02 archivadas. Avisos en `a17_cotejo_resultado_run04.md` y `a20_resultados_run04.md`.
+- **Siguiente:** job 56176 (cotejo; reemplaza al 56133) (cotejo `CKPT=mejor DELTA=0.03`, shard `a100_3g`) en PD, inicio estimado 2026-10-12 07:58 -> traer `a15_cotejo_run04_d003` -> combinar con el cotejo de 60k y aplicar `a17`. NO evaluar test con `run04_60k` antes de fijar el principal (#171).
 
 - **Ciclo `capitulo3` r14-r17 CERRADO** (pedido de la autora; con decisiones pendientes; PDF `redaccion/.build/etapas/capitulo3-r17.pdf`, 136 pp.). GAP cap. 3: 2/14/16. Pendiente: sustituir cifras del elegido leidas con 0.05 cuando exista el cotejo con 0.030; cifra de la sensibilidad P1 sin `0072` al cap. 4; cruces con `introduccion` (l. 48, 56, 90).
 - **Siguiente:** traer `a15_final_run04`; cotejo de `run04_mejor` con `DELTA=0.03` (shard `a100_3g`) -> a17 local -> segun ganador, `Delta`/final/`a23` con 0.03.

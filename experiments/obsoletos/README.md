@@ -35,6 +35,11 @@ hermanos). Para reproducir uno, copiarlo de vuelta a su carpeta original o ajust
 | `objetivo2/r2_nivel_pico_revisor.ANTERIOR.md` | `experiments/objetivo2/` | instrucciones previas de R2 | `r2_nivel_pico_revisor.md` |
 | `objetivo3/a2_entrenar.sbatch` | `experiments/objetivo3/` | piloto de 200 pasos para medir coste (job 52074, #89 medida) | `a7_entrenar.sbatch` |
 | `objetivo3/a6_muestra_minima.py` | `experiments/objetivo3/` | primera muestra sintetica, UN corte (#116) | `a8_muestra_serie.py` (serie) y `a15_cadena_completa.py` (cadena) |
+| `objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | `experiments/objetivo3/` | entrenamientos run01/run02 y run03: modelos con fuga (#166). Movidos 2026-10-12 | `a7_run04.sbatch` |
+| `objetivo3/a15_cadena.sbatch`, `a15_cotejo.sbatch`, `a15_delta.sbatch`, `a15_final.sbatch` | `experiments/objetivo3/` | cadena, cotejo, `Delta` y corrida final con `run01_140k` / `mejor_37k` (#164, #166). Movidos 2026-10-12 | los `_run04.sbatch` |
+| `objetivo3/a23_final.sbatch` | `experiments/objetivo3/` | E-A1 con `mejor_37k` (#164). Movido 2026-10-12 | `a23_final_run04.sbatch` |
+| `objetivo3/a17_cotejo_resultado.md` | `experiments/objetivo3/` | cotejo que eligio `mejor_37k` (#157). Movido 2026-10-12 | `a17_cotejo_resultado_run04.md` |
+| `objetivo3/a20_resultados.md` | `experiments/objetivo3/` | `Delta` = 188.7 con `mejor_37k`; sus filas de Peters siguen valiendo y estan repetidas en el sustituto. Movido 2026-10-12 | `a20_resultados_run04.md` |
 | `exploration-2d/` (carpeta entera) | `experiments/exploration/` | exploracion 2D inicial (cribado por PNG, resumen del dataset, duplicados): superada por `exploration-3d/` | `exploration-3d/`. `explorar.py` aun lee de aqui `excluded_clinic_ids.csv` y `caracterizacion_metal_d7.csv` para la columna `Antecedente 2D` (ruta ya actualizada) |
 
 ### Scripts de `exploration-2d/` recuperados (2026-10-09)
@@ -81,3 +86,21 @@ de la autora se **movio** (no se borro; no versionado) de `experiments/objetivo3
 
 Los `.md` versionados que citan esas cifras (`objetivo3/a17_cotejo_resultado.md`, `a20_resultados.md`, #157,
 #164) quedan como registro fechado. Las copias en Khipu (`$DATA/...`) no se tocaron.
+
+### Salidas de `run04_mejor` leidas con 0.05 (archivadas 2026-10-12, #172 (A))
+
+La recalibracion de `a16` con run04 dio 0.030 para `run04_mejor` (0.050 para `run04_60k`); la autora eligio que
+cada punto de control se lea con su valor (#172, opcion (A)). Lo de `run04_mejor` leido con 0.05 queda superado y se
+**movio** (no versionado) a `experiments/obsoletos/objetivo3/outputs/`:
+
+| Carpeta o archivo | Que es |
+|---|---|
+| `a15_final_run04/run04_mejor_d005_cortado/`, `a15fin04_55859.log` | corrida final de test, cortada por tiempo en `0100` |
+| `a15_delta_run04_mejor_d005/` | `s` de `Delta` (163.8 HU) en validacion |
+| `a20_run04/a20_delta_run04_mejor.json` | `Delta` = 163.8 HU |
+| `a17_run04_paso1mm_mejor_d005/` | cotejo `run04_mejor` (0.05) frente a `run04_60k` (12 frente a 10) |
+| `a22_run02/` | HU de copia y pegado del conjunto de run02 (5373 HU); el vigente es `outputs/a22_run04/` |
+
+**Siguen en su sitio** porque mezclan filas validas de `run04_60k` y los scripts filtran por etiqueta:
+`a15_cotejo_run04/` y `a20_run04/a20_ea2.csv`. Las filas `run04_mejor` de esos dos no se usan.
+

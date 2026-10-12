@@ -1,5 +1,7 @@
 # A20 run04 — `streak amplitude` de E-A2 en validacion y `Delta` (2026-10-11)
 
+> **AVISO 2026-10-12 (#172, opcion (A)):** las filas y el `Delta` de `run04_mejor` (163.8 HU) estan leidos con 0.05, no con su valor calibrado (0.030); se rehacen con el job 56134. Lo de `run04_60k` (`Delta` = 100.3 HU) y Peters (`r` = 23.2 HU) sigue valiendo.
+
 Reemplaza la parte del difusor y el `Delta` de `a20_resultados.md` (que eran de `mejor_37k`, modelo con fuga
 #166). Peters no cambia: mismas filas, recalculadas desde `outputs/a19/` (|A-B| Fe = 34.1 y 12.3 HU, `r` = 23.2 HU).
 Decisiones: `01-decisiones.md` 2026-10-11 (2) punto 2; #169 opcion (b).

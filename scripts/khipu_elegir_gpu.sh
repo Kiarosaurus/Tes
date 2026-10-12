@@ -9,8 +9,8 @@
 #
 # USO (en Khipu, desde ~/metalsynth):
 #   bash scripts/khipu_elegir_gpu.sh <archivo.sbatch> <minutos_en_A100> [GB_minimos] [-- args del sbatch]
-#   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a15_cotejo.sbatch 25 4
-#   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a15_cotejo.sbatch 25 4 -- dataset6_CLINIC_0102_data
+#   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a15_cotejo_run04.sbatch 25 4
+#   bash scripts/khipu_elegir_gpu.sh experiments/objetivo3/a15_cotejo_run04.sbatch 25 4 -- dataset6_CLINIC_0102_data
 #   PARTICIONES="gpu lenovo" bash scripts/khipu_elegir_gpu.sh ...   # solo esas particiones
 #
 # <minutos_en_A100>: cuanto tardaria el job en una A100 entera (estimalo de una corrida anterior).

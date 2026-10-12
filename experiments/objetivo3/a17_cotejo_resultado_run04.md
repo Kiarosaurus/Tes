@@ -1,5 +1,7 @@
 # A17 — cotejo de checkpoint de run04 (2026-10-11)
 
+> **AVISO 2026-10-12 (#172, opcion (A)):** aqui `run04_mejor` esta leido con 0.05, no con su valor calibrado (0.030). Las filas de `run04_60k` siguen valiendo. El cotejo con cada punto de control en su valor sale del job 56176 (`a15_cotejo_run04_d003`) y va en un archivo aparte.
+
 Reemplaza a `a17_cotejo_resultado.md` (run01/run02, modelo con fuga #166) para la eleccion de checkpoint.
 Candidatos y regla fijados antes de generar: `01-decisiones.md` 2026-10-11 (2).
 

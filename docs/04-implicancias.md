@@ -11941,3 +11941,28 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `s` de `Delta` -> corrida final -> `a23`. Si el cotejo cambia de ganador, el principal pasa a ser `run04_60k` por la
   misma regla preinscrita, y `run04_mejor` queda como sensibilidad.
 
+
+
+### 173 — EL TORNILLO SINTETICO SE COLOCO EN UN MARCO DE COORDENADAS EQUIVOCADO: la pose del corredor (Obj 2) esta en el array reorientado a RAS+, y `a11`/`a15`/`a18`/`a19` la rasterizan sobre el array CRUDO (LPS en dataset6), sin convertir: el tornillo queda reflejado en x e y, fuera del sacro — ABIERTA (toca TODO lo que genera o simula con la pose: cotejo de punto de control, `Delta` (s y r), eleccion del material (a21), sonda de Peters (a18), corrida final de E-A2 (a15_final, a19_final, a20); NO toca E-A1 (implantes reales), a16, a22, ni los Objetivos 1 y 2)
+
+- **Origen:** la autora, 2026-10-12, viendo los HTML de `a25`: "ninguno de los tornillos [...] estan colocados
+  directamente sobre S1 ni los ilios"; solo `0102` (validacion) parecia sobre hueso.
+- **Medido (Claude, 2026-10-12):** en los `.nii.gz` de `a15`, fraccion de `M` sobre > 150 HU del CT original: 0.00 en
+  13 de 15 pacientes (`0102` 0.21, `0022` 0.12); `0100`: 100 % de `M` en aire (< -500 HU).
+- **Causa (verificada en codigo):** `experiments/objetivo2/r1_landmarks.py` `cargar` reorienta el CT a RAS+
+  (`io_orientation` + `apply_orientation`) y E9-TS mide `c` en ese array (indice x zoom, origen 0). `a15` (y `a11`,
+  `a18`, `a19`) cargan el NIfTI crudo (`nib.load(...).get_fdata()`, LPS en los volumenes revisados) y llaman a
+  `rasteriza(arr.shape, zooms, c, u, ...)` con el mismo `c`, `u`, sin convertir. `a20` toma `u` de la misma tabla para
+  orientar las ROIs.
+- **Verificacion de la causa:** rasterizando con `c`, `u` convertidos al marco crudo, la mediana de HU dentro de `M`
+  coincide con `hu_p50_eje` de E9-TS: `0100` 132 frente a 124 (sin corregir: -977); `0021` 178 frente a 184.5 (-8);
+  `0101` 84 frente a 68 (14.5); `0012` 40 frente a 103 (-64). Aire en `M` corregido: 0.00 en los cuatro.
+- **Alcance:** invalida como medicion del diseno (tornillo en el eje del corredor) el cotejo de punto de control (los
+  dos), `s` y `r` de `Delta`, el cotejo del material (Ti/Fe, #161), la sonda de Peters, y la corrida final de E-A2
+  (difusor y Peters). Los dos brazos usaron la MISMA pose equivocada, asi que el contraste entre ellos es interno,
+  pero no sobre el corredor del Objetivo 2. **No afecta** E-A1, la calibracion de 0.030/0.050 (`a16`), `a22`, ni los
+  Objetivos 1 y 2. El control "CONTROL 1 receptor limpio" no lo podia detectar (mira metal previo, no la pose).
+- **Propuesta de Claude:** (1) una funcion unica que pase `c`, `u` del marco RAS+ al marco crudo, usada por `a11`,
+  `a15`, `a18`, `a19` y `a20`; (2) un CONTROL nuevo que aborte si la mediana de HU en `M` se aleja de `hu_p50_eje`;
+  (3) rehacer en orden: cotejo -> `Delta` (s; r de Peters en validacion) -> material (a21) -> corrida final (difusor y
+  Peters) -> `a20` -> `a24`; (4) los HTML se regeneran. Pendiente de la autora: aprobar el plan.

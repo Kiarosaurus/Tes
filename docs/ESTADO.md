@@ -8,7 +8,8 @@
 - **Logs 56243/56244/56245 PERDIDOS** (truncados a 0 bytes en Khipu por un scp mal pegado, 14:40). CONTROL pose recalculado en local para los 15 pacientes: todos PASAN (`obj3_pose/logs/control_pose_local.txt`; 0101 = 84 vs 68 HU, igual al log original). Falta `sacct -j 56243,56244,56245` para dejar `State`/`ExitCode`.
 - **sacct:** 56243, 56244 (g002, 1:19 h c/u) y 56245 (n006, 6:00 h) `COMPLETED 0:0`.
 - **`a17` y `a21` hechos (local, ~40 s):** gana `run04_mejor` 13 a 7; Ti 2 a 0 (Ti sobre lo real en 22 de 24) -> **#174 ABIERTA** (cifras de cap. 3 :232/:327/:329 y `00-tesis.md`:143 desfasadas; sonda `a18` aun con pose espejada). `a21` acepta `--dir-a19`/`--out-dir`. Salidas en `outputs/obj3_pose/{a17_paso1mm,a21}`.
-- **Siguiente:** la autora responde #174 (a)-(c); luego `a20` val (`Delta`) -> `a20` test -> `a24`; en Khipu `a23_final_run04` con `CKPT=mejor,DELTA=0.03` si confirma el principal.
+- **#174 DECIDIDA:** principal `run04_mejor`; material "ninguno reproduce lo real, Ti el menos alejado"; sonda `a18` NO se rehace (sin cifras en cap. 3). Aplicado en `00-tesis.md`; falta `overleaf/` cap. 3 via `/ciclo-redaccion`. `a23_final_run04.sbatch` -> `rtxa6000`, `DELTA` 0.03.
+- **Siguiente:** Khipu: `a23_final_run04` (E-A1). Local: `a20` val (`Delta`) -> `a20` test -> `a24`.
 - **Pendiente de la autora:** decidir si registra en `01-decisiones.md` la excepcion a "archivar no es borrar" (texto propuesto en el chat).
 
 ## 2026-10-11 (2) — run04 terminado (job 55706); decisiones escritas; cotejo de checkpoint preparado

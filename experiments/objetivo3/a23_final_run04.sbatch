@@ -4,19 +4,20 @@
 # Derivado de `a23_final.sbatch` (el de `mejor_37k`, archivado). Componentes >= 500 mm3, hasta 24 cortes por
 # componente, `run04_mejor`, 5 semillas. E-A1 va solo con el checkpoint principal (la sensibilidad de #169 (b) es
 # de E-A2).
-# GPU FIJA: gpu:a100_3g.20gb:1 en `all`, la de a15_final_run04 y de Delta (#151; KHIPU.md nota 12).
+# GPU FIJA: gpu:rtxa6000:1 en `all`, la de toda la repeticion con la pose corregida (diseno_A.md, #173, #151).
+# La corrida de `mejor_37k` en RTX A6000 tardo 2 h 31 min.
 #
 # USO (desde ~/metalsynth, tras `git pull`):
 #   sbatch --test-only experiments/objetivo3/a23_final_run04.sbatch
 #   J=$(sbatch --parsable experiments/objetivo3/a23_final_run04.sbatch); echo $J
 # Salida: $DATA/a23_final_run04/ (a23_parches.csv, a23_pacientes.csv y el cache de parches de test)
-# DELTA y CKPT (#172, opcion (A), 2026-10-11): cada punto de control se lee con su limite calibrado.
-#   sbatch --export=ALL,CKPT=mejor,DELTA=0.03 <este .sbatch>   -> salida con sufijo _d003
+# DELTA (#172, opcion (A), 2026-10-11): `run04_mejor` se lee con 0.03 (valor por omision) -> salida con sufijo _d003.
+# Principal confirmado por la autora el 2026-10-12 (#174 (a)).
 #SBATCH --job-name=a23fin04
 #SBATCH --partition=all
 #SBATCH --account=tesis
 #SBATCH --qos=a-tesis
-#SBATCH --gres=gpu:a100_3g.20gb:1
+#SBATCH --gres=gpu:rtxa6000:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=05:00:00
@@ -24,7 +25,7 @@
 
 set -o pipefail
 DATA=$HOME/metalsynth/data
-DELTA=${DELTA:-0.05}           # #172 (A): run04_mejor 0.03
+DELTA=${DELTA:-0.03}           # #172 (A): run04_mejor 0.03
 SUF=""; [ "$DELTA" != "0.05" ] && SUF="_d${DELTA/./}"
 REPO=$HOME/metalsynth
 module load miniconda/3.0
@@ -38,7 +39,7 @@ for viejo in metal_0053 metal_0003; do
         && { echo "ERROR: p1_particion.csv vieja (aun tiene $viejo; #156/#166)"; exit 1; }
 done
 
-echo "inicio $(date -Is)  nodo $(hostname)"
+echo "inicio $(date -Is)  nodo $(hostname)  delta $DELTA"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 python -u "$REPO/experiments/objetivo3/a23_ea1.py" --particiones test --corrida-final --dispositivo cuda \
     --data "$DATA/extracted" --ckpt "$DATA/a7/run04/mejor.pt" --delta "$DELTA" --out-dir "$DATA/a23_final_run04$SUF"

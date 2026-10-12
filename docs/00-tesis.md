@@ -137,14 +137,18 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       dentro de `M` sobre voxeles > 2500 HU, contra los **2 tornillos aislados de `metal_0039`**, unico
       paciente de validacion con tornillo aislado (`0011` fijador externo, `0056` placas; 2026-10-08 (2),
       #154); regla por envolvente real; con 1 paciente descarta, no prueba (2026-10-07 (2)).
-    - **Checkpoint elegido: `run04_mejor`** (paso 16 500; `01-decisiones.md` 2026-10-11 (3), #169).
-      - Candidatos fijados antes de generar: `run04_mejor` y el final de 60 000 pasos (`run04_60k`).
-        Cascaras de 1 mm (fijadas el 2026-10-09, antes de entrenar run04), 2 receptores (`0101`, `0102`) x
-        5 semillas. Gana `run04_mejor` por 12 frente a 10 de 24 cascaras.
-      - **Hallazgos declarados:** el p95 sintetico queda bajo lo real en los dos (8 y 10 de 12 cascaras); y
-        dentro de `M` `run04_mejor` genera metal mas oscuro que lo real (distancia de histograma 810 HU frente a
-        160 de `run04_60k`), cosa que la regla no mira.
-      - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (100.3 HU) y con el
+    - **Checkpoint elegido: `run04_mejor`** (paso 16 500; `01-decisiones.md` 2026-10-11 (3), #169; confirmado
+      por la autora el 2026-10-12 con la pose corregida, #174 (a)).
+      - Candidatos fijados antes de generar: `run04_mejor` (leido con 0.030) y el final de 60 000 pasos
+        (`run04_60k`, 0.050; #172 (A)). Cascaras de 1 mm (fijadas el 2026-10-09, antes de entrenar run04),
+        2 receptores (`0101`, `0102`) x 5 semillas, pose del corredor en el marco del array (#173). Gana
+        `run04_mejor` por 13 frente a 7 de 24 cascaras (`outputs/obj3_pose/a17_paso1mm/a17_cotejo.md`).
+      - **Hallazgos declarados:** el p95 sintetico queda bajo lo real en los dos (7 de 12 cascaras cada uno); y
+        dentro de `M` `run04_60k` queda mas cerca de lo real que `run04_mejor` (distancia de histograma 497
+        frente a 648 HU), cosa que la regla no mira.
+      - **PENDIENTE (#173):** las cifras de `Delta` y de rayas de esta vineta y la siguiente salieron con la pose
+      espejada; se sustituyen al correr `a20` sobre `outputs/obj3_pose/delta/`.
+    - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (100.3 HU) y con el
         principal (163.8 HU). En validacion genera rayas MAS DEBILES que `run04_mejor` (mediana de semillas
         749 / 1076 frente a 977 / 1238 HU en `0101` / `0102`), y las dos quedan bajo Peters Ti (2051 / 1279 HU):
         el principal, elegido por una regla que no mira el brazo fisico, es el que queda MAS CERCA de Peters, y

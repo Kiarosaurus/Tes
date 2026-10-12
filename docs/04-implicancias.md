@@ -11975,7 +11975,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   (`experiments/obsoletos/README.md`, seccion de #173). El job 56135 (final `run04_mejor`, pose espejada) se cancela.
 
 
-### 174 — COTEJO DE PUNTO DE CONTROL Y MATERIAL REHECHOS CON LA POSE CORREGIDA (#173): mismos ganadores (`run04_mejor`, Ti), cifras distintas; el Ti queda dentro de lo real en solo 2 de 24 cascaras — ABIERTA
+### 174 — COTEJO DE PUNTO DE CONTROL Y MATERIAL REHECHOS CON LA POSE CORREGIDA (#173): mismos ganadores (`run04_mejor`, Ti), cifras distintas; el Ti queda dentro de lo real en solo 2 de 24 cascaras — DECIDIDA el 2026-10-12 por la autora
 
 - **Origen:** Claude, 2026-10-12, al correr `a17` y `a21` sobre las salidas de `a15_cadena_pose` (jobs 56243/56244)
   y `a19_pose` (56245, etapa `val`), los tres `COMPLETED 0:0`. CONTROL pose recalculado en local: 15 de 15 PASAN.
@@ -11994,3 +11994,16 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Preguntas para la autora:** (a) confirmar `run04_mejor` como principal (la regla no elige, informa); (b) confirmar
   Ti como material primario con un margen de 2 cascaras, o declararlo como "ningun material reproduce lo real; Ti es
   el menos alejado"; (c) rehacer la sonda de Peters (`a18`) o quitar sus cifras del cap. 3.
+- **Decision de la autora (2026-10-12):** (a) `run04_mejor` confirmado como principal. (b) Se redacta como "ningun
+  material reproduce lo real; Ti es el menos alejado" (Ti sigue siendo el material del TOST, Fe la sensibilidad).
+  (c) Delego en Claude: "prefiero que me des una recomendacion profesional y apliquemos lo que me digas".
+- **Recomendacion de Claude para (c), aplicada:** NO rehacer `a18`. La sonda era una compuerta de viabilidad (un
+  corte de `0101`, una semilla) previa a Peters completo; esa pregunta ya la contesta `a19_pose` etapa `val` con la
+  pose corregida: los mismos receptores, 17 cortes con `M`, Ti y Fe, replicas A/B, y el artefacto es medible en todos
+  (job 56245 `COMPLETED 0:0`). Rehacerla no cambia ninguna decision. En el cap. 3: la sonda queda como paso del
+  orden de trabajo, sin cifras; la comparacion "dentro de `M`" usa las de `a21` (Ti 4462, Fe 7036 frente a 3092-3838
+  HU reales), y se declara que el veredicto de viabilidad se tomo con la pose espejada y se confirmo despues con
+  `a19_pose`. `sonda_peters.md` ya lleva el AVISO de #173.
+- **Aplicado:** `docs/00-tesis.md` (bloque del checkpoint: 13 frente a 7, 7 de 12, 497 / 648; aviso de `Delta`
+  PENDIENTE). `a23_final_run04.sbatch`: `DELTA` 0.03 por omision, `gpu:rtxa6000:1`. **Falta:** `overleaf/` (cap. 3
+  :232, :327, :329) via `/ciclo-redaccion capitulo3`, con (b) y (c).

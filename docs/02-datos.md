@@ -151,9 +151,10 @@ conteos de arriba, que quedan como registro del 2026-09-10:
 | Total | 166 | **159** |
 | train | 125 (51 de CLINIC-metal, 7 de ellos secundarios) | 118 |
 | val | 8 (3 de CLINIC-metal) | 8 |
-| test, dataset6 (E-A2 usa 13) | 20 | 20 |
-| test, dataset7 CLINIC-metal (E-A1) | 13 | 13 |
+| test, dataset6 (14 grupo 3, de los que E-A2 usa 13; 6 grupo 2) | 20 | 20 |
+| test, dataset7 CLINIC-metal (n efectivo de E-A1) | 13 | 13 |
 
+Por particion: train g1/g2/g3 = 47/28/50 volumenes, val 3/3/2, test 9/10/14.
 `grupos.csv`: grupo 1 = 59, grupo 2 = 41, grupo 3 = 66, reproducibilidad = 3 (`0003`, `0053`, `0065`),
 excluido = 10. Los `Grupo paciente` de #163 no están unificados en el CSV: el recuento de pacientes de esta
 tabla descuenta los 7 secundarios a mano. **No correr `grupo_paciente.py`** (renumera los IDs).

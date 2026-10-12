@@ -157,8 +157,11 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
     - **Endpoint primario `streak amplitude` preinscrito por completo** (2026-10-05 (3) y (4)): verdad de
       terreno = TC limpia del mismo paciente, asi que solo se mide en los **14 de test sin metal**
-      (E-A2; 13 tras excluir `dataset6_CLINIC_0034_data`, sin eje del corredor); en los **13** de test con metal
-      se mide **discrepancia** (E-A1; #156, #164; prueba = 33 pacientes, `02-datos.md` 2026-10-11). ROIs = anillos completos de un voxel de
+      (E-A2; 13 tras excluir `dataset6_CLINIC_0034_data`, sin eje del corredor); en los **19** de test con material u
+      objetos (grupo 1 = 9, grupo 2 = 10, `grupos.csv` 2026-10-11) se mide **discrepancia** (E-A1). **n efectivo =
+      13**: 6 pacientes de dataset6 del grupo 2 no tienen ningun componente >= 500 mm3 (umbral geometrico fijado
+      antes de correr, independiente del modelo; #164) y quedan los 13 de CLINIC-metal de test (grupo 1 = 9,
+      grupo 2 = 4). Prueba = 33 pacientes (`02-datos.md` 2026-10-11). ROIs = anillos completos de un voxel de
       guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
       fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
       (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura**.

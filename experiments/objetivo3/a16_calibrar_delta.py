@@ -112,13 +112,13 @@ def main() -> None:
     ap.add_argument('--particion', type=Path,
                     default=aqui.parent / 'objetivo1' / 'p1_particion.csv')
     ap.add_argument('--ckpt', type=Path, nargs='+',
-                    default=[aqui / 'outputs' / 'a7' / 'run01' / 'ckpt.pt',
-                             aqui / 'outputs' / 'a7' / 'run02' / 'mejor.pt'])
-    ap.add_argument('--etiquetas', nargs='+', default=['run01_140k', 'mejor_37k'])
+                    default=[aqui / 'outputs' / 'a7' / 'run04' / 'mejor.pt',
+                             aqui / 'outputs' / 'a7' / 'run04' / 'ckpt.pt'])
+    ap.add_argument('--etiquetas', nargs='+', default=['run04_mejor', 'run04_60k'])
     ap.add_argument('--cortes', type=int, default=6)
     ap.add_argument('--pasos', type=int, default=50)
     ap.add_argument('--semilla', type=int, default=0)
-    ap.add_argument('--out-dir', type=Path, default=aqui / 'outputs' / 'a16')
+    ap.add_argument('--out-dir', type=Path, default=aqui / 'outputs' / 'a16_run04')  # #172
     args = ap.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 

@@ -11509,7 +11509,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
     descriptiva (seria analisis anadido post congelamiento, y se declararia asi).
 - **Estado en el documento:** tres `\GAPDEC` en `overleaf/secciones/capitulo3.tex` (l. ~192, ~208, ~362).
 
-### 163 — `metal_0019` Y `metal_0020` SON EL MISMO PACIENTE (mismo equipo interno; `0019` tiene ademas grapas en la columna), pero `Grupo paciente` los separa (P122 y P123) — ABIERTA (toca el conteo de pacientes de `02-datos.md`, `tornillos_conteo`, la unidad de independencia de #45/#21)
+### 163 — `metal_0019` Y `metal_0020` SON EL MISMO PACIENTE (mismo equipo interno; `0019` tiene ademas grapas en la columna), pero `Grupo paciente` los separa (P122 y P123) — DECIDIDA el 2026-10-11 (`01-decisiones.md` 2026-10-11 (4): secundarios no cuentan, fuera del entrenamiento de run04; 159 pacientes) (toca el conteo de pacientes de `02-datos.md`, `tornillos_conteo`, la unidad de independencia de #45/#21)
 
 - **Origen:** observacion de la autora en el chat, 2026-10-10. Anotado en `nota_autora` de `1_tornillo` de ambos casos
   en `experiments/exploration-3d/tornillos_conteo.csv`.

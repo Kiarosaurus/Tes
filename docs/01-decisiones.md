@@ -2476,3 +2476,21 @@ test con run04.**
 6. **GPU fija** para `Delta`, `a15_final` y `a23_final`: `gpu:a100_3g.20gb:1` en `all` (#151).
 
 Registrado tambien como ENMIENDA 2026-10-11 (run04) en `experiments/objetivo3/diseno_A.md`.
+
+## 2026-10-11 (4) — Recuento de pacientes tras las auditorias de mismo paciente (#156, #163, #166)
+
+Escrito por el asistente con permiso explicito de la autora ("Sobre el conteo de pacientes, realizalo tu y alinea
+los resultados con los nuevos numeros"). Los grupos de mismo paciente los confirmo ella (#163, 2026-10-10; #166,
+2026-10-11).
+
+1. **Los 7 volumenes secundarios de #163** (`metal_0020`, `0026`, `0027`, `0038`, `0005`, `0052`, `0041`) no cuentan
+   como pacientes. Sus grupos estan enteros en `train` (sin fuga), asi que se quedan en la particion, pero ya no
+   entran al entrenamiento (manifiesto de run04, 2026-10-11). La opcion (b) de #163 (declarar peso doble) deja de
+   aplicar.
+2. **Recuento vigente** (`docs/02-datos.md`, actualizacion 2026-10-11): **166 volumenes en uso = 159 pacientes**;
+   train 125 volumenes / 118 pacientes, val 8, test 33 (20 de dataset6 y 13 de CLINIC-metal).
+3. **E-A1:** cohorte de diseno = 19 pacientes de test con material u objetos (grupo 1 = 9, grupo 2 = 10); **n
+   efectivo = 13** (los 13 de CLINIC-metal de test; los 6 de dataset6 del grupo 2 no tienen componentes >= 500 mm3,
+   umbral fijado antes de correr). **E-A2:** 13 (sin cambio).
+4. **`Grupo paciente` no se unifica en el CSV por ahora:** `grupo_paciente.py` renumeraria los identificadores. Los
+   recuentos descuentan los secundarios a mano y lo declaran.

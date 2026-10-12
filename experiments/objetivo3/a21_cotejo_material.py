@@ -13,9 +13,11 @@ Regla escrita y subida antes de correr esto (commit f9d27cc). **El difusor no en
 USO
 ---
     python experiments/objetivo3/a21_cotejo_material.py
+    python experiments/objetivo3/a21_cotejo_material.py --dir-a19 experiments/objetivo3/outputs/obj3_pose/peters_val         --out-dir experiments/objetivo3/outputs/obj3_pose/a21      # pose corregida (#173)
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import sys
@@ -37,7 +39,11 @@ CASOS = ['dataset6_CLINIC_0101_data', 'dataset6_CLINIC_0102_data']
 
 
 def main() -> None:
-    out_dir = _AQUI / 'outputs' / 'a21'
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--dir-a19', type=Path, default=_AQUI / 'outputs' / 'a19', help='salidas de a19 (val)')
+    ap.add_argument('--out-dir', type=Path, default=_AQUI / 'outputs' / 'a21')
+    args = ap.parse_args()
+    out_dir = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
     reales, hists = referencia_real([_RAIZ / 'data'], _AQUI.parent / 'objetivo1' / 'p1_particion.csv', PASO)
     R = np.stack(reales)
@@ -50,8 +56,8 @@ def main() -> None:
     for mat in ('Fe', 'Ti'):
         por_caso = []
         for caso in CASOS:
-            z = np.load(_AQUI / 'outputs' / 'a19' / ('a19_%s.npz' % caso))
-            meta = json.loads((_AQUI / 'outputs' / 'a19' / ('a19_%s.json' % caso)).read_text(encoding='utf-8'))
+            z = np.load(args.dir_a19 / ('a19_%s.npz' % caso))
+            meta = json.loads((args.dir_a19 / ('a19_%s.json' % caso)).read_text(encoding='utf-8'))
             pix = tuple(meta['pixel_mm'])
             con_m = [i for i in range(len(z['ks'])) if z['M'][i].any()]
             prf_rep, h_rep = [], []

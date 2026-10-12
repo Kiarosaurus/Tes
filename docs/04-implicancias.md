@@ -11974,3 +11974,23 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `a19_pose.sbatch` (Peters val -> final). Todo lo anterior con pose espejada, archivado
   (`experiments/obsoletos/README.md`, seccion de #173). El job 56135 (final `run04_mejor`, pose espejada) se cancela.
 
+
+### 174 — COTEJO DE PUNTO DE CONTROL Y MATERIAL REHECHOS CON LA POSE CORREGIDA (#173): mismos ganadores (`run04_mejor`, Ti), cifras distintas; el Ti queda dentro de lo real en solo 2 de 24 cascaras — ABIERTA
+
+- **Origen:** Claude, 2026-10-12, al correr `a17` y `a21` sobre las salidas de `a15_cadena_pose` (jobs 56243/56244)
+  y `a19_pose` (56245, etapa `val`), los tres `COMPLETED 0:0`. CONTROL pose recalculado en local: 15 de 15 PASAN.
+- **Cotejo de punto de control** (`a17 --paso-mm 1`, `run04_mejor` con 0.030 y `run04_60k` con 0.050, `0101`/`0102`,
+  5 semillas; `experiments/objetivo3/outputs/obj3_pose/a17_paso1mm/a17_cotejo.md`): gana `run04_mejor` por **13 frente
+  a 7** de 24 cascaras (p50 9 / 3, p95 4 / 4). Con la pose espejada fue 12 frente a 10. Dentro de `M` se repite #169:
+  `run04_60k` mas cerca de lo real (dist. hist. 497 frente a 648; `M` p50 3402 / 3245 HU, real 3838 / 3092).
+- **Material** (`a21`, `peters_val`, replicas A/B; `outputs/obj3_pose/a21/a21_cotejo_material.md`): gana **Ti, 2
+  frente a 0** de 24 (antes 7 frente a 0). Ti queda **por encima** de lo real en 22 de 24 cascaras (antes 13), Fe en
+  24. `M` p50 Ti 4462 / Fe 7036 HU; dist. hist. 3741 / 13686. El brazo fisico exagera el artefacto mas que lo que
+  decia la version con pose espejada; el margen del Ti es minimo (2 cascaras).
+- **Toca la redaccion (no aplicado; regla 14):** `overleaf/secciones/capitulo3.tex:232` (12 de 24, y "la lectura de
+  limite 0.05, la que se rehace"), `:327` (7 de 24), `:329` (13 de las 24; y la sonda 9895 / 5390 HU, que salio de
+  `a18` con pose espejada y NO se ha rehecho); `docs/00-tesis.md:143` (12 frente a 10). `tesis/main.tex` sin estas
+  cifras (grep 2026-10-12).
+- **Preguntas para la autora:** (a) confirmar `run04_mejor` como principal (la regla no elige, informa); (b) confirmar
+  Ti como material primario con un margen de 2 cascaras, o declararlo como "ningun material reproduce lo real; Ti es
+  el menos alejado"; (c) rehacer la sonda de Peters (`a18`) o quitar sus cifras del cap. 3.

@@ -44,7 +44,7 @@
 | `a9_suelo_representacion.py` | recorte del suelo de -1000 HU, sin modelo (#141) | script | **CORRIDO** sobre 23 058 parches; no usa el difusor |
 | `a10_costura.py` | salto de HU en el borde de `G` (#139) | script | **VIGENTE** (herramienta) |
 | `a12_roi_parametros.py` | perfil radial del artefacto real y parametros de las ROIs, sobre validacion | script | **CORRIDO**; no usa el difusor |
-| `a16_calibrar_delta.py` | fija `delta` de `regla_suave` (v2, #152) | script | **CORRIDO**: `delta = 0.05` |
+| `a16_calibrar_delta.py` | fija `delta` de `regla_suave` (v2, #152) | script (local) | **CORRIDO con run04 (2026-10-11, #172)**: `run04_mejor` **0.030**, `run04_60k` **0.050** -> `outputs/a16_run04/`, log `outputs/a16_run04.log`. Lo medido con el modelo archivado (0.05) esta en `../obsoletos/objetivo3/outputs/a16/`. Como aplicarlo: pendiente de la autora (#172) |
 | `a22_hu_copiapega.py` | HU de la copia y pegado (mediana del metal de entrenamiento) | script | **CORRIDO con run04: 5371 HU** (`outputs/a22_run04/`) |
 
 ## 4. Cadena completa, cotejo y `Delta`

@@ -76,6 +76,7 @@
 | `a15_final_run04.sbatch` | difusor en los 13 de E-A2, un job por checkpoint (`CKPT=mejor` / `60k`) | Khipu 55859, 55911 | **EN CURSO** (2026-10-11), en `shard:a100_3g.20gb` (#170) |
 | `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal, `run04_mejor` | Khipu | **LISTO, sin lanzar** |
 | `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **LISTO**, probado con datos de juguete |
+| `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Probado en validacion (`0102`) |
 | `a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **SUPERADOS** (fuga); resultados archivados, no citables (#164, #171) |
 
 ## 7. Archivados

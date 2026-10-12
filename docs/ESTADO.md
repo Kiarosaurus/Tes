@@ -14,7 +14,8 @@
 ## 2026-10-12 (2) — #173: tornillo sintetico en marco equivocado; corregido en codigo, corridas por rehacer
 
 - **Hecho:** la autora vio en los HTML de `a25` que el tornillo no caia en el sacro. Causa: pose del Obj 2 en RAS+, rasterizada sobre el array crudo (LPS). Corregido (`a11.pose_a_marco_crudo` + `control_pose`), probado en los 15 pacientes de E-A2 (todos PASAN). Archivado todo lo de pose espejada. Nuevos `a15_cadena_pose.sbatch` (x2: mejor/0.03, 60k/0.05) y `a19_pose.sbatch`.
-- **Siguiente:** cancelar 56135 (y 56176 si sigue); lanzar `a15_cadena_pose` x2 (MISMO `--gres`) y `a19_pose`; luego local: `a17` (cotejo) -> `a20` val (`Delta`) -> `a21` (material) -> `a20` test -> `a24`; `a23` con el ganador.
+- **Lanzado 2026-10-12 01:50:** `a15_cadena_pose` 56243 (`mejor`, 0.03, rtxa6000 g002, corriendo) y 56244 (`60k`, 0.05, rtxa6000, espera a 56243); `a19_pose` 56245 (big-mem n006, corriendo). CONTROL pose PASA en 0101 (84 vs 68 HU) en los dos brazos.
+- **Siguiente:** al terminar, traer `data/obj3_pose/` y los logs; luego local: `a17` (cotejo) -> `a20` val (`Delta`) -> `a21` (material) -> `a20` test -> `a24`; `a23` con el ganador.
 
 ## 2026-10-12 — Esperando el cotejo de `run04_mejor` con 0.03
 

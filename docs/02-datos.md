@@ -143,7 +143,7 @@ conteos de arriba, que quedan como registro del 2026-09-10:
 - 7 grupos nuevos de mismo paciente (#163): `0020`, `0026`, `0027`, `0038`, `0005`, `0052`, `0041` son
   volúmenes secundarios. Todos los grupos están enteros en `train` (sin fuga); siguen en `grupos.csv` y en
   la partición, pero **no cuentan como pacientes** y salieron del entrenamiento de run04.
-- `metal_0003` (train) = `metal_0072` (test), antes y después de la cirugía (#166, fuga): `0003` sale
+- `metal_0003` (train) y `metal_0072` (test) son el mismo paciente en dos momentos quirúrgicos distintos (#166, fuga): `0003` sale
   (`reproducibilidad`); `0072` queda en test.
 
 | Recuento 2026-10-11 (`p1_particion.csv`, `grupos.csv`) | Volúmenes en uso | Pacientes |

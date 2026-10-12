@@ -11,6 +11,11 @@
 - **Lectura (2) elegida:** `run04_60k` con su `Delta` (100.3) y con el principal (163.8). `diseno_A.md` lleva ENMIENDA 2026-10-11 (run04). Nuevo `a15_final_run04.sbatch` (CKPT=mejor|60k, GPU fija `a100_3g`).
 - **Lanzado:** `a15_final_run04` jobs 55842 (mejor) y 55843 (60k), en PD por `--time` de 8 h (bajar a 4 h con `scontrol`). `01-decisiones.md` 2026-10-11 (3) escrita (permiso explicito). `a24` adaptado (2 ckpt, 2 lecturas, probado con juguete); `a23` y `a23_final_run04.sbatch` pasados a run04.
 - **Siguiente:** lanzar `a23_final_run04`; al terminar a15: traer, `a20` test (peters `a19_final`, copiapega, difusor x2) -> `a24` x2 -> `a23`.
+## 2026-10-12 — Esperando el cotejo de `run04_mejor` con 0.03
+
+- **Hecho:** traidos `a15_final_run04/run04_60k` (completo, rc=0, 13 pacientes; VALE, leido con su 0.05) y `run04_mejor` (job 55859 CORTADO por tiempo en `0100`; igual se rehace con 0.03). En shard tardo ~3.5 h, no ~2.3: pedir >= 5 h al rehacerlo.
+- **Siguiente:** job 56133 (cotejo `CKPT=mejor DELTA=0.03`, shard `a100_3g`) en PD, inicio estimado 2026-10-12 07:58 -> traer `a15_cotejo_run04_d003` -> combinar con el cotejo de 60k y aplicar `a17`. NO evaluar test con `run04_60k` antes de fijar el principal (#171).
+
 - **Ciclo `capitulo3` r14-r17 CERRADO** (pedido de la autora; con decisiones pendientes; PDF `redaccion/.build/etapas/capitulo3-r17.pdf`, 136 pp.). GAP cap. 3: 2/14/16. Pendiente: sustituir cifras del elegido leidas con 0.05 cuando exista el cotejo con 0.030; cifra de la sensibilidad P1 sin `0072` al cap. 4; cruces con `introduccion` (l. 48, 56, 90).
 - **Siguiente:** traer `a15_final_run04`; cotejo de `run04_mejor` con `DELTA=0.03` (shard `a100_3g`) -> a17 local -> segun ganador, `Delta`/final/`a23` con 0.03.
 - **#172 DECIDIDA (A), 2026-10-11:** `a16` con run04 -> `run04_mejor` 0.030, `run04_60k` 0.050. Lo de 60k vale; se rehace lo de `run04_mejor` con `DELTA=0.03`: cotejo -> (si gana) `Delta` -> final -> `a23`. `.sbatch` de run04 aceptan `CKPT`/`DELTA` (salidas `_d003`); `a23_ea1.py --delta`. Finales 55859/55911 terminados (traer).

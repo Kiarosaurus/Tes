@@ -52,7 +52,7 @@ sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo1'))
 sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo2'))
 sys.path.insert(0, str(_AQUI))
 
-from a11_rasterizar_tornillo import BANDA_MM, D_CUERPO_MM, rasteriza  # noqa: E402
+from a11_rasterizar_tornillo import BANDA_MM, D_CUERPO_MM, control_pose, pose_a_marco_crudo, rasteriza  # noqa: E402
 
 CFGS = ['AAPM_MAR_phantom.cfg', 'AAPM_MAR_protocol.cfg', 'AAPM_MAR_physics.cfg', 'AAPM_MAR_scanner.cfg',
         'AAPM_MAR_recon.cfg']
@@ -82,8 +82,10 @@ def carga_corte(caso: str, data: list[Path], particion: Path, ejes: Path, modo: 
     arr = img.get_fdata(dtype=np.float32)
     eje = eje_axial(img)
     zooms = np.array(img.header.get_zooms()[:3], dtype=float)
+    c, u = pose_a_marco_crudo(img, c, u)     # #173
     M3, G3, _ = rasteriza(arr.shape[:3], zooms, c, u, float(e['L_TS_mejor_mm']), D_CUERPO_MM,
                          True, False, 0.0, BANDA_MM)
+    control_pose(arr, M3, float(e['hu_p50_eje']), caso)
     plano = [i for i in range(3) if i != eje]
     vol = np.moveaxis(arr, eje, 0)
     M = np.moveaxis(M3, eje, 0)

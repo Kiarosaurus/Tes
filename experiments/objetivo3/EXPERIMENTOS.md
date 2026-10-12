@@ -10,7 +10,8 @@
 >
 > **Modelo vigente: run04** (sin fuga, #166). Todo lo generado o medido con run01/run02 (`mejor_37k`) o run03 esta
 > archivado en `experiments/obsoletos/objetivo3/outputs/` y **no es citable** (#166, #171). Resultados citables del
-> Objetivo 3: solo los de la corrida final con run04 (`a15_final_run04`, `a23_final_run04`, `a24`), cuando existan.
+> Objetivo 3: solo los de la corrida final con run04 y la pose corregida (#173: `a15_cadena_pose`, `a19_pose`,
+> `a23_final_run04`, `a24`), cuando existan.
 > Las salidas (`outputs/`) no estan versionadas. Actualizado el 2026-10-11.
 
 ## 1. Diseno y datos de entrenamiento
@@ -51,11 +52,10 @@
 
 | Artefacto | Que es | Origen | Estado |
 |---|---|---|---|
-| `a11_rasterizar_tornillo.py` | pose -> `M`, `B_delta`, `G` | script | **VIGENTE**; lo importa `a15` |
+| `a11_rasterizar_tornillo.py` | pose -> `M`, `B_delta`, `G`; `pose_a_marco_crudo` (RAS+ del Obj 2 -> array crudo) y `control_pose` (#173) | script | **VIGENTE, CORREGIDO 2026-10-12**; lo importan `a15`, `a18`, `a19` |
 | `a15_cadena_completa.py` | pelvis limpia -> pose -> `M` -> generacion; **no reanudable** | script | **VIGENTE** |
-| `a15_cotejo_run04.sbatch` + `a17_cotejo.py` | cotejo de checkpoint (1 mm, 5 semillas, `0101`/`0102`, ref. `metal_0039`) | Khipu 55820 + local | **CORRIDO**: gana `run04_mejor` 12 a 10 -> `a17_cotejo_resultado_run04.md` (#169) |
-| `a15_delta_run04.sbatch` + `a20_evaluador_ea2.py` | `s` de `Delta` para los 2 checkpoints | Khipu 55825 + local | **CORRIDO**: `Delta` 163.8 / 100.3 HU -> `a20_resultados_run04.md` |
-| `outputs/a15_delta_run04_shard/` | control shard frente a exclusiva sobre `0101` | Khipu 55858 | **CORRIDO**: identico bit a bit (#170) |
+| `a15_cadena_pose.sbatch` + `a17_cotejo.py` + `a20_evaluador_ea2.py` | con la pose corregida (#173), un job por punto de control: cotejo (0101/0102) -> `s` de `Delta` -> corrida final de E-A2 (13 de test); cada uno con su limite calibrado (#172 (A)) | Khipu + local | **LISTO PARA LANZAR** (2026-10-12) |
+| `../obsoletos/objetivo3/outputs/pose_espejada/` | todo lo generado con la pose espejada: cotejo, `Delta`, control shard (identico bit a bit, #170: la conclusion sobre la GPU sigue valiendo), corrida final, Peters, material | Khipu | **ARCHIVADO** 2026-10-12 (#173) |
 | `../obsoletos/objetivo3/a15_cadena.sbatch`, `a15_cotejo.sbatch`, `a15_delta.sbatch` | versiones con `mejor_37k`/`run01` | Khipu | **ARCHIVADOS** 2026-10-12 |
 | `../obsoletos/objetivo3/a17_cotejo_resultado.md`, `a20_resultados.md` | resultados con `mejor_37k` | local | **ARCHIVADOS** 2026-10-12 (Peters, repetido en `a20_resultados_run04.md`) |
 
@@ -64,17 +64,17 @@
 | Artefacto | Que es | Origen | Estado |
 |---|---|---|---|
 | `peters/` | configuracion y parche del script publicado de XCIST, fuera del clon (#146) | script | **VIGENTE** |
-| `sonda_peters.md`, `a18_sonda_peters.py` | sonda de viabilidad preinscrita (2026-10-09 (2)) | script | **CORRIDO** |
-| `a19_peters_completo.py`, `a19_peters.sbatch`, `a19_final.sbatch` | brazo fisico en validacion y en los 13 de test | Khipu 55240, 55453 | **CORRIDO**, no usa el difusor: **vale con run04** (`r` = 23.2 HU) |
-| `a21_cotejo_material.py`, `a21_resultado.md` | material primario frente a tornillos reales | script | **CORRIDO**: Ti primario, Fe sensibilidad |
+| `sonda_peters.md`, `a18_sonda_peters.py` | sonda de viabilidad preinscrita (2026-10-09 (2)) | script | **CORRIDA CON POSE ESPEJADA** (#173); `a18` corregido, no se repite (la viabilidad la cubre `a19_pose`) |
+| `a19_peters_completo.py`, `a19_pose.sbatch` | brazo fisico con la pose corregida: validacion (0101/0102, `r` y material) -> 13 de test | Khipu | **LISTO PARA LANZAR** (2026-10-12). `a19_peters.sbatch`, `a19_final.sbatch`: pose espejada |
+| `a21_cotejo_material.py` | material primario frente a tornillos reales (regla 2026-10-09 (5)) | script (local) | **POR REHACER** sobre `peters_val` de `a19_pose`; el resultado anterior (Ti) esta archivado (#173) |
 
 ## 6. Corrida final (test, diseno congelado + enmienda)
 
 | Artefacto | Que es | Origen | Estado |
 |---|---|---|---|
 | `casos_ea2_test.txt` | los 13 pacientes de test sin metal de E-A2 | script | **VIGENTE** |
-| `a15_final_run04.sbatch` | difusor en los 13 de E-A2, un job por checkpoint (`CKPT=mejor` / `60k`) | Khipu 55859, 55911 | **EN CURSO** (2026-10-11), en `shard:a100_3g.20gb` (#170) |
-| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal, `run04_mejor` | Khipu | **LISTO, sin lanzar** |
+| (corrida final del difusor) | ahora es la etapa `final` de `a15_cadena_pose.sbatch` | — | ver seccion 4 |
+| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal (no usa la pose sintetica: #173 no lo toca) | Khipu | **LISTO, sin lanzar**: va con el punto de control que gane el cotejo, con su `--delta` |
 | `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **LISTO**, probado con datos de juguete |
 | `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Probado en validacion (`0102`) |
 | `../obsoletos/objetivo3/a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **ARCHIVADOS** 2026-10-12 (fuga); no citables (#164, #171) |

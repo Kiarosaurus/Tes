@@ -38,6 +38,11 @@
 >   Por ocupacion de esa porcion, la corrida final se lanzo en `shard:a100_3g.20gb` (la MISMA porcion, compartida);
 >   control sobre `0101`: salida identica bit a bit a la exclusiva (#170).
 > - Pacientes de E-A2, contrastes, Peters (`a19_final`) y material primario `Ti`: **sin cambios**.
+> - **Correccion 2026-10-12 (#173), antes de evaluar test:** la pose del corredor del Obj 2 se rasterizaba en el marco
+>   equivocado (tornillo reflejado). El diseno no cambia (tornillo en el eje del corredor, sin perturbar); se corrige
+>   su implementacion (`a11.pose_a_marco_crudo`) y se agrega un control de pose. Se rehacen con la pose correcta:
+>   cotejo, `Delta` (s y r), el material por la MISMA regla de 2026-10-09 (5) (el resultado Ti queda archivado y se
+>   acepta lo que salga), y la corrida final de los dos brazos.
 
 ## 0. Diseno congelado para la corrida final
 

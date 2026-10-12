@@ -99,7 +99,8 @@ from common.ventanas import DELTA_OBJ3, canales_diseno_a, codifica_bloque, decod
 from common.region import componer, verificar_composicion  # noqa: E402
 from difusion import Difusion, muestrea_ddim  # noqa: E402
 from modelo import UNetDifusion  # noqa: E402
-from a11_rasterizar_tornillo import rasteriza, D_CUERPO_MM, BANDA_MM, METAL_HU  # noqa: E402
+from a11_rasterizar_tornillo import (rasteriza, D_CUERPO_MM, BANDA_MM, METAL_HU,  # noqa: E402
+                                     control_pose, pose_a_marco_crudo)
 from a1b_parches_componente import ventana_coords  # noqa: E402
 from common.cotejo import agrega, bordes, histograma_m, perfil_corte  # noqa: E402
 
@@ -295,8 +296,10 @@ def main() -> None:
     arr = img.get_fdata(dtype=np.float32)
     eje = eje_axial(img)
     zooms = np.array(img.header.get_zooms()[:3], dtype=float)
+    c, u = pose_a_marco_crudo(img, c, u)     # #173: la pose del Obj 2 esta en RAS+, el array es crudo
     M3, G3, meta = rasteriza(arr.shape[:3], zooms, c, u, largo, args.diam_cuerpo,
                              True, False, 0.0, args.banda_mm)
+    control_pose(arr, M3, float(e['hu_p50_eje']), args.caso)
     plano = [i for i in range(3) if i != eje]
     vol = np.moveaxis(arr, eje, 0)
     M = np.moveaxis(M3, eje, 0)

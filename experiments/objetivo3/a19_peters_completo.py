@@ -58,7 +58,7 @@ def geometria(caso: str, data: list[Path], particion: Path, permitidas: list[str
     sys.path.insert(0, str(_RAIZ / 'experiments' / 'objetivo1'))
     from p1_decodificador_sd15 import leer_particion, rutas
     from e6b_vae_sd15 import eje_axial
-    from a11_rasterizar_tornillo import BANDA_MM, D_CUERPO_MM, rasteriza
+    from a11_rasterizar_tornillo import BANDA_MM, D_CUERPO_MM, control_pose, pose_a_marco_crudo, rasteriza
     filas = [f for f in leer_particion(particion) if f['Caso'] == caso]
     if not filas or filas[0]['particion'] not in permitidas:
         raise SystemExit('CONTROL: %s no esta en %s' % (caso, permitidas))
@@ -74,13 +74,17 @@ def geometria(caso: str, data: list[Path], particion: Path, permitidas: list[str
     arr = img.get_fdata(dtype=np.float32)
     eje = eje_axial(img)
     zooms = np.array(img.header.get_zooms()[:3], dtype=float)
+    c_ras, u_ras = c, u
+    c, u = pose_a_marco_crudo(img, c, u)     # #173: `pose['u']` queda en el marco del array (lo usa `a20`)
     M3, G3, _ = rasteriza(arr.shape[:3], zooms, c, u, float(e['L_TS_mejor_mm']), D_CUERPO_MM,
                           True, False, 0.0, BANDA_MM)
+    control = control_pose(arr, M3, float(e['hu_p50_eje']), caso)
     plano = [i for i in range(3) if i != eje]
     vol, M, G = (np.moveaxis(x, eje, 0) for x in (arr, M3, G3))
     if int((vol[G] > METAL_HU).sum()):
         raise SystemExit('CONTROL receptor limpio FALLA en %s: hay metal en `G`' % caso)
-    pose = {'c_mm': c.tolist(), 'u': u.tolist(), 'largo_mm': float(e['L_TS_mejor_mm']), 'eje_axial': int(eje),
+    pose = {'c_mm': c.tolist(), 'u': u.tolist(), 'c_mm_ras_obj2': c_ras.tolist(), 'u_ras_obj2': u_ras.tolist(),
+            'control_pose': control, 'largo_mm': float(e['L_TS_mejor_mm']), 'eje_axial': int(eje),
             'zooms': zooms.tolist(), 'plano': plano, 'D_TS_max_mm': float(e['D_TS_max_mm'])}
     return vol, M, G, (float(zooms[plano[0]]), float(zooms[plano[1]])), pose
 

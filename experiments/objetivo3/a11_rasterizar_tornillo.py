@@ -92,6 +92,50 @@ BANDA_MM = 12.0         # `B_delta`, `diseno_A.md` seccion 3
 METAL_HU = 2500.0       # umbral de cribado por HU del Objetivo 1
 
 
+AIRE_HU = -500.0
+MAX_FRAC_AIRE = 0.05     # control de pose (#173): fraccion maxima de `M` en aire
+MARGEN_HU_EJE = 150.0    # control de pose (#173): la mediana en `M` no puede caer mas de esto bajo `hu_p50_eje`
+
+
+def pose_a_marco_crudo(img, c_ras: np.ndarray, u_ras: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Pasa `c` (mm) y `u` del marco en que los mide el Objetivo 2 al marco del array crudo del NIfTI (#173).
+
+    `experiments/objetivo2/r1_landmarks.cargar` reorienta el CT a RAS+ (`io_orientation` + `apply_orientation`) y
+    E9-TS mide `c` como indice x espaciado en ese array (origen en el voxel 0). Este modulo rasteriza sobre el array
+    tal como sale de `nib.load(...).get_fdata()`, que en dataset6 es LPS. Sin esta conversion el tornillo queda
+    reflejado en los ejes invertidos (x e y en LPS) y cae fuera del corredor.
+    """
+    import nibabel as nib
+    ornt = nib.orientations.io_orientation(img.affine)
+    n = np.array(img.shape[:3])
+    zoom = np.array(img.header.get_zooms()[:3], dtype=float)
+    c_raw, u_raw = np.empty(3), np.empty(3)
+    for ax in range(3):
+        k, flip = int(ornt[ax, 0]), ornt[ax, 1] < 0
+        c_raw[ax] = (n[ax] - 1) * zoom[ax] - c_ras[k] if flip else c_ras[k]
+        u_raw[ax] = -u_ras[k] if flip else u_ras[k]
+    return c_raw, u_raw
+
+
+def control_pose(arr: np.ndarray, M: np.ndarray, hu_p50_eje: float, caso: str = '') -> dict:
+    """Aborta si `M` no cae en el corredor medido por el Objetivo 2 (#173).
+
+    Criterio de cordura, no preinscrito: a lo sumo 5 % de `M` en aire (< -500 HU) y mediana de HU en `M` no mas de
+    150 HU por debajo de `hu_p50_eje` (mediana sobre el eje que dio E9-TS). Con la pose espejada de #173 la mediana
+    caia a -977 / -64 / -8 HU frente a 124 / 103 / 184.5; con la pose corregida, 132 / 40 / 178.
+    """
+    v = arr[M]
+    res = {'mediana_hu_M': float(np.median(v)), 'frac_aire_M': float((v < AIRE_HU).mean()),
+           'frac_hueso150_M': float((v > 150).mean()), 'hu_p50_eje': float(hu_p50_eje)}
+    ok = res['frac_aire_M'] <= MAX_FRAC_AIRE and res['mediana_hu_M'] >= hu_p50_eje - MARGEN_HU_EJE
+    print('CONTROL pose %s: mediana HU en M %.0f (eje del Obj 2: %.0f) | aire %.3f | > 150 HU %.2f -> %s'
+          % (caso, res['mediana_hu_M'], hu_p50_eje, res['frac_aire_M'], res['frac_hueso150_M'],
+             'PASA' if ok else 'FALLA'))
+    if not ok:
+        raise SystemExit('CONTROL pose FALLA en %s: el tornillo no cae en el corredor (#173)' % caso)
+    return res
+
+
 def solido(p: np.ndarray, c: np.ndarray, u: np.ndarray, largo_mm: float,
            d_cuerpo: float, con_cabeza: bool, con_arandela: bool,
            d_canulacion: float) -> np.ndarray:
@@ -301,10 +345,12 @@ def main() -> None:
     zoom = np.array(img.header.get_zooms()[:3], dtype=float)
     forma = img.shape[:3]
     print('volumen %s | espaciado %s mm' % (forma, np.round(zoom, 3).tolist()))
+    c, u = pose_a_marco_crudo(img, c, u)     # #173
 
     M, G, meta = rasteriza(forma, zoom, c, u, largo, args.diam_cuerpo,
                            not args.sin_cabeza, args.arandela, args.canulacion_mm, args.banda_mm,
                            submuestreo=args.submuestreo)
+    control_pose(img.get_fdata(dtype=np.float32), M, float(e['hu_p50_eje']), args.caso)
     print('submuestreo: %d^3 = %d subpuntos por voxel, ocupacion por mayoria'
           % (args.submuestreo, args.submuestreo ** 3))
     vox_mm3 = float(np.prod(zoom))

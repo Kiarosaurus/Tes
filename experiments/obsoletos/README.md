@@ -104,3 +104,25 @@ cada punto de control se lea con su valor (#172, opcion (A)). Lo de `run04_mejor
 **Siguen en su sitio** porque mezclan filas validas de `run04_60k` y los scripts filtran por etiqueta:
 `a15_cotejo_run04/` y `a20_run04/a20_ea2.csv`. Las filas `run04_mejor` de esos dos no se usan.
 
+### Todo lo generado con la pose espejada (archivado 2026-10-12, #173)
+
+La pose del corredor del Objetivo 2 esta en el array reorientado a RAS+; `a11`, `a15`, `a18` y `a19` la rasterizaban
+sobre el array crudo (LPS) sin convertir, y el tornillo quedaba reflejado en x e y, fuera del sacro. Corregido en
+`a11.pose_a_marco_crudo` + `control_pose`. Todo lo que puso un tornillo sintetico queda superado.
+
+**Versionados (`git mv`):**
+
+| Archivo | Que era | Lo sustituye |
+|---|---|---|
+| `objetivo3/a17_cotejo_resultado_run04.md` | cotejo de run04 (12 frente a 10) | cotejo de `a15_cadena_pose.sbatch` |
+| `objetivo3/a20_resultados_run04.md` | `Delta` (163.8 / 100.3 HU) | `Delta` con la pose corregida |
+| `objetivo3/a21_resultado.md` | eleccion del material (Ti primario) | `a21` sobre `peters_val` de `a19_pose.sbatch` |
+| `objetivo3/a15_cotejo_run04.sbatch`, `a15_delta_run04.sbatch`, `a15_final_run04.sbatch` | cotejo, `Delta` y corrida final de run04 | `a15_cadena_pose.sbatch` (las tres etapas en un job) |
+
+**No versionados, en `objetivo3/outputs/pose_espejada/`:** `a11`, `a15_cotejo_run04`, `a15_delta_run04` (con sus
+`html/`), `a15_delta_run04_shard`, `a15_final_run04` (con `html/`), `a18`, `a18_corrida1`, `a19`, `a19_final`,
+`a19fin_55453.log`, `a20_run04`, `a21`, `peters_run1.log`, `peters_run2.log`.
+
+**Siguen valiendo** (no ponen tornillo sintetico): `a16_run04` (0.030 / 0.050), `a22_run04` (5371 HU), `a7/run04`,
+`a1b`, `a12`, `a9`, y E-A1 (`a23`, implantes reales).
+

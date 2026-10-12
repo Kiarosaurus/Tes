@@ -11,6 +11,11 @@
 - **Lectura (2) elegida:** `run04_60k` con su `Delta` (100.3) y con el principal (163.8). `diseno_A.md` lleva ENMIENDA 2026-10-11 (run04). Nuevo `a15_final_run04.sbatch` (CKPT=mejor|60k, GPU fija `a100_3g`).
 - **Lanzado:** `a15_final_run04` jobs 55842 (mejor) y 55843 (60k), en PD por `--time` de 8 h (bajar a 4 h con `scontrol`). `01-decisiones.md` 2026-10-11 (3) escrita (permiso explicito). `a24` adaptado (2 ckpt, 2 lecturas, probado con juguete); `a23` y `a23_final_run04.sbatch` pasados a run04.
 - **Siguiente:** lanzar `a23_final_run04`; al terminar a15: traer, `a20` test (peters `a19_final`, copiapega, difusor x2) -> `a24` x2 -> `a23`.
+## 2026-10-12 (2) — #173: tornillo sintetico en marco equivocado; corregido en codigo, corridas por rehacer
+
+- **Hecho:** la autora vio en los HTML de `a25` que el tornillo no caia en el sacro. Causa: pose del Obj 2 en RAS+, rasterizada sobre el array crudo (LPS). Corregido (`a11.pose_a_marco_crudo` + `control_pose`), probado en los 15 pacientes de E-A2 (todos PASAN). Archivado todo lo de pose espejada. Nuevos `a15_cadena_pose.sbatch` (x2: mejor/0.03, 60k/0.05) y `a19_pose.sbatch`.
+- **Siguiente:** cancelar 56135 (y 56176 si sigue); lanzar `a15_cadena_pose` x2 (MISMO `--gres`) y `a19_pose`; luego local: `a17` (cotejo) -> `a20` val (`Delta`) -> `a21` (material) -> `a20` test -> `a24`; `a23` con el ganador.
+
 ## 2026-10-12 — Esperando el cotejo de `run04_mejor` con 0.03
 
 - **Hecho:** traidos `a15_final_run04/run04_60k` (completo, rc=0, 13 pacientes; VALE, leido con su 0.05) y `run04_mejor` (job 55859 CORTADO por tiempo en `0100`; igual se rehace con 0.03). En shard tardo ~3.5 h, no ~2.3: pedir >= 5 h al rehacerlo.

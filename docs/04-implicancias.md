@@ -11943,7 +11943,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 
 
 
-### 173 — EL TORNILLO SINTETICO SE COLOCO EN UN MARCO DE COORDENADAS EQUIVOCADO: la pose del corredor (Obj 2) esta en el array reorientado a RAS+, y `a11`/`a15`/`a18`/`a19` la rasterizan sobre el array CRUDO (LPS en dataset6), sin convertir: el tornillo queda reflejado en x e y, fuera del sacro — ABIERTA (toca TODO lo que genera o simula con la pose: cotejo de punto de control, `Delta` (s y r), eleccion del material (a21), sonda de Peters (a18), corrida final de E-A2 (a15_final, a19_final, a20); NO toca E-A1 (implantes reales), a16, a22, ni los Objetivos 1 y 2)
+### 173 — EL TORNILLO SINTETICO SE COLOCO EN UN MARCO DE COORDENADAS EQUIVOCADO: la pose del corredor (Obj 2) esta en el array reorientado a RAS+, y `a11`/`a15`/`a18`/`a19` la rasterizan sobre el array CRUDO (LPS en dataset6), sin convertir: el tornillo queda reflejado en x e y, fuera del sacro — ABIERTA, CORRECCION APLICADA EN CODIGO 2026-10-12 (plan aprobado por la autora; falta rehacer las corridas) (toca TODO lo que genera o simula con la pose: cotejo de punto de control, `Delta` (s y r), eleccion del material (a21), sonda de Peters (a18), corrida final de E-A2 (a15_final, a19_final, a20); NO toca E-A1 (implantes reales), a16, a22, ni los Objetivos 1 y 2)
 
 - **Origen:** la autora, 2026-10-12, viendo los HTML de `a25`: "ninguno de los tornillos [...] estan colocados
   directamente sobre S1 ni los ilios"; solo `0102` (validacion) parecia sobre hueso.
@@ -11966,3 +11966,11 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `a15`, `a18`, `a19` y `a20`; (2) un CONTROL nuevo que aborte si la mediana de HU en `M` se aleja de `hu_p50_eje`;
   (3) rehacer en orden: cotejo -> `Delta` (s; r de Peters en validacion) -> material (a21) -> corrida final (difusor y
   Peters) -> `a20` -> `a24`; (4) los HTML se regeneran. Pendiente de la autora: aprobar el plan.
+- **Aplicado (2026-10-12, autora: "Haz todas las correcciones desde que se hace esta traslacion"):**
+  `a11.pose_a_marco_crudo` + `a11.control_pose` (aborta si > 5 % de `M` en aire o mediana en `M` < `hu_p50_eje` - 150
+  HU; criterio de cordura, no preinscrito), usados por `a11`, `a15`, `a18`, `a19` (y por tanto `a20`). Probado en
+  local sobre los 15 pacientes de E-A2 (0102 + 13 de test + 0101): todos PASAN, 0 % de `M` en aire, mediana en `M` a
+  -63..+16 HU de `hu_p50_eje`. Nuevos `a15_cadena_pose.sbatch` (cotejo -> `Delta` -> final, por punto de control) y
+  `a19_pose.sbatch` (Peters val -> final). Todo lo anterior con pose espejada, archivado
+  (`experiments/obsoletos/README.md`, seccion de #173). El job 56135 (final `run04_mejor`, pose espejada) se cancela.
+

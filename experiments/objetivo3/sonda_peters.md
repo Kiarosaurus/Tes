@@ -132,6 +132,11 @@ Script: `a18_sonda_peters.py`.
   - **Coste de V1 (114.7 h > 72 h):** no es error. Se aplica la salida preinscrita: submuestrear los cortes.
   - **Los criterios y umbrales no cambian.** Se corre una sola vez mas (corrida 2) y se reportan las dos.
 
+> **AVISO 2026-10-12 (#173):** esta corrida uso la pose del corredor en el marco equivocado (tornillo reflejado,
+> fuera del sacro). Sus cifras no describen el tornillo en el corredor. Salida archivada en
+> `experiments/obsoletos/objetivo3/outputs/pose_espejada/a18/`. La sonda no se repite: `a19_pose.sbatch` corre el
+> brazo fisico completo con la pose corregida.
+
 ## Resultado (corrida 2, 2026-10-09; salida en `outputs/a18/`)
 
 | | Medida | Corrida 1 | Corrida 2 | Umbral | Corrida 2 |

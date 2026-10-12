@@ -111,10 +111,10 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
     antes y no se modifico.
   - El diseno de la evaluacion (`experiments/objetivo3/diseno_A.md`) se **congelo el 2026-10-09**, antes de
     tocar test, con una **ENMIENDA el 2026-10-11 (run04)**, antes de tocar test con el modelo vigente
-    (`01-decisiones.md` 2026-10-11 (2) y (3)). Se declara que el modelo se entreno antes de congelar.
+    (`01-decisiones.md` 2026-10-11 (2) y (3)). Se declara que el modelo vigente se entreno despues del congelamiento y antes de la enmienda.
   - **Modelo vigente: run04** (actualizado el 2026-10-11). Una auditoria de pacientes duplicados detecto que
-    `metal_0003` (train) y `metal_0072` (test) eran el mismo paciente (#166): se reentreno sin `0003` y se
-    regeneraron todos los resultados. **La tesis reporta solo run04**; las corridas anteriores no se describen ni
+    `metal_0003` (train) y `metal_0072` (test) eran el mismo paciente (#166): se reentreno sin `0003` y todos los
+    resultados se regeneran con el (la corrida final de test sigue en curso el 2026-10-11). **La tesis reporta solo run04**; las corridas anteriores no se describen ni
     se comparan, y ninguna cifra sale de ellas (#171). Limitacion declarada en una frase: el conjunto de test se
     habia evaluado una vez con el modelo afectado; las enmiendas posteriores se fijaron sobre validacion y por
     reglas registradas antes (#171).

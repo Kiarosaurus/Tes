@@ -9,7 +9,8 @@
 - **sacct:** 56243, 56244 (g002, 1:19 h c/u) y 56245 (n006, 6:00 h) `COMPLETED 0:0`.
 - **`a17` y `a21` hechos (local, ~40 s):** gana `run04_mejor` 13 a 7; Ti 2 a 0 (Ti sobre lo real en 22 de 24) -> **#174 ABIERTA** (cifras de cap. 3 :232/:327/:329 y `00-tesis.md`:143 desfasadas; sonda `a18` aun con pose espejada). `a21` acepta `--dir-a19`/`--out-dir`. Salidas en `outputs/obj3_pose/{a17_paso1mm,a21}`.
 - **#174 DECIDIDA:** principal `run04_mejor`; material "ninguno reproduce lo real, Ti el menos alejado"; sonda `a18` NO se rehace (sin cifras en cap. 3). Aplicado en `00-tesis.md`; falta `overleaf/` cap. 3 via `/ciclo-redaccion`. `a23_final_run04.sbatch` -> `rtxa6000`, `DELTA` 0.03.
-- **Siguiente:** Khipu: `a23_final_run04` (E-A1). Local: `a20` val (`Delta`) -> `a20` test -> `a24`.
+- **Hecho despues:** `a23_final_run04` job 56355 (shard rtxa6000, 1:12 h, rc=0, 13 pacientes) traido a `outputs/obj3_pose/a23_final_run04_d003/`. `a20` val: `Delta` 196.3 HU (principal) / 115.8 (60k), `r` 6.1 -> **#175 ABIERTA** (`resultados_validacion_pose.md`). HTML `a25` de `final` y `delta`. `SITUACION_ACTUAL.md` reescrito (corte 12-10). Ronda `capitulo3-r18` en curso (encargo `redaccion/ENCARGO_2026-10-12.md`, tope 1).
+- **Siguiente:** `a20` test (los dos brazos) -> `a24`; resumen de `a23`; realismo.
 - **Pendiente de la autora:** decidir si registra en `01-decisiones.md` la excepcion a "archivar no es borrar" (texto propuesto en el chat).
 
 ## 2026-10-11 (2) — run04 terminado (job 55706); decisiones escritas; cotejo de checkpoint preparado

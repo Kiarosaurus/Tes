@@ -12007,3 +12007,24 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Aplicado:** `docs/00-tesis.md` (bloque del checkpoint: 13 frente a 7, 7 de 12, 497 / 648; aviso de `Delta`
   PENDIENTE). `a23_final_run04.sbatch`: `DELTA` 0.03 por omision, `gpu:rtxa6000:1`. **Falta:** `overleaf/` (cap. 3
   :232, :327, :329) via `/ciclo-redaccion capitulo3`, con (b) y (c).
+
+### 175 — `Delta` REHECHO CON LA POSE CORREGIDA (#173): 196.3 HU para el principal (antes 163.8) y 115.8 HU para `run04_60k` (antes 100.3); el difusor queda bajo Peters Ti en los dos receptores — ABIERTA (solo redaccion: la formula y el orden ya estaban fijados)
+
+- **Origen:** Claude, 2026-10-12, `a20` en validacion sobre `outputs/obj3_pose/delta/` y `peters_val/`
+  (`experiments/objetivo3/resultados_validacion_pose.md` §3).
+- **Medido:** `s` (rango entre 5 semillas, promedio de `0101`/`0102`) = 196.3 HU con `run04_mejor` leido con 0.030
+  (291.6 / 100.9) y 115.8 HU con `run04_60k` leido con 0.050 (160.0 / 71.7). `r` (Fe, |A-B|) = 6.1 HU (7.2 / 4.9);
+  con Ti, 8 y 27 HU. `Delta = max(s, r)` lo sigue fijando el difusor.
+- **Amplitudes (medianas, HU):** difusor principal 1248 / 1182; `run04_60k` 1164 / 1163; Peters Ti 1881 / 1287;
+  Peters Fe 5243 / 2166. Diferencia principal menos Ti: -633 / -104 HU (con la pose espejada, el texto del cap. 3
+  daba 901-1057 / 1188-1360 para el difusor y 2051 / 1279 para Ti).
+- **Lo que sigue valiendo del texto:** el sentido de las tres elecciones de #162 (3): el principal queda mas cerca de
+  Peters Ti que `run04_60k` y da el margen mas ancho (196.3 frente a 115.8). Con dos receptores, la diferencia media
+  a Ti (-369 HU) ya excede el margen: en validacion, concluir equivalencia en test parece improbable (como en #161;
+  la declaracion de potencia de 2026-10-05 (6) lo preacepta). No es resultado de test.
+- **Toca la redaccion (no aplicado; regla 14):** `overleaf/secciones/capitulo3.tex` :206 (GAP del cotejo y `Delta`
+  con 0.030, ya se puede cerrar), :325 (amplitudes Fe/Ti y del difusor), :337 (163.8 / 23.2 y "0.4 y 5.2 HU" con Ti),
+  :339 (100.3 y 163.8), :385 (163.8 frente a 100.3); `docs/00-tesis.md` bloque `Delta` (marcado PENDIENTE);
+  `experiments/objetivo3/diseno_A.md` ENMIENDA run04 (`Delta` 163.8 / 100.3).
+- **Pendiente de la autora:** nada que decidir (formula de 2026-10-09 (4) y lectura (2) de #169 ya fijadas); solo
+  confirmar que entra en la proxima ronda de redaccion. Ver `01-decisiones.md` si quiere dejarlo escrito.

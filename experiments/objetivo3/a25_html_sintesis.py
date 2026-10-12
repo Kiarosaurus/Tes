@@ -1,6 +1,6 @@
 """A25 - HTML para explorar la sintesis (salidas `.nii.gz` de `a15 --nifti`), en 3D y en cortes.
 
-Para cada paciente y punto de control de una carpeta de `a15` (por omision `outputs/a15_final_run04/`), escribe en
+Para cada paciente y punto de control de la carpeta de `a15` que se pase con `--dir` (obligatorio), escribe en
 `<carpeta>/html/<etiqueta>/`:
 
 - `<caso>_s<k>_3d.html`: superficies en mm RAS. Hueso (300 HU) del CT sintetico, metal (> 2500 HU) sintetico, el
@@ -14,10 +14,10 @@ no es una segmentacion.
 
 USO
 ---
-    python experiments/objetivo3/a25_html_sintesis.py                      # semilla 0, todo outputs/a15_final_run04
-    python experiments/objetivo3/a25_html_sintesis.py --semillas 0 1 2 3 4
-    python experiments/objetivo3/a25_html_sintesis.py --dir experiments/objetivo3/outputs/a15_delta_run04
-    python experiments/objetivo3/a25_html_sintesis.py --casos dataset6_CLINIC_0012_data --cdn
+    python experiments/objetivo3/a25_html_sintesis.py --dir experiments/objetivo3/outputs/a15_final_run04/run04_60k
+    python experiments/objetivo3/a25_html_sintesis.py --dir experiments/objetivo3/outputs/a15_final_run04/run04_mejor_d003
+    python experiments/objetivo3/a25_html_sintesis.py --dir experiments/objetivo3/outputs/a15_delta_run04 --semillas 0 1 2 3 4
+    python experiments/objetivo3/a25_html_sintesis.py --dir <carpeta> --casos dataset6_CLINIC_0012_data --cdn
 """
 from __future__ import annotations
 
@@ -101,8 +101,8 @@ def html_cortes(destino: Path, titulo: str, orig: np.ndarray, sint: np.ndarray, 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--dir', type=Path, default=_AQUI / 'outputs' / 'a15_final_run04',
-                    help='carpeta de a15 (o carpeta con subcarpetas por punto de control)')
+    ap.add_argument('--dir', type=Path, required=True,
+                    help='carpeta de a15 con los .nii.gz (o una carpeta con subcarpetas por punto de control)')
     ap.add_argument('--out', type=Path, default=None, help='por omision <dir>/html')
     ap.add_argument('--semillas', type=int, nargs='+', default=[0])
     ap.add_argument('--casos', nargs='*', default=None, help='subconjunto de casos (por omision, todos)')
@@ -111,6 +111,8 @@ def main() -> None:
     ap.add_argument('--cdn', action='store_true', help='plotly desde CDN (HTML chicos; necesita internet)')
     ap.add_argument('--solo-cortes', action='store_true', help='no genera la vista 3D (mas rapido)')
     args = ap.parse_args()
+    if not args.dir.is_dir():
+        raise SystemExit('no existe la carpeta %s' % args.dir)
     out = args.out or args.dir / 'html'
     js = 'cdn' if args.cdn else True
 

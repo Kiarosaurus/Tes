@@ -11895,7 +11895,12 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Atenuantes (verificables):** las enmiendas salen de la fuga y de reglas registradas antes (regla de duplicados
   2026-09-10, regla de cotejo 2026-10-05 (6) / 2026-10-09, formula de `Delta` 2026-10-09 (4)), y se midieron en
   validacion. La sensibilidad `run04_60k` genera rayas MAS DEBILES que `run04_mejor` (a20_resultados_run04.md), asi
-  que no acerca el difusor a Peters.
+  que no acerca el difusor a Peters. **Correccion 2026-10-11 (detectada por `redactor-tesis` en capitulo3-r14):** el
+  principal SI queda mas cerca de Peters Ti que `run04_60k` (validacion: Ti 2051 / 1279 HU; principal 977 / 1238;
+  60k 749 / 1076, medianas de semillas en `0101` / `0102`). Claude habia dicho a la autora que "la eleccion del
+  principal no acerca el difusor a Peters": es FALSO. Lo correcto: el principal se eligio por una regla que no usa
+  Peters, y la sensibilidad con `run04_60k` es la lectura conservadora. Corregido en `00-tesis.md`, `main.tex` y el
+  encargo.
 - **Recomendacion de Claude:** (1) reportar solo run04; runs anteriores fuera del texto, salvo 1-2 frases de
   transparencia (auditoria de duplicados -> reentrenamiento -> ninguna cifra del modelo afectado). (2) Declarar en
   limitaciones que test se evaluo una vez con el modelo afectado y que las enmiendas se fijaron sobre validacion y por
@@ -11905,3 +11910,15 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Decision de la autora (2026-10-11):** acepta (1)-(3): "lo dejare como trabajo futuro, y me gusta tu idea de la
   redaccion en una frase en limitaciones". Aplicado en `00-tesis.md`; en `overleaf/` via `/ciclo-redaccion capitulo3`.
 
+
+
+### 172 — EL LIMITE `delta = 0.05` DE `regla_suave` (lectura de HU del Obj 3) SE CALIBRO CON UN MODELO ARCHIVADO (`a16`, pre-run04) Y NO SE RECALIBRO CON run04 — ABIERTA (toca la frase de transparencia de #171 "ninguna cifra proviene del modelo afectado", 2026-10-07, #152)
+
+- **Origen:** `redactor-tesis`, capitulo3-r14 (2026-10-11): las salidas de `a16` estan en
+  `experiments/obsoletos/objetivo3/outputs/a16/`; el valor 0.05 se fijo el 2026-10-07 sobre un modelo con fuga.
+- **Por que importa:** es un parametro de lectura, no una cifra de resultado, pero la frase "ninguna cifra proviene
+  del modelo afectado" queda inexacta si no se nombra. El redactor lo dejo como `\GAPDEC` en capitulo3.
+- **Opciones para la autora:** (a) declararlo heredado (parametro fijado sobre validacion con el modelo anterior,
+  aplicado sin cambios); (b) recalibrar `a16` con `run04_mejor` en validacion antes de evaluar test (la corrida final
+  ya esta generada; si el valor cambia, solo cambia la lectura de HU de los NIfTI, que habria que rehacer).
+  Recomendacion de Claude: (a), y si hay plazo correr `a16` con run04 como verificacion: si da 0.05, se cierra.

@@ -145,8 +145,10 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
         dentro de `M` `run04_mejor` genera metal mas oscuro que lo real (distancia de histograma 810 HU frente a
         160 de `run04_60k`), cosa que la regla no mira.
       - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (100.3 HU) y con el
-        principal (163.8 HU). Genera rayas MAS DEBILES que `run04_mejor`, asi que la eleccion del principal no
-        acerca el difusor al brazo fisico.
+        principal (163.8 HU). En validacion genera rayas MAS DEBILES que `run04_mejor` (mediana de semillas
+        749 / 1076 frente a 977 / 1238 HU en `0101` / `0102`), y las dos quedan bajo Peters Ti (2051 / 1279 HU):
+        el principal, elegido por una regla que no mira el brazo fisico, es el que queda MAS CERCA de Peters, y
+        la sensibilidad con `run04_60k` es la lectura conservadora (corregido el 2026-10-11, #171).
     - **`Delta = max(s, r)` = 163.8 HU** (2026-10-09 (4); `s` del difusor = 163.8, `r` de Peters = 23.2).
       **HU de copia y pegado = 5371 HU** (`a22`, conjunto de run04).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el

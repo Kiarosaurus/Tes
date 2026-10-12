@@ -136,6 +136,28 @@ ningún archivo borrado; decisión del 2026-09-10 en `01-decisiones.md`). **Part
 objetivo:** `grupos.csv`, 179 unidades (178 + unión) y 168 pacientes con una unidad en uso:
 grupo 1 = 65, grupo 2 = 37, grupo 3 = 66, excluido = 10, reproducibilidad = 1.
 
+**Actualización 2026-10-11 (#156, #163, #166).** Tres auditorías de mismo paciente cambiaron los
+conteos de arriba, que quedan como registro del 2026-09-10:
+
+- `metal_0053` = `metal_0054` (#156): `0053` sale (`reproducibilidad`).
+- 7 grupos nuevos de mismo paciente (#163): `0020`, `0026`, `0027`, `0038`, `0005`, `0052`, `0041` son
+  volúmenes secundarios. Todos los grupos están enteros en `train` (sin fuga); siguen en `grupos.csv` y en
+  la partición, pero **no cuentan como pacientes** y salieron del entrenamiento de run04.
+- `metal_0003` (train) = `metal_0072` (test), antes y después de la cirugía (#166, fuga): `0003` sale
+  (`reproducibilidad`); `0072` queda en test.
+
+| Recuento 2026-10-11 (`p1_particion.csv`, `grupos.csv`) | Volúmenes en uso | Pacientes |
+|---|---:|---:|
+| Total | 166 | **159** |
+| train | 125 (51 de CLINIC-metal, 7 de ellos secundarios) | 118 |
+| val | 8 (3 de CLINIC-metal) | 8 |
+| test, dataset6 (E-A2 usa 13) | 20 | 20 |
+| test, dataset7 CLINIC-metal (E-A1) | 13 | 13 |
+
+`grupos.csv`: grupo 1 = 59, grupo 2 = 41, grupo 3 = 66, reproducibilidad = 3 (`0003`, `0053`, `0065`),
+excluido = 10. Los `Grupo paciente` de #163 no están unificados en el CSV: el recuento de pacientes de esta
+tabla descuenta los 7 secundarios a mano. **No correr `grupo_paciente.py`** (renumera los IDs).
+
 `Revisión 3D y cortes` vale `3D completa`, no `completa`: falta el recorrido de cortes.
 Ninguna cohorte se asigna todavía.
 Copia previa a la fusión: `experiments/exploration-3d/revision.previo-merge.csv`.

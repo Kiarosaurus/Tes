@@ -11,6 +11,7 @@
 - **Lectura (2) elegida:** `run04_60k` con su `Delta` (100.3) y con el principal (163.8). `diseno_A.md` lleva ENMIENDA 2026-10-11 (run04). Nuevo `a15_final_run04.sbatch` (CKPT=mejor|60k, GPU fija `a100_3g`).
 - **Lanzado:** `a15_final_run04` jobs 55842 (mejor) y 55843 (60k), en PD por `--time` de 8 h (bajar a 4 h con `scontrol`). `01-decisiones.md` 2026-10-11 (3) escrita (permiso explicito). `a24` adaptado (2 ckpt, 2 lecturas, probado con juguete); `a23` y `a23_final_run04.sbatch` pasados a run04.
 - **Siguiente:** lanzar `a23_final_run04`; al terminar a15: traer, `a20` test (peters `a19_final`, copiapega, difusor x2) -> `a24` x2 -> `a23`.
+- **Docs al dia (2026-10-11):** `00-tesis.md` (bloque Obj 3 solo run04 + frase de #171), `02-datos.md` (166 volumenes = 159 pacientes), `objetivo3/EXPERIMENTOS.md` reescrito. #170 control shard PASA; #171 decidida. Corriendo: `a15_final_run04` 55859 (mejor) y 55911 (60k), shard `a100_3g`.
 - **Pendientes:** los del bloque de abajo (salvo pegar #166, ya hecho).
 
 ## 2026-10-11 (CIERRE) — TRASPASO. Fuga 0003/0072 corregida; run04 (difusor sin repetidos) por lanzar o corriendo en Khipu

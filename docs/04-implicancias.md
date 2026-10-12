@@ -11885,7 +11885,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 
 
 
-### 171 — EL CONJUNTO DE TEST YA SE EVALUO UNA VEZ CON EL MODELO CON FUGA (#164) ANTES DE LAS ENMIENDAS DE run04: hay que declararlo; y la tesis reporta SOLO run04 — ABIERTA (toca la redaccion de metodos y limitaciones del cap. 3, `diseno_A.md` ENMIENDA 2026-10-11, #164, #166, #169)
+### 171 — EL CONJUNTO DE TEST YA SE EVALUO UNA VEZ CON EL MODELO CON FUGA (#164) ANTES DE LAS ENMIENDAS DE run04: hay que declararlo; y la tesis reporta SOLO run04 — DECIDIDA el 2026-10-11 por la autora: (1)-(3) aceptadas, run05 como trabajo futuro; APLICADA en `docs/00-tesis.md` el 2026-10-11 (toca la redaccion de metodos y limitaciones del cap. 3, `diseno_A.md` ENMIENDA 2026-10-11, #164, #166, #169)
 
 - **Origen:** pregunta de la autora, 2026-10-11: "no solo podemos hablar de la run04?" y si convendria una run05 con
   duplicados dentro de la misma division.
@@ -11902,3 +11902,6 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   reglas previas. (3) **No hacer run05** (duplicados en la misma division): no responde una pregunta de la tesis,
   viola la regla de un volumen por paciente, abre un camino alternativo con test ya visto. A lo sumo, trabajo futuro.
 - **Pendiente de la autora:** aceptar o no (1)-(3); el texto exacto va en la ronda de redaccion del cap. 3.
+- **Decision de la autora (2026-10-11):** acepta (1)-(3): "lo dejare como trabajo futuro, y me gusta tu idea de la
+  redaccion en una frase en limitaciones". Aplicado en `00-tesis.md`; en `overleaf/` via `/ciclo-redaccion capitulo3`.
+

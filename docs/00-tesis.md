@@ -109,44 +109,54 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
   codificacion multi-ventana y la banda `B_delta` (~12 mm).
   - **Es una decision POSTERIOR al resultado del Objetivo 1 y asi se declara.** La compuerta se fijo
     antes y no se modifico.
-  - El diseno (`experiments/objetivo3/diseno_A.md`) **se preinscribe antes de entrenar**; hoy sigue en
-    BORRADOR. Para congelarlo faltan (orden de la decision 2026-10-05 (6), punto 5): la **sonda de
-    viabilidad** del brazo fisico (preinscrita en `experiments/objetivo3/sonda_peters.md`, 2026-10-09 (2)) y
-    medir el margen `Delta` (D4). El checkpoint ya esta elegido (2026-10-09).
-  - La unidad de entrenamiento es el **componente conexo**, no el corte (D2, #102). Conjunto congelado
-    el 2026-09-21: **17 149 parches, 241 componentes, 47 casos** (`train`) y **896 parches, 3 casos**
-    (`val`, #105); `Delta` se medira sobre **n = 3 pacientes**, y se declara.
+  - El diseno de la evaluacion (`experiments/objetivo3/diseno_A.md`) se **congelo el 2026-10-09**, antes de
+    tocar test, con una **ENMIENDA el 2026-10-11 (run04)**, antes de tocar test con el modelo vigente
+    (`01-decisiones.md` 2026-10-11 (2) y (3)). Se declara que el modelo se entreno antes de congelar.
+  - **Modelo vigente: run04** (actualizado el 2026-10-11). Una auditoria de pacientes duplicados detecto que
+    `metal_0003` (train) y `metal_0072` (test) eran el mismo paciente (#166): se reentreno sin `0003` y se
+    regeneraron todos los resultados. **La tesis reporta solo run04**; las corridas anteriores no se describen ni
+    se comparan, y ninguna cifra sale de ellas (#171). Limitacion declarada en una frase: el conjunto de test se
+    habia evaluado una vez con el modelo afectado; las enmiendas posteriores se fijaron sobre validacion y por
+    reglas registradas antes (#171).
+  - La unidad de entrenamiento es el **componente conexo**, no el corte (D2, #102). Conjunto de run04:
+    **14 182 parches, 39 casos** (`train`; sin los volumenes secundarios de #163, sin `0003` y sin los 3
+    componentes no ortopedicos de #109/#167) y **896 parches, 3 casos** (`val`, #105). `Delta` se mide sobre
+    **2 receptores limpios de validacion** (`0101`, `0102`), y se declara.
   - **Tres desplazamientos de dominio declarados**, no supuestos ausentes: mascara de entrenamiento por
     umbral frente a cilindro parametrico liso; contexto con streaking real frente a paciente limpio;
     y parches de solo banda menos frecuentes de lo que predice la geometria del corredor.
-  - **Decisiones de octubre (todas en `01-decisiones.md`; anadido el 2026-10-08):**
-    - **Entrenamiento (B2, cerrada 2026-10-09 (2)):** la cifra de 30 000 pasos (2026-10-05 (2)) deja de
-      describir el modelo usado. El checkpoint se elige por cotejo entre **dos candidatos**: ~37 000 pasos
-      (minimo de la perdida de validacion de `run02`) y 140 000 (`run01`). Sin reentrenar; no se afirma que
-      ~37 000 sea optimo.
-    - **B1 (2026-10-09 (2)):** no se afirma saturacion con 47 pacientes; el efecto de anadir pacientes no se
-      midio. Solo se midio que 4 veces mas pasos no mejoran el cotejo: eso habla de la duracion, no de la
-      cohorte. Se declara como limitacion.
+  - **Decisiones de octubre (todas en `01-decisiones.md`):**
+    - **Entrenamiento:** run04, 60 000 pasos, hiperparametros fijados antes (#148). El minimo de la perdida de
+      validacion cae en el paso **16 500** y despues sube (sobreajuste; #168). No se afirma que ningun numero de
+      pasos sea optimo.
+    - **B1:** no se afirma saturacion con 39 casos de entrenamiento; el efecto de anadir pacientes no se midio.
+      Se declara como limitacion.
     - **El checkpoint NO se elige por la perdida de validacion** (2026-10-05 (6)), sino por un cotejo de
       apariencia **sobre la tarea de sintesis**: tornillo parametrico en pelvis limpias de validacion,
       perfil radial de HU (mediana y p95 como elevacion sobre el anillo de 12-15 mm) e histograma
       dentro de `M` sobre voxeles > 2500 HU, contra los **2 tornillos aislados de `metal_0039`**, unico
       paciente de validacion con tornillo aislado (`0011` fijador externo, `0056` placas; 2026-10-08 (2),
       #154); regla por envolvente real; con 1 paciente descarta, no prueba (2026-10-07 (2)).
-    - **Checkpoint elegido: `mejor_37k`** (2026-10-09, #157).
-      - Cascaras de **1 mm**. El cambio desde 0.5 mm es posterior al resultado y se declara: con 0.5 mm ganaba
-        `run01_140k` por 8 frente a 7 de 46; con 1 mm gana `mejor_37k` por 11 frente a 5 de 24.
-      - 2 receptores (`0101`, `0102`) x 5 semillas; resultado reproducible.
-      - **Hallazgo declarado:** en los dos checkpoints, el p95 sintetico queda bajo lo real (10-11 de 12
-        cascaras; unos 900 HU bajo en `M`).
+    - **Checkpoint elegido: `run04_mejor`** (paso 16 500; `01-decisiones.md` 2026-10-11 (3), #169).
+      - Candidatos fijados antes de generar: `run04_mejor` y el final de 60 000 pasos (`run04_60k`).
+        Cascaras de 1 mm (fijadas el 2026-10-09, antes de entrenar run04), 2 receptores (`0101`, `0102`) x
+        5 semillas. Gana `run04_mejor` por 12 frente a 10 de 24 cascaras.
+      - **Hallazgos declarados:** el p95 sintetico queda bajo lo real en los dos (8 y 10 de 12 cascaras); y
+        dentro de `M` `run04_mejor` genera metal mas oscuro que lo real (distancia de histograma 810 HU frente a
+        160 de `run04_60k`), cosa que la regla no mira.
+      - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (100.3 HU) y con el
+        principal (163.8 HU). Genera rayas MAS DEBILES que `run04_mejor`, asi que la eleccion del principal no
+        acerca el difusor al brazo fisico.
+    - **`Delta = max(s, r)` = 163.8 HU** (2026-10-09 (4); `s` del difusor = 163.8, `r` de Peters = 23.2).
+      **HU de copia y pegado = 5371 HU** (`a22`, conjunto de run04).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
       60 % de los parches (2026-10-05 (6), punto 2).
     - **Lectura de HU del Objetivo 3: `regla_suave` (v2), `delta = 0.05`** (2026-10-07). La `regla` v1
       sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
     - **Endpoint primario `streak amplitude` preinscrito por completo** (2026-10-05 (3) y (4)): verdad de
       terreno = TC limpia del mismo paciente, asi que solo se mide en los **14 de test sin metal**
-      (E-A2); en los **19** con metal se mide **discrepancia** (eran 20: `metal_0053` sale por ser otra
-      adquisicion de `metal_0054`, de train; #156; prueba = 33 pacientes). ROIs = anillos completos de un voxel de
+      (E-A2; 13 tras excluir `dataset6_CLINIC_0034_data`, sin eje del corredor); en los **13** de test con metal
+      se mide **discrepancia** (E-A1; #156, #164; prueba = 33 pacientes, `02-datos.md` 2026-10-11). ROIs = anillos completos de un voxel de
       guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
       fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
       (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura**.
@@ -162,8 +172,8 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       arquitectura tal como corrio (U-Net `base = 64`, `v`, coseno, DDIM 50); 5 semillas por caso; copia y
       pegado = HU constante (mediana del metal real de entrenamiento); `bone/metal integrity` descriptivas, leidas
       contra el brazo fisico; realismo = perfil radial e histograma frente a E-A1; brazo fisico sobre los 14
-      de E-A2, test-retest con otra semilla de ruido. Para congelar `diseno_A.md` solo faltan datos: sonda
-      de Peters y `Delta` (checkpoint elegido el 2026-10-09).
+      de E-A2, test-retest con otra semilla de ruido. `diseno_A.md` congelado el 2026-10-09 y enmendado el
+      2026-10-11 (run04).
 - Objetivo 4: SAP como unica metrica propia, mas las metricas del protocolo adoptado
   (`peters2025hybrid`) con SUS nombres publicados
 - ~~Ablaciones por restriccion~~ **FUERA** (2026-09-17): trabajo futuro. Ver punto 10 de `Fuera de alcance`

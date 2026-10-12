@@ -43,6 +43,9 @@
 >   su implementacion (`a11.pose_a_marco_crudo`) y se agrega un control de pose. Se rehacen con la pose correcta:
 >   cotejo, `Delta` (s y r), el material por la MISMA regla de 2026-10-09 (5) (el resultado Ti queda archivado y se
 >   acepta lo que salga), y la corrida final de los dos brazos.
+>   **GPU de la repeticion:** `gpu:rtxa6000:1` (exclusiva) para los dos puntos de control, en todas sus etapas
+>   (cotejo, `Delta`, final), elegida por disponibilidad (#151 exige el mismo tipo entre lo que se compara; todo se
+>   rehace, asi que no hay que empatar con la `a100_3g` anterior).
 
 ## 0. Diseno congelado para la corrida final
 

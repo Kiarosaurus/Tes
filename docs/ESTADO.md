@@ -2496,3 +2496,4 @@ que es la posible solucion de #7.
 ## Deudas asumidas
 - Leer a fondo Zwingmann 2009 y Smith 2006 antes de la sustentacion:
   la metrica SAP depende de la definicion de grados de brecha cortical.
+

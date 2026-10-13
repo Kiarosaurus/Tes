@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-13 (3) — Tabla de D-a generada en local (`v2_d_componentes.py`)
+
+- **Hecho:** `v2_d_componentes_run04.csv`/`.md` (autora, local): de 203 componentes del manifiesto de run04 (14 182 parches, 39 casos), **45 son tamano tornillo** (500-4000 mm3): **2 888 parches, 24 casos**. Fraccion natural **0.2036**. Factor `f` segun `FRAC`: 0.25 -> 1.30; 0.33 -> 1.93; 0.5 -> 3.91.
+- **Siguiente:** autora fija `FRAC` y `PESO` en `v2_plan.md`; Khipu: `git pull` -> humo de 200 pasos -> run05a.
+- **Pendiente:** compuerta de B (#178).
+
 ## 2026-10-13 (2) — Sesion cloud: 12 fichas nuevas (B + planificacion pelvica); scripts de D escritos
 
 - **Hecho:** `lector-papers` sobre los 12 PDF con clave sin ficha (R2, R3, R6-R11 de B; `goerres2017planning`, `han2019atlasplanning`, `han2021multibody`, `yang2022arcplanning`); `refs/clean/` + `MAPEO.md` + `_index.md` + `_candidatos.md`; `refs.bib` 131. R4 (`hyung2017ml`) sin PDF: solo raw/clean. Yang 2022: PDF de otro documento (VERIFICAR). Implicancias **#178** (T no da rayas para un tornillo de seccion estrictamente convexa; Teo. 3.5 de Park 2017), **#179** (brecha cap. 2), **#180** (planificadores del Obj 2) ABIERTAS.

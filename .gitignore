@@ -1,7 +1,7 @@
 # ---- NUNCA subir ----
 # PDFs con copyright del editor
-papers/*
-!papers/.gitkeep
+#papers/*
+#!papers/.gitkeep
 
 # Volumenes CT: pesados y potencialmente identificables
 data/*

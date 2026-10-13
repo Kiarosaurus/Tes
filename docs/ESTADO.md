@@ -10,7 +10,6 @@
 - **Siguiente:** Khipu: run05a completo (`FRAC=0.5,PESO=3`, GPU elegida con `khipu_elegir_gpu.sh ... 540 16`).
 - **run05a job 56471 en PD** (`ReqNodeNotAvail`, inicio corrido de 07:04 a 18:06). Corregido `entrenar.py`: al reanudar conservaba `mejor.pt` sin su minimo (la primera validacion tras reanudar lo sobrescribia); run04 no se reanudo (job unico 55706), no le afecta. `a7_run05a.sbatch` acepta `CADA_CKPT` para correr en tramos encadenados.
 - **run05a CORRIENDO desde 2026-10-13 15:52** en 4 tramos de 3 h encadenados (`afterany`): 56570 (R, ag001) -> 56571 -> 56572 -> 56573; `-p all --gres=shard:a100_3g.20gb:8`, `CADA_CKPT=1000`. **GPU distinta de run04 (rtxa6000)**: declararlo; run05b debe ir en la misma `a100_3g`. Las rtxa6000 estaban tomadas hasta ~18:06 (sin reservas: cola llena).
-- **run05a CORRIENDO desde 2026-10-13 15:52** en 4 tramos de 3 h encadenados (`afterany`): 56570 (R, ag001) -> 56571 -> 56572 -> 56573; `-p all --gres=shard:a100_3g.20gb:8`, `CADA_CKPT=1000`. **GPU distinta de run04 (rtxa6000)**: declararlo; run05b debe ir en la misma `a100_3g`. Las rtxa6000 estaban tomadas hasta ~18:06 (sin reservas: cola llena). En paralelo, local: fijar criterio de la compuerta de B y piloto.
 - **Pendiente:** compuerta de B (#178).
 
 ## 2026-10-13 (2) — Sesion cloud: 12 fichas nuevas (B + planificacion pelvica); scripts de D escritos

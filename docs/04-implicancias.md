@@ -12055,3 +12055,19 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   se informa ahora por salidas de test vistas en los HTML: debe declararse como posterior y exploratorio.
 - **Propuesta de Claude:** ver el chat del 2026-10-12 (evaluar v1 tal como esta preinscrita; diagnosticos baratos D1-D3;
   v2 solo si el plazo lo permite).
+
+### 177 — RESULTADO DE PRUEBA DE LA VERSION 1 (E-A2): no se concluye equivalencia con Peters Ti; el difusor da rayas mas debiles (-301 HU, IC90 [-477.0, -124.9], `Delta` 196.3); supera el piso de copia y pegado — ABIERTA
+
+- **Origen:** Claude, 2026-10-13, `a24` sobre la corrida final con la pose corregida
+  (`experiments/objetivo3/resultados_prueba_v1.md`). Primera y unica evaluacion de prueba con el modelo evaluado.
+- **Medido:** principal `run04_mejor`: diferencia media -301.0 HU, IC90 [-477.0, -124.9], p TOST 0.845; Fe -3814.2;
+  sin angostos (n = 10) -261.1 [-479.8, -42.4]. `run04_60k`: -384.0 [-566.5, -201.4], entero fuera de ±115.8 y de
+  ±196.3. Wilcoxon frente a copia y pegado p = 0.000122. E-A1 (13): MAE en `G` 270.9 HU (grupo 1, n = 9).
+- **Lo que significa (descriptivo):** el desenlace preaceptado "no se pudo concluir equivalencia" (2026-10-05 (6)).
+  El IC90 del principal esta entero bajo 0: el difusor genera rayas mas debiles que Peters Ti, coherente con #175
+  (validacion) y #176 (inspeccion visual). El diseno no fija si un IC entero fuera del margen cuenta como evidencia en
+  contra (`\GAPDEC` del cap. 3); con `run04_60k` ese caso ocurre, con el principal no.
+- **Toca:** el capitulo 4 (resultados) y la discusion; la decision de una version 2 (#176) se toma DESPUES de este
+  resultado y debe declararse asi. Realismo (opcion 3) pendiente: sin script y sin la lista de pacientes.
+- **Pendiente de la autora:** nada que decidir sobre este resultado (el diseno estaba congelado); si decide v2, se
+  reporta junto, no en lugar de este.

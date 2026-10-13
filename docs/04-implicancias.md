@@ -12078,3 +12078,14 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   **H2 se sostiene:** la banda de 12 mm corta un artefacto real que sigue presente hasta ~20-25 mm. Si se adopta la
   opcion A, el ancho que sugiere D1 es ~24-26 mm (no 40). Limite: la referencia es otro corte (la anatomia cambia);
   rayas largas y tenues por debajo de la deteccion de este metodo no se ven.
+- **Adenda D1 con piezas tamano tornillo y D2 (2026-10-13, Claude; `experiments/objetivo3/d1_d2_resultado.md`) —
+  CORRIGE la lectura de la adenda anterior:** restringido a componentes de 500-4000 mm3 (18 pacientes), el exceso real
+  vale 1930 / 1199 / 765 / 473 / 174 HU en 0-2 / 2-4 / 4-6 / 6-8 / 8-10 mm y **11 HU (IC90 incluye 0) a 10-12 mm**:
+  en tornillos el artefacto real se agota hacia 10 mm. El alcance de 20-25 mm de la adenda anterior lo aportaban
+  placas y protesis. **H2 NO se sostiene para tornillos: la banda de 12 mm alcanza.** D2 (misma metrica, validacion,
+  referencia exacta): el sintetico `run04_mejor` da 1697 / 488 / 97 / -65 / -40 HU en esos anillos (`run04_60k`
+  parecido): cerca del metal se aproxima a lo real (1697 frente a 1930) pero se apaga hacia 6 mm, donde lo real sigue
+  en 473-765 HU. **El defecto esta en lo que el modelo genera dentro de la banda, no en su ancho.** Coherente con H1
+  (contexto) y con H3 (mascara de entrenamiento con florecido) y con la composicion del entrenamiento (dominado por
+  placas y componentes grandes; en 40 componentes revisados solo 5 eran tornillos). Claude retira la recomendacion de
+  la opcion A (banda ancha). Limite de D1: la referencia es otro corte; D2 usa solo 2 receptores.

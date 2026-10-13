@@ -28,6 +28,7 @@ Salida: `outputs/d1/d1_exceso_por_anillo.csv`, `d1_por_paciente.csv`, `d1_resume
 USO
 ---
     python experiments/objetivo3/d1_alcance_rayas.py [--max-cortes 8] [--max-casos N]
+    python experiments/objetivo3/d1_alcance_rayas.py --vol-max 4000 --out-dir experiments/objetivo3/outputs/d1_tornillo
 """
 from __future__ import annotations
 
@@ -94,7 +95,7 @@ def casos() -> list[tuple[str, str, Path]]:
     return out
 
 
-def analiza(ruta: Path, max_cortes: int) -> tuple[list[np.ndarray], list[np.ndarray], int]:
+def analiza(ruta: Path, max_cortes: int, vol_max: float = np.inf) -> tuple[list[np.ndarray], list[np.ndarray], int]:
     """Perfiles de exceso (uno por componente) y nulos, de un volumen."""
     img = nib.load(str(ruta))
     vol = np.asarray(img.dataobj, dtype=np.float32)
@@ -115,7 +116,7 @@ def analiza(ruta: Path, max_cortes: int) -> tuple[list[np.ndarray], list[np.ndar
 
     perf_comp, nulos, ncomp = [], [], 0
     for c in range(1, n + 1):
-        if tam[c] * vox_mm3 < VOL_MIN_MM3:
+        if not VOL_MIN_MM3 <= tam[c] * vox_mm3 <= vol_max:
             continue
         mc = lab == c
         por_corte = mc.reshape(-1, mc.shape[2]).sum(0)
@@ -164,13 +165,15 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--max-cortes', type=int, default=8)
     ap.add_argument('--max-casos', type=int, default=None)
+    ap.add_argument('--vol-max', type=float, default=np.inf,
+                    help='mm3; p. ej. 4000 para quedarse con piezas del tamano de un tornillo')
     ap.add_argument('--out-dir', type=Path, default=_AQUI / 'outputs' / 'd1')
     args = ap.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     lista = casos()[:args.max_casos]
     por_pac, nul_pac, filas = [], [], []
     for i, (caso, part, ruta) in enumerate(lista, 1):
-        perf, nul, ncomp = analiza(ruta, args.max_cortes)
+        perf, nul, ncomp = analiza(ruta, args.max_cortes, args.vol_max)
         print('[%d/%d] %s (%s): %d componentes, %d nulos' % (i, len(lista), caso, part, ncomp, len(nul)), flush=True)
         if perf:
             p = np.nanmedian(np.stack(perf), 0)
@@ -198,8 +201,9 @@ def main() -> None:
     ultimo = BORDES_MM[max(supera) + 1] if supera else 0.0
     L = ['# D1 — alcance del artefacto real por anillo (#176)', '',
          'Generado por `d1_alcance_rayas.py`. %d pacientes con perfil (%d de nulo); entrenamiento de run04 y '
-         'validacion. Exceso = amplitud de Peters (5 %% superior - 5 %% inferior) en el corte con metal menos en un '
-         'corte de referencia sin metal a 15-40 mm. Nulo = lo mismo entre dos cortes sin metal.' % (P.shape[0], N.shape[0]),
+         'validacion%s. Exceso = amplitud de Peters (5 %% superior - 5 %% inferior) en el corte con metal menos en un '
+         'corte de referencia sin metal a 15-40 mm. Nulo = lo mismo entre dos cortes sin metal.' % (
+             P.shape[0], N.shape[0], '' if np.isinf(args.vol_max) else ', componentes de 500 a %g mm3' % args.vol_max),
          '', '| anillo (mm) | n | exceso mediano | IC90 | nulo mediano | IC90 nulo |', '|---|---|---|---|---|---|']
     for j, c in enumerate(centros):
         L.append('| %s | %d | %.0f | [%.0f, %.0f] | %.0f | [%.0f, %.0f] |' % (

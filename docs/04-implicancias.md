@@ -12071,3 +12071,10 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   resultado y debe declararse asi. Realismo (opcion 3) pendiente: sin script y sin la lista de pacientes.
 - **Pendiente de la autora:** nada que decidir sobre este resultado (el diseno estaba congelado); si decide v2, se
   reporta junto, no en lugar de este.
+- **Adenda D1 (2026-10-13, Claude; `experiments/objetivo3/d1_resultado.md`):** en 40 pacientes de entrenamiento y
+  validacion, el exceso de amplitud de Peters del corte con metal sobre un corte de referencia sin metal (15-40 mm)
+  vale 2382 HU a 0-2 mm, **324 HU a 10-12 mm** (borde de `G`), 223 a 12-14, ~105 a 16-20, ~85 a 20-24 y ~0 desde
+  26 mm. Supera al nulo (dos cortes sin metal) con IC90 separados hasta 20 mm; mediana con IC90 > 0 hasta 24 mm.
+  **H2 se sostiene:** la banda de 12 mm corta un artefacto real que sigue presente hasta ~20-25 mm. Si se adopta la
+  opcion A, el ancho que sugiere D1 es ~24-26 mm (no 40). Limite: la referencia es otro corte (la anatomia cambia);
+  rayas largas y tenues por debajo de la deteccion de este metodo no se ven.

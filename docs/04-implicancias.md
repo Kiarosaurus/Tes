@@ -12157,3 +12157,13 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Toca:** redaccion del trabajo relacionado del Objetivo 2 (cap. 2) y, si la autora quiere, el atlas publico de Han
   como contraste externo del corredor (no verificado que el enlace siga activo).
 - **Pendiente de la autora:** conseguir el PDF correcto de Yang 2022 (o el raw del documento que si se tiene).
+- **Adenda R4 (2026-10-13, Claude; ficha `hyung2017ml`, PDF subido por la autora):** es el precedente directo de B en
+  sentido "plantilla -> red": una U-net recibe como UNICA entrada g^m = -R^-1[ln(sinh(lambda R chi)/(lambda R chi))]
+  + c chi (Ec. 15, p. 3) y predice el artefacto solo-metal. **Refuerza dos puntos de `v2_plan.md`:** (a) un lambda
+  fijo sin calibrar por imagen tiene precedente: *"we used fixed λ and c for all input g^m"* (Sec. III.A, p. 4), con la
+  red absorbiendo la discrepancia (el valor de lambda: NO ENCONTRADO EN EL PDF); (b) misma no linealidad y FBP 2D
+  paralela por corte con mascara binaria por umbral. **No resuelve el caso del tornillo aislado:** las 690 imagenes de
+  entrenamiento tienen dos objetos metalicos simetricos y ninguna figura muestra un objeto convexo unico; tampoco hay
+  ablacion sin plantilla. Diferencias a declarar si se adopta: el termino `c chi` dentro del metal (en la tesis `M` ya
+  entra como canal) y la errata de signo entre la Ec. 15 y la Fig. 4 (se toma la Ec. 15, igual a `park2016MAR`).
+  **No cambia ninguna decision:** la compuerta del piloto sigue siendo lo que decide B.

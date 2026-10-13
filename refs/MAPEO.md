@@ -595,7 +595,7 @@ Implicancias: #178 (B), #179 (brecha cap. 2), #180 (Objetivo 2).
 | `gottschalk2022DL` | `gottschalk2022DL.bibtex` | Wiley | **el raw dice `year = 2023`** (Med Phys 50(1)); se conserva la clave de la autora con 2022 y el ano del raw; se descartan `keywords`, `url`, `eprint`, `abstract` |
 | `chen2019analytical` | `chen2019analytical.bibtex` | Wiley (Hindawi) | DOI sin prefijo URL; `2351878` es numero de articulo en `pages`; se descartan `url`, `eprint`, `abstract` |
 | `luo2025biconstraints` | `luo2025biconstraints.bib` | IEEE | clave `10638000` sustituida; se descartan `keywords`; paginas a guion doble |
-| `hyung2017ml` | `hyung2017ml.bib` | arXiv | **sin PDF en `papers/`, sin ficha**; formato `@misc` con `eprint` como `chen2026foundationvae`; el nombre `Hyung Suk` es el del raw |
+| `hyung2017ml` | `hyung2017ml.bib` | arXiv | PDF subido despues (2026-10-13), ficha `hyung2017ml.md`; formato `@misc` con `eprint` como `chen2026foundationvae`; el nombre `Hyung Suk` es el del raw |
 | `goerres2017planning` | `goerres2017planning.nbib` | PubMed (PMID 29058687) | iniciales tal como `FAU`; revista desde `JT` |
 | `han2019atlasplanning` | `han2019atlasplanning.nbib` | PubMed (PMID 30921783) | iniciales; `095022` es numero de articulo en `pages` |
 | `han2021multibody` | `han2021multibody.nbib` | PubMed (PMID 33341493) | iniciales; el raw no trae numero de fasciculo |

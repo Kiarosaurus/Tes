@@ -6,6 +6,7 @@
 
 - **Hecho:** `lector-papers` sobre los 12 PDF con clave sin ficha (R2, R3, R6-R11 de B; `goerres2017planning`, `han2019atlasplanning`, `han2021multibody`, `yang2022arcplanning`); `refs/clean/` + `MAPEO.md` + `_index.md` + `_candidatos.md`; `refs.bib` 131. R4 (`hyung2017ml`) sin PDF: solo raw/clean. Yang 2022: PDF de otro documento (VERIFICAR). Implicancias **#178** (T no da rayas para un tornillo de seccion estrictamente convexa; Teo. 3.5 de Park 2017), **#179** (brecha cap. 2), **#180** (planificadores del Obj 2) ABIERTAS.
 - **Scripts de D:** `entrenar.py --componentes/--frac-tornillo/--anillo-mm/--peso-anillo`, `v2_d_componentes.py`, `a7_run05a.sbatch` (aborta sin `FRAC`/`PESO`). Probados solo con un cache de juguete en CPU; sin banderas la curva es identica a la de v1.
+- **R4 leido (PDF subido por la autora):** ficha `hyung2017ml`; adenda en #178 (lambda fijo tiene precedente; sin casos de objeto unico). No cambia el plan ni los comandos de Khipu.
 - **Siguiente:** autora fija `FRAC`, `PESO` y la compuerta de B (con #178 a la vista); local: `v2_d_componentes.py` -> commit de la tabla; Khipu: humo de 200 pasos -> run05a. Piloto de B despues de fijar su criterio.
 
 ## 2026-10-13 — Version 1 evaluada; diagnostico D1/D2; DECIDIDA version 2 = B + D

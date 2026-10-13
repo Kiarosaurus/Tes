@@ -79,6 +79,15 @@
 | `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Corrido 2026-10-12 sobre `obj3_pose/{final,delta}` (60 HTML) |
 | `../obsoletos/objetivo3/a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **ARCHIVADOS** 2026-10-12 (fuga); no citables (#164, #171) |
 
+## 6b. Diagnostico de la version 1 y version 2 (#176, 2026-10-13)
+
+| Artefacto | Que es | Origen | Estado |
+|---|---|---|---|
+| `resultados_prueba_v1.md` | evaluacion de prueba de la version 1 (E-A2 `a24`, E-A1 `a23`) | local | **HECHO** (#177) |
+| `d1_alcance_rayas.py`, `d1_resultado.md` | D1: alcance del artefacto real por anillo (todas las piezas y `--vol-max 4000`) | local | **HECHO**: tornillos ~10 mm |
+| `d2_perfil_sintetico.py`, `d1_d2_resultado.md` | D2: perfil del artefacto sintetico con la misma metrica | local | **HECHO**: sintetico se apaga ~6 mm |
+| `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b) | autora + asistente | **PLANIFICADO** (`01-decisiones.md` 2026-10-13) |
+
 ## 7. Archivados
 
 Inventario completo en `experiments/obsoletos/README.md`.

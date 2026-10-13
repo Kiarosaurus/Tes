@@ -759,3 +759,24 @@ lectura con `lector-papers`.
 | Zhang J, Wu M, FitzGerald P, Araujo S, De Man B. Development and tuning of models for accurate simulation of CT spatial resolution using CatSim. Phys Med Biol. 2024;69(4):045014 | peters2025hybrid (ref. 38) | Es la unica fuente que el PDF da para el "standard reconstruction kernel" (2.1, p. 2). El kernel del brazo hibrido no esta en el PDF, y la sonda (`a18`) usa el `standard` de XCIST | 2 | PENDIENTE |
 | Zhang et al., "Accurate modeling of CT noise with CatSim" (figura como pending en la lista de referencias) | peters2025hybrid (ref. 39) | Modelo de ruido del brazo fisico; respaldaria V3 de la sonda (ruido test-retest) | 3 | PENDIENTE |
 | FitzGerald P, et al. Semiempirical, parameterized spectrum estimation for x-ray computed tomography. Med Phys 2021;48(5):2199-2213 | peters2025hybrid (ref. 37); ya registrada desde wu2022xcist | Segunda lectura independiente que la cita (espectros del ruido). Ver la fila PENDIENTE existente; no se duplica el estado | — | ver fila de wu2022xcist |
+
+## Ronda 2026-10-13 — fuentes para la opcion B de la version 2 (#176)
+
+> **Procedencia distinta de las rondas anteriores:** no salen de un PDF leido por `lector-papers`, sino de una
+> revision bibliografica externa que la autora pego en el chat el 2026-10-13. Las citas se transcriben como las da
+> esa revision y **no estan verificadas**: autores, anos, DOI y contenido se confirman al leer el PDF. Ya estan en el
+> repositorio, con ficha: `park2015ct` (R1), `lyu2020dudonet` (R5, *Encoding Metal Mask Projection*) y
+> `yun2026simulationdriven` (R12). La autora decidio B + D (`01-decisiones.md` 2026-10-13); la lectura se hace cuando
+> ella lo ordene, con los PDF y los raw en `refs/raw/`.
+
+| Cita (como aparece en la revision) | Salio de | Por que podria importar | Nivel sugerido | Estado |
+|---|---|---|---|---|
+| H. S. Park, J. K. Choi, J. K. Seo. Characterization of Metal Artifacts in X-Ray Computed Tomography. Comm. Pure Appl. Math. 70(11):2191-2217, 2017 (manuscrito arXiv 1406.0318) | revision externa (R3) | Formula de la plantilla (`log(sinh u / u)` y FBP) y condiciones geometricas de aparicion de rayas; imprescindible para B | 1 | LEER (falta PDF) |
+| H. S. Park, S. M. Lee, H. P. Kim, J. K. Seo. Machine-learning-based nonlinear decomposition of CT images for metal artifact reduction. arXiv:1708.00244, 2017 | revision externa (R4); ya listada como descarte en la ronda de `lin2019` | Antecedente mas directo de "plantilla aproximada -> red"; se relee para este uso nuevo. Prepublicacion | 1 | LEER (falta PDF) |
+| Y. Wang, Y. Zou. Streak artifacts from nonconvex metal objects in X-ray tomography. Pure Appl. Anal. 3(2):295-318, 2021 | revision externa (R9) | Geometrias no convexas (cabeza, fuste) | 2 | LEER si la autora sube el PDF |
+| Y. Lyu, J. Fu, C. Peng, S. K. Zhou. U-DuDoNet: Unpaired Dual-Domain Network for CT Metal Artifact Reduction. MICCAI 2021, LNCS 12906 | revision externa (R7) | Sintesis aprendida de artefactos ya existe: obliga a reformular la brecha del cap. 2 | 2 | LEER si la autora sube el PDF |
+| J. Xia et al. PND-Net: Physics-Inspired Non-Local Dual-Domain Network for Metal Artifact Reduction. IEEE TMI 43(6):2125-2136, 2024 | revision externa (R8) | Fisica + apariencia aprendida en la ruta de sintesis; advierte contra sumar un artefacto como capa universal | 2 | LEER si la autora sube el PDF |
+| H. S. Park, D. Hwang, J. K. Seo. Metal Artifact Reduction for Polychromatic X-ray CT Based on a Beam-Hardening Corrector. IEEE TMI 35(2):480-487, 2016 | revision externa (R2) | Correccion geometrica sin espectro conocido; complementaria a R3 | 3 | PENDIENTE |
+| T. Gottschalk et al. DL-based inpainting for metal artifact reduction for cone beam CT using metal path length information. Med Phys 50(1):128-141, 2023 | revision externa (R6) | Prior de longitud en metal con datos medidos (CBCT, MAR) | 3 | PENDIENTE |
+| M. Chen et al. An Analytical Method for Reducing Metal Artifacts in X-Ray CT Images. Math. Probl. Eng. 2019:2351878 | revision externa (R10) | Alternativa analitica; menos proxima | 4 | PENDIENTE |
+| M. Luo et al. Bi-Constraints Diffusion: A Conditional Diffusion Model With Degradation Guidance for Metal Artifact Reduction. IEEE TMI 44(9):3552-3562, 2025 | revision externa (R11) | Difusion guiada por informacion del artefacto (tarea inversa) | 3 | PENDIENTE |

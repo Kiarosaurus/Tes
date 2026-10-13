@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-13 — Version 1 evaluada; diagnostico D1/D2; DECIDIDA version 2 = B + D
+
+- **Hecho:** prueba de la version 1 (#177: no equivalencia con Peters Ti, -301 HU, IC90 [-477.0, -124.9]; supera copia y pegado; E-A1 MAE `G` 270.9 HU). D1/D2 (#176): en tornillos el artefacto real llega a ~10 mm y la banda de 12 mm alcanza; el sintetico se apaga a ~6 mm. Opcion A retirada. **Decision de la autora:** version 2 = **B + D** (run05a: D; run05b: D + B), Peters sigue como comparacion, sin XCIST/AAPM (`01-decisiones.md` 2026-10-13; plan `experiments/objetivo3/v2_plan.md`). Fuentes de B en `_candidatos.md`, ronda 2026-10-13.
+- **Siguientes decisiones (solo estas dos lineas de trabajo):** (1) **lectura** de R3 (Park, Choi y Seo 2017) y R4 (arXiv 1708.00244), y R9/R7/R8 si la autora sube los PDF, con `lector-papers` **cuando ella lo ordene** (pegar los raw en `refs/raw/`); (2) **scripts de D** (sobremuestreo de tornillos 500-4000 mm3 y peso de la perdida en 2-10 mm; fijar los `[POR FIJAR]` de `v2_plan.md`; `.sbatch` de run05a). Piloto de B despues de la lectura. **Redaccion en pausa.**
+- **Pendiente sin fecha:** realismo (sin script; falta la lista de pacientes de prueba con tornillo aislado); 16 `\GAPDEC` del cap. 3 (los del TOST esperan a la version 2).
+
 ## 2026-10-12 (3) — obj3_pose completo en local; logs de Khipu perdidos; limpieza de obsoletos
 
 - **Hecho:** `data/obj3_pose/` traido completo a `experiments/objetivo3/outputs/obj3_pose/` (`cotejo`, `delta`, `final` x2 ckpt, `peters_val`, `peters_final`); tamanos = Khipu (diferencias solo de bloques de directorio). D: se habia llenado: borradas salidas pesadas de `experiments/obsoletos/*/outputs/` (~36.6 GB; se conservan CSV/JSON/log/PNG/npz de marcas; excepcion escrita en `obsoletos/README.md`). `a19_peters`/`a19_final.sbatch` archivados.

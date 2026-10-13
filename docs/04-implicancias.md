@@ -12089,3 +12089,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   (contexto) y con H3 (mascara de entrenamiento con florecido) y con la composicion del entrenamiento (dominado por
   placas y componentes grandes; en 40 componentes revisados solo 5 eran tornillos). Claude retira la recomendacion de
   la opcion A (banda ancha). Limite de D1: la referencia es otro corte; D2 usa solo 2 receptores.
+- **Decision de la autora (2026-10-13; `01-decisiones.md` 2026-10-13):** version 2 = **B + D** (run05a: D; run05b:
+  D + B), Peters sigue como comparacion principal, sin XCIST ni AAPM; opcion A descartada. Plan:
+  `experiments/objetivo3/v2_plan.md`. Siguiente: lectura de las fuentes de B (a la orden de la autora) y scripts de D.
+  #176 sigue ABIERTA hasta evaluar la version 2.

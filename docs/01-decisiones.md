@@ -2494,3 +2494,28 @@ los resultados con los nuevos numeros"). Los grupos de mismo paciente los confir
    umbral fijado antes de correr). **E-A2:** 13 (sin cambio).
 4. **`Grupo paciente` no se unifica en el CSV por ahora:** `grupo_paciente.py` renumeraria los identificadores. Los
    recuentos descuentan los secundarios a mano y lo declaran.
+
+## 2026-10-13 — Version 2 del sintetizador: B + D, sin XCIST ni AAPM, con Peters como comparacion (#176, #177)
+
+Escrito por el asistente con permiso explicito de la autora ("Realizaremos B+D, pero deja todo declarado [...] asi
+como decisiones.md (si es necesario) declarando mi decision actual").
+
+1. **Contexto:** la autora juzga de baja calidad el artefacto de la version 1 (#176). La version 1 ya se evaluo tal
+   como estaba preinscrita: no se concluye equivalencia con Peters Ti, el difusor da rayas mas debiles (-301 HU, IC90
+   [-477.0, -124.9]) y supera la copia y pegado (#177). Diagnostico D1/D2: en tornillos la banda de 12 mm alcanza; el
+   sintetico se apaga hacia 6 mm.
+2. **Decision:** se hace una **version 2** con dos intervenciones: **D** (reentrenar con sobremuestreo de componentes
+   tamano tornillo y mas peso de la perdida en 2-10 mm) y **B** (canal de condicion con una plantilla analitica
+   aproximada de endurecimiento del haz calculada desde `M`). Dos entrenamientos comparables: run05a (D) y run05b
+   (D + B). Plan: `experiments/objetivo3/v2_plan.md`.
+3. **Lo que se mantiene:** la comparacion principal frente a **Peters** (la autora no quiere pasar a tornillos reales
+   como comparacion principal, porque son de otro tipo); el realismo frente a tornillos reales sigue descriptivo. No se
+   entrena con XCIST ni con el conjunto AAPM (seria entrenar con el comparador). Se descarta la opcion A (banda ancha):
+   D1 con piezas tamano tornillo muestra que la banda de 12 mm alcanza.
+4. **Declaracion:** la version 2 se decide despues de ver salidas y el resultado de prueba de la version 1; es
+   posterior y exploratoria y se reporta junto a la version 1, no en su lugar. Prueba no se usa para elegir entre
+   run05a y run05b ni para fijar parametros.
+5. **B tiene una compuerta:** un piloto local de la plantilla, tras leer las fuentes; si no da senal fuera de `M` en
+   2-10 mm, se sigue solo con D.
+6. **Orden:** primero la lectura de las fuentes de B (cuando la autora lo ordene) y los scripts de D; despues el
+   piloto de B. La redaccion queda en pausa hasta tener la version 2 evaluada.

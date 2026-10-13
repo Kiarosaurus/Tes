@@ -41,10 +41,26 @@
   simulador ni Peters; `lambda` no se calibra al escaner.
 - **Compuerta previa (piloto, local, sin entrenar):** calcular `T` sobre los cortes reales de `M` (validacion) y sobre
   controles (disco, elipse, dos discos, rectangulo largo). Se sigue con B solo si `T` tiene senal fuera de `M` en
-  2-10 mm y es estable al aumentar los angulos de proyeccion. Criterio numerico `[POR FIJAR]` antes de mirar el
-  piloto. Si falla, se sigue solo con D y se declara.
+  2-10 mm y es estable al aumentar los angulos de proyeccion. Criterio numerico: ver "Compuerta de B" abajo
+  (PROPUESTO por Claude 2026-10-13; la autora lo aprueba antes de correr el piloto). Si falla, se sigue solo con D y se declara.
 - **Implementacion:** `T` sobre el corte completo antes de recortar el parche, con espaciado fisico; misma definicion
   en entrenamiento (con la mascara del componente real) e inferencia (con el cilindro); normalizacion compartida.
+
+### Compuerta de B (PROPUESTA 2026-10-13, a aprobar por la autora ANTES de correr; script `b_piloto_plantilla.py`)
+
+Sin entrenar, local, sobre cortes de componentes tamano tornillo (500-4000 mm3) de entrenamiento de run04 y validacion,
+con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara binaria; 360 angulos.
+- **C0, validez numerica:** en controles sinteticos, `A_disco < 0.2 * A_dos_discos` (`A` = rms de la parte direccional
+  de `T` en 2-10 mm / rms de `T` en `M`). La teoria predice ~0 fuera del disco (#178).
+- **C1, estabilidad:** Spearman de la parte direccional de `T` entre 360 y 720 angulos, mediana por corte >= 0.9.
+- **C2, coincidencia con lo real (decide):** parte direccional (menos la mediana por cascara de 1 mm) de `T` y del
+  residuo real `D = HU(corte) - HU(referencia sin metal)` en 2-10 mm; `d = rho - rho_nulo` (nulo: `T` rotada 30-150 y
+  210-330 grados); control anatomico `d0` = lo mismo con dos cortes sin metal (nulo de D1); `e = d - d0`. Medianas
+  corte -> componente -> paciente. PASA si Wilcoxon de una cola `e > 0` entre pacientes da p < 0.05 y la mediana de
+  `d` >= 0.05.
+- B pasa si C0, C1 y C2 pasan. Sensibilidad que no decide: `lambda0 x 0.5`, `x 2`, mascara suavizada.
+- Probado con datos sinteticos (no reales): controles C0 calculados (disco 0.0067, elipse 0.0642, dos discos 0.0902,
+  estadio 0.1383: PASA; no usan datos); con anatomia alineada al tornillo y sin artefacto `e` < 0, con artefacto `e` > 0.
 
 ### Implementacion de D (2026-10-13, sesion cloud; probada solo con un cache de juguete)
 

@@ -289,6 +289,14 @@ def main() -> None:
         paso = int(prev.get('paso', 0))
         modo = 'a'
         print(f'REANUDADO desde {ck_previo} en el paso {paso}')
+        # El minimo de validacion tambien se reanuda: sin esto, la primera validacion tras reanudar
+        # sobrescribiria `mejor.pt` aunque fuera peor que el minimo ya guardado antes del corte.
+        for ruta, clave, reg in ((args.out / 'mejor.pt', 'perdida_val', mejor),
+                                 (args.out / 'mejor_pond.pt', 'perdida_val_pond', mejor_p)):
+            if ruta.exists():
+                m = torch.load(ruta, map_location='cpu', weights_only=False)
+                reg[0], reg[1] = float(m[clave]), int(m['paso'])
+                print(f'  minimo previo en {ruta.name}: {reg[0]:.5f} en el paso {reg[1]}')
         if 'opt' not in prev:
             print('AVISO: el ckpt no traia estado del optimizador; AdamW arranca con momentos a cero.')
 

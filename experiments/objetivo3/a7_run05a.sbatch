@@ -22,6 +22,9 @@
 #          experiments/objetivo3/a7_run05a.sbatch
 #
 # SI EL JOB SE CORTA, se relanza EXACTAMENTE igual: `--reanudar` continua desde `ckpt.pt`.
+# EN TRAMOS (cola llena o reservas, 2026-10-13): jobs cortos encadenados con --dependency=afterany, cada uno con
+# --time corto y CADA_CKPT=1000 para perder poco al cortarse. `mejor.pt`/`mejor_pond.pt` conservan su minimo al
+# reanudar. Si la corrida ya llego a 60 000 pasos, un tramo extra termina enseguida sin entrenar.
 # Salida: $DATA/a7/run05a/{ckpt.pt, mejor.pt, mejor_pond.pt, curva.csv, entrenar_meta.json}
 #SBATCH --job-name=a7run05a
 #SBATCH --partition=gpu
@@ -73,7 +76,7 @@ python -u "$REPO/src/renderizador/entrenar.py" \
     --lr 1e-4 \
     --cada 500 \
     --lotes-val 16 \
-    --cada-ckpt 5000 \
+    --cada-ckpt "${CADA_CKPT:-5000}" \
     --trabajadores "$SLURM_CPUS_PER_TASK" \
     --componentes "$COMP" \
     --frac-tornillo "$FRAC" \

@@ -7,7 +7,8 @@
 - **Hecho:** `v2_d_componentes_run04.csv`/`.md` (autora, local): de 203 componentes del manifiesto de run04 (14 182 parches, 39 casos), **45 son tamano tornillo** (500-4000 mm3): **2 888 parches, 24 casos**. Fraccion natural **0.2036**. Factor `f` segun `FRAC`: 0.25 -> 1.30; 0.33 -> 1.93; 0.5 -> 3.91.
 - **Fijados por la autora:** `FRAC = 0.5` (factor 3.91), `PESO = 3` (escalon 2-10 mm); escritos en `v2_plan.md`. Version 2 = solo run05a y run05b; no hay run06 (la opcion C era quedarse con la version 1, ya descartada).
 - **Humo run05a HECHO (shard `a100_3g.20gb:8`, A100-PCIE-40GB):** 6 controles PASAN (sorteo de tornillos 0.4981 frente a 0.5); 0.542 s/paso (tramo), **12.1 GB**; `perdida_val` 0.2362 / `perdida_val_pond` 0.2375 (el peso actua). `frac_pixeles_anillo_lote` 0.0 es esperable: el control usa los 2 primeros parches del manifiesto, sin metal. Estimado de la corrida completa: ~9-9.5 h a ese ritmo.
-- **Siguiente:** Khipu: run05a completo (`FRAC=0.5,PESO=3`, GPU elegida con `khipu_elegir_gpu.sh ... 540 16`). En paralelo, local: fijar criterio de la compuerta de B y piloto.
+- **Siguiente:** Khipu: run05a completo (`FRAC=0.5,PESO=3`, GPU elegida con `khipu_elegir_gpu.sh ... 540 16`).
+- **run05a job 56471 en PD** (`ReqNodeNotAvail`, inicio corrido de 07:04 a 18:06). Corregido `entrenar.py`: al reanudar conservaba `mejor.pt` sin su minimo (la primera validacion tras reanudar lo sobrescribia); run04 no se reanudo (job unico 55706), no le afecta. `a7_run05a.sbatch` acepta `CADA_CKPT` para correr en tramos encadenados. En paralelo, local: fijar criterio de la compuerta de B y piloto.
 - **Pendiente:** compuerta de B (#178).
 
 ## 2026-10-13 (2) — Sesion cloud: 12 fichas nuevas (B + planificacion pelvica); scripts de D escritos

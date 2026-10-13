@@ -15,10 +15,10 @@
 #   PESO  peso del anillo 2-10 mm dentro de G (D-b)
 #
 # USO (desde ~/metalsynth, tras `git pull`; la tabla v2_d_componentes_run04.csv tiene que estar commiteada):
-#   sbatch --test-only --export=ALL,FRAC=0.5,PESO=4 experiments/objetivo3/a7_run05a.sbatch
-#   sbatch --export=ALL,FRAC=0.5,PESO=4 experiments/objetivo3/a7_run05a.sbatch
+#   sbatch --test-only --export=ALL,FRAC=0.5,PESO=3 experiments/objetivo3/a7_run05a.sbatch
+#   sbatch --export=ALL,FRAC=0.5,PESO=3 experiments/objetivo3/a7_run05a.sbatch
 # Prueba corta de humo (200 pasos, otra carpeta):
-#   sbatch --time=00:30:00 --export=ALL,FRAC=0.5,PESO=4,PASOS=200,SALIDA=$HOME/metalsynth/data/a7/run05a_humo \
+#   sbatch --time=00:30:00 --export=ALL,FRAC=0.5,PESO=3,PASOS=200,SALIDA=$HOME/metalsynth/data/a7/run05a_humo \
 #          experiments/objetivo3/a7_run05a.sbatch
 #
 # SI EL JOB SE CORTA, se relanza EXACTAMENTE igual: `--reanudar` continua desde `ckpt.pt`.

@@ -42,11 +42,11 @@
 - **Compuerta previa (piloto, local, sin entrenar):** calcular `T` sobre los cortes reales de `M` (validacion) y sobre
   controles (disco, elipse, dos discos, rectangulo largo). Se sigue con B solo si `T` tiene senal fuera de `M` en
   2-10 mm y es estable al aumentar los angulos de proyeccion. Criterio numerico: ver "Compuerta de B" abajo
-  (PROPUESTO por Claude 2026-10-13; la autora lo aprueba antes de correr el piloto). Si falla, se sigue solo con D y se declara.
+  (propuesto por Claude y APROBADO por la autora el 2026-10-13, antes de correr el piloto). Si falla, se sigue solo con D y se declara.
 - **Implementacion:** `T` sobre el corte completo antes de recortar el parche, con espaciado fisico; misma definicion
   en entrenamiento (con la mascara del componente real) e inferencia (con el cilindro); normalizacion compartida.
 
-### Compuerta de B (PROPUESTA 2026-10-13, a aprobar por la autora ANTES de correr; script `b_piloto_plantilla.py`)
+### Compuerta de B (APROBADA por la autora 2026-10-13, ANTES de correr con datos reales; script `b_piloto_plantilla.py`)
 
 Sin entrenar, local, sobre cortes de componentes tamano tornillo (500-4000 mm3) de entrenamiento de run04 y validacion,
 con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara binaria; 360 angulos.

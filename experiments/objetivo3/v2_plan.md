@@ -46,6 +46,21 @@
 - **Implementacion:** `T` sobre el corte completo antes de recortar el parche, con espaciado fisico; misma definicion
   en entrenamiento (con la mascara del componente real) e inferencia (con el cilindro); normalizacion compartida.
 
+### Implementacion de D (2026-10-13, sesion cloud; probada solo con un cache de juguete)
+
+- `src/renderizador/entrenar.py`: banderas `--componentes/--frac-tornillo` (D-a) y `--anillo-mm A B/--peso-anillo w`
+  (D-b). Sin ellas el entrenamiento es el de run04 (curva identica bit a bit en el juguete).
+- **D-a:** `WeightedRandomSampler` con reemplazo, `len(ds)` sorteos por epoca; peso `f = p (N - n) / ((1 - p) n)` a los
+  parches de componentes tamano tornillo, de modo que salen con fraccion `p` por sorteo. La lista sale de
+  `v2_d_componentes.py` (tabla versionada `v2_d_componentes_run04.csv`, aun por generar en local).
+- **D-b:** mapa `w` = `peso` a `A`-`B` mm en el plano de `M` (EDT con el espaciado del corte, misma definicion de anillo
+  que D1/D2), 1 en el resto; perdida = media ponderada dentro de `G` normalizada por la suma de pesos. Cortes sin metal
+  del componente (banda mas alla de la punta): `w` = 1.
+- **Validacion:** `perdida_val` sin ponderar (comparable con run04) elige `mejor.pt`; `perdida_val_pond` elige
+  `mejor_pond.pt`. Cual se usa en la seleccion entre run05a, run05b y run04 es parte de la regla `[POR FIJAR]`.
+- Controles nuevos al arrancar: peso uniforme = perdida de la version 1; fraccion sorteada a menos de 0.02 de `p`.
+- `.sbatch`: `a7_run05a.sbatch`, aborta si no se pasan `FRAC` y `PESO` (los dos `[POR FIJAR]` de D).
+
 ## 2. Diseno de la comparacion (aisla cada efecto)
 
 | Entrenamiento | D (sobremuestreo + peso) | B (canal `T`) | Para que |

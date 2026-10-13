@@ -12093,3 +12093,67 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   D + B), Peters sigue como comparacion principal, sin XCIST ni AAPM; opcion A descartada. Plan:
   `experiments/objetivo3/v2_plan.md`. Siguiente: lectura de las fuentes de B (a la orden de la autora) y scripts de D.
   #176 sigue ABIERTA hasta evaluar la version 2.
+
+### 178 — LA PLANTILLA `T` DE LA OPCION B NO PREDICE RAYAS PARA UN TORNILLO AISLADO DE SECCION ESTRICTAMENTE CONVEXA: segun `park2017characterization` (Teo. 3.5) un metal estrictamente convexo no produce rayas, y para un disco el termino queda confinado al metal (Ec. 5.1); B depende de la forma del corte del tornillo y del modo de calcular `R(M)` — ABIERTA
+
+- **Origen:** Claude, 2026-10-13, lectura con `lector-papers` de las fuentes de B (R2, R3, R6-R11): fichas
+  `park2017characterization`, `park2016MAR`, `wang2021streak`, `xia2024pndnet`, `chen2019analytical`, `gottschalk2022DL`,
+  `luo2025biconstraints`, `lyu2021ududonet`. R4 (`hyung2017ml`) sin PDF: no leido.
+- **Confirmado:** la formula de `v2_plan.md` es la del paper: `-(1/4pi) R* I^-1 [ln(sinh(lambda R chi_D)/(lambda R chi_D))]`
+  (Ec. 1.6 y 2.10, p. 4-6; `h(u) = ln(sinh u / u)` literal), con `lambda = alfa*eps`; `park2016MAR` (Ec. 15) es el mismo
+  corrector, calculado solo desde la mascara. Supuestos: 2D paralelo, sin scatter ni ruido, alfa constante, espectro
+  rectangular; el hueso se ignora (`park2016MAR`, p. 483).
+- **Lo que limita a B:**
+  1. *"If D is strictly convex, then the CT image f_CT does not have the streaking"* (`park2017characterization`,
+     Teo. 3.5, p. 15). Las rayas van por rectas tangentes a DOS puntos de la frontera (Teo. 3.3): dos tornillos, tornillo
+     + placa, o una seccion no estrictamente convexa (lados rectos: Fig. 3.3, cuarto de disco). `wang2021streak` lo
+     extiende a fronteras no convexas (bitangentes + tangentes en inflexiones), siempre con frontera suave.
+  2. Para un disco, el termino tal como esta escrito en Ec. 5.1 (p. 21) vale 0 fuera del metal: un corte circular de
+     tornillo daria `T` sin senal fuera de `M`, justo donde D2 mide el hueco (2-10 mm).
+  3. `xia2024pndnet` sostiene que el termino BH queda confinado a la traza y que la parte no local del artefacto
+     (scatter, volumen parcial no lineal, ruido) no se deriva de `M` (Sec. II, p. 2127; Ec. 4).
+  4. `lambda` no tiene valor de referencia: `park2017characterization` no da ninguno (p. 10); `park2016MAR` lo estima por
+     imagen con `f_CT` (Ec. 17-18), con valores en escalas no reportadas (82.12 en simulacion; 0.3-5.5 en fantomas).
+     Sin la imagen no hay como calibrarlo; `v2_plan.md` ya dice que no se calibra al escaner.
+  5. La mascara voxelizada tiene borde en escalera (no suave ni estrictamente convexo): `T` calculada sobre ella puede
+     tener rayas de discretizacion que no son fisica (`wang2021streak`, duda de la ficha).
+- **Lo que deja vivo a B (geometria, no medido):** un tornillo iliosacro va casi en el plano axial, asi que en muchos
+  cortes su seccion es alargada con lados casi rectos (no estrictamente convexa), y en pelvis con mas de un componente hay
+  bitangentes. Ahi el teorema SI predice rayas. Es una prediccion, no una medicion: lo resuelve el piloto.
+- **Toca:** la compuerta del piloto de B (`v2_plan.md` seccion 1, criterio `[POR FIJAR]`): los controles deberian
+  incluir una seccion alargada (estadio) ademas de disco y elipse, y fijar como se rasteriza `M` para `R(M)` (mascara
+  binaria, suavizada o subpixel) ANTES de mirar el piloto; la redaccion de B ("prior aproximado de endurecimiento del haz",
+  no modelo del artefacto completo); y la expectativa razonable sobre run05b frente a run05a.
+- **Pendiente de la autora:** fijar el criterio numerico de la compuerta con estos datos a la vista y decidir si el
+  piloto incluye la seccion alargada y la mascara suavizada. Conseguir el PDF de R4 si se quiere su lectura.
+
+### 179 — LA SINTESIS APRENDIDA DE ARTEFACTOS METALICOS YA EXISTE COMO PASO INTERMEDIO DE MAR NO PAREADO (U-DuDoNet, PND-Net; ADN y RCN citados por U-DuDoNet): la brecha del cap. 2 debe acotarse — ABIERTA
+
+- **Origen:** Claude, 2026-10-13, fichas `lyu2021ududonet` y `xia2024pndnet`.
+- **Hallazgo:** U-DuDoNet suma a CT limpias componentes de artefacto aprendidos en sinograma e imagen
+  (I^ca = I^c + a_S + a_I) para entrenar sin pares; PND-Net tiene una ruta de sintesis aprendida (F-Net, Ec. 9, p. 2129)
+  y rechaza explicitamente sumar el artefacto de imagen a una CT limpia arbitraria (*"cannot be synthesized by directly
+  adding a_I to arbitrary clean CT image"*, Sec. III-A, p. 2128). En ambos la sintesis no se evalua como producto.
+- **Toca:** la frase de brecha del cap. 2 ("sintesis aprendida de artefactos locales poco explorada") y el reclamo de
+  novedad del renderizador. Matiz propuesto por la ficha de U-DuDoNet: lo que falta es una sintesis condicionada por la
+  geometria y la pose del implante, anatomicamente coherente, en 2.5D/3D y evaluada como producto. Tambien da un
+  argumento para B: `T` entra como condicion del difusor, no como suma a la salida (objecion de PND-Net).
+- **Pendiente de la autora:** decidir la reformulacion (no se toca `overleaf/` ni `main.tex` hasta entonces). Snowballing
+  sugerido por las fichas (no agregado a `_candidatos.md` por esta sesion): ADN (Liao et al., TMI 2019), RCN (Zhao et al.,
+  2020), Zhang y Yu (TMI 2018).
+
+### 180 — OBJETIVO 2: EXISTEN PLANIFICADORES AUTOMATICOS DE TRAYECTORIAS PELVICAS POR ATLAS (`goerres2017planning`, `han2019atlasplanning`, este con corredores IS S1/S2); no muestrean malposicion, pero el trabajo relacionado del muestreador debe nombrarlos. `yang2022arcplanning`: el PDF no es el articulo del raw — ABIERTA
+
+- **Origen:** Claude, 2026-10-13, fichas `goerres2017planning`, `han2019atlasplanning`, `han2021multibody`,
+  `yang2022arcplanning`.
+- **Hallazgo:** Goerres planifica corredores del ilion y la rama pubica (IS/TS y S1 quedan como trabajo futuro, p. 15-16);
+  Han 2019 transfiere 10 corredores de aceptacion de un atlas de 40 CT (incluye IS S1/S2) y ajusta una recta, con brecha
+  cortical por distancia centerline-cortex (radio de K-wire 1.6 mm). Ninguno muestrea poses ni malposicion graduada:
+  **el gap del muestreador se mantiene**, pero deja de ser "no existe planificacion automatica". Han 2021 es reduccion de
+  fractura (contexto). Metricas reutilizables: distancia firmada trayectoria-cortex a lo largo del eje (Goerres, Fig. 7).
+- **Problema de fuente:** `papers/yang2022arcplanning.pdf` es *An Internal Arc Fixation Channel and Automatic Planning
+  Algorithm for Pelvic Fracture* (5 pelvis, sin elementos finitos); `refs/raw/yang2022arcplanning.nbib` es el articulo de
+  CMPB 220:106810 (10 pelvis, FEA). Marcado `% VERIFICAR` en `refs/clean/`; ninguna cifra es citable.
+- **Toca:** redaccion del trabajo relacionado del Objetivo 2 (cap. 2) y, si la autora quiere, el atlas publico de Han
+  como contraste externo del corredor (no verificado que el enlace siga activo).
+- **Pendiente de la autora:** conseguir el PDF correcto de Yang 2022 (o el raw del documento que si se tiene).

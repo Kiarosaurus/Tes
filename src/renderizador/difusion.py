@@ -67,7 +67,8 @@ class Difusion:
 
 
 def perdida(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor,
-            dif: Difusion, generador: torch.Generator | None = None) -> torch.Tensor:
+            dif: Difusion, generador: torch.Generator | None = None,
+            peso: torch.Tensor | None = None) -> torch.Tensor:
     """MSE del objetivo de difusion, promediada **solo sobre los pixeles de `G`**.
 
     `x0`   (B, 3, H, W)  corte central verdadero, ya codificado en ventanas y en [-1, 1].
@@ -77,6 +78,10 @@ def perdida(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor,
     El promedio se hace por imagen y luego entre imagenes, de modo que un parche con `G` pequena
     pesa lo mismo que uno con `G` grande: si no, el lote lo dominarian las protesis (riesgo 3 de
     `diseno_A.md`).
+
+    `peso` (B, 1, H, W), version 2 (D-b): media PONDERADA dentro de `G`, normalizada por la suma de
+    pesos en `G`, asi la escala por imagen no cambia y solo se redistribuye hacia el anillo. Con
+    `peso=None` el calculo es exactamente el de la version 1.
     """
     b = x0.shape[0]
     t = torch.randint(0, dif.pasos, (b,), device=x0.device, generator=generador)
@@ -84,6 +89,11 @@ def perdida(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor,
     xt, objetivo = dif.ruidoso(x0, t, ruido)
     xt = xt * g  # fuera de G la entrada ruidosa no aporta: el contexto limpio va en `cond`
     salida = modelo(torch.cat([xt, cond], dim=1), t)
+    if peso is not None:
+        gw = g * peso
+        err = (salida - objetivo) ** 2 * gw
+        n = gw.sum(dim=(1, 2, 3)).clamp(min=1.0)
+        return (err.sum(dim=(1, 2, 3)) / (n * x0.shape[1])).mean()
     err = (salida - objetivo) ** 2 * g
     n = g.sum(dim=(1, 2, 3)).clamp(min=1.0)
     return (err.sum(dim=(1, 2, 3)) / (n * x0.shape[1])).mean()

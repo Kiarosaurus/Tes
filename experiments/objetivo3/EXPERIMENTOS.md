@@ -33,6 +33,8 @@
 | Artefacto | Que es | Origen | Estado |
 |---|---|---|---|
 | `a7_run04.sbatch` | entrenamiento de run04 (60 000 pasos, mismos hiperparametros que run02) | Khipu 55706 | **VIGENTE**. Salida en `outputs/a7/run04/`; minimo de validacion en el paso 16 500 (#168) |
+| `v2_d_componentes.py` -> `v2_d_componentes_run04.csv` / `.md` | version 2, D-a: componentes del manifiesto de run04 marcados tamano tornillo (500-4000 mm3) | script (local, necesita `outputs/a1b/a1b_componentes.csv`) | **ESCRITO 2026-10-13, POR CORRER** (la tabla no existe aun) |
+| `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm); exige `FRAC` y `PESO` (`v2_plan.md`, `[POR FIJAR]`) | Khipu | **ESCRITO 2026-10-13, NO LANZADO**; probado con un cache de juguete (CPU) |
 | `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |
 | `a13_comparar_ckpt.py` | dos checkpoints pareados sobre validacion | script | herramienta; sus salidas con run01/run02 estan archivadas |

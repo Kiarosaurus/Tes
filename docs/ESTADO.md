@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-13 (2) — Sesion cloud: 12 fichas nuevas (B + planificacion pelvica); scripts de D escritos
+
+- **Hecho:** `lector-papers` sobre los 12 PDF con clave sin ficha (R2, R3, R6-R11 de B; `goerres2017planning`, `han2019atlasplanning`, `han2021multibody`, `yang2022arcplanning`); `refs/clean/` + `MAPEO.md` + `_index.md` + `_candidatos.md`; `refs.bib` 131. R4 (`hyung2017ml`) sin PDF: solo raw/clean. Yang 2022: PDF de otro documento (VERIFICAR). Implicancias **#178** (T no da rayas para un tornillo de seccion estrictamente convexa; Teo. 3.5 de Park 2017), **#179** (brecha cap. 2), **#180** (planificadores del Obj 2) ABIERTAS.
+- **Scripts de D:** `entrenar.py --componentes/--frac-tornillo/--anillo-mm/--peso-anillo`, `v2_d_componentes.py`, `a7_run05a.sbatch` (aborta sin `FRAC`/`PESO`). Probados solo con un cache de juguete en CPU; sin banderas la curva es identica a la de v1.
+- **Siguiente:** autora fija `FRAC`, `PESO` y la compuerta de B (con #178 a la vista); local: `v2_d_componentes.py` -> commit de la tabla; Khipu: humo de 200 pasos -> run05a. Piloto de B despues de fijar su criterio.
+
 ## 2026-10-13 — Version 1 evaluada; diagnostico D1/D2; DECIDIDA version 2 = B + D
 
 - **Hecho:** prueba de la version 1 (#177: no equivalencia con Peters Ti, -301 HU, IC90 [-477.0, -124.9]; supera copia y pegado; E-A1 MAE `G` 270.9 HU). D1/D2 (#176): en tornillos el artefacto real llega a ~10 mm y la banda de 12 mm alcanza; el sintetico se apaga a ~6 mm. Opcion A retirada. **Decision de la autora:** version 2 = **B + D** (run05a: D; run05b: D + B), Peters sigue como comparacion, sin XCIST/AAPM (`01-decisiones.md` 2026-10-13; plan `experiments/objetivo3/v2_plan.md`). Fuentes de B en `_candidatos.md`, ronda 2026-10-13.

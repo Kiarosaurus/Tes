@@ -29,12 +29,14 @@ de P1, por la *Strict Isolation Rule* de `main.tex:111`. **Ningun corte de test 
 """
 from __future__ import annotations
 
+import csv
 import re
 import sys
 from pathlib import Path
 
 import numpy as np
 import torch
+from scipy import ndimage as ndi
 from torch.utils.data import Dataset
 
 _RAIZ = Path(__file__).resolve().parents[2]
@@ -68,6 +70,30 @@ def _lee_manifiesto(ruta: Path) -> set[tuple[str, int]]:
                 for r in csv.DictReader(fh)}
 
 
+def mapa_peso_anillo(metal: np.ndarray, zooms_plano: tuple[float, float],
+                     anillo_mm: tuple[float, float], peso: float) -> np.ndarray:
+    """Version 2, D-b: `peso` en los pixeles a `anillo_mm` (en el plano, mm) de `M`; 1 en el resto.
+
+    Distancia euclidea en el plano al metal del componente objetivo, con el espaciado fisico del
+    corte: la misma definicion de anillo que D1/D2 (`d1_alcance_rayas.py`). Si el corte no tiene
+    metal del componente (parche de banda mas alla de la punta, R3), el mapa es 1 en todo el corte:
+    la distancia en el plano no esta definida y no se inventa. Se multiplica por `G` en la perdida.
+    """
+    w = np.ones(metal.shape, dtype=np.float32)
+    if not metal.any() or peso == 1.0:
+        return w
+    d = ndi.distance_transform_edt(~metal, sampling=zooms_plano)
+    w[(d >= anillo_mm[0]) & (d <= anillo_mm[1])] = peso
+    return w
+
+
+def lee_componentes_tornillo(ruta: Path) -> dict[str, int]:
+    """Tabla versionada de `v2_d_componentes.py`: {serie `caso_cNNN`: 1 si es tamano tornillo}."""
+    with open(ruta, newline='', encoding='utf-8') as fh:
+        return {f'{r["Caso"]}_c{int(r["comp"]):03d}': int(r['tornillo'])
+                for r in csv.DictReader(fh)}
+
+
 class ParchesMetal(Dataset):
     """Parches 2.5D: 3 cortes x 3 ventanas + `M` + `G`; objetivo, el corte central.
 
@@ -75,13 +101,18 @@ class ParchesMetal(Dataset):
     - `x0`   (3, H, W)  corte central codificado en ventanas, en [-1, 1].
     - `cond` (8, H, W)  6 canales de los vecinos con `G` borrada, mas `M` y `G`.
     - `g`    (1, H, W)  mascara de generacion en {0, 1}.
+    - `w`    (1, H, W)  SOLO con `anillo_mm` (version 2, D-b): peso por distancia a `M`.
     """
 
     def __init__(self, cache: Path, particion: Path,
                  particiones: tuple[str, ...] = ('train',), lado: int = 256,
                  borrar_contexto: bool = False, inclusion: Path | None = None,
-                 ratio_banda: float | None = None, semilla: int = 20260921) -> None:
+                 ratio_banda: float | None = None, semilla: int = 20260921,
+                 anillo_mm: tuple[float, float] | None = None,
+                 peso_anillo: float = 1.0) -> None:
         self.cache = Path(cache)
+        self.anillo_mm = tuple(anillo_mm) if anillo_mm is not None else None
+        self.peso_anillo = float(peso_anillo)
         self.lado = lado
         self.borrar_contexto = borrar_contexto
         self.canales = canales_diseno_a()
@@ -133,9 +164,15 @@ class ParchesMetal(Dataset):
 
     def _carga(self, caso: str, k: int) -> dict[str, np.ndarray]:
         with np.load(self.cache / f'{caso}_k{k:04d}.npz') as z:
-            return {'hu': self._rellena(z['hu'], -1000.0),
-                    'metal': self._rellena(z['metal'], False),
-                    'g': self._rellena(z['g'], False)}
+            d = {'hu': self._rellena(z['hu'], -1000.0),
+                 'metal': self._rellena(z['metal'], False),
+                 'g': self._rellena(z['g'], False)}
+            if self.anillo_mm is not None:
+                # el parche es `vol[k]` con el eje axial movido al frente (a1b): el plano conserva
+                # el orden original de los otros dos ejes
+                eje, zooms = int(z['eje']), [float(v) for v in z['zooms']]
+                d['zooms_plano'] = tuple(zooms[i] for i in range(3) if i != eje)
+            return d
 
     def __getitem__(self, i: int) -> dict[str, torch.Tensor]:
         caso, k = self.indice[i]
@@ -155,10 +192,41 @@ class ParchesMetal(Dataset):
             ctx.append(codifica_bloque(hu, self.canales) * 2.0 - 1.0)
 
         cond = np.concatenate(ctx + [centro['metal'].astype(np.float32)[None], g[None]], axis=0)
-        return {'x0': torch.from_numpy(x0.astype(np.float32)),
+        item = {'x0': torch.from_numpy(x0.astype(np.float32)),
                 'cond': torch.from_numpy(cond.astype(np.float32)),
                 'g': torch.from_numpy(g[None]),
                 'caso': caso, 'k': k}
+        if self.anillo_mm is not None:
+            w = mapa_peso_anillo(centro['metal'], centro['zooms_plano'], self.anillo_mm,
+                                 self.peso_anillo)
+            item['w'] = torch.from_numpy(w[None])
+        return item
+
+    def pesos_sobremuestreo(self, tornillo: dict[str, int],
+                            frac_objetivo: float) -> tuple[torch.Tensor, dict[str, float]]:
+        """Version 2, D-a: peso por parche para que los de tamano tornillo salgan con `frac_objetivo`.
+
+        Con `n` parches de tornillo entre `N`, peso `f = p (N - n) / ((1 - p) n)` para ellos y 1
+        para el resto: la fraccion esperada de tornillos por sorteo es exactamente `p`. Si `p` es
+        menor o igual que la fraccion natural `n / N` no se sobremuestrea (`f` = 1). Una serie que
+        falta en la tabla aborta: la tabla tiene que cubrir el manifiesto entero.
+        """
+        faltan = sorted({s for s, _ in self.indice} - set(tornillo))
+        if faltan:
+            raise RuntimeError(f'{len(faltan)} series del manifiesto sin fila en la tabla de '
+                               f'componentes (p. ej. {faltan[:3]}); regenerar v2_d_componentes')
+        es = torch.tensor([float(tornillo[s]) for s, _ in self.indice])
+        n, total = float(es.sum()), float(len(es))
+        if n == 0:
+            raise RuntimeError('ningun parche de tamano tornillo en el manifiesto')
+        natural = n / total
+        f = max(1.0, frac_objetivo * (total - n) / ((1.0 - frac_objetivo) * n))
+        pesos = torch.where(es > 0, torch.tensor(f), torch.tensor(1.0)).double()
+        series_t = {s for s, _ in self.indice if tornillo[s]}
+        return pesos, {'parches_tornillo': n, 'parches': total,
+                       'series_tornillo': float(len(series_t)),
+                       'frac_natural': round(natural, 4),
+                       'frac_objetivo': frac_objetivo, 'factor': round(f, 4)}
 
     def resumen(self) -> dict[str, float]:
         # `casos` son pacientes (unidad de la particion); `series` son implantes (unidad de entrenamiento).

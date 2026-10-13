@@ -579,3 +579,29 @@ Wellenberg--Slotman--van Osch--Nijholt--Boomsma, mientras que la primera pagina 
 Selles--Slotman--van Osch--Nijholt--Wellenberg--Maas--Boomsma. La entrada clean conserva el orden del raw,
 de acuerdo con la regla de normalizacion del repositorio.
 
+
+## Altas del 2026-10-13 — fuentes de la opcion B (version 2) y de planificacion pelvica (sesion cloud)
+
+La autora subio los PDF y los raw. Fichas con `lector-papers`; una entrada normalizada por raw; `refs.bib` regenerado.
+Implicancias: #178 (B), #179 (brecha cap. 2), #180 (Objetivo 2).
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `park2017characterization` | `park2017characterization.bibtex` | Wiley | clave del editor sustituida; DOI sin prefijo URL; se descartan `url`, `eprint`, `abstract`; paginas a guion doble |
+| `park2016MAR` | `park2016MAR.bib` | IEEE | clave `7268881` sustituida; se descartan `keywords`; paginas a guion doble |
+| `wang2021streak` | `wang2021streak.bib` | MSP | clave `Wang_2021` sustituida; se descartan `ISSN`, `url`, `month`; guion largo Unicode `295–318` -> `295--318` |
+| `lyu2021ududonet` | `lyu2021ududonet.bib` | Springer | clave del editor sustituida; DOI tomado de la clave del editor (`10.1007/978-3-030-87231-1_29`), que es el DOI del capitulo; se descarta `abstract` |
+| `xia2024pndnet` | `xia2024pndnet.bib` | IEEE | clave `10404006` sustituida; se descartan `keywords`; paginas a guion doble |
+| `gottschalk2022DL` | `gottschalk2022DL.bibtex` | Wiley | **el raw dice `year = 2023`** (Med Phys 50(1)); se conserva la clave de la autora con 2022 y el ano del raw; se descartan `keywords`, `url`, `eprint`, `abstract` |
+| `chen2019analytical` | `chen2019analytical.bibtex` | Wiley (Hindawi) | DOI sin prefijo URL; `2351878` es numero de articulo en `pages`; se descartan `url`, `eprint`, `abstract` |
+| `luo2025biconstraints` | `luo2025biconstraints.bib` | IEEE | clave `10638000` sustituida; se descartan `keywords`; paginas a guion doble |
+| `hyung2017ml` | `hyung2017ml.bib` | arXiv | **sin PDF en `papers/`, sin ficha**; formato `@misc` con `eprint` como `chen2026foundationvae`; el nombre `Hyung Suk` es el del raw |
+| `goerres2017planning` | `goerres2017planning.nbib` | PubMed (PMID 29058687) | iniciales tal como `FAU`; revista desde `JT` |
+| `han2019atlasplanning` | `han2019atlasplanning.nbib` | PubMed (PMID 30921783) | iniciales; `095022` es numero de articulo en `pages` |
+| `han2021multibody` | `han2021multibody.nbib` | PubMed (PMID 33341493) | iniciales; el raw no trae numero de fasciculo |
+| `yang2022arcplanning` | `yang2022arcplanning.nbib` | PubMed (PMID 35462347) | **`% VERIFICAR`: el PDF de `papers/` es otro documento** (#180) |
+
+**Sin cambio:** `tonetti2001results` y `varma2025medvae` tienen raw y ficha pero siguen sin archivo en `clean/` (pendiente
+anterior a esta ronda, no tocado). `papers/lugmayr2002repaint.pdf` es el PDF de `lugmayr2022repaint` (ya leido; ver aviso
+de la ronda 2026-09-21). Los catalogos de fabricante subidos con esta tanda ya tenian ficha con otro nombre
+(`synthes_*`, `acumed_*`, `doublemedical_*`, `primis_*`).

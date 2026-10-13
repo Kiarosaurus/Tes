@@ -23,9 +23,9 @@
 
 - **D-a, sobremuestreo:** los componentes tamano tornillo (500-4000 mm3, el mismo rango de D1) se muestrean con mas
   frecuencia en cada epoca. Motivo: el entrenamiento esta dominado por placas y componentes grandes (5 de 40
-  componentes revisados eran tornillos, `a3_revision_componentes.md`). Factor `[POR FIJAR]`.
+  componentes revisados eran tornillos, `a3_revision_componentes.md`). Factor: **`FRAC = 0.5` (fijado por la autora 2026-10-13)**: fraccion natural 0.2036 (2 888 de 14 182 parches, 45 componentes, 24 casos; `v2_d_componentes_run04.md`) -> factor 3.91.
 - **D-b, peso de la perdida por distancia:** dentro de `G`, mas peso al anillo de 2-10 mm alrededor de `M`, donde D2
-  mide el hueco (sintetico 488 / 97 / -65 / -40 HU frente a real 1199 / 765 / 473 / 174). Forma y peso `[POR FIJAR]`.
+  mide el hueco (sintetico 488 / 97 / -65 / -40 HU frente a real 1199 / 765 / 473 / 174). Forma: escalon en 2-10 mm en el plano de `M`; **`PESO = 3` (fijado por la autora 2026-10-13)**.
 - **Mismos datos que run04** (14 182 parches, 39 casos; validacion 896 / 3), mismos hiperparametros salvo lo anterior.
 - Cambia el criterio R4 de `a5_criterio_inclusion.py` ("tamano y forma no filtran"): **no se filtra**, se sobremuestrea.
   Se declara como cambio de la version 2.

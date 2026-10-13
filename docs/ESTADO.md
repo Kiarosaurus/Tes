@@ -5,7 +5,8 @@
 ## 2026-10-13 (3) — Tabla de D-a generada en local (`v2_d_componentes.py`)
 
 - **Hecho:** `v2_d_componentes_run04.csv`/`.md` (autora, local): de 203 componentes del manifiesto de run04 (14 182 parches, 39 casos), **45 son tamano tornillo** (500-4000 mm3): **2 888 parches, 24 casos**. Fraccion natural **0.2036**. Factor `f` segun `FRAC`: 0.25 -> 1.30; 0.33 -> 1.93; 0.5 -> 3.91.
-- **Siguiente:** autora fija `FRAC` y `PESO` en `v2_plan.md`; Khipu: `git pull` -> humo de 200 pasos -> run05a.
+- **Fijados por la autora:** `FRAC = 0.5` (factor 3.91), `PESO = 3` (escalon 2-10 mm); escritos en `v2_plan.md`. Version 2 = solo run05a y run05b; no hay run06 (la opcion C era quedarse con la version 1, ya descartada).
+- **Siguiente:** Khipu: humo de 200 pasos (`FRAC=0.5,PESO=3`) -> run05a completo. En paralelo, local: fijar criterio de la compuerta de B y piloto.
 - **Pendiente:** compuerta de B (#178).
 
 ## 2026-10-13 (2) — Sesion cloud: 12 fichas nuevas (B + planificacion pelvica); scripts de D escritos

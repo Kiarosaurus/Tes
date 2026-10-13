@@ -12028,3 +12028,30 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   `experiments/objetivo3/diseno_A.md` ENMIENDA run04 (`Delta` 163.8 / 100.3).
 - **Pendiente de la autora:** nada que decidir (formula de 2026-10-09 (4) y lectura (2) de #169 ya fijadas); solo
   confirmar que entra en la proxima ronda de redaccion. Ver `01-decisiones.md` si quiere dejarlo escrito.
+
+### 176 — EL ARTEFACTO SINTETICO QUEDA ENCERRADO EN `G` Y NO TIENE RAYAS: la autora lo juzga de baja calidad; hipotesis de causa estructural (contexto de entrenamiento ya con artefacto + techo de la banda de 12 mm) — ABIERTA
+
+- **Origen:** la autora, 2026-10-12: "estoy segura de que si se lo mostrara a un medico podria reconocer de inmediato
+  la baja calidad del artefacto creado" (el tornillo en si se ve bien).
+- **Observado por Claude (inspeccion visual, no medicion; `0101`, `run04_mejor`, semilla 0, corte axial con mas `M`,
+  frente a `metal_0039` cortes 184-190):** (1) la diferencia sintetica - original es distinta de cero solo dentro de
+  `G` y su borde sigue el contorno de `G` (corte neto a 12 mm); (2) dentro de `G` hay moteado claro/oscuro, no rayas
+  radiales ni bandas oscuras a lo largo del tornillo; (3) el metal sale como una nube brillante algo mas ancha que el
+  cilindro; (4) en `metal_0039` se ven rayas oscuras radiales que salen de la cabeza del tornillo mas alla de 12 mm.
+  Montaje (no versionado, contiene datos): scratchpad de la sesion, `montaje.png` y `zoom.png`.
+- **Coherente con lo medido:** p95 sintetico bajo lo real en 7 de 12 cascaras (#174); amplitud del difusor bajo Peters
+  Ti en los dos receptores (#175); la regla de cotejo mira solo 0-12 mm y la mediana del anillo, que no ve rayas
+  direccionales.
+- **Hipotesis de causa (NO verificadas):**
+  - (H1) **Fuga de contexto en el entrenamiento.** El modelo se entrena rellenando `G` en pacientes con metal real, cuyo
+    contexto fuera de `G` ya trae las rayas del mismo implante: aprende a continuar rayas que ya existen, no a crearlas.
+    En sintesis el contexto esta limpio y no hay nada que continuar. Es el desplazamiento de dominio (2) ya declarado
+    en `diseno_A.md`, pero su efecto no se habia medido.
+  - (H2) **Techo de la banda.** Fuera de `G` se copia el original por construccion: ninguna raya puede pasar de 12 mm.
+    `a12` midio el perfil real solo hasta 13.5 mm y con la mediana del anillo, que no capta rayas.
+  - (H3) Mascara de entrenamiento a 2500 HU (incluye el "florecido" del metal) frente a cilindro liso en sintesis.
+- **Toca:** el alcance de lo que se puede afirmar sobre realismo; la interpretacion del TOST frente a Peters; quiza el
+  diseno del sintetizador (banda, datos de entrenamiento) si la autora decide una version 2. Cualquier cambio de diseno
+  se informa ahora por salidas de test vistas en los HTML: debe declararse como posterior y exploratorio.
+- **Propuesta de Claude:** ver el chat del 2026-10-12 (evaluar v1 tal como esta preinscrita; diagnosticos baratos D1-D3;
+  v2 solo si el plazo lo permite).

@@ -6,6 +6,7 @@
 
 - **Corriendo en Khipu:** finales exploratorias 56791 (run05a), 56792 (run05b) y E-A1 56793/56794. HTML de validacion de los tres modelos generados en local (`a25`).
 - **Preparado:** `a20_v2.sbatch` (a20 val + Delta propio, a20 prueba con Peters y copia y pegado, a24 por modelo; CPU, sin bajar NIfTI). Encargo de redaccion `redaccion/ENCARGO_2026-10-14.md` (cap. 3: version 2; resultados de prueba v2 como `\GAPDATO`); ciclo `/ciclo-redaccion capitulo3` r19-r20.
+- **Redaccion:** `capitulo3-r19` CERRADA (unica ronda; 29 aplicados, 3 escalados: T06 fuentes desfasadas en `00-tesis.md`/`diseno_A.md`/`tesis/main.tex`, T05 cierre de #90, guia-4 introduccion frente a cap. 3). Version 2 en `sec:v2`; GAP 2/15/16; PDF `redaccion/.build/etapas/capitulo3-r19.pdf` (143 pp.).
 - **Siguiente:** al terminar las finales: `sbatch --dependency=afterok:56791:56792 experiments/objetivo3/a20_v2.sbatch`; luego traer `$DATA/v2_prueba` y `$DATA/a23_v2`; comparacion visual a ciegas (D3); cap. 4.
 
 ## 2026-10-14 (2) — Version 2 evaluada en validacion: la regla dice "no mejora" (#182)

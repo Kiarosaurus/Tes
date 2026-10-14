@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-14 (3) — Version 2 en prueba (exploratorio) corriendo; redaccion de la version 2 en marcha
+
+- **Corriendo en Khipu:** finales exploratorias 56791 (run05a), 56792 (run05b) y E-A1 56793/56794. HTML de validacion de los tres modelos generados en local (`a25`).
+- **Preparado:** `a20_v2.sbatch` (a20 val + Delta propio, a20 prueba con Peters y copia y pegado, a24 por modelo; CPU, sin bajar NIfTI). Encargo de redaccion `redaccion/ENCARGO_2026-10-14.md` (cap. 3: version 2; resultados de prueba v2 como `\GAPDATO`); ciclo `/ciclo-redaccion capitulo3` r19-r20.
+- **Siguiente:** al terminar las finales: `sbatch --dependency=afterok:56791:56792 experiments/objetivo3/a20_v2.sbatch`; luego traer `$DATA/v2_prueba` y `$DATA/a23_v2`; comparacion visual a ciegas (D3); cap. 4.
+
 ## 2026-10-14 (2) — Version 2 evaluada en validacion: la regla dice "no mejora" (#182)
 
 - **Hecho:** cadena a16_v2 -> a15_cadena_v2 -> v2_eleccion en Khipu (56777-56781). E (2-10 mm): run04 532.8, run05a 418.2, run05b 367.0; salvaguarda 0-2 mm (tope 279.6): run05a 284 (falla por 4 HU), run05b 540. **Resultado preinscrito: la version 2 no reemplaza a run04; sin corrida final.** a17: gana run04. -> **#182 ABIERTA**. Resultados en `experiments/objetivo3/run05/`.

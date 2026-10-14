@@ -36,7 +36,8 @@
 | `v2_d_componentes.py` -> `v2_d_componentes_run04.csv` / `.md` | version 2, D-a: componentes del manifiesto de run04 marcados tamano tornillo (500-4000 mm3) | script (local, necesita `outputs/a1b/a1b_componentes.csv`) | **ESCRITO 2026-10-13, POR CORRER** (la tabla no existe aun) |
 | `a7_cache_T.sbatch`, `v2_b_cache_T.py`, `a7_run05b.sbatch` | version 2, B: cache del canal T y run05b (D + B) | Khipu | **CORRIDOS** 2026-10-14 (cache 56650; run05b 56721-56724) |
 | `a16_v2.sbatch`, `a15_cadena_v2.sbatch`, `v2_eleccion.sbatch` + `v2_eleccion.py` | version 2: calibracion de `delta`, cadena en validacion y regla de eleccion aprobada | Khipu 56777-56781 | **CORRIDOS 2026-10-14**: "no mejora" (#182); resultado en `run05/v2_eleccion.md` |
-| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu | **ESCRITOS 2026-10-14, POR CORRER** |
+| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIENDO 2026-10-14** |
+| `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | **ESCRITO 2026-10-14, POR CORRER** (tras las finales) |
 | `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm); exige `FRAC` y `PESO` (`v2_plan.md`, `[POR FIJAR]`) | Khipu | **ESCRITO 2026-10-13, NO LANZADO**; probado con un cache de juguete (CPU) |
 | `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |

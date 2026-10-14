@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-14 (2) — Version 2 evaluada en validacion: la regla dice "no mejora" (#182)
+
+- **Hecho:** cadena a16_v2 -> a15_cadena_v2 -> v2_eleccion en Khipu (56777-56781). E (2-10 mm): run04 532.8, run05a 418.2, run05b 367.0; salvaguarda 0-2 mm (tope 279.6): run05a 284 (falla por 4 HU), run05b 540. **Resultado preinscrito: la version 2 no reemplaza a run04; sin corrida final.** a17: gana run04. -> **#182 ABIERTA**. Resultados en `experiments/objetivo3/run05/`.
+- **Siguiente:** la autora registra el resultado en `01-decisiones.md` y decide si hay algo mas con la version 2 (opciones en el chat; cualquier prueba con run05a/b seria exploratoria). Luego: realismo y redaccion (cap. 4: v1 + v2 lado a lado).
+
 ## 2026-10-14 — Piloto de B: PASA; canal T y run05b listos
 
 - **Hecho:** piloto de B corrido por la autora (criterio aprobado antes): **PASA** (C0, C1, C2; e = 0.116, p = 0.0085, 13 pacientes) -> **#181 ABIERTA**. Copias en `experiments/objetivo3/b_piloto/`. Canal T implementado (`src/renderizador/plantilla.py`, `datos.py --cache-T`, `entrenar.py` 12 entradas; `a15`/`a16`/`a23` leen `entrada` del checkpoint); `v2_b_cache_T.py`, `a7_cache_T.sbatch` (CPU) y `a7_run05b.sbatch` (`a100_3g`, tramos). Probado con juguete; run04 y run05a dan curvas identicas con el codigo nuevo.

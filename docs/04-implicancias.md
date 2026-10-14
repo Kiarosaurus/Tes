@@ -12190,3 +12190,31 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   aproximado", efecto moderado); #178 sigue ABIERTA para el caso del tornillo de seccion estrictamente convexa (el
   piloto mide promedios, no lo separa).
 - **Pendiente de la autora:** registrar la decision en `01-decisiones.md` (texto propuesto en el chat) y lanzar run05b.
+
+### 182 — RESULTADO DE LA REGLA DE ELECCION DE LA VERSION 2: "NO MEJORA" (preinscrito). run05a y run05b reducen el error en 2-10 mm (E 418 y 367 HU frente a 533 de run04), pero los dos caen en la salvaguarda de 0-2 mm; run05a por 4 HU — ABIERTA
+
+- **Origen:** `v2_eleccion.sbatch` en Khipu (jobs 56777-56781), regla APROBADA por la autora el 2026-10-14 antes de
+  generar (`v2_plan.md`). Resultado versionado: `experiments/objetivo3/run05/v2_eleccion.md` y `v2_d2_perfil.csv`.
+- **Medido (validacion 0101/0102, 5 semillas, mediana de los dos pacientes; exceso de amplitud de Peters, HU):**
+
+  | punto | 0-2 | 2-4 | 4-6 | 6-8 | 8-10 | E (2-10) | dev 0-2 |
+  |---|---|---|---|---|---|---|---|
+  | real D1 tornillo | 1930 | 1199 | 765 | 473 | 174 | | |
+  | run04_mejor | 1697 | 488 | 97 | -65 | -40 | 532.8 | 233 |
+  | run05a_mejor (D) | 1646 | 608 | 207 | 79 | 44 | 418.2 | 284 |
+  | run05b_mejor (D + B) | 1390 | 625 | 257 | 144 | 117 | 367.0 | 540 |
+
+  Tope de la salvaguarda: 1.2 x 233 = 279.6 HU. run05a lo pasa por 4.4 HU; run05b por 260 HU. Por la regla, ninguno
+  reemplaza a run04: **la version 2 se reporta como "no mejora" y no hay corrida final con ella.** a17 (no decide):
+  gana run04 (13 cascaras dentro; run05a 13, run05b 9).
+- **Lectura descriptiva (no cambia el resultado):** D y D + B hacen lo que se buscaba en 2-10 mm (el artefacto ya no
+  se apaga a 6 mm: run05b da 144 y 117 HU en 6-8 y 8-10 frente a -65 y -40), con un gradiente D < D + B; pero lo pagan
+  junto al metal (0-2 mm), mucho mas con B. Aun el mejor sigue lejos de lo real (6-8 mm: 144 frente a 473). Con 2
+  pacientes, la diferencia de 4 HU de run05a frente al tope esta dentro del ruido: el resultado es fragil y debe
+  declararse asi, sin reinterpretarlo despues de verlo.
+- **Toca:** el capitulo 4 (resultados de la version 2, reportados junto a la version 1, #177) y la discusion (el
+  compromiso cerca/lejos del metal, y el efecto de B coherente con #181: senal direccional moderada); #176 sigue
+  ABIERTA (el artefacto sintetico sigue debil). Cualquier corrida en prueba con run05a o run05b seria POSTERIOR a esta
+  regla y exploratoria; no puede presentarse como resultado principal.
+- **Pendiente de la autora:** registrar el resultado en `01-decisiones.md` (texto propuesto en el chat) y decidir si
+  se hace algo mas con la version 2 (opciones en el chat).

@@ -102,6 +102,12 @@ con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara bi
 - Implementacion: `v2_eleccion.py` (probada con perfiles sinteticos), `a16_v2.sbatch` -> `a15_cadena_v2.sbatch`
   (cotejo + delta) -> `v2_eleccion.sbatch`; la etapa `final` de `a15_cadena_v2` solo corre para el elegido.
 
+### Resultado de la regla (2026-10-14, #182)
+
+**"No mejora"**: run05a (E 418.2) y run05b (E 367.0) bajan el error en 2-10 mm frente a run04 (532.8), pero los dos
+caen en la salvaguarda de 0-2 mm (dev 284 y 540 frente al tope de 279.6). No hay corrida final con la version 2.
+Detalle: `experiments/objetivo3/run05/v2_eleccion.md`.
+
 ## 2. Diseno de la comparacion (aisla cada efecto)
 
 | Entrenamiento | D (sobremuestreo + peso) | B (canal `T`) | Para que |

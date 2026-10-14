@@ -13,10 +13,11 @@
 #   Solo la final, tras la eleccion:  --export=ALL,RUN=<elegido>,ETAPAS=final
 # Salida: $DATA/obj3_pose/{cotejo,delta,final}/<RUN>_mejor/ (junto a run04, para compararlos con las mismas rutas)
 #SBATCH --job-name=a15v2
+# Generar usa pocos GB (lote 1): shards, como a15_cadena_pose; los dos RUN pueden compartir la MIG a la vez.
 #SBATCH --partition=all
 #SBATCH --account=tesis
 #SBATCH --qos=a-tesis
-#SBATCH --gres=gpu:a100_3g.20gb:1
+#SBATCH --gres=shard:a100_3g.20gb:5
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 #SBATCH --time=03:00:00

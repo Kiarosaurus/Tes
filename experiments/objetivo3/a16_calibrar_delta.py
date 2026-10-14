@@ -227,6 +227,7 @@ def main() -> None:
             print('  %s: n = %d | p50 %.4f | p95 %.4f | p99 %.4f'
                   % (nom, v.size, *np.percentile(v, [50, 95, 99])))
 
+    elegidos = []
     for et in args.etiquetas:
         print('\n%s: mediana entre pacientes' % et)
         print('  %7s %9s %13s %10s %12s' % ('delta', 'MAE G', 'MAE no metal', 'MAE metal', 'metal rec.'))
@@ -246,6 +247,13 @@ def main() -> None:
         print('  -> argmin MAE G: %.3f | parsimonia (+%.0f HU): %.3f | cumple salvaguarda: %s'
               ' | ELEGIDO por el criterio: %.3f'
               % (arg, EMPATE_HU, pars, 'si' if pars in ok else 'NO', elegido))
+        elegidos.append({'etiqueta': et, 'delta': elegido})
+    # para que la cadena de la version 2 (a15_cadena_v2.sbatch) lea el `delta` sin copiarlo a mano
+    with open(args.out_dir / 'a16_elegido.csv', 'w', newline='', encoding='utf-8') as fh:
+        w = csv.DictWriter(fh, fieldnames=['etiqueta', 'delta'])
+        w.writeheader()
+        w.writerows(elegidos)
+    print('\ndelta elegido por punto de control: %s' % (args.out_dir / 'a16_elegido.csv'))
 
 
 if __name__ == '__main__':

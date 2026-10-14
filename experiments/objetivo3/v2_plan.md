@@ -87,6 +87,21 @@ con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara bi
 - Controles nuevos al arrancar: peso uniforme = perdida de la version 1; fraccion sorteada a menos de 0.02 de `p`.
 - `.sbatch`: `a7_run05a.sbatch`, aborta si no se pasan `FRAC` y `PESO` (los dos `[POR FIJAR]` de D).
 
+### Regla de eleccion (APROBADA por la autora el 2026-10-14, antes de generar con run05a/run05b)
+
+- **Candidatos:** el `mejor.pt` (minimo de validacion) de run04, run05a y run05b.
+- **Datos:** validacion (`0101`, `0102`), pose corregida, 5 semillas, etapa `delta` de la cadena; `delta` de
+  `regla_suave` calibrado por `a16` para cada punto (#172).
+- **Metrica principal:** `E` = media de |sintetico - real| del exceso de amplitud de Peters (metrica de D2) en los
+  anillos 2-4, 4-6, 6-8 y 8-10 mm, frente a D1 tornillo (1199 / 765 / 473 / 174 HU). run04: E = 532.8 HU.
+- **Salvaguarda:** se descarta un candidato si su desviacion en 0-2 mm (|sintetico - 1930|) supera en mas de 20 % la de
+  run04, o si falla un control de la cadena.
+- **Eleccion por simplicidad:** run04 -> run05a -> run05b; uno reemplaza al elegido solo con `E` al menos 10 % menor.
+  Si queda run04, la version 2 se reporta como "no mejora" y no hay corrida final con ella.
+- El cotejo de `a17` se reporta al lado y no decide. Limitacion declarada: 2 pacientes de validacion.
+- Implementacion: `v2_eleccion.py` (probada con perfiles sinteticos), `a16_v2.sbatch` -> `a15_cadena_v2.sbatch`
+  (cotejo + delta) -> `v2_eleccion.sbatch`; la etapa `final` de `a15_cadena_v2` solo corre para el elegido.
+
 ## 2. Diseno de la comparacion (aisla cada efecto)
 
 | Entrenamiento | D (sobremuestreo + peso) | B (canal `T`) | Para que |

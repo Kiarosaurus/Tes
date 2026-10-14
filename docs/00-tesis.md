@@ -114,7 +114,7 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
     (`01-decisiones.md` 2026-10-11 (2) y (3)). Se declara que el modelo vigente se entreno despues del congelamiento y antes de la enmienda.
   - **Modelo vigente: run04** (actualizado el 2026-10-11). Una auditoria de pacientes duplicados detecto que
     `metal_0003` (train) y `metal_0072` (test) eran el mismo paciente (#166): se reentreno sin `0003` y todos los
-    resultados se regeneran con el (la corrida final de test sigue en curso el 2026-10-11). **La tesis reporta solo run04**; las corridas anteriores no se describen ni
+    resultados se regeneran con el (corrida final de test HECHA y evaluada el 2026-10-13: `experiments/objetivo3/resultados_prueba_v1.md`, #177). **La tesis reporta solo run04**; las corridas anteriores no se describen ni
     se comparan, y ninguna cifra sale de ellas (#171). Limitacion declarada en una frase: el conjunto de test se
     habia evaluado una vez con el modelo afectado; las enmiendas posteriores se fijaron sobre validacion y por
     reglas registradas antes (#171).
@@ -146,14 +146,28 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       - **Hallazgos declarados:** el p95 sintetico queda bajo lo real en los dos (7 de 12 cascaras cada uno); y
         dentro de `M` `run04_60k` queda mas cerca de lo real que `run04_mejor` (distancia de histograma 497
         frente a 648 HU), cosa que la regla no mira.
-      - **PENDIENTE (#173):** las cifras de `Delta` y de rayas de esta vineta y la siguiente salieron con la pose
-      espejada; se sustituyen al correr `a20` sobre `outputs/obj3_pose/delta/`.
-    - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (100.3 HU) y con el
-        principal (163.8 HU). En validacion genera rayas MAS DEBILES que `run04_mejor` (mediana de semillas
-        749 / 1076 frente a 977 / 1238 HU en `0101` / `0102`), y las dos quedan bajo Peters Ti (2051 / 1279 HU):
+      - Las cifras de `Delta` y de rayas de esta vineta y la siguiente son las de la pose corregida (#173, #175;
+      `experiments/objetivo3/resultados_validacion_pose.md` §3); las de la pose espejada (163.8 / 100.3 HU) quedan
+      retiradas.
+    - **Sensibilidad de checkpoint en E-A2:** `run04_60k`, juzgado con su propio `Delta` (115.8 HU) y con el
+        principal (196.3 HU). En validacion genera rayas MAS DEBILES que `run04_mejor` (mediana de semillas
+        1164 / 1163 frente a 1248 / 1182 HU en `0101` / `0102`), y las dos quedan bajo Peters Ti (1881 / 1287 HU):
         el principal, elegido por una regla que no mira el brazo fisico, es el que queda MAS CERCA de Peters, y
-        la sensibilidad con `run04_60k` es la lectura conservadora (corregido el 2026-10-11, #171).
-    - **`Delta = max(s, r)` = 163.8 HU** (2026-10-09 (4); `s` del difusor = 163.8, `r` de Peters = 23.2).
+        la sensibilidad con `run04_60k` es la lectura conservadora (#171, cifras de la pose corregida #175).
+    - **`Delta = max(s, r)` = 196.3 HU** (2026-10-09 (4); `s` del difusor = 196.3, `r` de Peters Fe = 6.1; pose
+      corregida, #175; con la pose espejada eran 163.8 y 23.2).
+    - **Resultado de prueba de la version 1 (2026-10-13, #177; `resultados_prueba_v1.md`):** TOST primario frente a
+      Peters Ti, n = 13: diferencia media -301.0 HU, IC90 [-477.0, -124.9], `Delta` 196.3: **no se concluye
+      equivalencia** (el difusor da rayas mas debiles). Cordura frente a copia y pegado: Wilcoxon p = 0.000122, la
+      supera. `run04_60k` (sensibilidad): -384.0 HU, tampoco equivalente. La comparacion contra Peters ya se
+      ejecuto como contraste primario: la contingencia de plazo de #90 quedo sin efecto (CERRADA 2026-10-14).
+    - **Version 2 del sintetizador (POSTERIOR y EXPLORATORIA; `experiments/objetivo3/v2_plan.md`; 2026-10-13,
+      2026-10-14 y 2026-10-14 (2)):** decidida despues de ver la prueba de la version 1. D (sobremuestreo de
+      componentes tamano tornillo + peso 3 en el anillo de 2-10 mm; run05a) y B (canal con plantilla analitica
+      de endurecimiento del haz; run05b; compuerta aprobada antes y pasada, #181). Por la regla de eleccion
+      aprobada antes de generar, **la version 2 "no mejora"** (#182): el modelo principal sigue siendo run04.
+      run05a y run05b se evaluan en prueba como analisis exploratorio declarado antes de correr, lado a lado con
+      run04, sin elegir ganador; nunca sustituyen a la version 1.
       **HU de copia y pegado = 5371 HU** (`a22`, conjunto de run04).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
       60 % de los parches (2026-10-05 (6), punto 2).

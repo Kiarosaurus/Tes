@@ -6461,7 +6461,7 @@ renderizador: sin cambios.**
   como supuesto), plan de P3/O3.
 - **Tipo:** REDACCION + SUPUESTO. **Pendiente de decision de la autora. No aplicado a `main.tex` (reglas 4 y 14).**
 
-### 90 — Plazo: la autora habla de 5 semanas, los documentos dicen ~11 — ABIERTA
+### 90 — Plazo: la autora habla de 5 semanas, los documentos dicen ~11 — CERRADA 2026-10-14 (por ejecucion; ver cierre al final de la ACTUALIZACION 2026-09-21)
 
 - **Origen:** pregunta de la autora, 2026-09-18: "es posible llegar hasta el 4 en 5 semanas?".
 - **Hallazgo:** `01-decisiones.md` (2026-09-17, "Por que") planifica con **~11 semanas**; `ESTADO.md` cita ~12 semanas
@@ -8138,6 +8138,13 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
 - **DECISION DE LA AUTORA (2026-09-21, en chat):** **no se corta nada por ahora.** Se apunta a llegar al
   Objetivo 3 dentro de las ~5 semanas y **`main.tex` no se toca**: el brazo TOST **se mantiene como meta**.
   El recorte de arriba queda como **contingencia declarada**, a aplicar solo si el plazo lo obliga.
+- **CIERRE (2026-10-14, instruccion de la autora en el chat: "cierra T05 dado que ya fue la comparacion con
+  Peters"):** la contingencia no llego a aplicarse. El brazo TOST frente a `peters2025hybrid` se implemento, `Delta`
+  se midio en validacion (196.3 HU, #175) y la comparacion se ejecuto en prueba como contraste primario el
+  2026-10-13 (`experiments/objetivo3/resultados_prueba_v1.md`, #177; DEC 2026-10-13). La opcion "pasar la
+  equivalencia a trabajo futuro" ya no puede ocurrir. **Que toca:** `overleaf/secciones/capitulo3.tex` (§Analisis
+  estadistico, `\GAPDEC` de la contingencia de plazo; hallazgo T05 de capitulo3-r19): el GAP se retira en la proxima
+  ronda del capitulo 3. `main.tex` y `00-tesis.md` no lo mencionan como abierto.
   Literal: *"Por ahora no voy a tocar lo de main.tex a pesar del endurecimiento porque se intentara llegar
   en 5 semanas al objetivo 3. En caso de no llegar, se cortara pero por ahora solo se dejara como una
   posibilidad."* **El asistente no debe aplicar el recorte por su cuenta.**

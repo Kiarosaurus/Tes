@@ -1,0 +1,38 @@
+skimage 0.26.0
+inicio 2026-10-13T22:19:43-05:00  nodo n006  cpus 24  commit b8e80ec
+control: T igual a la del piloto (diferencia maxima 9.31e-10)
+23058 parches en /home/kiara.balcazar/metalsynth/data/a1b_cache; lambda 0.0847 por mm; 360 angulos
+  1000/23058 (1000 nuevos)
+  2000/23058 (2000 nuevos)
+  3000/23058 (3000 nuevos)
+  4000/23058 (4000 nuevos)
+  5000/23058 (5000 nuevos)
+  6000/23058 (6000 nuevos)
+  7000/23058 (7000 nuevos)
+  8000/23058 (8000 nuevos)
+  9000/23058 (9000 nuevos)
+  10000/23058 (10000 nuevos)
+  11000/23058 (11000 nuevos)
+  12000/23058 (12000 nuevos)
+  13000/23058 (13000 nuevos)
+  14000/23058 (14000 nuevos)
+  15000/23058 (15000 nuevos)
+  16000/23058 (16000 nuevos)
+  17000/23058 (17000 nuevos)
+  18000/23058 (18000 nuevos)
+  19000/23058 (19000 nuevos)
+  20000/23058 (20000 nuevos)
+  21000/23058 (21000 nuevos)
+  22000/23058 (22000 nuevos)
+  23000/23058 (23000 nuevos)
+  23058/23058 (23058 nuevos)
+escala = 0.000589148 -> /home/kiara.balcazar/metalsynth/data/a1b_cache_T/escala.json
+fin 2026-10-13T22:32:51-05:00  rc=0
+{
+  "escala": 0.0005891475011594594,
+  "lambda_por_mm": 0.0847457627118644,
+  "n_ang": 360,
+  "parches_muestra": 1136,
+  "regla": "p99 de |T| fuera de M, parches de entrenamiento con metal (semilla 20261014)",
+  "parches_total": 23058
+}

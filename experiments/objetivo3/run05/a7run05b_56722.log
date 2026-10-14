@@ -1,0 +1,102 @@
+torch 2.14.0+cu130 cuda True
+inicio 2026-10-14T05:14:28-05:00  nodo ag001  gpu MIG-de2fd08d-5f4d-540d-a681-ce9d19fca72a  parches 14182  FRAC=0.5  PESO=3  anillo 2 10 mm
+commit dfa1d35
+NVIDIA A100-PCIE-40GB, 40960 MiB
+control identidad_ventanas: peor 1.09e-11 HU
+control aislamiento: 0 de 33 casos de test en el cargador
+control perdida_solo_en_G: G vacia -> 0.0
+control peso_uniforme_identico: 1.02512 = 1.02512
+control frac_pixeles_anillo_lote: 0.0000
+control sobremuestreo: fraccion tornillo sorteada 0.4981 (objetivo 0.5)
+datos: {'parches': 14182.0, 'casos': 39.0, 'series': 330.0, 'borde': 405.0, 'frac_borde': 0.0286}  parametros: 28.0 M
+validacion: {'parches': 896.0, 'casos': 3.0, 'series': 24.0, 'borde': 28.0, 'frac_borde': 0.0312}
+D-a sobremuestreo: {'parches_tornillo': 2888.0, 'parches': 14182.0, 'series_tornillo': 45.0, 'frac_natural': 0.2036, 'frac_objetivo': 0.5, 'factor': 3.9107}
+B canal T: escala 0.000589148 (cond con 9 canales, modelo con 12 entradas)
+D-b peso 3.0 en 2.0-10.0 mm de M
+AVISO: corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis.
+REANUDADO desde /home/kiara.balcazar/metalsynth/data/a7/run05b/ckpt.pt en el paso 27000
+  minimo previo en mejor.pt: 0.05957 en el paso 21000
+  minimo previo en mejor_pond.pt: 0.06410 en el paso 21000
+paso 27500/60000 perdida 0.04692 val 0.06366 0.371 s/paso (tramo) 12.4 GB
+paso 28000/60000 perdida 0.03772 val 0.06241 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 28000
+paso 28500/60000 perdida 0.05960 val 0.06330 0.391 s/paso (tramo) 12.4 GB
+paso 29000/60000 perdida 0.03197 val 0.06293 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 29000
+paso 29500/60000 perdida 0.03564 val 0.06141 0.391 s/paso (tramo) 12.4 GB
+paso 30000/60000 perdida 0.07251 val 0.06367 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 30000
+paso 30500/60000 perdida 0.03397 val 0.06365 0.391 s/paso (tramo) 12.4 GB
+paso 31000/60000 perdida 0.04602 val 0.06125 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 31000
+paso 31500/60000 perdida 0.04729 val 0.06543 0.392 s/paso (tramo) 12.4 GB
+paso 32000/60000 perdida 0.04165 val 0.06348 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 32000
+paso 32500/60000 perdida 0.05169 val 0.06554 0.392 s/paso (tramo) 12.4 GB
+paso 33000/60000 perdida 0.05003 val 0.06463 0.385 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 33000
+paso 33500/60000 perdida 0.03145 val 0.06314 0.392 s/paso (tramo) 12.4 GB
+paso 34000/60000 perdida 0.03433 val 0.07100 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 34000
+paso 34500/60000 perdida 0.03887 val 0.06470 0.392 s/paso (tramo) 12.4 GB
+paso 35000/60000 perdida 0.03602 val 0.06312 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 35000
+paso 35500/60000 perdida 0.01896 val 0.06209 0.391 s/paso (tramo) 12.4 GB
+paso 36000/60000 perdida 0.03521 val 0.06455 0.385 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 36000
+paso 36500/60000 perdida 0.03195 val 0.06328 0.391 s/paso (tramo) 12.4 GB
+paso 37000/60000 perdida 0.02936 val 0.06426 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 37000
+paso 37500/60000 perdida 0.03100 val 0.06258 0.391 s/paso (tramo) 12.4 GB
+paso 38000/60000 perdida 0.04989 val 0.06242 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 38000
+paso 38500/60000 perdida 0.03661 val 0.06398 0.391 s/paso (tramo) 12.4 GB
+paso 39000/60000 perdida 0.04578 val 0.06388 0.391 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 39000
+paso 39500/60000 perdida 0.02445 val 0.06561 0.393 s/paso (tramo) 12.4 GB
+paso 40000/60000 perdida 0.02855 val 0.06441 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 40000
+paso 40500/60000 perdida 0.03709 val 0.06666 0.392 s/paso (tramo) 12.4 GB
+paso 41000/60000 perdida 0.02676 val 0.06634 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 41000
+paso 41500/60000 perdida 0.02542 val 0.06930 0.392 s/paso (tramo) 12.4 GB
+paso 42000/60000 perdida 0.02625 val 0.06651 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 42000
+paso 42500/60000 perdida 0.04207 val 0.06614 0.392 s/paso (tramo) 12.4 GB
+paso 43000/60000 perdida 0.03086 val 0.06609 0.385 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 43000
+paso 43500/60000 perdida 0.03538 val 0.06589 0.391 s/paso (tramo) 12.4 GB
+paso 44000/60000 perdida 0.03531 val 0.06870 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 44000
+paso 44500/60000 perdida 0.02227 val 0.06907 0.391 s/paso (tramo) 12.4 GB
+paso 45000/60000 perdida 0.02180 val 0.06926 0.385 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 45000
+paso 45500/60000 perdida 0.06850 val 0.06778 0.391 s/paso (tramo) 12.4 GB
+paso 46000/60000 perdida 0.03895 val 0.06628 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 46000
+paso 46500/60000 perdida 0.02023 val 0.06685 0.392 s/paso (tramo) 12.4 GB
+paso 47000/60000 perdida 0.02361 val 0.06938 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 47000
+paso 47500/60000 perdida 0.04162 val 0.06827 0.392 s/paso (tramo) 12.4 GB
+paso 48000/60000 perdida 0.01674 val 0.06845 0.385 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 48000
+paso 48500/60000 perdida 0.02121 val 0.06588 0.392 s/paso (tramo) 12.4 GB
+paso 49000/60000 perdida 0.03643 val 0.06728 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 49000
+paso 49500/60000 perdida 0.01585 val 0.06829 0.393 s/paso (tramo) 12.4 GB
+paso 50000/60000 perdida 0.02413 val 0.07178 0.384 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 50000
+paso 50500/60000 perdida 0.03645 val 0.06945 0.392 s/paso (tramo) 12.4 GB
+paso 51000/60000 perdida 0.02161 val 0.07057 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 51000
+paso 51500/60000 perdida 0.02447 val 0.07299 0.391 s/paso (tramo) 12.4 GB
+paso 52000/60000 perdida 0.02422 val 0.07243 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 52000
+paso 52500/60000 perdida 0.03641 val 0.07214 0.391 s/paso (tramo) 12.4 GB
+paso 53000/60000 perdida 0.02962 val 0.07507 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 53000
+paso 53500/60000 perdida 0.02636 val 0.07522 0.391 s/paso (tramo) 12.4 GB
+paso 54000/60000 perdida 0.04650 val 0.07041 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 54000
+paso 54500/60000 perdida 0.03114 val 0.07335 0.392 s/paso (tramo) 12.4 GB
+[2026-10-14T08:14:29.005] error: *** JOB 56722 ON ag001 CANCELLED AT 2026-10-14T08:14:29 DUE TO TIME LIMIT ***

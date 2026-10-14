@@ -1,0 +1,135 @@
+torch 2.14.0+cu130 cuda True
+inicio 2026-10-14T01:48:57-05:00  nodo ag001  gpu MIG-de2fd08d-5f4d-540d-a681-ce9d19fca72a  parches 14182  FRAC=0.5  PESO=3  anillo 2 10 mm
+commit dfa1d35
+NVIDIA A100-PCIE-40GB, 40960 MiB
+control identidad_ventanas: peor 1.09e-11 HU
+control aislamiento: 0 de 33 casos de test en el cargador
+control perdida_solo_en_G: G vacia -> 0.0
+control peso_uniforme_identico: 1.02512 = 1.02512
+control frac_pixeles_anillo_lote: 0.0000
+control sobremuestreo: fraccion tornillo sorteada 0.4981 (objetivo 0.5)
+datos: {'parches': 14182.0, 'casos': 39.0, 'series': 330.0, 'borde': 405.0, 'frac_borde': 0.0286}  parametros: 28.0 M
+validacion: {'parches': 896.0, 'casos': 3.0, 'series': 24.0, 'borde': 28.0, 'frac_borde': 0.0312}
+D-a sobremuestreo: {'parches_tornillo': 2888.0, 'parches': 14182.0, 'series_tornillo': 45.0, 'frac_natural': 0.2036, 'frac_objetivo': 0.5, 'factor': 3.9107}
+B canal T: escala 0.000589148 (cond con 9 canales, modelo con 12 entradas)
+D-b peso 3.0 en 2.0-10.0 mm de M
+AVISO: corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis.
+paso 500/60000 perdida 0.21764 val 0.17081 0.366 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.17081 en el paso 500 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.17383 en el paso 500 -> mejor_pond.pt
+paso 1000/60000 perdida 0.10227 val 0.13290 0.391 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.13290 en el paso 1000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.13737 en el paso 1000 -> mejor_pond.pt
+ckpt guardado en el paso 1000
+paso 1500/60000 perdida 0.14867 val 0.10689 0.392 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.10689 en el paso 1500 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.11035 en el paso 1500 -> mejor_pond.pt
+paso 2000/60000 perdida 0.07996 val 0.09987 0.386 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.09987 en el paso 2000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.10322 en el paso 2000 -> mejor_pond.pt
+ckpt guardado en el paso 2000
+paso 2500/60000 perdida 0.07161 val 0.09967 0.392 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.09967 en el paso 2500 -> mejor.pt
+paso 3000/60000 perdida 0.14207 val 0.08969 0.384 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.08969 en el paso 3000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.09471 en el paso 3000 -> mejor_pond.pt
+ckpt guardado en el paso 3000
+paso 3500/60000 perdida 0.05988 val 0.08589 0.392 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.08589 en el paso 3500 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.09077 en el paso 3500 -> mejor_pond.pt
+paso 4000/60000 perdida 0.09926 val 0.07866 0.386 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.07866 en el paso 4000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.08285 en el paso 4000 -> mejor_pond.pt
+ckpt guardado en el paso 4000
+paso 4500/60000 perdida 0.07778 val 0.07870 0.392 s/paso (tramo) 12.3 GB
+paso 5000/60000 perdida 0.07992 val 0.07310 0.381 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.07310 en el paso 5000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.07724 en el paso 5000 -> mejor_pond.pt
+ckpt guardado en el paso 5000
+paso 5500/60000 perdida 0.11184 val 0.08219 0.392 s/paso (tramo) 12.3 GB
+paso 6000/60000 perdida 0.07406 val 0.07454 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 6000
+paso 6500/60000 perdida 0.06404 val 0.07273 0.388 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.07273 en el paso 6500 -> mejor.pt
+paso 7000/60000 perdida 0.06070 val 0.08948 0.383 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 7000
+paso 7500/60000 perdida 0.06390 val 0.06963 0.388 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06963 en el paso 7500 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.07436 en el paso 7500 -> mejor_pond.pt
+paso 8000/60000 perdida 0.06019 val 0.07895 0.386 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 8000
+paso 8500/60000 perdida 0.04089 val 0.06964 0.388 s/paso (tramo) 12.3 GB
+paso 9000/60000 perdida 0.05460 val 0.06925 0.381 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06925 en el paso 9000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.07417 en el paso 9000 -> mejor_pond.pt
+ckpt guardado en el paso 9000
+paso 9500/60000 perdida 0.06499 val 0.06916 0.392 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06916 en el paso 9500 -> mejor.pt
+paso 10000/60000 perdida 0.06243 val 0.06419 0.384 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06419 en el paso 10000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06820 en el paso 10000 -> mejor_pond.pt
+ckpt guardado en el paso 10000
+paso 10500/60000 perdida 0.05941 val 0.06502 0.392 s/paso (tramo) 12.3 GB
+paso 11000/60000 perdida 0.08662 val 0.06587 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 11000
+paso 11500/60000 perdida 0.06292 val 0.06327 0.387 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06327 en el paso 11500 -> mejor.pt
+paso 12000/60000 perdida 0.07225 val 0.06321 0.383 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06321 en el paso 12000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06787 en el paso 12000 -> mejor_pond.pt
+ckpt guardado en el paso 12000
+paso 12500/60000 perdida 0.03933 val 0.06343 0.393 s/paso (tramo) 12.3 GB
+paso 13000/60000 perdida 0.04828 val 0.06334 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 13000
+paso 13500/60000 perdida 0.06054 val 0.06397 0.388 s/paso (tramo) 12.3 GB
+paso 14000/60000 perdida 0.04814 val 0.06792 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 14000
+paso 14500/60000 perdida 0.03937 val 0.06508 0.389 s/paso (tramo) 12.3 GB
+paso 15000/60000 perdida 0.04405 val 0.06167 0.381 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06167 en el paso 15000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06653 en el paso 15000 -> mejor_pond.pt
+ckpt guardado en el paso 15000
+paso 15500/60000 perdida 0.06653 val 0.06342 0.392 s/paso (tramo) 12.3 GB
+paso 16000/60000 perdida 0.04429 val 0.06432 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 16000
+paso 16500/60000 perdida 0.06571 val 0.06542 0.387 s/paso (tramo) 12.3 GB
+paso 17000/60000 perdida 0.05383 val 0.06202 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 17000
+paso 17500/60000 perdida 0.03887 val 0.06326 0.387 s/paso (tramo) 12.3 GB
+paso 18000/60000 perdida 0.04352 val 0.06271 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 18000
+paso 18500/60000 perdida 0.08734 val 0.06234 0.387 s/paso (tramo) 12.3 GB
+paso 19000/60000 perdida 0.05286 val 0.06136 0.381 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06136 en el paso 19000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06646 en el paso 19000 -> mejor_pond.pt
+ckpt guardado en el paso 19000
+paso 19500/60000 perdida 0.03520 val 0.06120 0.393 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.06120 en el paso 19500 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06566 en el paso 19500 -> mejor_pond.pt
+paso 20000/60000 perdida 0.03848 val 0.06647 0.385 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 20000
+paso 20500/60000 perdida 0.06099 val 0.06412 0.388 s/paso (tramo) 12.3 GB
+paso 21000/60000 perdida 0.02822 val 0.05957 0.381 s/paso (tramo) 12.3 GB
+  nuevo minimo de validacion: 0.05957 en el paso 21000 -> mejor.pt
+  nuevo minimo de validacion ponderada: 0.06410 en el paso 21000 -> mejor_pond.pt
+ckpt guardado en el paso 21000
+paso 21500/60000 perdida 0.03132 val 0.06276 0.392 s/paso (tramo) 12.3 GB
+paso 22000/60000 perdida 0.05138 val 0.06157 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 22000
+paso 22500/60000 perdida 0.03281 val 0.06280 0.388 s/paso (tramo) 12.3 GB
+paso 23000/60000 perdida 0.03876 val 0.06086 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 23000
+paso 23500/60000 perdida 0.05075 val 0.06121 0.388 s/paso (tramo) 12.3 GB
+paso 24000/60000 perdida 0.03060 val 0.06042 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 24000
+paso 24500/60000 perdida 0.03870 val 0.06476 0.388 s/paso (tramo) 12.3 GB
+paso 25000/60000 perdida 0.03752 val 0.06354 0.382 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 25000
+paso 25500/60000 perdida 0.04963 val 0.06271 0.388 s/paso (tramo) 12.3 GB
+paso 26000/60000 perdida 0.04187 val 0.06505 0.382 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 26000
+paso 26500/60000 perdida 0.03714 val 0.06541 0.387 s/paso (tramo) 12.3 GB
+paso 27000/60000 perdida 0.05881 val 0.06095 0.381 s/paso (tramo) 12.3 GB
+ckpt guardado en el paso 27000
+paso 27500/60000 perdida 0.04483 val 0.06197 0.388 s/paso (tramo) 12.3 GB
+[2026-10-14T04:48:56.004] error: *** JOB 56721 ON ag001 CANCELLED AT 2026-10-14T04:48:56 DUE TO TIME LIMIT ***

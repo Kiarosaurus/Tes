@@ -1,0 +1,47 @@
+torch 2.14.0+cu130 cuda True
+inicio 2026-10-14T08:15:00-05:00  nodo ag001  gpu MIG-de2fd08d-5f4d-540d-a681-ce9d19fca72a  parches 14182  FRAC=0.5  PESO=3  anillo 2 10 mm
+commit dfa1d35
+NVIDIA A100-PCIE-40GB, 40960 MiB
+control identidad_ventanas: peor 1.09e-11 HU
+control aislamiento: 0 de 33 casos de test en el cargador
+control perdida_solo_en_G: G vacia -> 0.0
+control peso_uniforme_identico: 1.02512 = 1.02512
+control frac_pixeles_anillo_lote: 0.0000
+control sobremuestreo: fraccion tornillo sorteada 0.4981 (objetivo 0.5)
+datos: {'parches': 14182.0, 'casos': 39.0, 'series': 330.0, 'borde': 405.0, 'frac_borde': 0.0286}  parametros: 28.0 M
+validacion: {'parches': 896.0, 'casos': 3.0, 'series': 24.0, 'borde': 28.0, 'frac_borde': 0.0312}
+D-a sobremuestreo: {'parches_tornillo': 2888.0, 'parches': 14182.0, 'series_tornillo': 45.0, 'frac_natural': 0.2036, 'frac_objetivo': 0.5, 'factor': 3.9107}
+B canal T: escala 0.000589148 (cond con 9 canales, modelo con 12 entradas)
+D-b peso 3.0 en 2.0-10.0 mm de M
+AVISO: corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis.
+REANUDADO desde /home/kiara.balcazar/metalsynth/data/a7/run05b/ckpt.pt en el paso 54000
+  minimo previo en mejor.pt: 0.05957 en el paso 21000
+  minimo previo en mejor_pond.pt: 0.06410 en el paso 21000
+paso 54500/60000 perdida 0.03554 val 0.06920 0.370 s/paso (tramo) 12.4 GB
+paso 55000/60000 perdida 0.02307 val 0.06981 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 55000
+paso 55500/60000 perdida 0.04781 val 0.07596 0.393 s/paso (tramo) 12.4 GB
+paso 56000/60000 perdida 0.02170 val 0.07091 0.388 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 56000
+paso 56500/60000 perdida 0.02452 val 0.07152 0.394 s/paso (tramo) 12.4 GB
+paso 57000/60000 perdida 0.06351 val 0.07082 0.388 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 57000
+paso 57500/60000 perdida 0.02625 val 0.07347 0.393 s/paso (tramo) 12.4 GB
+paso 58000/60000 perdida 0.02982 val 0.07101 0.388 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 58000
+paso 58500/60000 perdida 0.03416 val 0.07383 0.395 s/paso (tramo) 12.4 GB
+paso 59000/60000 perdida 0.02769 val 0.07365 0.387 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 59000
+paso 59500/60000 perdida 0.03893 val 0.07407 0.395 s/paso (tramo) 12.4 GB
+paso 60000/60000 perdida 0.04009 val 0.07397 0.386 s/paso (tramo) 12.4 GB
+ckpt guardado en el paso 60000
+MEJOR VALIDACION: 0.05957 en el paso 21000 (mejor.pt). Ultimo paso: 60000. Si la distancia entre ambos es grande, el modelo paso de largo el minimo y el `ckpt.pt` final NO es el que hay que usar.
+MEJOR VALIDACION PONDERADA: 0.06410 en el paso 21000 (mejor_pond.pt).
+LISTO. 60000 pasos, 0.391 s/paso. Extrapolacion a 30 000 pasos: 3.3 h
+fin 2026-10-14T08:54:13-05:00  rc=0
+ultimas filas de la curva:
+58000,0.029822,0.07101,0.3874,0.3877,12.42,0.0787
+58500,0.034159,0.073827,0.3882,0.3945,12.42,0.081546
+59000,0.027693,0.073654,0.388,0.3868,12.42,0.081741
+59500,0.038928,0.07407,0.3886,0.3947,12.42,0.082093
+60000,0.04009,0.07397,0.3885,0.3864,12.42,0.081886

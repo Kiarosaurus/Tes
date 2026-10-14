@@ -1,0 +1,52 @@
+torch 2.14.0+cu130 cuda True
+inicio 2026-10-13T22:33:25-05:00  nodo ag001  gpu 0  parches 14182  FRAC=0.5  PESO=3  anillo 2 10 mm
+commit b8e80ec
+NVIDIA A100-PCIE-40GB, 40960 MiB
+control identidad_ventanas: peor 1.09e-11 HU
+control aislamiento: 0 de 33 casos de test en el cargador
+control perdida_solo_en_G: G vacia -> 0.0
+control peso_uniforme_identico: 1.02512 = 1.02512
+control frac_pixeles_anillo_lote: 0.0000
+control sobremuestreo: fraccion tornillo sorteada 0.4981 (objetivo 0.5)
+datos: {'parches': 14182.0, 'casos': 39.0, 'series': 330.0, 'borde': 405.0, 'frac_borde': 0.0286}  parametros: 28.0 M
+validacion: {'parches': 896.0, 'casos': 3.0, 'series': 24.0, 'borde': 28.0, 'frac_borde': 0.0312}
+D-a sobremuestreo: {'parches_tornillo': 2888.0, 'parches': 14182.0, 'series_tornillo': 45.0, 'frac_natural': 0.2036, 'frac_objetivo': 0.5, 'factor': 3.9107}
+B canal T: escala 0.000589148 (cond con 9 canales, modelo con 12 entradas)
+D-b peso 3.0 en 2.0-10.0 mm de M
+AVISO: corrida NO preinscrita. Es piloto de medicion (#89), no resultado de tesis.
+[W1013 22:33:33.931216672 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 536870912 bytes (free: 44433408, total: 21072183296).
+[W1013 22:33:33.127620240 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 536870912 bytes (free: 382074880, total: 21072183296).
+Traceback (most recent call last):
+  File "/home/kiara.balcazar/metalsynth/src/renderizador/entrenar.py", line 396, in <module>
+    main()
+  File "/home/kiara.balcazar/metalsynth/src/renderizador/entrenar.py", line 337, in main
+    l = perdida(modelo, lote['x0'].to(args.dispositivo), lote['cond'].to(args.dispositivo),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/metalsynth/src/renderizador/difusion.py", line 91, in perdida
+    salida = modelo(torch.cat([xt, cond], dim=1), t)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/metalsynth/src/renderizador/modelo.py", line 132, in forward
+    h = amplia(h)
+        ^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/modules/upsampling.py", line 174, in forward
+    return F.interpolate(
+           ^^^^^^^^^^^^^^
+  File "/home/kiara.balcazar/.conda/envs/totalseg/lib/python3.11/site-packages/torch/nn/functional.py", line 5214, in interpolate
+    return torch._C._nn.upsample_nearest2d(input, output_size, scale_factors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 512.00 MiB. GPU 0 has a total capacity of 19.62 GiB of which 362.38 MiB is free. Process 4128857 has 12.03 GiB memory in use. Including non-PyTorch memory, this process has 7.12 GiB memory in use. Of the allocated memory 6.45 GiB is allocated by PyTorch, and 465.74 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+fin 2026-10-13T22:33:34-05:00  rc=1
+ultimas filas de la curva:
+paso,perdida,perdida_val,s_por_paso,s_tramo,gb_max,perdida_val_pond

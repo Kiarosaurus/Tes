@@ -11,6 +11,7 @@
 #   JA=$(sbatch --parsable --export=ALL,RUN=run05a experiments/objetivo3/a16_v2.sbatch)
 #   sbatch --dependency=afterok:$JA --export=ALL,RUN=run05a experiments/objetivo3/a15_cadena_v2.sbatch
 #   Solo la final, tras la eleccion:  --export=ALL,RUN=<elegido>,ETAPAS=final
+#   Final EXPLORATORIA (#182, declarada en v2_plan.md): --export=ALL,RUN=run05a,ETAPAS=final,EXPLORATORIO=1 --time=08:00:00
 # Salida: $DATA/obj3_pose/{cotejo,delta,final}/<RUN>_mejor/ (junto a run04, para compararlos con las mismas rutas)
 #SBATCH --job-name=a15v2
 # Generar usa pocos GB (lote 1): shards, como a15_cadena_pose; los dos RUN pueden compartir la MIG a la vez.
@@ -40,8 +41,16 @@ if [ -z "${DELTA:-}" ]; then
 fi
 ETAPAS=${ETAPAS:-"cotejo delta"}
 case " $ETAPAS " in
-    *" final "*) [ -f "$DATA/v2_eleccion/v2_eleccion.md" ] && grep -q "elegido \`$ETIQ\`" "$DATA/v2_eleccion/v2_eleccion.md" \
-        || { echo "ERROR: la etapa final solo corre para el punto elegido por v2_eleccion.py"; exit 1; } ;;
+    *" final "*)
+        if [ "${EXPLORATORIO:-0}" = "1" ]; then
+            # #182: la regla dio "no mejora"; la autora declaro el analisis exploratorio en prueba ANTES de correrlo
+            grep -q "Analisis exploratorio en prueba (DECLARADO" "$REPO/experiments/objetivo3/v2_plan.md" \
+                || { echo "ERROR: EXPLORATORIO=1 sin la declaracion en v2_plan.md (git pull)"; exit 1; }
+            echo "AVISO: corrida final EXPLORATORIA y POSTERIOR (v2_plan.md, #182): no reemplaza a run04"
+        else
+            [ -f "$DATA/v2_eleccion/v2_eleccion.md" ] && grep -q "elegido \`$ETIQ\`" "$DATA/v2_eleccion/v2_eleccion.md" \
+                || { echo "ERROR: la etapa final solo corre para el punto elegido por v2_eleccion.py (o EXPLORATORIO=1)"; exit 1; }
+        fi ;;
 esac
 BASE=${BASE:-$DATA/obj3_pose}
 VAL=(dataset6_CLINIC_0101_data dataset6_CLINIC_0102_data)

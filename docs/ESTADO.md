@@ -5,7 +5,8 @@
 ## 2026-10-14 (2) — Version 2 evaluada en validacion: la regla dice "no mejora" (#182)
 
 - **Hecho:** cadena a16_v2 -> a15_cadena_v2 -> v2_eleccion en Khipu (56777-56781). E (2-10 mm): run04 532.8, run05a 418.2, run05b 367.0; salvaguarda 0-2 mm (tope 279.6): run05a 284 (falla por 4 HU), run05b 540. **Resultado preinscrito: la version 2 no reemplaza a run04; sin corrida final.** a17: gana run04. -> **#182 ABIERTA**. Resultados en `experiments/objetivo3/run05/`.
-- **Siguiente:** la autora registra el resultado en `01-decisiones.md` y decide si hay algo mas con la version 2 (opciones en el chat; cualquier prueba con run05a/b seria exploratoria). Luego: realismo y redaccion (cap. 4: v1 + v2 lado a lado).
+- **Decidido (autora):** evaluar run05a y run05b en prueba como analisis EXPLORATORIO y POSTERIOR, declarado en `v2_plan.md` antes de correr; tres modelos lado a lado, sin ganador en prueba; mas comparacion visual a ciegas (D3). `a15_cadena_v2` acepta `ETAPAS=final EXPLORATORIO=1`; nuevo `a23_v2.sbatch` (E-A1).
+- **Siguiente:** Khipu: final x2 + a23_v2 x2; local: `a20` val (`Delta`) y prueba -> `a24` para cada run05; HTML `a25`; texto para `01-decisiones.md` en el chat (lo pega la autora).
 
 ## 2026-10-14 — Piloto de B: PASA; canal T y run05b listos
 

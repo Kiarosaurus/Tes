@@ -108,6 +108,28 @@ con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara bi
 caen en la salvaguarda de 0-2 mm (dev 284 y 540 frente al tope de 279.6). No hay corrida final con la version 2.
 Detalle: `experiments/objetivo3/run05/v2_eleccion.md`.
 
+### Analisis exploratorio en prueba (DECLARADO 2026-10-14, antes de correr nada en prueba con run05a/run05b)
+
+Decision de la autora despues de ver el resultado de la regla (#182) y antes de tocar prueba con la version 2. Motivo:
+la eleccion se hizo con 2 pacientes de validacion y run05a quedo fuera por 4 HU; la autora juzga insatisfactorio el
+resultado visual de run04.
+
+1. **El resultado principal no cambia:** por la regla preinscrita la version 2 "no mejora" (#182) y la comparacion
+   principal frente a Peters sigue siendo la de run04 (#177).
+2. **run05a y run05b se evaluan en prueba como analisis EXPLORATORIO y POSTERIOR**, con el mismo procedimiento que
+   run04: `Delta` de cada uno en validacion (etapa `delta`, ya generada; `a20` en validacion con su `delta` de `a16`),
+   corrida final en los 13 pacientes de E-A2 (5 semillas), `a20` -> `a24` (TOST frente a Peters Ti con su propio
+   `Delta`, Wilcoxon frente a copia y pegado) y E-A1 (`a23`, reconstruccion del implante real en prueba).
+3. **Se reportan los tres modelos completos, lado a lado, con las mismas metricas y sin elegir ganador en prueba.**
+   Ningun resultado de prueba de run05a/run05b reemplaza a run04 como modelo principal.
+4. **Redaccion:** los resultados de la version 2 en prueba son descriptivos ("en prueba, run05x cambia tanto en 2-10 mm
+   y tanto en 0-2 mm"), nunca "el modelo final es run05x".
+5. **Complemento:** comparacion visual a ciegas de los tres modelos (etiquetas ocultas, orden aleatorio; la prueba D3
+   propuesta en #176), descriptiva.
+
+Implementacion: `a15_cadena_v2.sbatch` con `ETAPAS=final EXPLORATORIO=1` (se niega sin esta declaracion) y
+`a23_v2.sbatch`.
+
 ## 2. Diseno de la comparacion (aisla cada efecto)
 
 | Entrenamiento | D (sobremuestreo + peso) | B (canal `T`) | Para que |

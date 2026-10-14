@@ -12218,3 +12218,10 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   regla y exploratoria; no puede presentarse como resultado principal.
 - **Pendiente de la autora:** registrar el resultado en `01-decisiones.md` (texto propuesto en el chat) y decidir si
   se hace algo mas con la version 2 (opciones en el chat).
+- **Adenda (2026-10-14, decision de la autora; declarada en `v2_plan.md` ANTES de correr en prueba):** run05a y
+  run05b se evaluan en prueba como analisis EXPLORATORIO y POSTERIOR, con el procedimiento de run04 (`Delta` propio en
+  validacion, final en los 13 de E-A2, `a20` -> `a24`, E-A1 con `a23`), reportando los tres modelos lado a lado y sin
+  elegir ganador en prueba; mas una comparacion visual a ciegas (D3). El resultado principal (#177, run04) y el de esta
+  implicancia no cambian. Motivo declarado: eleccion con 2 pacientes, run05a fuera por 4 HU, resultado visual de run04
+  insatisfactorio. Toca la redaccion del cap. 4 (seccion exploratoria separada) y obliga a no presentar la version 2
+  como modelo final.

@@ -2519,3 +2519,39 @@ como decisiones.md (si es necesario) declarando mi decision actual").
    2-10 mm, se sigue solo con D.
 6. **Orden:** primero la lectura de las fuentes de B (cuando la autora lo ordene) y los scripts de D; despues el
    piloto de B. La redaccion queda en pausa hasta tener la version 2 evaluada.
+
+## 2026-10-14 — Version 2: parametros de D, compuerta de B superada y regla de eleccion (#181, `v2_plan.md`)
+
+Escrito por el asistente con permiso explicito de la autora ("Redacta lo sugerido en 01-decisiones.md"). Recoge
+decisiones tomadas el 2026-10-13 y el 2026-10-14 que ya estaban en `v2_plan.md` y en el chat.
+
+1. **Parametros de D (fijados antes de entrenar):** `FRAC = 0.5` (fraccion de parches tamano tornillo por sorteo;
+   natural 0.2036, factor 3.91) y `PESO = 3` (escalon en 2-10 mm alrededor de `M`, dentro de `G`).
+2. **Compuerta de B:** criterio C0/C1/C2 con control anatomico, propuesto por el asistente y aprobado por la autora
+   antes de correr el piloto. **B paso la compuerta** (C2: e = 0.116, p = 0.0085, 13 pacientes con control; rho
+   mediana 0.166; #181). Se entreno run05b = run05a + canal T, con la misma GPU y los mismos hiperparametros. El
+   efecto es moderado: la plantilla se describe como prior analitico aproximado, no como modelo del artefacto.
+3. **Regla de eleccion entre run04, run05a y run05b (aprobada antes de generar con run05a/run05b):** metrica `E` =
+   media de |sintetico - real| del exceso de amplitud de Peters en 2-4, 4-6, 6-8 y 8-10 mm frente a D1 tornillo
+   (1199 / 765 / 473 / 174 HU), en validacion (`0101`, `0102`, 5 semillas, `mejor.pt` de cada corrida); salvaguarda:
+   descartar si la desviacion en 0-2 mm supera en mas de 20 % la de run04; eleccion por simplicidad (run04 -> run05a
+   -> run05b), reemplazo solo con `E` al menos 10 % menor; el cotejo de `a17` se reporta y no decide.
+
+## 2026-10-14 (2) — Version 2: resultado de la regla y analisis exploratorio en prueba (#182)
+
+Escrito por el asistente con permiso explicito de la autora (mismo pedido).
+
+1. **Resultado de la regla:** ni run05a (D) ni run05b (D + B) reemplazan a run04. Bajan el error en 2-10 mm (E 418.2
+   y 367.0 frente a 532.8 HU) pero fallan la salvaguarda de 0-2 mm (desviacion 284 y 540 frente al tope de 279.6:
+   run05a por 4 HU, run05b por 260). **Resultado principal: la version 2 "no mejora"; la comparacion principal frente
+   a Peters sigue siendo run04 (#177).**
+2. **Decision, tomada despues de ver ese resultado y ANTES de correr nada en prueba con la version 2:** run05a y
+   run05b se evaluan en prueba como **analisis exploratorio y posterior**, con el mismo procedimiento que run04
+   (`Delta` propio en validacion, corrida final en los 13 pacientes de E-A2 con 5 semillas, `a20` -> `a24`, E-A1 con
+   `a23`), y se reportan **los tres modelos lado a lado, sin elegir ganador en prueba**. Se anade una comparacion
+   visual a ciegas de los tres modelos (D3, descriptiva).
+3. **Motivo:** la eleccion se hizo con 2 pacientes de validacion (run05a quedo fuera por 4 HU, dentro del ruido) y el
+   resultado visual de run04 no es satisfactorio para la autora.
+4. **Redaccion:** los resultados de la version 2 en prueba se presentan como descriptivos y en una seccion separada;
+   nunca como "el modelo final es run05x". Declaracion completa en `v2_plan.md` ("Analisis exploratorio en prueba
+   (DECLARADO 2026-10-14)").

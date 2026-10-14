@@ -6,7 +6,7 @@
 
 - **Hecho:** cadena a16_v2 -> a15_cadena_v2 -> v2_eleccion en Khipu (56777-56781). E (2-10 mm): run04 532.8, run05a 418.2, run05b 367.0; salvaguarda 0-2 mm (tope 279.6): run05a 284 (falla por 4 HU), run05b 540. **Resultado preinscrito: la version 2 no reemplaza a run04; sin corrida final.** a17: gana run04. -> **#182 ABIERTA**. Resultados en `experiments/objetivo3/run05/`.
 - **Decidido (autora):** evaluar run05a y run05b en prueba como analisis EXPLORATORIO y POSTERIOR, declarado en `v2_plan.md` antes de correr; tres modelos lado a lado, sin ganador en prueba; mas comparacion visual a ciegas (D3). `a15_cadena_v2` acepta `ETAPAS=final EXPLORATORIO=1`; nuevo `a23_v2.sbatch` (E-A1).
-- **Siguiente:** Khipu: final x2 + a23_v2 x2; local: `a20` val (`Delta`) y prueba -> `a24` para cada run05; HTML `a25`; texto para `01-decisiones.md` en el chat (lo pega la autora).
+- **Siguiente:** Khipu: final x2 + a23_v2 x2; local: `a20` val (`Delta`) y prueba -> `a24` para cada run05; HTML `a25`; `01-decisiones.md` 2026-10-14 y 2026-10-14 (2) escritas por el asistente con permiso explicito de la autora (parametros de D, compuerta de B, regla de eleccion, resultado y analisis exploratorio).
 
 ## 2026-10-14 — Piloto de B: PASA; canal T y run05b listos
 

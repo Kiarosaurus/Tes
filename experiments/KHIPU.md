@@ -926,6 +926,11 @@ sbatch a2_entrenar.sbatch 200 --base 64 --lote 8     # mas lote
     `scontrol update JobId=<id> TimeLimit=00:50:00`; el usuario puede bajarlo, no subirlo, y el job arranco.
     El cotejo `a15_cotejo.sbatch` tarda ~15-25 min en la `3g`: a `khipu_elegir_gpu.sh` pasarle **11** minutos
     en A100, no 25.
+13. **Dos entrenamientos en shards de la misma MIG = OOM (2026-10-14):** run05b (job 56651) pidio
+    `shard:a100_3g.20gb:8` y Slurm lo puso en la misma MIG de 20 GB donde ya corria un tramo de run05a (12 GB): murio a
+    los 15 s con `CUDA out of memory` (*"Process ... has 12.03 GiB memory in use"*). Un shard NO reserva memoria. Para
+    entrenamientos (12.4 GB) pedir la GPU o la MIG ENTERA (`gpu:a100_3g.20gb:1`, `gpu:rtxa6000:1`) si puede coincidir
+    con otro job grande.
 11. **Arreglos y tope de jobs (2026-10-09):** `a19_final` como arreglo de 13 tareas fue rechazado con
     `QOSMaxSubmitJobPerUserLimit`: **cada tarea de un arreglo cuenta como un job enviado**. Ademas la QoS a-tesis
     limita la SUMA de lo que corre a la vez (`cpu=32`, `mem=98G`). Regla practica: un job por brazo, que recorra

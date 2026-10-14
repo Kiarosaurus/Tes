@@ -1,0 +1,53 @@
+{
+  "pasos": 60000,
+  "lote": 16,
+  "lado": 256,
+  "base": 64,
+  "objetivo": "v",
+  "semilla": 20260920,
+  "dispositivo": "cuda",
+  "parametros": 27979587,
+  "preinscrito": false,
+  "borrar_contexto": false,
+  "manifiesto": "/home/kiara.balcazar/metalsynth/experiments/objetivo3/a5_manifiesto_train_run04.csv",
+  "datos": {
+    "parches": 14182.0,
+    "casos": 39.0,
+    "series": 330.0,
+    "borde": 405.0,
+    "frac_borde": 0.0286
+  },
+  "controles": {
+    "identidad_ventanas": "peor 1.09e-11 HU",
+    "aislamiento": "0 de 33 casos de test en el cargador",
+    "perdida_solo_en_G": "G vacia -> 0.0",
+    "peso_uniforme_identico": "1.02512 = 1.02512",
+    "frac_pixeles_anillo_lote": "0.0000",
+    "sobremuestreo": "fraccion tornillo sorteada 0.4981 (objetivo 0.5)"
+  },
+  "datos_val": {
+    "parches": 896.0,
+    "casos": 3.0,
+    "series": 24.0,
+    "borde": 28.0,
+    "frac_borde": 0.0312
+  },
+  "manifiesto_val": "/home/kiara.balcazar/metalsynth/experiments/objetivo3/a5_manifiesto_val.csv",
+  "cada_ckpt": 1000,
+  "v2_D": {
+    "componentes": "/home/kiara.balcazar/metalsynth/experiments/objetivo3/v2_d_componentes_run04.csv",
+    "sobremuestreo": {
+      "parches_tornillo": 2888.0,
+      "parches": 14182.0,
+      "series_tornillo": 45.0,
+      "frac_natural": 0.2036,
+      "frac_objetivo": 0.5,
+      "factor": 3.9107
+    },
+    "anillo_mm": [
+      2.0,
+      10.0
+    ],
+    "peso_anillo": 3.0
+  }
+}

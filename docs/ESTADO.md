@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-14 (4) — T06/T05 aplicados; propuestas GAPDEC/GAPLIT; introduccion r06 revisada (sin correccion)
+
+- **Hecho:** T06: cifras vigentes en `00-tesis.md` (Delta 196.3/115.8, resultado de prueba v1, version 2) y `tesis/main.tex` Obj 3 (13 frente a 7; 648/497). T05: #90 CERRADA por ejecucion. Propuestas `redaccion/propuesta_gapdec_2026-10-14.md` (18 GAPDEC = 16 decisiones; 17 marcas resolubles ya) y `propuesta_gaplit_2026-10-14.md` (7 GAPLIT: 2 B, 5 C; 14 candidatos PENDIENTE). Implicancia #183 ABIERTA.
+- **introduccion-r06:** lint FALLA (0/1/1), guia 0/6/5, estilo 2/16/14, trazabilidad 5/5/9. Correccion del redactor NO lanzada (la autora lo pidio); etapa sin cerrar.
+- **Siguiente:** autora: aprobar GAPDEC, permiso para `01-decisiones.md` (D-O, D-M, D-N ANTES de mirar `a20_v2`), confirmar D-K; pegar raws de GAPLIT. Khipu: finales ~21:30/22:00 hora local -> `a20_v2`.
+
 ## 2026-10-14 (3) — Version 2 en prueba (exploratorio) corriendo; redaccion de la version 2 en marcha
 
 - **Corriendo en Khipu:** finales exploratorias 56791 (run05a), 56792 (run05b) y E-A1 56793/56794. HTML de validacion de los tres modelos generados en local (`a25`).

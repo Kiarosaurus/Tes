@@ -6,7 +6,7 @@
 
 - **Hecho:** piloto de B corrido por la autora (criterio aprobado antes): **PASA** (C0, C1, C2; e = 0.116, p = 0.0085, 13 pacientes) -> **#181 ABIERTA**. Copias en `experiments/objetivo3/b_piloto/`. Canal T implementado (`src/renderizador/plantilla.py`, `datos.py --cache-T`, `entrenar.py` 12 entradas; `a15`/`a16`/`a23` leen `entrada` del checkpoint); `v2_b_cache_T.py`, `a7_cache_T.sbatch` (CPU) y `a7_run05b.sbatch` (`a100_3g`, tramos). Probado con juguete; run04 y run05a dan curvas identicas con el codigo nuevo.
 - **Siguiente:** autora pega la decision en `01-decisiones.md`; Khipu: `a7_cache_T` -> cadena run05b (cuidado con el tope de ~5 jobs enviados mientras siga la cadena de run05a).
-- **Corriendo:** run05a (cadena 56570-56573).
+- **Corriendo:** run05a (cadena 56570-56573). Curva parcial versionada (`experiments/objetivo3/run05/run05a_curva.csv`, hasta el paso 47 500, sin pasos repetidos: los tramos reanudan bien): minimo de validacion 0.0597 en el paso 21 000 (sin ponderar y ponderada coinciden), 0.0665 en 47 500; ~0.5 s/paso, 12.4 GB. run04 tenia su minimo en 0.0540 (paso 16 500): misma validacion y misma semilla, asi que es comparable, pero la perdida de validacion no es el criterio de eleccion (perfil D2 + cotejo, regla `[POR FIJAR]`).
 
 ## 2026-10-13 (3) — Tabla de D-a generada en local (`v2_d_componentes.py`)
 

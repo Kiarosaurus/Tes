@@ -1,0 +1,8 @@
+{
+  "escala": 0.0005891475011594594,
+  "lambda_por_mm": 0.0847457627118644,
+  "n_ang": 360,
+  "parches_muestra": 1136,
+  "regla": "p99 de |T| fuera de M, parches de entrenamiento con metal (semilla 20261014)",
+  "parches_total": 23058
+}

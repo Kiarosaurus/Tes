@@ -12232,3 +12232,19 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   implicancia no cambian. Motivo declarado: eleccion con 2 pacientes, run05a fuera por 4 HU, resultado visual de run04
   insatisfactorio. Toca la redaccion del cap. 4 (seccion exploratoria separada) y obliga a no presentar la version 2
   como modelo final.
+
+### 183 — LAS REGLAS DE LECTURA DEL TOST Y DEL WILCOXON (desenlaces, tamano de efecto, supuesto de *t*) NO ESTAN FIJADAS y la version 2 aun no tiene `a20`/`a24` en prueba: si se fijan ANTES de `a20_v2`, son previas para el exploratorio; para la version 1 ya son posteriores — ABIERTA
+
+- **Origen:** propuesta del asesor sobre las 18 `\GAPDEC` (`redaccion/propuesta_gapdec_2026-10-14.md`, D-M, D-N, D-O),
+  2026-10-14.
+- **Hallazgo:** `diseno_A.md` §0 solo define "equivalencia si el IC90 cae entero en el margen"; no distingue no
+  equivalencia de no concluyente, no enuncia el supuesto del IC con *t* y no recoge el tamano de efecto de D4 (ii).
+  `resultados_prueba_v1.md`:27-29 ya lee la version 1 de forma descriptiva y lo marca como no fijado. `a20_v2.sbatch`
+  espera a 56791/56792 (ESTADO 2026-10-14 (3)).
+- **Por que importa:** decidir la lectura despues de ver los resultados de la version 2 duplicaria el problema post hoc
+  que ya tiene la version 1.
+- **Ademas (desfases de redaccion, sin cambio de fondo):** `introduccion.tex:56` y `capitulo2.tex:106` ("sobre las poses
+  del muestreador", "segun el plazo"); `introduccion.tex:90` (`\GAPDATO` "modelo final no elegido"); `capitulo1.tex:128`
+  ("aun sin preinscribir"); `00-tesis.md`:91 (cabeza como sensibilidad frente a `diseno_A.md` §0).
+- **Opciones y recomendacion:** en la propuesta citada. **Pendiente de la autora:** decidir y registrar en
+  `01-decisiones.md` antes de lanzar `a20_v2`.

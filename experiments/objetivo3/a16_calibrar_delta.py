@@ -68,10 +68,25 @@ EMPATE_HU = 1.0   # parsimonia: dentro de 1 HU del minimo se prefiere el `delta`
 
 def carga_modelo(ruta: Path):
     ck = torch.load(ruta, map_location='cpu', weights_only=False)
-    m = UNetDifusion(base=int(ck.get('meta', {}).get('base', 64)))
+    meta = ck.get('meta', {})
+    m = UNetDifusion(base=int(meta.get('base', 64)), entrada=int(meta.get('entrada', 11)))
     m.load_state_dict(ck['modelo'])
     m.eval()
     return m, ck.get('paso')
+
+
+def kw_T(rutas_ck: list[Path], cache_T: Path | None) -> dict:
+    """Argumentos de `ParchesMetal` para el canal T (version 2, B). Todos los checkpoints deben coincidir."""
+    metas = [torch.load(r, map_location='cpu', weights_only=False).get('meta', {}) for r in rutas_ck]
+    entradas = {int(m.get('entrada', 11)) for m in metas}
+    if len(entradas) > 1:
+        raise SystemExit('checkpoints con distinto numero de entradas: %s' % entradas)
+    if entradas == {11}:
+        return {}
+    escalas = {float(m['v2_B']['escala_T']) for m in metas}
+    if len(escalas) > 1 or cache_T is None:
+        raise SystemExit('canal T: hace falta --cache-T y una sola escala (%s)' % escalas)
+    return dict(cache_T=cache_T, escala_T=escalas.pop())
 
 
 def plan_val(cache: Path, particion: Path, cortes: int) -> dict[str, tuple[str, list[int]]]:
@@ -119,6 +134,8 @@ def main() -> None:
     ap.add_argument('--pasos', type=int, default=50)
     ap.add_argument('--semilla', type=int, default=0)
     ap.add_argument('--out-dir', type=Path, default=aqui / 'outputs' / 'a16_run04')  # #172
+    ap.add_argument('--cache-T', type=Path, default=None,
+                    help='version 2, B: carpeta de T (se completa al vuelo si falta algun parche)')
     args = ap.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -132,7 +149,7 @@ def main() -> None:
     print('generaciones: %d | deltas: %s' % (total, ', '.join('%.3g' % d for d in DELTAS)), flush=True)
 
     dif = Difusion()
-    ds = ParchesMetal(args.cache, args.particion, particiones=('val',))
+    ds = ParchesMetal(args.cache, args.particion, particiones=('val',), **kw_T(args.ckpt, args.cache_T))
     pos = {k: i for i, k in enumerate(ds.indice)}
 
     # por (ckpt, caso): voxeles de G con u generado, u verdad y HU verdad

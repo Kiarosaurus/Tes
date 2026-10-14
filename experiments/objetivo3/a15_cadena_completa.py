@@ -125,8 +125,12 @@ def parche(vol, M, G, k, y0, x0, lado=LADO):
             rellena(G[k][sl], False))
 
 
-def cond_de(vol, M, G, k, y0, x0, canales):
-    """Los 8 canales del condicionamiento, en el orden exacto de `datos.ParchesMetal.__getitem__`."""
+def cond_de(vol, M, G, k, y0, x0, canales, canal_T=None):
+    """Los 8 canales del condicionamiento, en el orden exacto de `datos.ParchesMetal.__getitem__`.
+
+    `canal_T = (pix_mm, escala)` (version 2, B): anade al final la plantilla `T` de `M` del parche, normalizada con la
+    escala del checkpoint; misma funcion que en el entrenamiento (`plantilla.py`).
+    """
     _, m_c, g_c = parche(vol, M, G, k, y0, x0)
     ctx = []
     for j in (k - 1, k + 1):
@@ -135,7 +139,11 @@ def cond_de(vol, M, G, k, y0, x0, canales):
         hu_v = hu_v.copy()
         hu_v[g_v] = -1000.0                             # el vecino tambien lleva `G` borrada
         ctx.append(codifica_bloque(hu_v, canales) * 2.0 - 1.0)
-    cond = np.concatenate(ctx + [m_c.astype(np.float32)[None], g_c.astype(np.float32)[None]], axis=0)
+    extra = [m_c.astype(np.float32)[None], g_c.astype(np.float32)[None]]
+    if canal_T is not None:
+        from plantilla import normaliza, plantilla
+        extra.append(normaliza(plantilla(m_c.astype(bool), canal_T[0]), canal_T[1])[None])
+    cond = np.concatenate(ctx + extra, axis=0)
     return cond.astype(np.float32), g_c, m_c
 
 
@@ -350,8 +358,13 @@ def main() -> None:
     hecho = 0
     for ruta_ck, et in zip(args.ckpt, args.etiquetas):
         ck = torch.load(ruta_ck, map_location='cpu', weights_only=False)
-        modelo = UNetDifusion(base=int(ck.get('meta', {}).get('base', 64)))
+        meta_ck = ck.get('meta', {})
+        modelo = UNetDifusion(base=int(meta_ck.get('base', 64)), entrada=int(meta_ck.get('entrada', 11)))
         modelo.load_state_dict(ck['modelo'])
+        canal_T = None
+        if int(meta_ck.get('entrada', 11)) == 12:      # version 2, B
+            canal_T = (0.5 * (esp2d[0] + esp2d[1]), float(meta_ck['v2_B']['escala_T']))
+            print('  canal T: escala %.6g (del checkpoint)' % canal_T[1])
         modelo.to(args.dispositivo).eval()
         print('\n--- %s (paso %s) | %s ---' % (et, ck.get('paso'), args.dispositivo), flush=True)
 
@@ -360,7 +373,7 @@ def main() -> None:
             marcas = {'k': [], 'y': [], 'x': [], 'u': []}   # `u` crudo de los 3 canales dentro de `M` (#152)
             for k in ks:
                 y0, x0, _ = ventanas[k]
-                cond, g_c, m_c = cond_de(vol, M, G, k, y0, x0, canales)
+                cond, g_c, m_c = cond_de(vol, M, G, k, y0, x0, canales, canal_T)
                 hu_c, _, _ = parche(vol, M, G, k, y0, x0)
                 gt = torch.from_numpy(g_c.astype(np.float32)[None])[None].to(args.dispositivo)
                 with torch.no_grad():

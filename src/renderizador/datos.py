@@ -102,6 +102,9 @@ class ParchesMetal(Dataset):
     - `cond` (8, H, W)  6 canales de los vecinos con `G` borrada, mas `M` y `G`.
     - `g`    (1, H, W)  mascara de generacion en {0, 1}.
     - `w`    (1, H, W)  SOLO con `anillo_mm` (version 2, D-b): peso por distancia a `M`.
+
+    Con `cache_T` (version 2, B) `cond` lleva un canal mas al final (9): la plantilla `T` normalizada
+    (`plantilla.normaliza`, `escala_T`), precalculada por `v2_b_cache_T.py` para el corte central.
     """
 
     def __init__(self, cache: Path, particion: Path,
@@ -109,8 +112,13 @@ class ParchesMetal(Dataset):
                  borrar_contexto: bool = False, inclusion: Path | None = None,
                  ratio_banda: float | None = None, semilla: int = 20260921,
                  anillo_mm: tuple[float, float] | None = None,
-                 peso_anillo: float = 1.0) -> None:
+                 peso_anillo: float = 1.0, cache_T: Path | None = None,
+                 escala_T: float | None = None) -> None:
         self.cache = Path(cache)
+        if (cache_T is None) != (escala_T is None):
+            raise ValueError('cache_T y escala_T van juntos')
+        self.cache_T = Path(cache_T) if cache_T is not None else None
+        self.escala_T = escala_T
         self.anillo_mm = tuple(anillo_mm) if anillo_mm is not None else None
         self.peso_anillo = float(peso_anillo)
         self.lado = lado
@@ -149,6 +157,24 @@ class ParchesMetal(Dataset):
             raise RuntimeError(f'cache vacio para {particiones} en {self.cache}')
         self.n_borde = sum(1 for c, k in self.indice
                            if not {k - 1, k + 1} <= self.por_caso[c])
+
+    def faltan_T(self) -> list[str]:
+        """Parches del indice sin `T` precalculada en `cache_T` (se calcularian al vuelo, lento)."""
+        if self.cache_T is None:
+            return []
+        return [f'{s}_k{k:04d}' for s, k in self.indice if not (self.cache_T / f'{s}_k{k:04d}_T.npy').exists()]
+
+    def _T(self, caso: str, k: int) -> np.ndarray:
+        """T cruda del corte; si no esta en `cache_T` se calcula (misma funcion que `v2_b_cache_T.py`) y se guarda."""
+        from plantilla import pix_plano, plantilla
+        ruta = self.cache_T / f'{caso}_k{k:04d}_T.npy'
+        if ruta.exists():
+            return np.load(ruta)
+        with np.load(self.cache / f'{caso}_k{k:04d}.npz') as z:
+            T = plantilla(z['metal'].astype(bool), pix_plano(z['zooms'], int(z['eje'])))
+        self.cache_T.mkdir(parents=True, exist_ok=True)
+        np.save(ruta, T)
+        return T
 
     def __len__(self) -> int:
         return len(self.indice)
@@ -191,7 +217,12 @@ class ParchesMetal(Dataset):
                 hu[~v['g']] = -1000.0
             ctx.append(codifica_bloque(hu, self.canales) * 2.0 - 1.0)
 
-        cond = np.concatenate(ctx + [centro['metal'].astype(np.float32)[None], g[None]], axis=0)
+        extra = [centro['metal'].astype(np.float32)[None], g[None]]
+        if self.cache_T is not None:
+            from plantilla import normaliza
+            T = self._rellena(self._T(caso, k), 0.0)
+            extra.append(normaliza(T, self.escala_T)[None])
+        cond = np.concatenate(ctx + extra, axis=0)
         item = {'x0': torch.from_numpy(x0.astype(np.float32)),
                 'cond': torch.from_numpy(cond.astype(np.float32)),
                 'g': torch.from_numpy(g[None]),

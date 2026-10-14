@@ -46,7 +46,7 @@ for _p in (str(_RAIZ / 'src'), str(Path(__file__).resolve().parent)):
 from common.ventanas import verificar as verificar_ventanas  # noqa: E402
 from datos import ParchesMetal, lee_componentes_tornillo, lee_particion  # noqa: E402
 from difusion import Difusion, perdida  # noqa: E402
-from modelo import UNetDifusion  # noqa: E402
+from modelo import CANALES_ENTRADA, UNetDifusion  # noqa: E402
 
 # Semilla del sorteo de `t` y del ruido en la validacion. Fija y distinta de `--semilla` para que la
 # medicion no quede correlacionada con el estado del entrenamiento. Cambiarla rompe la comparabilidad
@@ -154,6 +154,8 @@ def main() -> None:
                     help='D-b: anillo (mm, en el plano) alrededor de M que recibe --peso-anillo')
     v2.add_argument('--peso-anillo', type=float, default=1.0,
                     help='D-b: peso del anillo dentro de G (1 = sin efecto)')
+    v2.add_argument('--cache-T', type=Path, default=None,
+                    help='B: carpeta de v2_b_cache_T.py (T por parche + escala.json); anade el canal T (12 entradas)')
     args = p.parse_args()
     if (args.componentes is None) != (args.frac_tornillo is None):
         p.error('--componentes y --frac-tornillo van juntos')
@@ -170,21 +172,26 @@ def main() -> None:
     if man and not Path(man).exists():
         raise SystemExit(f'ABORTA: falta el manifiesto {man}. Es el conjunto congelado (R1-R3, '
                          f'decision 2026-09-21). Para entrenar sin el, pasa --manifiesto ""')
+    escala_T = None
+    if args.cache_T is not None:
+        escala_T = float(json.loads((args.cache_T / 'escala.json').read_text(encoding='utf-8'))['escala'])
+    kw_T = dict(cache_T=args.cache_T, escala_T=escala_T)
     ds = ParchesMetal(args.cache, args.particion, ('train',), args.lado, args.borrar_contexto,
-                      inclusion=man, anillo_mm=args.anillo_mm, peso_anillo=args.peso_anillo)
+                      inclusion=man, anillo_mm=args.anillo_mm, peso_anillo=args.peso_anillo, **kw_T)
     man_val = args.manifiesto_val if (args.manifiesto_val and str(args.manifiesto_val)) else None
     if man_val and not Path(man_val).exists():
         raise SystemExit(f'ABORTA: falta el manifiesto de validacion {man_val}. '
                          f'Para entrenar sin validacion, pasa --manifiesto-val ""')
     ds_val = (ParchesMetal(args.cache, args.particion, ('val',), args.lado, args.borrar_contexto,
                            inclusion=man_val, anillo_mm=args.anillo_mm,
-                           peso_anillo=args.peso_anillo) if man_val else None)
+                           peso_anillo=args.peso_anillo, **kw_T) if man_val else None)
     pesos_muestreo, tornillo, info_muestreo = None, None, None
     if args.componentes is not None:
         tornillo = lee_componentes_tornillo(args.componentes)
         pesos_muestreo, info_muestreo = ds.pesos_sobremuestreo(tornillo, args.frac_tornillo)
     dif = Difusion(objetivo=args.objetivo)
-    modelo = UNetDifusion(base=args.base).to(args.dispositivo)
+    entrada = CANALES_ENTRADA + (1 if args.cache_T is not None else 0)
+    modelo = UNetDifusion(base=args.base, entrada=entrada).to(args.dispositivo)
 
     chk = controles(ds, args.particion, modelo, dif, args.dispositivo, pesos_muestreo,
                     tornillo, args.frac_tornillo, args.semilla)
@@ -199,7 +206,11 @@ def main() -> None:
             'cada_ckpt': args.cada_ckpt,
             'v2_D': {'componentes': str(args.componentes) if args.componentes else None,
                      'sobremuestreo': info_muestreo,
-                     'anillo_mm': args.anillo_mm, 'peso_anillo': args.peso_anillo}}
+                     'anillo_mm': args.anillo_mm, 'peso_anillo': args.peso_anillo},
+            'entrada': entrada,
+            'v2_B': ({'cache_T': str(args.cache_T), 'escala_T': escala_T,
+                      'lambda_por_mm': json.loads((args.cache_T / 'escala.json').read_text(encoding='utf-8'))
+                      ['lambda_por_mm']} if args.cache_T is not None else None)}
     (args.out / 'entrenar_meta.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
     for k, v in chk.items():
         print(f'control {k}: {v}')
@@ -210,6 +221,12 @@ def main() -> None:
         print('AVISO: sin validacion. No se podra ver si converge ni medir el margen Delta (D4).')
     if info_muestreo is not None:
         print(f'D-a sobremuestreo: {info_muestreo}')
+    if args.cache_T is not None:
+        faltan = ds.faltan_T() + (ds_val.faltan_T() if ds_val is not None else [])
+        if faltan:
+            raise SystemExit(f'ABORTA: {len(faltan)} parches sin T precalculada en {args.cache_T} '
+                             f'(p. ej. {faltan[:3]}); correr v2_b_cache_T.py antes de entrenar')
+        print(f'B canal T: escala {escala_T:.6g} (cond con {entrada - 3} canales, modelo con {entrada} entradas)')
     if args.anillo_mm is not None:
         print(f'D-b peso {args.peso_anillo} en {args.anillo_mm[0]}-{args.anillo_mm[1]} mm de M')
     if not args.preinscrito:

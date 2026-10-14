@@ -12167,3 +12167,26 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   ablacion sin plantilla. Diferencias a declarar si se adopta: el termino `c chi` dentro del metal (en la tesis `M` ya
   entra como canal) y la errata de signo entre la Ec. 15 y la Fig. 4 (se toma la Ec. 15, igual a `park2016MAR`).
   **No cambia ninguna decision:** la compuerta del piloto sigue siendo lo que decide B.
+
+### 181 — LA PLANTILLA `T` (OPCION B) PASA LA COMPUERTA: coincide con la parte direccional del artefacto real en 2-10 mm por encima de la plantilla girada y del control anatomico; efecto moderado (rho mediana 0.17) — ABIERTA
+
+- **Origen:** piloto `b_piloto_plantilla.py`, criterio propuesto por Claude y APROBADO por la autora el 2026-10-13
+  ANTES de correr con datos reales (`v2_plan.md`); corrido por la autora en local el 2026-10-14; resultado versionado en
+  `experiments/objetivo3/b_piloto/` (`b_resumen.md`, CSV por corte y por paciente).
+- **Medido:** C0 (controles: disco 0.0067, dos discos 0.0902; la teoria predice ~0 en el disco) PASA; C1 (360 frente a
+  720 angulos) mediana 1.000 en 228 cortes, PASA; C2 en 228 cortes de 18 pacientes (13 con control anatomico),
+  `lambda0` = 0.0847 por mm: rho mediana 0.166, d (sobre la plantilla girada) 0.133, d0 anatomico 0.041,
+  e = d - d0 0.116, Wilcoxon p = 0.0085 -> PASA. d > 0 en 16 de 18 pacientes; e > 0 en 10 de 13. Las tres
+  sensibilidades (lambda x0.5, x2, mascara suavizada) dan lo mismo (e 0.114-0.119, p 0.0085).
+- **Lectura:** la plantilla calculada solo desde `M` lleva informacion de DIRECCION del artefacto real (rayas y bandas),
+  no explicada por la anatomia ni por la cantidad de estructura. El efecto es moderado: una correlacion de 0.17 no
+  hace de `T` un modelo del artefacto (coherente con #178: solo endurecimiento del haz, 2D, sin scatter); justifica
+  usarla como condicion y no como suma.
+- **Limites declarados:** el residuo real incluye anatomia (referencia = otro corte); 16 de los 228 cortes son de
+  validacion (`0039`) y el resto de entrenamiento (no hay modelo: compuerta sobre la plantilla); el piloto incluye
+  componentes de 500-4000 mm3 sin el filtro de no ortopedicos de #167. Sensibilidad posterior (Claude, no decide):
+  sin `0045` ni `0062` (pacientes con componentes no ortopedicos) e mediana 0.150, p = 0.0093 (n = 11).
+- **Toca:** habilita run05b (`01-decisiones.md` 2026-10-13, punto 5); la redaccion de B en el cap. 3 ("prior analitico
+  aproximado", efecto moderado); #178 sigue ABIERTA para el caso del tornillo de seccion estrictamente convexa (el
+  piloto mide promedios, no lo separa).
+- **Pendiente de la autora:** registrar la decision en `01-decisiones.md` (texto propuesto en el chat) y lanzar run05b.

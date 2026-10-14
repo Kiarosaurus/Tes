@@ -120,7 +120,12 @@ def main() -> None:
             print('%s: %d componentes >= %.0f mm3, %d parches' % (m['Caso'], len(comps), MIN_MM3, len(parches)), flush=True)
 
     # 2. muestra de cortes por componente
-    ds = ParchesMetal(cache, args.particion, particiones=tuple(args.particiones))
+    ck = torch.load(args.ckpt, map_location='cpu', weights_only=False)
+    meta_ck = ck.get('meta', {})
+    kw_T = {}
+    if int(meta_ck.get('entrada', 11)) == 12:          # version 2, B: T al vuelo para los parches de este cache
+        kw_T = dict(cache_T=args.out_dir / 'cache_T', escala_T=float(meta_ck['v2_B']['escala_T']))
+    ds = ParchesMetal(cache, args.particion, particiones=tuple(args.particiones), **kw_T)
     pos = {k: i for i, k in enumerate(ds.indice)}
     plan = []
     for serie in sorted(ds.por_caso):
@@ -130,8 +135,7 @@ def main() -> None:
     total = len(plan) * len(args.semillas)
     print('parches a generar: %d x %d semillas = %d' % (len(plan), len(args.semillas), total), flush=True)
 
-    ck = torch.load(args.ckpt, map_location='cpu', weights_only=False)
-    modelo = UNetDifusion(base=int(ck.get('meta', {}).get('base', 64)))
+    modelo = UNetDifusion(base=int(meta_ck.get('base', 64)), entrada=int(meta_ck.get('entrada', 11)))
     modelo.load_state_dict(ck['modelo'])
     modelo.to(args.dispositivo).eval()
     dif = Difusion()

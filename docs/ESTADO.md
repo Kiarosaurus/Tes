@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-14 — Piloto de B: PASA; canal T y run05b listos
+
+- **Hecho:** piloto de B corrido por la autora (criterio aprobado antes): **PASA** (C0, C1, C2; e = 0.116, p = 0.0085, 13 pacientes) -> **#181 ABIERTA**. Copias en `experiments/objetivo3/b_piloto/`. Canal T implementado (`src/renderizador/plantilla.py`, `datos.py --cache-T`, `entrenar.py` 12 entradas; `a15`/`a16`/`a23` leen `entrada` del checkpoint); `v2_b_cache_T.py`, `a7_cache_T.sbatch` (CPU) y `a7_run05b.sbatch` (`a100_3g`, tramos). Probado con juguete; run04 y run05a dan curvas identicas con el codigo nuevo.
+- **Siguiente:** autora pega la decision en `01-decisiones.md`; Khipu: `a7_cache_T` -> cadena run05b (cuidado con el tope de ~5 jobs enviados mientras siga la cadena de run05a).
+- **Corriendo:** run05a (cadena 56570-56573).
+
 ## 2026-10-13 (3) — Tabla de D-a generada en local (`v2_d_componentes.py`)
 
 - **Hecho:** `v2_d_componentes_run04.csv`/`.md` (autora, local): de 203 componentes del manifiesto de run04 (14 182 parches, 39 casos), **45 son tamano tornillo** (500-4000 mm3): **2 888 parches, 24 casos**. Fraccion natural **0.2036**. Factor `f` segun `FRAC`: 0.25 -> 1.30; 0.33 -> 1.93; 0.5 -> 3.91.

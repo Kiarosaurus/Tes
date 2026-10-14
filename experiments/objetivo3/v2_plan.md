@@ -62,6 +62,16 @@ con la seleccion de D1. `lambda0 = 1 / mediana(L_max)` (sin usar HU); mascara bi
 - Probado con datos sinteticos (no reales): controles C0 calculados (disco 0.0067, elipse 0.0642, dos discos 0.0902,
   estadio 0.1383: PASA; no usan datos); con anatomia alineada al tornillo y sin artefacto `e` < 0, con artefacto `e` > 0.
 
+### Resultado de la compuerta y canal T (2026-10-14)
+
+- **B PASA** (#181; `experiments/objetivo3/b_piloto/b_resumen.md`): e = 0.116, p = 0.0085 (13 pacientes con control),
+  rho mediana 0.166; C0 y C1 pasan.
+- Canal `T` en `src/renderizador/plantilla.py` (misma funcion que el piloto, comprobado), `lambda` = 0.0847 por mm
+  (lambda0 del piloto). Normalizacion: `T / escala` recortado a +-3, `escala` = p99 de |T| fuera de `M` en parches de
+  entrenamiento (`v2_b_cache_T.py` -> `escala.json`, guardada tambien en el checkpoint). Precalculo en CPU:
+  `a7_cache_T.sbatch`. Entrenamiento: `entrenar.py --cache-T` (12 entradas) con `a7_run05b.sbatch` (misma GPU
+  `a100_3g` que run05a). Inferencia: `a15`, `a16 --cache-T` y `a23` leen `entrada` y `escala` del checkpoint.
+
 ### Implementacion de D (2026-10-13, sesion cloud; probada solo con un cache de juguete)
 
 - `src/renderizador/entrenar.py`: banderas `--componentes/--frac-tornillo` (D-a) y `--anillo-mm A B/--peso-anillo w`

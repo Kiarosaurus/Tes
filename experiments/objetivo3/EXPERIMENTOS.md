@@ -38,7 +38,7 @@
 | `a16_v2.sbatch`, `a15_cadena_v2.sbatch`, `v2_eleccion.sbatch` + `v2_eleccion.py` | version 2: calibracion de `delta`, cadena en validacion y regla de eleccion aprobada | Khipu 56777-56781 | **CORRIDOS 2026-10-14**: "no mejora" (#182); resultado en `run05/v2_eleccion.md` |
 | `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIENDO 2026-10-14** |
 | `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | **ESCRITO 2026-10-14, POR CORRER** (tras las finales) |
-| `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm); exige `FRAC` y `PESO` (`v2_plan.md`, `[POR FIJAR]`) | Khipu | **ESCRITO 2026-10-13, NO LANZADO**; probado con un cache de juguete (CPU) |
+| `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm), `FRAC=0.5`, `PESO=3` | Khipu 56570-56573 + 56704 | **CORRIDO 2026-10-14**: `mejor.pt` en 21 000 (val 0.0597); curva en `run05/run05a_curva.csv` |
 | `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |
 | `a13_comparar_ckpt.py` | dos checkpoints pareados sobre validacion | script | herramienta; sus salidas con run01/run02 estan archivadas |
@@ -92,7 +92,7 @@
 | `resultados_prueba_v1.md` | evaluacion de prueba de la version 1 (E-A2 `a24`, E-A1 `a23`) | local | **HECHO** (#177) |
 | `d1_alcance_rayas.py`, `d1_resultado.md` | D1: alcance del artefacto real por anillo (todas las piezas y `--vol-max 4000`) | local | **HECHO**: tornillos ~10 mm |
 | `d2_perfil_sintetico.py`, `d1_d2_resultado.md` | D2: perfil del artefacto sintetico con la misma metrica | local | **HECHO**: sintetico se apaga ~6 mm |
-| `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b) | autora + asistente | **PLANIFICADO** (`01-decisiones.md` 2026-10-13) |
+| `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b), compuerta, regla de eleccion y analisis exploratorio declarado | autora + asistente | **EN CURSO**: entrenados; regla = "no mejora" (#182); evaluacion exploratoria en prueba corriendo (`01-decisiones.md` 2026-10-13, 2026-10-14, 2026-10-14 (2)) |
 
 ## 7. Archivados
 

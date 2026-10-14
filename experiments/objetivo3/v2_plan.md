@@ -1,6 +1,6 @@
 # Version 2 del sintetizador: B + D (decidido por la autora el 2026-10-13) — plan de trabajo
 
-> **Estado: PLANIFICADO, nada implementado.** Decision: `docs/01-decisiones.md` 2026-10-13. Implicancias: #176
+> **Estado (2026-10-14): D y B implementados y entrenados (run05a, run05b); la regla de eleccion dio "no mejora" (#182); evaluacion exploratoria en prueba en curso (ver secciones de abajo).** Estado original (2026-10-13): PLANIFICADO. Decision: `docs/01-decisiones.md` 2026-10-13. Implicancias: #176
 > (diagnostico), #177 (resultado de la version 1). Este archivo fija QUE se hace y EN QUE ORDEN; los numeros concretos
 > que todavia no estan fijados van marcados `[POR FIJAR]` y se fijan en este archivo **antes** de entrenar.
 

@@ -261,6 +261,10 @@ def main() -> None:
                     help='rampa de la lectura `regla_suave` (v2, #152); por omision la decidida, 0.05')
     ap.add_argument('--regla-v1', dest='delta', action='store_const', const=None,
                     help='lee con la `regla` v1 del Objetivo 1, solo para reproducir corridas anteriores')
+    ap.add_argument('--sin-metal', action='store_true',
+                    help='amplitud nula (DEC 2026-10-15 pto 18): canal `M` del condicionamiento a cero, misma `G`')
+    ap.add_argument('--guardar-u-g', action='store_true',
+                    help='guarda `u` crudo de todo `G` en <base>_marcasG.npz (diagnostico del p95, DEC 2026-10-15 pto 7)')
     ap.add_argument('--dispositivo', default='cpu',
                     help="'cpu' o 'cuda'. Con la misma semilla CPU y GPU NO dan el mismo ruido: "
                          'no mezclar dispositivos entre pacientes de un mismo cotejo')
@@ -368,6 +372,8 @@ def main() -> None:
         modelo = UNetDifusion(base=int(meta_ck.get('base', 64)), entrada=int(meta_ck.get('entrada', 11)))
         modelo.load_state_dict(ck['modelo'])
         canal_T = None
+        if args.sin_metal and int(meta_ck.get('entrada', 11)) != 11:
+            raise SystemExit('--sin-metal solo esta definido para modelos sin canal T (entrada 11)')
         if int(meta_ck.get('entrada', 11)) == 12:      # version 2, B
             canal_T = (0.5 * (esp2d[0] + esp2d[1]), float(meta_ck['v2_B']['escala_T']))
             print('  canal T: escala %.6g (del checkpoint)' % canal_T[1])
@@ -377,9 +383,12 @@ def main() -> None:
         for semilla in semillas:
             sal = vol.copy()
             marcas = {'k': [], 'y': [], 'x': [], 'u': []}   # `u` crudo de los 3 canales dentro de `M` (#152)
+            marcas_g = {'k': [], 'y': [], 'x': [], 'u': []}  # idem en todo `G` (--guardar-u-g)
             for k in ks:
                 y0, x0, _ = ventanas[k]
                 cond, g_c, m_c = cond_de(vol, M, G, k, y0, x0, canales, canal_T)
+                if args.sin_metal:
+                    cond[6] = 0.0                       # canal `M` (orden: 6 de contexto, M, G); `G` intacta
                 hu_c, _, _ = parche(vol, M, G, k, y0, x0)
                 gt = torch.from_numpy(g_c.astype(np.float32)[None])[None].to(args.dispositivo)
                 with torch.no_grad():
@@ -400,6 +409,12 @@ def main() -> None:
                 marcas['y'].append((yy + y0).astype(np.int32))
                 marcas['x'].append((xx + x0).astype(np.int32))
                 marcas['u'].append(u_c[:, yy, xx].T.astype(np.float32))
+                if args.guardar_u_g:
+                    gy, gx = np.nonzero(g_c[:h, :w])
+                    marcas_g['k'].append(np.full(gy.size, k, dtype=np.int32))
+                    marcas_g['y'].append((gy + y0).astype(np.int32))
+                    marcas_g['x'].append((gx + x0).astype(np.int32))
+                    marcas_g['u'].append(u_c[:, gy, gx].T.astype(np.float32))
                 hecho += 1
                 if hecho % 8 == 0:
                     tr = (time.time() - t0) / hecho * (total - hecho) / 60
@@ -430,6 +445,10 @@ def main() -> None:
             base = args.out_dir / ('a15_%s_%s' % (args.caso, et)
                                    + ('_s%d' % semilla if args.semillas else ''))
             resumen_marcas(marcas, canales, sal, str(base) + '_marcas.npz')
+            if args.guardar_u_g:
+                np.savez_compressed(str(base) + '_marcasG.npz',
+                                    **{c: np.concatenate(v) for c, v in marcas_g.items()},
+                                    delta=np.nan if args.delta is None else args.delta)
             with open(str(base) + '_perfil.csv', 'w', newline='', encoding='utf-8') as fh:
                 w_ = csv.DictWriter(fh, fieldnames=list(perfil[0].keys()))
                 w_.writeheader()

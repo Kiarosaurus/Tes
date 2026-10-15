@@ -54,16 +54,19 @@ def amplitud(x: np.ndarray) -> float:
     return float(x[-m:].mean() - x[:m].mean())
 
 
-def rois(M: np.ndarray, esp3d, u_af: np.ndarray, guarda_mm: float) -> np.ndarray:
+def rois(M: np.ndarray, esp3d, u_af: np.ndarray, guarda_mm: float, r_min_mm: float | None = None,
+         r_max_mm: float = R_MAX_MM, excluir_cabeza_mm: float = 0.0) -> np.ndarray:
     """Etiqueta de ROI (rebanada perpendicular a `u`) por voxel, en orden axial-primero; -1 fuera de las ROIs.
 
     `M` va en orden (axial, plano0, plano1) y `u_af` es la direccion del eje en ese mismo orden.
+    Variantes posteriores (DEC 2026-10-15): `r_min_mm`/`r_max_mm` = anillos del perfil 8-16 mm (pto 5);
+    `excluir_cabeza_mm` = quita las ROIs a menos de esa distancia del extremo +u, donde `a11` apila la cabeza (pto 2).
     """
     from scipy import ndimage as ndi
     esp = np.asarray(esp3d, dtype=float)
     u = np.asarray(u_af, dtype=float) / np.linalg.norm(u_af)
     idx = np.argwhere(M)
-    marg = np.ceil((R_MAX_MM + 1.0) / esp).astype(int)
+    marg = np.ceil((r_max_mm + 1.0) / esp).astype(int)
     lo = np.maximum(idx.min(0) - marg, 0)
     hi = np.minimum(idx.max(0) + marg + 1, M.shape)
     caja = tuple(slice(a, b) for a, b in zip(lo, hi))
@@ -72,8 +75,9 @@ def rois(M: np.ndarray, esp3d, u_af: np.ndarray, guarda_mm: float) -> np.ndarray
     g = np.stack(np.meshgrid(*[np.arange(a, b) * e for a, b, e in zip(lo, hi, esp)], indexing='ij'), -1)
     t = g @ u
     t_m = t[Mc]
-    t0, t1 = t_m.min() + RECORTE_EXTREMO_MM, t_m.max() - RECORTE_EXTREMO_MM
-    sel = (~Mc) & (dist > guarda_mm) & (dist <= R_MAX_MM) & (t >= t0) & (t <= t1)
+    t0, t1 = t_m.min() + RECORTE_EXTREMO_MM, t_m.max() - max(RECORTE_EXTREMO_MM, excluir_cabeza_mm)
+    r_lo = guarda_mm if r_min_mm is None else max(guarda_mm, r_min_mm)
+    sel = (~Mc) & (dist > r_lo) & (dist <= r_max_mm) & (t >= t0) & (t <= t1)
     lab = np.full(Mc.shape, -1, dtype=np.int32)
     lab[sel] = np.floor((t[sel] - t0) / guarda_mm).astype(np.int32)
     out = np.full(M.shape, -1, dtype=np.int32)
@@ -105,6 +109,32 @@ def evalua(delta: np.ndarray, lab: np.ndarray, validos: np.ndarray, img: np.ndar
     return {'amp_HU': float(np.median(amps)), 'n_rois': len(amps), 'n_vox': int(np.sum(n_vox)),
             'amp_p25': float(np.percentile(amps, 25)), 'amp_p75': float(np.percentile(amps, 75)),
             'suelo_frac': float(np.median(suelo)) if suelo else float('nan')}
+
+
+def costura(img: np.ndarray, ref: np.ndarray, G: np.ndarray, validos: np.ndarray) -> float:
+    """Exceso de costura (DEC 2026-10-08 pto 7; 2026-10-15 pto 5), por corte axial valido.
+
+    |salto de medianas a traves del borde de `G`| en `img` menos el mismo en `ref` (anillos de un voxel,
+    conectividad 1, como `a10`/`a23`); mediana sobre cortes con >= MIN_VOX voxeles a cada lado.
+    Difusor y copia y pegado: ref = TC original. Peters: ref = su simulacion sin metal.
+    """
+    from a23_ea1 import anillos2d
+    exc = []
+    for k in np.flatnonzero(validos):
+        if not G[k].any():
+            continue
+        ins, out = anillos2d(G[k])
+        if ins.sum() < MIN_VOX or out.sum() < MIN_VOX:
+            continue
+        s_i = abs(float(np.median(img[k][ins])) - float(np.median(img[k][out])))
+        s_r = abs(float(np.median(ref[k][ins])) - float(np.median(ref[k][out])))
+        exc.append(s_i - s_r)
+    return float(np.median(exc)) if exc else float('nan')
+
+
+def suelo(x: np.ndarray, activo: bool) -> np.ndarray:
+    """Suelo simetrico (DEC 2026-10-15 pto 1): recorta a -1000 HU, el suelo de la representacion del difusor."""
+    return np.maximum(x, SUELO_HU) if activo else x
 
 
 def sdc(a: np.ndarray, b: np.ndarray) -> float:
@@ -197,11 +227,17 @@ def main() -> None:
     for q in (p, d, cp):
         q.add_argument('--corrida-final', action='store_true', help='permite test (tras congelar diseno_A.md)')
         q.add_argument('--out', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
+        # Variantes POSTERIORES (DEC 2026-10-15); por omision, la definicion congelada
+        q.add_argument('--r-min-mm', type=float, default=None, help='anillo interior (perfil 8-16 mm, pto 5)')
+        q.add_argument('--r-max-mm', type=float, default=R_MAX_MM, help='anillo exterior (perfil 8-16 mm, pto 5)')
+        q.add_argument('--excluir-cabeza-mm', type=float, default=0.0, help='sin ROIs cerca de la cabeza (pto 2)')
+        q.add_argument('--suelo-simetrico', action='store_true', help='los dos brazos recortados a -1000 HU (pto 1)')
     args = ap.parse_args()
     if args.brazo == 'delta':
         calcula_delta(args.csv, args.etiqueta)
         return
     parts = ['val', 'test'] if args.corrida_final else ['val']
+    geo = (args.r_min_mm, args.r_max_mm, args.excluir_cabeza_mm)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     filas = []
 
@@ -210,13 +246,15 @@ def main() -> None:
             (_AQUI / 'outputs' / 'a22_run04' / 'a22_hu_copiapega.json').read_text(encoding='utf-8'))['HU_copiapega']
         for caso in args.casos:
             vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
-            lab = rois(M, esp3d, u_af, guarda)
+            lab = rois(M, esp3d, u_af, guarda, *geo)
             validos = G.reshape(G.shape[0], -1).any(1)
             orig = vol.astype(np.float32)
             sint = orig.copy()
             sint[M] = hu
+            orig, sint = suelo(orig, args.suelo_simetrico), suelo(sint, args.suelo_simetrico)
             res = evalua(sint - orig, lab, validos, img=sint)
             res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
+            res['exceso_costura'] = costura(sint, orig, G, validos)
             filas.append({'brazo': 'copiapega', 'caso': caso, 'condicion': 'HU_%.0f' % hu, **res})
             print('%s copiapega: amp %.1f HU | %d ROIs' % (caso, res['amp_HU'], res['n_rois']))
     elif args.brazo == 'peters':
@@ -224,18 +262,20 @@ def main() -> None:
             z = np.load(ruta)
             caso = json.loads(ruta.with_suffix('.json').read_text(encoding='utf-8'))['caso']
             vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
-            lab = rois(M, esp3d, u_af, guarda)
+            lab = rois(M, esp3d, u_af, guarda, *geo)
             validos = np.zeros(M.shape[0], bool)
             validos[z['ks']] = True
             full = {}
             for nom in ('limpia_A', 'limpia_B', 'Fe_A', 'Fe_B', 'Ti_A', 'Ti_B'):
                 v = np.zeros(M.shape, np.float32)
                 v[z['ks']] = z[nom]
-                full[nom] = v
+                full[nom] = suelo(v, args.suelo_simetrico)
             for mat in ('Fe', 'Ti'):
                 for r in ('A', 'B'):
-                    res = evalua(full['%s_%s' % (mat, r)] - full['limpia_%s' % r], lab, validos)
-                    res.update(integridad(full['%s_%s' % (mat, r)], full['limpia_%s' % r], M, G, validos, metal_ref=M))
+                    img_m, img_l = full['%s_%s' % (mat, r)], full['limpia_%s' % r]
+                    res = evalua(img_m - img_l, lab, validos, img=img_m)      # `suelo_frac` de Peters (pto 1)
+                    res.update(integridad(img_m, img_l, M, G, validos, metal_ref=M))
+                    res['exceso_costura'] = costura(img_m, img_l, G, validos)
                     filas.append({'brazo': 'peters', 'caso': caso, 'condicion': '%s_%s' % (mat, r), **res})
                     print('%s peters %s_%s: amp %.0f HU | %d ROIs' % (caso, mat, r, res['amp_HU'], res['n_rois']))
             ruido = evalua(full['limpia_A'] - full['limpia_B'], lab, validos)
@@ -243,7 +283,7 @@ def main() -> None:
     else:
         import nibabel as nib
         vol, M, esp3d, u_af, guarda, G = geometria_af(args.caso, parts)
-        lab = rois(M, esp3d, u_af, guarda)
+        lab = rois(M, esp3d, u_af, guarda, *geo)
         ruta_g = args.dir / ('a15_%s_G.nii.gz' % args.caso)
         if ruta_g.exists():                                   # con --incluir-banda, a15 genera todos los cortes con `G`
             Gv = np.moveaxis(nib.load(str(ruta_g)).get_fdata(dtype=np.float32), 2, 0) > 0.5
@@ -258,20 +298,22 @@ def main() -> None:
 
         def lee(ruta: Path) -> np.ndarray:
             return np.moveaxis(nib.load(str(ruta)).get_fdata(dtype=np.float32), 2, 0)   # a15 guarda (y, x, axial)
-        orig = lee(args.dir / ('a15_%s_original.nii.gz' % args.caso))
+        orig = suelo(lee(args.dir / ('a15_%s_original.nii.gz' % args.caso)), args.suelo_simetrico)
         if orig.shape != M.shape:
             raise SystemExit('forma del original de a15 %s != %s' % (orig.shape, M.shape))
         for s in args.semillas:
-            sint = lee(args.dir / ('a15_%s_%s_s%d_sintetica.nii.gz' % (args.caso, args.etiqueta, s)))
+            sint = suelo(lee(args.dir / ('a15_%s_%s_s%d_sintetica.nii.gz' % (args.caso, args.etiqueta, s))),
+                         args.suelo_simetrico)
             res = evalua(sint - orig, lab, validos, img=sint)
             res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
+            res['exceso_costura'] = costura(sint, orig, G, validos)
             filas.append({'brazo': 'difusor', 'caso': args.caso, 'condicion': '%s_s%d' % (args.etiqueta, s), **res})
             print('%s difusor %s s%d: amp %.0f HU | %d ROIs | suelo %.3f'
                   % (args.caso, args.etiqueta, s, res['amp_HU'], res['n_rois'], res['suelo_frac']))
 
     nuevo = not args.out.exists()
     claves = ['brazo', 'caso', 'condicion', 'amp_HU', 'amp_p25', 'amp_p75', 'n_rois', 'n_vox', 'suelo_frac',
-              'hueso_sdc', 'hueso_dvol', 'metal_sdc', 'metal_dvol']
+              'hueso_sdc', 'hueso_dvol', 'metal_sdc', 'metal_dvol', 'exceso_costura']
     with open(args.out, 'a', newline='', encoding='utf-8') as fh:
         w = csv.DictWriter(fh, fieldnames=claves, extrasaction='ignore')
         if nuevo:

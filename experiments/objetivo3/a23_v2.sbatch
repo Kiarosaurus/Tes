@@ -5,7 +5,9 @@
 # T al vuelo para los parches de prueba (en <out>/cache_T).
 #
 # USO:  sbatch --export=ALL,RUN=run05a experiments/objetivo3/a23_v2.sbatch
-# Salida: $DATA/a23_v2/<RUN>/ (a23_parches.csv, a23_pacientes.csv, cache de parches de prueba)
+#       Con la lectura de run04 (DEC 2026-10-15 pto 19, separa modelo de lectura):
+#       sbatch --export=ALL,RUN=run05a,DELTA=0.03,SUF=_d003 experiments/objetivo3/a23_v2.sbatch
+# Salida: $DATA/a23_v2/<RUN><SUF>/ (a23_parches.csv, a23_pacientes.csv, cache de parches de prueba)
 #SBATCH --job-name=a23v2
 #SBATCH --partition=all
 #SBATCH --account=tesis
@@ -45,7 +47,7 @@ echo "inicio $(date -Is)  nodo $(hostname)  $RUN  delta $DELTA  commit $(git -C 
 echo "AVISO: E-A1 EXPLORATORIO y POSTERIOR (v2_plan.md, #182): no reemplaza a run04"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 python -u "$REPO/experiments/objetivo3/a23_ea1.py" --particiones test --corrida-final --dispositivo cuda \
-    --data "$DATA/extracted" --ckpt "$PT" --delta "$DELTA" --out-dir "$DATA/a23_v2/$RUN"
+    --data "$DATA/extracted" --ckpt "$PT" --delta "$DELTA" --out-dir "$DATA/a23_v2/$RUN${SUF:-}"
 rc=$?
 echo "fin $(date -Is)  rc=$rc"
 exit $rc

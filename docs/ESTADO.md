@@ -5,7 +5,8 @@
 ## 2026-10-15 (3) — decisiones registradas; codigo de Khipu en preparacion
 
 - **Hecho:** `01-decisiones.md` 2026-10-15 (22 puntos: D1-D16, D-extra 1-4, correccion de `Delta`, acuerdo), escrito por el asistente con permiso explicito de la autora. Inventario `experiments/objetivo3/visto.md`.
-- **Siguiente:** codigo de `a20`/`a24`/`a15`/`a23_v2` para las nuevas mediciones; comandos de Khipu; ronda de redaccion (cap. 3, cap. 1, introduccion).
+- **Codigo listo (probado: regresion exacta de `a20` en 0012; humo CPU de `a15`):** `a20` con suelo de Peters, costura en los dos brazos y variantes (`--suelo-simetrico`, `--excluir-cabeza-mm`, `--r-min/max-mm`); `a15 --sin-metal/--guardar-u-g`; `a20_v2.sbatch` (ETAPA/VARIANTE, candado contra doble envio); `a15_diag.sbatch` (MODO=nulo/p95); `a23_v2.sbatch` con SUF. D9 (poses) pendiente: `a20` no calcula ROIs con pose perturbada.
+- **Siguiente:** Khipu (autora); local: a24 ampliado y variantes de v1; ronda de redaccion r22/r09/r07 en curso.
 
 ## 2026-10-15 (2) — revision experta de las GAPDEC
 

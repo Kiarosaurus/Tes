@@ -12,6 +12,10 @@ Por modelo (`--etiquetas`), sobre el CSV de `a20` de una variante (`--csv`, `--v
   la sensibilidad solo puede BAJAR la categoria (regla general de la entrada);
 - **margen minimo de equivalencia** (pto 16): max(|limite inferior|, |limite superior|) del IC90 con *t*;
 - **acuerdo** (#185, pto 22): Bland-Altman (sesgo, limites al 95 %) y Pitman-Morgan (igualdad de varianzas pareadas);
+- **acuerdo en escala logaritmica** (#189 opcion a/b, pedido de la autora 2026-10-15): Bland-Altman sobre
+  ln(difusor) - ln(Peters Ti), con sesgo y limites devueltos a razon (antilog, `bland1986statistical` p. 309), y
+  Pitman-Morgan sobre ln, que compara aproximadamente los CV; ademas, para cada escala, la correlacion de Spearman
+  entre la media del par y |diferencia - sesgo| (si la dispersion sigue creciendo con la magnitud);
 - descriptivos de las asimetrias (#186): fraccion de la ROI de Peters Ti bajo -1000 HU, voxeles por brazo, y el
   exceso de costura de cada brazo (pto 5).
 
@@ -93,6 +97,28 @@ def pitman_morgan(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
     return float(r), float(p)
 
 
+def heterocedasticidad(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
+    """Spearman entre la media del par y el desvio absoluto de la diferencia respecto del sesgo."""
+    d = x - y
+    rho, p = stats.spearmanr((x + y) / 2.0, np.abs(d - d.mean()))
+    return float(rho), float(p)
+
+
+def acuerdo_log(D: np.ndarray, Ti: np.ndarray) -> dict:
+    """Bland-Altman y Pitman-Morgan sobre ln (bland1986statistical p. 309); limites devueltos como razon D/Ti."""
+    if (D <= 0).any() or (Ti <= 0).any():
+        raise SystemExit('CONTROL: amplitudes no positivas, la escala log no aplica')
+    lD, lT = np.log(D), np.log(Ti)
+    ld = lD - lT
+    m, sd = float(ld.mean()), float(ld.std(ddof=1))
+    r, p = pitman_morgan(lD, lT)
+    rho, prho = heterocedasticidad(lD, lT)
+    return {'sesgo_log': m, 'lim_inf_log': m - 1.96 * sd, 'lim_sup_log': m + 1.96 * sd,
+            'razon_sesgo': float(np.exp(m)), 'razon_lim_inf': float(np.exp(m - 1.96 * sd)),
+            'razon_lim_sup': float(np.exp(m + 1.96 * sd)), 'shapiro_p': float(stats.shapiro(ld).pvalue),
+            'pitman_morgan_log': {'r': r, 'p': p}, 'hetero_spearman': {'rho': rho, 'p': prho}}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--csv', type=Path, required=True)
@@ -144,6 +170,8 @@ def main() -> None:
             'shapiro_p': float(stats.shapiro(d).pvalue),
             'bland_altman': {'sesgo': m, 'lim_inf': m - 1.96 * ba_sd, 'lim_sup': m + 1.96 * ba_sd},
             'pitman_morgan': {'r': r_pm, 'p': p_pm},
+            'hetero_spearman_HU': dict(zip(('rho', 'p'), heterocedasticidad(D, Ti))),
+            'acuerdo_log': acuerdo_log(D, Ti),
             'cv_difusor': float(D.std(ddof=1) / D.mean()), 'cv_Ti': float(Ti.std(ddof=1) / Ti.mean()),
             'pearson_r': float(stats.pearsonr(D, Ti)[0]),
             'costura_mediana': float(np.nanmedian([col(c, 'difusor', et + '_s', 'exceso_costura') for c in casos])),
@@ -178,6 +206,14 @@ def main() -> None:
         L.append('| %s | %.3f | %.3f | %.2f | %.2f (%.2g) | %+.1f [%+.1f, %+.1f] | %.1f | %.0f |'
                  % (et, r['cv_difusor'], r['cv_Ti'], r['pearson_r'], r['pitman_morgan']['r'], r['pitman_morgan']['p'],
                     ba['sesgo'], ba['lim_inf'], ba['lim_sup'], r['costura_mediana'], r['n_vox_mediana']))
+    L += ['', 'Escala logaritmica (#189): razon = difusor / Peters Ti; hetero = Spearman(media, |dif - sesgo|).', '',
+          '| modelo | razon sesgo [limites 95 %] | Shapiro p (log) | Pitman-Morgan log r (p) | hetero HU rho (p) | '
+          'hetero log rho (p) |', '|---|---|---|---|---|---|']
+    for et, r in res['modelos'].items():
+        a, hh, hl = r['acuerdo_log'], r['hetero_spearman_HU'], r['acuerdo_log']['hetero_spearman']
+        L.append('| %s | %.3f [%.3f, %.3f] | %.2g | %.2f (%.2g) | %.2f (%.2g) | %.2f (%.2g) |'
+                 % (et, a['razon_sesgo'], a['razon_lim_inf'], a['razon_lim_sup'], a['shapiro_p'],
+                    a['pitman_morgan_log']['r'], a['pitman_morgan_log']['p'], hh['rho'], hh['p'], hl['rho'], hl['p']))
     L += ['', 'Confirmatorio: solo `run04_mejor` con su `Delta` en la variante `base` (pto 15). Todo lo demas es '
           'descriptivo; multiplicidad declarada, sin correccion.']
     (out / 'a26_lecturas.md').write_text('\n'.join(L) + '\n', encoding='utf-8')

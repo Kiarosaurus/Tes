@@ -124,3 +124,39 @@ de regresion: la decodificacion local reproduce el `elev_p95` de `a15` (diferenc
   +3 a +53 HU; el deficit frente a la envolvente es de 30 a 130 HU.
 - (b) En lo real el cambio de decodificacion mueve el p95 0.00 HU (ida y vuelta exacta): cumple, pero es trivial.
 - **Veredicto por la regla: modelo.** Implicancia #191.
+
+## #189 — acuerdo en escala logaritmica (pedido de la autora, 2026-10-15)
+
+Fuente: `a26_lecturas.py` ampliado (Bland-Altman sobre ln(difusor) - ln(Peters Ti), devuelto como razon
+difusor / Ti; Pitman-Morgan sobre ln; Spearman entre la media del par y |dif - sesgo| en cada escala) ->
+`outputs/a26_log/{v1,v2}_<variante>/`. Regresion: todos los campos previos identicos a `outputs/a26/` y a los `a26`
+de Khipu (diferencias < 1e-10). POSTERIOR para v1 y v2 (`visto.md`): descriptivo.
+
+| variante | modelo | razon sesgo [limites 95 %] | Shapiro p (log) | Pitman-Morgan log r (p) | hetero HU rho (p) | hetero log rho (p) |
+|---|---|---|---|---|---|---|
+| base | run04_mejor | 0.831 [0.533, 1.296] | 0.38 | -0.83 (4.7e-4) | 0.15 (0.62) | 0.15 (0.62) |
+| base | run05a_mejor | 0.857 [0.517, 1.420] | 0.90 | -0.74 (3.8e-3) | 0.24 (0.44) | 0.12 (0.69) |
+| base | run05b_mejor | 0.854 [0.525, 1.390] | 0.72 | -0.78 (1.7e-3) | 0.26 (0.39) | 0.12 (0.71) |
+| congelado | run04_60k | 0.778 [0.490, 1.236] | 0.45 | -0.83 (4.1e-4) | 0.20 (0.51) | 0.03 (0.91) |
+| inter | run04_mejor | 0.835 [0.534, 1.306] | 0.63 | -0.85 (2.6e-4) | 0.13 (0.67) | 0.12 (0.69) |
+| suelo | run04_mejor | 0.859 [0.577, 1.278] | 0.15 | -0.77 (2.1e-3) | 0.14 (0.64) | 0.13 (0.67) |
+| sincabeza | run04_mejor | 0.817 [0.521, 1.279] | 0.33 | -0.84 (2.9e-4) | 0.14 (0.64) | 0.15 (0.63) |
+| r08_10 | run04_mejor | 2.206 [1.194, 4.074] | 0.62 | -0.58 (0.038) | -0.27 (0.37) | -0.58 (0.037) |
+| r10_12 | run04_mejor | 2.341 [1.383, 3.965] | 0.84 | -0.48 (0.097) | -0.09 (0.76) | -0.37 (0.22) |
+
+v2 en `inter`, `suelo`, `sincabeza` y anillos 8-12 mm: mismo patron que v1 (razones 0.84-0.89 y 2.22-2.39; tablas
+en `outputs/a26_log/v2_*`). **12-16 mm: no aplica** — el difusor vale 0 HU en los 13 pacientes (fuera de `G`, techo
+de `G`), ln no definido; ya era trivial.
+
+Lectura:
+- En HU la dispersion de las diferencias **no crece** con la magnitud (Spearman 0.15, p 0.62). Lo que viola el
+  supuesto de Bland-Altman (p. 309) es una **pendiente**: la diferencia baja al subir la media (r suma-diferencia
+  -0.89), porque el difusor varia menos entre pacientes que Peters.
+- En log esa pendiente **sigue** (Pitman-Morgan log r -0.83, p 4.7e-4): las diferencias no son proporcionales a la
+  media, asi que el log no arregla el supuesto. Bland-Altman avisan que con una relacion asi los limites quedan
+  "too far apart rather than too close" (p. 309): conservadores.
+- Como resumen en razon: el difusor da ~0.83 veces la amplitud de Peters Ti; el 95 % de los pacientes caeria entre
+  0.53 y 1.30 veces. En los anillos 8-12 mm, entre 2.2 y 2.4 veces (por encima).
+- Pitman-Morgan sobre ln compara aproximadamente los CV: ahora si se puede decir que el difusor tiene **menor
+  variabilidad relativa** que Peters (p 4.7e-4), lo que antes (HU crudos) solo era descriptivo (#189 punto 4).
+  Normalidad de ln(D) - ln(Ti): Shapiro p 0.15-0.90, sin rechazo (n = 13, poca potencia).

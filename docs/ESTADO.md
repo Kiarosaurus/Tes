@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (8) — acuerdo recalculado en escala logaritmica (#189)
+
+- **Hecho:** `a26_lecturas.py` agrega Bland-Altman en razon, Pitman-Morgan sobre ln y heterocedasticidad; corrido sobre 15 variantes v1/v2 -> `outputs/a26_log/` (regresion exacta de lo previo). run04 base: razon 0.83 [0.53, 1.30]; la pendiente sigue en log (r -0.83), la dispersion no crece con la magnitud; CV difusor < Peters con prueba (p 4.7e-4). 12-16 mm no aplica. Registrado en #189, `resultados_dec_2026-10-15.md`, `visto.md`.
+- **Siguiente:** autora elige escala para cap. 4; decisiones #187-#191; `refs/clean` de las tres fuentes; ronda de redaccion; D9, realismo, D3 a ciegas.
+
 ## 2026-10-15 (7) — v2 leida, D7, fichas de Bland-Altman y Pitman-Morgan
 
 - **Hecho:** v2 en prueba: run05a/b "no concluyente, a la baja" en todas las variantes (#190); E-A1 d003: ventaja de run05a es de lectura, run05b la conserva en parte (#190). D7 (`a28_diag_p95.py`): p95 bajo lo real es del **modelo** (LW entra 1 de 7; #191). Fichas `bland1986statistical`, `pitman1939note`, `morgan1939test` + `_index`/`_candidatos`; #189 (supuestos de Bland-Altman y varianza frente a CV). Raw de las tres en `refs/raw/`; `refs/clean` y `refs.bib` sin tocar.

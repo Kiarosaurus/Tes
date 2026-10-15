@@ -12370,6 +12370,13 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Por que importa:** cap. 3 §Analisis estadistico (el `\GAPLIT` que se cierra con estas fuentes) y cap. 4.
 - **Opciones:** (a) Bland-Altman en escala logaritmica (razon) ademas de HU; (b) Pitman-Morgan tambien sobre log, que
   si compara CV aproximadamente; (c) declarar las cinco limitaciones sin recalcular. **Pendiente de la autora.**
+- **Recalculo en log (2026-10-15, pedido por la autora; opciones a y b; `outputs/a26_log/`):** base run04_mejor:
+  razon difusor/Ti 0.831 [0.533, 1.296]; Pitman-Morgan sobre ln r -0.83 (p 4.7e-4); Spearman media vs |dif - sesgo|
+  0.15 en HU y en log (la dispersion no crece con la magnitud). La pendiente persiste en log: el supuesto de
+  Bland-Altman tampoco se cumple en razon y los limites quedan conservadores (p. 309). Pitman-Morgan sobre ln da la
+  prueba de CV que faltaba (punto 4): el difusor varia relativamente menos que Peters. Shapiro sobre ln sin rechazo.
+  v2 igual (0.857 / 0.854). 12-16 mm no aplica (difusor = 0). Detalle en `resultados_dec_2026-10-15.md`. Puntos 2, 3
+  y 5 siguen como limitacion declarada. **Pendiente de la autora:** que escala va al cap. 4 (HU, razon o ambas).
 
 ### 190 — VERSION 2 EN PRUEBA (EXPLORATORIO): run05a y run05b tambien quedan "no concluyente, a la baja" en todas las variantes; acercan la media ~40 HU y su correlacion con Peters por paciente cae a ~0. En E-A1 la ventaja de run05a es de lectura (`--delta`), la de run05b se sostiene en parte — ABIERTA
 

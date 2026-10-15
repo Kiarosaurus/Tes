@@ -12313,3 +12313,26 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   difusor: debe reportarse sin poder elevar la categoria del desenlace.
 - **Opciones:** ver D1, D-extra 1 y D-extra 2 de la propuesta. **Pendiente de la autora:** decidir antes de relanzar
   `a20_v2`.
+
+### 187 — UN COMPARADOR PARAMETRICO SIN APRENDIZAJE (D1 + dos lobulos) QUEDA MAS CERCA DEL PROTOCOLO FISICO QUE EL DIFUSOR EN PRUEBA (v1): -98.9 frente a -301.0 HU; y el perfil del difusor es plano (bajo Peters en la banda, +412 a +478 HU sobre Peters en 8-12 mm) — ABIERTA
+
+- **Origen:** variantes posteriores de DEC 2026-10-15 sobre run04_mejor (`a20_v1_variantes.sh`, `a26_lecturas.py`),
+  2026-10-15. Detalle en `experiments/objetivo3/resultados_dec_2026-10-15.md`. Posterior y descriptivo para v1.
+- **Medido (13 pacientes de prueba, medias de diferencias, IC90 *t*):**
+  - Banda completa (`base`): parametrico - Ti -98.9 [-287.3, +89.4] (no concluyente con 196.3); difusor - Ti -301.0
+    [-477.0, -124.9]; difusor - parametrico -202.0. Con suelo simetrico el parametrico pasa a equivalencia
+    (-36.3 [-191.5, +118.9]); el difusor sigue no concluyente (-238.3).
+  - Ninguna variante (`inter`, `suelo`, `sincabeza`) cambia el desenlace del difusor.
+  - Anillos: 8-10 mm difusor 888 HU, Peters 410, parametrico 308; 10-12 mm 725 / 314 / 83. 12-16 mm: difusor y
+    parametrico 0 por construccion (techo de `B_delta`, #176 H2); Peters 231-260 HU, del orden de su ruido (#186).
+  - El parametrico casi no varia entre pacientes (CV 0.025) y no correlaciona con Ti (r = 0.14): reproduce el nivel,
+    no el paciente. Lo mismo que #185 para el difusor, mas acentuado.
+- **Por que importa:** DEC 2026-10-15 (2) lo definio para responder "si el difusor llega a lo que un modelo analitico
+  calibrado con datos reales da sin aprendizaje". En v1 la respuesta descriptiva es **no**: en amplitud de banda el
+  difusor esta 200 HU por debajo del analitico. Toca la discusion del Objetivo 3 (cap. 4) y el argumento de valor del
+  renderizador aprendido; no toca el desenlace confirmatorio. Caveats: el parametrico usa `A(r)` de D1 (entrenamiento
+  y validacion, sin fuga a prueba) y la metrica es solo amplitud por anillo; no mide textura, rayas ni realismo, donde
+  el parametrico (dos lobulos ideales) es trivialmente irreal.
+- **Opciones:** (a) reportarlo como resultado descriptivo en cap. 4 junto al primario; (b) repetirlo sobre v2 cuando
+  llegue `a20_v2` (mismo brazo ya incluido) antes de decidir la redaccion; (c) sumar una metrica de forma (perfil
+  radial normalizado) que separe nivel de forma. **Pendiente de la autora.**

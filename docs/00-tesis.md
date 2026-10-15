@@ -158,8 +158,13 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       corregida, #175; con la pose espejada eran 163.8 y 23.2).
     - **Resultado de prueba de la version 1 (2026-10-13, #177; `resultados_prueba_v1.md`):** TOST primario frente a
       Peters Ti, n = 13: diferencia media -301.0 HU, IC90 [-477.0, -124.9], `Delta` 196.3: **no se concluye
-      equivalencia** (el difusor da rayas mas debiles). Cordura frente a copia y pegado: Wilcoxon p = 0.000122, la
-      supera. `run04_60k` (sensibilidad): -384.0 HU, tampoco equivalente. La comparacion contra Peters ya se
+      equivalencia** (el difusor da rayas mas debiles). Con los desenlaces fijados el 2026-10-15 (pto 15, lectura
+      posterior para v1): **no concluyente, con diferencia significativa a la baja** (el IC90 excluye 0 y cruza
+      -`Delta`); margen minimo de equivalencia 477.0 HU (30 % de Ti); IC90 por permutacion [-477.2, -124.1], igual
+      categoria. Cordura frente a copia y pegado: Wilcoxon p = 0.000122 = 2^-13, el minimo alcanzable: la prueba es
+      degenerada (copia y pegado = 0) y no se reporta tamano de efecto (pto 12). `run04_60k` (sensibilidad):
+      -384.0 HU, **no equivalencia** con su `Delta` y con el comun. Acuerdo (pto 22): el difusor casi no varia entre
+      pacientes (CV 0.076 frente a 0.241; Pitman-Morgan p = 3.8e-5, #185). La comparacion contra Peters ya se
       ejecuto como contraste primario: la contingencia de plazo de #90 quedo sin efecto (CERRADA 2026-10-14).
     - **Version 2 del sintetizador (POSTERIOR y EXPLORATORIA; `experiments/objetivo3/v2_plan.md`; 2026-10-13,
       2026-10-14 y 2026-10-14 (2)):** decidida despues de ver la prueba de la version 1. D (sobremuestreo de
@@ -182,10 +187,19 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       grupo 2 = 4). Prueba = 33 pacientes (`02-datos.md` 2026-10-11). ROIs = anillos completos de un voxel de
       guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
       fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
-      (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura**.
+      (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura** (degenerado,
+      2026-10-15 pto 12; comparador parametrico descriptivo, 2026-10-15 (2)).
+    - **Lecturas y sensibilidades del TOST (2026-10-15; posteriores para v1, previas para v2):** desenlaces
+      equivalencia / no equivalencia / no concluyente con direccion; IC90 por permutacion; margen minimo y margen
+      comun 196.3 HU; cortes compartidos, sin cabeza, suelo simetrico, anillos de 8-16 mm, costura en los dos brazos,
+      pisos de ruido de los dos brazos, Bland-Altman y Pitman-Morgan. Ninguna puede **elevar** la categoria del
+      primario. Detalle: adenda 2026-10-15 de `experiments/objetivo3/diseno_A.md`.
     - **Suelo de -1000 HU** (2026-10-05): regla preinscrita; si la perdida atribuible a la
       representacion (percentil 5 del paciente, eleccion post hoc declarada) es menor que `Delta`, se
-      declara como limitacion de alcance; si es mayor, se cambia la representacion.
+      declara como limitacion de alcance; si es mayor, se cambia la representacion. **Declarada NO APLICABLE el
+      2026-10-15 (pto 1, #186):** su desenlace depende del percentil (225.0 HU con p95 por paciente, 1.2 HU con
+      mediana) y el cambio de representacion esta bloqueado por el congelamiento. Se reportan los dos valores, la
+      fraccion de la ROI de Peters bajo -1000 HU (maximo 0.017 en prueba) y el TOST con suelo simetrico.
     - **Brazo fisico: se reproduce, NO se valida** (2026-10-05 (5)). Verificado en su codigo: paciente
       y metal se proyectan **juntos**; geometria 2D de una fila de detector; su metal son formas
       fractales, no implantes.

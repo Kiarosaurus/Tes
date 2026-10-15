@@ -90,6 +90,7 @@ else
     python -u "$A20" peters --npz "$DATA"/obj3_pose/peters_final/a19_*.npz --corrida-final "${OPC[@]}" \
         --out "$CSV" || exit 1
     python -u "$A20" copiapega --casos "${TEST[@]}" --hu 5371 --corrida-final "${OPC[@]}" --out "$CSV" || exit 1
+    python -u "$A20" parametrico --casos "${TEST[@]}" --hu 5371 --corrida-final "${OPC[@]}" --out "$CSV" || exit 1
     for et in "${RUNS[@]}"; do
         for caso in "${TEST[@]}"; do
             INT=()

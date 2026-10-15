@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (5) — variantes de v1 leidas; cuatro documentos alineados
+
+- **Hecho:** las 8 variantes de v1 ya habian terminado (04:15); `a26` sobre cada una + CSV congelado (`outputs/a26/v1_*`). Ninguna variante cambia el desenlace de run04_mejor (no concluyente, a la baja); anillos 8-12 mm: difusor sobre Peters; 12-16 mm trivial (techo de `G`). Comparador parametrico mas cerca de Peters que el difusor (-98.9 frente a -301.0 HU): **#187 ABIERTA**. Alineados con DEC 2026-10-15: `diseno_A.md` (adenda + correccion de `Delta`), `00-tesis.md`, `EXPERIMENTOS.md` (seccion 6c), `resultados_prueba_v1.md`. `a20_v2.sbatch` ahora incluye el brazo parametrico (Khipu: resincronizar antes de lanzar).
+- **Siguiente:** resultados de Khipu (v2, nulo, p95, a23 d003) -> `a26`; D9, realismo (H5), D3 a ciegas; decision de la autora sobre #187 y capitulo2 (#183).
+
 ## 2026-10-15 (4) — ronda unica de redaccion por DEC 2026-10-15
 
 - **Hecho:** capitulo1-r09 (GAPDEC del suelo cerrada; PASA), capitulo3-r22 (16 GAPDEC cerradas, asimetrias de #186 en Amenazas, tabla `tab:desviaciones`; PASA; 1 GAPLIT Bland-Altman/Pitman-Morgan con candidatos), introduccion-r07 (contingencia retirada, resultado de v1 "no concluyente" escrito; FALLA solo por el encabezado, #126). PDF 153 pp. en `redaccion/.build/main.pdf`; etapas en `redaccion/.build/etapas/`.

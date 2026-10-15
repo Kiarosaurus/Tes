@@ -16,6 +16,7 @@
 | 2026-10-15 | `a26` sobre el CSV congelado de v1: desenlaces D15 con *t* y permutacion, margen minimo (477.0 HU), Bland-Altman | prueba (v1) | run04_mejor, run04_60k | `a26` (scratchpad; se rehace sobre la variante `base`) | ninguna (lecturas ya fijadas) |
 | 2026-10-15 | D8: preservacion de Peters fuera de `G` (RMSE mediana 31.4 HU, SSIM 0.907) | prueba | Peters (sin metal) | `outputs/obj3_pose/a27/` | ninguna |
 | 2026-10-15 | D4: diametro semimaximo - 2500 HU en componentes 500-4000 mm3 de entrenamiento (E8) | entrenamiento | — | `resultados_dec_2026-10-15.md` | ninguna |
+| 2026-10-15 | `a20` de prueba en 8 variantes (base, inter, suelo, sincabeza, anillos 8-16 mm) con brazo parametrico; `a26` sobre cada una | prueba (v1) | run04_mejor, parametrico | `resultados_dec_2026-10-15.md`, #187 | ninguna (lecturas ya fijadas; v2 sigue sin ver) |
 
 **No visto a la fecha de `01-decisiones.md` 2026-10-15:** ningun TOST, Wilcoxon ni amplitud de prueba de run05a o
 run05b (E-A2); ninguna salida de las mediciones nuevas (D1, D2, D5, D7, D8, D9, D12, D-extra 1-3).

@@ -12,7 +12,8 @@
 > archivado en `experiments/obsoletos/objetivo3/outputs/` y **no es citable** (#166, #171). Resultados citables del
 > Objetivo 3: solo los de la corrida final con run04 y la pose corregida (#173: `a15_cadena_pose`, `a19_pose`,
 > `a23_final_run04`, `a24`), cuando existan.
-> Las salidas (`outputs/`) no estan versionadas. Actualizado el 2026-10-12.
+> Las salidas (`outputs/`) no estan versionadas. Actualizado el 2026-10-15 (DEC 2026-10-15: lecturas del TOST,
+> variantes posteriores y comparador parametrico; seccion 6c).
 
 ## 1. Diseno y datos de entrenamiento
 
@@ -36,8 +37,8 @@
 | `v2_d_componentes.py` -> `v2_d_componentes_run04.csv` / `.md` | version 2, D-a: componentes del manifiesto de run04 marcados tamano tornillo (500-4000 mm3) | script (local, necesita `outputs/a1b/a1b_componentes.csv`) | **ESCRITO 2026-10-13, POR CORRER** (la tabla no existe aun) |
 | `a7_cache_T.sbatch`, `v2_b_cache_T.py`, `a7_run05b.sbatch` | version 2, B: cache del canal T y run05b (D + B) | Khipu | **CORRIDOS** 2026-10-14 (cache 56650; run05b 56721-56724) |
 | `a16_v2.sbatch`, `a15_cadena_v2.sbatch`, `v2_eleccion.sbatch` + `v2_eleccion.py` | version 2: calibracion de `delta`, cadena en validacion y regla de eleccion aprobada | Khipu 56777-56781 | **CORRIDOS 2026-10-14**: "no mejora" (#182); resultado en `run05/v2_eleccion.md` |
-| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIENDO 2026-10-14** |
-| `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | **ESCRITO 2026-10-14, POR CORRER** (tras las finales) |
+| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIDO 2026-10-14**; E-A1 de v2 visto (#184). `a23_v2.sbatch` acepta `SUF` para repetir con `--delta` 0.03 (DEC 2026-10-15 pto 19): **POR CORRER** |
+| `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | Job 56847 **ABORTO** en validacion (doble envio, 56848 cancelado). Ampliado 2026-10-15: `ETAPA=val|test`, `VARIANTE` (8, DEC 2026-10-15), candado, brazos copia y pegado y parametrico. **POR CORRER** |
 | `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm), `FRAC=0.5`, `PESO=3` | Khipu 56570-56573 + 56704 | **CORRIDO 2026-10-14**: `mejor.pt` en 21 000 (val 0.0597); curva en `run05/run05a_curva.csv` |
 | `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |
@@ -80,8 +81,8 @@
 |---|---|---|---|
 | `casos_ea2_test.txt` | los 13 pacientes de test sin metal de E-A2 | script | **VIGENTE** |
 | (corrida final del difusor) | ahora es la etapa `final` de `a15_cadena_pose.sbatch` | — | ver seccion 4 |
-| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal (no usa la pose sintetica: #173 no lo toca) | Khipu 56355 | **CORRIDO** 2026-10-12 (`run04_mejor`, 0.030, shard rtxa6000, rc=0, 13 pacientes) -> `outputs/obj3_pose/a23_final_run04_d003/`; resumen PENDIENTE |
-| `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **LISTO**, probado con datos de juguete |
+| `a23_ea1.py`, `a23_final_run04.sbatch` | E-A1: reconstruccion del implante real en test con metal (no usa la pose sintetica: #173 no lo toca) | Khipu 56355 | **CORRIDO** 2026-10-12 (`run04_mejor`, 0.030, shard rtxa6000, rc=0, 13 pacientes) -> `outputs/obj3_pose/a23_final_run04_d003/`; resumen en `resultados_prueba_v1.md` |
+| `a24_contrastes.py` | TOST primario y sensibilidades; dos lecturas de `Delta` para `run04_60k` | script | **CORRIDO** sobre v1 (`resultados_prueba_v1.md`). Analisis congelado; las lecturas de DEC 2026-10-15 van en `a26` |
 | `a25_html_sintesis.py` | HTML de inspeccion visual (3D y cortes original/sintetica/diferencia) desde los `.nii.gz` de `a15` -> `<carpeta>/html/<etiqueta>/` | script | **VIGENTE** (herramienta; no mide). Corrido 2026-10-12 sobre `obj3_pose/{final,delta}` (60 HTML) |
 | `../obsoletos/objetivo3/a15_final.sbatch`, `a23_final.sbatch` | corrida final con `mejor_37k` | Khipu 55454, 55455 | **ARCHIVADOS** 2026-10-12 (fuga); no citables (#164, #171) |
 
@@ -93,6 +94,19 @@
 | `d1_alcance_rayas.py`, `d1_resultado.md` | D1: alcance del artefacto real por anillo (todas las piezas y `--vol-max 4000`) | local | **HECHO**: tornillos ~10 mm |
 | `d2_perfil_sintetico.py`, `d1_d2_resultado.md` | D2: perfil del artefacto sintetico con la misma metrica | local | **HECHO**: sintetico se apaga ~6 mm |
 | `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b), compuerta, regla de eleccion y analisis exploratorio declarado | autora + asistente | **EN CURSO**: entrenados; regla = "no mejora" (#182); evaluacion exploratoria en prueba corriendo (`01-decisiones.md` 2026-10-13, 2026-10-14, 2026-10-14 (2)) |
+
+## 6c. Decisiones del 2026-10-15 (cierre de `\GAPDEC`, lecturas del TOST; posteriores para v1, previas para v2)
+
+| Artefacto | Que es | Origen | Estado |
+|---|---|---|---|
+| `visto.md` | inventario fechado de que resultados se vieron (D-extra 4) | asistente | **VIGENTE**: se agrega una fila por cada resultado nuevo visto |
+| `a20_evaluador_ea2.py` (ampliado) | `suelo_frac` de Peters, `exceso_costura` en todos los brazos (D5), `--suelo-simetrico` (D1), `--excluir-cabeza-mm` (D2), `--r-min-mm/--r-max-mm` (anillos 8-16 mm), brazo `parametrico` (D12, DEC 2026-10-15 (2)) | script | **VIGENTE**; regresion exacta en `0012` |
+| `a20_v1_variantes.sh` | las 8 variantes de `a20` sobre run04_mejor (v1), en local | local | **CORRIDO** 2026-10-15 (01:25-04:15) -> `outputs/obj3_pose/a20_variantes/` |
+| `a26_lecturas.py` | desenlaces (D15), IC90 por permutacion (D14), margen minimo y comun (D16), Bland-Altman y Pitman-Morgan (pto 22) | script | **CORRIDO** sobre v1 (`outputs/a26/v1_*`); resultados en `resultados_prueba_v1.md` y `resultados_dec_2026-10-15.md`; #187 |
+| `a27_preservacion_peters.py` | D8: RMSE y SSIM de Peters sin metal frente a la TC, fuera de `G` | script | **CORRIDO**: RMSE 31.4 HU, SSIM 0.907 (mediana) |
+| `a15_cadena_completa.py` (`--sin-metal`, `--guardar-u-g`), `a15_diag.sbatch` | D-extra 2 (piso de ruido del difusor, `MODO=nulo`) y D7 (p95, `MODO=p95`) | Khipu | **POR CORRER** |
+| `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1 y comparador parametrico | asistente | **EN CURSO**: faltan D-extra 2, D7, D9, D-extra 3 y todo v2 |
+| (sin script) | D9 (poses del muestreador), D3 a ciegas, control con imagenes reales de D7, realismo (H5) | — | **POR ESCRIBIR** |
 
 ## 7. Archivados
 

@@ -21,12 +21,31 @@ Implicancia: #177.
 | | sin corredores angostos | 10 | -353.9 | [-585.7, -122.1] | 0.878 | no se concluye equivalencia |
 
 Cordura (Wilcoxon de rangos con signo, una cola, difusor > copia y pegado): n = 13, p = 0.000122 en los dos puntos de
-control: supera el piso. La copia y pegado da amplitud 0 (las ROIs excluyen `M`). Fraccion de la ROI en el suelo de
--1000 HU: 0.000 (maximo por paciente).
+control: supera el piso. La copia y pegado da amplitud 0 (las ROIs excluyen `M`), asi que la prueba es degenerada:
+p = 2^-13 es el minimo alcanzable y no se reporta tamano de efecto (DEC 2026-10-15 pto 12). Fraccion de la ROI en el
+suelo de -1000 HU: difusor 0.000; Peters Ti 0.017 (maximo por paciente; medida el 2026-10-15, #186).
 
-Lectura descriptiva (no fijada en el diseno, ver `\GAPDEC` "que desenlace cuenta en contra"): con el principal, el IC90
-queda entero bajo 0 y su extremo superior (-124.9) dentro de [-196.3, 196.3]; con `run04_60k`, el IC90 queda entero
-fuera de los dos margenes (por 5.1 HU frente a 196.3).
+## Lecturas fijadas el 2026-10-15 (posteriores para v1)
+
+`01-decisiones.md` 2026-10-15 fijo los desenlaces (pto 15), la sensibilidad por permutacion (pto 14), el margen
+minimo (pto 16) y las lecturas de acuerdo (pto 22) **despues** de ver esta tabla (`visto.md`): para v1 son lecturas
+posteriores. Calculo: `a26_lecturas.py` sobre el CSV congelado -> `outputs/a26/v1_congelado/`.
+
+| modelo | `Delta` | desenlace (pto 15) | direccion | IC90 por permutacion | margen minimo |
+|---|---|---|---|---|---|
+| **`run04_mejor` (confirmatorio)** | 196.3 | **no concluyente** | difusor < Peters (IC90 excluye 0) | [-477.2, -124.1] | 477.0 HU (30 % de Ti) |
+| `run04_60k` | 115.8 y 196.3 | no equivalencia con los dos | difusor < Peters | [-567.3, -200.4] | 566.5 HU (36 %) |
+
+La permutacion coincide con *t* a menos de 2 HU: no baja ninguna categoria.
+
+Acuerdo (#185, descriptivo): CV entre pacientes difusor 0.076 frente a Ti 0.241; Pitman-Morgan r = -0.89,
+p = 3.8e-5; Pearson r = 0.40; Bland-Altman sesgo -301.0 HU, limites [-999.0, +397.1]. El difusor casi no cambia de
+paciente a paciente; el TOST de medias no lo ve.
+
+Asimetrias (#186): Peters medido en cortes `k = 2` (62 341 voxeles mediana) frente a 124 679 del difusor; piso de ruido
+de Peters (`limpia_A - limpia_B`) 183.5 HU mediana; costura mediana difusor 4.3 HU, Peters 1.2 HU (pto 5). Variantes
+que corrigen las asimetrias y comparador parametrico: `resultados_dec_2026-10-15.md` (ninguna cambia el desenlace;
+#187).
 
 ## E-A1, reconstruccion de implantes reales (13 pacientes de prueba con metal, `run04_mejor`, 0.030)
 
@@ -41,5 +60,5 @@ Todas las cifras en HU salvo SDC y dVol (fraccion). Descriptivo, sin prueba de h
 
 ## Pendiente
 
-Realismo (diseno_A.md seccion 0, opcion 3): no hay script; la lista de pacientes de prueba con tornillo intraoseo
+Realismo (diseno_A.md seccion 0, opcion 3): no hay script (H5, prioridad 1); la lista de pacientes de prueba con tornillo intraoseo
 aislado (revision de la autora) sigue como `\GAPDATO`.

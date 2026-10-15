@@ -32,6 +32,8 @@
 > - **`Delta`:** principal **163.8 HU** (`s` de `run04_mejor`; `r` = 23.2). Sustituye a 188.7. Para `run04_60k`
 >   se reportan **dos lecturas**: con su propio `Delta` (100.3 HU) y con el principal (163.8 HU), para separar el
 >   efecto del margen del efecto del modelo (`a20_resultados_run04.md`).
+>   **Corregido (DEC 2026-10-15 pto 21):** esas cifras son de la pose espejada; con la pose corregida (#173, #175)
+>   los vigentes son **196.3 HU** (`r` = 6.1) para `run04_mejor` y **115.8 HU** para `run04_60k`.
 > - **HU de copia y pegado:** **5371 HU** (`a22`, conjunto de run04). Sustituye a 5373.
 > - **GPU:** `gpu:a100_3g.20gb:1` en `all`, la misma de `Delta` (job 55825) y del cotejo (#151). Sustituye a
 >   `shard:rtxa6000:4`.
@@ -46,6 +48,35 @@
 >   **GPU de la repeticion:** `gpu:rtxa6000:1` (exclusiva) para los dos puntos de control, en todas sus etapas
 >   (cotejo, `Delta`, final), elegida por disponibilidad (#151 exige el mismo tipo entre lo que se compara; todo se
 >   rehace, asi que no hay que empatar con la `a100_3g` anterior).
+
+> ## ADENDA 2026-10-15 (`01-decisiones.md` 2026-10-15 y 2026-10-15 (2)): lecturas y sensibilidades
+>
+> Fijadas **despues** de ver la prueba de v1 (`resultados_prueba_v1.md`, #177) y **antes** de cualquier TOST de prueba de
+> v2 (`visto.md`): para v1 son posteriores; para v2, previas. **No cambia el primario ni el analisis congelado de
+> `a24`.** Regla general: ninguna sensibilidad agregada puede **elevar** la categoria del desenlace primario; solo
+> bajarla.
+>
+> - **Desenlaces del TOST (pto 15):** equivalencia (IC90 entero dentro de +-`Delta`), no equivalencia (IC90 entero
+>   fuera), no concluyente (IC90 cruza un limite); direccion siempre que el IC90 excluya 0. Confirmatorio: solo
+>   `run04_mejor` con su `Delta`. **v1: `run04_mejor` no concluyente, difusor < Peters; `run04_60k` no equivalencia.**
+> - **Supuesto *t* (pto 14):** sensibilidad con IC90 exacto por permutacion pareada (2^13).
+> - **Margen (pto 16):** se reporta el margen minimo de equivalencia y el TOST con el margen comun (196.3 HU) ademas del
+>   propio. El margen 0.80-1.25 queda descartado.
+> - **Suelo (pto 1):** la regla del suelo de 2026-10-05 se declara **no aplicable** (225.0 HU con p95, 1.2 HU con
+>   mediana). En su lugar: fraccion de la ROI de Peters bajo -1000 HU y TOST con los dos brazos recortados a
+>   -1000 HU (`--suelo-simetrico`).
+> - **Sensibilidades posteriores de `a20`:** cortes compartidos (`--interseccion`, pto 17), sin ROIs a menos de 20 mm
+>   de la cabeza (pto 2; la sintesis usa el tornillo con cabeza, desviacion de D3), anillos de 2 mm de 8 a 16 mm
+>   (pto 5), costura en los dos brazos (pto 5).
+> - **Pisos de ruido (pto 18):** amplitud nula de Peters (`limpia_A - limpia_B`) y del difusor (`G` sin `M`).
+> - **Cordura (pto 12):** degenerada (copia y pegado = 0; p = 2^-13 es el minimo); sin tamano de efecto. Comparador
+>   nuevo, descriptivo: **artefacto parametrico** (`M` a 5371 HU + `(A(r)/2) * signo(cos 2 theta)`, `A(r)` de D1).
+> - **Acuerdo (pto 22):** Bland-Altman y Pitman-Morgan, descriptivos.
+> - **Otros:** preservacion de Peters fuera de `G` (pto 8), diferencia de diametro por semimaximo (pto 4, no se
+>   entrena), diagnostico del p95 (pto 7), poses del muestreador (pto 9, exploratorio), QC y comparacion a ciegas
+>   (pto 10), lote = 16 (pto 3), `CLINIC_0066` en grupo 2 (pto 6).
+> - Scripts: `a20_evaluador_ea2.py` (ampliado), `a26_lecturas.py`, `a27_preservacion_peters.py`; resultados en
+>   `resultados_dec_2026-10-15.md`.
 
 ## 0. Diseno congelado para la corrida final
 

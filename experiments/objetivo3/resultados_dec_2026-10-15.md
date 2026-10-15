@@ -79,3 +79,48 @@ Fuente: Khipu 56867 (`a15_diag.sbatch MODO=nulo`, rc=0) -> `outputs/khipu_2026-1
 | Peters Ti | 184 | 1574 | 0.12 | 1388 |
 
 Medianas por paciente, HU. Implicancia #188.
+
+## Version 2 en prueba (exploratorio, lecturas previas) — `a20_v2` + `a26`
+
+Fuente: Khipu 56857-56865 (rc=0) -> `outputs/khipu_2026-10-15/v2_prueba/` (`a26/<variante>/`, `a24/`). `Delta` propio
+de validacion: run05a 157.1 HU, run05b 107.1 HU; margen comun 196.3. Peters y copia y pegado identicos a v1 (verificado).
+
+| variante | run04_mejor (v1) | run05a | run05b | desenlace (los tres) |
+|---|---|---|---|---|
+| base | -301.0 [-477.0, -124.9] | -258.9 [-456.7, -61.1] | -264.3 [-456.8, -71.7] | no concluyente, dif. < Peters |
+| inter | -295.3 | -254.3 | -269.6 | igual |
+| suelo simetrico | -238.3 | -196.2 [-360.9, -31.5] | -201.6 [-360.9, -42.3] | igual |
+| sin cabeza | -329.3 | -280.1 | -288.0 | igual |
+| anillo 8-10 mm | +478.0 | +489.8 | +480.0 | no equivalencia, dif. > Peters |
+| anillo 10-12 mm | +411.7 | +415.2 | +424.9 | no equivalencia, dif. > Peters |
+
+Margen minimo (base): run05a 456.7 HU (29 %), run05b 456.8 (29 %), frente a 477.0 de v1. Acuerdo (base): CV
+run05a 0.093, run05b 0.081 (Ti 0.241); Pearson con Ti 0.03 y 0.09 (v1: 0.40); Pitman-Morgan p 7.3e-4 y 1.9e-4.
+Permutacion: no baja ninguna categoria. Lectura: la version 2 acerca la media ~40 HU sin cambiar ningun desenlace;
+la correlacion por paciente con Peters cae a ~0. Implicancia #190.
+
+## D-extra 3 — E-A1 de v2 con `--delta` 0.03 (el de run04)
+
+Fuente: Khipu 56868/56869 -> `outputs/khipu_2026-10-15/a23_v2/run05{a,b}_d003/`. Medianas, grupo 1 (n = 9):
+
+| modelo / lectura | MAE `G` | MAE `M` | MAE `B_delta` | metal SDC | pacientes con MAE `G` < run04 |
+|---|---|---|---|---|---|
+| run04, 0.03 | 270.9 | 2312.5 | 198.0 | 0.928 | — |
+| run05a, propio (0.05) | 259.5 | 2423.2 | 192.2 | 0.925 | 9 de 13 |
+| run05a, 0.03 | 271.8 | 2694.9 | 188.8 | 0.894 | 4 de 13 |
+| run05b, propio (0.2) | 242.1 | 2062.0 | 185.7 | 0.948 | 11 de 13 |
+| run05b, 0.03 | 246.4 | 2335.3 | 188.2 | 0.930 | 9 de 13 |
+
+Lectura: la ventaja de run05a sobre run04 en E-A1 es de lectura (desaparece con 0.03); la de run05b se sostiene en
+parte (9 de 13). Grupo 2 (n = 4): exceso de costura con 0.03 sube a 43.9 (run05a) y 72.8 HU (run05b), frente a 9.0 de
+run04: el 0.03 no es una lectura adecuada para esos modelos fuera de distribucion. Implicancia #190.
+
+## D7 — mecanismo del p95
+
+Fuente: `a28_diag_p95.py` sobre Khipu 56866 (`u` de `G`, 0101/0102 x 5 semillas) -> `outputs/obj3_pose/a28/`. Control
+de regresion: la decodificacion local reproduce el `elev_p95` de `a15` (diferencia 0.00 HU en las 10 generaciones).
+
+- (a) Con solo LW el p95 entra en la envolvente real en **1 de 7** cascaras (umbral 4): no cumple. LW sube el p95
+  +3 a +53 HU; el deficit frente a la envolvente es de 30 a 130 HU.
+- (b) En lo real el cambio de decodificacion mueve el p95 0.00 HU (ida y vuelta exacta): cumple, pero es trivial.
+- **Veredicto por la regla: modelo.** Implicancia #191.

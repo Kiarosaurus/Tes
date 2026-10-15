@@ -12351,3 +12351,48 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** (a) reportar piso y amplitud lado a lado (lo fijado en pto 18), sin restar; (b) descriptivo adicional:
   exceso sobre el piso propio por brazo (posterior; sujeto a la regla general, no puede elevar el desenlace);
   (c) llevarlo a Amenazas a la validez del cap. 3 y a la discusion del cap. 4. **Pendiente de la autora.**
+
+### 189 — LO QUE BLAND-ALTMAN (1986) Y PITMAN/MORGAN (1939) OBLIGAN A REVISAR EN LA LECTURA DE ACUERDO (#185, DEC 2026-10-15 pto 22) — ABIERTA
+
+- **Origen:** fichas `bland1986statistical.md`, `pitman1939note.md`, `morgan1939test.md` (2026-10-15, `lector-papers`).
+- **Hallazgos:**
+  1. **Diferencia que depende de la magnitud.** Bland-Altman suponen que la diferencia no varia con la magnitud y
+     proponen escala logaritmica si es proporcional (p. 309). En v1 la correlacion suma-diferencia es -0.89 (#185):
+     el supuesto no se cumple y los limites +-1.96 DE en HU estan mal calibrados en los extremos.
+  2. **Sin diferencia aceptable fijada de antemano** (p. 308): la lectura de acuerdo debe declararse descriptiva.
+  3. **Promedio de semillas:** promediar replicas achica la DE de las diferencias (p. 310); el difusor entra como
+     mediana de 5 semillas.
+  4. **Varianza, no CV.** Pitman y Morgan prueban sigma1^2 = sigma2^2 en normal bivariada (t con n-2 gl). `a26` la
+     aplica a HU crudos con medias distintas (1294 frente a 1595): el p = 3.8e-5 es sobre varianzas; el CV
+     (0.076 frente a 0.241) es descriptivo aparte. Normalidad bivariada con n = 13 sin verificar.
+  5. **Atribucion:** la formulacion por correlacion suma-diferencia esta explicita en Morgan (ec. 16, 20); Pitman la
+     obtiene con variables estandarizadas. Citar ambos.
+- **Por que importa:** cap. 3 §Analisis estadistico (el `\GAPLIT` que se cierra con estas fuentes) y cap. 4.
+- **Opciones:** (a) Bland-Altman en escala logaritmica (razon) ademas de HU; (b) Pitman-Morgan tambien sobre log, que
+  si compara CV aproximadamente; (c) declarar las cinco limitaciones sin recalcular. **Pendiente de la autora.**
+
+### 190 — VERSION 2 EN PRUEBA (EXPLORATORIO): run05a y run05b tambien quedan "no concluyente, a la baja" en todas las variantes; acercan la media ~40 HU y su correlacion con Peters por paciente cae a ~0. En E-A1 la ventaja de run05a es de lectura (`--delta`), la de run05b se sostiene en parte — ABIERTA
+
+- **Origen:** Khipu 56857-56869 (rc=0), traidos el 2026-10-15; detalle en `resultados_dec_2026-10-15.md`.
+- **Medido:** base: run05a -258.9 [-456.7, -61.1] (Delta 157.1), run05b -264.3 [-456.8, -71.7] (Delta 107.1);
+  v1 -301.0. Ninguna variante cambia el desenlace; anillos 8-12 mm +415 a +490 HU (igual que v1). Pearson con Ti 0.03 y
+  0.09 (v1 0.40). E-A1 grupo 1 con 0.03: run05a pierde la ventaja (4 de 13 pacientes con menor MAE `G` que run04, antes
+  9), run05b la conserva en parte (9 de 13, antes 11); grupo 2 con 0.03: costura 44-73 HU.
+- **Por que importa:** confirma #182 ("no mejora") con datos de prueba y separa modelo de lectura (D-extra 3) para el
+  cap. 4. Con el margen comun (196.3) tampoco cambia ningun desenlace. Sin decisiones previas pendientes: todo lo que se decida desde
+  ahora sobre v2 es posterior (`visto.md`).
+- **Opciones:** reportar lado a lado con v1 como exploratorio declarado (lo ya fijado). **Pendiente de la autora:**
+  confirmar la redaccion.
+
+### 191 — EL p95 BAJO LO REAL ES DEL MODELO, NO DEL DECODIFICADOR (D7, regla fijada antes): con solo LW el p95 entra en la envolvente real en 1 de 7 cascaras — ABIERTA
+
+- **Origen:** `a28_diag_p95.py` sobre `u` de `G` guardado en Khipu 56866 (0101/0102 x 5 semillas, run04_mejor); DEC
+  2026-10-15 pto 7. Regresion: la decodificacion local reproduce `a15` exacto.
+- **Medido:** LW sube el p95 entre +3 y +53 HU en las 7 cascaras (4-12 mm); el deficit frente a la envolvente es de 30
+  a 130 HU; con LW entra 1 de 7 (umbral 4). Control real: 0.00 HU (ida y vuelta exacta; no puede captar la
+  amplificacion de ruido, limite declarado).
+- **Por que importa:** cierra la pregunta de mecanismo de #152/#157 para el cap. 3/4: la limitacion "p95 bajo lo real"
+  se atribuye al modelo; cambiar la decodificacion no la resuelve. Coherente con #187/#188 (artefacto debil cerca del
+  tornillo, piso de textura alto).
+- **Opciones:** redactar la limitacion con esta atribucion; #152 puede pasar a CERRADA en lo que toca al mecanismo.
+  **Pendiente de la autora.**

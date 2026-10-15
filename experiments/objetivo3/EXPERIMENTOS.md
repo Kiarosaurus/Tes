@@ -37,8 +37,8 @@
 | `v2_d_componentes.py` -> `v2_d_componentes_run04.csv` / `.md` | version 2, D-a: componentes del manifiesto de run04 marcados tamano tornillo (500-4000 mm3) | script (local, necesita `outputs/a1b/a1b_componentes.csv`) | **ESCRITO 2026-10-13, POR CORRER** (la tabla no existe aun) |
 | `a7_cache_T.sbatch`, `v2_b_cache_T.py`, `a7_run05b.sbatch` | version 2, B: cache del canal T y run05b (D + B) | Khipu | **CORRIDOS** 2026-10-14 (cache 56650; run05b 56721-56724) |
 | `a16_v2.sbatch`, `a15_cadena_v2.sbatch`, `v2_eleccion.sbatch` + `v2_eleccion.py` | version 2: calibracion de `delta`, cadena en validacion y regla de eleccion aprobada | Khipu 56777-56781 | **CORRIDOS 2026-10-14**: "no mejora" (#182); resultado en `run05/v2_eleccion.md` |
-| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIDO 2026-10-14**; E-A1 de v2 visto (#184). `a23_v2.sbatch` acepta `SUF` para repetir con `--delta` 0.03 (DEC 2026-10-15 pto 19): **POR CORRER** |
-| `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | Job 56847 **ABORTO** en validacion (doble envio, 56848 cancelado). Ampliado 2026-10-15: `ETAPA=val|test`, `VARIANTE` (8, DEC 2026-10-15), candado, brazos copia y pegado y parametrico. **POR CORRER** |
+| `a15_cadena_v2.sbatch` (`ETAPAS=final EXPLORATORIO=1`), `a23_v2.sbatch` | version 2 en prueba, EXPLORATORIO y POSTERIOR (declarado en `v2_plan.md`) | Khipu 56791-56794 | **CORRIDO 2026-10-14**; E-A1 de v2 visto (#184). `a23_v2.sbatch` con `SUF=_d003` (DEC 2026-10-15 pto 19): **CORRIDO** 56868/56869; #190 |
+| `a20_v2.sbatch` | version 2: `a20` en validacion (Delta propio) y prueba + `a24`, en Khipu (CPU), sin bajar NIfTI | Khipu | Job 56847 abortado (doble envio). Ampliado 2026-10-15 (`ETAPA`, `VARIANTE`, candado). **CORRIDO** 56857-56865 (rc=0) -> `outputs/khipu_2026-10-15/v2_prueba/`; #190. El brazo parametrico se agrego despues; no depende del modelo y vale el de v1 |
 | `a7_run05a.sbatch` | version 2, run05a = run04 + D (sobremuestreo + peso 2-10 mm), `FRAC=0.5`, `PESO=3` | Khipu 56570-56573 + 56704 | **CORRIDO 2026-10-14**: `mejor.pt` en 21 000 (val 0.0597); curva en `run05/run05a_curva.csv` |
 | `../obsoletos/objetivo3/a7_entrenar.sbatch`, `a7_run03.sbatch` | run01/run02 y run03 | Khipu | **ARCHIVADOS** 2026-10-12 (fuga, #166) |
 | `a14_curvas.py` | grafico de curvas de entrenamiento | script | **VIGENTE** (herramienta) |
@@ -104,8 +104,9 @@
 | `a20_v1_variantes.sh` | las 8 variantes de `a20` sobre run04_mejor (v1), en local | local | **CORRIDO** 2026-10-15 (01:25-04:15) -> `outputs/obj3_pose/a20_variantes/` |
 | `a26_lecturas.py` | desenlaces (D15), IC90 por permutacion (D14), margen minimo y comun (D16), Bland-Altman y Pitman-Morgan (pto 22) | script | **CORRIDO** sobre v1 (`outputs/a26/v1_*`); resultados en `resultados_prueba_v1.md` y `resultados_dec_2026-10-15.md`; #187 |
 | `a27_preservacion_peters.py` | D8: RMSE y SSIM de Peters sin metal frente a la TC, fuera de `G` | script | **CORRIDO**: RMSE 31.4 HU, SSIM 0.907 (mediana) |
-| `a15_cadena_completa.py` (`--sin-metal`, `--guardar-u-g`), `a15_diag.sbatch` | D-extra 2 (piso de ruido del difusor, `MODO=nulo`) y D7 (p95, `MODO=p95`) | Khipu | **POR CORRER** |
-| `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1 y comparador parametrico | asistente | **EN CURSO**: faltan D-extra 2, D7, D9, D-extra 3 y todo v2 |
+| `a15_cadena_completa.py` (`--sin-metal`, `--guardar-u-g`), `a15_diag.sbatch` | D-extra 2 (piso de ruido del difusor, `MODO=nulo`) y D7 (p95, `MODO=p95`) | Khipu 56867 / 56866 | **CORRIDOS** 2026-10-15 (rc=0) -> `outputs/khipu_2026-10-15/obj3_pose/`; #188 |
+| `a28_diag_p95.py` | D7: decodificacion regla_suave frente a solo LW del `u` de `G`, control real en `metal_0039` | local | **CORRIDO** 2026-10-15: veredicto "modelo" (#191) |
+| `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1 y comparador parametrico | asistente | **EN CURSO**: falta D9 |
 | (sin script) | D9 (poses del muestreador), D3 a ciegas, control con imagenes reales de D7, realismo (H5) | — | **POR ESCRIBIR** |
 
 ## 7. Archivados

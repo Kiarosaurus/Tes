@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (7) — v2 leida, D7, fichas de Bland-Altman y Pitman-Morgan
+
+- **Hecho:** v2 en prueba: run05a/b "no concluyente, a la baja" en todas las variantes (#190); E-A1 d003: ventaja de run05a es de lectura, run05b la conserva en parte (#190). D7 (`a28_diag_p95.py`): p95 bajo lo real es del **modelo** (LW entra 1 de 7; #191). Fichas `bland1986statistical`, `pitman1939note`, `morgan1939test` + `_index`/`_candidatos`; #189 (supuestos de Bland-Altman y varianza frente a CV). Raw de las tres en `refs/raw/`; `refs/clean` y `refs.bib` sin tocar.
+- **Siguiente:** decisiones de la autora sobre #187-#191; `refs/clean` de las tres fuentes; ronda de redaccion (cap. 3 GAPLIT + GAPDATO) cuando la autora la pida; D9, realismo, D3 a ciegas.
+
 ## 2026-10-15 (6) — resultados de Khipu recibidos y completos
 
 - **Hecho:** `obj3_post_2026-10-15.tar.gz` extraido en `experiments/objetivo3/outputs/khipu_2026-10-15/`. 13 jobs rc=0; `a20_v2` val + 8 variantes completas (run05a/b, 65 filas por modelo); `Delta` run05a 157.1, run05b 107.1; nulo, diag p95 y `a23` d003 completos. Peters y copia y pegado identicos a v1 (el parametrico no depende del modelo: vale el de v1). Piso de ruido del difusor 893 HU frente a 184 de Peters: **#188 ABIERTA**. TOST de prueba de v2 aun NO visto.

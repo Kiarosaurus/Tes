@@ -12248,3 +12248,32 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   ("aun sin preinscribir"); `00-tesis.md`:91 (cabeza como sensibilidad frente a `diseno_A.md` §0).
 - **Opciones y recomendacion:** en la propuesta citada. **Pendiente de la autora:** decidir y registrar en
   `01-decisiones.md` antes de lanzar `a20_v2`.
+
+### 184 — E-A1 EN PRUEBA (EXPLORATORIO, VERSION 2): run05b reconstruye el implante real con menor MAE en `G` que run04 en 11 de 13 pacientes (mediana grupo 1: 242 frente a 271 HU); descriptivo, con `--delta` de decodificacion distinto por modelo — ABIERTA
+
+- **Origen:** `a23_v2.sbatch` en Khipu (jobs 56793 run05a, 56794 run05b; rc=0), comparado en local con run04
+  (`outputs/obj3_pose/a23_final_run04_d003/`), 2026-10-15. Salidas: `experiments/objetivo3/outputs/obj3_v2/a23_run05{a,b}/`.
+- **Medido (medianas por grupo, HU salvo SDC/dVol):**
+
+  | grupo | modelo | MAE `G` | MAE `M` | MAE `B_delta` | hueso SDC | metal SDC | metal dVol | exceso costura |
+  |---|---|---|---|---|---|---|---|---|
+  | 1 (n = 9) | run04 | 270.9 | 2312.5 | 198.0 | 0.717 | 0.928 | -0.078 | 6.3 |
+  | 1 | run05a | 259.5 | 2423.2 | 192.2 | 0.729 | 0.925 | -0.082 | 9.9 |
+  | 1 | run05b | 242.1 | 2062.0 | 185.7 | 0.740 | 0.948 | -0.006 | 6.6 |
+  | 2 (n = 4) | run04 | 199.8 | 2747.9 | 165.8 | 0.534 | 0.753 | -0.255 | 9.0 |
+  | 2 | run05a | 178.9 | 2302.5 | 159.7 | 0.610 | 0.879 | -0.116 | 25.0 |
+  | 2 | run05b | 163.3 | 2263.7 | 145.1 | 0.587 | 0.890 | -0.028 | 8.6 |
+
+  Por paciente (MAE `G`): run05b < run04 en 11/13 (mediana de la diferencia -16.0 HU); run05a < run04 en 9/13
+  (-4.3 HU). Exceso de costura menor que run04: run05b 7/13, run05a 4/13.
+- **Confusor a declarar:** cada modelo se decodifica con su `--delta` calibrado (`a16`): run04 0.03, run05a 0.05,
+  run05b 0.2 (logs `a23v2_5679{3,4}.log`). La diferencia mezcla modelo y `delta`; es el procedimiento declarado
+  ("el mismo que run04"), pero no aisla el efecto de D ni de B.
+- **Por que importa:** el orden run04 > run05a > run05b en error de E-A1 va en el mismo sentido que E (2-10 mm) de
+  #182, mientras la regla preinscrita dice "no mejora". Es exploratorio y posterior: no cambia #182 ni #177, pero el
+  cap. 4 debe reportarlo descriptivo, lado a lado, sin ganador, y la discusion debe explicar la tension con la
+  salvaguarda de 0-2 mm. Sin prueba de hipotesis; 13 pacientes.
+- **Ademas:** `a20_v2` (56847) aborto en la etapa 1 (validacion): el CSV perdio filas de Peters y run05a; hubo un
+  segundo envio (56848, cancelado). La etapa de prueba (TOST/Wilcoxon) NO corrio, por lo que #183 (fijar la lectura
+  del TOST y del Wilcoxon) todavia puede resolverse ANTES de ver esos resultados.
+- **Pendiente de la autora:** decidir #183 antes de relanzar `a20_v2`; validar esta lectura de E-A1.

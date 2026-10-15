@@ -6,7 +6,8 @@
 
 - **Push RESUELTO:** `4666fb2` traia `papers/Gray's Anatomy...pdf` (310 MB > 100 MB de GitHub). Todos los `*.pdf` salieron del repo (`.gitignore`) y del historial completo (`git filter-repo`, push forzado de `main` y `claude/plan-b-opcion-d-tk53v6`); los 211 PDF locales siguen intactos (md5). `.git` 3.2 GB -> 44 MB. Respaldo del historial viejo en `../metalsynth-respaldo.git`. **Khipu debe resincronizar** (`git fetch && git reset --hard origin/main`).
 - **Version 2 en prueba:** finales 56791/56792 y E-A1 56793/56794 terminaron (rc=0; `outputs/obj3_v2/`). `a20_v2` (56847) **aborto en la etapa 1**: `Delta` de run05a = 157.1 HU, pero el `a20_val.csv` final solo tiene las filas de run05b (sin Peters ni run05a) y el `delta` de run05b falla con "sin pacientes con los dos brazos". Causa no confirmada (posible segundo envio del `.sbatch`, cuyo `rm -f` borra el CSV). Etapas 2 (prueba) y 3 (`a24`) NO corrieron.
-- **Siguiente:** en Khipu resincronizar, revisar `squeue`/logs `a20v2_*` y relanzar `a20_v2.sbatch` (una sola vez); traer `v2_prueba/`; tabla de los tres modelos; D3 a ciegas.
+- **E-A1 v2 revisado:** run05b < run04 en MAE `G` en 11/13 (grupo 1: 242 frente a 271 HU); run05a 9/13; `--delta` distinto por modelo (0.03/0.05/0.2) -> **#184 ABIERTA**. Respaldo `metalsynth-respaldo.git` borrado (autora lo pidio). Doble envio de `a20_v2` confirmado (56848, cancelado).
+- **Siguiente:** autora decide #183 (lectura TOST/Wilcoxon) ANTES de relanzar; Khipu: resincronizar y relanzar `a20_v2` una sola vez; traer `v2_prueba/`; tabla de los tres modelos; D3 a ciegas.
 
 ## 2026-10-14 (8) — repositorios XCIST versionados y GAPLIT cerrado
 

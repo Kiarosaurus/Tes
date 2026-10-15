@@ -1,0 +1,62 @@
+PMID- 11764364
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20020102
+LR  - 20190605
+IS  - 0009-921X (Print)
+IS  - 0009-921X (Linking)
+IP  - 393
+DP  - 2001 Dec
+TI  - Accuracy of computer-guided screw fixation of the sacroiliac joint.
+PG  - 310-7
+AB  - Computer-assisted image guidance allows precise preoperative planning and 
+      intraoperative localization of surgical instruments. The technique recently was 
+      validated for the insertion of pedicle screws. In the laboratory, the precision 
+      of a surface-matching algorithm was evaluated for registration and accuracy and 
+      safety of screw placement into the vertebral bodies of S1 and S2 for fixation of 
+      the sacroiliac joint. Using six plastic pelves, 24 screw holes were made through 
+      the sacroiliac joint into the vertebral body of S1, and 12 holes were made 
+      through the sacroiliac joint into S2. The accuracy of the hole position was 
+      evaluated using a postoperative computed tomography examination. The safety 
+      factor was assessed by analysis of the remaining bone stock around the holes 
+      calculating a theoretical cylindrical volume being outside bone with increasing 
+      bore hole diameters. The registration was accurate with a mean error less than 
+      1.4 mm in the posterior parts of the pelvis. The drilling followed precisely the 
+      preoperatively planned trajectories; perforation of the cortex of the sacrum was 
+      not observed. The safety factor of the S1 vertebral body is higher than that of 
+      S2 allowing larger diameter screw insertion into S1. This technique provides a 
+      safe and precise guide for transcutaneous or open insertion of iliosacral screws 
+      in cases of iliosacral dislocation or sacral fracture.
+FAU - Gautier, E
+AU  - Gautier E
+AD  - Department of Orthopaedic Surgery, Kantonsspital Fribourg, Switzerland.
+FAU - Bächler, R
+AU  - Bächler R
+FAU - Heini, P F
+AU  - Heini PF
+FAU - Nolte, L P
+AU  - Nolte LP
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - Clin Orthop Relat Res
+JT  - Clinical orthopaedics and related research
+JID - 0075674
+SB  - IM
+MH  - Algorithms
+MH  - *Bone Screws
+MH  - *Fracture Fixation
+MH  - Humans
+MH  - Sacroiliac Joint/*injuries
+MH  - *Surgery, Computer-Assisted
+EDAT- 2002/01/05 10:00
+MHDA- 2002/01/05 10:01
+CRDT- 2002/01/05 10:00
+PHST- 2002/01/05 10:00 [pubmed]
+PHST- 2002/01/05 10:01 [medline]
+PHST- 2002/01/05 10:00 [entrez]
+AID - 10.1097/00003086-200112000-00036 [doi]
+PST - ppublish
+SO  - Clin Orthop Relat Res. 2001 Dec;(393):310-7. doi: 
+      10.1097/00003086-200112000-00036.

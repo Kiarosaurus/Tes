@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (9) — fichas Gautier/Yang/Day; refs/clean; contraste pareado preparado
+
+- **Hecho:** fichas `gautier2001accuracy`, `yang2022computeraided`, `day2000transsacral` (solo abstract) + `_index`/`_candidatos`; #192. `refs/clean` de bland/pitman/morgan/gautier/day (Yang espera decision de clave, raw duplicado). `a20 --ref-dir` y `a20_pareado.sbatch` (difusor contra su sintetica sin metal, regla fijada antes en `resultados_dec_2026-10-15.md`); perfil interior 0-8 mm de v1 corriendo en local.
+- **Siguiente:** leer perfil interior; Khipu: `a20_pareado.sbatch`; recomendaciones de #187-#192.
+
 ## 2026-10-15 (8) — acuerdo recalculado en escala logaritmica (#189)
 
 - **Hecho:** `a26_lecturas.py` agrega Bland-Altman en razon, Pitman-Morgan sobre ln y heterocedasticidad; corrido sobre 15 variantes v1/v2 -> `outputs/a26_log/` (regresion exacta de lo previo). run04 base: razon 0.83 [0.53, 1.30]; la pendiente sigue en log (r -0.83), la dispersion no crece con la magnitud; CV difusor < Peters con prueba (p 4.7e-4). 12-16 mm no aplica. Registrado en #189, `resultados_dec_2026-10-15.md`, `visto.md`.

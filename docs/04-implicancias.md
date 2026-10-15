@@ -12403,3 +12403,26 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   tornillo, piso de textura alto).
 - **Opciones:** redactar la limitacion con esta atribucion; #152 puede pasar a CERRADA en lo que toca al mecanismo.
   **Pendiente de la autora.**
+
+### 192 — FICHAS DE GAUTIER 2001, YANG 2022 (CMPB) Y DAY 2000: cierran el problema de fuente de #180, corrigen una cita de segunda mano (Gautier no da un "maximo de 4.5 mm") y avisan de un choque de terminos ("transsacral" de Day = tornillo iliosacro horizontal unilateral) — ABIERTA
+
+- **Origen:** fichas `gautier2001accuracy.md`, `yang2022computeraided.md`, `day2000transsacral.md` (2026-10-15,
+  `lector-papers`; Day solo abstract, sin PDF).
+- **Hallazgos:**
+  1. **#180, fuente de Yang:** `refs/raw/yang2022computeraided.nbib` y `refs/raw/yang2022arcplanning.nbib` son el
+     MISMO articulo (PMID 35462347, doi 10.1016/j.cmpb.2022.106810). El PDF nuevo corresponde; el viejo
+     (`papers/yang2022arcplanning.pdf`) es su ref. [16], version de congreso RCAE 2021, sin raw. Las cifras de las
+     pelvis 1-5 coinciden: ahora son citables desde `yang2022computeraided`. Primer autor: Yang Q (no "Yang, W.").
+     Optimiza un canal por pelvis; no muestrea pose ni malposicion: **el gap del muestreador se mantiene**.
+  2. **Gautier 2001:** recomienda tornillo cortical de 4.5 mm en S2 "only when necessary from the mechanical point of
+     view" (p. 317); el "no larger than 4.5 mm" es parafrasis de Moed. Estudio en 6 pelvis plasticas (error continuo
+     2.7 mm entrada, 3.5 mm objetivo): no sirve como distribucion de malposicion clinica. La tesis no lo cita; no
+     afecta a S1.
+  3. **Day 2000 (solo abstract):** su "transsacral" es la orientacion horizontal de un tornillo IS unilateral en S1,
+     no el transiliaco-transsacro de la tesis (`capitulo1.tex`:76). Su corredor horizontal es mas estrecho (A/P
+     10.9 mm; 22.5 % < 7.3 mm), coherente con la medicion local del corredor (cap. 3) como contraste cualitativo.
+- **Toca:** cap. 2 (trabajo relacionado del Objetivo 2: Yang junto a Goerres y Han), cap. 1 (precision terminologica
+  si se cita a Day). Ningun numero de la tesis cambia.
+- **Pendiente de la autora:** (a) que clave queda para Yang (los dos raw son duplicados; regla 9: la lista de entradas
+  la define ella) — propuesta: `yang2022computeraided`, y retirar `yang2022arcplanning` o reasignarla al congreso con
+  su propio raw; (b) PDF de Day 2000 si quiere citar cifras del cuerpo.

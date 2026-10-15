@@ -160,3 +160,29 @@ Lectura:
 - Pitman-Morgan sobre ln compara aproximadamente los CV: ahora si se puede decir que el difusor tiene **menor
   variabilidad relativa** que Peters (p 4.7e-4), lo que antes (HU crudos) solo era descriptivo (#189 punto 4).
   Normalidad de ln(D) - ln(Ti): Shapiro p 0.15-0.90, sin rechazo (n = 13, poca potencia).
+
+## Perfil por anillos y contraste pareado (#187 c, #188) — REGLA FIJADA ANTES DE CORRER (2026-10-15)
+
+Propuesta del asistente como asesor (pedido de la autora: "aplica tu recomendacion y realiza los experimentos que
+consideres"). Todo es POSTERIOR y descriptivo: no puede cambiar el desenlace confirmatorio (regla general de DEC
+2026-10-15).
+
+Motivo: en 8-10 mm el difusor da 888 HU y su nulo (sin metal) 893 HU; el "difusor sobre Peters en 8-12 mm" de #187
+puede ser piso de regeneracion, no artefacto. Peters ya se mide contra su propia simulacion sin metal
+(`a20`, `costura`: "Peters: ref = su simulacion sin metal"); el difusor, contra la TC original. El analogo justo es
+**difusor pareado** = sintetica con metal (semilla s) - sintetica sin metal (`--sin-metal`, misma semilla s, mismo
+corte, mismo `delta`): DDIM con `eta` 0 y `torch.Generator(seed)` por corte, asi que el ruido inicial es el mismo.
+
+Mediciones:
+1. Local (v1): `a20_v1_variantes.sh r00_02 r02_04 r04_06 r06_08` -> perfil completo 0-12 mm de Peters Ti,
+   parametrico y difusor sin parear.
+2. Khipu (v1): `a20 difusor --ref-etiqueta run04_mejor_nulo --ref-dir <nulo>` en `base` y en los 6 anillos 0-12 mm.
+   v2 no tiene nulo (`--sin-metal` no esta definido para entrada 12): se declara.
+
+Lectura fijada:
+- (i) Si en 8-12 mm el difusor pareado queda por debajo de la mitad del sin parear, el exceso de #187 en 8-12 mm se
+  atribuye al piso de regeneracion (#188), no al artefacto.
+- (ii) Forma: decaimiento por paciente = amplitud(0-2 mm) / amplitud(6-8 mm) por brazo; se compara con D1 real
+  (1930 / 473 = 4.1, medianas de exceso). Brazo "plano" si su razon es < 2.
+- (iii) Banda completa pareada: media de (difusor pareado - Peters Ti) con IC90 *t*, contra `Delta` comun 196.3,
+  como descriptivo. No reemplaza ni eleva el desenlace confirmatorio.

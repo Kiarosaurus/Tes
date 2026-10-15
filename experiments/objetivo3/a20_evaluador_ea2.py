@@ -257,6 +257,9 @@ def main() -> None:
     d.add_argument('--etiqueta', default='mejor_37k')
     d.add_argument('--semillas', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     d.add_argument('--interseccion', type=Path, default=None, help='npz de a19: usar solo sus cortes simulados')
+    d.add_argument('--ref-dir', type=Path, default=None,
+                   help='POSTERIOR (#188): referencia = sintetica sin metal de a15 --sin-metal, misma semilla (pareado)')
+    d.add_argument('--ref-etiqueta', default='run04_mejor_nulo')
     cp = sub.add_parser('copiapega', help='control de cordura: M con HU constante (a22), resto identico')
     cp.add_argument('--casos', nargs='+', required=True)
     cp.add_argument('--hu', type=float, default=None, help='por omision, outputs/a22_run04/a22_hu_copiapega.json (run04, 01-decisiones 2026-10-11 (2))')
@@ -361,10 +364,17 @@ def main() -> None:
         for s in args.semillas:
             sint = suelo(lee(args.dir / ('a15_%s_%s_s%d_sintetica.nii.gz' % (args.caso, args.etiqueta, s))),
                          args.suelo_simetrico)
-            res = evalua(sint - orig, lab, validos, img=sint)
-            res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
-            res['exceso_costura'] = costura(sint, orig, G, validos)
-            filas.append({'brazo': 'difusor', 'caso': args.caso, 'condicion': '%s_s%d' % (args.etiqueta, s), **res})
+            ref = orig
+            if args.ref_dir:                                  # analogo de Peters (Ti - su simulacion sin metal)
+                ref = suelo(lee(args.ref_dir / ('a15_%s_%s_s%d_sintetica.nii.gz' % (args.caso, args.ref_etiqueta, s))),
+                            args.suelo_simetrico)
+                if ref.shape != sint.shape:
+                    raise SystemExit('forma de la referencia sin metal %s != %s' % (ref.shape, sint.shape))
+            res = evalua(sint - ref, lab, validos, img=sint)
+            res.update(integridad(sint, ref, M, G, validos, metal_ref=M))
+            res['exceso_costura'] = costura(sint, ref, G, validos)
+            cond = '%s_s%d' % (args.etiqueta, s) + ('_pareado' if args.ref_dir else '')
+            filas.append({'brazo': 'difusor', 'caso': args.caso, 'condicion': cond, **res})
             print('%s difusor %s s%d: amp %.0f HU | %d ROIs | suelo %.3f'
                   % (args.caso, args.etiqueta, s, res['amp_HU'], res['n_rois'], res['suelo_frac']))
 

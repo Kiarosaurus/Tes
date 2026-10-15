@@ -12,6 +12,9 @@ for v in "${VARS[@]}"; do
         base|inter) OPC=() ;; suelo) OPC=(--suelo-simetrico) ;; sincabeza) OPC=(--excluir-cabeza-mm 20) ;;
         r08_10) OPC=(--r-min-mm 8 --r-max-mm 10) ;; r10_12) OPC=(--r-min-mm 10 --r-max-mm 12) ;;
         r12_14) OPC=(--r-min-mm 12 --r-max-mm 14) ;; r14_16) OPC=(--r-min-mm 14 --r-max-mm 16) ;;
+        # perfil interior (2026-10-15, posterior; separa nivel y forma junto al contraste pareado de #188)
+        r00_02) OPC=(--r-min-mm 0 --r-max-mm 2) ;; r02_04) OPC=(--r-min-mm 2 --r-max-mm 4) ;;
+        r04_06) OPC=(--r-min-mm 4 --r-max-mm 6) ;; r06_08) OPC=(--r-min-mm 6 --r-max-mm 8) ;;
         *) echo "variante desconocida $v"; exit 1 ;;
     esac
     CSV=$OUT/a20_test_$v.csv

@@ -629,3 +629,16 @@ La autora subio los PDF y los raws. Los libros llegaron como capitulos separados
 | `zhang2024catsim` | `zhang2024catsim.bib` | IOP | clave del editor sustituida; URL y resumen descartados; numero de articulo conservado en `pages` |
 | `xcist2026main` | `xcist2026main.bib` | GitHub, permalink al commit | entrada de software aportada por la autora; campos conservados; el SHA completo fija la revisión y el `note` registra BSD 3-Clause |
 | `xcist2025example` | `xcist2025example.bib` | GitHub, permalink al commit | entrada de software aportada por la autora; campos conservados; URL acotada a los scripts AAPM CT-MAR, SHA completo y BSD 3-Clause |
+
+## Altas del 2026-10-15 — acuerdo (cap. 3) y Objetivo 2
+
+La autora subio los raws (y los PDF, salvo Day 2000). `yang2022computeraided` NO se da de alta: su raw es duplicado de
+`yang2022arcplanning.nbib` (mismo PMID 35462347 y DOI; #192) y la eleccion de clave es de la autora.
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `bland1986statistical` | `bland1986statistical.bib` | ScienceDirect | clave del editor `MARTINBLAND1986307` sustituida; titulo de mayusculas a Title Case; el raw separa `J. {Martin Bland}` y `DouglasG. Altman`: se escribe `Bland, J. Martin` y `Altman, Douglas G.` (mismas palabras, orden apellido-nombre; la ficha confirma el nombre impreso); DOI sin prefijo URL; `note`, `issn`, `url`, resumen descartados |
+| `pitman1939note` | `pitman1939note.bibtex` | Oxford Academic | clave DOI sustituida; apellido y titulo de mayusculas a Title Case; `month`, `issn`, `url`, `eprint` descartados |
+| `morgan1939test` | `morgan1939test.bibtex` | Oxford Academic | idem |
+| `gautier2001accuracy` | `gautier2001accuracy.nbib` | PubMed (PMID 11764364) | revista desde `JT`; el raw solo trae `IP 393` (sin `VI`): va en `number`, sin `volume`; paginas `310-7` -> `310--317`; `Bächler` con diacritico del raw |
+| `day2000transsacral` | `day2000transsacral.nbib` | PubMed (PMID 11011775) | sin DOI en el raw (no se agrega); `IP 9 Suppl` en `number`; revista desde `JT` sin el lugar entre parentesis; **sin PDF: ficha solo abstract** |

@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (11) — realismo visual (#193) y GAPDEC resolubles
+
+- **Hecho:** #193 ABIERTA (realismo visual insuficiente; mas entrenamiento no lo resolveria; opciones a/b/c). Inventario de las 5 GAPDEC con recomendacion (Yang #192, brecha #179, no concluyente, escala #189, piso #188).
+- **Siguiente:** autora trae `pareado_2026-10-15.tar.gz` -> `a29` reglas (i)/(iii) -> cierre de GAPDEC #188; "ok" de la autora para GAPDEC 1, 2, 4; decision #193 con el asesor.
+
 ## 2026-10-15 (10) — rondas unicas capitulo2-r07 y capitulo3-r23; perfil por anillos
 
 - **Hecho:** capitulo3-r23 (GAPLIT de acuerdo cerrado; mediciones ya corridas como "calculado, en implicancia abierta"; 3 GAPDEC nuevos; PASA) y capitulo2-r07 (resultado del Obj 3 alineado; Goerres/Han; Yang sin cita por #192; GAPDEC #179; PASA). PDF 155 pp. en `redaccion/.build/main.pdf`, etapas en `redaccion/.build/etapas/`. Perfil 0-12 mm (`a29_perfil.py`): difusor plano (razon 1.92 frente a 4.08 real), adenda en #187.

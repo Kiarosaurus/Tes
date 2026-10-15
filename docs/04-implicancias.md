@@ -12430,3 +12430,22 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Pendiente de la autora:** (a) que clave queda para Yang (los dos raw son duplicados; regla 9: la lista de entradas
   la define ella) — propuesta: `yang2022computeraided`, y retirar `yang2022arcplanning` o reasignarla al congreso con
   su propio raw; (b) PDF de Day 2000 si quiere citar cifras del cuerpo.
+
+### 193 — REALISMO VISUAL DEL ARTEFACTO SINTETICO INSUFICIENTE A JUICIO DE LA AUTORA; MAS ENTRENAMIENTO DEL MISMO DISENO NO LO RESOLVERIA (opinion del asistente) — ABIERTA
+
+- **Origen:** la autora, 2026-10-15: "siguen sin verse del todo realistas ... los artefactos reales son distintos de los
+  generados"; teme que no pasen una prueba de Turing medica. Opinion del asistente en el chat, misma fecha.
+- **Evidencia ya medida que lo respalda:** perfil plano (#187 adenda: razon 1.92 frente a 4.08 real); piso de
+  regeneracion de 893 HU sin metal (#188); p95 bajo lo real atribuido al modelo (#191); v2 con plantilla fisica no
+  cambia el desenlace (#190); `B_delta` de 12 mm trunca rayas que en lo real cruzan el corte.
+- **Lectura del asistente:** las rayas reales son un fenomeno de proyeccion (lineas que atraviesan el corte, orientadas
+  por la geometria del metal y por los caminos de mayor atenuacion); un modelo 2.5D que regenera una banda local no
+  tiene esa informacion. Entrenar mas, o solo con componentes tamano tornillo, ataca el campo cercano, donde el nivel
+  ya coincide con lo real (1828 frente a 1930 HU en 0-2 mm), no el campo lejano ni el piso.
+- **Toca:** alcance y reclamo del Objetivo 3 (cap. 1, 3, 4, conclusiones); la prueba de Turing NO es un compromiso de
+  `docs/00-tesis.md` (el realismo declarado es perfil radial e histograma frente a E-A1, l. 211).
+- **Opciones (decide la autora):** (a) acotar el reclamo a sintesis local de campo cercano y reportar la limitacion
+  cuantificada (perfil, piso, p95), con el protocolo fisico como referencia de campo lejano; (b) hibrido: el artefacto
+  lo pone la simulacion fisica (ya implementada) y el difusor queda como alternativa estudiada; (c) nuevo modelo
+  (banda mayor, formulacion residual o refinamiento sim-a-real), que requiere pares simulados y tiempo de proyecto
+  que no esta estimado.

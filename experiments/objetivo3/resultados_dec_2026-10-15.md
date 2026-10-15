@@ -186,3 +186,20 @@ Lectura fijada:
   (1930 / 473 = 4.1, medianas de exceso). Brazo "plano" si su razon es < 2.
 - (iii) Banda completa pareada: media de (difusor pareado - Peters Ti) con IC90 *t*, contra `Delta` comun 196.3,
   como descriptivo. No reemplaza ni eleva el desenlace confirmatorio.
+
+### Resultado (ii) — perfil por anillos, v1, local (`a29_perfil.py` -> `outputs/a29/`; corrida 12:44-14:23)
+
+| anillo (mm) | Peters Ti | parametrico | difusor | D1 real (exceso) |
+|---|---|---|---|---|
+| 0-2 | 3864 (n = 10) | 1865 | 1828 | 1930 |
+| 2-4 | 1808 | 1469 | 1234 | 1199 |
+| 4-6 | 894 | 948 | 949 | 765 |
+| 6-8 | 613 | 598 | 946 | 473 |
+| 8-10 | 448 | 306 | 919 | 174 |
+| 10-12 | 338 | 83 | 727 | 11 |
+
+Razon 0-2 / 6-8 por paciente (mediana [p25, p75]): Peters 6.71 [5.89, 7.54] (n = 10: en 3 pacientes el anillo 0-2 no
+tiene ROIs validas en los cortes que Peters simula); parametrico 3.16; **difusor 1.92 [1.82, 2.21] -> plano por la
+regla**; D1 real 4.08. Lectura: junto al tornillo el difusor da el nivel real (1828 frente a 1930) pero desde 4 mm
+queda en una meseta de ~950 HU, del orden de su piso sin metal (893, #188). Peters cae mas rapido que lo real. D1 es
+otra metrica (exceso sobre un corte sin metal): comparar forma, no nivel. (i) y (iii) esperan `a20_pareado.sbatch`.

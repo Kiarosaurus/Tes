@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (10) — rondas unicas capitulo2-r07 y capitulo3-r23; perfil por anillos
+
+- **Hecho:** capitulo3-r23 (GAPLIT de acuerdo cerrado; mediciones ya corridas como "calculado, en implicancia abierta"; 3 GAPDEC nuevos; PASA) y capitulo2-r07 (resultado del Obj 3 alineado; Goerres/Han; Yang sin cita por #192; GAPDEC #179; PASA). PDF 155 pp. en `redaccion/.build/main.pdf`, etapas en `redaccion/.build/etapas/`. Perfil 0-12 mm (`a29_perfil.py`): difusor plano (razon 1.92 frente a 4.08 real), adenda en #187.
+- **Siguiente:** Khipu `a20_pareado.sbatch` -> `a29` reglas (i)/(iii); decisiones de la autora #179, #187-#192, escalados de r23; PDF de Niu 2021 (ultimo GAPLIT); redactar `capitulo4`.
+
 ## 2026-10-15 (9) — fichas Gautier/Yang/Day; refs/clean; contraste pareado preparado
 
 - **Hecho:** fichas `gautier2001accuracy`, `yang2022computeraided`, `day2000transsacral` (solo abstract) + `_index`/`_candidatos`; #192. `refs/clean` de bland/pitman/morgan/gautier/day (Yang espera decision de clave, raw duplicado). `a20 --ref-dir` y `a20_pareado.sbatch` (difusor contra su sintetica sin metal, regla fijada antes en `resultados_dec_2026-10-15.md`); perfil interior 0-8 mm de v1 corriendo en local.

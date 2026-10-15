@@ -12336,6 +12336,10 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** (a) reportarlo como resultado descriptivo en cap. 4 junto al primario; (b) repetirlo sobre v2 cuando
   llegue `a20_v2` (mismo brazo ya incluido) antes de decidir la redaccion; (c) sumar una metrica de forma (perfil
   radial normalizado) que separe nivel de forma. **Pendiente de la autora.**
+- **Adenda 2026-10-15 (perfil 0-12 mm, regla fijada antes; `resultados_dec_2026-10-15.md`):** razon 0-2 / 6-8 mm:
+  difusor 1.92 (**plano**, umbral 2), parametrico 3.16, Peters 6.71, D1 real 4.08. El difusor iguala el nivel real en
+  0-2 mm (1828 frente a 1930) y queda en ~950 HU entre 4 y 10 mm, del orden de su piso (#188). Falta el contraste
+  pareado (Khipu, `a20_pareado.sbatch`) para atribuir la meseta.
 
 ### 188 — PISO DE RUIDO DEL DIFUSOR (D-extra 2): sin metal, regenerar `G` ya da 893 HU de amplitud (69 % de su amplitud con metal); el de Peters es 184 HU (12 %). Sobre su propio piso, el difusor agrega 397 HU de artefacto y Peters 1388 — ABIERTA
 

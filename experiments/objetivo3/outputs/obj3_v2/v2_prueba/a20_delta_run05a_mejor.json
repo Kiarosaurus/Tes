@@ -1,0 +1,18 @@
+{
+  "s_HU": 157.07430609127027,
+  "r_HU": 6.054081737546994,
+  "Delta_HU": 157.07430609127027,
+  "casos": [
+    "dataset6_CLINIC_0101_data",
+    "dataset6_CLINIC_0102_data"
+  ],
+  "s_por_caso": {
+    "dataset6_CLINIC_0101_data": 142.3993929908388,
+    "dataset6_CLINIC_0102_data": 171.74921919170174
+  },
+  "r_por_caso": {
+    "dataset6_CLINIC_0101_data": 7.173435756138133,
+    "dataset6_CLINIC_0102_data": 4.934727718955855
+  },
+  "formula": "Delta = max(s, r), 01-decisiones 2026-10-09 (4)"
+}

@@ -1,0 +1,47 @@
+inicio 2026-10-14T23:49:50-05:00  commit e70c520
+AVISO: evaluacion EXPLORATORIA y POSTERIOR de la version 2 (v2_plan.md, #182): no reemplaza a run04
+##### 1. validacion y Delta #####
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+dataset6_CLINIC_0101_data peters Fe_A: amp 5246 HU | 155 ROIs
+dataset6_CLINIC_0101_data peters Fe_B: amp 5239 HU | 155 ROIs
+dataset6_CLINIC_0101_data peters Ti_A: amp 1885 HU | 155 ROIs
+dataset6_CLINIC_0101_data peters Ti_B: amp 1877 HU | 155 ROIs
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+dataset6_CLINIC_0102_data peters Fe_A: amp 2163 HU | 154 ROIs
+dataset6_CLINIC_0102_data peters Fe_B: amp 2168 HU | 154 ROIs
+dataset6_CLINIC_0102_data peters Ti_A: amp 1300 HU | 154 ROIs
+dataset6_CLINIC_0102_data peters Ti_B: amp 1273 HU | 154 ROIs
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+dataset6_CLINIC_0101_data difusor run05a_mejor s0: amp 1361 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05a_mejor s1: amp 1383 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05a_mejor s2: amp 1348 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05a_mejor s3: amp 1262 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05a_mejor s4: amp 1241 HU | 155 ROIs | suelo 0.000
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+dataset6_CLINIC_0102_data difusor run05a_mejor s0: amp 1301 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05a_mejor s1: amp 1429 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05a_mejor s2: amp 1257 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05a_mejor s3: amp 1272 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05a_mejor s4: amp 1307 HU | 154 ROIs | suelo 0.000
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv
+dataset6_CLINIC_0101_data | difusor: 5 semillas, rango 142.4 HU | Peters Fe: |A-B| = 7.2 HU
+dataset6_CLINIC_0102_data | difusor: 5 semillas, rango 171.7 HU | Peters Fe: |A-B| = 4.9 HU
+s = 157.1 HU | r = 6.1 HU | Delta = max(s, r) = 157.1 HU (lo fija el difusor)
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_delta.json
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+dataset6_CLINIC_0101_data difusor run05b_mejor s0: amp 1300 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05b_mejor s1: amp 1337 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05b_mejor s2: amp 1264 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05b_mejor s3: amp 1254 HU | 155 ROIs | suelo 0.000
+dataset6_CLINIC_0101_data difusor run05b_mejor s4: amp 1226 HU | 155 ROIs | suelo 0.000
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+dataset6_CLINIC_0102_data difusor run05b_mejor s0: amp 1290 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05b_mejor s1: amp 1352 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05b_mejor s2: amp 1255 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05b_mejor s3: amp 1248 HU | 154 ROIs | suelo 0.000
+dataset6_CLINIC_0102_data difusor run05b_mejor s4: amp 1307 HU | 154 ROIs | suelo 0.000
+-> /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv
+sin pacientes con los dos brazos en /home/kiara.balcazar/metalsynth/data/v2_prueba/a20_val.csv

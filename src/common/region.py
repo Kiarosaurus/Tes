@@ -12,6 +12,11 @@ QUE APORTA DE NUEVO
 resultado es el CT de origen, **voxel a voxel**. En el Diseno A eso no es un resultado medido sino una
 propiedad de construccion (bloque E-A3 de `diseno_A.md`), y solo es cierta si la composicion se hace
 en un unico sitio. Este es ese sitio.
+
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a este archivo en **Region que pinta**. La mascara se
+construye mediante `region_generacion` y `componer` garantiza que solo `G` llegue a la salida.
 """
 from __future__ import annotations
 

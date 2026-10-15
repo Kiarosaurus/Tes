@@ -2,6 +2,41 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 — push bloqueado; a20_v2 incompleto
+
+- **Push:** el commit local `4666fb2` (sin subir) incluye `papers/Gray's Anatomy_ ... .pdf` de 310 MB; GitHub rechaza archivos > 100 MB. Los capitulos `standring2020grayschapter*.pdf` ya estan aparte. Arreglo propuesto: sacar ese PDF del commit (`git rm --cached` + `--amend`) y agregarlo a `.gitignore`.
+- **Version 2 en prueba:** finales 56791/56792 y E-A1 56793/56794 terminaron (rc=0; `outputs/obj3_v2/`). `a20_v2` (56847) **aborto en la etapa 1**: `Delta` de run05a = 157.1 HU, pero el `a20_val.csv` final solo tiene las filas de run05b (sin Peters ni run05a) y el `delta` de run05b falla con "sin pacientes con los dos brazos". Causa no confirmada (posible segundo envio del `.sbatch`, cuyo `rm -f` borra el CSV). Etapas 2 (prueba) y 3 (`a24`) NO corrieron.
+- **Siguiente:** arreglar commit y push; en Khipu revisar `squeue`/logs `a20v2_*` y relanzar `a20_v2.sbatch` (una sola vez); traer `v2_prueba/`; tabla de los tres modelos; D3 a ciegas.
+
+## 2026-10-14 (8) — repositorios XCIST versionados y GAPLIT cerrado
+
+- **Hecho:** altas `xcist2026main` y `xcist2025example` en raw y clean, con fichas de software y commits completos; bibliografia regenerada con 146 entradas.
+- **Redaccion:** `capitulo3-r21` cita ambos repositorios tras las revisiones y la licencia BSD 3-Clause. El fallo de serializacion y el parche quedan como observaciones locales. `\GAPLIT` de capitulo 3: 1 -> 0; lint PASA y PDF de etapa de 137 pp., sin referencias indefinidas.
+- **GAPLIT residual:** solo Niu--Li--Wang (DOI `10.1117/12.2596239`, inaccesible por ahora) en capitulo 2. La implicancia #158 y su `\GAPDEC` no cambian: la ronda resolvio la cita versionada, no la decision sobre usar el repositorio como fuente de todos los detalles de implementacion.
+- **Implicancias:** sin implicancias nuevas; se cierra una deuda bibliografica existente.
+
+## 2026-10-14 (7) — trazabilidad de variables del Objetivo 3
+
+- **Hecho:** la tabla de `SITUACION_ACTUAL.md` §5.1 ahora indica el archivo y símbolo donde se implementa o registra cada variable del sintetizador.
+- **Código:** los módulos del modelo, datos, difusión, ventanas, región, rasterizado, cadena, entrenamiento y lanzamiento `run04` señalan de vuelta las secciones correspondientes del resumen.
+- **Verificación:** referencias cruzadas revisadas y módulos Python compilados sin errores; no cambió ninguna constante ni lógica ejecutable.
+- **Implicancias:** sin implicancias sobre la tesis; es una mejora de trazabilidad documental.
+
+## 2026-10-14 (6) — Fay incorporado y auditoria de citas XCIST
+
+- **Hecho:** `fay2010two` incorporado con PDF, raw, entrada normalizada y ficha; bibliografia regenerada con 144 entradas. `capitulo1-r08` define la convencion bilateral *minlike* y cierra el ultimo `\GAPLIT` del capitulo 1 (lint de seccion PASA; PDF de 137 pp.).
+- **XCIST:** la pagina oficial confirma cinco publicaciones recomendadas; las cinco ya tienen PDF, raw, entrada limpia y ficha (`wu2022xcist`, `zhang2024catsim`, `fitzgerald2021semiempirical`, `deman2015dose`, `wu2017modelbased`). No respaldan los hashes ni la licencia del codigo, por lo que la cita versionada del software sigue pendiente y subordinada a #158.
+- **GAPLIT residuales:** solo Niu--Li--Wang (DOI `10.1117/12.2596239`, inaccesible por ahora) y la referencia versionada de XCIST (sin DOI de software). Propuesta residual, indice, candidatos, MAPEO y mapa de redaccion actualizados.
+- **Implicancias:** sin implicancias nuevas; Fay completa una deuda bibliografica y la auditoria XCIST conserva la frontera de evidencia ya registrada.
+- **Siguiente:** conseguir Niu cuando sea accesible; decidir #158 antes de crear una entrada de software para XCIST.
+
+## 2026-10-14 (5) — fichas GAPLIT y ronda unica de integracion
+
+- **Hecho:** 12 fichas nuevas, raw -> clean -> `refs.bib` (143 entradas), indice/candidatos/MAPEO actualizados; los capitulos separados de Kak, Gray y Efron se registraron como una obra por raw.
+- **Redaccion:** `capitulo1-r07` cerro fisica de TC, anatomia y Wasserstein y redujo Fisher a su convencion bilateral; `capitulo3-r20` cerro prediccion $v$. Ambos lint de seccion PASAN; PDF de etapa de 137 pp. El lint global compila pero FALLA por pendientes preexistentes de otras secciones.
+- **GAPLIT residuales:** Niu--Li--Wang (MAR multiventana, DOI `10.1117/12.2596239`), Fay 2010 (Fisher bilateral, DOI `10.32614/RJ-2010-008`) y cita versionada de XCIST (sin DOI, subordinada a #158). Propuesta residual actualizada en `redaccion/propuesta_gaplit_2026-10-14.md`.
+- **Siguiente:** conseguir PDF+raw de Niu y Fay; decidir #158 antes de crear una entrada de software para XCIST.
+
 ## 2026-10-14 (4) — T06/T05 aplicados; propuestas GAPDEC/GAPLIT; introduccion r06 revisada (sin correccion)
 
 - **Hecho:** T06: cifras vigentes en `00-tesis.md` (Delta 196.3/115.8, resultado de prueba v1, version 2) y `tesis/main.tex` Obj 3 (13 frente a 7; 648/497). T05: #90 CERRADA por ejecucion. Propuestas `redaccion/propuesta_gapdec_2026-10-14.md` (18 GAPDEC = 16 decisiones; 17 marcas resolubles ya) y `propuesta_gaplit_2026-10-14.md` (7 GAPLIT: 2 B, 5 C; 14 candidatos PENDIENTE). Implicancia #183 ABIERTA.

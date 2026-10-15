@@ -26,6 +26,11 @@ PARTICION
 ---------
 Se filtra por caso contra `p1_particion.csv` (semilla 20260917). Es la misma particion por paciente
 de P1, por la *Strict Isolation Rule* de `main.tex:111`. **Ningun corte de test entra aqui.**
+
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a `ParchesMetal` en las filas **Dimension** y
+**Entrada principal**: `__getitem__` arma los tres cortes 2.5D, sus ventanas, `M` y `G`.
 """
 from __future__ import annotations
 

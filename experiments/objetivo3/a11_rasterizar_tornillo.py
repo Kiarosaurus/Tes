@@ -12,6 +12,11 @@ Este script es ese eslabon. De una pose a `M = voxeles cuyo centro cae dentro de
 (`diseno_A.md` seccion 6), luego `B_delta` por distancia euclidea 3D con el espaciado del header, y
 `G = M union B_delta`.
 
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md` apunta a este archivo en **Region que pinta** (seccion 5.1) y en la
+geometria del tornillo (seccion 5.3). `BANDA_MM`, `D_CUERPO_MM` y `rasteriza` son las piezas citadas.
+
 MARCO DE COORDENADAS: el mismo de SAP, y no es negociable
 ---------------------------------------------------------
 `sap._indices` define `idx = (pts - origen) / zoom`, con `origen = [s.start for s in sl] * zoom`

@@ -10,6 +10,12 @@ generacion, composicion— **nunca se ha ejecutado**, y es lo que #139 registra 
 Este script lo ejecuta. No inventa ninguna pieza: encadena las que ya existen, y **usa las mismas
 convenciones que el entrenamiento**, que es lo unico que hace valida la salida.
 
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a este archivo para los 50 pasos DDIM (`--pasos`) y
+las cinco semillas (`--semillas`); las secciones 5.2 y 5.3 describen su lectura de HU y su cadena de
+pose, mascara y generacion.
+
 POR QUE IMPORTA MAS QUE CUALQUIER OTRO EXPERIMENTO PENDIENTE
 ------------------------------------------------------------
 Es el unico que puede **invalidar el Objetivo 3 entero**. El renderizador aprendio la apariencia del

@@ -814,3 +814,23 @@ cambiar la afirmacion por una cualitativa.
 consiguio el PDF (IEEE Xplore, descarga del 2026-09-08 desde UTEC), se leyo entero y
 paso a acceso COMPLETO. La regla dura de accesibilidad ya no le aplica: sus cifras son
 citables. Cierra la implicancia #1.
+
+## Ronda 2026-10-14 — fuentes de GAPLIT y apoyo de simulacion de TC
+
+| Clave | PDF | Acceso | Ficha | Leido a fondo por la autora | Uso y limite principal |
+|---|---|---|---|---|---|
+| `kak2001book` | si, 8 capitulos | COMPLETO | `kak2001book.md` | no | N1. Cierra el GAPLIT de fisica de TC: Beer--Lambert bajo supuesto monoenergetico, escala HU y FBP. |
+| `standring2020grays` | si, libro y 7 capitulos | COMPLETO | `standring2020grays.md` | no | N3. Anatomia cortical, sacro, ilion, foramenes, platillos y articulacion sacroiliaca; no respalda las tres corticales del tornillo ni toda la direccion de la pendiente alar. |
+| `vallender1974wasserstein` | si | COMPLETO | `vallender1974wasserstein.md` | no | N2. Forma unidimensional de Wasserstein-1 como integral de la diferencia absoluta entre CDF. |
+| `wilcoxon1945rankingmethods` | si | COMPLETO | `wilcoxon1945rankingmethods.md` | no | N2. Procedimiento pareado de rangos con signo; no define por si solo todas las convenciones modernas. |
+| `schuirmann1987comparison` | si | COMPLETO | `schuirmann1987comparison.md` | no | N2. TOST y equivalencia con un IC de nivel $1-2\alpha$ contenido en los margenes. |
+| `efron1992bootstrap` | si, articulo y extracto de libro | PARCIAL | `efron1992bootstrap.md` | no | N2. Remuestreo con reemplazo e IC percentil; no se aporto el capitulo 13 completo del libro. |
+| `fisher1935logic` | si | COMPLETO | `fisher1935logic.md` | no | N2. Prueba exacta condicional en tabla 2x2; la convencion bilateral no aparece. |
+| `fay2010two` | si | COMPLETO | `fay2010two.md` | no | N2. Distingue las convenciones bilaterales central, minlike y Blaker; documenta que `fisher.test` usa minlike en la version de `stats` estudiada. Cierra el GAPLIT de bilateralidad. |
+| `salimans2022progressive` | si | COMPLETO | `salimans2022progressive.md` | no | N2. Fuente primaria de la parametrizacion de prediccion $v$. |
+| `deman2015dose` | si | COMPLETO | `deman2015dose.md` | no | N2. Reconstruccion analitica de dosis; no modela ni valida implantes o artefactos metalicos. |
+| `fitzgerald2021semiempirical` | si | COMPLETO | `fitzgerald2021semiempirical.md` | no | N2. Espectros de XCIST validados en 80--140 kVp y 5--9 grados; titanio solo como atenuador de calibracion. |
+| `wu2017modelbased` | si | COMPLETO | `wu2017modelbased.md` | no | N2. Reconstruccion de dosis agua/hueso validada contra GEANT4; no es simulacion de imagen ni de metal. |
+| `zhang2024catsim` | si | COMPLETO | `zhang2024catsim.md` | no | N1. Valida resolucion espacial de CatSim; no valida artefactos metalicos ni la configuracion de Peters. |
+| `xcist2026main` | no aplica | COMPLETO (software versionado) | `xcist2026main.md` | no | N2. Repositorio principal de XCIST en el commit `4cf3544`; respalda la revisión del simulador y su licencia BSD 3-Clause. |
+| `xcist2025example` | no aplica | COMPLETO (software versionado) | `xcist2025example.md` | no | N2. Scripts AAPM CT-MAR en el commit `4993e87`; respalda el código publicado, el desplazamiento de agua y la licencia BSD 3-Clause. |

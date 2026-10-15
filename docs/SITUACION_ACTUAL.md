@@ -1,9 +1,9 @@
 # Situación actual de MetalSynth-Pelvis, explicada en simple
 
-> **Corte del estado: 12 de octubre de 2026.** Lectura de unos 15 minutos, pensada para mostrar el avance al asesor.
+> **Corte del estado: 14 de octubre de 2026.** Lectura de unos 15 minutos, pensada para mostrar el avance al asesor.
 > Explica **solo lo vigente**: lo que quedó superado está en `experiments/obsoletos/` y no se cita. La versión anterior
-> de este documento (8 de octubre, más larga y con la historia de cada decisión) está en el historial de git
-> (`git show e7417ad:docs/SITUACION_ACTUAL.md`).
+> al entrenamiento y evaluación de `run05a`/`run05b` está en el historial de git; la versión del 8 de octubre, más
+> larga y con la historia de cada decisión, se recupera con `git show e7417ad:docs/SITUACION_ACTUAL.md`.
 >
 > Convención: **HECHO** = ejecutado y registrado. **PENDIENTE** = todavía no existe. Las cifras salen de
 > `docs/04-implicancias.md`, `docs/00-tesis.md`, `docs/02-datos.md` y de los resultados en `experiments/`.
@@ -38,7 +38,7 @@ pelvis sin metal ─► [MUESTREADOR, Obj 2] ─► pose del tornillo ─► má
 |---|---|---|---|
 | **1. Compuerta** | ¿Se puede comprimir la TC con un modelo de imágenes normales sin perder los números del hueso? | **HECHO: No** | `experiments/objetivo1/` |
 | **2. Muestreador** | ¿Dónde pondría el tornillo un cirujano, con sus errores típicos? | **HECHO y cerrado** | `experiments/objetivo2/`, `src/muestreador/` |
-| **3. Sintetizador** | ¿Se puede dibujar el tornillo y sus rayas de forma creíble? | **Generado todo; falta evaluar la prueba final** | `experiments/objetivo3/`, `src/renderizador/` |
+| **3. Sintetizador** | ¿Se puede dibujar el tornillo y sus rayas de forma creíble? | **Versión 1 evaluada; versión 2 no la mejora según la regla fijada; análisis exploratorio en curso** | `experiments/objetivo3/`, `src/renderizador/` |
 | **4. Métricas** | ¿Con qué se mide? | SAP (propia) **HECHA**; rayas con métricas de Peters et al. | `src/muestreador/sap.py`, `experiments/objetivo3/a20_evaluador_ea2.py` |
 
 **Por qué el Objetivo 1 importa todavía.** El plan original era usar Stable Diffusion, que trabaja sobre una versión
@@ -190,22 +190,23 @@ Un **modelo de difusión** (aprende a quitar ruido de una imagen paso a paso; al
 ruido) que **rellena un hueco**: borra la zona alrededor del tornillo y la vuelve a pintar con metal y rayas.
 Lo de fuera del hueco se copia tal cual, así que el resto de la anatomía queda intacto **por construcción**.
 
-| Variable | Valor elegido | Por qué |
-|---|---|---|
-| Red | **U-Net de difusión**, 4 niveles (64, 128, 256, 512 canales), atención en el nivel más bajo, float32 | Arquitectura estándar de difusión sobre imagen; nada exótico que defender |
-| Dimensión | **2.5D**: 3 cortes axiales seguidos, genera el central | Ve a sus vecinos (continuidad 3D) sin el costo en memoria y datos de un modelo 3D |
-| Entrada | 3 cortes × 3 ventanas = 9 canales, + máscara `M` + región `G` = **11 canales** | Las máscaras le dicen dónde va el metal y qué zona puede tocar |
-| Ventanas de HU (`pub+asinh`) | ancha LW **[−1000, 20000]** comprimida con asinh; media MW **[−320, 480]**; estrecha SW **[−160, 240]** | Una sola escala no ve a la vez el metal (miles de HU) y el hueso (cientos); asinh deja caber el metal sin aplastar lo demás |
-| Región que pinta | `G = M ∪ B_δ`: el tornillo más una **banda de 12 mm** alrededor | Las rayas se extienden fuera del metal; si solo pintara el tornillo, no habría rayas |
-| Pérdida | error cuadrático **solo dentro de `G`** | Fuera de `G` no hay nada que aprender |
-| Qué predice | **`v`** (en vez del ruido) | Más estable con rangos muy grandes, como el metal |
-| Ruido | programa **coseno**, 1000 pasos; muestreo **DDIM de 50 pasos** | Estándar; DDIM es rápido y, con semilla fija, repetible |
-| Semillas | **5 por paciente** (0–4) | Mide cuánto varía el resultado de una muestra a otra (entra en `Δ`, §7) |
-| Entrenamiento (**run04**) | **14 182 recortes de 39 pacientes**, 60 000 pasos; validación 896 recortes de 3 pacientes | run04 es el único modelo vigente: se reentrenó tras hallar un paciente repetido entre entrenamiento y prueba (#166) |
-| Punto de control | **`run04_mejor`**, paso 16 500 (mínimo de la pérdida de validación); `run04_60k` (paso final) como sensibilidad | Lo eligió el cotejo contra tornillos reales (§8), no la pérdida |
+| Variable | Valor elegido | Archivo fuente | Por qué |
+|---|---|---|---|
+| Red | **U-Net de difusión**, 4 niveles (64, 128, 256, 512 canales), atención en el nivel más bajo, float32 | `src/renderizador/modelo.py` (`UNetDifusion`) | Arquitectura estándar de difusión sobre imagen; nada exótico que defender |
+| Dimensión | **2.5D**: 3 cortes axiales seguidos, genera el central | `src/renderizador/datos.py` (`ParchesMetal`); `src/renderizador/modelo.py` | Ve a sus vecinos (continuidad 3D) sin el costo en memoria y datos de un modelo 3D |
+| Entrada principal | 3 cortes × 3 ventanas = 9 canales, + máscara `M` + región `G` = **11 canales** | `src/renderizador/datos.py` (`ParchesMetal.__getitem__`); `src/renderizador/modelo.py` (`CANALES_ENTRADA`) | Las máscaras le dicen dónde va el metal y qué zona puede tocar; `run05b` ensayó un duodécimo canal (§5.4) |
+| Ventanas de HU (`pub+asinh`) | ancha LW **[−1000, 20000]** comprimida con asinh; media MW **[−320, 480]**; estrecha SW **[−160, 240]** | `src/common/ventanas.py` (`canales_diseno_a`) | Una sola escala no ve a la vez el metal (miles de HU) y el hueso (cientos); asinh deja caber el metal sin aplastar lo demás |
+| Región que pinta | `G = M ∪ B_δ`: el tornillo más una **banda de 12 mm** alrededor | `experiments/objetivo3/a11_rasterizar_tornillo.py` (`BANDA_MM`, `rasteriza`); `src/common/region.py` | Las rayas se extienden fuera del metal; si solo pintara el tornillo, no habría rayas |
+| Pérdida | error cuadrático **solo dentro de `G`** | `src/renderizador/difusion.py` (`perdida`) | Fuera de `G` no hay nada que aprender |
+| Qué predice | **`v`** (en vez del ruido) | `src/renderizador/difusion.py` (`Difusion`, `perdida`) | Más estable con rangos muy grandes, como el metal |
+| Ruido | programa **coseno**, 1000 pasos; muestreo **DDIM de 50 pasos** | `src/renderizador/difusion.py` (`betas_coseno`, `Difusion`, `muestrea_ddim`); `experiments/objetivo3/a15_cadena_completa.py` (`--pasos`) | Estándar; DDIM es rápido y, con semilla fija, repetible |
+| Semillas | **5 por paciente** (0–4) | `experiments/objetivo3/a15_cadena_pose.sbatch` (`COMUN`); `experiments/objetivo3/a15_cadena_completa.py` (`--semillas`) | Mide cuánto varía el resultado de una muestra a otra (entra en `Δ`, §7) |
+| Entrenamiento principal (**run04**) | **14 182 recortes de 39 pacientes**, 60 000 pasos; validación 896 recortes de 3 pacientes | `experiments/objetivo3/a7_run04.sbatch`; `experiments/objetivo3/a5_manifiesto_train_run04.csv`; `experiments/objetivo3/a5_manifiesto_val.csv` | Sigue siendo el modelo principal: se reentrenó tras hallar un paciente repetido entre entrenamiento y prueba (#166), y la versión 2 no cumplió la regla para reemplazarlo (#182) |
+| Punto de control | **`run04_mejor`**, paso 16 500 (mínimo de la pérdida de validación); `run04_60k` (paso final) como sensibilidad | `src/renderizador/entrenar.py` (selección de `mejor.pt`); `experiments/objetivo3/outputs/a7/run04/curva.csv` (paso observado) | Lo eligió el cotejo contra tornillos reales (§8), no la pérdida |
 
-Código: `src/renderizador/` (modelo y datos), `experiments/objetivo3/a7_run04.sbatch` (entrenamiento),
-`a15_cadena_completa.py` (pelvis limpia → pose → máscara → generación).
+La columna «Archivo fuente» indica dónde se implementa o, cuando es un resultado de la corrida, dónde queda
+registrado cada valor. Código de la cadena completa: `a15_cadena_completa.py` (pelvis limpia → pose → máscara →
+generación).
 
 ### 5.2 Cómo se leen los HU de la salida
 
@@ -233,6 +234,38 @@ TC en su orientación original (LPS), sin convertir. El tornillo quedaba **refle
 del 5 % de `M` cae en aire o si la mediana de HU dentro de `M` queda más de 150 HU bajo lo medido en el eje por el
 Objetivo 2. Los 15 pacientes lo pasan (ej. `0101`: 84 HU frente a 68). **Todo lo que usaba el tornillo sintético se
 rehízo**; lo anterior está archivado en `experiments/obsoletos/objetivo3/outputs/pose_espejada/`.
+
+### 5.4 Versión 2: `run05a` y `run05b`
+
+Después de evaluar la versión 1 se observó que sus rayas se apagaban hacia los 6 mm, mientras que en las piezas
+reales de tamaño tornillo el exceso de amplitud llegaba aproximadamente a 10 mm. Por eso se probaron dos cambios
+posteriores y exploratorios, con **los mismos datos, arquitectura base, 60 000 pasos y presupuesto** de `run04`:
+
+| Corrida | Qué cambia frente a `run04` | Mejor punto de validación |
+|---|---|---|
+| **`run05a` (D)** | Los 2 888 recortes de componentes de 500–4000 mm³ se sobremuestrean de 20.36 % a 50 % (factor 3.91), y la pérdida pesa ×3 el anillo de 2–10 mm | paso 21 000; pérdida 0.0597 |
+| **`run05b` (D + B)** | Todo lo anterior + un canal `T` con una plantilla analítica aproximada de endurecimiento del haz, calculada desde `M` | paso 21 000; pérdida 0.0596 |
+
+La compuerta previa del canal `T` se superó (`e = 0.116`, `p = 0.0085`, 13 pacientes con control), pero eso solo
+autorizaba entrenar `run05b`: no demostraba que el modelo completo fuera mejor. Los dos entrenamientos terminaron
+correctamente el 14 de octubre; sus metadatos y curvas versionadas están en `experiments/objetivo3/run05/`.
+
+La elección se hizo **solo en validación** (`0101` y `0102`, 5 semillas), con una regla aprobada antes de generar con
+las corridas nuevas. Se comparó el error medio `E` frente al perfil real en 2–10 mm, se exigió una mejora mínima de
+10 % y se descartó cualquier candidato cuya desviación en 0–2 mm superara en más de 20 % la de `run04`:
+
+| Modelo | `E` en 2–10 mm (menor es mejor) | Desviación en 0–2 mm | Decisión |
+|---|---:|---:|---|
+| `run04_mejor` | 532.8 HU | 233 HU | referencia; pasa |
+| `run05a_mejor` | 418.2 HU | 284 HU | descartado por la salvaguarda (tope 279.6 HU) |
+| `run05b_mejor` | 367.0 HU | 540 HU | descartado por la salvaguarda |
+
+**Resultado formal:** la versión 2 **no mejora** a `run04` según la regla fijada, aunque ambas corridas reducen el
+error entre 2 y 10 mm. Por eso `run04_mejor` sigue siendo el modelo principal y no se hizo una corrida final
+confirmatoria con la versión 2. Como la decisión depende de solo 2 pacientes y `run05a` excedió el tope por 4 HU,
+`run05a` y `run05b` se están midiendo también en prueba, lado a lado y **solo como análisis exploratorio posterior**;
+esa comparación no puede cambiar retrospectivamente el modelo principal. Detalle: `v2_plan.md` y
+`run05/v2_eleccion.md`.
 
 ---
 
@@ -317,37 +350,45 @@ hipótesis.
 
 ---
 
-## 8. Lo último obtenido (12 de octubre, con la pose corregida)
+## 8. Lo último obtenido (14 de octubre)
 
-Todo en **validación** (2 pacientes sin metal, `0101` y `0102`, frente a los 2 tornillos reales de `metal_0039`).
-Resumen versionado: `experiments/objetivo3/resultados_validacion_pose.md`.
+### 8.1 Resultado principal de la versión 1 en prueba
 
 | Qué | Resultado | Lectura simple |
 |---|---|---|
-| **Cotejo del punto de control** (`a17`) | `run04_mejor` **13** de 24 anillos dentro de lo real; `run04_60k` 7 | El paso 16 500 se parece más a los tornillos reales. Confirmado por ti |
-| **Material de Peters** (`a21`) | Ti 2 de 24, Fe 0 de 24; Ti queda **sobre** lo real en 22 | Peters exagera las rayas con los dos; Ti es el menos alejado |
-| **`Δ`** (`a20`) | **196.3 HU** (principal); 115.8 HU (`run04_60k`); `r` de Peters = 6.1 HU | El margen lo fija la variabilidad del propio sintetizador |
-| **Amplitudes** | sintetizador 1248 / 1182 HU; Peters Ti 1881 / 1287 HU | El sintetizador hace rayas **más débiles** que Peters: −633 HU en `0101`, −104 en `0102` |
-| **Corrida final** | sintetizador (2 puntos de control), Peters y E-A1: **generadas**, sin errores | Falta medirlas |
-| **HTML** | 60 vistas (3D y cortes) en `outputs/obj3_pose/{final,delta}/<punto>/html/` | Para revisar a ojo que el tornillo cae en S1 |
+| **E-A2 principal: `run04_mejor` frente a Peters Ti** | diferencia media **−301.0 HU**, IC90 **[−477.0, −124.9]**, `p_TOST = 0.845`, n = 13 | **No se concluye equivalencia**; el sintetizador produce rayas más débiles |
+| **Cordura frente a copia y pegado** | Wilcoxon una cola `p = 0.000122`, n = 13 | El difusor sí supera el piso sin rayas, pero eso no demuestra equivalencia física |
+| **Sensibilidad `run04_60k`** | −384.0 HU, IC90 [−566.5, −201.4]; no equivale con su margen (115.8 HU) ni con el principal (196.3 HU) | La conclusión no depende del checkpoint ni del margen elegido |
+| **E-A1, grupo ortopédico** | n = 9; MAE en `G` 270.9 HU, en `M` 2312.5 HU y en la banda 198.0 HU | Reconstruir el metal sigue siendo mucho más difícil que reconstruir su entorno |
+| **E-A1, objetos no ortopédicos** | n = 4; MAE en `G` 199.8 HU, en `M` 2747.9 HU y en la banda 165.8 HU | Resultado descriptivo y fuera de la distribución de entrenamiento |
 
-**Lo que eso anticipa (sin ser resultado):** en validación la diferencia media con Peters (≈ −369 HU) ya es mayor que
-el margen (196 HU). Es probable que la prueba final **no** concluya equivalencia; la tesis ya lo aceptó por escrito
-como resultado válido. Además, el sintetizador queda **bajo** Peters, y Peters **sobre** lo real: el sintetizador
-podría estar más cerca de los tornillos reales que la física simulada. Eso lo dirá el realismo (§7.3).
+El resultado principal estaba fijado antes de tocar prueba y queda en
+`experiments/objetivo3/resultados_prueba_v1.md`. `run04_mejor` sigue siendo el modelo de tesis.
+
+### 8.2 Resultado de selección de la versión 2
+
+En validación, `run05a` y `run05b` acercaron las rayas al perfil real entre 2 y 10 mm, pero empeoraron la zona de
+0–2 mm y fallaron la salvaguarda. El cotejo descriptivo contra los dos tornillos de `metal_0039` tampoco favoreció
+a `run05b`: quedaron dentro de la envolvente real 13 de 24 cáscaras con `run04`, 13 con `run05a` y 9 con `run05b`.
+Por la regla completa, **gana `run04_mejor`** (§5.4).
+
+La evaluación exploratoria de `run05a` y `run05b` en los 13 pacientes de prueba está en curso. Se declararon antes
+de iniciarla su carácter posterior, el uso del `Δ` propio de cada modelo y la obligación de mostrar los tres modelos
+lado a lado sin escoger un ganador en prueba.
 
 ---
 
 ## 9. Lo que queda pendiente, en orden
 
-1. **Evaluar la prueba final de rayas (E-A2):** `a20` sobre los 13 pacientes de prueba (los dos brazos) → `a24`
-   (Wilcoxon y TOST, con el principal y la sensibilidad `run04_60k` con sus dos márgenes).
-2. **Resumir E-A1** (`a23`, ya generado) y el **realismo** frente a los tornillos reales de prueba.
-3. **Redacción:** pasar al capítulo 3 las cifras nuevas (en curso, ronda r18) y escribir el capítulo 4 (resultados)
-   cuando existan.
+1. **Terminar el análisis exploratorio de `run05a` y `run05b` en prueba:** E-A2 (13 pacientes, 5 semillas, `a20` →
+   `a24`) y E-A1, siempre lado a lado con `run04` y sin reelegir el modelo principal.
+2. **Completar la comparación visual a ciegas** D3 de los tres modelos y el **realismo** frente a los tornillos
+   reales de prueba.
+3. **Redacción:** incorporar por separado el resultado principal de `run04` y el análisis posterior de la versión 2;
+   luego escribir el capítulo 4 con las cifras cerradas.
 4. **Decisiones tuyas abiertas:** los `\GAPDEC` del capítulo 3 (16) y las implicancias abiertas (#162, #165,
    #167, #168, #175).
-5. **Fuera de esta tesis (trabajo futuro):** el efecto sobre un segmentador, y un posible run05.
+5. **Fuera de esta tesis (trabajo futuro):** medir el efecto del sintetizador sobre un segmentador.
 
 ---
 
@@ -357,7 +398,7 @@ podría estar más cerca de los tornillos reales que la física simulada. Eso lo
 |---|---|
 | Pregunta, hipótesis y alcance | `docs/00-tesis.md` |
 | Datos y conteos | `docs/02-datos.md` |
-| Hallazgos que cambiaron el plan | `docs/04-implicancias.md` (#173–#175 son los de hoy) |
+| Hallazgos que cambiaron el plan | `docs/04-implicancias.md` (#173–#182 cubren la pose corregida, la versión 1 y la versión 2) |
 | Diseño congelado del Objetivo 3 | `experiments/objetivo3/diseno_A.md` (sección 0 + enmiendas) |
 | Índices de experimentos | `experiments/objetivo2/EXPERIMENTOS.md`, `experiments/objetivo3/EXPERIMENTOS.md` |
 | Muestreador y SAP | `src/muestreador/muestreo.py`, `src/muestreador/sap.py` |
@@ -365,5 +406,5 @@ podría estar más cerca de los tornillos reales que la física simulada. Eso lo
 | Censo de tornillos y grupos | `experiments/exploration-3d/tornillos_conteo.csv`, `grupos.csv` |
 | Criterio de entrenamiento | `experiments/objetivo3/a5_criterio_inclusion.py` |
 | Cadena del Objetivo 3 | `a11_rasterizar_tornillo.py`, `a15_cadena_completa.py`, `a20_evaluador_ea2.py`, `a24_contrastes.py` |
-| Resultados de hoy | `experiments/objetivo3/resultados_validacion_pose.md` |
+| Resultados vigentes | `experiments/objetivo3/resultados_prueba_v1.md`, `v2_plan.md`, `run05/v2_eleccion.md` |
 | Documento de tesis | `overleaf/` (PDF en `redaccion/.build/main.pdf`) |

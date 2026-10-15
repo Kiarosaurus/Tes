@@ -10,6 +10,11 @@ DECISIONES DE ESTE ARCHIVO (todas `[SUPUESTO]` de `diseno_A.md` seccion 5)
   Diseno A sea inpainting y no generacion libre.
 - Muestreo DDIM determinista (eta = 0), 50 pasos, semilla fija.
 
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a este archivo en **Perdida**, **Que predice** y
+**Ruido**: `perdida`, `Difusion`/`betas_coseno` y `muestrea_ddim` son las implementaciones citadas.
+
 LO QUE NO RESUELVE
 ------------------
 El riesgo #96: en entrenamiento el contexto fuera de `G` trae el streaking del implante real, y en

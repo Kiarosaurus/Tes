@@ -60,3 +60,6 @@ Thumbs.db
 
 # Compilacion local del documento de overleaf (scripts/lint_redaccion.py --compilar)
 redaccion/.build/
+
+# PDFs: solo en local (papers con copyright y PDFs compilados)
+*.pdf

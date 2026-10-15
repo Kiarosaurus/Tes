@@ -1,5 +1,7 @@
 #!/bin/bash
 # A7 run04: reentrenamiento del difusor SIN ningun volumen repetido (#163 y #166; autora, 2026-10-11).
+# Fuente de la fila **Entrenamiento principal (run04)** de `docs/SITUACION_ACTUAL.md`, seccion 5.1:
+# este archivo fija el manifiesto, 60 000 pasos y los hiperparametros; `entrenar.py` elige `mejor.pt`.
 #
 # QUE ES: el modelo que reemplaza a run02 (`mejor_37k`) y a run03. Ambos entrenaron con `metal_0003`, que
 # es el mismo paciente que `metal_0072` (test); por la regla del 2026-09-10 (opcion (a) de #166) `0003` sale

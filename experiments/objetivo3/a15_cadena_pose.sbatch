@@ -1,5 +1,6 @@
 #!/bin/bash
 # OBJETIVO 3 CON LA POSE CORREGIDA (#173): difusor, un punto de control por job, en tres etapas seguidas.
+# Fuente de la fila **Semillas** de `docs/SITUACION_ACTUAL.md`, seccion 5.1: `COMUN` fija 0 1 2 3 4.
 #   1. cotejo  - 0101/0102 (validacion), cortes con `M`, 5 semillas, cascaras de 1 mm, sin NIfTI  (eleccion, #169)
 #   2. delta   - 0101/0102 (validacion), `--incluir-banda`, 5 semillas, NIfTI                     (`s` de Delta)
 #   3. final   - 13 de test de E-A2 (`casos_ea2_test.txt`), `--incluir-banda`, 5 semillas, NIfTI  (E-A2)

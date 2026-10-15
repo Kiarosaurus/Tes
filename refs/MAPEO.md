@@ -605,3 +605,27 @@ Implicancias: #178 (B), #179 (brecha cap. 2), #180 (Objetivo 2).
 anterior a esta ronda, no tocado). `papers/lugmayr2002repaint.pdf` es el PDF de `lugmayr2022repaint` (ya leido; ver aviso
 de la ronda 2026-09-21). Los catalogos de fabricante subidos con esta tanda ya tenian ficha con otro nombre
 (`synthes_*`, `acumed_*`, `doublemedical_*`, `primis_*`).
+
+## Altas del 2026-10-14 — fuentes para cerrar GAPLIT y apoyo de simulacion de TC
+
+La autora subio los PDF y los raws. Los libros llegaron como capitulos separados con un unico raw por obra:
+`kak2001book1.pdf`--`kak2001book8.pdf`, los capitulos 59, 71 y 73--77 de `standring2020grays`, y
+`efron1992bootstrap.pdf` junto con `efron1993IC.pdf`. Cada conjunto produce una sola entrada y una sola ficha.
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `kak2001book` | `kak2001book.bib` | SIAM | clave del editor sustituida; campos vacios descartados; DOI conservado; los ocho PDF se tratan como una obra |
+| `standring2020grays` | `standring2020grays.bib` | BibTeX aportado por la autora | campos conservados tal como aparecen; los capitulos y el PDF completo comparten entrada |
+| `vallender1974wasserstein` | `vallender1974wasserstein.bib` | ProQuest | clave estable de autora; DOI sin prefijo URL; `isbn` del raw se conserva como `issn`; **`% VERIFICAR`: el raw da `pages={784-3}` y no permite expandir el extremo** |
+| `wilcoxon1945rankingmethods` | `wilcoxon1945rankingmethods.bib` | Springer | la version aportada es la reimpresion de 1992 en *Breakthroughs in Statistics*; clave estable; resumen y URL descartados |
+| `schuirmann1987comparison` | `schuirmann1987comparison.ris` | Springer | RIS convertido a BibTeX; paginas a guion doble; resumen y URL descartados |
+| `efron1992bootstrap` | `efron1992bootstrap.bib` | Springer | la version aportada es la reimpresion de 1992; clave estable; resumen y URL descartados; los dos PDF comparten entrada |
+| `fisher1935logic` | `fisher1935logic.bib` | JSTOR | clave del proveedor sustituida; `urldate` descartado; URL estable y campo `publisher` conservados literalmente |
+| `fay2010two` | `fay2010two.bib` | The R Journal | clave del proveedor `RJ-2010-008` sustituida; `issue` normalizado a `number`; URL del campo `note` descartada porque el DOI queda en su campo propio |
+| `salimans2022progressive` | `salimans2022progressive.bib` | arXiv | clave estable; URL descartada; se conservan `eprint`, `archivePrefix` y `primaryClass` |
+| `deman2015dose` | `deman2015dose.bibtex` | Wiley | clave DOI sustituida; DOI sin prefijo URL; paginas a guion doble; `keywords`, URL, eprint y resumen descartados |
+| `fitzgerald2021semiempirical` | `fitzgerald2021semiempirical.bibtex` | Wiley | clave DOI sustituida; DOI sin prefijo URL; paginas a guion doble; `keywords`, URL, eprint y resumen descartados |
+| `wu2017modelbased` | `wu2017modelbased.bibtex` | Wiley | clave DOI sustituida; DOI sin prefijo URL; paginas a guion doble; `keywords`, URL, eprint y resumen descartados |
+| `zhang2024catsim` | `zhang2024catsim.bib` | IOP | clave del editor sustituida; URL y resumen descartados; numero de articulo conservado en `pages` |
+| `xcist2026main` | `xcist2026main.bib` | GitHub, permalink al commit | entrada de software aportada por la autora; campos conservados; el SHA completo fija la revisión y el `note` registra BSD 3-Clause |
+| `xcist2025example` | `xcist2025example.bib` | GitHub, permalink al commit | entrada de software aportada por la autora; campos conservados; URL acotada a los scripts AAPM CT-MAR, SHA completo y BSD 3-Clause |

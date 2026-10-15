@@ -25,6 +25,12 @@ QUE EXPONE
 
 La eleccion de `pub+asinh` es un `[SUPUESTO]` de `diseno_A.md`. La lectura del Objetivo 3 SI esta decidida:
 `regla_suave` con `DELTA_OBJ3 = 0.05` (`docs/01-decisiones.md`, entrada 2026-10-07).
+
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md` apunta a este archivo en la fila **Ventanas de HU** de la seccion 5.1 y
+en la regla de lectura de la seccion 5.2. `canales_diseno_a` fija las ventanas y `regla_suave` hace
+la vuelta a HU.
 """
 from __future__ import annotations
 

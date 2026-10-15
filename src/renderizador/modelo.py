@@ -6,6 +6,12 @@ Es la red del Objetivo 3 tras el No-Go de P1 (#91): sin autoencoder, sin Control
 preentrenada. Todo lo de este archivo es `[SUPUESTO]` de `diseno_A.md` seccion 5 (U-Net tipo
 DDPM/ADM, float32), no una decision de la tesis.
 
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a este archivo en las filas **Red**, **Dimension** y
+**Entrada principal**. `UNetDifusion` fija los cuatro niveles y la atencion; `CANALES_ENTRADA` y
+`CANALES_SALIDA` fijan las dimensiones externas de la red.
+
 ENTRADA (11 canales, seccion 4 de `diseno_A.md`)
 ------------------------------------------------
 - 3 canales: el corte central **con ruido** (`x_t`), en sus 3 ventanas (LW asinh, MW, SW) de

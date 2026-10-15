@@ -1,5 +1,11 @@
 """Entrenamiento del renderizador del Diseno A (difusion en espacio de imagen).
 
+TRAZABILIDAD EN EL RESUMEN
+--------------------------
+`docs/SITUACION_ACTUAL.md`, seccion 5.1, apunta a este archivo en **Punto de control**: la validacion
+periodica conserva `mejor.pt` en el minimo y `ckpt.pt` como estado final/reanudable. Los parametros
+concretos de run04 estan en `experiments/objetivo3/a7_run04.sbatch`.
+
 ESTADO: EL DISENO NO ESTA PREINSCRITO
 -------------------------------------
 `experiments/objetivo3/diseno_A.md` sigue en BORRADOR y tiene cuatro `[DECIDIR]` de la autora. Este

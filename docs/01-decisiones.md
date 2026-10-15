@@ -2555,3 +2555,80 @@ Escrito por el asistente con permiso explicito de la autora (mismo pedido).
 4. **Redaccion:** los resultados de la version 2 en prueba se presentan como descriptivos y en una seccion separada;
    nunca como "el modelo final es run05x". Declaracion completa en `v2_plan.md` ("Analisis exploratorio en prueba
    (DECLARADO 2026-10-14)").
+
+## 2026-10-15 — Cierre de las `\GAPDEC` y lecturas del TOST antes de relanzar `a20_v2` (#183, #185, #186)
+
+Escrito por el asistente con permiso explicito de la autora ("estoy totalmente con todas las recomendaciones ...
+anade los textos a 01-decisiones.md"), 2026-10-15. Fuente: `redaccion/propuesta_gapdec_2026-10-15.md`, que la autora
+leyo completa. **Momento:** despues de ver la prueba de v1 (#177), el `Delta` de run05a (157.1 HU), la validacion de
+run05b, E-A1 de v2 (#184) y los HTML de prueba de run04 (#176); **antes** de cualquier TOST de prueba de la version 2
+(`a20_v2` 56847 aborto en la etapa de validacion). Inventario: `experiments/objetivo3/visto.md`. Todo lo de abajo es
+**previo al TOST de prueba de v2 y posterior para v1**.
+
+**Regla general:** ninguna sensibilidad o analisis anadido aqui puede **elevar** la categoria del desenlace primario;
+solo puede bajarla.
+
+1. **D1, suelo (2026-10-05):** la regla del suelo se declara **no aplicable**: su desenlace depende del percentil
+   (225.0 HU con p95 por paciente, 1.2 HU con mediana; `a9`), ya era calculable antes de fijar una conversion, y su rama
+   de cambio de representacion esta bloqueada por el congelamiento. Se reportan los dos valores. En su lugar: fraccion
+   de la ROI de Peters bajo -1000 HU, y TOST con las imagenes de Peters (con metal y limpia) recortadas a -1000 HU, los
+   dos brazos con el mismo suelo; posterior, direccion declarada (hacia la equivalencia).
+2. **D2, cabeza:** la sintesis usa el tornillo con cabeza congelado el 2026-10-09; se declara desviacion de D3
+   (2026-09-20). Sensibilidad posterior: E-A2 sin las ROIs a menos de 20 mm del extremo con cabeza, en los dos brazos.
+3. **D3, lote:** correccion de 2026-10-08 punto 3: el lote corrido en run02, run04, run05a y run05b es **16**
+   (`a7_run04.sbatch`, metadatos, #148); "lote 4" fue un error de registro. No cambia ningun resultado.
+4. **D4, semimaximo:** la sensibilidad por semimaximo (2026-09-20) **no se entrena, por coste**. Se reporta la
+   diferencia de diametro entre las dos mascaras en componentes de 500-4000 mm3 de entrenamiento, como dato de la
+   limitacion.
+5. **D5, costura:** la costura de 2026-10-08 punto 7 se mide en E-A2 para **los dos brazos**, como se fijo; el
+   congelamiento la omitio. Se agrega el perfil de `streak amplitude` en anillos de 2 mm entre 8 y 16 mm, descriptivo.
+6. **D6, `CLINIC_0066`:** se clasifica en grupo 2 segun `grupos.csv`, que prevalece sobre 2026-09-21 (2). No cambia
+   receptores ni resultados.
+7. **D7, p95:** diagnostico de #152 en validacion (`0101`, `0102`, 5 semillas, `run04_mejor`): `u` guardado en `G`,
+   decodificacion con `regla_suave` frente a solo LW, con control sobre la ida y vuelta de parches reales de validacion.
+   Lectura: mecanismo = decodificador solo si con LW el p95 entra en la envolvente real en >= 4 de las 7 cascaras y en
+   las imagenes reales el cambio de decodificacion mueve el p95 menos de la mitad de ese corrimiento; si no, modelo o
+   indeterminado. No cambia el modelo ni la evaluacion.
+8. **D8, preservacion de Peters:** se reporta como caracterizacion de la referencia: RMSE y SSIM (rango [-1000, 2000]
+   HU) de su simulacion sin metal frente a la TC original, fuera de `G` y dentro del cuerpo, mas su amplitud de solo
+   ruido. Para el sintetizador vale 0 por construccion y no se presenta como resultado.
+9. **D9, pose:** E-A2 usa el eje del corredor para aislar la apariencia de la colocacion (evaluada en el Objetivo 2) y
+   por el coste del protocolo fisico (sonda: 108.9 h con k = 1). Exploratorio: 5 poses del muestreador por paciente
+   de E-A2, solo sintetizador (`run04_mejor`, 5 semillas), con `streak amplitude` y `metal integrity` por grado de
+   brecha. **Expectativa fijada antes:** la amplitud deberia variar poco entre grados; una variacion grande indicaria
+   dependencia espuria del contexto.
+10. **D10, QC y D3 visual:** QC (E-A4): 13 pacientes x semilla 0 x 3 cortes (mayor area de `M`; 1/4 y 3/4 del tramo
+    evaluado), lista cerrada de defectos (costura visible, metal fragmentado, artefacto fuera de lugar, anatomia
+    alterada); control, no evaluacion; **no ciego para run04**. Comparacion D3 a ciegas de los tres modelos: mismos
+    cortes, etiquetas ocultas, orden aleatorio por script con semilla guardada, pregunta fija (ordenar por realismo del
+    artefacto frente a una referencia real), registro antes de destapar; descriptiva; protocolo fijado antes de ver las
+    salidas de v2.
+11. **D11, repositorio AAPM:** el protocolo fisico se atribuye a Peters et al. (protocolo) y al repositorio del reto
+    AAPM en version fija (implementacion), con tabla de las cinco desviaciones.
+12. **D12, cordura:** se declara su degeneracion (copia y pegado = 0 por construccion; p = 2^-13, minimo alcanzable)
+    y no se reporta tamano de efecto. Comparador nuevo, posterior y descriptivo: **artefacto parametrico** (tornillo a
+    HU constante mas el perfil radial medio del artefacto real de tornillos de `d1_d2`), sin difusion.
+13. **D13, contingencia #90:** se retiran las marcas; #90 CERRADA por ejecucion (2026-10-14).
+14. **D14, supuesto *t*:** el IC90 con *t* supone diferencias pareadas aproximadamente normales e independientes.
+    Sensibilidad: IC90 exacto por inversion de la prueba de permutacion pareada (2^13 cambios de signo). Sujeta a la
+    regla general.
+15. **D15, desenlaces del TOST:** **equivalencia** (IC90 entero dentro de +-`Delta`), **no equivalencia** (IC90 entero
+    fuera), **no concluyente** (IC90 cruza un limite); se reporta la direccion siempre que el IC90 excluya 0.
+    Confirmatorio: solo `run04_mejor` con su `Delta`; lo demas, descriptivo, con multiplicidad declarada y sin
+    correccion. La incertidumbre de `Delta` (n = 2) se declara aparte. Para v1: `run04_mejor` = no concluyente con
+    diferencia significativa a la baja; `run04_60k` = no equivalencia con los dos margenes.
+16. **D16, margen:** se reporta el **margen minimo de equivalencia** (mayor |limite| del IC90) de cada modelo, y el
+    TOST de los tres modelos con el **margen comun de run04 (196.3 HU)** ademas del propio. Se declara el sentido
+    conjunto de las tres elecciones sobre los mismos receptores (#162 (3)). El margen 0.80-1.25 se descarta (elegido
+    tras ver la razon de v1).
+17. **D-extra 1, cortes:** sensibilidad del primario con `a20 --interseccion` (los dos brazos en los mismos cortes).
+18. **D-extra 2, piso de ruido:** amplitud nula de cada brazo: Peters `limpia_A - limpia_B` (existente) y el difusor
+    generando `G` **sin `M`** sobre los mismos receptores (13 x 5 semillas, `run04_mejor`). Se reporta junto a la
+    amplitud de cada brazo.
+19. **D-extra 3, decodificacion en v2:** E-A1 de run05a y run05b se repite con `--delta` 0.03 (el de run04), ademas del
+    propio, para separar modelo de lectura.
+20. **D-extra 4, inventario:** `experiments/objetivo3/visto.md` registra que resultados se vieron y cuando, antes de
+    cada decision de v2.
+21. **Correccion de registro (H2):** DEC 2026-10-11 (3) dice `Delta` 163.8 / `r` 23.2; los vigentes, con la pose
+    corregida, son **196.3 / 6.1** (#175).
+22. **Lectura de acuerdo (#185):** Bland-Altman y Pitman-Morgan entre brazos, descriptivos, para v1 y v2.

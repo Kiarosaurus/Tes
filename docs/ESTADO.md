@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (3) — decisiones registradas; codigo de Khipu en preparacion
+
+- **Hecho:** `01-decisiones.md` 2026-10-15 (22 puntos: D1-D16, D-extra 1-4, correccion de `Delta`, acuerdo), escrito por el asistente con permiso explicito de la autora. Inventario `experiments/objetivo3/visto.md`.
+- **Siguiente:** codigo de `a20`/`a24`/`a15`/`a23_v2` para las nuevas mediciones; comandos de Khipu; ronda de redaccion (cap. 3, cap. 1, introduccion).
+
 ## 2026-10-15 (2) — revision experta de las GAPDEC
 
 - **Hecho:** `redaccion/propuesta_gapdec_2026-10-15.md`: 16 decisiones (18 marcas) + 4 nuevas, redactada sin leer la propuesta del 10-14 y pasada por un agente revisor severo (rechazo el margen 0.80-1.25 y la conversion del suelo por vanos; ajusto 12). Implicancias **#185** (difusor casi invariante entre pacientes) y **#186** (asimetrias del primario: cortes k=2, ruido de Peters 184 HU, suelo; regla del suelo da 225.0 con p95 y 1.2 con mediana) ABIERTAS.

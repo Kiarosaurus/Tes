@@ -6,7 +6,8 @@
 
 - **Hecho:** `01-decisiones.md` 2026-10-15 (22 puntos: D1-D16, D-extra 1-4, correccion de `Delta`, acuerdo), escrito por el asistente con permiso explicito de la autora. Inventario `experiments/objetivo3/visto.md`.
 - **Codigo listo (probado: regresion exacta de `a20` en 0012; humo CPU de `a15`):** `a20` con suelo de Peters, costura en los dos brazos y variantes (`--suelo-simetrico`, `--excluir-cabeza-mm`, `--r-min/max-mm`); `a15 --sin-metal/--guardar-u-g`; `a20_v2.sbatch` (ETAPA/VARIANTE, candado contra doble envio); `a15_diag.sbatch` (MODO=nulo/p95); `a23_v2.sbatch` con SUF. D9 (poses) pendiente: `a20` no calcula ROIs con pose perturbada.
-- **Siguiente:** Khipu (autora); local: a24 ampliado y variantes de v1; ronda de redaccion r22/r09/r07 en curso.
+- **Local hecho:** `a26_lecturas.py` (desenlaces D15, IC por permutacion, margen minimo/comun, Bland-Altman, Pitman-Morgan); D8 `a27` (RMSE 31.4 HU, SSIM 0.907); D4 (semimaximo -0.24 mm); comparador parametrico en `a20 parametrico` (DEC 2026-10-15 (2)). Resultados en `experiments/objetivo3/resultados_dec_2026-10-15.md`. Variantes de v1 corriendo (`a20_v1_variantes.sh`).
+- **Siguiente:** Khipu (autora lanza); capitulo3-r22 en correccion, luego introduccion-r07; consolidar BITACORA.
 
 ## 2026-10-15 (2) — revision experta de las GAPDEC
 

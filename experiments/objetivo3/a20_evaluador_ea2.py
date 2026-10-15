@@ -132,6 +132,45 @@ def costura(img: np.ndarray, ref: np.ndarray, G: np.ndarray, validos: np.ndarray
     return float(np.median(exc)) if exc else float('nan')
 
 
+# Comparador parametrico (DEC 2026-10-15 (2)): medianas de D1 por anillo de 2 mm (`d1_d2_resultado.md`)
+D1_CENTROS_MM = np.array([1.0, 3.0, 5.0, 7.0, 9.0, 11.0])
+D1_EXCESO_HU = np.array([1930.0, 1199.0, 765.0, 473.0, 174.0, 11.0])
+
+
+def artefacto_parametrico(vol: np.ndarray, M: np.ndarray, G: np.ndarray, esp3d, u_af: np.ndarray,
+                          hu_metal: float) -> np.ndarray:
+    """`M` a HU constante y, en `G` fuera de `M`, `Delta = (A(r)/2) * signo(cos 2 theta)` alrededor del eje `u`.
+
+    `r` = distancia euclidea 3D a `M`; `theta` = angulo en el plano perpendicular a `u`, medido desde una direccion
+    perpendicular a `u` fijada con el eje axial; `A(r)` interpolada linealmente entre los centros de anillo de D1.
+    """
+    from scipy import ndimage as ndi
+    esp = np.asarray(esp3d, dtype=float)
+    u = np.asarray(u_af, dtype=float) / np.linalg.norm(u_af)
+    ref = np.array([1.0, 0.0, 0.0]) if abs(u[0]) < 0.9 else np.array([0.0, 1.0, 0.0])
+    e1 = np.cross(u, ref)
+    e1 /= np.linalg.norm(e1)
+    e2 = np.cross(u, e1)
+    idx = np.argwhere(G | M)
+    lo, hi = np.maximum(idx.min(0) - 1, 0), np.minimum(idx.max(0) + 2, M.shape)
+    caja = tuple(slice(a, b) for a, b in zip(lo, hi))
+    Mc, Gc = M[caja], G[caja]
+    dist = ndi.distance_transform_edt(~Mc, sampling=esp)
+    g = np.stack(np.meshgrid(*[np.arange(a, b) * e for a, b, e in zip(lo, hi, esp)], indexing='ij'), -1)
+    c = (np.argwhere(M) * esp).mean(0)
+    v = g - c
+    v = v - (v @ u)[..., None] * u
+    theta = np.arctan2(v @ e2, v @ e1)
+    A = np.interp(dist, D1_CENTROS_MM, D1_EXCESO_HU)          # constante fuera del rango de centros
+    banda = Gc & ~Mc & (dist <= R_MAX_MM)
+    sal = vol.astype(np.float32).copy()
+    sc = sal[caja]
+    sc[banda] += (0.5 * A * np.sign(np.cos(2.0 * theta)))[banda].astype(np.float32)
+    sc[Mc] = hu_metal
+    sal[caja] = sc
+    return sal
+
+
 def suelo(x: np.ndarray, activo: bool) -> np.ndarray:
     """Suelo simetrico (DEC 2026-10-15 pto 1): recorta a -1000 HU, el suelo de la representacion del difusor."""
     return np.maximum(x, SUELO_HU) if activo else x
@@ -221,10 +260,13 @@ def main() -> None:
     cp = sub.add_parser('copiapega', help='control de cordura: M con HU constante (a22), resto identico')
     cp.add_argument('--casos', nargs='+', required=True)
     cp.add_argument('--hu', type=float, default=None, help='por omision, outputs/a22_run04/a22_hu_copiapega.json (run04, 01-decisiones 2026-10-11 (2))')
+    pa = sub.add_parser('parametrico', help='M a HU constante + artefacto D1 con dos lobulos (DEC 2026-10-15 (2))')
+    pa.add_argument('--casos', nargs='+', required=True)
+    pa.add_argument('--hu', type=float, default=None)
     dl = sub.add_parser('delta', help='calcula Delta = max(s, r) desde el CSV (formula fijada 2026-10-09)')
     dl.add_argument('--csv', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
     dl.add_argument('--etiqueta', default='mejor_37k')
-    for q in (p, d, cp):
+    for q in (p, d, cp, pa):
         q.add_argument('--corrida-final', action='store_true', help='permite test (tras congelar diseno_A.md)')
         q.add_argument('--out', type=Path, default=_AQUI / 'outputs' / 'a20' / 'a20_ea2.csv')
         # Variantes POSTERIORES (DEC 2026-10-15); por omision, la definicion congelada
@@ -257,6 +299,21 @@ def main() -> None:
             res['exceso_costura'] = costura(sint, orig, G, validos)
             filas.append({'brazo': 'copiapega', 'caso': caso, 'condicion': 'HU_%.0f' % hu, **res})
             print('%s copiapega: amp %.1f HU | %d ROIs' % (caso, res['amp_HU'], res['n_rois']))
+    elif args.brazo == 'parametrico':
+        hu = args.hu if args.hu is not None else json.loads(
+            (_AQUI / 'outputs' / 'a22_run04' / 'a22_hu_copiapega.json').read_text(encoding='utf-8'))['HU_copiapega']
+        for caso in args.casos:
+            vol, M, esp3d, u_af, guarda, G = geometria_af(caso, parts)
+            lab = rois(M, esp3d, u_af, guarda, *geo)
+            validos = G.reshape(G.shape[0], -1).any(1)
+            orig = vol.astype(np.float32)
+            sint = artefacto_parametrico(orig, M, G, esp3d, u_af, hu)
+            orig, sint = suelo(orig, args.suelo_simetrico), suelo(sint, args.suelo_simetrico)
+            res = evalua(sint - orig, lab, validos, img=sint)
+            res.update(integridad(sint, orig, M, G, validos, metal_ref=M))
+            res['exceso_costura'] = costura(sint, orig, G, validos)
+            filas.append({'brazo': 'parametrico', 'caso': caso, 'condicion': 'D1_cos2', **res})
+            print('%s parametrico: amp %.1f HU | %d ROIs' % (caso, res['amp_HU'], res['n_rois']))
     elif args.brazo == 'peters':
         for ruta in args.npz:
             z = np.load(ruta)

@@ -2632,3 +2632,17 @@ solo puede bajarla.
 21. **Correccion de registro (H2):** DEC 2026-10-11 (3) dice `Delta` 163.8 / `r` 23.2; los vigentes, con la pose
     corregida, son **196.3 / 6.1** (#175).
 22. **Lectura de acuerdo (#185):** Bland-Altman y Pitman-Morgan entre brazos, descriptivos, para v1 y v2.
+
+## 2026-10-15 (2) — Forma del comparador parametrico (D12)
+
+Escrito por el asistente con permiso explicito de la autora ("Apruebo tu propuesta"), 2026-10-15, antes de calcularlo.
+Precisa el punto 12 de 2026-10-15: el perfil de D1 es una amplitud por anillo, no un campo, y hacia falta fijar su
+forma angular.
+
+- `M` a HU constante (5371 HU, el de la copia y pegado). En la banda (0-12 mm de `M`), en el plano perpendicular al eje
+  `u`, `Delta(r, theta) = (A(r)/2) * signo(cos 2 theta)`: dos lobulos claros y dos oscuros. Fuera de la banda, la TC
+  original.
+- `A(r)`: medianas de D1 por anillo (`d1_d2_resultado.md`; 1930, 1199, 765, 473, 174, 11 HU de 0-2 a 10-12 mm),
+  interpoladas linealmente entre centros de anillo; constante bajo 1 mm.
+- Por construccion reproduce la amplitud real por anillo: responde si el difusor llega a lo que un modelo analitico
+  calibrado con datos reales da sin aprendizaje. Posterior y descriptivo.

@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (4) — ronda unica de redaccion por DEC 2026-10-15
+
+- **Hecho:** capitulo1-r09 (GAPDEC del suelo cerrada; PASA), capitulo3-r22 (16 GAPDEC cerradas, asimetrias de #186 en Amenazas, tabla `tab:desviaciones`; PASA; 1 GAPLIT Bland-Altman/Pitman-Morgan con candidatos), introduccion-r07 (contingencia retirada, resultado de v1 "no concluyente" escrito; FALLA solo por el encabezado, #126). PDF 153 pp. en `redaccion/.build/main.pdf`; etapas en `redaccion/.build/etapas/`.
+- **Pendiente (autora):** alinear `diseno_A.md`, `00-tesis.md`, `EXPERIMENTOS.md`, `resultados_prueba_v1.md` con DEC 2026-10-15 (escalado T05/T06); `capitulo2.tex`:104-106 desfasado (#183); relanzar o no las variantes de v1 (detenidas por memoria).
+- **Siguiente:** resultados de Khipu -> `a26` sobre cada variante; D9 y realismo (codigo pendiente).
+
 ## 2026-10-15 (3) — decisiones registradas; codigo de Khipu en preparacion
 
 - **Hecho:** `01-decisiones.md` 2026-10-15 (22 puntos: D1-D16, D-extra 1-4, correccion de `Delta`, acuerdo), escrito por el asistente con permiso explicito de la autora. Inventario `experiments/objetivo3/visto.md`.

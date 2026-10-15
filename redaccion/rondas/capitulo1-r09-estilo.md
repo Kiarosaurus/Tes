@@ -1,0 +1,34 @@
+# Revision de estilo — capitulo1 — r09
+
+## Hallazgos
+| ID | Sev | Criterio | Ubicacion | Texto actual (max 15 palabras) | Propuesta |
+|---|---|---|---|---|---|
+| ES-1 | media | E-R2 | l.132, oracion de Fay | "esta atribución se limita a la implementación y versión que examinó" | Eliminar. "bajo la versión 2.11.0 del paquete stats" ya acota la atribucion; la clausula solo anuncia el alcance en vez de decir el hecho. Patron PAT-5 reincide |
+| ES-2 | media | E-O2, E-M1 | l.132, parrafo completo | "La compuerta del Objetivo~1 acompaña su error con un intervalo..." (8 oraciones) | Partir en dos parrafos. El primero trata el remuestreo de la compuerta (oraciones 1-4). El segundo abre con su funcion: "Las amenazas a la validez comparan proporciones en tablas de 2x2 con la prueba exacta de Fisher, ..." y sigue con la convencion minlike, Fay y la lectura con 15 casos. Patron PAT-58 reincide (el parrafo crecio con las salvedades de r06-r08) y PAT-33 reincide (dos funciones sin oracion tematica comun) |
+| ES-3 | media | E-T1 | l.31 y l.62 | "Las fuentes médicas reales son policromáticas"; "fuente monocromática idealizada ... ninguna de las dos fuentes" | En el capitulo, "fuente" designa la bibliografia ("las fuentes revisadas"), y en la l.62 los dos sentidos aparecen en una misma oracion. l.31: "Los haces de los equipos médicos reales son policromáticos; ...". l.62: "Lo estudian en hueso, sin metal y con un haz monocromático idealizado, ...". Patron PAT-14 reincide |
+| ES-4 | media | E-T1 | l.68, penultima oracion | "con el valor del protocolo físico como referencia" | "con el valor del protocolo físico como término de comparación". La decision del 2026-09-30 (BITACORA §2) reserva "referencia" para la referencia clinica. Patron PAT-14 reincide |
+| ES-5 | media | E-R2, E-M2 | l.66, primera oracion | "el sintetizador de este trabajo no hace ni lo uno ni lo otro" | "La MAR reduce el artefacto de una TC ya adquirida y la simulación física lo produce reproduciendo la adquisición; el sintetizador de este trabajo también lo produce, pero con un modelo aprendido y sin simular proyecciones." (El contraste actual niega que el sintetizador produzca el artefacto, cuando si lo produce) |
+| ES-6 | media | E-R4 | l.66, ultima oracion | "Este trabajo genera la apariencia del artefacto con un modelo aprendido, sin simular proyecciones" | Con ES-5 aplicado, dejar solo: "El protocolo físico se prevé como comparación (Sección~\ref{sec:apariencia})." Hoy el cierre repite lo dicho en la apertura. Patron PAT-98 reincide |
+| ES-7 | media | E-P3 | l.76, oraciones 2 y 5 | "Este trabajo no intercambia las medidas de corredor de los dos tipos" | La oracion 5 traslada al otro tipo el umbral de 10 mm y la holgura radial de Kaiser, y asi contradice la oracion 2. Propuesta: "Este trabajo traslada de un tipo de tornillo al otro solo el umbral de 10~mm y la holgura radial, y lo hace como convención: las medidas de McLaren et al. son de tornillos transilíaco-transsacros, y Kaiser et al. eligen su umbral para un tornillo iliosacro." Patron PAT-39 reincide |
+| ES-8 | media | E-R2 | l.108, ultima oracion | "cuya arquitectura se fijó tal como se entrenó" | "El sintetizador también usa una U-Net, cuya arquitectura se describe en la Sección~\ref{sec:sintetizador}." La frase actual no dice nada verificable |
+| ES-9 | media | E-R4 | l.58, ultima oracion | "El tratamiento de ese límite depende de una regla preinscrita cuyo desenlace aún no se conoce" | Eliminar la oracion y remitir desde la anterior: "... que caigan bajo ese suelo (Sección~\ref{sec:mt-tc})." La regla y su \GAPDEC ya estan en la l.48. La version actual repite esa regla con otro enfoque ("desenlace") que no coincide con el del GAP (conversion a HU) |
+| ES-10 | baja | E-V2 | l.76, oracion 4 | "y le aplican las tolerancias angulares de McLaren et al." | "y se le aplican las tolerancias angulares de McLaren et al., ..." (la oracion no tiene sujeto plural) |
+| ES-11 | baja | E-M8 | l.33, oracion 3 | "Park et al. señalan que su modelo de proyecciones, el de Radon" | "Park et al. señalan que el modelo de proyecciones en que se basa ese algoritmo, el de Radon, es monocromático ..." (el antecedente de "su" es ambiguo: Park o el algoritmo) |
+| ES-12 | baja | E-T1 | l.31 y l.35 | "Wang et al.~\cite{wang2019cochlear}" ... "Wang et al.~\cite{wang2025adaptiveweighting}" | En la l.35 hay dos grupos "Wang et al." distintos en oraciones contiguas. En la segunda aparicion conviene anadir lo que los distingue: "Como $\mu$ depende de la energía, Wang et al.~\cite{wang2019cochlear}, en su simulación de implantes cocleares, realizan ..." |
+| ES-13 | baja | E-T1 | l.74, oracion 4 | "Como referencia anatómica, Standring describe el ala..." | "Standring~\cite{standring2020grays} describe además el ala como ..." (la decision del 2026-09-30 reserva "referencia") |
+| ES-14 | baja | E-R1 | l.124, oracion tematica | "Los resultados de este trabajo son de tres tipos, y cada uno..." | "Cada objetivo produce un resultado de distinta naturaleza y se analiza sobre su propia unidad." Patron PAT-114 reincide (apertura con recuento) |
+| ES-15 | baja | E-M8 | l.132, oracion de Fisher | "que condiciona en los márgenes y enumera las tablas compatibles" | "que fija los totales marginales de la tabla y enumera las tablas compatibles con ellos" (calco de *conditions on*) |
+
+## Impresion general
+Leido de corrido, el capitulo suena sobrio y la atribucion esta bien calibrada. Ya no quedan muletillas ni inflacion.
+El defecto dominante es de acumulacion: las salvedades de rondas recientes repiten lo que dice otro parrafo (l.58 frente a l.48; cierre de l.66) o lo vuelven a acotar (Fay), y el parrafo l.132 ya tiene dos funciones.
+Persiste la deriva terminologica en "fuente" y "referencia", que tienen un sentido reservado.
+
+## Patrones
+| Patron (una linea, generalizable a otras secciones) | Criterio | Ejemplo antes (max 15 palabras) | Ya en bitacora (PAT-n o "nuevo") |
+|---|---|---|---|
+| Clausula que anuncia el alcance de una atribucion ya acotada en la misma oracion | E-R2 | "esta atribución se limita a la implementación y versión que examinó" | PAT-5 |
+| Parrafo que suma salvedades de varias rondas hasta superar 7 oraciones con dos funciones | E-O2, E-M1 | remuestreo de la compuerta + Fisher + minlike + Fay en un parrafo | PAT-58 |
+| Palabra con sentido reservado en el documento ("fuente", "referencia") usada en su sentido comun | E-T1 | "fuente monocromática ... ninguna de las dos fuentes reúne" | PAT-14 |
+| Oracion de apertura que niega algo y el mismo parrafo afirma una excepcion | E-P3 | "no intercambia las medidas" / "Aun así, ... se aplican también" | PAT-39 |
+| Limite declarado en un mecanismo, que repite con otro enfoque la regla ya presentada en otra seccion | E-R4 | "depende de una regla preinscrita cuyo desenlace aún no se conoce" | PAT-86 |

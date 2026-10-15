@@ -12336,3 +12336,18 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** (a) reportarlo como resultado descriptivo en cap. 4 junto al primario; (b) repetirlo sobre v2 cuando
   llegue `a20_v2` (mismo brazo ya incluido) antes de decidir la redaccion; (c) sumar una metrica de forma (perfil
   radial normalizado) que separe nivel de forma. **Pendiente de la autora.**
+
+### 188 — PISO DE RUIDO DEL DIFUSOR (D-extra 2): sin metal, regenerar `G` ya da 893 HU de amplitud (69 % de su amplitud con metal); el de Peters es 184 HU (12 %). Sobre su propio piso, el difusor agrega 397 HU de artefacto y Peters 1388 — ABIERTA
+
+- **Origen:** `a15_diag.sbatch MODO=nulo` (Khipu 56867, rc=0) -> `a20` sobre `G` sin `M`, 13 pacientes de prueba x 5
+  semillas, `run04_mejor`; traido el 2026-10-15 en `obj3_post_2026-10-15.tar.gz` ->
+  `experiments/objetivo3/outputs/khipu_2026-10-15/obj3_pose/nulo/a20_nulo.csv`. DEC 2026-10-15 pto 18.
+- **Medido (medianas por paciente):** nulo del difusor 893 HU [766, 1055]; con metal 1308; razon 0.69. Peters:
+  `limpia_A - limpia_B` 184 HU frente a Ti 1574; razon 0.12. Mismas ROIs (`n_vox` identico al de la variante `base`).
+- **Por que importa:** `streak amplitude` mide la dispersion de (sintetica - original). Para el difusor, la mayor parte
+  de esa dispersion existe sin implante: es la diferencia de textura de regenerar `G`, no artefacto. El TOST primario
+  compara amplitudes brutas con pisos muy distintos (amplia la asimetria 2 de #186). Tambien explica en parte #185
+  (difusor casi invariante: domina un piso estable) y la meseta de 8-12 mm de #187.
+- **Opciones:** (a) reportar piso y amplitud lado a lado (lo fijado en pto 18), sin restar; (b) descriptivo adicional:
+  exceso sobre el piso propio por brazo (posterior; sujeto a la regla general, no puede elevar el desenlace);
+  (c) llevarlo a Amenazas a la validez del cap. 3 y a la discusion del cap. 4. **Pendiente de la autora.**

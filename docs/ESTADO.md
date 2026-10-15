@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (6) — resultados de Khipu recibidos y completos
+
+- **Hecho:** `obj3_post_2026-10-15.tar.gz` extraido en `experiments/objetivo3/outputs/khipu_2026-10-15/`. 13 jobs rc=0; `a20_v2` val + 8 variantes completas (run05a/b, 65 filas por modelo); `Delta` run05a 157.1, run05b 107.1; nulo, diag p95 y `a23` d003 completos. Peters y copia y pegado identicos a v1 (el parametrico no depende del modelo: vale el de v1). Piso de ruido del difusor 893 HU frente a 184 de Peters: **#188 ABIERTA**. TOST de prueba de v2 aun NO visto.
+- **Siguiente:** leer v2 (`a26`), D7 local con control de imagenes reales, E-A1 d003; registrar en `visto.md`.
+
 ## 2026-10-15 (5) — variantes de v1 leidas; cuatro documentos alineados
 
 - **Hecho:** las 8 variantes de v1 ya habian terminado (04:15); `a26` sobre cada una + CSV congelado (`outputs/a26/v1_*`). Ninguna variante cambia el desenlace de run04_mejor (no concluyente, a la baja); anillos 8-12 mm: difusor sobre Peters; 12-16 mm trivial (techo de `G`). Comparador parametrico mas cerca de Peters que el difusor (-98.9 frente a -301.0 HU): **#187 ABIERTA**. Alineados con DEC 2026-10-15: `diseno_A.md` (adenda + correccion de `Delta`), `00-tesis.md`, `EXPERIMENTOS.md` (seccion 6c), `resultados_prueba_v1.md`. `a20_v2.sbatch` ahora incluye el brazo parametrico (Khipu: resincronizar antes de lanzar).

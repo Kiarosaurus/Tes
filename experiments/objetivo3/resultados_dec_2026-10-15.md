@@ -67,3 +67,15 @@ Lectura (descriptiva, sin regla nueva):
   -301.0 HU) y alcanza equivalencia con suelo simetrico. Implicancia #187.
 - 12-16 mm no compara nada: es el techo de `B_delta` (#176 H2). El residuo de Peters ahi (231-260 HU) esta en el orden
   de su piso de ruido (184 HU, #186).
+
+## D-extra 2 — piso de ruido de cada brazo
+
+Fuente: Khipu 56867 (`a15_diag.sbatch MODO=nulo`, rc=0) -> `outputs/khipu_2026-10-15/obj3_pose/nulo/a20_nulo.csv`
+(13 x 5 semillas, `run04_mejor`, `G` sin `M`). Peters: `ruido_A-B` de la variante `base`.
+
+| brazo | piso (sin metal) | con metal | piso / con metal | con metal - piso |
+|---|---|---|---|---|
+| difusor run04_mejor | 893 [766, 1055] | 1308 | 0.69 | 397 |
+| Peters Ti | 184 | 1574 | 0.12 | 1388 |
+
+Medianas por paciente, HU. Implicancia #188.

@@ -22,6 +22,7 @@
 | 2026-10-15 | E-A1 de v2 con `--delta` 0.03 (D-extra 3) | prueba | run05a, run05b | idem, #190 | ninguna |
 | 2026-10-15 | D7: p95 con solo LW frente a regla_suave | validacion | run04_mejor | `outputs/obj3_pose/a28/`, #191 | ninguna (regla fijada antes) |
 | 2026-10-15 | Acuerdo en escala log (Bland-Altman en razon, Pitman-Morgan sobre ln, heterocedasticidad), todas las variantes | prueba (v1 y v2) | run04_mejor, run04_60k, run05a, run05b | `outputs/a26_log/`, #189 | ninguna (pedido de la autora; descriptivo) |
+| 2026-10-15 | Perfil 0-12 mm por brazo (local) y contraste pareado del difusor (Khipu 56968) | prueba (v1) | run04_mejor, Peters, parametrico | `outputs/a29/`, #187, #188 | reglas (i)-(iii) fijadas antes de correr; lecturas 2026-10-15 (3) posteriores |
 
 **No visto a la fecha de `01-decisiones.md` 2026-10-15:** ningun TOST, Wilcoxon ni amplitud de prueba de run05a o
 run05b (E-A2); ninguna salida de las mediciones nuevas (D1, D2, D5, D7, D8, D9, D12, D-extra 1-3).

@@ -88,7 +88,9 @@ coined ones.
 > | Cilindro **7.0 mm** | lo que **mide** la brecha cortical en SAP | D-O2.4, 2026-09-22; #118 |
 >
 > La de sintesis es el `d_centro` mediana de E11 (4.91 mm, frente a 4.8 mm de catalogo y 5.00 mm de E8),
-> con cabeza y rosca de 7.3 mm como sensibilidad. La de SAP es **7.0 mm porque es el calibre del
+> con cabeza (8.0 mm de diametro, 4.5 mm de alto) **dentro de la sintesis**, no como sensibilidad: `01-decisiones.md`
+> 2026-10-15 D2 (desviacion declarada de D3 2026-09-20; sensibilidad posterior: E-A2 sin las ROIs a menos de 20 mm de la
+> cabeza). La de SAP es **7.0 mm porque es el calibre del
 > benchmark**: `zwingmann2009navigated` midio sus cuatro grados sobre tornillos canulados de 7.0 mm
 > (*"the screws using a 7.0-mm cannulated screw"*, Materials and Methods, p. 1835). Como la profundidad
 > de perforacion escala con el radio, medir SAP con otro calibre meteria un sesgo sistematico dentro del
@@ -172,12 +174,15 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       de endurecimiento del haz; run05b; compuerta aprobada antes y pasada, #181). Por la regla de eleccion
       aprobada antes de generar, **la version 2 "no mejora"** (#182): el modelo principal sigue siendo run04.
       run05a y run05b se evaluan en prueba como analisis exploratorio declarado antes de correr, lado a lado con
-      run04, sin elegir ganador; nunca sustituyen a la version 1.
+      run04, sin elegir ganador; nunca sustituyen a la version 1. **Corrido el 2026-10-15 (#190):** run05a -258.9 y
+      run05b -264.3 HU frente a Peters Ti, "no concluyente, a la baja" en todas las variantes; acercan la media ~40 HU
+      y su correlacion por paciente con Peters cae a ~0. Se reporta lado a lado con v1 (2026-10-15 (3) pto 5).
       **HU de copia y pegado = 5371 HU** (`a22`, conjunto de run04).
     - **Validacion = 3 pacientes de CLINIC-metal** (`metal_0011`, `_0039`, `_0056`); `0011` aporta el
       60 % de los parches (2026-10-05 (6), punto 2).
-    - **Lectura de HU del Objetivo 3: `regla_suave` (v2), `delta = 0.05`** (2026-10-07). La `regla` v1
-      sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
+    - **Lectura de HU del Objetivo 3: `regla_suave` (v2)** (2026-10-07), con el limite calibrado de cada punto de
+      control: **0.030 para `run04_mejor`** y 0.05 para `run04_60k` (#172 (A), #174 (a); antes 0.05 para todos). La
+      `regla` v1 sigue siendo la del Objetivo 1, cuyas cifras no cambian; la v1 es caso particular de la v2.
     - **Endpoint primario `streak amplitude` preinscrito por completo** (2026-10-05 (3) y (4)): verdad de
       terreno = TC limpia del mismo paciente, asi que solo se mide en los **14 de test sin metal**
       (E-A2; 13 tras excluir `dataset6_CLINIC_0034_data`, sin eje del corredor); en los **19** de test con material u
@@ -194,6 +199,14 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       comun 196.3 HU; cortes compartidos, sin cabeza, suelo simetrico, anillos de 8-16 mm, costura en los dos brazos,
       pisos de ruido de los dos brazos, Bland-Altman y Pitman-Morgan. Ninguna puede **elevar** la categoria del
       primario. Detalle: adenda 2026-10-15 de `experiments/objetivo3/diseno_A.md`.
+    - **Lecturas posteriores fijadas el 2026-10-15 (3)** (delegadas; `experiments/objetivo3/resultados_dec_2026-10-15.md`):
+      "no concluyente" = la hipotesis de equivalencia no se sostiene y la amplitud del difusor es menor, sin leerse como
+      no equivalencia demostrada; acuerdo en HU y en razon (log), con los supuestos no cumplidos declarados (#189);
+      piso de ruido 893 frente a 184 HU, que **favorece al difusor** (pareado: -455.0 HU, IC90 [-647.6, -262.5],
+      descriptivo; #188); perfil 0-12 mm: el difusor iguala el nivel real junto al tornillo y no su caida (#187); el
+      comparador parametrico se reporta como oraculo de nivel; el p95 bajo lo real es del modelo (#191).
+    - **Abierto para la autora y el asesor:** realismo visual del artefacto (#193); de ello depende como se acota el
+      reclamo del Objetivo 3 en conclusiones.
     - **Suelo de -1000 HU** (2026-10-05): regla preinscrita; si la perdida atribuible a la
       representacion (percentil 5 del paciente, eleccion post hoc declarada) es menor que `Delta`, se
       declara como limitacion de alcance; si es mayor, se cambia la representacion. **Declarada NO APLICABLE el
@@ -332,7 +345,8 @@ Por tanto:
   **propuesta** (no decidida) una tercera regla para extraer mascaras de implantes reales:
   umbral de semimaximo local (E8, #46).~~ **DECIDIDO el 2026-09-20** (D1): la mascara `M` de
   entrenamiento se extrae con **umbral de 2500 HU en el piloto**, y el **semimaximo local queda como
-  variante de sensibilidad**, no como regla principal.
+  variante de sensibilidad**, no como regla principal. **ACTUALIZADO 2026-10-15 (D4):** esa sensibilidad **no se
+  entrena**, por coste; se reporta la diferencia de diametro entre las dos mascaras (`resultados_dec_2026-10-15.md`).
 - ~~`templeman1996proximity` sigue en `refs.bib` sin PDF.~~ **RESUELTO 2026-09-17**: PDF y ficha
   completos; no publica ningun % de malposicion (#77).
 

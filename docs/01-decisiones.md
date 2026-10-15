@@ -2646,3 +2646,49 @@ forma angular.
   interpoladas linealmente entre centros de anillo; constante bajo 1 mm.
 - Por construccion reproduce la amplitud real por anillo: responde si el difusor llega a lo que un modelo analitico
   calibrado con datos reales da sin aprendizaje. Posterior y descriptivo.
+
+## 2026-10-15 (3) — Decisiones delegadas tras el pareado: lecturas posteriores del Objetivo 3, bibliografia y alineacion (#179, #180, #183, #185-#192)
+
+Escrito por el asistente con permiso explicito de la autora ("toma las decisiones por mi"; "Corrige lo de 00-tesis.md y
+01-decisiones.md para que este de acuerdo al estado actual del proyecto"), 2026-10-15. Todo lo que sigue es POSTERIOR a
+ver la prueba de la version 1 y la de la version 2: son lecturas y formas de reporte, no cambian ningun desenlace
+confirmatorio (regla general de 2026-10-15). **Queda fuera, para la autora y el asesor:** el realismo visual (#193) y
+lo que de el dependa en el reclamo del Objetivo 3.
+
+1. **Que significa "no concluyente" para el Objetivo 3 (GAPDEC cap. 3).** El Objetivo 3 se cumple como objetivo de
+   diseno y evaluacion (el sintetizador se implemento y se evaluo con el diseno congelado). La hipotesis de equivalencia
+   con el protocolo fisico **no se sostiene**: "no concluyente, a la baja" se reporta como que los datos no permiten
+   afirmar equivalencia y muestran amplitud menor que el protocolo fisico; no se lee como equivalencia ni como
+   no equivalencia demostrada. Se declara que esta lectura se fija despues de ver el resultado.
+2. **Acuerdo (#189, #185).** Se reportan las dos escalas: HU para el TOST (ya fijado) y razon difusor / Peters Ti
+   (log) para Bland y Altman; Pitman y Morgan sobre ln como prueba aproximada de CV, y sobre HU como prueba de
+   varianzas. Se declaran como limitaciones los cinco puntos de #189 (pendiente que persiste en log, sin diferencia
+   aceptable fijada, promedio de semillas, varianza frente a CV, normalidad con n = 13). Lectura descriptiva para v1 y
+   v2. #185 se cierra con esto.
+3. **Piso de ruido (#188; GAPDEC cap. 3).** Se reportan lado a lado amplitud y piso de cada brazo (893 frente a 184
+   HU) y se lleva a Amenazas a la validez. **Sentido:** el piso del brazo aprendido **favorece al difusor** en el
+   contraste primario: referido a su propia sintesis sin metal, su amplitud baja (1308 -> 1112 HU) y la diferencia se
+   aleja de cero (-301.0 -> -455.0 HU, IC90 [-647.6, -262.5]). El contraste pareado entra como descriptivo con su
+   limite: cambiar el canal `M` cambia toda la trayectoria DDIM, asi que no aisla un artefacto puro.
+4. **Perfil radial y comparador parametrico (#187).** Opciones (a) y (c): el comparador parametrico se reporta en el
+   cap. 4 como **oraculo de nivel** (calibrado con D1, reproduce la amplitud por construccion, no la textura), y el
+   perfil por anillos 0-12 mm (`a29`) como descriptivo de forma. Por la regla fijada antes: el difusor sin parear es
+   plano (razon 1.92 < 2), el pareado no (2.42), lo real 4.08; la meseta de 8-12 mm no se atribuye al piso (regla (i)).
+   La opcion (b) queda cubierta: el parametrico no depende del modelo.
+5. **Version 2 (#190).** Se reporta lado a lado con v1, como exploratorio declarado; no sustituye a run04.
+6. **Mecanismo del p95 (#191).** Se atribuye al modelo, por la regla fijada antes (1 de 7 cascaras con solo LW); el
+   control sobre imagenes reales se declara trivial. #152 se cierra en lo que toca al mecanismo.
+7. **Asimetrias del contraste primario (#186) y reglas de lectura (#183):** cerradas por 2026-10-15 (ptos 1, 15, 17,
+   18 y 22), ya redactadas en el cap. 3 (r22, r23).
+8. **Bibliografia (#192, #180).** La clave de Yang et al. 2022 (CMPB 220:106810) es `yang2022computeraided`; la entrada
+   `yang2022arcplanning` se retira de `refs/clean/` (su raw queda; los dos raw son el mismo articulo). Con ello y con
+   Goerres y Han ya nombrados en el cap. 2 (r07), #180 se cierra. Se dan de alta `bland1986statistical`,
+   `pitman1939note`, `morgan1939test`, `gautier2001accuracy` y `day2000transsacral`. Gautier & Baechler 1999: DESCARTADO
+   (Gautier 2001 no lo cita, no fija un maximo de diametro y la tesis es solo S1).
+9. **Brecha del cap. 2 (#179).** Se nombra la sintesis aprendida de componentes de artefacto como paso intermedio de
+   la MAR no pareada (U-DuDoNet, PND-Net) y la brecha se acota a: sintesis del implante y de su artefacto local,
+   condicionada por la geometria y la pose de un implante colocado por un muestreador quirurgicamente restringido, y
+   evaluada como producto frente a un protocolo fisico.
+10. **Alineacion de fuentes (T02 de capitulo3-r22/r23).** `00-tesis.md` y `EXPERIMENTOS.md` se alinean con D2
+    (la cabeza esta dentro de la sintesis), D4 (el semimaximo no se entrena) y con la evaluacion exploratoria de v2 ya
+    corrida.

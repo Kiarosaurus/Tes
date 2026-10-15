@@ -10954,7 +10954,7 @@ para los dos pacientes en A6000 (frente a ~70 min de CPU para `0101` solo). CONT
 **Lo que NO se sostiene:** ninguna eleccion de checkpoint (el cotejo de la decision (6) sigue
 bloqueado por la definicion comun, arriba), ni cifra citable hasta leer los CSV con su `n_M`.
 
-### 152 — EL "HUESO DENTRO DE `M`" ES UN EFECTO DE LA DECODIFICACION MULTI-VENTANA: los voxeles bajos de `M` se apilan exactamente en los techos de SW (236 HU) y MW (472 HU) — ABIERTA (toca #145, #149, #150, la metrica `frac_sobre_2500` y la `regla` del Objetivo 1)
+### 152 — EL "HUESO DENTRO DE `M`" ES UN EFECTO DE LA DECODIFICACION MULTI-VENTANA: los voxeles bajos de `M` se apilan exactamente en los techos de SW (236 HU) y MW (472 HU) — ABIERTA (toca #145, #149, #150, la metrica `frac_sobre_2500` y la `regla` del Objetivo 1) [mecanismo CERRADO 2026-10-15 (3) pto 6, #191]
 
 - **Origen:** lectura de los CSV del job 54619 (GPU, `outputs/a15_gpu/`). Valores casi identicos
   (~234 y ~471 HU) se repetian como percentiles en pacientes, semillas y dispositivos distintos.
@@ -12134,7 +12134,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Pendiente de la autora:** fijar el criterio numerico de la compuerta con estos datos a la vista y decidir si el
   piloto incluye la seccion alargada y la mascara suavizada. Conseguir el PDF de R4 si se quiere su lectura.
 
-### 179 — LA SINTESIS APRENDIDA DE ARTEFACTOS METALICOS YA EXISTE COMO PASO INTERMEDIO DE MAR NO PAREADO (U-DuDoNet, PND-Net; ADN y RCN citados por U-DuDoNet): la brecha del cap. 2 debe acotarse — ABIERTA
+### 179 — LA SINTESIS APRENDIDA DE ARTEFACTOS METALICOS YA EXISTE COMO PASO INTERMEDIO DE MAR NO PAREADO (U-DuDoNet, PND-Net; ADN y RCN citados por U-DuDoNet): la brecha del cap. 2 debe acotarse — DECIDIDA 2026-10-15 (3) pto 9, pendiente de redaccion (cap. 2)
 
 - **Origen:** Claude, 2026-10-13, fichas `lyu2021ududonet` y `xia2024pndnet`.
 - **Hallazgo:** U-DuDoNet suma a CT limpias componentes de artefacto aprendidos en sinograma e imagen
@@ -12149,7 +12149,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   sugerido por las fichas (no agregado a `_candidatos.md` por esta sesion): ADN (Liao et al., TMI 2019), RCN (Zhao et al.,
   2020), Zhang y Yu (TMI 2018).
 
-### 180 — OBJETIVO 2: EXISTEN PLANIFICADORES AUTOMATICOS DE TRAYECTORIAS PELVICAS POR ATLAS (`goerres2017planning`, `han2019atlasplanning`, este con corredores IS S1/S2); no muestrean malposicion, pero el trabajo relacionado del muestreador debe nombrarlos. `yang2022arcplanning`: el PDF no es el articulo del raw — ABIERTA
+### 180 — OBJETIVO 2: EXISTEN PLANIFICADORES AUTOMATICOS DE TRAYECTORIAS PELVICAS POR ATLAS (`goerres2017planning`, `han2019atlasplanning`, este con corredores IS S1/S2); no muestrean malposicion, pero el trabajo relacionado del muestreador debe nombrarlos. `yang2022arcplanning`: el PDF no es el articulo del raw — CERRADA 2026-10-15 (3) pto 8
 
 - **Origen:** Claude, 2026-10-13, fichas `goerres2017planning`, `han2019atlasplanning`, `han2021multibody`,
   `yang2022arcplanning`.
@@ -12233,7 +12233,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   insatisfactorio. Toca la redaccion del cap. 4 (seccion exploratoria separada) y obliga a no presentar la version 2
   como modelo final.
 
-### 183 — LAS REGLAS DE LECTURA DEL TOST Y DEL WILCOXON (desenlaces, tamano de efecto, supuesto de *t*) NO ESTAN FIJADAS y la version 2 aun no tiene `a20`/`a24` en prueba: si se fijan ANTES de `a20_v2`, son previas para el exploratorio; para la version 1 ya son posteriores — ABIERTA
+### 183 — LAS REGLAS DE LECTURA DEL TOST Y DEL WILCOXON (desenlaces, tamano de efecto, supuesto de *t*) NO ESTAN FIJADAS y la version 2 aun no tiene `a20`/`a24` en prueba: si se fijan ANTES de `a20_v2`, son previas para el exploratorio; para la version 1 ya son posteriores — CERRADA (2026-10-15 ptos 15, 22; 2026-10-15 (3) pto 7)
 
 - **Origen:** propuesta del asesor sobre las 18 `\GAPDEC` (`redaccion/propuesta_gapdec_2026-10-14.md`, D-M, D-N, D-O),
   2026-10-14.
@@ -12278,7 +12278,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   del TOST y del Wilcoxon) todavia puede resolverse ANTES de ver esos resultados.
 - **Pendiente de la autora:** decidir #183 antes de relanzar `a20_v2`; validar esta lectura de E-A1.
 
-### 185 — EL DIFUSOR VARIA MUCHO MENOS ENTRE PACIENTES QUE EL PROTOCOLO FISICO (CV 0.076 frente a 0.241; Pitman-Morgan p = 3.8e-5) y su correlacion por paciente es debil (r = 0.40, n.s.): el TOST de medias no lo ve — ABIERTA
+### 185 — EL DIFUSOR VARIA MUCHO MENOS ENTRE PACIENTES QUE EL PROTOCOLO FISICO (CV 0.076 frente a 0.241; Pitman-Morgan p = 3.8e-5) y su correlacion por paciente es debil (r = 0.40, n.s.): el TOST de medias no lo ve — CERRADA 2026-10-15 (3) pto 2
 
 - **Origen:** revision experta de las `\GAPDEC` (`redaccion/propuesta_gapdec_2026-10-15.md`, H3), 2026-10-15; recalculo
   sobre `experiments/objetivo3/outputs/obj3_pose/a24/run04_mejor/a24_por_paciente.csv` (n = 13, prueba v1 ya vista;
@@ -12293,7 +12293,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   externa posible: dispersion entre pacientes del artefacto real de tornillos (`d1_d2_resultado.md`).
 - **Pendiente de la autora:** aceptar la lectura de acuerdo como descriptiva para v1 y v2.
 
-### 186 — EL CONTRASTE PRIMARIO TIENE TRES ASIMETRIAS ENTRE BRAZOS NO DECLARADAS (cortes k = 2 solo en Peters; piso de ruido de Peters de 184 HU; suelo de -1000 HU solo en el difusor) Y LA REGLA DEL SUELO YA NO ES APLICABLE (225.0 HU con p95 frente a 1.2 HU con mediana) — ABIERTA
+### 186 — EL CONTRASTE PRIMARIO TIENE TRES ASIMETRIAS ENTRE BRAZOS NO DECLARADAS (cortes k = 2 solo en Peters; piso de ruido de Peters de 184 HU; suelo de -1000 HU solo en el difusor) Y LA REGLA DEL SUELO YA NO ES APLICABLE (225.0 HU con p95 frente a 1.2 HU con mediana) — CERRADA (2026-10-15 ptos 1, 17, 18; 2026-10-15 (3) pto 7)
 
 - **Origen:** revision experta de las `\GAPDEC` (propuesta 2026-10-15, H6 y D1), hallazgos del agente revisor,
   verificados por Claude el 2026-10-15 sobre `outputs/obj3_pose/a20_test/a20_ea2_test.csv` y
@@ -12314,7 +12314,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** ver D1, D-extra 1 y D-extra 2 de la propuesta. **Pendiente de la autora:** decidir antes de relanzar
   `a20_v2`.
 
-### 187 — UN COMPARADOR PARAMETRICO SIN APRENDIZAJE (D1 + dos lobulos) QUEDA MAS CERCA DEL PROTOCOLO FISICO QUE EL DIFUSOR EN PRUEBA (v1): -98.9 frente a -301.0 HU; y el perfil del difusor es plano (bajo Peters en la banda, +412 a +478 HU sobre Peters en 8-12 mm) — ABIERTA
+### 187 — UN COMPARADOR PARAMETRICO SIN APRENDIZAJE (D1 + dos lobulos) QUEDA MAS CERCA DEL PROTOCOLO FISICO QUE EL DIFUSOR EN PRUEBA (v1): -98.9 frente a -301.0 HU; y el perfil del difusor es plano (bajo Peters en la banda, +412 a +478 HU sobre Peters en 8-12 mm) — DECIDIDA 2026-10-15 (3) pto 4, pendiente de redaccion (cap. 4)
 
 - **Origen:** variantes posteriores de DEC 2026-10-15 sobre run04_mejor (`a20_v1_variantes.sh`, `a26_lecturas.py`),
   2026-10-15. Detalle en `experiments/objetivo3/resultados_dec_2026-10-15.md`. Posterior y descriptivo para v1.
@@ -12341,7 +12341,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   0-2 mm (1828 frente a 1930) y queda en ~950 HU entre 4 y 10 mm, del orden de su piso (#188). Falta el contraste
   pareado (Khipu, `a20_pareado.sbatch`) para atribuir la meseta.
 
-### 188 — PISO DE RUIDO DEL DIFUSOR (D-extra 2): sin metal, regenerar `G` ya da 893 HU de amplitud (69 % de su amplitud con metal); el de Peters es 184 HU (12 %). Sobre su propio piso, el difusor agrega 397 HU de artefacto y Peters 1388 — ABIERTA
+### 188 — PISO DE RUIDO DEL DIFUSOR (D-extra 2): sin metal, regenerar `G` ya da 893 HU de amplitud (69 % de su amplitud con metal); el de Peters es 184 HU (12 %). Sobre su propio piso, el difusor agrega 397 HU de artefacto y Peters 1388 — DECIDIDA 2026-10-15 (3) pto 3, pendiente de redaccion (cap. 3 y 4)
 
 - **Origen:** `a15_diag.sbatch MODO=nulo` (Khipu 56867, rc=0) -> `a20` sobre `G` sin `M`, 13 pacientes de prueba x 5
   semillas, `run04_mejor`; traido el 2026-10-15 en `obj3_post_2026-10-15.tar.gz` ->
@@ -12355,8 +12355,12 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** (a) reportar piso y amplitud lado a lado (lo fijado en pto 18), sin restar; (b) descriptivo adicional:
   exceso sobre el piso propio por brazo (posterior; sujeto a la regla general, no puede elevar el desenlace);
   (c) llevarlo a Amenazas a la validez del cap. 3 y a la discusion del cap. 4. **Pendiente de la autora.**
+- **Adenda #188 (2026-10-15, contraste pareado, Khipu 56968):** difusor pareado - Peters Ti = -455.0 HU, IC90
+  [-647.6, -262.5] (descriptivo); 8-12 mm pareado 725 / 616 HU frente a 919 / 727 sin parear: por la regla (i) la
+  meseta no se atribuye al piso. Limite: el cambio del canal `M` altera toda la trayectoria DDIM. Decidido en
+  2026-10-15 (3) pto 3: el piso favorece al difusor en el contraste primario.
 
-### 189 — LO QUE BLAND-ALTMAN (1986) Y PITMAN/MORGAN (1939) OBLIGAN A REVISAR EN LA LECTURA DE ACUERDO (#185, DEC 2026-10-15 pto 22) — ABIERTA
+### 189 — LO QUE BLAND-ALTMAN (1986) Y PITMAN/MORGAN (1939) OBLIGAN A REVISAR EN LA LECTURA DE ACUERDO (#185, DEC 2026-10-15 pto 22) — DECIDIDA 2026-10-15 (3) pto 2, pendiente de redaccion (cap. 3 y 4)
 
 - **Origen:** fichas `bland1986statistical.md`, `pitman1939note.md`, `morgan1939test.md` (2026-10-15, `lector-papers`).
 - **Hallazgos:**
@@ -12382,7 +12386,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   v2 igual (0.857 / 0.854). 12-16 mm no aplica (difusor = 0). Detalle en `resultados_dec_2026-10-15.md`. Puntos 2, 3
   y 5 siguen como limitacion declarada. **Pendiente de la autora:** que escala va al cap. 4 (HU, razon o ambas).
 
-### 190 — VERSION 2 EN PRUEBA (EXPLORATORIO): run05a y run05b tambien quedan "no concluyente, a la baja" en todas las variantes; acercan la media ~40 HU y su correlacion con Peters por paciente cae a ~0. En E-A1 la ventaja de run05a es de lectura (`--delta`), la de run05b se sostiene en parte — ABIERTA
+### 190 — VERSION 2 EN PRUEBA (EXPLORATORIO): run05a y run05b tambien quedan "no concluyente, a la baja" en todas las variantes; acercan la media ~40 HU y su correlacion con Peters por paciente cae a ~0. En E-A1 la ventaja de run05a es de lectura (`--delta`), la de run05b se sostiene en parte — DECIDIDA 2026-10-15 (3) pto 5, pendiente de redaccion (cap. 4)
 
 - **Origen:** Khipu 56857-56869 (rc=0), traidos el 2026-10-15; detalle en `resultados_dec_2026-10-15.md`.
 - **Medido:** base: run05a -258.9 [-456.7, -61.1] (Delta 157.1), run05b -264.3 [-456.8, -71.7] (Delta 107.1);
@@ -12395,7 +12399,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** reportar lado a lado con v1 como exploratorio declarado (lo ya fijado). **Pendiente de la autora:**
   confirmar la redaccion.
 
-### 191 — EL p95 BAJO LO REAL ES DEL MODELO, NO DEL DECODIFICADOR (D7, regla fijada antes): con solo LW el p95 entra en la envolvente real en 1 de 7 cascaras — ABIERTA
+### 191 — EL p95 BAJO LO REAL ES DEL MODELO, NO DEL DECODIFICADOR (D7, regla fijada antes): con solo LW el p95 entra en la envolvente real en 1 de 7 cascaras — DECIDIDA 2026-10-15 (3) pto 6, pendiente de redaccion (cap. 3 y 4)
 
 - **Origen:** `a28_diag_p95.py` sobre `u` de `G` guardado en Khipu 56866 (0101/0102 x 5 semillas, run04_mejor); DEC
   2026-10-15 pto 7. Regresion: la decodificacion local reproduce `a15` exacto.
@@ -12408,7 +12412,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones:** redactar la limitacion con esta atribucion; #152 puede pasar a CERRADA en lo que toca al mecanismo.
   **Pendiente de la autora.**
 
-### 192 — FICHAS DE GAUTIER 2001, YANG 2022 (CMPB) Y DAY 2000: cierran el problema de fuente de #180, corrigen una cita de segunda mano (Gautier no da un "maximo de 4.5 mm") y avisan de un choque de terminos ("transsacral" de Day = tornillo iliosacro horizontal unilateral) — ABIERTA
+### 192 — FICHAS DE GAUTIER 2001, YANG 2022 (CMPB) Y DAY 2000: cierran el problema de fuente de #180, corrigen una cita de segunda mano (Gautier no da un "maximo de 4.5 mm") y avisan de un choque de terminos ("transsacral" de Day = tornillo iliosacro horizontal unilateral) — DECIDIDA 2026-10-15 (3) pto 8, pendiente de redaccion (cap. 2)
 
 - **Origen:** fichas `gautier2001accuracy.md`, `yang2022computeraided.md`, `day2000transsacral.md` (2026-10-15,
   `lector-papers`; Day solo abstract, sin PDF).

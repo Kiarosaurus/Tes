@@ -93,7 +93,7 @@
 | `resultados_prueba_v1.md` | evaluacion de prueba de la version 1 (E-A2 `a24`, E-A1 `a23`) | local | **HECHO** (#177) |
 | `d1_alcance_rayas.py`, `d1_resultado.md` | D1: alcance del artefacto real por anillo (todas las piezas y `--vol-max 4000`) | local | **HECHO**: tornillos ~10 mm |
 | `d2_perfil_sintetico.py`, `d1_d2_resultado.md` | D2: perfil del artefacto sintetico con la misma metrica | local | **HECHO**: sintetico se apaga ~6 mm |
-| `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b), compuerta, regla de eleccion y analisis exploratorio declarado | autora + asistente | **EN CURSO**: entrenados; regla = "no mejora" (#182); evaluacion exploratoria en prueba corriendo (`01-decisiones.md` 2026-10-13, 2026-10-14, 2026-10-14 (2)) |
+| `v2_plan.md` | plan de la version 2 = B + D (run05a, run05b), compuerta, regla de eleccion y analisis exploratorio declarado | autora + asistente | **EN CURSO**: entrenados; regla = "no mejora" (#182); evaluacion exploratoria en prueba **CORRIDA** (Khipu 56857-56865; #190) (`01-decisiones.md` 2026-10-13, 2026-10-14, 2026-10-14 (2)) |
 
 ## 6c. Decisiones del 2026-10-15 (cierre de `\GAPDEC`, lecturas del TOST; posteriores para v1, previas para v2)
 

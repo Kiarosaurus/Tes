@@ -642,3 +642,15 @@ La autora subio los raws (y los PDF, salvo Day 2000). `yang2022computeraided` NO
 | `morgan1939test` | `morgan1939test.bibtex` | Oxford Academic | idem |
 | `gautier2001accuracy` | `gautier2001accuracy.nbib` | PubMed (PMID 11764364) | revista desde `JT`; el raw solo trae `IP 393` (sin `VI`): va en `number`, sin `volume`; paginas `310-7` -> `310--317`; `Bächler` con diacritico del raw |
 | `day2000transsacral` | `day2000transsacral.nbib` | PubMed (PMID 11011775) | sin DOI en el raw (no se agrega); `IP 9 Suppl` en `number`; revista desde `JT` sin el lugar entre parentesis; **sin PDF: ficha solo abstract** |
+
+## Yang 2022: alta de `yang2022computeraided` y retiro de `yang2022arcplanning` (2026-10-15, #192)
+
+Decision delegada por la autora ("toma las decisiones por mi", 2026-10-15). Los dos raw son el mismo articulo (PMID
+35462347, DOI 10.1016/j.cmpb.2022.106810) y `papers/yang2022computeraided.pdf` le corresponde. Se da de alta
+`yang2022computeraided` desde su raw (mismos campos que tenia la entrada retirada; el `% VERIFICAR` desaparece porque el
+PDF ya corresponde). `refs/clean/yang2022arcplanning.bib` se retira; su raw queda intacto en `raw/` (regla 9). El PDF
+viejo `papers/yang2022arcplanning.pdf` es la version de congreso (RCAE 2021), sin raw ni entrada.
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `yang2022computeraided` | `yang2022computeraided.nbib` | PubMed (PMID 35462347) | nombres completos desde `FAU`; revista desde `JT`; numero de articulo en `pages`; sin `number` (el raw no lo trae) |

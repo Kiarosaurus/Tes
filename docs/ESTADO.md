@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (12) — decisiones delegadas registradas; fuentes alineadas
+
+- **Hecho:** pareado traido y leido (`a29`): meseta 8-12 mm no es piso (regla i); pareado -455.0 HU IC90 [-647.6, -262.5]; el piso favorece al difusor. `01-decisiones.md` 2026-10-15 (3) (10 puntos, delegada con permiso explicito). `00-tesis.md` y `EXPERIMENTOS.md` alineados (T02, v2 corrida, delta 0.030, lecturas posteriores). Yang: `yang2022computeraided` alta, `yang2022arcplanning` retirada de clean. Implicancias 179, 187-192 DECIDIDAS; 180, 183, 185, 186 CERRADAS; #152 mecanismo cerrado.
+- **Siguiente:** ronda de redaccion que aplique 2026-10-15 (3) (cap. 2: GAPDEC Yang y #179; cap. 3: GAPDEC no concluyente, escala, piso); redactar cap. 4; #193 con el asesor; PDF de Niu 2021.
+
 ## 2026-10-15 (11) — realismo visual (#193) y GAPDEC resolubles
 
 - **Hecho:** #193 ABIERTA (realismo visual insuficiente; mas entrenamiento no lo resolveria; opciones a/b/c). Inventario de las 5 GAPDEC con recomendacion (Yang #192, brecha #179, no concluyente, escala #189, piso #188).

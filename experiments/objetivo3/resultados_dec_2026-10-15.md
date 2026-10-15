@@ -203,3 +203,28 @@ tiene ROIs validas en los cortes que Peters simula); parametrico 3.16; **difusor
 regla**; D1 real 4.08. Lectura: junto al tornillo el difusor da el nivel real (1828 frente a 1930) pero desde 4 mm
 queda en una meseta de ~950 HU, del orden de su piso sin metal (893, #188). Peters cae mas rapido que lo real. D1 es
 otra metrica (exceso sobre un corte sin metal): comparar forma, no nivel. (i) y (iii) esperan `a20_pareado.sbatch`.
+
+### Resultados (i) y (iii) — contraste pareado (Khipu 56968, rc=0, 13 x 5 x 7 variantes; `outputs/khipu_pareado/`)
+
+| anillo (mm) | difusor sin parear | difusor pareado | Peters Ti | D1 real |
+|---|---|---|---|---|
+| 0-2 | 1828 | 1749 | 3864 (n = 10) | 1930 |
+| 2-4 | 1234 | 1201 | 1808 | 1199 |
+| 4-6 | 949 | 789 | 894 | 765 |
+| 6-8 | 946 | 794 | 613 | 473 |
+| 8-10 | 919 | 725 | 448 | 174 |
+| 10-12 | 727 | 616 | 338 | 11 |
+
+- **(i)** 8-10 mm: pareado 725 frente a 919 sin parear; 10-12 mm: 616 frente a 727. Ninguno baja de la mitad: por la
+  regla, **la meseta de 8-12 mm no se atribuye al piso de regeneracion**.
+- **(ii) pareado:** razon 0-2 / 6-8 = 2.42 [2.09, 2.59]: no plano por la regla, pero lejos de lo real (4.08) y de Peters.
+- **(iii)** banda completa: difusor pareado - Peters Ti = **-455.0 HU, IC90 [-647.6, -262.5]**, entero bajo -196.3
+  (descriptivo; la categoria confirmatoria sigue siendo "no concluyente, a la baja"). Mediana pareado 1112, Ti 1574;
+  Pearson con Ti 0.02.
+- **Limite (no anticipado en la regla):** con la misma semilla, cambiar el canal `M` cambia toda la trayectoria de
+  muestreo DDIM, asi que "con metal - sin metal" mezcla el efecto del metal con la divergencia de la muestra en toda
+  `G`. El pareado no aisla un artefacto "puro"; separa solo el ruido inicial comun. Lectura: lejos del tornillo, la
+  presencia del metal cambia la textura generada (600-725 HU) sin reproducir la caida real (174 y 11 HU).
+- **Sentido del piso sobre el contraste primario (#188):** referir el difusor a su propia sintesis sin metal baja su
+  amplitud (1308 -> 1112 de mediana) y aleja la diferencia de cero (-301.0 -> -455.0): el piso del brazo aprendido
+  **favorece al difusor** en el contraste primario, es decir, lo acerca a la equivalencia.

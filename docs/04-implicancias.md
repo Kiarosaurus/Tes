@@ -12277,3 +12277,39 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   segundo envio (56848, cancelado). La etapa de prueba (TOST/Wilcoxon) NO corrio, por lo que #183 (fijar la lectura
   del TOST y del Wilcoxon) todavia puede resolverse ANTES de ver esos resultados.
 - **Pendiente de la autora:** decidir #183 antes de relanzar `a20_v2`; validar esta lectura de E-A1.
+
+### 185 — EL DIFUSOR VARIA MUCHO MENOS ENTRE PACIENTES QUE EL PROTOCOLO FISICO (CV 0.076 frente a 0.241; Pitman-Morgan p = 3.8e-5) y su correlacion por paciente es debil (r = 0.40, n.s.): el TOST de medias no lo ve — ABIERTA
+
+- **Origen:** revision experta de las `\GAPDEC` (`redaccion/propuesta_gapdec_2026-10-15.md`, H3), 2026-10-15; recalculo
+  sobre `experiments/objetivo3/outputs/obj3_pose/a24/run04_mejor/a24_por_paciente.csv` (n = 13, prueba v1 ya vista;
+  descriptivo). Pitman-Morgan calculado por el agente revisor.
+- **Medido:** media 1293.7 (difusor) frente a 1594.7 HU (Peters Ti); CV 0.076 frente a 0.241; Pearson r = 0.40
+  (p = 0.17; IC95 aprox. [-0.19, 0.78]); Spearman rho = 0.37 (p = 0.21); Pitman-Morgan r(suma, diferencia) = -0.89,
+  p = 3.8e-5.
+- **Lectura prudente:** la dispersion entre pacientes del difusor es significativamente menor; con n = 13 NO se puede
+  afirmar que "no sigue al paciente". Parte de la dispersion de Peters puede deberse a que exagera (#159, #174).
+- **Por que importa:** un sintetizador para aumentacion deberia responder a la anatomia del receptor; la igualdad de
+  medias (TOST) no lo evalua. Toca el cap. 4 (lectura de acuerdo: Bland-Altman, Pitman-Morgan) y la discusion; ancla
+  externa posible: dispersion entre pacientes del artefacto real de tornillos (`d1_d2_resultado.md`).
+- **Pendiente de la autora:** aceptar la lectura de acuerdo como descriptiva para v1 y v2.
+
+### 186 — EL CONTRASTE PRIMARIO TIENE TRES ASIMETRIAS ENTRE BRAZOS NO DECLARADAS (cortes k = 2 solo en Peters; piso de ruido de Peters de 184 HU; suelo de -1000 HU solo en el difusor) Y LA REGLA DEL SUELO YA NO ES APLICABLE (225.0 HU con p95 frente a 1.2 HU con mediana) — ABIERTA
+
+- **Origen:** revision experta de las `\GAPDEC` (propuesta 2026-10-15, H6 y D1), hallazgos del agente revisor,
+  verificados por Claude el 2026-10-15 sobre `outputs/obj3_pose/a20_test/a20_ea2_test.csv` y
+  `outputs/a9/a9_suelo_por_parche.csv`.
+- **Medido:**
+  - Cortes: mediana de voxeles por paciente 62 341 (Peters, `k = 2`) frente a 124 679 (difusor); `a20 --interseccion`
+    existe y no se uso en el primario.
+  - Ruido: amplitud de `ruido_A-B` de Peters (sin metal) mediana 184 HU, media 177 (n = 13), del orden de `Delta`
+    (196.3). La amplitud nula del difusor (generar `G` sin `M`) no se midio.
+  - Suelo: `suelo_frac` de Peters vacio en sus 65 filas (no se midio); el difusor no puede bajar de -1000 HU. Una
+    reconstruccion aproximada del revisor sugiere ~1 % de la ROI de Ti bajo el suelo; no citable hasta medirlo.
+  - Regla del suelo (2026-10-05): perdida = vano real - vano tras ida y vuelta (23 058 parches, 77 pacientes de
+    entrenamiento y validacion): mediana entre pacientes del p95 por paciente 225.0 HU (> `Delta`; 40 de 77 la
+    superan); con la mediana por paciente, 1.2 HU. El desenlace depende del percentil y ya es calculable.
+- **Por que importa:** toca la interpretacion del TOST primario (#177) y la `\GAPDEC` del suelo (cap. 1:48, cap. 3:198).
+  Cualquier sensibilidad que corrija estas asimetrias es posterior y, en el caso del suelo, su direccion favorece al
+  difusor: debe reportarse sin poder elevar la categoria del desenlace.
+- **Opciones:** ver D1, D-extra 1 y D-extra 2 de la propuesta. **Pendiente de la autora:** decidir antes de relanzar
+  `a20_v2`.

@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (2) — revision experta de las GAPDEC
+
+- **Hecho:** `redaccion/propuesta_gapdec_2026-10-15.md`: 16 decisiones (18 marcas) + 4 nuevas, redactada sin leer la propuesta del 10-14 y pasada por un agente revisor severo (rechazo el margen 0.80-1.25 y la conversion del suelo por vanos; ajusto 12). Implicancias **#185** (difusor casi invariante entre pacientes) y **#186** (asimetrias del primario: cortes k=2, ruido de Peters 184 HU, suelo; regla del suelo da 225.0 con p95 y 1.2 con mediana) ABIERTAS.
+- **Siguiente:** autora registra D14/D15/D16/D1/D12 y D-extra 1-4 (incluido inventario de lo visto) ANTES de relanzar `a20_v2`; luego Claude ejecuta lo de CPU local; Khipu: `a20_v2` ajustado + difusor sin `M` + D7.
+
 ## 2026-10-15 — push bloqueado; a20_v2 incompleto
 
 - **Push RESUELTO:** `4666fb2` traia `papers/Gray's Anatomy...pdf` (310 MB > 100 MB de GitHub). Todos los `*.pdf` salieron del repo (`.gitignore`) y del historial completo (`git filter-repo`, push forzado de `main` y `claude/plan-b-opcion-d-tk53v6`); los 211 PDF locales siguen intactos (md5). `.git` 3.2 GB -> 44 MB. Respaldo del historial viejo en `../metalsynth-respaldo.git`. **Khipu debe resincronizar** (`git fetch && git reset --hard origin/main`).

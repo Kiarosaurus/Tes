@@ -2,6 +2,12 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+
+## 2026-10-15 (19) — claves finales de Bland 1986 y Haber; #195 decidida (a)
+
+- **Hecho:** `bland1986statistical` retirada de clean, queda `bland1986statisticalmeasurement` (ficha, cite cap. 3, indices); `haber2007general` -> `haber2008general` (raw, PDF, clean, ficha). 156 entradas; cap. 3 PASA. #195 DECIDIDA opcion (a) por la autora.
+- **Siguiente:** visto bueno de #194 (mapeo de "no concluyente", cap. 1); ronda de cap. 3 si la autora la confirma (#195, IC95); GAPDATO cerrables por documentacion o calculo barato.
+
 ## 2026-10-15 (18) — ficha Haber y Barnhart para #195
 
 - **Hecho:** ficha completa `haber2007general`, entrada clean y bibliografías regeneradas; `_index`, `_candidatos`, `MAPEO` y #195 actualizados.

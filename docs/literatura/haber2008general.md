@@ -1,13 +1,12 @@
-# haber2007general — Acuerdo entre métodos con mediciones replicadas
+# haber2008general — Acuerdo entre métodos con mediciones replicadas
 
-- **DOI / URL:** 10.1177/0962280206075527 (impreso en p. 151 del PDF; coincide con `doi` y `URL` de `refs/raw/haber2007general.bib`)
+- **DOI / URL:** 10.1177/0962280206075527 (impreso en p. 151 del PDF; coincide con `doi` y `URL` de `refs/raw/haber2008general.bib`)
 - **Nivel de lectura:** 2 (método)
 - **Leído a fondo por la autora:** no
-- **PDF:** papers/haber2007general.pdf
+- **PDF:** papers/haber2008general.pdf
 
 Verificación contra el raw: título, autores (Michael Haber y Huiman X Barnhart), revista, volumen 17, número 2,
-páginas 151--169, año 2008 y DOI coinciden con la cabecera del PDF. La clave elegida por la autora contiene 2007,
-pero el año bibliográfico respaldado por el raw y el PDF es 2008; se conserva la clave `haber2007general`.
+páginas 151--169, año 2008 y DOI coinciden con la cabecera del PDF. Clave renombrada a `haber2008general` por la autora (2026-10-15): coincide con el año del raw y del PDF.
 
 ## Qué hace (3 líneas máximo)
 Propone coeficientes de acuerdo que comparan el desacuerdo entre dos métodos con el desacuerdo entre réplicas del

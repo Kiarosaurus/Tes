@@ -1,9 +1,9 @@
-# bland1986statistical — Acuerdo entre dos metodos de medicion clinica (Bland y Altman)
+# bland1986statisticalmeasurement — Acuerdo entre dos metodos de medicion clinica (Bland y Altman)
 
-- **DOI / URL:** NO ENCONTRADO EN EL PDF (el raw `refs/raw/bland1986statistical.bib` trae `10.1016/S0140-6736(86)90837-8`; el PDF solo imprime "THE LANCET, FEBRUARY 8, 1986" y paginas 307-310)
+- **DOI / URL:** NO ENCONTRADO EN EL PDF (el raw `refs/raw/bland1986statisticalmeasurement.bib` trae `10.1016/S0140-6736(86)90837-8`; el PDF solo imprime "THE LANCET, FEBRUARY 8, 1986" y paginas 307-310)
 - **Nivel de lectura:** 2 (metodo)
 - **Leido a fondo por la autora:** no
-- **PDF:** papers/bland1986statistical.pdf
+- **PDF:** papers/bland1986statisticalmeasurement.pdf
 
 ## Que hace (3 lineas maximo)
 Argumenta que el coeficiente de correlacion no mide el acuerdo entre dos metodos que miden la misma cantidad sin un valor verdadero conocido. Propone graficar la diferencia contra la media de ambos metodos, resumir el acuerdo con el sesgo (media de las diferencias) y los "limites de acuerdo" (media +- 2 DE, o +- 1.96 DE bajo normalidad), con sus IC, y trata la transformacion logaritmica, la repetibilidad y las mediciones repetidas.

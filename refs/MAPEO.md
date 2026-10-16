@@ -674,3 +674,11 @@ La autora renombro los raws para que coincidan con sus PDF:
 - Nuevo `bland1986statisticalmeasurement.nbib` (PubMed, PMID 2868172): **mismo articulo** que `bland1986statistical`.
   Alta con `% VERIFICAR` (dos claves, una obra); el volumen es el del raw de PubMed (`VI 1`), distinto del 327 de
   ScienceDirect: no se armoniza (regla 9). Decide la autora cual clave queda.
+
+## Claves finales de Bland 1986 y Haber (2026-10-15, decision de la autora)
+
+- Bland 1986 (Lancet): queda **`bland1986statisticalmeasurement`** (raw PubMed, PMID 2868172; volumen 1 segun el raw);
+  `refs/clean/bland1986statistical.bib` se retira (su raw de ScienceDirect queda en `raw/`). Ficha, `\cite` del cap. 3,
+  indices e implicancias actualizados.
+- Haber y Barnhart: `haber2007general` -> **`haber2008general`** (raw, PDF, clean y ficha renombrados; el ano 2008 es
+  el del raw y del PDF).

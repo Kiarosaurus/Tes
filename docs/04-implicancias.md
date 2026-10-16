@@ -12362,7 +12362,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 
 ### 189 — LO QUE BLAND-ALTMAN (1986) Y PITMAN/MORGAN (1939) OBLIGAN A REVISAR EN LA LECTURA DE ACUERDO (#185, DEC 2026-10-15 pto 22) — DECIDIDA 2026-10-15 (3) pto 2, pendiente de redaccion (cap. 3 y 4)
 
-- **Origen:** fichas `bland1986statistical.md`, `pitman1939note.md`, `morgan1939test.md` (2026-10-15, `lector-papers`).
+- **Origen:** fichas `bland1986statisticalmeasurement.md`, `pitman1939note.md`, `morgan1939test.md` (2026-10-15, `lector-papers`).
 - **Hallazgos:**
   1. **Diferencia que depende de la magnitud.** Bland-Altman suponen que la diferencia no varia con la magnitud y
      proponen escala logaritmica si es proporcional (p. 309). En v1 la correlacion suma-diferencia es -0.89 (#185):
@@ -12467,7 +12467,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   como apoyo de "a la baja". Se aplica en capitulo3-r25; cap. 1 queda para su proxima ronda. **Pendiente de la autora:**
   visto bueno del mapeo.
 
-### 195 — EL MARGEN `Delta` NO ES LA "DIFERENCIA CLINICAMENTE ACEPTABLE" DE LA LITERATURA DE EQUIVALENCIA: es la variabilidad del propio metodo (max(s, r)); Walker 2011 pide justificarlo con evidencia clinica — ABIERTA
+### 195 — EL MARGEN `Delta` NO ES LA "DIFERENCIA CLINICAMENTE ACEPTABLE" DE LA LITERATURA DE EQUIVALENCIA: es la variabilidad del propio metodo (max(s, r)); Walker 2011 pide justificarlo con evidencia clinica — DECIDIDA opcion (a) por la autora 2026-10-15, pendiente de redaccion (cap. 3)
 
 - **Origen:** capitulo3-r25 (guia-5), ficha `walker2011understanding.md` ("the maximum clinically acceptable difference",
   p. 192; justificacion con "relevant evidence and sound clinical considerations", p. 194).
@@ -12477,7 +12477,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Toca:** cap. 3 §Analisis estadistico y Amenazas (validez de la conclusion); cap. 4 discusion.
 - **Opciones:** (a) declararlo como limitacion: el TOST contrasta contra la variabilidad propia, no contra un umbral
   de uso; (b) buscar una fuente que justifique un margen por variabilidad (`\GAPLIT`). **Pendiente de la autora.**
-- **Adenda 2026-10-15 — `haber2007general`:** Haber y Barnhart (2008, DOI 10.1177/0962280206075527) respaldan la
+- **Adenda 2026-10-15 — `haber2008general`:** Haber y Barnhart (2008, DOI 10.1177/0962280206075527) respaldan la
   idea general de comparar el desacuerdo entre métodos con el desacuerdo entre réplicas del mismo método. No
   respaldan la regla concreta: sin referencia usan el **promedio** de `G(X,X')` y `G(Y,Y')`; con referencia usan
   solo `G(X,X')`. Exigen comprobar antes que el desacuerdo intramétodo sea aceptable y reconocen que su coeficiente
@@ -12486,3 +12486,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   NO ENCONTRADO EN EL PDF. La búsqueda de respaldo conceptual queda cubierta; la fórmula `max(s,r)` permanece como
   convención propia. **Recomendación:** opción (a), citando Haber y Barnhart para la intuición y declarando la falta
   de correspondencia matemática y el incentivo favorable al método más ruidoso.
+- **Decision (autora, chat 2026-10-15: "confirmo la opcion a de 195"):** `Delta` se presenta como convencion del
+  estudio inspirada en el acuerdo individual (`haber2008general`) y su regla `max(s, r)` se declara como limitacion:
+  no es la del paper (promedio sin referencia; solo la referencia con referencia), favorece al metodo mas ruidoso, `s`
+  y `r` son estimadores heterogeneos en 2 pacientes, y el contraste usa medianas de 5 semillas.

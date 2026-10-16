@@ -662,3 +662,14 @@ viejo `papers/yang2022arcplanning.pdf` es la version de congreso (RCAE 2021), si
 | `bland1996statistics` | `bland1996statistics .bib` (con espacio en el nombre) | BMJ | el PDF es la nota "Measurement error proportional to the mean" (313:106) y le corresponde el raw con espacio; clave del editor `Bland106` sustituida; `publisher`, `issn`, URL, eprint descartados. **`% VERIFICAR`:** `bland1996statistics.bib` (sin espacio) es otra nota ("Logarithms", 312:700), sin PDF; decide la autora |
 | `lakens2017equivalence` | `lakens2017equivalence.bib` | SAGE | clave DOI sustituida; paginas a guion doble; `note` con PMID descartado; diacritico de Daniël en LaTeX |
 | `walker2011understanding` | `walker2011understanding.ris` | Springer | RIS convertido a BibTeX; `PY` 2011 (el PDF da la publicacion en linea de 2010-09-21); resumen, URL, ISSN descartados |
+
+## Renombre de raws de Bland por la autora (2026-10-15, noche)
+
+La autora renombro los raws para que coincidan con sus PDF:
+- `bland1996statistics .bib` -> `bland1996statisticsmeasurement.bib`: la clave `bland1996statistics` pasa a
+  `bland1996statisticsmeasurement` (clean, ficha, `\cite` de `capitulo3.tex`, indices e implicancias actualizados).
+- `bland1996statistics.bib` (Logarithms) -> `bland1996statisticslog.bib`: alta `bland1996statisticslog` (BMJ;
+  clave `Bland700` sustituida; `publisher`, `issn`, URL, eprint descartados).
+- Nuevo `bland1986statisticalmeasurement.nbib` (PubMed, PMID 2868172): **mismo articulo** que `bland1986statistical`.
+  Alta con `% VERIFICAR` (dos claves, una obra); el volumen es el del raw de PubMed (`VI 1`), distinto del 327 de
+  ScienceDirect: no se armoniza (regla 9). Decide la autora cual clave queda.

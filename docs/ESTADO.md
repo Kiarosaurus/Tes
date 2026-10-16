@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (16) — referencias de Bland actualizadas tras el renombre de raws
+
+- **Hecho:** `bland1996statistics` -> `bland1996statisticsmeasurement` (clean, ficha, cite del cap. 3, indices); altas `bland1996statisticslog` y `bland1986statisticalmeasurement` (VERIFICAR: mismo articulo que `bland1986statistical`). 156 entradas; cap. 3 compila y PASA.
+- **Siguiente:** autora lanza lectores de `bland1996statisticslog` y del PDF de 1 p. `bland1986statistical`; decide clave duplicada de Bland 1986; busqueda breve para #195.
+
 ## 2026-10-15 (15) — capitulo3-r25 cerrada: 0 GAPLIT y 0 GAPDEC en el cap. 3
 
 - **Hecho:** 2 GAPLIT cerrados (Walker + Lakens; Bland 1996 con derivacion propia a ln). Mapeo de "no concluyente" (#194). #195 ABIERTA (Delta = variabilidad del metodo, no diferencia clinica). IC95 v1 registrado en `resultados_dec_2026-10-15.md`. Documento: 1 GAPLIT (Niu, cap. 2), 0 GAPDEC.

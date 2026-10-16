@@ -1,14 +1,14 @@
-# bland1996statistics — Statistics Notes: Measurement error proportional to the mean (Bland y Altman, BMJ 1996)
+# bland1996statisticsmeasurement — Statistics Notes: Measurement error proportional to the mean (Bland y Altman, BMJ 1996)
 
-- **DOI / URL:** NO ENCONTRADO EN EL PDF (el PDF solo imprime "BMJ 1996;313:106"; el DOI 10.1136/bmj.313.7049.106 viene del raw `refs/raw/bland1996statistics .bib`, con espacio en el nombre)
+- **DOI / URL:** NO ENCONTRADO EN EL PDF (el PDF solo imprime "BMJ 1996;313:106"; el DOI 10.1136/bmj.313.7049.106 viene del raw `refs/raw/bland1996statisticsmeasurement.bib` (antes `bland1996statistics .bib`), con espacio en el nombre)
 - **Nivel de lectura:** 2 (metodo)
 - **Leido a fondo por la autora:** no
-- **PDF:** papers/bland1996statistics.pdf
+- **PDF:** papers/bland1996statisticsmeasurement.pdf
 
 > Correspondencia raw/PDF: el PDF es una sola pagina (BMJ vol. 313, p. 106, 13 julio 1996) y
 > contiene SOLO la nota "Measurement error proportional to the mean". NO contiene la nota
 > "Logarithms" (BMJ 312:700), que aparece unicamente como referencia 3 del PDF. El raw que
-> corresponde es `refs/raw/bland1996statistics .bib` (Bland106), no `refs/raw/bland1996statistics.bib` (Bland700).
+> corresponde es `refs/raw/bland1996statisticsmeasurement.bib` (antes `bland1996statistics .bib`) (Bland106), no `refs/raw/bland1996statistics.bib` (Bland700).
 > La pagina incluye ademas, arriba, el final de un articulo ajeno sobre la edicion nigeriana del BMJ; no se ficha.
 
 ## Que hace (3 lineas maximo)

@@ -3,6 +3,12 @@
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
 
+
+## 2026-10-15 (20) — GAPDATO baratos cerrados en fuentes; decisiones (4); rondas c en curso
+
+- **Hecho:** `e15_w1_sensibilidad` (W1 IC95 nav [0.152, 0.313], conv [0.089, 0.364]; sin 0022/0024: 0.203 / 0.237), razon solo banda run04 0.638, Fisher reproducido (minlike), registro de metodos (`experiments/registro/registro_metodos_2026-10-15.md`). `01-decisiones.md` 2026-10-15 (4): #194 (delegada), #184, #195. Rondas capitulo1-r10, capitulo3-r26, introduccion-r09 en curso (encargo c).
+- **Siguiente:** cerrar las tres etapas; reportar a la autora.
+
 ## 2026-10-15 (19) — claves finales de Bland 1986 y Haber; #195 decidida (a)
 
 - **Hecho:** `bland1986statistical` retirada de clean, queda `bland1986statisticalmeasurement` (ficha, cite cap. 3, indices); `haber2007general` -> `haber2008general` (raw, PDF, clean, ficha). 156 entradas; cap. 3 PASA. #195 DECIDIDA opcion (a) por la autora.

@@ -2692,3 +2692,24 @@ lo que de el dependa en el reclamo del Objetivo 3.
 10. **Alineacion de fuentes (T02 de capitulo3-r22/r23).** `00-tesis.md` y `EXPERIMENTOS.md` se alinean con D2
     (la cabeza esta dentro de la sintesis), D4 (el semimaximo no se entrena) y con la evaluacion exploratoria de v2 ya
     corrida.
+
+## 2026-10-15 (4) — Mapeo de "no concluyente" (#194), lectura de E-A1 de v2 (#184), margen (#195) y GAPDATO cerrables
+
+Escrito por el asistente con permiso explicito de la autora ("Para #194 necesito que apliquemos tu opinion
+profesional, y sobre #184 estoy de acuerdo con lo de aplicar lo mismo que se decidio para v2"; "confirmo la opcion a de
+195"; "Cierra los GAPDATOS que se puedan cerrar con experimentos baratos y/o data que ya tenemos"), 2026-10-15.
+
+1. **#194 (delegada).** Se conservan los tres desenlaces fijados el 2026-10-15 pto 15 (previos para v2; no se
+   renombran despues de ver datos). "No concluyente" se define como nombre propio de la tesis para "equivalencia no
+   establecida y no equivalencia no demostrada" (`walker2011understanding`: "nonequivalence cannot be ruled out"), y
+   "a la baja" como la diferencia significativa del escenario B de `lakens2017equivalence` (IC95 [-516.2, -85.7] HU,
+   excluye 0). Se escribe en el cap. 1 (definicion) y en el cap. 3 (lectura).
+2. **#184 (autora).** E-A1 de la version 2 se reporta lado a lado con v1 como exploratorio, igual que #190: la
+   ventaja de run05a es de lectura (desaparece con `--delta` 0.03), la de run05b se sostiene en parte (9 de 13).
+3. **#195 (autora, opcion a).** `Delta` se presenta como convencion inspirada en el acuerdo individual
+   (`haber2008general`) y `max(s, r)` se declara como limitacion (ver #195).
+4. **GAPDATO cerrados con datos existentes o calculos baratos** (`experiments/registro/registro_metodos_2026-10-15.md`):
+   compresion asinh; ajuste del decodificador; busqueda del eje del corredor; localizacion de referencias; IC90 por
+   anillo; programa y convencion de Fisher (reproducidos con la *minlike*); razon de solo banda de run04 (0.638);
+   W1 por remuestreo de pacientes e intervalo, y sensibilidad sin `CLINIC_0022`/`0024` (`e15`). Todos descriptivos;
+   ninguno cambia una cifra confirmatoria.

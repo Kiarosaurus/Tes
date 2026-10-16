@@ -12249,7 +12249,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Opciones y recomendacion:** en la propuesta citada. **Pendiente de la autora:** decidir y registrar en
   `01-decisiones.md` antes de lanzar `a20_v2`.
 
-### 184 — E-A1 EN PRUEBA (EXPLORATORIO, VERSION 2): run05b reconstruye el implante real con menor MAE en `G` que run04 en 11 de 13 pacientes (mediana grupo 1: 242 frente a 271 HU); descriptivo, con `--delta` de decodificacion distinto por modelo — ABIERTA
+### 184 — E-A1 EN PRUEBA (EXPLORATORIO, VERSION 2): run05b reconstruye el implante real con menor MAE en `G` que run04 en 11 de 13 pacientes (mediana grupo 1: 242 frente a 271 HU); descriptivo, con `--delta` de decodificacion distinto por modelo — DECIDIDA 2026-10-15 (4) pto 2, pendiente de redaccion (cap. 3 y 4)
 
 - **Origen:** `a23_v2.sbatch` en Khipu (jobs 56793 run05a, 56794 run05b; rc=0), comparado en local con run04
   (`outputs/obj3_pose/a23_final_run04_d003/`), 2026-10-15. Salidas: `experiments/objetivo3/outputs/obj3_v2/a23_run05{a,b}/`.
@@ -12454,7 +12454,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   (banda mayor, formulacion residual o refinamiento sim-a-real), que requiere pares simulados y tiempo de proyecto
   que no esta estimado.
 
-### 194 — EL ROTULO "NO CONCLUYENTE, A LA BAJA" NO ES EL DE LAS FUENTES: Lakens 2017 llama a este caso "estadisticamente diferente y no equivalente" (escenario B) y Walker 2011 "equivalence not established"; hay que mapear, no renombrar — ABIERTA
+### 194 — EL ROTULO "NO CONCLUYENTE, A LA BAJA" NO ES EL DE LAS FUENTES: Lakens 2017 llama a este caso "estadisticamente diferente y no equivalente" (escenario B) y Walker 2011 "equivalence not established"; hay que mapear, no renombrar — DECIDIDA 2026-10-15 (4) pto 1 (delegada), pendiente de redaccion (cap. 1 y 3)
 
 - **Origen:** fichas `lakens2017equivalence.md`, `walker2011understanding.md`, `bland1996statisticsmeasurement.md` (2026-10-15).
 - **Hallazgo:** con IC90 [-477.0, -124.9] e IC95 [-516.2, -85.7] (calculado 2026-10-15, excluye 0), el resultado de v1

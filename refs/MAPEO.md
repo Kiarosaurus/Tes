@@ -654,3 +654,11 @@ viejo `papers/yang2022arcplanning.pdf` es la version de congreso (RCAE 2021), si
 | Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
 |---|---|---|---|
 | `yang2022computeraided` | `yang2022computeraided.nbib` | PubMed (PMID 35462347) | nombres completos desde `FAU`; revista desde `JT`; numero de articulo en `pages`; sin `number` (el raw no lo trae) |
+
+## Altas del 2026-10-15 (2) — GAPLIT del cap. 3 (TOST no concluyente; log y CV)
+
+| Clave (autora) | Raw | Procedencia del raw | Normalizacion relevante |
+|---|---|---|---|
+| `bland1996statistics` | `bland1996statistics .bib` (con espacio en el nombre) | BMJ | el PDF es la nota "Measurement error proportional to the mean" (313:106) y le corresponde el raw con espacio; clave del editor `Bland106` sustituida; `publisher`, `issn`, URL, eprint descartados. **`% VERIFICAR`:** `bland1996statistics.bib` (sin espacio) es otra nota ("Logarithms", 312:700), sin PDF; decide la autora |
+| `lakens2017equivalence` | `lakens2017equivalence.bib` | SAGE | clave DOI sustituida; paginas a guion doble; `note` con PMID descartado; diacritico de Daniël en LaTeX |
+| `walker2011understanding` | `walker2011understanding.ris` | Springer | RIS convertido a BibTeX; `PY` 2011 (el PDF da la publicacion en linea de 2010-09-21); resumen, URL, ISSN descartados |

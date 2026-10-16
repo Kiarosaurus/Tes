@@ -12453,3 +12453,16 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   lo pone la simulacion fisica (ya implementada) y el difusor queda como alternativa estudiada; (c) nuevo modelo
   (banda mayor, formulacion residual o refinamiento sim-a-real), que requiere pares simulados y tiempo de proyecto
   que no esta estimado.
+
+### 194 — EL ROTULO "NO CONCLUYENTE, A LA BAJA" NO ES EL DE LAS FUENTES: Lakens 2017 llama a este caso "estadisticamente diferente y no equivalente" (escenario B) y Walker 2011 "equivalence not established"; hay que mapear, no renombrar — ABIERTA
+
+- **Origen:** fichas `lakens2017equivalence.md`, `walker2011understanding.md`, `bland1996statistics.md` (2026-10-15).
+- **Hallazgo:** con IC90 [-477.0, -124.9] e IC95 [-516.2, -85.7] (calculado 2026-10-15, excluye 0), el resultado de v1
+  es el escenario B de Lakens (p. 357). Walker: un IC que cruza un limite no establece equivalencia y "nonequivalence
+  cannot be ruled out" (p. 192); no usa "inconclusive". La categoria "no concluyente" de DEC 2026-10-15 pto 15 es propia
+  de la tesis: queda como nombre propio mapeado a esas dos lecturas. `bland1996statistics` respalda log y
+  antilog(DE) - 1 ~ CV; el paso a ln y a Pitman-Morgan sobre ln es derivacion propia (cambio de base y Taylor).
+- **Toca:** cap. 1 (`sec:mt-estadistica`, definicion de los tres desenlaces) y cap. 3; ningun desenlace cambia.
+- **Propuesta:** conservar los tres desenlaces fijados (previos para v2) y escribir el mapeo con las dos citas; IC95
+  como apoyo de "a la baja". Se aplica en capitulo3-r25; cap. 1 queda para su proxima ronda. **Pendiente de la autora:**
+  visto bueno del mapeo.

@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (14) — fichas Walker, Lakens, Bland 1996; #194; capitulo3-r25 en curso
+
+- **Hecho:** fichas `walker2011understanding`, `lakens2017equivalence`, `bland1996statistics` + `refs/clean` (154 entradas); cubren los 2 GAPLIT del cap. 3 (rotulo propio mapeado, #194; paso a ln como derivacion propia). IC95 v1 [-516.2, -85.7].
+- **Siguiente:** cerrar capitulo3-r25 (falta estilo y redactor); autora: raw de Bland "Logarithms" sin PDF, visto bueno de #194.
+
 ## 2026-10-15 (13) — ronda del encargo b: realismo visual en rojo y GAPDEC cerradas
 
 - **Hecho:** macro `\REVVISUAL` (rojo, #193) en `overleaf/main.tex`; capitulo2-r08 (PASA), capitulo3-r24 (PASA), introduccion-r08 (FALLA solo por l. 7, #126) con DEC 2026-10-15 (3). **0 `\GAPDEC` en el documento.** GAPLIT: 3 (Niu-Li-Wang cap. 2; lectura de un TOST no concluyente y var(ln) ~ CV^2, cap. 3). PDF 161 pp.

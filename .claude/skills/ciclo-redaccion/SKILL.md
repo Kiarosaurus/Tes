@@ -44,7 +44,8 @@ b. **Revision en paralelo**: lanza en **un solo mensaje** tres llamadas Agent, a
    **Si el lint de la seccion cuenta algun `\GAPDEC` o `\GAPDATO`**, lanza en ese mismo mensaje una cuarta
    llamada, a `asesor-tesis`, con la seccion, `rNN` y la ruta del lint (autora, 2026-10-16: meta de 0 `\GAPDEC` y
    solo el `\GAPLIT` de Niu al final). Su reporte `<seccion>-rNN-asesor.md` va al redactor en el paso e: el
-   redactor aplica las clases A y D; las clases B (decisiones) y C (calculos) se listan para la autora en el cierre.
+   redactor aplica las clases A y D (el asesor ya convirtio en A los calculos baratos que hizo); las clases B
+   (decisiones de la autora) y los calculos no baratos se listan para la autora en el cierre.
 
 c. **Criterio de parada por convergencia**: si el lint dice PASA **y** los tres revisores devuelven
    `alta=0 media=0`, **para: CONVERGIO**.

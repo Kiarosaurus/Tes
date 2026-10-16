@@ -6,8 +6,10 @@ argument-hint: <seccion|documento> [rondas=5]
 
 # /ciclo-redaccion
 
-Orquestas; no redactas ni revisas tu mismo. Las tareas van a los subagentes `redactor-tesis`,
-`revisor-guia-cs`, `revisor-estilo` y `auditor-trazabilidad`. Tu trabajo es correr el bucle, decidir
+Orquestas; no redactas ni revisas tu mismo. Las tareas van al subagente `redactor-tesis`, al
+`asesor-tesis` y a los tres revisores (guia, estilo, trazabilidad), que corren en **Codex** via
+`scripts/codex_revisor.sh` (con los subagentes `revisor-guia-cs`, `revisor-estilo` y `auditor-trazabilidad` de
+Claude como respaldo). Tu trabajo es correr el bucle, decidir
 cuando parar y reportar a la autora.
 
 Argumentos: `$ARGUMENTS`. Primer argumento: nombre del `.tex` sin extension (`introduccion`,
@@ -36,13 +38,20 @@ a. **Lint**:
    `python scripts/lint_redaccion.py <seccion> --compilar > redaccion/rondas/<seccion>-rNN-lint.md`
    (en `documento`, sin argumento de seccion). Guarda el total y si dice PASA o FALLA.
 
-b. **Revision en paralelo**: lanza en **un solo mensaje** tres llamadas Agent, a
-   `revisor-guia-cs`, `revisor-estilo` y `auditor-trazabilidad`. A cada una le pasas:
-   seccion, `rNN`, ruta del lint de esta ronda y, si r > r0 o existe una ronda previa, la ruta de
-   `redaccion/rondas/<seccion>-r(NN-1)-respuesta.md`. Cada revisor arranca sin contexto de rondas
-   anteriores, salvo esa respuesta; eso es a proposito, para que no se autoconvenza.
+b. **Revision en paralelo, con Codex** (autora, 2026-10-16: los tres revisores corren en Codex para ahorrar uso
+   de Claude; la cuota de OpenAI se puede usar). Lanza en **un solo mensaje** tres llamadas Bash con
+   `run_in_background: true`:
+   `bash scripts/codex_revisor.sh guia <seccion> rNN`, `... estilo ...` y `... trazabilidad ...`
+   (si hay encargo de la autora, antepon `ENCARGO=<ruta> `; contexto extra del orquestador, como cuarto argumento
+   entre comillas). El script busca solo la respuesta previa, deja el reporte en
+   `redaccion/rondas/<seccion>-rNN-<tipo>.md` e imprime `<ruta> alta=N media=N baja=N`. Codex solo puede escribir
+   en `redaccion/rondas/` (sandbox). Cada revisor arranca sin contexto de rondas anteriores, salvo esa respuesta;
+   eso es a proposito, para que no se autoconvenza. **Si el script sale con error** (sin reporte), lanza para ese
+   revisor el subagente de Claude equivalente (`revisor-guia-cs`, `revisor-estilo`, `auditor-trazabilidad`) con
+   seccion, `rNN`, lint y respuesta previa, y avisalo en el reporte final. Si un reporte de Codex no trae la linea
+   TOTAL o su formato no sigue el del agente, abrelo y cuentalo tu; si es inutilizable, mismo respaldo.
    **Si el lint de la seccion cuenta algun `\GAPDEC` o `\GAPDATO`**, lanza en ese mismo mensaje una cuarta
-   llamada, a `asesor-tesis`, con la seccion, `rNN` y la ruta del lint (autora, 2026-10-16: meta de 0 `\GAPDEC` y
+   llamada, esta si Agent, a `asesor-tesis`, con la seccion, `rNN` y la ruta del lint (autora, 2026-10-16: meta de 0 `\GAPDEC` y
    solo el `\GAPLIT` de Niu al final). Su reporte `<seccion>-rNN-asesor.md` va al redactor en el paso e: el
    redactor aplica las clases A y D (el asesor ya convirtio en A los calculos baratos que hizo); las clases B
    (decisiones de la autora) y los calculos no baratos se listan para la autora en el cierre.

@@ -119,6 +119,7 @@ y ruta anterior en `../obsoletos/README.md`). Lo superado que **todavia se impor
 | `e9_corredor.py` | aqui | **lo importan** `e9ts_corredor.py`, `e12_sap_control.py`, `e14_relleno_envolvente.py` y `src/muestreador/sap.py` |
 | `ts_piloto_qc.py` / `.csv` | aqui | congelado como evidencia de #49/#50; lo importan `ts_qc.py`, `e9ts_corredor.py`, `e12`, `e14` |
 | `e13_poses_piloto.csv` | aqui | lo lee `verificar_coherencia.py` |
+| `e15_w1_sensibilidad.py` -> `e15_w1_sensibilidad.md` | W1 por remuestreo de pacientes (IC95) y sensibilidad sin `CLINIC_0022`/`0024` (2026-10-08 ptos 18 y 22) | local | **CORRIDO** 2026-10-15: regresion exacta de E13; IC95 nav [0.152, 0.313], conv [0.089, 0.364]; sin los 2 casos 0.203 / 0.237 |
 | `r1_mosaico.py`, `r1_revision_itksnap_revisor.*`, `r1_landmarks.v*`, `r1_estados.v2a.csv`, `r2_nivel_pico_revisor.ANTERIOR.md` | `../obsoletos/objetivo2/` | ver tabla de abajo |
 
 Detalle historico:

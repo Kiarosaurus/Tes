@@ -192,7 +192,7 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       grupo 2 = 4). Prueba = 33 pacientes (`02-datos.md` 2026-10-11). ROIs = anillos completos de un voxel de
       guarda a 12 mm, cortes con `M` menos 8 mm por extremo; mediana por paciente; se reporta la
       fraccion de voxeles en el suelo de -1000 HU. Jerarquia: **TOST contra el brazo fisico
-      (primario)**, realismo frente a CLINIC-metal, y copia y pegado como **control de cordura** (degenerado,
+      (primario)**, realismo frente a CLINIC-metal (**no ejecutado; trabajo futuro**, 2026-10-16, #193), y copia y pegado como **control de cordura** (degenerado,
       2026-10-15 pto 12; comparador parametrico descriptivo, 2026-10-15 (2)).
     - **Lecturas y sensibilidades del TOST (2026-10-15; posteriores para v1, previas para v2):** desenlaces
       equivalencia / no equivalencia / no concluyente con direccion; IC90 por permutacion; margen minimo y margen
@@ -205,8 +205,11 @@ quirurgicamente admisible, validado contra la distribucion clinica real de malpo
       piso de ruido 893 frente a 184 HU, que **favorece al difusor** (pareado: -455.0 HU, IC90 [-647.6, -262.5],
       descriptivo; #188); perfil 0-12 mm: el difusor iguala el nivel real junto al tornillo y no su caida (#187); el
       comparador parametrico se reporta como oraculo de nivel; el p95 bajo lo real es del modelo (#191).
-    - **Abierto para la autora y el asesor:** realismo visual del artefacto (#193); de ello depende como se acota el
-      reclamo del Objetivo 3 en conclusiones.
+    - **Realismo visual (#193), DECIDIDO 2026-10-16 con el asesor:** el proyecto y sus resultados quedan como estan;
+      no se redisena el sintetizador ni hay version 3. El reclamo del Objetivo 3 se acota a la sintesis local en la
+      banda, evaluada contra el protocolo fisico; el realismo visual insuficiente se reporta como limitacion
+      cuantificada (perfil plano #187, piso #188, p95 #191, pareado, v2 sin cambio #190). La comparacion a ciegas (D3)
+      y el contraste de realismo (H5) no se ejecutan: trabajo futuro. Sin prueba de Turing.
     - **Suelo de -1000 HU** (2026-10-05): regla preinscrita; si la perdida atribuible a la
       representacion (percentil 5 del paciente, eleccion post hoc declarada) es menor que `Delta`, se
       declara como limitacion de alcance; si es mayor, se cambia la representacion. **Declarada NO APLICABLE el

@@ -1,0 +1,55 @@
+# Revision de estilo — introduccion — r09
+
+Fuentes leidas: `redaccion/ESTILO.md`, `overleaf/CLAUDE.md` (tabla de terminos), `redaccion/BITACORA.md` (§1 VIGENTES
+y §2), lint `introduccion-r09-lint.md` (no se repiten la oracion de 41 palabras de l.7 ni "robustos"), respuesta
+`introduccion-r08-respuesta.md`, reporte `introduccion-r08-estilo.md`, `redaccion/ENCARGO_2026-10-15c.md`,
+`experiments/objetivo2/e15_w1_sensibilidad.md`, `capitulo3.tex` (:198-200, :341, :431 para "suelo"). `muestras_autora.md`
+esta vacio.
+
+Alcance: el encabezado (l.3-17) y la Formulacion (l.21) siguen bajo #126; sus hallazgos de r07 siguen ESCALADOS y no se
+re-reportan. Se revisa de l.23 a l.102. Lo APLICADO (PARCIAL) con motivo en r08 (S11, Obj 4 en siete oraciones) y lo no
+aplicado con motivo (S25) no se re-reportan. "No se sostiene" (l.52) es literal de DEC 2026-10-15 (3) y no se reporta.
+La repeticion del piso de ruido en l.50 y l.100 la pidio guia-6 en r08 y no se reporta.
+
+## Hallazgos
+| ID | Sev | Criterio | Ubicacion | Texto actual (max 15 palabras) | Propuesta |
+|---|---|---|---|---|---|
+| S01 | media | E-P4, E-P1 | l.94, ultima oracion (texto que cambia en esta ronda) | "con una sensibilidad sin los dos casos fallidos \GAPDATO{...}" | Al cerrar el GAPDATO con e15, dar las dos cifras y la condicion: la introduccion no da W1 primaria, asi que 0.203/0.237 solos quedan sueltos. "... y la variante se mantiene. En un analisis posterior y descriptivo sin esos dos casos, la distancia de Wasserstein-1 pasa de 0.206 a 0.203 frente a la serie navegada y de 0.230 a 0.237 frente a la convencional." Patron PAT-31 (la condicion "posterior y descriptivo" no se puede perder) |
+| S02 | media | E-R4, E-T1 | l.50, primera oracion; l.52, cuarta oracion | "la lectura de sus desenlaces, despues de conocer el resultado" / "se fijo despues de ver la prueba ... de las dos versiones" | El mismo momento de la lectura se dice dos veces y con dos formulas distintas (resultado de v1 / prueba de las dos versiones). Dejarlo una vez, en l.52, que es la precisa: en l.50, "En el Objetivo~3, la regla de equivalencia se fijo antes de procesar ningun paciente de prueba con el sintetizador o con el protocolo fisico (Seccion~\ref{sec:ap-analisis})." Patron PAT-177 reincide |
+| S03 | media | E-M1 | l.54 (parrafo entero) | "La insercion por copia y pegado no produce rayas, y superarla es..." | Parrafo cajon: control de cordura, contraste de realismo pendiente y version 2, sin oracion tematica. Abrir con la funcion: "Los demas contrastes del Objetivo~3 no deciden su desenlace." y seguir con las tres piezas; o llevar la version 2 a un parrafo propio con su ultima oracion. Patron PAT-33 reincide |
+| S04 | media | E-M1, E-O3 | l.72, primera oracion | "El muestreador no se construye con los datos ..., y el veredicto negativo del Objetivo~1 aporta" | Une con "y" dos ideas sin relacion (independencia del muestreador; hallazgo del Obj 1); el parrafo no tiene una sola funcion. Separar: la independencia del muestreador al final de l.70, tras el segundo elemento; el hallazgo del Obj 1 como parrafo propio o al final de l.46, que ya da el veredicto. Patron PAT-33 reincide |
+| S05 | media | E-O2, E-M1 | l.102 (ocho oraciones) | "Las mascaras de entrenamiento se umbralizan ... El primero se cuantifica con ..." | Cada desplazamiento se nombra en una oracion y se mide en otra, tres oraciones mas abajo; el lector empareja. Fundir cada par: "El primero, entre las mascaras umbralizadas sobre metal real y el cilindro parametrico liso con cabeza, se cuantifica con ... (Seccion~\ref{sec:sintetizador})." Igual con el segundo y el tercero. El parrafo queda en cinco oraciones. Patron PAT-58 reincide |
+| S06 | media | E-T1, E-R5 | l.100, ultimas dos oraciones | "asimetrias de cortes, de ruido y de suelo de la representacion" / "el piso de ruido" | "Suelo" (los -1000 HU de la representacion, C3 :341, :431) y "piso" (amplitud de solo ruido) son conceptos distintos con nombres casi sinonimos en la misma oracion. Dar el valor del suelo en su primera aparicion: "asimetrias de cortes, de ruido y de saturacion en el suelo de -1000~HU de la representacion" y mantener "piso de ruido" solo para el ruido. Patron PAT-14 reincide |
+| S07 | media | E-M8, E-R2 | l.98, cuarta oracion | "mientras que el percentil~95 del sintetizador queda por debajo de ellas" | El percentil 95 no dice de que magnitud es; la oracion compara un artefacto con un estadistico sin objeto. "mientras que el percentil~95 de los HU del artefacto sintetizado ..." con la magnitud que fija C3 :525 (cotejar alli cual es) |
+| S08 | media | E-P3 | l.66, sexta oracion | "El sintetizador, en cambio, opera sobre cualquier TC reconstruida, sin proyecciones." | "Cualquier" generaliza mas alla de lo entrenado y evaluado (CTPelvic1K, pelvis). "El sintetizador, en cambio, opera sobre la TC reconstruida, sin proyecciones." |
+| S09 | media | E-M8 | l.58, quinta oracion | "Medir esa utilidad con ejemplos ... confundiria las dos propiedades" | "Esa utilidad" no tiene antecedente: la oracion anterior habla de "usar implantes sinteticos como aumento de datos". "Medir la utilidad de ese aumento de datos con ejemplos cuya plausibilidad fisica no se conoce confundiria utilidad y plausibilidad (vease el alcance)." Patron PAT-34 reincide |
+| S10 | media | E-M4, E-O3 | l.62, primera oracion | "no liga al objeto generado ..., y el artefacto metalico no queda dentro del implante" | La "y" oculta la relacion: la carencia importa porque el artefacto sale de la mascara. "El tercer enfoque, la sintesis de lesiones por difusion, no liga al objeto generado los cambios de intensidad fuera de su mascara, y el artefacto metalico es justamente un cambio de ese tipo." |
+| S11 | media | E-M1, E-O3 | l.64, ultima oracion | "La brecha se acota, asi, a la sintesis del implante ..." | La brecha concluye los cuatro enfoques (l.60-64), pero cierra el parrafo de la MAR no pareada y "asi" la presenta como consecuencia solo de el. Llevarla a un parrafo propio, o abrir con ella el de l.66, sin "asi": "La brecha que queda es la sintesis del implante y de su artefacto local, ..." (formula del pto 9 sin cambios) |
+| S12 | baja | E-M8 | l.52, tercera oracion | "Corresponde al modelo evaluado, el punto de control de la version~1" | Sujeto eliptico: no se sabe si corresponde el desenlace o la *streak amplitude*. "Ese resultado corresponde al modelo evaluado, ..." Patron PAT-152 reincide |
+| S13 | baja | E-M1 | l.64, primera y segunda oraciones | "publicada como paso intermedio de la MAR no pareada ... Esa MAR se entrena" | Se usa la MAR no pareada y se define despues. "La MAR no pareada, que se entrena sin pares de una misma imagen con metal y sin el, publica como paso intermedio una sintesis aprendida de componentes del artefacto, que tampoco produce ..." Patron PAT-3 reincide |
+| S14 | baja | E-R4 | l.48, ultima oracion | "se ejerce en el Objetivo~2 y no se evalua experimentalmente por separado" | Que el Obj 4 no se evalua por separado ya lo dicen l.28 y l.43; "se ejerce" no dice nada verificable. "El Objetivo~4 se verifica con los controles de implementacion de SAP (identidad, monotonia y resolucion)." |
+| S15 | baja | E-R4 | l.54, cuarta y quinta oraciones | "posterior y exploratoria ... Su evaluacion exploratoria en prueba se ejecuto" | "Exploratoria" dos veces seguidas. "Su evaluacion en prueba se ejecuto, salvo ..." |
+| S16 | baja | E-R2 | l.66, cuarta oracion | "Por eso la comparacion no cubre las poses del muestreador" | Causa circular: haber elegido una sola pose no es la razon de no cubrir las otras, es lo mismo. "La comparacion no cubre, asi, las poses del muestreador, que solo entran ..." o sin conector. Patron afin a PAT-93 |
+| S17 | baja | E-M4 | l.66, ultima oracion | "Si alcanza la equivalencia con el protocolo fisico es una pregunta del Objetivo~3" | El desenlace ya se dio (l.52); el presente la lee como pendiente. "La equivalencia con el protocolo fisico era una pregunta del Objetivo~3, no una premisa de este trabajo." |
+| S18 | baja | E-M8 | l.83 (ablaciones) | "los componentes del muestreador vigente, el anclaje ... y la escala ..., para medir" | La aposicion se lee como tres cosas y el doble "para" encadena dos finalidades. "Las ablaciones, que retirarian uno a uno los dos componentes del muestreador vigente (el anclaje al eje del corredor y la escala de la perturbacion) y medirian el efecto de cada uno, se difieren ..." |
+| S19 | baja | E-R4 | l.82, ultimas dos oraciones | "Ademas, localmente solo se dispone ... Un resultado de segmentacion descansaria" | "Localmente" dos veces y la ultima oracion resume las dos anteriores. Fundir: "Localmente solo se dispone de una parte de la coleccion, de modo que un resultado de segmentacion descansaria en una cohorte pequena y parcialmente anotada." |
+| S20 | baja | E-V2 | l.102, tercera y sexta oraciones | "El contexto de entrenamiento trae rayas" / "donde el contexto si trae metal" | "Traer" coloquial, dos veces. "contiene" |
+| S21 | baja | E-R4 | l.70, cuarta oracion | "Lo propio de este trabajo es emplear esas ventanas como codificacion de la entrada" | Repite por la afirmativa lo que la oracion anterior acaba de negar ("y no a la codificacion de la entrada"). Fundir: "... a la funcion de perdida \cite{...}; este trabajo las emplea como codificacion de la entrada para generar." Patron PAT-181 reincide |
+
+TOTAL alta=0 media=11 baja=10
+
+## Impresion general
+Desde los objetivos la seccion se lee sobria y con la certeza medida, sin muletillas; el encabezado (l.3-17) conserva la
+otra voz (#126). El patron dominante sigue siendo la acumulacion entre rondas: parrafos cajon (l.54, l.72), un parrafo de
+ocho oraciones (l.102) y salvedades dichas dos veces con formulas distintas (momento de la lectura, Obj 4).
+
+## Patrones
+| Patron (una linea, generalizable a otras secciones) | Criterio | Ejemplo antes (max 15 palabras) | Ya en bitacora (PAT-n o "nuevo") |
+|---|---|---|---|
+| Parrafo cajon que junta control, pendiente y version posterior sin oracion tematica | E-M1 | "La insercion por copia y pegado ... Despues ... se entreno una version~2" | PAT-33 |
+| Salvedad temporal de la lectura repetida con dos formulas distintas | E-R4, E-T1 | "despues de conocer el resultado" / "despues de ver la prueba ... de las dos versiones" | PAT-177 |
+| Parrafo que enumera elementos en un bloque y su medida en otro, hasta ocho oraciones | E-O2, E-M1 | "Las mascaras ... El primero se cuantifica con ..." | PAT-58 |
+| Dos conceptos distintos con nombres casi sinonimos en la misma oracion | E-T1, E-R5 | "suelo de la representacion" / "piso de ruido" | nuevo (afin a PAT-14) |
+| Anafora a un sustantivo que la oracion anterior no nombra | E-M8 | "Medir esa utilidad" tras "usar implantes ... como aumento de datos" | PAT-34 |
+| Cifra de sensibilidad que entra sin la cifra principal ni su condicion posterior | E-P4, E-P1 | "con una sensibilidad sin los dos casos fallidos" | PAT-31 |
+| Oracion de brecha general cerrando el parrafo de un solo enfoque, con "asi" | E-M1, E-O3 | "La brecha se acota, asi, a la sintesis del implante" | nuevo |

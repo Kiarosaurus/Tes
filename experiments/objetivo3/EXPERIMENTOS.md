@@ -105,9 +105,11 @@
 | `a26_lecturas.py` | desenlaces (D15), IC90 por permutacion (D14), margen minimo y comun (D16), Bland-Altman y Pitman-Morgan (pto 22) | script | **CORRIDO** sobre v1 (`outputs/a26/v1_*`); resultados en `resultados_prueba_v1.md` y `resultados_dec_2026-10-15.md`; #187 |
 | `a27_preservacion_peters.py` | D8: RMSE y SSIM de Peters sin metal frente a la TC, fuera de `G` | script | **CORRIDO**: RMSE 31.4 HU, SSIM 0.907 (mediana) |
 | `a15_cadena_completa.py` (`--sin-metal`, `--guardar-u-g`), `a15_diag.sbatch` | D-extra 2 (piso de ruido del difusor, `MODO=nulo`) y D7 (p95, `MODO=p95`) | Khipu 56867 / 56866 | **CORRIDOS** 2026-10-15 (rc=0) -> `outputs/khipu_2026-10-15/obj3_pose/`; #188 |
+| `../registro/r_razon_banda_run04.py`, `../registro/registro_metodos_2026-10-15.md` | razon de parches de solo banda de run04 y registro de metodos que solo constaban en el codigo (decodificador P1, asinh, eje del corredor, landmarks, IC90 por anillo, Fisher) | local | **HECHO** 2026-10-15: razon 0.638 (5 526 / 8 656) |
+| `a29_perfil.py`, `a20_pareado.sbatch` | perfil 0-12 mm por brazo y contraste pareado del difusor (#187, #188) | local + Khipu 56968 | **CORRIDO** 2026-10-15 |
 | `a28_diag_p95.py` | D7: decodificacion regla_suave frente a solo LW del `u` de `G`, control real en `metal_0039` | local | **CORRIDO** 2026-10-15: veredicto "modelo" (#191) |
-| `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1 y comparador parametrico | asistente | **EN CURSO**: falta D9 |
-| (sin script) | D9 (poses del muestreador), D3 a ciegas, control con imagenes reales de D7, realismo (H5) | — | **POR ESCRIBIR** |
+| `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1, comparador parametrico, v2, D7, acuerdo en log, perfil (`a29`) y pareado | asistente | **EN CURSO**: falta D9 |
+| (sin script) | D9 (poses del muestreador), D3 a ciegas, realismo (H5) | — | **POR ESCRIBIR** (el control con imagenes reales de D7 se corrio en `a28`) |
 
 ## 7. Archivados
 

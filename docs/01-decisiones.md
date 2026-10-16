@@ -2713,3 +2713,24 @@ profesional, y sobre #184 estoy de acuerdo con lo de aplicar lo mismo que se dec
    anillo; programa y convencion de Fisher (reproducidos con la *minlike*); razon de solo banda de run04 (0.638);
    W1 por remuestreo de pacientes e intervalo, y sensibilidad sin `CLINIC_0022`/`0024` (`e15`). Todos descriptivos;
    ninguno cambia una cifra confirmatoria.
+
+## 2026-10-16 — Realismo visual (#193): el proyecto y sus resultados quedan como estan
+
+Decidido por la autora con su asesor y escrito por el asistente a pedido explicito ("Con el asesor decidimos dejar el
+proyecto y los resultados como estan y no cambiar todo respecto al difusor para dar un resultado visualmente
+realista. Deja todo listo (00-tesis.md y 01-decisiones.md, ESTADO.md, etc)"), 2026-10-16.
+
+1. **#193, opcion (a).** No se reentrena ni se redisena el sintetizador para mejorar el realismo visual; no hay
+   version 3. El reclamo del Objetivo 3 se acota a la sintesis local, en la banda, condicionada por la pose del
+   muestreador, evaluada contra el protocolo fisico con el diseno congelado. La limitacion de realismo se reporta
+   cuantificada con lo ya medido: perfil por anillos plano (#187), piso de ruido (#188), p95 bajo lo real (#191),
+   contraste pareado (#188), y que la version 2 no cambio el desenlace (#190). El protocolo fisico de
+   `peters2025hybrid` queda como referencia del campo lejano.
+2. **Prueba de Turing visual:** no se hace ni se promete; no era compromiso de `00-tesis.md`. La comparacion visual a
+   ciegas (D3) y el contraste de realismo sin script (H5) no se ejecutan: se declaran como trabajo futuro, con la
+   razon (el resultado visual ya se juzgo insuficiente y la decision es no rediseñar).
+3. **Redaccion:** la marca `\REVVISUAL` (rojo) se retira en la proxima ronda; su texto se conserva reescrito como
+   limitacion declarada del Objetivo 3, sin afirmar realismo visual. Los `\GAPDATO` de realismo (H5, D3, estructura
+   direccional, lista de la referencia de realismo) pasan a limitacion o trabajo futuro, no a GAP.
+4. **Meta de la ronda de todos los capitulos:** 0 `\GAPDEC` y 0 `\GAPDATO` cerrables; el unico GAP admitido al final
+   es el `\GAPLIT` de Niu, Li y Wang (cap. 2).

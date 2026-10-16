@@ -41,6 +41,10 @@ b. **Revision en paralelo**: lanza en **un solo mensaje** tres llamadas Agent, a
    seccion, `rNN`, ruta del lint de esta ronda y, si r > r0 o existe una ronda previa, la ruta de
    `redaccion/rondas/<seccion>-r(NN-1)-respuesta.md`. Cada revisor arranca sin contexto de rondas
    anteriores, salvo esa respuesta; eso es a proposito, para que no se autoconvenza.
+   **Si el lint de la seccion cuenta algun `\GAPDEC` o `\GAPDATO`**, lanza en ese mismo mensaje una cuarta
+   llamada, a `asesor-tesis`, con la seccion, `rNN` y la ruta del lint (autora, 2026-10-16: meta de 0 `\GAPDEC` y
+   solo el `\GAPLIT` de Niu al final). Su reporte `<seccion>-rNN-asesor.md` va al redactor en el paso e: el
+   redactor aplica las clases A y D; las clases B (decisiones) y C (calculos) se listan para la autora en el cierre.
 
 c. **Criterio de parada por convergencia**: si el lint dice PASA **y** los tres revisores devuelven
    `alta=0 media=0`, **para: CONVERGIO**.
@@ -54,7 +58,8 @@ d. **Deteccion de oscilacion**: lee los tres reportes y compara con la ronda ant
    medios restantes oscilan o estan ESCALADOS, **para: SOLO QUEDAN DECISIONES DE LA AUTORA**.
 
 e. **Correccion**: lanza `redactor-tesis` en modo `corregir` con la seccion y `rNN`. Dile que
-   hallazgos sacaste por oscilacion, para que no los toque. En `documento`, el redactor se lanza una
+   hallazgos sacaste por oscilacion, para que no los toque, y pasale el reporte del asesor si existe.
+   En `documento`, el redactor se lanza una
    vez **por cada seccion** con hallazgos, en serie (no en paralelo: comparten siglas y terminos).
 
 f. **Cierre de etapa** (paso g), siempre, antes de seguir o de parar.

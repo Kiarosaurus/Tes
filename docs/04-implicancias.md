@@ -12435,7 +12435,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   la define ella) — propuesta: `yang2022computeraided`, y retirar `yang2022arcplanning` o reasignarla al congreso con
   su propio raw; (b) PDF de Day 2000 si quiere citar cifras del cuerpo.
 
-### 193 — REALISMO VISUAL DEL ARTEFACTO SINTETICO INSUFICIENTE A JUICIO DE LA AUTORA; MAS ENTRENAMIENTO DEL MISMO DISENO NO LO RESOLVERIA (opinion del asistente) — ABIERTA
+### 193 — REALISMO VISUAL DEL ARTEFACTO SINTETICO INSUFICIENTE A JUICIO DE LA AUTORA; MAS ENTRENAMIENTO DEL MISMO DISENO NO LO RESOLVERIA (opinion del asistente) — DECIDIDA 2026-10-16 opcion (a) (autora y asesor), pendiente de redaccion
 
 - **Origen:** la autora, 2026-10-15: "siguen sin verse del todo realistas ... los artefactos reales son distintos de los
   generados"; teme que no pasen una prueba de Turing medica. Opinion del asistente en el chat, misma fecha.

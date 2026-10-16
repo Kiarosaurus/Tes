@@ -59,6 +59,9 @@
 \newcommand{\GAPLIT}[1]{\gapmarca{gaplit}{GAP-LIT}{red!75!black}{#1}}
 \newcommand{\GAPDATO}[1]{\gapmarca{gapdato}{GAP-DATO}{orange!85!black}{#1}}
 \newcommand{\GAPDEC}[1]{\gapmarca{gapdec}{GAP-DEC}{blue!70!black}{#1}}
+%% \REVVISUAL{...}: texto que depende del realismo visual del artefacto sintetico (implicancia 193), pendiente de
+%% revision con el asesor. No es un GAP: es contenido redactado, en rojo para ubicarlo. Pedido de la autora 2026-10-15.
+\newcommand{\REVVISUAL}[1]{\textcolor{red}{#1}}
 \makeatletter
 \AtEndDocument{\immediate\write\@auxout{%
   \string\gdef\string\gapstotales{\arabic{gaplit}/\arabic{gapdato}/\arabic{gapdec}}}}

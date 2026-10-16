@@ -1,0 +1,50 @@
+# Revision de estilo — capitulo2 — r08
+
+Vara de tono: `redaccion/ESTILO.md` §1.1 (E-M1 a E-M8). `redaccion/muestras_autora.md` sigue vacio.
+El lint de r08 PASA (0/0/0), y ningun hallazgo de este reporte repite lo que el lint ya cuenta. La respuesta r07 aplico
+ES-01 a ES-15 y no rechazo ninguno, asi que no hay nada que re-abrir.
+La ubicacion es la linea de `overleaf/secciones/capitulo2.tex` en su estado actual (116 lineas, anterior a las
+ediciones del encargo 2026-10-15b). Fichas abiertas: `yang2022computeraided`, `han2019atlasplanning` y
+`goerres2017planning`. Para l. 98 se cotejo `capitulo3.tex`:262 (`sec:v2`). DEC 2026-10-15 (3), ptos 1 y 9, se leyo solo
+para no proponer redacciones que el encargo vaya a sustituir.
+Se comprobaron todos los VIGENTES de §1 que caen en estilo: PAT-3, 5, 14, 31, 33, 34, 39, 44, 46, 58, 86, 98, 102,
+114, 116, 119, 122, 143, 146, 152, 160, 161, 164, 173 a 177 y 181. Reinciden PAT-58 (l. 78, 94 y 104), PAT-86
+(l. 56/74), PAT-181 (l. 82 a 88), PAT-46 (desenlace del Obj 3) y PAT-31 (l. 98). PAT-77, que estaba ERRADICADO,
+reaparece en l. 56.
+Se respetan las decisiones de §2: no se reportan la formula de colocacion (l. 44 y 74), la formula de la carencia, la
+formula "este trabajo lee", el supuesto repetido en el cierre ni la salvedad de CLINIC-metal.
+
+## Hallazgos
+
+| ID | Sev | Criterio | Ubicacion | Texto actual (max 15 palabras) | Propuesta |
+|---|---|---|---|---|---|
+| ES-01 | alta | E-R6, E-M1 | l. 56, oraciones 1 y 4 | "Otros planificadores automáticos registran sobre la TC del paciente un atlas de pelvis" | El patron PAT-77 reincide. La oracion tematica mete a Yang et al. en el grupo de los atlas, pero su ficha dice "Yang no usa atlas, hace busqueda exhaustiva por paciente" y puntua por erosion. "Optimo" tampoco dice con que criterio. Ahora que Yang entra con `\cite`, el error queda impreso. Propuesta: or. 1: "Otros planificadores automáticos fijan la trayectoria con un atlas de pelvis anotado por un experto o con una búsqueda sobre la pelvis del paciente." Las or. 2 y 3 quedan igual (registro del atlas: "Goerres et al. registran sobre la TC del paciente un atlas de 12 pelvis femeninas ..."). Or. 4: "Yang et al.~\cite{yang2022computeraided} no usan atlas: sobre 10 pelvis buscan, en cada una, el canal de un ilion al otro a través de S1 cuya distancia mínima a la superficie ósea es mayor." |
+| ES-02 | media | E-R4 | l. 56, or. 5, y l. 74, or. 2 | "Los tres entregan una trayectoria por corredor, y ninguno modela una malposición graduada" | El patron PAT-86 reincide: el cierre de l. 56 vuelve casi literal en l. 74 ("entrega una trayectoria por corredor y no modela una malposición graduada"). Se conserva l. 56, que es el respaldo en el cuerpo. La de l. 74 se reformula como carencia: "La planificación entrega un plan por corredor y no una distribución de poses; la de Liu et al., además, no menciona tornillos iliosacros ni se aplica a fracturas de sacro." |
+| ES-03 | media | E-P3 | l. 98, or. 7 | "el artefacto real medido en la cohorte queda dentro de esa banda" | El patron PAT-31 reincide. `sec:v2` (cap. 3, l. 262) dice que la banda "alcanza ... para el artefacto real de estas piezas", y da todavia 174 HU de exceso real mediano en el anillo de 8 a 10 mm. "Queda dentro" suena a contencion completa y pierde la condicion de "estas piezas". Propuesta: "En los componentes metálicos de la cohorte del tamaño de un tornillo, la Sección~\ref{sec:v2} concluye que ese ancho alcanza para el artefacto real medido." |
+| ES-04 | media | E-M4, E-R4 | l. 94, or. 8 | "ya ejecutada y no concluyente en la partición de prueba, es la que puede contradecir" | Despues de decir que la comparacion ya se ejecuto, "puede contradecir" obliga al lector a adivinar si contradijo o no. Ademas, el patron PAT-46 reincide: el desenlace del Objetivo 3 se da tres veces en el capitulo (l. 94, 104 y 108), con tres formulas y tres remisiones distintas ("Sección amenazas", "capítulo de resultados", "véanse los objetivos"). Aqui basta la funcion del contraste, y el desenlace queda en §Brecha y en la fila propia: "La comparación del Objetivo~3 con el protocolo físico es la que pone a prueba ese supuesto (Sección~\ref{sec:amenazas})." |
+| ES-05 | media | E-O2 | l. 78 (8 oraciones) | "La densidad ósea y la apariencia tampoco tienen en las fuentes revisadas una medida" | El patron PAT-58 reincide: al partir ES-10 de r07 en dos oraciones, el parrafo paso a ocho y quedo con dos funciones. Se parte en dos. El parrafo de densidad son las or. 1 a 5, con la or. 1 "La densidad ósea tampoco tiene en las fuentes revisadas una medida pensada para un implante generado." y la or. 2 abierta por "La Sección~\ref{sec:poses} cita como motivación a Arand et al. ...". El parrafo de apariencia son las or. 6 a 8, con esta apertura: "Las métricas de apariencia del Objetivo~4 son tres de las ocho de Peters et al., \emph{bone integrity}, \emph{metal integrity} y \emph{streak amplitude}, diseñadas para puntuar la MAR frente a la imagen sin metal." |
+| ES-06 | media | E-O2, E-M1 | l. 94 (8 oraciones) | "Otra pregunta de representación es si la apariencia del artefacto puede generarse" | El patron PAT-58 reincide. Las or. 1 a 5 dan la evidencia publicada (reduccion en imagen frente a dos dominios), y las or. 6 a 8 dan el negativo y el supuesto. Se parte despues de la or. 5. El segundo parrafo abre con "Ningún trabajo revisado sintetiza el artefacto metálico solo en el dominio de imagen y evalúa su coherencia física.", que hace de oracion tematica, y cierra con la or. 8 de ES-04 |
+| ES-07 | media | E-O2, E-R1 | l. 104 (8 oraciones) | "En la fila propia, la columna ... En la fila propia constan el muestreador" | El patron PAT-58 reincide, y dos oraciones del mismo parrafo abren con "En la fila propia". Se parte despues de la or. 5: las or. 1 a 5 dicen como leer la tabla y las or. 6 a 8 dan el estado de la fila propia. La or. 3 queda asi: "La columna del enfoque añade, en esa fila, el supuesto y la convención de este trabajo." El segundo parrafo abre con "En la fila propia constan ...". El pasaje del realismo (or. 7) va en `\REVVISUAL` (encargo E1) |
+| ES-08 | media | E-R4 | l. 82 (or. 3), l. 86 (or. 2), l. 88 (or. 1) | "En las dos fuentes, las ventanas sirven para supervisar o para reconstruir por etapas" | El patron PAT-181 reincide. La idea de que el multiventana viene de la MAR y sirve para quitar el artefacto, mientras que aqui sirve para generar, se dice al cerrar l. 82, otra vez en l. 86 (or. 2), que va pegada a la apertura de l. 88 ("no reclama ...: emplea"), y una vez mas en la sintesis (l. 106, or. 4). Se elimina la or. 2 de l. 86. La or. 3 de l. 82 se acorta a "El uso de varias ventanas de HU para cubrir ese rango proviene de la MAR." El contraste queda una vez en l. 88 y otra en la sintesis |
+| ES-09 | baja | E-T1, E-M8 | l. 108, or. 7, y l. 104, or. 6 | "y en prueba quedó sin concluir (véanse los objetivos)" | "En prueba" queda eliptico, y "prueba" es polisemico en el documento (PAT-177). Ademas, las dos menciones que quedan tras ES-04 remiten a sitios distintos. Propuesta para l. 108: "..., y en la partición de prueba los datos no permitieron afirmarla (capítulo de resultados)." En l. 104 se mantiene la misma remision. La lectura completa de DEC 2026-10-15 (3) pto 1 la fija el redactor |
+| ES-10 | baja | E-R2 | l. 114, or. 4 | "se formula, por eso, como una combinación compatible con esos precedentes" | "Compatible" no dice nada verificable: no contradecir a los precedentes no es un aporte. Lo que el parrafo sostiene es que el aporte es la union de las piezas. Propuesta: "El aporte del sintetizador se formula, por eso, como la combinación de esas piezas: ...". El encargo (pto 9) va a reescribir esta oracion, y conviene que la nueva no recupere "compatible" |
+| ES-11 | baja | E-M8, E-O3 | l. 34, or. 1 | "es una práctica establecida en la MAR, de modo que insertar metal virtual no es" | El sujeto se repite dentro de la misma oracion, y es el segundo de cuatro "de modo que" del capitulo (l. 26, 34, 46 y 86), un roce con PAT-160. Propuesta: "Insertar metal virtual en TC clínicas para generar datos de entrenamiento es una práctica establecida en la MAR, y por eso no es lo que aporta este trabajo." |
+
+TOTAL alta=1 media=7 baja=3
+
+## Impresion general
+
+Leida de corrido, la seccion mantiene la voz de la guia: las citas llevan verbo y condicion, las lecturas propias estan marcadas y no hay inflacion ni informalidad.
+El fallo grave es puntual y de certeza: el parrafo nuevo de planificadores agrupa a Yang et al. con los atlas, aunque su ficha dice lo contrario.
+El patron dominante es el crecimiento por correcciones: tres parrafos pasan de siete oraciones, y el desenlace del Objetivo 3 y el posicionamiento del multiventana se repiten.
+
+## Patrones
+
+| Patron (una linea, generalizable a otras secciones) | Criterio | Ejemplo antes (max 15 palabras) | Ya en bitacora (PAT-n o "nuevo") |
+|---|---|---|---|
+| Oracion tematica que asigna a todas las fuentes del parrafo un metodo que una de ellas no usa | E-R6, E-M1 | "Otros planificadores automáticos registran ... un atlas" (Yang no usa atlas) | PAT-77 |
+| Cierre de parrafo repetido casi literal en el parrafo de carencias de la misma seccion | E-R4 | "Los tres entregan una trayectoria por corredor, y ninguno modela" | PAT-86 |
+| Partir una oracion por E-O1 deja el parrafo en ocho oraciones con dos funciones | E-O2 | l. 78: densidad y apariencia en un solo parrafo | PAT-58 |
+| El desenlace de un resultado propio se repite en varias secciones del capitulo, con remisiones distintas | E-R4 | "ya ejecutada y no concluyente" / "no concluyente" / "quedó sin concluir" | PAT-46 |
+| Origen y uso del multiventana dichos en oraciones contiguas tras la correccion anterior | E-R4 | "En las dos fuentes, las ventanas sirven para supervisar" + "no reclama" | PAT-181 |
+| Resultado propio retomado en otro capitulo con mas certeza y sin la condicion de la seccion que lo mide | E-P3 | "queda dentro de esa banda" frente a "alcanza ... para estas piezas" | PAT-31 |

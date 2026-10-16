@@ -41,6 +41,9 @@ agregar contenido tecnico que no este respaldado en el repositorio.
 
    El texto dentro de la marca dice **que** falta en una frase, no lo que se "espera" encontrar.
    Cada GAP nuevo se anota en la tabla de `redaccion/MAPA.md`.
+   - `\REVVISUAL{texto}` (no es GAP; pedido de la autora 2026-10-15): envuelve en rojo todo pasaje que trate del
+     realismo visual del artefacto sintetico o que dependa de el (#193), para revisarlo con el asesor. Se retira
+     cuando la autora decida #193.
 3. **Implicancia ABIERTA = GAP, no hecho.** Solo entran como hechos las entradas APLICADAS o
    CERRADAS de `docs/04-implicancias.md` y lo decidido en `docs/01-decisiones.md`.
 4. **Cita con ficha.** Solo claves que existan en `refs.bib`. Si la ficha del paper dice

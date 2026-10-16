@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (13) — ronda del encargo b: realismo visual en rojo y GAPDEC cerradas
+
+- **Hecho:** macro `\REVVISUAL` (rojo, #193) en `overleaf/main.tex`; capitulo2-r08 (PASA), capitulo3-r24 (PASA), introduccion-r08 (FALLA solo por l. 7, #126) con DEC 2026-10-15 (3). **0 `\GAPDEC` en el documento.** GAPLIT: 3 (Niu-Li-Wang cap. 2; lectura de un TOST no concluyente y var(ln) ~ CV^2, cap. 3). PDF 161 pp.
+- **Siguiente:** autora busca las 3 fuentes GAPLIT; revision con el asesor de lo rojo (#193); redactar cap. 4.
+
 ## 2026-10-15 (12) — decisiones delegadas registradas; fuentes alineadas
 
 - **Hecho:** pareado traido y leido (`a29`): meseta 8-12 mm no es piso (regla i); pareado -455.0 HU IC90 [-647.6, -262.5]; el piso favorece al difusor. `01-decisiones.md` 2026-10-15 (3) (10 puntos, delegada con permiso explicito). `00-tesis.md` y `EXPERIMENTOS.md` alineados (T02, v2 corrida, delta 0.030, lecturas posteriores). Yang: `yang2022computeraided` alta, `yang2022arcplanning` retirada de clean. Implicancias 179, 187-192 DECIDIDAS; 180, 183, 185, 186 CERRADAS; #152 mecanismo cerrado.

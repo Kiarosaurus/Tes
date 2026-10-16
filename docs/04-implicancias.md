@@ -12477,3 +12477,12 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Toca:** cap. 3 §Analisis estadistico y Amenazas (validez de la conclusion); cap. 4 discusion.
 - **Opciones:** (a) declararlo como limitacion: el TOST contrasta contra la variabilidad propia, no contra un umbral
   de uso; (b) buscar una fuente que justifique un margen por variabilidad (`\GAPLIT`). **Pendiente de la autora.**
+- **Adenda 2026-10-15 — `haber2007general`:** Haber y Barnhart (2008, DOI 10.1177/0962280206075527) respaldan la
+  idea general de comparar el desacuerdo entre métodos con el desacuerdo entre réplicas del mismo método. No
+  respaldan la regla concreta: sin referencia usan el **promedio** de `G(X,X')` y `G(Y,Y')`; con referencia usan
+  solo `G(X,X')`. Exigen comprobar antes que el desacuerdo intramétodo sea aceptable y reconocen que su coeficiente
+  aumenta con la variabilidad intramétodo (p. 168). Sus coeficientes se interpretan para una medición individual,
+  no para la mediana de cinco semillas usada en el contraste de la tesis. `max`, rango máximo--mínimo y margen TOST:
+  NO ENCONTRADO EN EL PDF. La búsqueda de respaldo conceptual queda cubierta; la fórmula `max(s,r)` permanece como
+  convención propia. **Recomendación:** opción (a), citando Haber y Barnhart para la intuición y declarando la falta
+  de correspondencia matemática y el incentivo favorable al método más ruidoso.

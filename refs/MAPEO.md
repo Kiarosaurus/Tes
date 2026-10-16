@@ -57,6 +57,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `ferrero2017technicalnote` | `ferrero2017technicalnote.nbib` | PubMed nbib | — | 28241103 |
 | `glover1980nonlinear` | `glover1980nonlinear.nbib` | PubMed nbib | — | 7393149 |
 | `grass2016` | `grass2016.nbib` | PubMed nbib | — | 27392768 |
+| `haber2007general` | `haber2007general.bib` | BibTeX SAGE | `doi:10.1177/0962280206075527` | 17698934 |
 | `haneda2025aapm` | `haneda2025aapm.nbib` | PubMed nbib | — | 41058545 |
 | `hinsche2002fluoroscopy` | `hinsche2002fluoroscopy.nbib` | PubMed nbib | — | 11937873 |
 | `ho2020denoising` | `ho2020denoising.bib` | BibTeX ACM | `3495724.3496298` | — |

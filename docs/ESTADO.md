@@ -2,6 +2,18 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (18) — ficha Haber y Barnhart para #195
+
+- **Hecho:** ficha completa `haber2007general`, entrada clean y bibliografías regeneradas; `_index`, `_candidatos`, `MAPEO` y #195 actualizados.
+- **Hallazgo:** respalda comparar desacuerdo entre métodos con variabilidad intramétodo, pero usa promedio (sin referencia) o solo la referencia; no `max(s,r)`. Exige repetibilidad aceptable y reconoce que el índice crece con el ruido propio.
+- **Siguiente:** autora decide aplicar la opción (a) de #195: citar la intuición y declarar `max(s,r)` como convención/limitación. `barnhart2007` queda candidato opcional, no necesario.
+
+## 2026-10-15 (17) — ficha y referencias de Bland 1996 Logarithms
+
+- **Hecho:** ficha `bland1996statisticslog` por `lector-papers`; raw BMJ verificado, clean normalizado y bibliografias regeneradas (156 entradas). `_index` y `_candidatos` actualizados; sin implicancias nuevas sobre la tesis.
+- **Aclaracion:** `papers/bland1986statistical.pdf` era incorrecto y la autora lo borro; el PDF correcto de 4 pp. queda como `bland1986statisticalmeasurement.pdf` y sustenta la ficha existente. Sigue pendiente decidir cual de las dos claves bibliograficas duplicadas se conserva.
+- **Siguiente:** autora decide la clave duplicada de Bland 1986; busqueda breve para #195.
+
 ## 2026-10-15 (16) — referencias de Bland actualizadas tras el renombre de raws
 
 - **Hecho:** `bland1996statistics` -> `bland1996statisticsmeasurement` (clean, ficha, cite del cap. 3, indices); altas `bland1996statisticslog` y `bland1986statisticalmeasurement` (VERIFICAR: mismo articulo que `bland1986statistical`). 156 entradas; cap. 3 compila y PASA.

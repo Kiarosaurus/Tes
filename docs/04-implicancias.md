@@ -12466,3 +12466,14 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Propuesta:** conservar los tres desenlaces fijados (previos para v2) y escribir el mapeo con las dos citas; IC95
   como apoyo de "a la baja". Se aplica en capitulo3-r25; cap. 1 queda para su proxima ronda. **Pendiente de la autora:**
   visto bueno del mapeo.
+
+### 195 — EL MARGEN `Delta` NO ES LA "DIFERENCIA CLINICAMENTE ACEPTABLE" DE LA LITERATURA DE EQUIVALENCIA: es la variabilidad del propio metodo (max(s, r)); Walker 2011 pide justificarlo con evidencia clinica — ABIERTA
+
+- **Origen:** capitulo3-r25 (guia-5), ficha `walker2011understanding.md` ("the maximum clinically acceptable difference",
+  p. 192; justificacion con "relevant evidence and sound clinical considerations", p. 194).
+- **Hallazgo:** `Delta = max(s, r)` (2026-10-09 (4)) se fijo antes de ver prueba, pero como ruido del metodo (rango entre
+  semillas del difusor, test-retest de Peters), no como diferencia aceptable para un uso. Ya #189 punto 2 notaba que no
+  hay diferencia aceptable fijada (Bland y Altman). No cambia ningun desenlace.
+- **Toca:** cap. 3 §Analisis estadistico y Amenazas (validez de la conclusion); cap. 4 discusion.
+- **Opciones:** (a) declararlo como limitacion: el TOST contrasta contra la variabilidad propia, no contra un umbral
+  de uso; (b) buscar una fuente que justifique un margen por variabilidad (`\GAPLIT`). **Pendiente de la autora.**

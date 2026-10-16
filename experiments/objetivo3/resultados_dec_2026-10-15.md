@@ -228,3 +228,8 @@ otra metrica (exceso sobre un corte sin metal): comparar forma, no nivel. (i) y 
 - **Sentido del piso sobre el contraste primario (#188):** referir el difusor a su propia sintesis sin metal baja su
   amplitud (1308 -> 1112 de mediana) y aleja la diferencia de cero (-301.0 -> -455.0): el piso del brazo aprendido
   **favorece al difusor** en el contraste primario, es decir, lo acerca a la equivalencia.
+
+## IC95 del contraste primario de v1 (apoyo de la lectura "a la baja"; #194)
+
+Mismos 13 pacientes y valores por paciente que `a26` (`outputs/a26/v1_base/a26_por_paciente.csv`): media -301.0 HU,
+IC95 *t* [-516.2, -85.7] (IC90 [-477.0, -124.9]). Excluye 0: escenario B de `lakens2017equivalence`.

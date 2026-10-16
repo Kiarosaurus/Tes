@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-15 (15) — capitulo3-r25 cerrada: 0 GAPLIT y 0 GAPDEC en el cap. 3
+
+- **Hecho:** 2 GAPLIT cerrados (Walker + Lakens; Bland 1996 con derivacion propia a ln). Mapeo de "no concluyente" (#194). #195 ABIERTA (Delta = variabilidad del metodo, no diferencia clinica). IC95 v1 registrado en `resultados_dec_2026-10-15.md`. Documento: 1 GAPLIT (Niu, cap. 2), 0 GAPDEC.
+- **Siguiente:** autora: #194, #195, raw "Logarithms", PDF de Niu; asesor: lo rojo (#193); redactar cap. 4.
+
 ## 2026-10-15 (14) — fichas Walker, Lakens, Bland 1996; #194; capitulo3-r25 en curso
 
 - **Hecho:** fichas `walker2011understanding`, `lakens2017equivalence`, `bland1996statistics` + `refs/clean` (154 entradas); cubren los 2 GAPLIT del cap. 3 (rotulo propio mapeado, #194; paso a ln como derivacion propia). IC95 v1 [-516.2, -85.7].

@@ -2734,3 +2734,117 @@ realista. Deja todo listo (00-tesis.md y 01-decisiones.md, ESTADO.md, etc)"), 20
    direccional, lista de la referencia de realismo) pasan a limitacion o trabajo futuro, no a GAP.
 4. **Meta de la ronda de todos los capitulos:** 0 `\GAPDEC` y 0 `\GAPDATO` cerrables; el unico GAP admitido al final
    es el `\GAPLIT` de Niu, Li y Wang (cap. 2).
+
+## 2026-10-16 (2) — Envolvente osea de SAP y canal sacro (#196): limitacion declarada, `B` sin cambios
+
+Decidido por la autora ("Me quedo con la decision de opcion a") y escrito por el asistente a pedido explicito
+("Redacta la decision en docs/01-decisiones.md"), 2026-10-16, tras correr la opcion (b) en Khipu (job 57118).
+
+1. **#196, opcion (a).** La envolvente osea `B` de SAP se mantiene como esta (cierre de 2 mm, sin relleno de
+   cavidades); no se recalcula ninguna cifra del Objetivo 2.
+2. **Evidencia** (`experiments/registro/registro_2026-10-16.md` §2; descriptiva y posterior): en la cohorte primaria,
+   el control de regresion reproduce en 71 de 72 casos (`CLINIC_0044`: 134.0 frente a 135.0 mm, queda sin cifras).
+   En los 71, `B` deja fuera un hueco medial de S1 con HU de partes blandas o grasa; el cierre lo ocupa en 14 casos,
+   en tramos de hasta 6.4 mm en z y donde la union ya lo dejaba de hasta 6.3 mm AP (40 de 2727 cortes con hueco).
+3. **Redaccion.** Se declara como limitacion de validez de constructo del Objetivo 2 (cap. 3 §Amenazas; discusion
+   del cap. 4), con esas cifras y sus limites: la medida no establece que el hueco sea el canal, no mide los
+   foramenes ni el efecto sobre la brecha de ninguna pose, y `CLINIC_0044` queda fuera. El `\GAPDATO` de envolvente
+   y canal de la introduccion (§Alcance) se cierra con esta formulacion.
+
+## 2026-10-16 (3) — D9, segundo corredor bajo S1, control visual E-A4 y revision multiplanar (introduccion-r09, capitulo3-r27)
+
+Decidido por la autora (respuestas en el chat a B-1 a B-4 de `redaccion/rondas/capitulo3-r27-asesor.md`: "No
+ejecutar", "Trabajo futuro", "No: declarar limitacion", "No ejecutado") y escrito por el asistente con su permiso
+explicito ("Te doy permiso para realizar esas redacciones en 01-decisiones.md"), 2026-10-16.
+
+1. **D9 (2026-10-15 pto 9) no se ejecuta.** El analisis exploratorio con 5 poses del muestreador por paciente de
+   E-A2, solo con el sintetizador, queda como analisis fijado en el diseno y no ejecutado, y se declara como trabajo
+   futuro. Razon: exige generar con GPU sobre la particion de prueba del Objetivo 3 despues de la decision del
+   2026-10-16 (#193), y su resultado, exploratorio y sin umbral, no podia cambiar el desenlace del contraste primario.
+   Los capitulos lo escriben como no ejecutado, no como pendiente. Consecuencia para el reclamo de 2026-10-16 pto 1:
+   que la sintesis este "condicionada por la pose del muestreador" es una propiedad del diseno; ninguna evaluacion del
+   Objetivo 3 usa poses del muestreador (E-A2 usa el eje sin perturbar).
+2. **Segundo corredor bajo S1: no se preinscribe ni se corre el muestreo de poses.** Trabajo futuro. Razon: sin
+   distribucion ordinal clinica bajo S1 (2026-09-08 (3)-(4)), el resultado seria solo descriptivo; el nivel del
+   corredor varia entre volumenes. El eje medido (69 de 72) se conserva y se reporta como dato de la geometria del
+   corredor, no como resultado del muestreador.
+3. **Control visual E-A4 (2026-10-15 pto 10): no se ejecuta con la regla fijada.** Como D3 y H5 (2026-10-16 pto 2),
+   se declara fijado y no ejecutado. La unica inspeccion visual registrada es la del 2026-10-12 (#176), que no es una
+   medicion ni sigue la lista cerrada de defectos.
+4. **Revision multiplanar: se declara lo que acredita el registro.** `experiments/exploration-3d/revision.csv`
+   acredita la revision 3D de los 178 volumenes; la revision en cortes consta para los 56 pacientes de CLINIC-metal
+   (`tornillos_conteo.csv`, columna `autora`) y no para los volumenes sin metal. El cap. 3 lo declara como limitacion
+   de la auditoria de la cohorte, sin afirmar que la revision multiplanar este completa.
+5. **Alcance de la redaccion.** Aplica a `capitulo3` (r27) y cierra los dos `\GAPDATO` de D9 y del segundo corredor
+   de `introduccion` (l. ~68 y ~78); `capitulo4`, `conclusiones` y `trabajosFuturos` lo heredan.
+
+## 2026-10-16 (4) — Techo de la etiqueta de S1 frente al platillo (#138): se reporta lo medido; el resto, supuesto no medido
+
+Decidido por el asistente como asesor, por delegacion explicita de la autora ("Cual es tu recomendacion frente a #138?
+prefiero que apliquemos tu recomendacion"), 2026-10-16. Decision posterior a ver la cifra (registro 2026-10-16 §4).
+
+1. **No se hace ninguna comprobacion nueva** antes de la sustentacion (coherente con 2026-10-16: el proyecto queda como
+   esta). Opcion de #138: declarar la diferencia como supuesto no medido, con la parte ya medida reportada.
+2. **Lo medido se reporta** (`experiments/registro/registro_2026-10-16.md` §4; `r_techo_platillo.py` sobre
+   `experiments/objetivo2/ts_nivel_s1.csv`; descriptivo y posterior; control de regresion reproduce `ts_analisis.md`):
+   en la columna media (x +-5 mm, y +-10 mm alrededor del punto del platillo de R1), el techo de `vertebrae_S1` queda
+   por encima del platillo en los 72 casos de la cohorte primaria, mediana 6.5 mm (RIC 5.7-7.2; 3.7 a 15.4; 2 casos
+   >= 10 mm) con el recorte `default6mm`.
+3. **Lo no medido se declara como supuesto:** si el voxel mas craneal de toda la etiqueta cae en el cuerpo o en el arco
+   posterior (cresta sacra media), y con que diferencia. Afecta al control de nivel, no al marco de referencia, que se
+   ancla al platillo de la localizacion de referencia. Cap. 3 §Amenazas; cap. 4 lo hereda.
+
+## 2026-10-16 (5) — Alcance del segundo corredor en `00-tesis.md` (#198)
+
+Decidido por la autora y aplicado por el asistente con su permiso ("Sí, se corrige la frase S2 en 00-tesis.md, te doy
+el permiso de hacerlo tú"), 2026-10-16.
+
+1. `docs/00-tesis.md` (alcance minimo, Objetivo 2) deja de prometer "geometria y grados de brecha" en S2. Texto nuevo:
+   el segundo corredor bajo S1 se reporta solo como geometria (eje medido en 69 de 72); el muestreo de poses y los
+   grados de brecha quedan como trabajo futuro. Alinea la fuente de alcance con 2026-10-16 (3) pto 2; ningun capitulo
+   cambia (`capitulo4` e `introduccion` ya lo decian).
+
+## 2026-10-16 (6) — Atribucion del rango de salida de MAISI y rango entre pacientes de E-A1 (capitulo4-r01)
+
+Decidido por el asistente como asesor, por delegacion explicita de la autora ("Sobre cómo citar el bundle MONAI y el
+rango E-A1, lo dejo en tu criterio como profesional"), 2026-10-16.
+
+1. **Rango de salida de MAISI ([-1000, 1000] HU), #93 y asesor #3 de `capitulo4-r01`:** se atribuye a la inspeccion del
+   codigo hecha en este trabajo, sin entrada bibliografica nueva: el texto nombra el paquete distribuido
+   (`maisi_ct_generative`, descargado con `monai.bundle`) y el guion (`scripts/sample.py`), y la traza queda en #93. No
+   se crea entrada en `refs.bib` porque la regla 9 de `CLAUDE.md` exige un archivo en `refs/raw/` y la lista de
+   entradas la define la autora; si la autora quiere citarlo como software, basta con pegar su raw. No se abre
+   `\GAPLIT`: el hecho es una observacion propia, verificable en el codigo, no una afirmacion de la literatura. El
+   articulo de Guo et al. se sigue citando solo para lo que dice (que no publica el rango).
+2. **Rango entre pacientes de E-A1:** se calcula (clase C barata, `experiments/registro/r_rango_ea1.py`, registro
+   2026-10-16 §6, con control de regresion) y se reporta en `tab:res-ea1` como "mediana [minimo, maximo]", como
+   promete el diseno. Descriptivo y posterior a ver las medianas; no cambia ninguna lectura.
+
+## 2026-10-16 (7) — Titulo de la tesis (#126 (a) y (b)); resumen y abstract
+
+Decidido por el asistente como asesor, por delegacion explicita de la autora ("Redacta el resumen y abstract, y
+modifica el título en español para que se adecúe más a la tesis actual. Modifica entonces 00-tesis.md y
+01-decisiones.md, así como tesis/main.pdf"), 2026-10-16.
+
+1. **Titulo en espanol** (`overleaf/main.tex`): *Síntesis condicionada de tornillos transilíaco-transsacros y de su
+   artefacto metálico local en TC pélvica mediante difusión multiventana en el dominio de imagen.* Sustituye a "...
+   mediante difusion condicionada para aumento de datos en segmentacion osea".
+2. **Razon:** (a) nombra el implante que la tesis sintetiza (el tornillo transiliaco-transsacro, no implantes en
+   general) y lo que sintetiza (el tornillo y su artefacto local); (b) nombra el metodo vigente (difusion en el dominio
+   de imagen con codificacion multiventana; la compuerta del Objetivo 1 descarto la latente); (c) **no menciona el
+   aumento de datos ni la segmentacion** (#126 (b)): la evaluacion downstream esta fuera de alcance y el titulo dice
+   solo lo que se hace. La colocacion no figura en el titulo; "condicionada" cubre el condicionamiento por la mascara
+   del implante en su pose (#197: propiedad del diseno).
+3. **Titulo en ingles** (`tesis/main.tex`, `docs/00-tesis.md`, abstract): *MetalSynth-Pelvis: Conditioned synthesis of
+   transiliac-transsacral screws and their local metal artifacts in pelvic CT using multi-window image-domain
+   diffusion.* Traduccion del espanol; el abstract usa el titulo sin el prefijo del proyecto. `tesis/main.pdf`
+   recompilado.
+4. **Resumen y abstract** se redactan ahora, a pedido de la autora (cede la regla 7 de `overleaf/CLAUDE.md`).
+5. **#126 (c)** (ORCID de autora y asesor; nombre completo del asesor en la portada de `overleaf/main.tex`) sigue
+   abierta: no se inventan identificadores.
+6. **Ajuste del mismo dia (revision `resumen-r01`, ES-01, PAT-56):** "difusion multiventana" daba un nombre nuevo a la
+   codificacion multiventana. Titulos finales: *Síntesis condicionada de tornillos transilíaco-transsacros y de su
+   artefacto metálico local en TC pélvica mediante difusión con codificación multiventana en el dominio de imagen* y
+   *MetalSynth-Pelvis: Conditioned synthesis of transiliac-transsacral screws and their local metal artifacts in pelvic
+   CT using image-domain diffusion with multi-window encoding.* Mismo permiso de la autora.
+

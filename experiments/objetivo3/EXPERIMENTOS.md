@@ -110,6 +110,8 @@
 | `a28_diag_p95.py` | D7: decodificacion regla_suave frente a solo LW del `u` de `G`, control real en `metal_0039` | local | **CORRIDO** 2026-10-15: veredicto "modelo" (#191) |
 | `resultados_dec_2026-10-15.md` | resultados de D4, D8, variantes de v1, comparador parametrico, v2, D7, acuerdo en log, perfil (`a29`) y pareado | asistente | **EN CURSO**: falta D9 |
 | (sin script) | D9 (poses del muestreador), D3 a ciegas, realismo (H5) | — | **POR ESCRIBIR** (el control con imagenes reales de D7 se corrio en `a28`) |
+| `../registro/r_seccion_convexa.py`, `../registro/registro_2026-10-16.md` §3 | prueba de admision de `T` (B) estratificada por forma de la seccion del tornillo (#178); control: reproduce los 228 cortes y `n_pix` de `b_piloto/b_por_corte.csv` | local (asesor, capitulo3-r27), ~8 min | **CORRIDO** 2026-10-16, descriptivo y posterior: seccion compacta (elong <= 1.5, 1 comp.) d 0.079, e 0.012 (8 pac.) frente a alargada d 0.201, e 0.148 (13 pac.) |
+| `../registro/r_integridad_ea2.py`, `../registro/registro_2026-10-16.md` §5 | medianas por brazo de SDC y dVol de hueso y metal en E-A2 (v1, prueba; resume columnas ya calculadas por `a20`, sin analisis nuevo); control: reproduce -301.0 HU y ruido de Peters 183.5 HU de `resultados_prueba_v1.md` | local (asesor, capitulo4-r01), segundos | **CORRIDO** 2026-10-16, descriptivo y posterior (n = 13): `run04_mejor` hueso SDC 0.677, dVol 0.098, metal SDC 0.862, dVol -0.190; Peters Ti 0.800, 0.121, 0.856, 0.283 |
 
 ## 7. Archivados
 

@@ -1,19 +1,19 @@
-\customchapter{ABSTRACT} 
+\customchapter{ABSTRACT}
+% Redactado en abstract-r00 (DEC 2026-10-16 (7)): traduccion fiel de resumen.tex (r01), oracion a oracion (P-R4).
+% Sin citas, siglas, figuras ni tablas (P-R2). Correspondencia en redaccion/rondas/abstract-r00-respuesta.md.
 
 \begin{center}
-\large \vspace{-1.5cm} \textbf{TÍTULO DE LA TESIS EN INGLÉS}
+\large \vspace{-1.5cm} \textbf{Conditioned synthesis of transiliac-transsacral screws and their local metal artifacts in pelvic CT using image-domain diffusion with multi-window encoding}
 \end{center}
 
-Lorem ipsum dolor sit amet, cum tollit aeterno ut. Sea amet iuvaret placerat in, saperet impedit consulatu mei ne, quo no alii vituperatoribus. No mutat dolorum habemus pro, vis rebum accusam no, meis partiendo necessitatibus cu sit. Zril mediocrem scriptorem cu quo, ex duo mucius doming legendos. Posse nemore cu cum. Et facer pertinax sed, atqui ignota antiopam in pro, dolore oportere ius ex.
+Artifacts from metallic implants can obscure bone boundaries in pelvic computed tomography, and the scarcity of volumes with implants and bone annotation motivates synthesizing the implant and its artifact as data augmentation. Measuring the usefulness of that augmentation presupposes that what is synthesized is plausible, and none of the reviewed approaches produces both a distribution of implant poses and the appearance of its artifact. This work proposed a synthesis pipeline that inserts a transiliac-transsacral screw and its local metal artifact into implant-free pelvic computed tomography scans from the public CTPelvic1K dataset, and evaluated the surgical and physical coherence of what was synthesized.
 
-An justo nonumy mnesarchum quo, eruditi cotidieque in sed. Consulatu urbanitas conceptam eam id, liber accusamus eu mel. Ius iusto albucius elaboraret id, dico partiendo contentiones nec in, sint eruditi per ne. No eruditi probatus cum, no mei sumo facer torquatos. Sea dicunt facilisis corrumpit at, audiam accusam eligendi qui ne.
+A preliminary gate, with a criterion fixed in advance, examined whether the autoencoder of a latent diffusion model, the network that compresses the image and reconstructs it, preserves bone values with a mean absolute error below 25 Hounsfield units. A placement sampler proposes three-dimensional screw poses in the osseous corridor, and surgical admissibility of placement, proposed here, rates each pose by corridor viability and by cortical breach grade, which records how far the screw protrudes from the bone. The synthesizer uses an image-domain diffusion model with multi-window encoding of the values in Hounsfield units, and regenerates only the implant and a band of about 12~mm around it. The \emph{streak amplitude}, which measures the intensity of the streaks relative to the metal-free image, was compared for equivalence with a published physics-based simulation protocol and, as a control, with copy-paste insertion, which produces no artifact.
 
-Facete officiis invenire sit ex, facete causae fabellas ei qui. Et pertinacia contentiones definitiones nam. Cum moderatius signiferumque in, blandit senserit cum no. Mea appareat posidonium contentiones an, no case accommodare cum, ei sea oporteat percipitur. 
-Ea congue necessitatibus sed, no adhuc graeco usu. Eam harum equidem fierent ne, duo id facer consequuntur signiferumque. 
-Dolore molestie phaedrum nec ei, ei eos noluisse constituto. Eruditi propriae in mea, vero laboramus cotidieque ad duo. Tacimates constituto est ex, ad mei clita sapientem evertitur. \\
+The gate returned a negative verdict, which moved the synthesis to the image domain: none of the six configurations evaluated fell below 25 Hounsfield units in the 34 test patients, and the lowest mean absolute error was 61.72 Hounsfield units. Surgical admissibility of placement passed its identity, monotonicity and resolution checks; the grade distribution over 3\,600 poses in 72 patients lay at Wasserstein-1 distances of 0.206 and 0.230 grades from the clinical series with and without navigation. Both distances are smaller than the 0.395 grades that separate those series, but the reading is descriptive: the objective has no decision rule, and the patient-level bootstrap intervals do not rank the series by closeness. In 13 metal-free test patients, the mean paired difference in \emph{streak amplitude} between the synthesizer and the physics-based protocol with titanium was $-301.0$ Hounsfield units. Its 90\,\% confidence interval, from $-477.0$ to $-124.9$, crosses the lower equivalence bound of $-196.3$ Hounsfield units; the outcome is inconclusive, and the synthesizer has a lower \emph{streak amplitude} than the protocol. Outperforming copy-paste insertion, with $p = 0.000122$ in the Wilcoxon test, is a sanity check that does not count in favor of the synthesizer, because that insertion produces no streaks.
+
+The results are limited: the grade distribution lies closer to each clinical series than those series lie to each other, in a descriptive reading, and the equivalence of the \emph{streak amplitude} with that of the physics-based protocol was not established. The visual realism of the synthetic artifact is not claimed, because the author judged it insufficient; she and her advisor decided not to redesign the synthesizer, and its output does not reproduce the decay of the amplitude with distance from the metal. Bone segmentation evaluation was left out of scope, and no result of this work measures whether synthetic implants help train a network.
 
 
 \noindent \textbf{Keywords:}\\
-\noindent Keyword 1; Keyword 2; Keyword 3; Keyword 4
-
-
+\noindent Medical image synthesis; Metal artifact; Pelvic computed tomography; Diffusion models; Iliosacral fixation

@@ -2,8 +2,54 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-16 (8) — titulo nuevo; resumen y abstract redactados y revisados
+
+- **Hecho:** titulo decidido por delegacion (DEC 2026-10-16 (7) + pto 6; #126 (a)-(b) DECIDIDAS) en `overleaf/main.tex`, `tesis/main.tex` (PDF recompilado) y `00-tesis.md`; resumen r00+r01, abstract r00+r01 (traduccion fiel). Documento 194 pags; lint documento: 1 alta (`anexos.tex` l. 5, plantilla) y 1 media (introduccion l. 7); GAP solo Niu.
+- **Pendiente autora:** #126 (c) ORCID de autora y asesor + nombre del asesor en portada (`overleaf/main.tex` l. 88-89); #199 (`CLAUDE.md`).
+- **Siguiente:** anexos (plantilla l. 5), introduccion l. 7 (oracion de 41 palabras), luego segunda pasada del documento.
+
+## 2026-10-16 (7) — capitulo4, conclusiones y trabajosFuturos cerrados en la ronda de todos los capitulos
+
+- **Hecho:** cap4 r01 (+ puntual y puntual2: MAISI atribuido al codigo, rango E-A1 con `r_rango_ea1.py`, "dos autoencoders" corregido tambien en cap3 l. 93); conclusiones r00+r01; trabajosFuturos r00+r01. Documento 193 pags, GAP solo Niu. DEC 2026-10-16 (5) (#198, S2 en 00-tesis) y (6) (MAISI, E-A1), con permiso de la autora.
+- **Bloqueo:** resumen/abstract no se escriben (regla 7): encabezado y Formulacion de la introduccion DESFASADOS por #126 (titulo, portada, ORCID: decide la autora).
+- **Pendiente autora:** #199 (`CLAUDE.md` raiz describe muestreador con Zwingmann y renderizador latente); #126. **Siguiente:** con #126 decidida, introduccion encabezado + resumen/abstract; luego segunda pasada.
+
+## 2026-10-16 (6) — capitulo3 r27 cerrada; introduccion en correccion puntual
+
+- **Hecho:** autora decidio B-1..B-4 (DEC 2026-10-16 (3), escrita con su permiso) y delego #138 (DEC (4), DECIDIDA); #197 nueva DECIDIDA (pose del muestreador = propiedad del diseno). cap3 r27: guia 0/2/0, estilo 0/9/1, traza 4/3/0; 19 aplicados; 30 `\REVVISUAL` y 10 `\GAPDATO` fuera; PASA, 165 pags, `etapas/capitulo3-r27.pdf`.
+- **Hecho tambien:** `introduccion` r09-puntual: 3 `\GAPDATO` cerrados; documento con GAP lit=1 (Niu), dato=0, dec=0 (meta del encargo). PDF `etapas/introduccion-r09-puntual.pdf`.
+- **Siguiente:** `capitulo4` r00 (redactar) + r01; luego conclusiones/trabajosFuturos, resumen/abstract.
+
+## 2026-10-16 (5) — capitulo3 r27: PARADA ANTICIPADA tras el asesor
+
+- **Hecho:** lint r27 PASA (26 bajos, 10 `\GAPDATO`); `capitulo3-r27-asesor.md`: A=1 (l. 513 #196), C->A=2 (#178 `r_seccion_convexa.py`, #138 `r_techo_platillo.py`, en `registro_2026-10-16.md` §3-§4), D=4 (realismo), B=3 + B-4; 30 `\REVVISUAL`. Revisores y redactor NO lanzados.
+- **Bloqueo (autora):** B-1 (D9 no se ejecuta; el condicionamiento por pose del muestreador = propiedad del diseno), B-2 (segundo corredor S1 a trabajo futuro), B-3 (revision multiplanar: acreditar o declarar limitacion), B-4 (control visual E-A4 no ejecutado). Textos listos para `01-decisiones.md` en el reporte del asesor, l. 195-300. B-1/B-2 tocan intro (l. 68, 78), cap. 4 y trabajosFuturos.
+- **Siguiente:** con la decision, revisores Codex en serie para r27 (`ENCARGO=redaccion/ENCARGO_2026-10-16.md bash scripts/codex_revisor.sh guia capitulo3 r27`, luego estilo, luego trazabilidad), correccion con el asesor y cierre; luego cerrar los 2 `\GAPDATO` de la introduccion.
+
+## 2026-10-16 (4) — capitulo2 r09 cerrada
+
+- **Hecho:** capitulo2 r09 (modo una ronda): revisores guia 0/1/0, estilo 0/5/3, traza 2/3/0 (estilo si habia terminado; solo traza se relanzo); 14 aplicados, 0 rechazados/escalados; 9 `\REVVISUAL` retirados (7 cap. 2, 2 `anexos.tex`:30); 2 `\GAPDATO` cerrados; queda solo el `\GAPLIT` de Niu. Lint seccion PASA, 165 pags, PDF `redaccion/.build/etapas/capitulo2-r09.pdf`. Sin parada anticipada.
+- **Siguiente:** `/ciclo-redaccion capitulo3` (r27, ENCARGO_2026-10-16): conservar `sec:ap-realismo`/`sec:amenazas`, limitacion #196 en §Amenazas, l. ~485 "no concluyente"; de paso cerrar el `\GAPDATO` envolvente/canal de la introduccion.
+- **Pendiente autora:** 4 decisiones de redaccion nuevas de capitulo2-r09 en BITACORA §2; mas lo de (3).
 
 
+
+
+## 2026-10-16 (3) — ronda de todos los capitulos: capitulo1 cerrado, capitulo2 r09 a medias
+
+- **Hecho:** capitulo1 r11-r15 (TOPE): lint PASA, 0 GAP, guia y traza 0/0 desde r13; 1 oscilacion de estilo (ES-1 r15, l. 13, "La seccion sobre..." vs r11) para la autora. PDF `redaccion/.build/etapas/capitulo1-r15.pdf`.
+- **Interrumpido (memoria):** capitulo2 r09: lint PASA (1 GAPLIT, 2 GAPDATO), `-guia.md` (0/1/0) y `-asesor.md` (A=1, D=1, B=0; retirar 7 `\REVVISUAL` + 2 en `anexos.tex`:30) hechos; Codex de estilo lo mato el sistema por falta de memoria; faltan `-estilo.md` y `-trazabilidad.md`.
+- **Modo (autora):** ENCARGO_2026-10-16 editado: UNA ronda por capitulo, sin bucle; parada anticipada si surge decision que afecte otros capitulos.
+- **Siguiente:** relanzar `ENCARGO=redaccion/ENCARGO_2026-10-16.md bash scripts/codex_revisor.sh estilo capitulo2 r09` y luego `trazabilidad` (de a uno), corregir r09; luego cap3 r27 (revisar `capitulo3.tex`:485 "no concluyente" vs #194), cap4, conclusiones/trabajosFuturos, resumen/abstract.
+- **#196 opcion b CORRIDA (job 57118):** 71/72 reproducen (0044 no); cierre ocupa hueco medial S1 en 14/71 casos, max 6.4 mm en z (`registro_2026-10-16.md` §2). #196 DECIDIDA (opcion a, DEC 2026-10-16 (2)): limitacion en cap. 3 §Amenazas y cap. 4; cierra el GAPDATO de envolvente/canal de la introduccion en su proxima ronda. Redaccion en pausa hasta su indicacion.
+- **Pendiente autora:** #196, ES-1 cap1 l. 13, decisiones de redaccion nuevas en BITACORA §2, mas lo de (2).
+
+## 2026-10-16 (2) — ronda de todos los capitulos EN CURSO (una ronda por capitulo, pedido de la autora)
+
+- **Hecho:** introduccion r09 corregida y etapa cerrada (`redaccion/.build/etapas/introduccion-r09.pdf`): sin `\REVVISUAL`, limitacion de realismo en Alcance, quedan 3 `\GAPDATO` (clases B del asesor: D9, segundo corredor S1, envolvente/canal). #196 ABIERTA (cierre de `B` ocupa hueco medial S1 en `CLINIC_0002`).
+- **Interrumpido:** capitulo1 r11: lint PASA (0 GAP); los tres revisores Codex los mato el sistema por falta de memoria, sin reportes. Espera indicacion de la autora (serie en Codex, respaldo Claude o pausa).
+- **Siguiente:** cap1 r11 revision+correccion; luego cap2 r09, cap3 r27, cap4 (r00+r01), conclusiones/trabajosFuturos, resumen/abstract. Patrones ERRADICADO se evaluan al final de la ronda completa.
+- **Pendiente autora:** decisiones B del asesor (`redaccion/rondas/introduccion-r09-asesor.md`), #196, T02 (E15 en §7 y no §5 de `objetivo2/EXPERIMENTOS.md`; `00-tesis.md` sin 0.203/0.237).
 
 ## 2026-10-16 — PUNTO DE PARTIDA PARA LA SIGUIENTE SESION: ronda de redaccion de todos los capitulos
 

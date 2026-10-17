@@ -1,11 +1,268 @@
-\chapter{RESULTADOS Y DISCUSIÓN}
+\chapter{RESULTADOS Y DISCUSIÓN}\label{cap:resultados}
 % Bloque (c), parte empirica. Ver redaccion/MAPA.md.
 % Pautas de la plantilla UTEC movidas a redaccion/RUBRICA.md (P-RE).
+% Fuentes: experiments/objetivo1/p1_compuerta.md, p1_sin_0053.md, p1_sin_0072.md; implicancia 93 (CERRADA);
+% experiments/objetivo2/e13_sap.md, e13_sap_g3.md, e13b_estratificado.md, e15_w1_sensibilidad.md; tesis/main.tex
+% (Placement result); experiments/objetivo3/resultados_prueba_v1.md, resultados_dec_2026-10-15.md,
+% outputs/a29/a29_perfil.md; experiments/registro/registro_2026-10-16.md; docs/01-decisiones.md 2026-10-15 a
+% 2026-10-16 (4). Fuente de cada cifra: redaccion/rondas/capitulo4-r00-respuesta.md.
 
-\section{Evaluación de la representación multiventana}
+Este capítulo presenta los resultados en el orden de los objetivos y después los discute frente a la pregunta y la hipótesis del trabajo. Cada sección da primero los datos, con su cohorte, su variabilidad cuando consta en el registro y la condición en que se midieron, y luego la lectura que permite el diseño del Capítulo~\ref{cap:propuesta}. El Objetivo~4 no tiene sección propia, porque su producto es la definición de las métricas. Los controles de SAP acompañan los resultados del Objetivo~2, y las métricas de Peters et al.\ se aplican en los del Objetivo~3, sin que ningún resultado evalúe su adopción.
 
-\section{Admisibilidad quirúrgica de la colocación}
+\section{Evaluación de la representación multiventana}\label{sec:res-obj1}
 
-\section{Coherencia de apariencia}
+La compuerta del Objetivo~1 midió el error absoluto medio en el hueso de seis combinaciones de variante del autoencoder y codificación, sobre los 34 pacientes de prueba y frente al criterio de 25~HU. La Tabla~\ref{tab:res-compuerta} reúne, para cada combinación, la media entre pacientes, su IC del 95\,\% por remuestreo de pacientes, la mediana y los pacientes que no cumplen el criterio.
 
-\section{Discusión}
+\begin{table}[htbp]
+\centering
+\small
+\caption{Compuerta del Objetivo~1 sobre los 34 pacientes de prueba: error absoluto medio en HU por combinación de variante del autoencoder y codificación.}
+\label{tab:res-compuerta}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.16\linewidth} p{0.16\linewidth} p{0.08\linewidth} p{0.17\linewidth} p{0.115\linewidth} p{0.08\linewidth} p{0.1\linewidth}}
+\hline
+\textbf{Variante} & \textbf{Codificación} & \textbf{Media} & \textbf{IC 95\,\%} & \textbf{Mediana} & \textbf{$\geq 25$~HU} & \textbf{Media en $B_{\delta}$} \\
+\hline
+Preentrenada & Ventanas publicadas & 160.13 & [142.42, 180.62] & 136.61 & 34/34 & 114.73 \\
+Preentrenada & Techo de 20\,000~HU & 209.39 & [191.91, 228.62] & 190.89 & 34/34 & 147.77 \\
+Preentrenada & Arcoseno hiperbólico & 164.76 & [148.81, 182.87] & 146.60 & 34/34 & 118.27 \\
+Adaptada & Ventanas publicadas & 72.91 & [59.37, 89.02] & 53.29 & 34/34 & 64.62 \\
+Adaptada & Techo de 20\,000~HU & 77.03 & [70.12, 84.65] & 70.41 & 34/34 & 88.72 \\
+Adaptada & Arcoseno hiperbólico & 61.72 & [55.12, 68.99] & 53.07 & 34/34 & 69.70 \\
+\hline
+\multicolumn{7}{p{0.9\linewidth}}{\footnotesize La media, el IC y la mediana se calculan sobre el error de cada paciente en el hueso; la última columna es descriptiva y cubre los 21 pacientes de prueba con metal.} \\
+\end{tabular}
+\end{table}
+
+Ninguna de las seis combinaciones bajó de 25~HU, y el veredicto de la compuerta es negativo. La menor media fue de 61.72~HU, con un IC del 95\,\% de 55.12 a 68.99~HU, y correspondió a la variante con el decodificador adaptado y la compresión arcoseno hiperbólico. En las seis combinaciones, los 34 pacientes quedaron en 25~HU o más, de modo que el veredicto no descansa en unos pocos casos.
+
+Adaptar el decodificador redujo el error en las tres codificaciones, sin acercarlo al criterio. Con la compresión arcoseno hiperbólico, la media bajó de 164.76~HU con el autoencoder preentrenado a 61.72~HU con la variante adaptada. Con las ventanas publicadas bajó de 160.13 a 72.91~HU, y con el techo de 20\,000~HU, de 209.39 a 77.03~HU. Por subgrupo, y de forma descriptiva, la mejor combinación dio 53.72~HU en los 14 pacientes sin metal de \texttt{dataset6} y 46.99~HU en sus 6 pacientes con metal. En los 14 pacientes de \texttt{dataset7}, la carpeta que corresponde a CLINIC-metal por inferencia (Sección~\ref{sec:datos}), dio 76.03~HU, y ningún subgrupo quedó por debajo de 25~HU.
+
+La ida y vuelta de la codificación sin autoencoder, que no entra en el criterio, se midió en los mismos pacientes. En el hueso, su error medio fue de 0.00~HU con la compresión arcoseno hiperbólico y con el techo de 20\,000~HU, y de 21.80~HU con las ventanas publicadas. En la banda $B_{\delta}$ de los 21 pacientes con metal, ese error fue de 13.71~HU con las dos primeras y de 15.25~HU con la tercera. Los experimentos del Objetivo~1 registran esa ida y vuelta como cota inferior del error de cada codificación. El error de la banda con el autoencoder, de 64.62~HU en el mejor caso (Tabla~\ref{tab:res-compuerta}), es descriptivo y no interviene en el veredicto.
+
+El veredicto no cambia al retirar a los pacientes de prueba que las auditorías de identidad de paciente vincularon con el entrenamiento (Sección~\ref{sec:datos}). Sin la adquisición repetida de un paciente de entrenamiento, con 33 pacientes, la mejor combinación da 60.95~HU, con un IC del 95\,\% de 54.28 a 68.19~HU. Sin ese paciente ni el compartido entre particiones, con 32, da 61.08~HU, de 54.23 a 68.57~HU. En las dos sensibilidades, todos los pacientes quedan en 25~HU o más, y con 33 pacientes ninguna media cambia más de 2.3~HU (Sección~\ref{sec:datos}).
+
+La extensión de la compuerta al autoencoder del generador de volúmenes de TC de Guo et al.~\cite{guo2025maisi} terminó en la cota por saturación, sin correr el modelo. El artículo no publica el rango de intensidades. La inspección del código hecha en este trabajo lo encontró en el paquete distribuido \texttt{maisi\_ct\_generative}, descargado con la utilidad \texttt{monai.bundle}: su guion \texttt{scripts/sample.py} fija la salida del modelo entre $-1000$ y 1000~HU. Saturar a ese rango los 34 volúmenes de prueba, sin modelo alguno, da una media del error absoluto medio en el hueso de 42.24~HU. Su mediana es de 18.24~HU, su rango va de 6.96 a 231.43~HU y 11 de los 34 pacientes quedan por encima de 25~HU. Como esa media supera el criterio antes de que intervenga el autoencoder, la evaluación no se corrió, y el séptimo candidato tampoco aprueba (Sección~\ref{sec:obj1}).
+
+\section{Admisibilidad quirúrgica de la colocación}\label{sec:res-obj2}
+
+El muestreo preinscrito se ejecutó completo en las dos cohortes y pasó sus controles de consistencia de la implementación. Se calificaron 3\,600 poses en los 72 pacientes de la cohorte primaria y 2\,450 en los 49 de la cohorte de sensibilidad, 50 por paciente, y ninguna quedó sin grado. La pose sin perturbar de cada paciente dio brecha nula con el diámetro de su propio corredor, como exige la identidad de la Sección~\ref{sec:poses}. En la cohorte primaria, la perturbación desplazó el centro una mediana de 1.66~mm, con un percentil~90 de 4.09~mm y un máximo de 7.49~mm. Inclinó el eje una mediana de $1.48^{\circ}$, con un percentil~90 de $3.61^{\circ}$ y un máximo de $8.22^{\circ}$.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[Distribución de grados de brecha cortical frente a la referencia clínica]{Distribución de grados de brecha cortical y distancia de Wasserstein-1, en grados, frente a las dos series de la referencia clínica. Calibre de medición de 7.0~mm salvo indicación.}
+\label{tab:res-sap}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.29\linewidth} r r r r r r r r}
+\hline
+\textbf{Conjunto} & \textbf{Pac.} & \textbf{Poses} & \textbf{G0} & \textbf{G1} & \textbf{G2} & \textbf{G3} & \textbf{$W_1$ nav.} & \textbf{$W_1$ conv.} \\
+ & & & \multicolumn{4}{c}{\textbf{(\%)}} & & \\
+\hline
+Serie navegada \cite{zwingmann2009navigated} & 24 & 26$^{a}$ & 69 & 15 & 8 & 8 &  & 0.395 \\
+Serie convencional \cite{zwingmann2009navigated} & 32 & 35$^{a}$ & 40 & 37 & 11.5 & 11.5 & 0.395 &  \\
+\hline
+Cohorte primaria (preinscrito) & 72 & 3\,600 & 51.5 & 31.4 & 11.1 & 6.0 & 0.206 & 0.230 \\
+\quad calibre de 4.91~mm & 72 & 3\,600 & 70.3 & 20.4 & 6.9 & 2.3 & 0.138 & 0.533 \\
+\quad calibre de 7.3~mm & 72 & 3\,600 & 48.6 & 32.5 & 12.3 & 6.7 & 0.247 & 0.174 \\
+\quad sin los 2 casos con error de segmentación & 70 & 3\,500 & 51.8 & 31.4 & 11.1 & 5.7 & 0.203 & 0.237 \\
+\quad corredor de 7.0~mm o más$^{b}$ & 57 & 2\,850 & 64.2 & 27.5 & 6.1 & 2.2 & 0.183 & 0.482 \\
+\quad corredor de menos de 7.0~mm$^{b}$ & 15 & 750 & 3.3 & 46.4 & 30.0 & 20.3 & 1.122 & 0.727 \\
+\hline
+Cohorte de sensibilidad (preinscrito) & 49 & 2\,450 & 54.9 & 30.4 & 9.9 & 4.8 & 0.186 & 0.299 \\
+\quad corredor de 7.0~mm o más$^{b}$ & 41 & 2\,050 & 64.6 & 26.6 & 6.6 & 2.1 & 0.175 & 0.483 \\
+\quad corredor de menos de 7.0~mm$^{b}$ & 8 & 400 & 5.2 & 49.5 & 26.5 & 18.8 & 1.037 & 0.643 \\
+\hline
+\multicolumn{9}{p{0.9\linewidth}}{\footnotesize $^{a}$Tornillos, no poses. $^{b}$Estratificación post hoc. La distancia entre las dos series la calcula este trabajo con la Ecuación~\eqref{eq:w1}.} \\
+\end{tabular}
+\end{table}
+
+La distribución de grados de la cohorte primaria quedó a una distancia de Wasserstein-1 de 0.206 grados de la serie navegada y de 0.230 grados de la convencional (Tabla~\ref{tab:res-sap}). Sus poses se repartieron en el 51.5, 31.4, 11.1 y 6.0\,\% entre los grados~0 a~3. La serie navegada reúne el 69, 15, 8 y 8\,\% de sus tornillos, y la convencional, el 40, 37, 11.5 y 11.5\,\% \cite{zwingmann2009navigated}. La cohorte de sensibilidad dio 54.9, 30.4, 9.9 y 4.8\,\%, a 0.186 y 0.299 grados. El Objetivo~2 no tiene regla de decisión, y su escala de lectura, elegida después de conocer estas distancias, es la que separa las dos series de la referencia clínica, de 0.395 grados (Sección~\ref{sec:sap}).
+
+El IC del 95\,\% por remuestreo de pacientes, posterior y descriptivo, va de 0.152 a 0.313 grados frente a la serie navegada y de 0.089 a 0.364 grados frente a la convencional, con 2\,000 remuestreos. Los dos intervalos contienen las dos distancias puntuales, de modo que esta cohorte no ordena las dos series por su cercanía al muestreador. El intervalo trata como fijas las dos series de la referencia clínica, de 26 y 35 tornillos, y no recoge su incertidumbre. Sin los dos casos con error de segmentación, con 70 pacientes y 3\,500 poses, la distribución es de 51.8, 31.4, 11.1 y 5.7\,\%, y las distancias, de 0.203 y 0.237 grados.
+
+El calibre de medición desplaza la distribución en el sentido que exige el control de monotonía, porque una brecha no decrece al ensanchar el cilindro (Sección~\ref{sec:poses}). Con el cuerpo de 4.91~mm, el grado~0 reúne el 70.3\,\% de las poses y las distancias son de 0.138 y 0.533 grados. Con 7.3~mm, el grado~0 reúne el 48.6\,\% y las distancias son de 0.247 y 0.174 grados. La serie más cercana cambia, así, con el calibre, y solo el de 7.0~mm, que es el de la referencia clínica, hace comparables los grados (Sección~\ref{sec:geometria}).
+
+La estratificación post hoc por viabilidad del calibre separa dos poblaciones dentro de la cifra agregada. En los 57 pacientes cuyo corredor admite el calibre de 7.0~mm, el grado~0 reúne el 64.2\,\% de las poses. Su distancia baja a 0.183 grados frente a la serie navegada y sube a 0.482 frente a la convencional. En los 15 de corredor más estrecho, el grado~0 cae al 3.3\,\% y las distancias son de 1.122 y 0.727 grados. La cohorte de sensibilidad repite ese patrón, con el 64.6\,\% de grado~0 y 0.175 grados frente a la serie navegada en sus 41 pacientes viables y el 5.2\,\% en sus 8 estrechos. La cercanía de la cifra agregada a la serie convencional se debe, en parte, a esa mezcla, y la estratificación acompaña a la cifra preinscrita sin sustituirla.
+
+La viabilidad del corredor, el segundo componente de SAP, se midió de forma descriptiva con el criterio $D \geq 9$~mm. En la cohorte primaria, el 59.7\,\% de las poses pertenece a pacientes cuyo corredor lo cumple, y en la de sensibilidad, el 65.3\,\%. Con los calibres de sensibilidad y la misma holgura radial de 1~mm, esa fracción es del 79.2\,\% con 4.91~mm y del 54.2\,\% con 7.3~mm en la cohorte primaria. Estas cifras no entran en la comparación con la referencia clínica, que solo usa la distribución de grados (Sección~\ref{sec:sap}).
+
+\section{Coherencia de apariencia}\label{sec:res-obj3}
+
+\subsection{Contraste primario}\label{sec:res-primario}
+
+El contraste primario compara, por equivalencia, la \emph{streak amplitude} del modelo evaluado con la del protocolo físico con titanio, sobre los 13 pacientes de la síntesis sobre pelvis sin metal (Tabla~\ref{tab:res-tost}). La diferencia media pareada fue de $-301.0$~HU, con un IC del 90\,\% de $-477.0$ a $-124.9$~HU frente al margen $\Delta = 196.3$~HU, y con un IC del 95\,\% de $-516.2$ a $-85.7$~HU. La mediana entre pacientes de la amplitud fue de 1308~HU en el sintetizador y de 1574~HU en el protocolo físico con titanio.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Comparación de la \emph{streak amplitude} con el protocolo físico en los pacientes de la síntesis sobre pelvis sin metal. Diferencia media pareada (sintetizador menos protocolo físico) e IC del 90\,\% en HU; margen $\Delta = 196.3$~HU salvo indicación.}
+\label{tab:res-tost}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.18\linewidth} p{0.225\linewidth} c r p{0.21\linewidth} p{0.14\linewidth}}
+\hline
+\textbf{Modelo} & \textbf{Contraste} & \textbf{$n$} & \textbf{Diferencia} & \textbf{IC 90\,\%} & \textbf{Desenlace} \\
+\hline
+Modelo evaluado & Titanio, banda completa (primario) & 13 & $-301.0$ & $[-477.0, -124.9]$ & No concluyente, menor \\
+ & Hierro & 13 & $-3814.2$ & $[-4405.9, -3222.6]$ & No equivalencia, menor \\
+ & Sin corredores más angostos que el tornillo & 10 & $-261.1$ & $[-479.8, -42.4]$ & No concluyente, menor \\
+ & Mismos cortes en los dos brazos$^{a}$ & 13 & $-295.3$ & $[-473.6, -117.1]$ & No concluyente, menor \\
+ & Mismo suelo en los dos brazos$^{a}$ & 13 & $-238.3$ & $[-384.1, -92.4]$ & No concluyente, menor \\
+ & Sin regiones a menos de 20~mm de la cabeza$^{a}$ & 13 & $-329.3$ & $[-510.4, -148.3]$ & No concluyente, menor \\
+ & Anillo de 8 a 10~mm$^{a}$ & 13 & $+478.0$ & $[+393.9, +562.2]$ & No equivalencia, mayor \\
+ & Anillo de 10 a 12~mm$^{a}$ & 13 & $+411.7$ & $[+350.9, +472.5]$ & No equivalencia, mayor \\
+ & Contraste pareado, banda completa$^{a}$ & 13 & $-455.0$ & $[-647.6, -262.5]$ & Descriptivo \\
+\hline
+Estado final & Titanio; $\Delta$ de 115.8 y 196.3~HU & 13 & $-384.0$ & $[-566.5, -201.4]$ & No equivalencia, menor \\
+\hline
+Modelo con sobremuestreo$^{b}$ & Titanio; $\Delta$ de 157.1 y 196.3~HU & 13 & $-258.9$ & $[-456.7, -61.1]$ & No concluyente, menor \\
+Modelo con canal$^{b}$ & Titanio; $\Delta$ de 107.1 y 196.3~HU & 13 & $-264.3$ & $[-456.8, -71.7]$ & No concluyente, menor \\
+\hline
+Artefacto paramétrico$^{a}$ & Titanio, banda completa & 13 & $-98.9$ & $[-287.3, +89.4]$ & Descriptivo \\
+ & Mismo suelo en los dos brazos & 13 & $-36.3$ & $[-191.5, +118.9]$ & Descriptivo \\
+\hline
+\multicolumn{6}{p{0.9\linewidth}}{\footnotesize Solo la primera fila es confirmatoria; en las demás, la regla de desenlaces se aplica como descripción. $^{a}$Análisis añadido el 15 de octubre, posterior para la versión~1. $^{b}$Versión~2, posterior y exploratoria.} \\
+\end{tabular}
+\end{table}
+
+La lectura de este desenlace para el Objetivo~3 se fijó después de ver la prueba de equivalencia de las dos versiones del sintetizador (Sección~\ref{sec:ap-analisis}). Con esa lectura, el desenlace es no concluyente, porque el IC del 90\,\% cruza el límite inferior del margen y no cae entero ni dentro ni fuera de él: los datos no permiten afirmar la equivalencia ni la no equivalencia. Como el intervalo queda además entero por debajo de cero, se informa la dirección, y la \emph{streak amplitude} del sintetizador es menor que la del protocolo físico. El IC del 95\,\% también excluye el cero, y la diferencia corresponde al caso que Lakens~\cite{lakens2017equivalence} llama estadísticamente diferente y no equivalente (Sección~\ref{sec:mt-estadistica}).
+
+Ni el intervalo exacto ni las sensibilidades preinscritas elevan la categoría del desenlace. El IC del 90\,\% por inversión de la prueba de permutación pareada va de $-477.2$ a $-124.1$~HU, a menos de 2~HU del calculado con la distribución \emph{t}. El margen mínimo de equivalencia del modelo evaluado es de 477.0~HU, el menor con que su intervalo habría concluido equivalencia. Sin los tres pacientes de corredor más angosto que el tornillo, la diferencia es de $-261.1$~HU y el desenlace sigue siendo no concluyente. Frente al protocolo físico con hierro, el intervalo queda entero por debajo de $-\Delta$, en el sentido que ya mostraba la validación, donde el hierro se alejaba más del sintetizador que el titanio (Sección~\ref{sec:ap-brazos}). Con el estado final del entrenamiento, el intervalo queda entero fuera de su margen propio de 115.8~HU y del de 196.3~HU, y su margen mínimo es de 566.5~HU.
+
+El control de cordura frente a la inserción por copia y pegado se superó, aunque ese resultado no cuenta a favor del sintetizador. La prueba de Wilcoxon de una cola dio $p = 0.000122$ con 13 pacientes, que es $2^{-13}$, el menor valor que la prueba alcanza con ese tamaño, porque la amplitud de la copia y pegado vale cero en todos los pacientes. El estado final del entrenamiento dio el mismo valor $p$.
+
+\subsection{Análisis añadidos al contraste primario}\label{sec:res-anadidos}
+
+Los análisis que corrigen asimetrías entre los brazos acercan la diferencia a cero sin cambiar la categoría del contraste primario (Tabla~\ref{tab:res-tost}). Con los dos brazos medidos en los mismos cortes, la diferencia es de $-295.3$~HU, y con el protocolo físico saturado en el mismo suelo de $-1000$~HU que el sintetizador, de $-238.3$~HU. Sin las regiones de medición situadas a menos de 20~mm del extremo con cabeza, la diferencia es de $-329.3$~HU. Los tres intervalos cruzan el límite inferior del margen y quedan enteros por debajo de cero. En las regiones de medición, la fracción de vóxeles en el suelo o por debajo de él fue, como máximo entre pacientes, de 0.000 en el sintetizador y de 0.017 en el protocolo físico con titanio. La amplitud del sintetizador no está, por tanto, censurada por el suelo en esas regiones.
+
+El perfil de la \emph{streak amplitude} a través del borde de $G$ invierte el sentido de la diferencia. En los anillos de 8 a 10 y de 10 a 12~mm, la amplitud del sintetizador supera a la del protocolo físico con titanio en $+478.0$ y $+411.7$~HU, con intervalos enteros por encima de $+\Delta$. Más allá de 12~mm, el sintetizador vale cero por construcción, porque fuera de $G$ copia la TC original. El protocolo físico conserva ahí una amplitud media de 259.5~HU de 12 a 14~mm y de 230.8~HU de 14 a 16~mm. Esos valores son del orden de su piso de ruido, de 184~HU.
+
+El piso de ruido de cada brazo, la amplitud que da sin metal, separa lo que cada uno agrega por el implante. En el sintetizador, generar $G$ sin $M$ sobre los mismos 13 pacientes da una mediana de 893~HU, frente a 184~HU del protocolo físico. Con metal, las medianas son de 1308 y 1574~HU, y el cociente entre el piso y la amplitud con metal es de 0.69 en el sintetizador y de 0.12 en el protocolo físico. Sobre su propio piso, el sintetizador agrega 397~HU y el protocolo físico, 1388~HU.
+
+El contraste pareado refiere el sintetizador a su propia síntesis sin metal, con la misma semilla y el mismo corte. Sobre la banda completa, la amplitud pareada tiene una mediana de 1112~HU. Su diferencia media con el protocolo físico con titanio es de $-455.0$~HU, con un intervalo entero por debajo de $-\Delta$, y la cifra es descriptiva y no cambia el desenlace confirmatorio. En el anillo de 8 a 10~mm, la amplitud pareada es de 725~HU frente a 919~HU sin parear, y en el de 10 a 12~mm, de 616 frente a 727~HU. Ninguna baja de la mitad de la amplitud sin parear, y por la regla fijada el exceso del sintetizador en esos anillos no se atribuye a su piso de ruido. La correlación de Pearson entre la amplitud pareada y la del protocolo físico, paciente por paciente, es de 0.02.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Perfil por anillos de la \emph{streak amplitude}: mediana entre los 13 pacientes de prueba, en HU, y razón entre los anillos de 0 a 2 y de 6 a 8~mm por paciente.}
+\label{tab:res-anillos}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.15\linewidth} p{0.135\linewidth} p{0.13\linewidth} p{0.13\linewidth} p{0.13\linewidth} p{0.13\linewidth}}
+\hline
+\textbf{Anillo (mm)} & \textbf{Protocolo físico Ti} & \textbf{Paramé\-trico} & \textbf{Sinteti\-zador} & \textbf{Sinteti\-zador pareado} & \textbf{Exceso real$^{b}$} \\
+\hline
+0 a 2 & 3864$^{a}$ & 1865 & 1828 & 1749 & 1930 \\
+2 a 4 & 1808 & 1469 & 1234 & 1201 & 1199 \\
+4 a 6 & 894 & 948 & 949 & 789 & 765 \\
+6 a 8 & 613 & 598 & 946 & 794 & 473 \\
+8 a 10 & 448 & 306 & 919 & 725 & 174 \\
+10 a 12 & 338 & 83 & 727 & 616 & 11 \\
+\hline
+Razón, mediana & 6.71$^{a}$ & 3.16 & 1.92 & 2.42 & 4.08 \\
+Razón, percentiles 25 y 75 & 5.89 y 7.54 & 3.08 y 3.17 & 1.82 y 2.21 & 2.09 y 2.59 &  \\
+\hline
+\multicolumn{6}{p{0.9\linewidth}}{\footnotesize $^{a}$10 pacientes: en 3, el anillo de 0 a 2~mm no tiene regiones de medición válidas en los cortes que simula el protocolo físico. $^{b}$Exceso de amplitud de los componentes del tamaño de un tornillo (Sección~\ref{sec:v2}), medido en 18 pacientes de entrenamiento y validación con otra métrica; se compara su forma, no su nivel. El registro no resume la dispersión entre pacientes de cada anillo; la de la razón está en la última fila, y la de la diferencia con el protocolo físico en los anillos de 8 a 12~mm, en la Tabla~\ref{tab:res-tost}.} \\
+\end{tabular}
+\end{table}
+
+El perfil por anillos describe cómo cae la amplitud con la distancia al metal (Tabla~\ref{tab:res-anillos}). Por la regla fijada, el perfil del sintetizador es plano: la razón mediana entre los anillos de 0 a 2 y de 6 a 8~mm es de 1.92, por debajo de 2. Esa razón es de 2.42 en el sintetizador pareado, de 3.16 en el artefacto paramétrico y de 6.71 en el protocolo físico con titanio, y la del exceso real por anillo es de 4.08. Desde el anillo de 4 a 6~mm, la amplitud del sintetizador queda entre 727 y 949~HU, mientras el protocolo físico y el exceso real siguen bajando. El protocolo físico, a su vez, cae más rápido que el exceso real.
+
+El artefacto paramétrico, que no usa aprendizaje y reproduce por construcción el nivel del exceso real por anillo, queda más cerca del protocolo físico que el sintetizador en la banda completa. Su diferencia media con el protocolo físico con titanio es de $-98.9$~HU, frente a $-301.0$~HU del sintetizador, y su amplitud media queda 202.0~HU por encima de la del sintetizador. Con el mismo suelo en los dos brazos, su diferencia es de $-36.3$~HU, y con la misma lectura, aplicada solo como descripción, su intervalo cae entero dentro del margen (Tabla~\ref{tab:res-tost}).
+
+La lectura de acuerdo entre brazos muestra que el sintetizador varía menos entre pacientes que el protocolo físico. El coeficiente de variación de su amplitud entre pacientes es de 0.076, frente a 0.241 en el protocolo físico con titanio. La prueba de Pitman y Morgan, con la correlación entre la suma y la diferencia de cada par, da $r = -0.89$ y $p = 3.8 \times 10^{-5}$ sobre HU, y $r = -0.83$ y $p = 4.7 \times 10^{-4}$ sobre el logaritmo. La correlación de Pearson entre los dos brazos, paciente por paciente, es de 0.40. En HU, el análisis de Bland y Altman da un sesgo de $-301.0$~HU y límites de acuerdo de $-999.0$ a $+397.1$~HU. En razón, el sintetizador da 0.831 veces la amplitud del protocolo físico, con límites de 0.533 a 1.296; los límites de esta lectura se tratan en la Sección~\ref{sec:amenazas}.
+
+La costura y la preservación caracterizan a cada brazo y no deciden. En la síntesis sobre pelvis sin metal, el salto de los valores de TC al cruzar el borde de $G$ tuvo una mediana de 4.3~HU en el sintetizador y de 1.2~HU en el protocolo físico. Fuera de $G$ y dentro del cuerpo, la simulación sin metal del protocolo físico se comparó con la TC original en los 13 pacientes y sus dos réplicas. Su RMSE tuvo una mediana de 31.4~HU, de 20.1 a 42.4~HU, y su SSIM, una mediana de 0.9069, de 0.8268 a 0.9653. En el sintetizador esa región se copia, y la preservación es exacta por construcción.
+
+Los componentes de la \emph{bone integrity} y de la \emph{metal integrity}, descriptivos, se resumen con el valor de cada paciente: la mediana de sus cinco semillas en el sintetizador y la de sus dos réplicas en el protocolo físico (Tabla~\ref{tab:res-integridad}). En el hueso, la mediana del coeficiente de Sørensen-Dice entre los 13 pacientes fue de 0.677 en el sintetizador y de 0.800 en el protocolo físico con titanio. La del cambio relativo de volumen fue de 0.098 y 0.121. En el metal, el coeficiente fue de 0.862 y 0.856. El cambio de volumen fue de $-0.190$ en el sintetizador, que deja menos vóxeles sobre 2500~HU que la máscara $M$, y de $+0.283$ en el protocolo físico, que deja más; con hierro, de $+1.683$. Como el artefacto cambia los HU de $G$, ninguna de estas cifras indica por sí sola un resultado peor (Sección~\ref{sec:ap-reconstruccion}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Componentes de la \emph{bone integrity} y de la \emph{metal integrity} en la síntesis sobre pelvis sin metal: mediana entre los 13 pacientes de prueba, con el mínimo y el máximo.}
+\label{tab:res-integridad}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.2\linewidth} p{0.16\linewidth} p{0.19\linewidth} p{0.16\linewidth} p{0.2\linewidth}}
+\hline
+\textbf{Brazo} & \textbf{Hueso: Sørensen-Dice} & \textbf{Hueso: cambio de volumen} & \textbf{Metal: Sørensen-Dice} & \textbf{Metal: cambio de volumen} \\
+\hline
+Modelo evaluado & 0.677 [0.586, 0.775] & 0.098 [$-0.094$, 0.340] & 0.862 [0.769, 0.903] & $-0.190$ [$-0.367$, $-0.084$] \\
+Protocolo físico, titanio & 0.800 [0.736, 0.876] & 0.121 [$-0.002$, 0.319] & 0.856 [0.820, 0.892] & 0.283 [$-0.117$, 0.334] \\
+Protocolo físico, hierro & 0.707 [0.599, 0.865] & 0.043 [$-0.124$, 0.349] & 0.518 [0.503, 0.668] & 1.683 [0.989, 1.785] \\
+\hline
+\multicolumn{5}{p{0.9\linewidth}}{\footnotesize Resumen descriptivo, calculado después de conocer los desenlaces, sobre componentes que el diseño ya declaraba descriptivos. El hueso se compara con la TC original, y el metal, con la máscara $M$.} \\
+\end{tabular}
+\end{table}
+
+\subsection{Reconstrucción de implantes reales}\label{sec:res-reconstruccion}
+
+La reconstrucción de implantes reales, descriptiva y sin prueba de hipótesis, se hizo con el modelo evaluado y el límite de lectura de 0.030 en 13 pacientes de prueba con metal (Tabla~\ref{tab:res-ea1}). En los 9 pacientes con material ortopédico, la discrepancia mediana fue de 270.9~HU en $G$, de 2312.5~HU en $M$ y de 198.0~HU en $B_{\delta}$. El coeficiente de Sørensen-Dice fue de 0.717 en el hueso y de 0.928 en el metal, y el salto en el borde de $G$, descontado el de la TC real, fue de 6.3~HU. Los 4 pacientes con objetos no ortopédicos quedan fuera de la distribución de entrenamiento. En ellos, la discrepancia en $G$ fue de 199.8~HU, el coeficiente del metal bajó a 0.753 y el salto descontado subió a 9.0~HU. Ninguna de estas cifras tiene un umbral de comparación, y la discrepancia en $M$ se mide contra el metal de una TC real cuya reconstrucción no se conoce (Sección~\ref{sec:datos}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Reconstrucción de implantes reales con el modelo evaluado en los pacientes de prueba con metal: mediana entre pacientes, con el mínimo y el máximo.}
+\label{tab:res-ea1}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.36\linewidth} p{0.27\linewidth} p{0.27\linewidth}}
+\hline
+\textbf{Medida} & \textbf{Material ortopédico} & \textbf{Objetos no ortopédicos} \\
+\hline
+Pacientes & 9 & 4 \\
+Discrepancia en $G$ (HU) & 270.9 [133.7, 480.3] & 199.8 [123.7, 397.8] \\
+Discrepancia en $M$ (HU) & 2312.5 [880.3, 2710.7] & 2747.9 [1842.3, 4071.7] \\
+Discrepancia en $B_{\delta}$ (HU) & 198.0 [129.4, 340.7] & 165.8 [118.9, 270.3] \\
+Hueso: coeficiente de Sørensen-Dice & 0.717 [0.640, 0.786] & 0.534 [0.518, 0.728] \\
+Hueso: cambio relativo de volumen & $-0.041$ [$-0.142$, 0.088] & 0.324 [$-0.033$, 0.526] \\
+Metal: coeficiente de Sørensen-Dice & 0.928 [0.846, 0.953] & 0.753 [0.580, 0.877] \\
+Metal: cambio relativo de volumen & $-0.078$ [$-0.151$, $-0.036$] & $-0.255$ [$-0.318$, $-0.204$] \\
+Salto en el borde de $G$, descontado el real (HU) & 6.3 [3.4, 24.1] & 9.0 [4.4, 18.9] \\
+\hline
+\multicolumn{3}{p{0.9\linewidth}}{\footnotesize El mínimo y el máximo dan el rango entre pacientes que prevé el diseño (Sección~\ref{sec:ap-reconstruccion}). Es un resumen descriptivo, calculado después de conocer las medianas, sin prueba de hipótesis.} \\
+\end{tabular}
+\end{table}
+
+\subsection{Versión 2 del sintetizador}\label{sec:res-v2}
+
+La evaluación exploratoria de la versión~2 dio, en sus dos modelos, el mismo desenlace que la versión~1 en todas las variantes del contraste primario (Tabla~\ref{tab:res-tost}). El modelo con sobremuestreo dio una diferencia media de $-258.9$~HU y el modelo con canal, de $-264.3$~HU. Los dos son no concluyentes y con amplitud menor que el protocolo físico, tanto con su margen propio, de 157.1 y 107.1~HU, como con el común de 196.3~HU. Sus márgenes mínimos de equivalencia son de 456.7 y 456.8~HU, frente a 477.0~HU del modelo evaluado. En los anillos de 8 a 12~mm, los dos superan al protocolo físico, como la versión~1, con diferencias de $+415.2$ a $+489.8$~HU. Su coeficiente de variación entre pacientes es de 0.093 y 0.081, y su correlación de Pearson con el protocolo físico, de 0.03 y 0.09, frente a 0.40 de la versión~1.
+
+En la reconstrucción de implantes reales, la ventaja de la versión~2 depende del límite de lectura, y esa lectura se fijó después de ver la prueba de equivalencia de las dos versiones (Sección~\ref{sec:v2}). Con su límite propio, de 0.05 y 0.2, la discrepancia mediana en $G$ de los 9 pacientes con material ortopédico fue de 259.5 y 242.1~HU, en ese orden. El modelo evaluado había dado 270.9~HU. Con el límite de 0.030 del modelo evaluado, esas cifras fueron de 271.8 y 246.4~HU. Con ese límite, el modelo con sobremuestreo tuvo menor discrepancia en $G$ que el modelo evaluado en 4 de los 13 pacientes, y el modelo con canal, en 9. Con su límite propio, lo hicieron en 9 y 11. En los pacientes con objetos no ortopédicos, el límite de 0.030 eleva el salto descontado en el borde de $G$ a 43.9 y 72.8~HU, frente a 9.0~HU del modelo evaluado.
+
+\section{Discusión}\label{sec:discusion}
+
+La discusión lee cada resultado contra su objetivo y contra la hipótesis del trabajo, y después reúne las limitaciones que acotan esas lecturas. Las amenazas a la validez del diseño se tratan en la Sección~\ref{sec:amenazas}, y aquí se retoman solo por su efecto sobre los resultados obtenidos. Las evaluaciones que no se ejecutaron se proponen en el capítulo de trabajos futuros.
+
+\subsection{Compuerta de representación}
+
+El veredicto negativo responde a la pregunta del Objetivo~1 con el criterio fijado de antemano: ninguna combinación examinada conserva los HU del hueso con un error menor que 25~HU. El resultado no es marginal, porque el IC del 95\,\% de la mejor combinación empieza en 55.12~HU y todos los pacientes incumplen el criterio en las seis combinaciones. Se evaluó el autoencoder de Stable Diffusion~1.5, preentrenado o con el decodificador adaptado, y en ninguna de sus dos variantes la representación latente alcanzó la tolerancia exigida. El autoencoder de Guo et al. no llegó a correrse: la sola saturación a su rango de salida ya superaba el criterio sin modelo alguno. La fuga entre particiones y la multiplicidad sin corregir solo podían favorecer un aprobado, de modo que no comprometen un veredicto negativo (Sección~\ref{sec:amenazas}).
+
+La consecuencia práctica del veredicto fue el rediseño del Objetivo~3 en el dominio de imagen, una decisión posterior que no modificó la regla de la compuerta (Sección~\ref{sec:obj1}). El veredicto descartó la difusión latente, pero no la codificación multiventana, cuya ida y vuelta sin autoencoder tuvo un error medio de 0.00~HU en el hueso con la compresión arcoseno hiperbólico. En la banda $B_{\delta}$, ese error sube a 13.71~HU en los pacientes con metal. Lo que este resultado no establece es que ningún espacio latente pueda conservar los HU, porque solo se evaluaron las dos variantes del autoencoder de Stable Diffusion~1.5 y, en el de Guo et al., la cota por saturación.
+
+\subsection{Muestreador y admisibilidad quirúrgica}
+
+La distribución de grados del muestreador queda más cerca de cada serie de la referencia clínica que esas dos series entre sí, sin que ningún parámetro se ajustara a ellas. Esa lectura usa una escala elegida después de conocer la distancia, y el Objetivo~2 no tiene una regla que la convierta en éxito o fallo (Sección~\ref{sec:sap}). Los intervalos por remuestreo tampoco permiten decir a cuál de las dos series se parece más la cohorte primaria. Lo que sí muestra la estratificación es que una parte de la distancia agregada no proviene del muestreador. En los corredores que admiten el calibre, el grado~0 llega al 64.2\,\% frente al 69\,\% de la serie navegada; en los 15 estrechos, el propio eje del corredor perfora y el grado~0 cae al 3.3\,\%.
+
+El caso negativo de este objetivo es, por tanto, anatómico y no de colocación: en 15 de los 72 pacientes de la cohorte primaria, el corredor no admite el tornillo con que se mide la brecha. Qué estrecha esos corredores no está establecido, y la fractura, confirmada en 20 de los 30 casos del cribado, es su confundidor (Sección~\ref{sec:amenazas}). La cohorte de sensibilidad da distancias de 0.186 y 0.299 grados, y el análisis sin los dos casos con error de segmentación, de 0.203 y 0.237 grados. Todas quedan por debajo de la escala de 0.395 grados.
+
+El Objetivo~4 se cumple como objetivo de definición. SAP quedó formalizada con sus dos componentes, su implementación pasó los controles de identidad, monotonía y resolución, y se aplicó a todas las poses sin descartar ninguna. Ningún resultado de este capítulo la valida como medida clínica de la perforación, porque mide la protrusión fuera de una envolvente ósea segmentada (Sección~\ref{sec:amenazas}). Las métricas de Peters et al. se aplicaron con su inversión para síntesis, y su lectura descansa en el valor del protocolo físico, que tampoco es una verdad física.
+
+\subsection{Sintetizador}
+
+El Objetivo~3 se cumple como objetivo de diseño y evaluación: el sintetizador se implementó y se evaluó con el diseño congelado, en la corrida final con el modelo evaluado y la pose corregida. Lo que los datos podían contradecir era la hipótesis de equivalencia con el protocolo físico, y con el desenlace obtenido (Sección~\ref{sec:res-primario}) esa hipótesis no se sostiene. El resultado que la habría rechazado, un intervalo entero fuera del margen, no ocurrió con el modelo evaluado, pero sí con el estado final del entrenamiento, en una sensibilidad descriptiva. Esta lectura en dos niveles se fijó después de ver la prueba de equivalencia de las dos versiones. Las tres elecciones hechas sobre los dos receptores de validación, el punto de control, el material y el margen, empujan la prueba hacia la equivalencia, igual que el piso de ruido del sintetizador (Sección~\ref{sec:amenazas}). El desenlace no la alcanzó con ese sentido de los sesgos registrados, aunque su efecto conjunto no se midió.
+
+Los análisis añadidos describen en qué se separa el sintetizador del protocolo físico, y ninguno lo lleva a la equivalencia. En la banda completa su amplitud es menor y junto al borde de $G$ es mayor. Su perfil es plano por la regla fijada, con una razón de 1.92 frente a 6.71 del protocolo físico y 4.08 del exceso real. El sintetizador no reproduce, así, la caída de la amplitud con la distancia al metal, aunque la forma del exceso real se midió con otra métrica y en otros pacientes. El artefacto paramétrico queda más cerca del protocolo físico sin aprendizaje alguno, de modo que la amplitud media de la banda, por sí sola, no distingue un modelo aprendido de uno analítico que solo reproduce el nivel por anillo.
+
+La lectura de acuerdo añade un rasgo que la prueba de medias no recoge. El sintetizador cambia poco de un paciente a otro, con un coeficiente de variación de 0.076, y sigue de forma débil la amplitud del protocolo físico en cada paciente, con una correlación de 0.40. La versión~2, entrenada para corregir la atenuación medida en validación, dio diferencias de $-258.9$ y $-264.3$~HU frente a $-301.0$~HU, sin cambiar ningún desenlace, y su correlación con el protocolo físico bajó a 0.03 y 0.09. Como es posterior, exploratoria y reutiliza la partición de prueba, no reemplaza al modelo evaluado (Sección~\ref{sec:amenazas}).
+
+La reconstrucción de implantes reales no tiene umbral, y su valor es descriptivo. La concordancia del metal fue menor en los objetos no ortopédicos, que están fuera de la distribución de entrenamiento: su coeficiente de Sørensen-Dice bajó de 0.928 a 0.753. En la versión~2, la menor discrepancia del modelo con sobremuestreo desaparece al leerlo con el límite del modelo evaluado, de modo que no puede atribuirse al modelo.
+
+\subsection{Limitaciones}
+
+La limitación principal del Objetivo~3 es que el realismo visual del artefacto sintético no se reclama. La autora juzgó insuficiente el resultado visual del modelo evaluado y, con su asesor, decidió no rediseñar ni reentrenar el sintetizador (Sección~\ref{sec:amenazas}). En las mediciones de este capítulo, el perfil es plano, y el piso de ruido es 0.69 veces la amplitud con metal. En validación, el percentil~95 sintético quedó bajo lo real, y la versión~2 no cambió ningún desenlace. El reclamo del Objetivo~3 se acota, en consecuencia, a la síntesis local del artefacto en la región $G$, condicionada por la geometría y la pose del implante y evaluada frente al protocolo físico con el diseño congelado. El contraste de realismo, la comparación visual a ciegas y el control de calidad visual quedaron diseñados y no se ejecutaron, y pasan a trabajo futuro.
+
+La pose del muestreador no interviene en ningún resultado del Objetivo~3. La síntesis sobre pelvis sin metal usa el eje del corredor sin perturbar, y el análisis exploratorio con poses del muestreador se fijó y no se ejecutó (Sección~\ref{sec:ap-sintesis}). Que el sintetizador opere sobre una pose del muestreador es, por tanto, una propiedad del diseño y no un resultado evaluado.
+
+En el Objetivo~2, la envolvente ósea con que SAP mide la brecha puede ocupar parte del hueco medial de S1, y los resultados no lo corrigen. Una medición posterior y descriptiva sobre la línea media de S1 cubrió 71 de los 72 pacientes de la cohorte primaria; en el restante no se reprodujo la envolvente. En los 71, la envolvente deja fuera un hueco medial con HU de partes blandas o grasa, y el cierre morfológico lo ocupa en 14. Lo ocupa en tramos de hasta 6.4~mm en sentido craneocaudal, donde el hueco ya medía hasta 6.3~mm en sentido anteroposterior. En esos tramos, una pose que perforara hacia el hueco ocupado recibiría brecha nula, y su grado quedaría por debajo del que le corresponde. La medición no establece que el hueco sea el canal sacro, ni mide los forámenes o el efecto sobre la brecha de ninguna pose. Por decisión de la autora, la envolvente y las cifras del Objetivo~2 se mantienen (Sección~\ref{sec:amenazas}).
+
+El control de nivel que selecciona la cohorte del Objetivo~2 descansa, además, en un supuesto no medido. En una columna de la línea media alrededor del platillo, el techo de la etiqueta de S1 queda por encima del platillo de la localización en los 72 pacientes. La mediana es de 6.5~mm (rango intercuartílico de 5.7 a 7.2~mm), en una distribución truncada por el propio control. Dónde cae el vóxel más craneal de toda la etiqueta, en el cuerpo vertebral o en la cresta sacra media, no se midió. Ese supuesto afecta al control de nivel y, con él, a qué pacientes forman la cohorte, pero no al marco de referencia en que se miden las poses, anclado al platillo de la localización.
+
+Otras piezas del diseño quedaron sin ejecutar o sin un registro completo. El eje del segundo corredor bajo S1 está medido en 69 de los 72 pacientes, pero el muestreo de poses en él no se preinscribió ni se ejecutó. Ninguna de las fuentes revisadas da una distribución ordinal clínica por debajo de S1 (Sección~\ref{sec:poses}). La revisión en cortes de la auditoría consta solo para los 56 pacientes de CLINIC-metal, y la ausencia de metal de los volúmenes receptores descansa en la revisión tridimensional y en el cribado por HU (Sección~\ref{sec:datos}).

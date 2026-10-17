@@ -89,6 +89,8 @@
 | `e13_poses_piloto.csv` / `e13_sap_piloto.md` | 2 casos de grupo 1, prueba del camino | script | **NO ES RESULTADO**: fuera de cohorte |
 | `e13b_estratificado.py` / `.md` | W1 por viabilidad del corredor | script | **VIGENTE — post hoc declarado** (#122) |
 | `e14_relleno_envolvente.py` / `e14_relleno.sbatch` -> `outputs/e14_relleno.csv` | envolvente con cierre frente a cierre + relleno; 152 casos | Khipu | **CERRADO** (#131): 0 casos cambian; cierra #127 pto 13 |
+| `../registro/r_envolvente_canal.py`, `../registro/registro_2026-10-16.md` §1 | la envolvente `B` y el canal sacro en la linea media de S1 (y lo que rellena el cierre); control: longitud anclada = E12 | local (asesor, introduccion-r09) | **CORRIDO** 2026-10-16 solo en los **2 pilotos** (fuera de cohorte), descriptivo: `metal_0008` canal fuera de `B` en 36/36 cortes con hueco; `CLINIC_0002` el cierre ocupa el hueco medial en 7 cortes de un extremo de S1. Foramenes no medidos. Cohorte (`--cohorte`, Khipu): **NO CORRIDO** |
+| `../registro/r_techo_platillo.py`, `../registro/registro_2026-10-16.md` §4 | techo de `vertebrae_S1` (columna media) menos platillo de R1 en la cohorte primaria, desde `ts_nivel_s1.csv` (#138); control: reproduce `ts_analisis.md` §1 | local (asesor, capitulo3-r27), segundos | **CORRIDO** 2026-10-16, descriptivo y posterior: 72 casos, mediana 6.5 mm, RIC [5.7, 7.2], 3.7 a 15.4 mm (`default6mm`) |
 | `e11_componentes.csv` | componentes medidos por E11 | script | **VIGENTE** (ver 3) |
 | `verificar_coherencia.py` | 104 comprobaciones (2026-10-08): codigo, preinscripcion, controles y `main.tex` dicen lo mismo | script | **VIGENTE — correr antes de cerrar sesion** |
 

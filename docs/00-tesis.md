@@ -4,8 +4,16 @@
 
 ## Titulo actual
 
-MetalSynth-Pelvis: Conditioned synthesis of osteosynthesis implants and local metal
-artifacts in pelvic CT scan volumes using Multi-Window Image-Domain Diffusion.
+MetalSynth-Pelvis: Conditioned synthesis of transiliac-transsacral screws and their local metal
+artifacts in pelvic CT using image-domain diffusion with multi-window encoding.
+
+Titulo del documento de entrega (espanol, `overleaf/main.tex`): *Síntesis condicionada de tornillos
+transilíaco-transsacros y de su artefacto metálico local en TC pélvica mediante difusión con codificación
+multiventana en el dominio de imagen.*
+
+> Actualizado el 2026-10-16 (DEC 2026-10-16 (7), #126 (a)-(b)): el implante es el tornillo
+> transiliaco-transsacro, no "implantes de osteosintesis" en general; el titulo no menciona la
+> segmentacion (fuera de alcance).
 
 > Actualizado el 2026-09-21: *Latent* -> *Image-Domain*, aplicando el punto 4 de la decision
 > del 2026-09-19. `tesis/main.tex:36` ya lo tenia; este archivo iba retrasado.
@@ -60,8 +68,9 @@ coined ones.
   parametrico (6.5-8.0 mm) y holgura radial `c` de 1-2 mm por lado, derivada de Kaiser
 - Metrica SAP + comparacion contra las DOS distribuciones ordinales de cuatro grados de
   `zwingmann2009navigated`, condicionadas por tecnica quirurgica **solo en S1**.
-  S1/S2 se conserva como variable geometrica del muestreador; S2 se evalua
-  descriptivamente (geometria y grados de brecha), sin prior ordinal clinico disponible.
+  El segundo corredor bajo S1 (no siempre S2, #121) se reporta solo como geometria (eje medido
+  en 69 de 72); el muestreo de poses y los grados de brecha ahi quedan como trabajo futuro, sin
+  prior ordinal clinico disponible (DEC 2026-10-16 (3) pto 2; #198).
   **EJECUTADO (E13) y CERRADO.** Distribucion de poses y SAP preinscritas el 2026-09-22 (D-O2.1 a
   D-O2.7) antes del primer Wasserstein-1; ningun parametro se tomo de Zwingmann. Resultado
   (`tesis/main.tex`, *Expected Results* y *Placement result*): **72 volumenes, 3 600 poses**, grados

@@ -6787,6 +6787,8 @@ renderizador: sin cambios.**
   HU que excluye el hueso denso y el metal.**
 - **Queda para la redaccion (pendiente de la autora):** una frase en el Objetivo 1 con este resultado, y la cita del
   bundle (no del paper) para el rango. **Tipo:** RESULTADO. **#93 CERRADA.**
+- **Cita del bundle resuelta 2026-10-16 (6):** atribucion a la inspeccion del codigo (paquete y guion nombrados), sin
+  entrada bibliografica nueva.
 
 ---
 
@@ -8804,6 +8806,9 @@ verificada: **0 errores, 0 citas indefinidas, 7 paginas**. Ninguna esta citada t
   la motivacion (aumento de datos) o solo lo que se evalua (coherencia fisica y quirurgica); (c) nombre
   completo y ORCID del asesor, y ORCID propio.
 - **Tipo:** REDACCION + ALCANCE. **No aplicado: `overleaf/main.tex` conserva titulo y portada (regla 14).**
+- **(a) y (b) DECIDIDAS 2026-10-16 (7)** (delegacion de la autora): titulo nuevo en `overleaf/main.tex`, `tesis/main.tex` y
+  `00-tesis.md`, sin aumento de datos ni segmentacion. **(c) sigue ABIERTA** (ORCID de autora y asesor, nombre del
+  asesor en la portada).
 
 ### 127 — La redaccion del capitulo 3 (`overleaf/`) destapo contradicciones entre decisiones, corridas y `tesis/main.tex` — ABIERTA
 
@@ -9704,7 +9709,7 @@ Marcado como `[DECIDIR]` en `diseno_A.md` seccion 5, al lado de la cifra de B2. 
   evalua solo con metricas y por que, o se anade un bloque de lectura. Lo primero es legitimo; el
   silencio no.
 
-### 138 — El medico confirma que la "parte de atras" aceptada como S1 es la CRESTA SACRA MEDIA; el techo de la etiqueta `vertebrae_S1` no es el platillo superior — ABIERTA
+### 138 — El medico confirma que la "parte de atras" aceptada como S1 es la CRESTA SACRA MEDIA; el techo de la etiqueta `vertebrae_S1` no es el platillo superior — DECIDIDA 2026-10-16 (4)
 
 - **Origen:** respuesta del medico colaborador el 2026-10-05, a la pregunta pendiente que bloqueaba el
   `\GAPDEC` de `overleaf/secciones/capitulo3.tex:97`. **Desambigua** lo que se habia anotado como
@@ -9728,6 +9733,9 @@ Marcado como `[DECIDIR]` en `diseno_A.md` seccion 5, al lado de la cifra de B2. 
   comprobacion anterior.
 - **PENDIENTE DE LA AUTORA (regla 14):** decidir si esa comprobacion se hace antes de la sustentacion
   o si la diferencia entre el techo de la etiqueta y el platillo se declara como supuesto no medido.
+- **DECIDIDA 2026-10-16 (4)** (delegada en el asistente): sin comprobacion nueva. Se reporta lo medido en la columna
+  media (techo por encima del platillo en 72 de 72, mediana 6.5 mm, 3.7 a 15.4; `registro_2026-10-16.md` §4); la
+  posicion del voxel mas craneal de toda la etiqueta se declara supuesto no medido. Ver `docs/01-decisiones.md`.
 
 ### 139 — LA CADENA COMPLETA NUNCA SE HA EJECUTADO, y la costura de E-A2 queda medida por primera vez (203 frente a 30 HU) — ABIERTA
 
@@ -12490,3 +12498,69 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
   estudio inspirada en el acuerdo individual (`haber2008general`) y su regla `max(s, r)` se declara como limitacion:
   no es la del paper (promedio sin referencia; solo la referencia con referencia), favorece al metodo mas ruidoso, `s`
   y `r` son estimadores heterogeneos en 2 pacientes, y el contraste usa medianas de 5 semillas.
+
+### 196 — EL CIERRE MORFOLOGICO DE LA ENVOLVENTE OSEA `B` OCUPA EL HUECO MEDIAL DE S1 EN UN PILOTO: el canal sacro no queda garantizadamente fuera de `B` — DECIDIDA
+
+- **Origen:** `asesor-tesis`, ronda `introduccion-r09` (2026-10-16), calculo barato `experiments/registro/r_envolvente_canal.py`;
+  registro en `experiments/registro/registro_2026-10-16.md` §1.
+- **Hallazgo (descriptivo, posterior, 2 pilotos fuera de la cohorte del Objetivo 2):** en `metal_0008` el hueco medial
+  de S1 queda fuera de `B` en los 36 cortes donde aparece; en `CLINIC_0002` el cierre de 2 mm lo ocupa en 7 cortes
+  contiguos (~5.6 mm) de un extremo de S1, donde la union dejaba el hueco estrecho (3.1-8.6 mm). No establece que ese
+  hueco sea el canal; no mide foramenes; no mide efecto sobre la brecha de ninguna pose. Control de regresion: longitud
+  anclada reproduce E12 (113.0 y 154.0 mm).
+- **Toca:** validez de constructo del Objetivo 2 (si `B` cubre parte del canal, una pose que lo invade podria no
+  contarse como brecha); cap. 3 §Amenazas, cap. 4 discusion, introduccion l. ~96 (`\GAPDATO` de envolvente y canal).
+- **Opciones (decide la autora):** (a) declararlo limitacion con la evidencia de los dos pilotos; (b) correr el mismo
+  script sobre los 72 casos en Khipu (`--cohorte`; CPU, minutos; falta adaptar rutas a `~/metalsynth/qc/` y sbatch).
+- **Actualizacion 2026-10-16 (opcion b ejecutada a pedido de la autora, job 57118; `experiments/registro/registro_2026-10-16.md`
+  §2):** control de regresion reproduce en 71 de 72 (`CLINIC_0044`: 134.0 frente a 135.0 mm, sin cifras). En 71 casos
+  `B` deja fuera un hueco medial de S1 con HU de partes blandas o grasa; el cierre lo ocupa en 14 casos, en tramos de
+  hasta 6.4 mm en z y donde la union lo dejaba de hasta 6.3 mm AP (40 de 2727 cortes con hueco). Sigue sin medir
+  foramenes ni efecto sobre la brecha.
+- **DECIDIDA 2026-10-16 (autora, opcion a):** limitacion declarada con la cohorte, `B` sin cambios. Ver
+  `docs/01-decisiones.md` 2026-10-16 (2).
+
+### 197 — SIN D9, NINGUNA EVALUACION DEL OBJETIVO 3 USA POSES DEL MUESTREADOR: "condicionada por la pose del muestreador" es propiedad del diseno, no resultado evaluado — DECIDIDA 2026-10-16 (3)
+
+- **Origen:** `asesor-tesis`, ronda `capitulo3-r27` (2026-10-16), B-1 de `redaccion/rondas/capitulo3-r27-asesor.md`.
+- **Hallazgo:** DEC 2026-10-16 pto 1 acota el reclamo del Objetivo 3 a la sintesis local "condicionada por la pose del
+  muestreador". E-A2 evalua sobre el eje del corredor sin perturbar (cap. 3 l. ~349 y ~533); el unico analisis con
+  poses del muestreador era el exploratorio D9 (2026-10-15 pto 9), que no se ejecuta.
+- **Toca:** redaccion del reclamo del Objetivo 3 en introduccion, cap. 3, cap. 4, conclusiones y trabajos futuros: no
+  escribir "evaluada con las poses del muestreador".
+- **DECIDIDA 2026-10-16 (autora, opcion a de B-1):** D9 fijado y no ejecutado, trabajo futuro; el condicionamiento por
+  pose se escribe como propiedad del diseno. Ver `docs/01-decisiones.md` 2026-10-16 (3) pto 1.
+
+### 198 — `00-tesis.md` SIGUE PROMETIENDO "GRADOS DE BRECHA" EN EL SEGUNDO CORREDOR: contradice DEC 2026-10-16 (3) pto 2 — DECIDIDA 2026-10-16 (5)
+
+- **Origen:** `auditor-trazabilidad`, ronda `capitulo4-r01` (2026-10-16), T02 de `redaccion/rondas/capitulo4-r01-trazabilidad.md`.
+- **Hallazgo:** `docs/00-tesis.md` (alcance minimo, Objetivo 2, l. ~63-64) dice que "S2 se evalua descriptivamente
+  (geometria y grados de brecha)". DEC 2026-10-16 (3) pto 2 fija que el muestreo de poses en el segundo corredor no se
+  preinscribe ni se corre (trabajo futuro) y que solo se reporta el eje medido (69 de 72) como geometria. Sin poses no
+  hay grados de brecha. Ademas, por #121, el segundo corredor no es siempre S2. `capitulo4.tex` (l. ~244) e
+  `introduccion.tex` ya siguen la decision; la fuente de alcance quedo atras.
+- **Toca:** solo `docs/00-tesis.md` (fuente de alcance que leen los revisores); ningun capitulo cambia.
+- **Propuesta (decide la autora; regla 14 impide editarlo sin su decision):** reemplazar la frase por "El segundo
+  corredor bajo S1 se reporta solo como geometria (eje medido en 69 de 72); el muestreo de poses y los grados de brecha
+  ahi quedan como trabajo futuro (DEC 2026-10-16 (3) pto 2)".
+- **DECIDIDA 2026-10-16 (autora):** frase corregida en `docs/00-tesis.md` con la propuesta. Ver `docs/01-decisiones.md`
+  2026-10-16 (5).
+
+### 199 — `CLAUDE.md` RAIZ DESCRIBE UN MUESTREADOR Y UN RENDERIZADOR QUE YA NO SON LOS DE LA TESIS — ABIERTA
+
+- **Origen:** `auditor-trazabilidad`, ronda `conclusiones-r01` (2026-10-16), T02 de `redaccion/rondas/conclusiones-r01-trazabilidad.md`;
+  verificado por el orquestador.
+- **Hallazgo:** `CLAUDE.md` (seccion "Que es este proyecto", l. ~18-26) dice que el muestreador "muestrea de las
+  distribuciones ordinales de malposicion medidas por `zwingmann2009navigated`". La preinscripcion
+  (`experiments/objetivo2/preinscripcion_muestreador.md` §3.1, "una sola constante, y no es de Zwingmann") y
+  `docs/00-tesis.md` fijan lo contrario: la perturbacion sale de la holgura de Kaiser (h = 5 mm) y Zwingmann solo sirve
+  de comparacion (W1). Ademas, describe el renderizador como "difusion latente 2.5D guiado por ControlNet", descartado
+  tras la compuerta negativa del Objetivo 1 (sintetizador en el dominio de imagen). Los capitulos y las conclusiones
+  siguen la implementacion; la instruccion permanente quedo atras y puede inducir a error a revisores y agentes.
+- **Toca:** solo `CLAUDE.md` (instrucciones del proyecto); ningun capitulo cambia.
+- **Propuesta (decide la autora):** reemplazar en el punto 1 "muestrea de las distribuciones ordinales ... condicionadas
+  por tecnica quirurgica y solo en S1" por "perturba la pose alrededor del eje del corredor con una escala derivada de
+  la holgura de Kaiser (preinscripcion del 2026-09-22); las distribuciones ordinales de `zwingmann2009navigated`, solo
+  en S1 y por tecnica, sirven de comparacion (W1), no de parametro"; y en el punto 2, "Modelo de difusion latente 2.5D
+  guiado por ControlNet" por "modelo de difusion en el dominio de imagen (la compuerta del Objetivo 1 descarto la
+  difusion latente)", conservando la banda B_delta.

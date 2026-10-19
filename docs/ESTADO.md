@@ -2,6 +2,16 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-10-19 (2) — título de Trabajos futuros corregido en el índice
+
+- **Hecho:** `trabajosFuturos.tex` r02-puntual: «TRABAJOS FUTUROS» en índice y encabezado; lint de sección PASA (0/0/0). PDF completo recompilado directamente con `pdflatex` (194 páginas), porque `latexmk` requiere Perl ausente; etapa en `redaccion/.build/etapas/trabajosFuturos-r02-puntual.pdf`.
+- **Siguiente:** anexos l. 5, introducción l. 7 y segunda pasada del documento.
+
+## 2026-10-19 — resumen y abstract corregidos en paralelo (r02)
+
+- **Hecho:** ambos textos reescritos para primera lectura, con correspondencia 3/4/6/3, cifras centrales y limites trazados en `redaccion/rondas/resumen-r02-respuesta.md` y `abstract-r02-respuesta.md`; sin GAP nuevos. Lint de ambas secciones PASA y documento completo compilado (194 paginas); etapa en `redaccion/.build/etapas/resumen-abstract-r02.pdf`.
+- **Siguiente:** anexos (plantilla l. 5), introduccion l. 7 y segunda pasada del documento; pendientes de autora #126 (c) y #199.
+
 ## 2026-10-16 (8) — titulo nuevo; resumen y abstract redactados y revisados
 
 - **Hecho:** titulo decidido por delegacion (DEC 2026-10-16 (7) + pto 6; #126 (a)-(b) DECIDIDAS) en `overleaf/main.tex`, `tesis/main.tex` (PDF recompilado) y `00-tesis.md`; resumen r00+r01, abstract r00+r01 (traduccion fiel). Documento 194 pags; lint documento: 1 alta (`anexos.tex` l. 5, plantilla) y 1 media (introduccion l. 7); GAP solo Niu.

@@ -104,6 +104,27 @@ def perdida(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor,
     return (err.sum(dim=(1, 2, 3)) / (n * x0.shape[1])).mean()
 
 
+def perdida_ang(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor, dif: Difusion,
+                clave: torch.Tensor, lam: float, tmax: int, generador: torch.Generator | None = None,
+                k_sect: int = 24) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """`perdida` (v1, sin peso) + `lam` * L_ang (prueba minima de B; `angular.py`). Devuelve (total, L_v, L_ang).
+
+    Misma estructura que `perdida`: con `lam = 0` el total es exactamente `perdida`.
+    """
+    from angular import perdida_amplitud
+    b = x0.shape[0]
+    t = torch.randint(0, dif.pasos, (b,), device=x0.device, generator=generador)
+    ruido = torch.randn(x0.shape, device=x0.device, generator=generador)
+    xt, objetivo = dif.ruidoso(x0, t, ruido)
+    xt = xt * g
+    salida = modelo(torch.cat([xt, cond], dim=1), t)
+    err = (salida - objetivo) ** 2 * g
+    n = g.sum(dim=(1, 2, 3)).clamp(min=1.0)
+    l_v = (err.sum(dim=(1, 2, 3)) / (n * x0.shape[1])).mean()
+    l_a = perdida_amplitud(dif.x0_desde(xt, salida, t), x0, clave, t, tmax, k_sect)
+    return l_v + lam * l_a, l_v.detach(), l_a.detach()
+
+
 @torch.no_grad()
 def muestrea_ddim(modelo, cond: torch.Tensor, g: torch.Tensor, dif: Difusion,
                   pasos: int = 50, semilla: int = 0, eta: float = 0.0) -> torch.Tensor:

@@ -51,7 +51,7 @@ for _p in (str(_RAIZ / 'src'), str(Path(__file__).resolve().parent)):
 
 from common.ventanas import verificar as verificar_ventanas  # noqa: E402
 from datos import ParchesMetal, lee_componentes_tornillo, lee_particion  # noqa: E402
-from difusion import Difusion, perdida  # noqa: E402
+from difusion import Difusion, perdida, perdida_ang  # noqa: E402
 from modelo import CANALES_ENTRADA, UNetDifusion  # noqa: E402
 
 # Semilla del sorteo de `t` y del ruido en la validacion. Fija y distinta de `--semilla` para que la
@@ -162,6 +162,13 @@ def main() -> None:
                     help='D-b: peso del anillo dentro de G (1 = sin efecto)')
     v2.add_argument('--cache-T', type=Path, default=None,
                     help='B: carpeta de v2_b_cache_T.py (T por parche + escala.json); anade el canal T (12 entradas)')
+    bm = p.add_argument_group('B minima (01-decisiones.md 2026-11-20 (3)); sin estas banderas = run04')
+    bm.add_argument('--init-modelo', type=Path, default=None,
+                    help='ajuste fino: carga solo los pesos del modelo de este .pt (p. ej. run04 mejor.pt); paso = 0')
+    bm.add_argument('--ang-lambda', type=float, default=None,
+                    help='peso del termino de amplitud angular (angular.py); None = sin termino')
+    bm.add_argument('--ang-tmax', type=int, default=300, help='el termino solo cuenta con t < tmax')
+    bm.add_argument('--ang-k', type=int, default=24, help='sectores angulares')
     args = p.parse_args()
     if (args.componentes is None) != (args.frac_tornillo is None):
         p.error('--componentes y --frac-tornillo van juntos')
@@ -198,6 +205,10 @@ def main() -> None:
     dif = Difusion(objetivo=args.objetivo)
     entrada = CANALES_ENTRADA + (1 if args.cache_T is not None else 0)
     modelo = UNetDifusion(base=args.base, entrada=entrada).to(args.dispositivo)
+    if args.init_modelo is not None:
+        _ini = torch.load(args.init_modelo, map_location=args.dispositivo, weights_only=False)
+        modelo.load_state_dict(_ini['modelo'])
+        print(f"ajuste fino: pesos de {args.init_modelo} (paso origen {_ini.get('paso')}); paso destino = 0", flush=True)
 
     chk = controles(ds, args.particion, modelo, dif, args.dispositivo, pesos_muestreo,
                     tornillo, args.frac_tornillo, args.semilla)
@@ -302,6 +313,7 @@ def main() -> None:
     mejor = [float('inf'), -1]
     mejor_p = [float('inf'), -1]
     paso = 0
+    ang_ult = (0.0, 0.0)
     modo = 'w'
     ck_previo = args.out / 'ckpt.pt'
     if args.reanudar and ck_previo.exists():
@@ -340,9 +352,18 @@ def main() -> None:
         except StopIteration:
             it = iter(cargador)
             continue
-        l = perdida(modelo, lote['x0'].to(args.dispositivo), lote['cond'].to(args.dispositivo),
-                    lote['g'].to(args.dispositivo), dif,
-                    peso=lote['w'].to(args.dispositivo) if ponderada else None)
+        if args.ang_lambda:
+            from angular import claves
+            _c = lote['cond'].to(args.dispositivo)
+            _g = lote['g'].to(args.dispositivo)
+            l, _lv, _la = perdida_ang(modelo, lote['x0'].to(args.dispositivo), _c, _g, dif,
+                                      claves(_c[:, 6:7], _g, args.ang_k), args.ang_lambda, args.ang_tmax,
+                                      k_sect=args.ang_k)
+            ang_ult = (float(_lv), float(_la))
+        else:
+            l = perdida(modelo, lote['x0'].to(args.dispositivo), lote['cond'].to(args.dispositivo),
+                        lote['g'].to(args.dispositivo), dif,
+                        peso=lote['w'].to(args.dispositivo) if ponderada else None)
         opt.zero_grad(set_to_none=True)
         l.backward()
         torch.nn.utils.clip_grad_norm_(modelo.parameters(), 1.0)
@@ -363,7 +384,8 @@ def main() -> None:
             curva.flush()
             txt_val = 'sin val' if pv != pv else f'val {pv:.5f}'
             print(f'paso {paso}/{args.pasos} perdida {val:.5f} {txt_val} '
-                  f'{st:.3f} s/paso (tramo) {gb:.1f} GB', flush=True)
+                  f'{st:.3f} s/paso (tramo) {gb:.1f} GB'
+                  + (f' | L_v {ang_ult[0]:.5f} L_ang {ang_ult[1]:.5f}' if args.ang_lambda else ''), flush=True)
             # El ultimo paso NO es el mejor modelo. En el job 54367 la validacion toco su minimo
             # alrededor del paso 44 000 y al 144 500 estaba al DOBLE, mientras `ckpt.pt` se
             # sobrescribia cada 5 000 pasos: las pesas buenas se perdieron. `mejor.pt` guarda el

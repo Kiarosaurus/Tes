@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-20 (2) — rama `exp/b-minima-angular`: prueba minima de B (termino de amplitud angular), exploratoria
+
+- **Hecho:** `src/renderizador/angular.py` (termino L_ang), `difusion.perdida_ang` (nueva; `perdida` no se toca), banderas `--init-modelo/--ang-lambda/--ang-tmax/--ang-k` en `entrenar.py` (sin ellas = run04), `a7_b_minima.sbatch` (ajuste fino 3 000 pasos; LAMBDA=0.05 y control LAMBDA=0) y `a15_val_ckpt.sbatch` (evaluacion en validacion con NIfTI). Prueba unitaria local en CPU: con lambda=0 la perdida es identica; con 0.05 hay gradiente y amplitud halo liso 0.018 vs rayas 0.125. Reglas en `01-decisiones.md` 2026-11-20 (3). Nada lanzado en Khipu.
+- **Siguiente:** la autora hace `git fetch && git switch exp/b-minima-angular` en Khipu, humo de 200 pasos y aprueba cada `sbatch`; evaluar con `c4_anisotropia`/D2/a17 (el `ckpt.pt` final, paso 3 000).
+
 ## 2026-11-20 — rama `exp/v3-eta-muestreo`: `--eta` en a15 y barrido de muestreo (etapa 0 de v3, exploratoria)
 
 - **Hecho:** `a15_cadena_completa.py` expone `--eta` (por omisión 0 = idéntico a antes) y `a15_eta_sweep.sbatch` barre pasos DDIM x eta con `run04_mejor` ya entrenado en validación 0101/0102. Todo post-hoc: v1 y v2 se reportan completas. Sin cambios a `tesis/main.tex`, `overleaf/` ni `01-decisiones.md`. Nada lanzado en Khipu.

@@ -2955,3 +2955,34 @@ Escrito por Claude con permiso directo de la autora. **Dependiente de datos:** s
    eta2_exc en K = 12 no baja mas de 0.05 frente al control. Los criterios (ii) y (iii) no cambian.
 4. **Limites:** el diseno se informo con los pacientes de prueba, pero B se evalua solo en validacion (0101/0102). Sigue sin
    sustituir a E-A2; peters es referencia fisica, no "lo real". Antes de este cambio no se habia entrenado ninguna B.
+
+## 2026-11-20 (6) — Resultado del barrido de muestreo (v3 etapa 0) y calibracion de B
+
+Escrito por Claude con permiso directo de la autora (2026-11-20), tras leer el job 64318 (COMPLETED, 00:57:21) y el humo 64334.
+
+**A. Barrido pasos x eta (validacion 0101/0102, 5 semillas, criterio (a) de (1)/(2); `tesis/veredicto_eta.md`).**
+1. Cascaras criticas con p95 dentro de la envolvente real (de 7): 50:0 -> 1; 50:0.3 -> **4**; 50:0.6 -> 3; 100:0.3 -> **5**;
+   200:0 -> 1. Pasar de 50 a 200 pasos con eta 0 no cambia nada; eta > 0 sube el p95 (50:0.3 y 100:0.3 pasan (a)). El
+   criterio (b) (0-2 mm <= 279.6 HU, D2) **no esta evaluado**: ninguna variante "cumple" todavia.
+2. **Control declarado en (2) punto 3: NO REPRODUCE.** Diferencia maxima 48.63 HU (tolerancia 1.0 HU) frente a
+   `obj3_pose/cotejo/run04_mejor`. Por la regla fijada, el barrido **no se interpreta**.
+3. **Causa verificada (despues de ver el fallo):** la variante 50:0 coincide con el diagnostico A28 (`a28_diag_p95.csv`,
+   `sint_p95_suave`, Khipu 56866, 2026-10-15) con diferencia maxima de 0.04 HU en las 7 cascaras (690.5, 624.5, 578.6, 543.1,
+   472.0, 432.0, 403.1 HU). La carpeta local `cotejo/run04_mejor` es una corrida anterior (difiere hasta 48.6 HU en 8-9 mm),
+   es decir, la referencia fijada era la equivocada, no el muestreo. Consecuencia: la corrida es determinista y `--eta 0`
+   reproduce el codigo anterior.
+4. **Decision que queda en manos de la autora:** sustituir la referencia del control por A28 es una desviacion **posterior**
+   a ver el fallo y la propone Claude. Si la acepta, el barrido se informa como descriptivo con esta salvedad escrita; si no,
+   se informa "no concluyente por control" y no se usa. Hasta que decida, ninguna cifra del barrido entra a `overleaf/`.
+5. **Criterio (b):** para las variantes que pasan (a) (100:0.3 y 50:0.3) se regenera con NIfTI
+   (`a15_val_ckpt.sbatch` con `PASOS`/`ETA`, mejor.pt de run04) y se aplica D2. Sin eso no hay "cumple".
+
+**B. Calibracion de B minima (antes de entrenar; datos: solo perdida de entrenamiento, no evaluacion).**
+6. Humos 64328 (K = 24) y 64334 (K = 48, `d749a2c`) a 200 pasos con tmax = 300: L_ang = 0.00149 y 0.00153 frente a
+   L_v = 0.041. Con lambda = 0.05 el termino pesa ~0.2 % de L_v: B seria practicamente el control.
+7. **Regla:** `ANGTMAX` pasa a ser parametro del sbatch. Se mide un humo con `ANGTMAX = 1000` (el deficit aparece en la
+   cadena de muestreo, no solo a t bajo); **tmax = 1000** si ese humo corre sin error. **lambda = 0.1 x L_v / L_ang**
+   medido en ese humo, redondeado a una cifra significativa (el termino aporta ~10 % de L_v). Se registra el valor en una
+   entrada nueva antes de entrenar.
+8. **Riesgo declarado:** a t alto, `x0` predicho es una media posterior mas suave que la verdad; forzar su amplitud puede
+   chocar con el MSE. El control de ajuste fino (lambda = 0) y la guarda en K = 12 del punto (5).3 existen para separarlo.

@@ -6,6 +6,7 @@
 # USO (desde ~/metalsynth):
 #   sbatch --export=ALL,ETIQ=b_min_l0.05,PT=$HOME/metalsynth/data/a7/b_min_l0.05/ckpt.pt experiments/objetivo3/a15_val_ckpt.sbatch
 #   sbatch --export=ALL,ETIQ=b_min_l0,PT=$HOME/metalsynth/data/a7/b_min_l0/ckpt.pt       experiments/objetivo3/a15_val_ckpt.sbatch
+#   Criterio (b) del barrido eta (01-decisiones.md 2026-11-20 (2)): PASOS=100 ETA=0.3 ETIQ=run04_mejor_p100_e0.3 PT=$HOME/metalsynth/data/a7/run04/mejor.pt
 #   CORTES=2 para una prueba de humo. DELTA=0.03 por omision (limite de run04_mejor; NO recalibrado para el ajuste fino).
 #SBATCH --job-name=a15bmin
 #SBATCH --partition=all
@@ -40,7 +41,7 @@ for caso in "${VAL[@]}"; do
     echo "=== $ETIQ $caso  $(date -Is) ==="
     python -u "$A15" --caso "$caso" --cortes "$CORTES" --dispositivo cuda --semillas 0 1 2 3 4 \
         --pasos-cotejo-mm 1.0 --data "$DATA/extracted" --ckpt "$PT" --etiquetas "$ETIQ" --delta "$DELTA" \
-        --pasos 50 --eta 0 --out-dir "$BASE/$ETIQ" \
+        --pasos "${PASOS:-50}" --eta "${ETA:-0}" --out-dir "$BASE/$ETIQ" \
         || { echo "ERROR en $ETIQ $caso"; rc=1; }
 done
 echo "fin $(date -Is)  rc=$rc"

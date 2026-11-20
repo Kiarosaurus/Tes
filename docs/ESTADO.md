@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-20 (4) — barrido eta leido, control mal referenciado, B se recalibra (antes de entrenar)
+
+- **Hecho:** `tesis/veredicto_eta.md`: 100:0.3 5/7 y 50:0.3 4/7 pasan el criterio (a); el control declarado NO reproduce (48.63 HU) porque la referencia era una corrida local anterior; 50:0 coincide con A28 a 0.04 HU. `a7_b_minima.sbatch` (`ANGTMAX`) y `a15_val_ckpt.sbatch` (`PASOS`, `ETA`) parametrizados. Reglas en `01-decisiones.md` 2026-11-20 (6).
+- **Siguiente:** la autora decide si acepta el control A28; humo de B con `ANGTMAX=1000` para fijar lambda; criterio (b) de 100:0.3 y 50:0.3.
+
 ## 2026-11-20 (3) — B minima: L_ang pasa a K = 48 (agrupado por sector) y C4 entra al repo, exploratorio
 
 - **Hecho:** C4b en los 13 de prueba mostro un cruce por escala angular (run04 mas grueso que Peters, le falta escala fina); `angular.py` y `a7_b_minima.sbatch` pasan a K = 48. `experiments/objetivo3/c4_{anisotropia,protocolo,resultado}`, `c4b_prueba.py` y la figura quedan versionados. Reglas en `01-decisiones.md` 2026-11-20 (5). Nada de B entrenado todavia.

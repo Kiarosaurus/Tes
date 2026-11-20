@@ -11,6 +11,7 @@
 #   humo (200 pasos, 30 min):  sbatch --time=00:30:00 --export=ALL,LAMBDA=0.05,PASOS=200,SALIDA=$HOME/metalsynth/data/a7/b_min_humo experiments/objetivo3/a7_b_minima.sbatch
 #   B:        sbatch --export=ALL,LAMBDA=0.05 experiments/objetivo3/a7_b_minima.sbatch
 #   control:  sbatch --export=ALL,LAMBDA=0    experiments/objetivo3/a7_b_minima.sbatch
+# ANGTMAX (por omision 300): tope de t del termino angular. Calibracion en 01-decisiones.md 2026-11-20 (6).
 # Salida: $DATA/a7/b_min_l<LAMBDA>/{ckpt.pt, mejor.pt, curva.csv, entrenar_meta.json}
 # SI EL JOB SE CORTA, se relanza igual: `--reanudar` continua desde `ckpt.pt`.
 #SBATCH --job-name=a7bmin
@@ -64,7 +65,7 @@ python -u "$REPO/src/renderizador/entrenar.py" \
     --preinscrito \
     --init-modelo "$INIT" \
     --ang-lambda "$LAMBDA" \
-    --ang-tmax 300 \
+    --ang-tmax "${ANGTMAX:-300}" \
     --ang-k 48 \
     --reanudar
 rc=$?

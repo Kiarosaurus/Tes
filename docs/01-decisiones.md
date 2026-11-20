@@ -2986,3 +2986,37 @@ Escrito por Claude con permiso directo de la autora (2026-11-20), tras leer el j
    entrada nueva antes de entrenar.
 8. **Riesgo declarado:** a t alto, `x0` predicho es una media posterior mas suave que la verdad; forzar su amplitud puede
    chocar con el MSE. El control de ajuste fino (lambda = 0) y la guarda en K = 12 del punto (5).3 existen para separarlo.
+
+## 2026-11-20 (7) — La autora acepta las recomendaciones: control A28 del barrido y correccion de #202
+
+Registrado por Claude con permiso directo de la autora; ella escribio "Seguire tus recomendaciones" (2026-11-20) tras la recomendacion de aceptar el control A28 y de corregir #202.
+1. **Control del barrido (6) punto 4: ACEPTADO el control A28** (`a28_diag_p95.csv`, Khipu 56866) en lugar de `obj3_pose/cotejo/run04_mejor`. La variante 50:0 lo reproduce con diferencia maxima de 0.04 HU. Desviacion **posterior** a ver el fallo del control declarado (48.63 HU), registrada aqui. El barrido se informa como **descriptivo y post-hoc**; el criterio (b) sigue pendiente y ninguna variante "cumple" hasta evaluarlo.
+2. **#202 se actualiza** con el cruce por escala angular (C4b, 13 pacientes de prueba); la lectura previa "no robusto" queda corregida.
+3. Sigue vigente que nada de esto entra a `overleaf/` como hecho hasta que (b) y C4 sobre los NIfTI de las variantes esten leidos y decididos.
+
+## 2026-11-20 (8) — Resultado del criterio (b) y de C4 sobre las variantes eta (validacion 0101/0102; EXPLORATORIO, POST-HOC)
+
+Registrado por Claude con permiso directo de la autora. Fuentes: jobs 64337 y 64338 (`a15_val_ckpt.sbatch`, COMPLETED, rc = 0, 00:17:06 y 00:15:04); `d2_perfil_sintetico.py` (8 cortes, 5 semillas); `experiments/objetivo3/c4_eta_resultado.md`.
+1. **Criterio (b) (desviacion en 0-2 mm = |exceso - 1930| HU <= 279.6, definicion de `v2_eleccion.py`):** 100:0.3 -> exceso 1847, **desviacion 83 HU**;
+   50:0.3 -> 1794, **desviacion 136 HU** (run04_mejor: 233 HU). Ambas pasan.
+2. **Con (a) de (6) (5/7 y 4/7 cascaras) las dos variantes "cumplen" (a) y (b)**, con el control A28 aceptado en (7). Sigue siendo exploratorio: 2 pacientes de validacion, un checkpoint, y la eleccion de variante se hizo en esa misma validacion.
+3. **Dato descriptivo adicional (no parte del criterio fijado):** error medio E de `v2_eleccion.py` en 2-10 mm: 100:0.3 -> **361.5 HU**; 50:0.3 -> 453.5 HU (run04_mejor 532.8; run05a 418.2; run05b 367.0). Es decir -32 % y -15 % frente a run04.
+4. **C4 angular (N = 2, residuo, eta2_exc mediana):** K = 12: run04 0.184, 100:0.3 0.189, 50:0.3 0.192 (Peters 0.134); K = 24: 0.237, 0.271, 0.279 (Peters 0.340); K = 48: 0.274, 0.312, 0.308 (Peters 0.476). `eta > 0` sube la estructura angular de forma
+   modesta (en 0101 casi no cambia en K = 48: 0.358 -> 0.364) y **no cierra la brecha de escala fina** frente a Peters.
+5. **Lectura permitida:** `eta > 0` recupera amplitud radial (p95, E) sin romper 0-2 mm; no corrige el patron angular fino. No es equivalencia con Peters ni con lo real. No entra a `overleaf/` hasta decision de la autora.
+
+## 2026-11-20 (9) — Criterio visual (c) a ciegas y plan de B con dos valores de tmax (EXPLORATORIO, POST-HOC)
+
+Escrito por Claude con permiso directo de la autora; ella pidio la prueba a ciegas y probar B "cuando este". Fijado antes de puntuar y antes de entrenar B.
+1. **Observacion cualitativa NO ciega (autora, ITK-SNAP, 0101 s0, solo `100:0.3`):** el artefacto se ve mejor creado; falla en que el borde del tornillo
+   deberia verse mas brillante que el interior. Se informa como tal (un caso, una semilla, sin ciego). Mi medida borde/interior (`rim_core.py`: real 0.800,
+   run04 0.787, 100:0.3 0.773, Peters 0.592) no la reproduce y esta sesgada por volumen parcial (#204).
+2. **Criterio (c):** una sola sesion a ciegas (`c2b_ciego.py`), tras terminar B, con todos los brazos: run04_mejor, 100:0.3, 50:0.3, los brazos B y su control de
+   ajuste fino que existan, Peters Ti y real. 6 paneles por brazo (0101/0102, cortes 1/6, 3/6, 5/6, semilla 0; real: 2 tornillos x 3 cortes), ventana
+   [-500, 1300] HU, orden aleatorio. Por panel: credibilidad 1-5 y casilla "borde mas brillante que el interior". La autora no abre la clave antes de puntuar.
+3. **Regla:** una variante "mejora visualmente" frente a run04_mejor si su puntaje medio >= el de run04 + 0.5 **y** es mayor en >= 4 de los 6 pares (mismo paciente y corte).
+   `c2b_puntuar.py`. Se informan todos los brazos. No sustituye a (a), (b) ni a C4: es un criterio adicional, anadido despues de ver datos.
+4. **B con dos valores de `tmax` (la autora pregunta si 1000 es el mejor):** no se puede saber por la perdida de entrenamiento. Brazo **primario: tmax = 1000** (punto 7 de (6)).
+   Brazo **secundario: tmax = 300** con lambda recalibrado con la misma regla (0.1 x L_v / L_ang medido), **solo si hay tiempo** (corte duro: sab 2026-11-21 22:00 para
+   lanzar). Orden: control (lambda = 0), B tmax = 1000, B tmax = 300. Se reportan todos; la eleccion entre ellos, si se hace, es post-hoc y se declara.
+5. **Guarda operativa:** `a7_b_minima.sbatch` aborta si `SALIDA` ya tiene `ckpt.pt` y no se pasa `REANUDAR=1` (el humo 64389 no entreno ningun paso por un ckpt previo en `b_min_humo3`).

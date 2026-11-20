@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-20 (5) — criterio visual (c) a ciegas, plan de B con dos tmax, guarda de ckpt
+
+- **Hecho:** `01-decisiones.md` (9): regla del criterio (c) (puntaje 1-5 a ciegas) y B con tmax 1000 (primario) y 300 (secundario, si hay tiempo). `a7_b_minima.sbatch` aborta si `SALIDA` ya tiene `ckpt.pt` sin `REANUDAR=1`. Observacion visual de la autora registrada como cualitativa no ciega (#204).
+- **Siguiente:** leer el L_ang de la corrida tmax = 1000 (log de las 14:48), fijar lambda, humo en T4, entrenar control/B, y una sola sesion a ciegas con todos los brazos.
+
 ## 2026-11-20 (4) — barrido eta leido, control mal referenciado, B se recalibra (antes de entrenar)
 
 - **Hecho:** `tesis/veredicto_eta.md`: 100:0.3 5/7 y 50:0.3 4/7 pasan el criterio (a); el control declarado NO reproduce (48.63 HU) porque la referencia era una corrida local anterior; 50:0 coincide con A28 a 0.04 HU. `a7_b_minima.sbatch` (`ANGTMAX`) y `a15_val_ckpt.sbatch` (`PASOS`, `ETA`) parametrizados. Reglas en `01-decisiones.md` 2026-11-20 (6).

@@ -13,7 +13,7 @@
 #   control:  sbatch --export=ALL,LAMBDA=0    experiments/objetivo3/a7_b_minima.sbatch
 # ANGTMAX (por omision 300): tope de t del termino angular. Calibracion en 01-decisiones.md 2026-11-20 (6).
 # Salida: $DATA/a7/b_min_l<LAMBDA>/{ckpt.pt, mejor.pt, curva.csv, entrenar_meta.json}
-# SI EL JOB SE CORTA, se relanza igual: `--reanudar` continua desde `ckpt.pt`.
+# SI EL JOB SE CORTA, se relanza con REANUDAR=1 (continua desde `ckpt.pt`). Sin REANUDAR=1 y con ckpt.pt previo, aborta (evita un humo que no entrena).
 #SBATCH --job-name=a7bmin
 #SBATCH --partition=all
 #SBATCH --account=tesis
@@ -30,6 +30,10 @@ REPO=$HOME/metalsynth
 [ -n "${LAMBDA:-}" ] || { echo "ERROR: falta LAMBDA (0.05 = B, 0 = control de ajuste fino)"; exit 1; }
 SALIDA=${SALIDA:-$DATA/a7/b_min_l$LAMBDA}
 PASOS=${PASOS:-3000}
+if [ -f "$SALIDA/ckpt.pt" ] && [ -z "${REANUDAR:-}" ]; then
+    echo "ERROR: $SALIDA ya tiene ckpt.pt; --reanudar no entrenaria nada. Usa otra SALIDA o REANUDAR=1 para continuar un job cortado."
+    exit 1
+fi
 INIT=$DATA/a7/run04/mejor.pt
 MAN=$REPO/experiments/objetivo3/a5_manifiesto_train_run04.csv
 

@@ -247,6 +247,9 @@ def main() -> None:
     ap.add_argument('--incluir-banda', action='store_true',
                     help='genera tambien los cortes de solo banda (todos los que toca `G`; #160)')
     ap.add_argument('--pasos', type=int, default=50)
+    ap.add_argument('--eta', type=float, default=0.0,
+                    help='eta del DDIM (0 = determinista, igual que antes; >0 anade ruido en cada paso). '
+                         'Etapa 0 de v3 (post-hoc, exploratorio): tesis/v3_plan.md')
     ap.add_argument('--semilla', type=int, default=0)
     ap.add_argument('--semillas', type=int, nargs='+', default=None,
                     help='una generacion por semilla y salida `_cotejo.csv` (cotejo de checkpoint)')
@@ -393,7 +396,8 @@ def main() -> None:
                 gt = torch.from_numpy(g_c.astype(np.float32)[None])[None].to(args.dispositivo)
                 with torch.no_grad():
                     gen = muestrea_ddim(modelo, torch.from_numpy(cond)[None].to(args.dispositivo), gt,
-                                        dif, pasos=args.pasos, semilla=semilla).cpu()
+                                        dif, pasos=args.pasos, semilla=semilla,
+                                        eta=args.eta).cpu()
                 # CONTROL 2: cero exacto fuera de `G`
                 fuera = float(np.abs(gen.numpy()[0][:, ~g_c]).max()) if (~g_c).any() else 0.0
                 if fuera != 0.0:

@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-20 — rama `exp/v3-eta-muestreo`: `--eta` en a15 y barrido de muestreo (etapa 0 de v3, exploratoria)
+
+- **Hecho:** `a15_cadena_completa.py` expone `--eta` (por omisión 0 = idéntico a antes) y `a15_eta_sweep.sbatch` barre pasos DDIM x eta con `run04_mejor` ya entrenado en validación 0101/0102. Todo post-hoc: v1 y v2 se reportan completas. Sin cambios a `tesis/main.tex`, `overleaf/` ni `01-decisiones.md`. Nada lanzado en Khipu.
+- **Siguiente:** la autora fija variantes y umbral, hace `git fetch`/`switch` en Khipu, humo con `CORTES=2` y aprueba cada `sbatch`. Plan: `_plan_urgente_2026-11/tesis/v3_plan.md`. Implicancias abiertas #200 y #201.
+
 ## 2026-10-19 (2) — título de Trabajos futuros corregido en el índice
 
 - **Hecho:** `trabajosFuturos.tex` r02-puntual: «TRABAJOS FUTUROS» en índice y encabezado; lint de sección PASA (0/0/0). PDF completo recompilado directamente con `pdflatex` (194 páginas), porque `latexmk` requiere Perl ausente; etapa en `redaccion/.build/etapas/trabajosFuturos-r02-puntual.pdf`.

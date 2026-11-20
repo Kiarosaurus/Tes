@@ -65,7 +65,7 @@ python -u "$REPO/src/renderizador/entrenar.py" \
     --init-modelo "$INIT" \
     --ang-lambda "$LAMBDA" \
     --ang-tmax 300 \
-    --ang-k 24 \
+    --ang-k 48 \
     --reanudar
 rc=$?
 echo "fin $(date -Is)  rc=$rc"

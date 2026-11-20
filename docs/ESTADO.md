@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-20 (3) — B minima: L_ang pasa a K = 48 (agrupado por sector) y C4 entra al repo, exploratorio
+
+- **Hecho:** C4b en los 13 de prueba mostro un cruce por escala angular (run04 mas grueso que Peters, le falta escala fina); `angular.py` y `a7_b_minima.sbatch` pasan a K = 48. `experiments/objetivo3/c4_{anisotropia,protocolo,resultado}`, `c4b_prueba.py` y la figura quedan versionados. Reglas en `01-decisiones.md` 2026-11-20 (5). Nada de B entrenado todavia.
+- **Siguiente:** la autora hace `git pull` en Khipu, humo de B y evalua con `a15_val_ckpt.sbatch`.
+
 ## 2026-11-20 (2) — rama `exp/b-minima-angular`: prueba minima de B (termino de amplitud angular), exploratoria
 
 - **Hecho:** `src/renderizador/angular.py` (termino L_ang), `difusion.perdida_ang` (nueva; `perdida` no se toca), banderas `--init-modelo/--ang-lambda/--ang-tmax/--ang-k` en `entrenar.py` (sin ellas = run04), `a7_b_minima.sbatch` (ajuste fino 3 000 pasos; LAMBDA=0.05 y control LAMBDA=0) y `a15_val_ckpt.sbatch` (evaluacion en validacion con NIfTI). Prueba unitaria local en CPU: con lambda=0 la perdida es identica; con 0.05 hay gradiente y amplitud halo liso 0.018 vs rayas 0.125. Reglas en `01-decisiones.md` 2026-11-20 (3). Nada lanzado en Khipu.

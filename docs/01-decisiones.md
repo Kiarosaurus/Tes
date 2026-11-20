@@ -2848,3 +2848,110 @@ modifica el título en español para que se adecúe más a la tesis actual. Modi
    *MetalSynth-Pelvis: Conditioned synthesis of transiliac-transsacral screws and their local metal artifacts in pelvic
    CT using image-domain diffusion with multi-window encoding.* Mismo permiso de la autora.
 
+## 2026-11-20 — v3, etapa 0: barrido del muestreo (pasos DDIM x eta) sobre run04_mejor (EXPLORATORIA, POST-HOC)
+
+Escrito por Claude con permiso expreso de la autora (2026-11-20). El job 64318 ya se habia enviado cuando se
+redacto esta entrada, pero **ninguna cifra del barrido se habia leido**: la regla y las variantes de abajo se fijan
+antes de ver resultados.
+
+1. **Que se hace.** Con `run04_mejor` ya entrenado (delta 0.03), se varian solo los parametros del muestreo DDIM:
+   `--pasos` y `--eta`. No se reentrena. Particion de validacion (0101 y 0102), 5 semillas, todos los cortes con `M`,
+   cotejo en cascaras de 1 mm. Rama `exp/v3-eta-muestreo`, commit `b9b54ba`; script `a15_eta_sweep.sbatch`;
+   job **64318**. `--eta` por omision vale 0 (identico a lo anterior).
+2. **Variantes (pasos:eta):** 50:0 (control), 50:0.3, 50:0.6, 100:0.3, 200:0.
+3. **Regla de exito, por variante (fijada antes de ver cifras):** >= 4 de las 7 cascaras criticas (4-5, 5-6, 6-7, 8-9,
+   9-10, 10-11 y 11-12 mm) con el p95 dentro de la envolvente real de `metal_0039` (criterio de A28, #191), **y** la
+   desviacion en 0-2 mm sin superar el tope de 279.6 HU de la salvaguarda de v1.
+4. **Control de validez:** la variante 50:0 debe reproducir el cotejo de `run04_mejor` de octubre. Si no lo
+   reproduce, el barrido no se interpreta (la diferencia seria no determinismo, no `eta`).
+5. **Si ninguna variante cumple:** no se reentrena sin una decision nueva y escrita (etapa 1 de `v3_plan.md`). El
+   resultado se informa completo, con todas las variantes, tambien las desfavorables.
+6. **Estatus declarado:** posterior y exploratorio. La prueba ya se vio con v1 y v2; v1 y v2 se reportan completas y
+   esto va al lado, **sin sustituir a E-A2** (-301.0 HU, IC90 [-477.0, -124.9], p_TOST 0.845). Elegir una variante
+   con la validacion que la selecciona no la hace confirmatoria.
+7. **No cambia:** `tesis/main.tex`, `overleaf/`, `docs/00-tesis.md`, el diseno A ni la comparacion principal. Si algo
+   cumple, se registra una implicancia (ABIERTA) y la autora decide como entra a la tesis.
+8. **Limitaciones conocidas:** 2 pacientes de validacion que ya intervinieron en la calibracion (delta, a21); un solo
+   checkpoint; el humo (job 64310, 2 cortes) solo mostro que `--eta` cambia la salida y que los controles de pose
+   pasan.
+
+## 2026-11-20 (2) — Precision a la entrada anterior: como se evalua la salvaguarda de 0-2 mm de v3, etapa 0
+
+Escrito por Claude con el permiso expreso de la autora (2026-11-20), antes de leer cifras del job 64318.
+
+1. **Problema hallado.** La salvaguarda de 0-2 mm (punto 3 de la entrada anterior) se definio en v1/v2 con D2
+   (`d2_perfil_sintetico.py`): |exceso sintetico - 1930| en el anillo 0-2 mm, a partir de volumenes NIfTI. El job 64318
+   se envio con `--sin-nifti`, asi que **esa metrica no se puede calcular con sus salidas**. Los CSV de cotejo (cascaras
+   de 1 mm, elevacion p50/p95) miden otra cosa y no la sustituyen.
+2. **Procedimiento fijado.** (a) se evalua con los CSV (>= 4 de 7 cascaras, sin cambios). (b) se evalua **solo para las
+   variantes que pasen (a)**, regenerando 0101/0102 con NIfTI (`--sin-nifti` apagado, 5 semillas, hasta 8 cortes como
+   D2) y aplicando D2: dev 0-2 = |exceso - 1930| <= 279.6 HU (= 1.2 x 233 HU de run04). Una variante solo "cumple"
+   si pasa (a) **y** (b). Con (a) sola se informa "pasa (a), (b) pendiente".
+3. **Control (punto 4).** "Reproduce" = diferencia maxima del p95 en las 7 cascaras <= 1.0 HU frente al cotejo de
+   octubre (`obj3_pose/cotejo/run04_mejor`). Tolerancia fijada aqui; `eta_veredicto.py` la aplica.
+4. **Limite declarado.** Ninguno de estos criterios mide la **estructura angular** del artefacto (el patron direccional
+   de las rayas); solo su perfil radial. Un "pasa" no implica que ese patron se parezca al real.
+
+## 2026-11-20 (3) — Evaluacion de la estructura angular del artefacto (C4, brazo A) y prueba minima de B (EXPLORATORIAS, POST-HOC)
+
+Escrito por Claude con permiso directo de la autora (2026-11-20). Reglas fijadas **antes** de calcular sobre los 13
+pacientes de prueba y antes de entrenar. Motivo: observacion de la autora (rayas reales con patron direccional; las
+sinteticas, halo liso) y brecha B7/#202: todo el cotejo anterior (a17, A28, D1/D2, barrido de v3 etapa 0) es radial.
+
+**A. Medicion angular.**
+1. **Metrica** (v2 de `c4_protocolo.md`, enmienda declarada): anillos de 1 mm por **distancia en el plano a `M`** (2-10 mm),
+   mediana por anillo restada, `eta2_exc` = varianza entre K sectores angulares / varianza total menos (K-1)/(N-1).
+   K principal = 24; sensibilidad K = 12 y 48 y recorte [-1000, 3000] HU. La v1 (anillos por radio al centroide) quedo
+   invalidada por controles (liso en `M` elipse: 0.805; control sin metal: 0.49) y se conserva como evidencia.
+2. **Controles de validez de la metrica** (obligatorios, se reportan): halo liso ~0, rayas sinteticas > 0, ruido baja el valor.
+3. **Alcance:** 13 pacientes de **prueba** (`casos_ea2_test.txt`) con `run04_mejor` y `run04_60k` (5 semillas) y Peters Ti
+   (replica A, residuo = Ti_A - limpia_A); validacion 0101/0102 con run05a/run05b (semillas disponibles). Referencia real:
+   los 2 tornillos aislados de `metal_0039` (unica referencia confirmada) y controles sin metal. run05a/b en prueba no se
+   incluyen: sus volumenes no estan en local.
+4. **Estadistica:** descriptiva; IC95 por bootstrap por paciente (B = 2000) donde haya >= 5 pacientes; sin p-values.
+   Se reportan todos los brazos, modos y sensibilidades, tambien los desfavorables.
+5. **Lectura permitida:** "el eta2_exc de X es mayor/menor que el de Y y que su control". Prohibido: afirmar equivalencia,
+   causa del defecto o mejora. La referencia real es N = 2 tornillos y otra anatomia: limite de toda comparacion con lo real.
+6. **Estatus:** posterior a ver la prueba (v1 y v2 ya vistas); exploratorio; no sustituye a E-A2 (-301.0 HU, p_TOST 0.845).
+
+**B minima (una sola prueba, validacion).**
+7. **Que es:** ajuste fino de `run04_mejor` (mejor.pt, paso 16 500) durante **3 000 pasos**, lr 5e-5, lote 16, mismos datos y
+   semilla que run04, con un termino auxiliar de **amplitud angular**: sobre `x0` predicho (solo en `t < 300` de 1000), por
+   imagen, `L_ang = (A_pred / (A_verdad + eps) - 1)^2`, con `A` = raiz de la media de los cuadrados de las medias por
+   sector (K = 24) tras restar la media por anillo (2-11 px alrededor de `M`, dentro de `G`). `L = L_v + 0.05 * L_ang`.
+   **Control de ajuste fino:** el mismo ajuste con peso 0 (separa el efecto del termino del efecto de seguir entrenando).
+8. **Evaluacion (fijada antes):** 0101/0102, 5 semillas, todos los cortes con `M`, muestreo `50:0`. La variante B "mejora"
+   si (i) `eta2_exc` en modo residuo (K = 24) sube >= 0.05 frente al control de ajuste fino, **y** (ii) las cascaras
+   criticas de a17/A28 dentro de la envolvente real no bajan frente al control, **y** (iii) la desviacion en 0-2 mm
+   <= 279.6 HU (D2). Si no cumple las tres, "no mejora" y se informa igual. Maximo un reintento, solo con decision escrita.
+9. **Limites:** 2 pacientes de validacion; un solo `lambda`; la prueba no puede usarse para elegir. Si B no mejora o no
+   termina antes del corte de computo (dom 2026-11-22 12:00), se declara y la tesis no cambia.
+10. **Tesis:** lo medido en A entra en `overleaf/` solo como exploratorio y con sus limites. B entra solo si termina, y
+    como "prueba minima, resultado X", sin sustituir a E-A2.
+
+## 2026-11-20 (4) — Precisiones a (3) sobre B minima (antes de entrenar)
+
+Escrito por Claude con permiso directo de la autora. Ninguna cifra de B se ha medido.
+1. Se evalua el `ckpt.pt` **final** (paso 3 000) del brazo B (`lambda = 0.05`) y del control de ajuste fino (`lambda = 0`),
+   no `mejor.pt`. Rama `exp/b-minima-angular`, commit `f42ebfe`; scripts `a7_b_minima.sbatch` y `a15_val_ckpt.sbatch`.
+2. Evaluacion: `a15` con delta 0.03 (el limite de `run04_mejor`, **no recalibrado** para el ajuste fino), 50 pasos, eta 0,
+   0101/0102, 5 semillas, con NIfTI. Criterio (i): C4 v2 en modo residuo, K = 24, B menos control de ajuste fino >= 0.05.
+   Criterio (ii): cascaras criticas de a17/A28 dentro de la envolvente real, B no menor que el control. Criterio (iii):
+   D2 (`d2_perfil_sintetico.py --base ... --puntos <etiquetas>`), desviacion en 0-2 mm <= 279.6 HU.
+3. Sobre `L_ang`: aproximacion en pixeles (anillos 2-11 px, K = 24 sectores) de la metrica C4 y solo con `t < 300`.
+   Que optimice su propia aproximacion no implica que mejore la metrica de evaluacion; por eso (i) se mide con C4 sobre HU.
+
+## 2026-11-20 (5) — Enmienda a B minima tras ver C4b en los 13 de prueba (antes de entrenar B)
+
+Escrito por Claude con permiso directo de la autora. **Dependiente de datos:** se decide despues de ver C4b (`experiments/objetivo3/c4_resultado.md`).
+1. **Hallazgo de C4b** (13 pacientes de prueba, run04_mejor frente a Peters Ti, modo residuo, diferencia pareada, IC95 bootstrap):
+   K = 12: +0.124 [0.060, 0.152]; K = 24: +0.039 [-0.046, 0.082]; K = 48: -0.178 [-0.206, -0.134]. Es decir, la estructura
+   angular de run04 se concentra en escalas gruesas y le falta la de escala fina (sectores de 7.5 grados) que tiene Peters.
+   Con 0101/0102 el cruce ya aparecia (K = 12: 0.184 vs 0.134; K = 48: 0.274 vs 0.476) y se leyo como "no robusto"; con 13
+   pacientes es un cruce sistematico por escala. **Esa lectura anterior queda corregida.**
+2. **Cambio a B (aun no entrenada):** `L_ang` usa **K = 48** y agrupa los residuos por sector (todos los anillos), como C4
+   (`angular.py`; `a7_b_minima.sbatch --ang-k 48`). Con K = 24 el termino apuntaria a una escala donde no hay deficit.
+3. **Criterio (i) de (4) reemplazado:** C4 v2 en modo residuo, **K = 48**, B menos control de ajuste fino >= 0.05. Guarda: el
+   eta2_exc en K = 12 no baja mas de 0.05 frente al control. Los criterios (ii) y (iii) no cambian.
+4. **Limites:** el diseno se informo con los pacientes de prueba, pero B se evalua solo en validacion (0101/0102). Sigue sin
+   sustituir a E-A2; peters es referencia fisica, no "lo real". Antes de este cambio no se habia entrenado ninguna B.

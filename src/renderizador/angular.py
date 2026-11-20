@@ -5,14 +5,14 @@ entrenamiento es identico al de run04.
 
 Idea: la perdida MSE promedia y suaviza; un artefacto real tiene estructura angular (rayas) que el MSE tiende a
 apagar. Este termino compara, por imagen, la AMPLITUD de la modulacion angular de `x0` predicho con la de `x0`
-verdadero, en anillos por distancia a `M` (2-11 px) y K sectores (K = 24), solo dentro de `G`, solo para `t < tmax`
+verdadero, en anillos por distancia a `M` (2-11 px) y K sectores (K = 48 en la prueba), solo dentro de `G`, solo para `t < tmax`
 (donde `x0` predicho es fiable):
 
-    A = sqrt(media de (media por sector - media por anillo)^2)         por canal
+    A = sqrt(media de (media por sector del residuo respecto al anillo)^2)   por canal
     L_ang = media sobre canales de (A_pred / (A_verdad + EPS_A) - 1)^2   (cociente acotado a 5)
 
 Es una aproximacion en pixeles (no en mm) de la metrica C4 v2 (c4_anisotropia.py): anillos por distancia a `M`,
-sectores respecto al centroide de `M`. No es la metrica de evaluacion; la evaluacion se hace con C4 sobre HU.
+sectores respecto al centroide de `M`; los residuos se agrupan por sector (todos los anillos). No es la metrica de evaluacion; la evaluacion se hace con C4 sobre HU.
 """
 from __future__ import annotations
 
@@ -47,7 +47,11 @@ def claves(M: torch.Tensor, g: torch.Tensor, K: int = 24) -> torch.Tensor:
 
 
 def amplitud(X: torch.Tensor, clave: torch.Tensor, K: int = 24) -> tuple[torch.Tensor, torch.Tensor]:
-    """Amplitud angular por imagen y canal: (B, C) y `valido` (B,) bool."""
+    """Amplitud angular por imagen y canal: (B, C) y `valido` (B,) bool.
+
+    Igual que la metrica C4 v2: se resta la media de cada anillo y los residuos se agrupan por SECTOR (agrupando todos
+    los anillos), de modo que cada sector tiene ~N/K pixeles aun con K = 48.
+    """
     B, C = X.shape[:2]
     R = R_HI - R_LO
     amp = X.new_zeros((B, C))
@@ -55,20 +59,20 @@ def amplitud(X: torch.Tensor, clave: torch.Tensor, K: int = 24) -> tuple[torch.T
     for b in range(B):
         k = clave[b]
         m = k >= 0
-        if int(m.sum()) < 2 * K * MIN_PIX_BIN:
+        if int(m.sum()) < K * MIN_PIX_BIN:
             continue
         kk = k[m]
         v = X[b][:, m]                                           # (C, n)
-        S = X.new_zeros((C, R * K)).index_add_(1, kk, v)
-        cnt = torch.bincount(kk, minlength=R * K).to(X.dtype)
-        binmean = (S / cnt.clamp(min=1)).view(C, R, K)
-        cr = cnt.view(R, K)
-        ringmean = S.view(C, R, K).sum(2) / cr.sum(1).clamp(min=1)          # (C, R)
-        dev = binmean - ringmean[:, :, None]
-        w = (cr >= MIN_PIX_BIN).to(X.dtype)[None]                          # (1, R, K)
-        if float(w.sum()) < K:
+        ring, sec = kk // K, kk % K
+        rs = X.new_zeros((C, R)).index_add_(1, ring, v)
+        rc = torch.bincount(ring, minlength=R).to(X.dtype)
+        d = v - (rs / rc.clamp(min=1))[:, ring]                  # residuo respecto al anillo
+        ss = X.new_zeros((C, K)).index_add_(1, sec, d)
+        sc = torch.bincount(sec, minlength=K).to(X.dtype)
+        w = (sc >= MIN_PIX_BIN).to(X.dtype)[None]
+        if float(w.sum()) < K // 2:
             continue
-        amp[b] = torch.sqrt(((dev ** 2) * w).sum((1, 2)) / w.sum().clamp(min=1) + 1e-8)
+        amp[b] = torch.sqrt((((ss / sc.clamp(min=1)) ** 2) * w).sum(1) / w.sum().clamp(min=1) + 1e-8)
         valido[b] = True
     return amp, valido
 

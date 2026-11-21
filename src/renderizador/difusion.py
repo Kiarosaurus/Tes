@@ -125,6 +125,46 @@ def perdida_ang(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor, d
     return l_v + lam * l_a, l_v.detach(), l_a.detach()
 
 
+def perdida_aux(modelo, x0: torch.Tensor, cond: torch.Tensor, g: torch.Tensor, dif: Difusion,
+                lam_tex: float, lam_per: float, lam_adv: float, tmax: int, D=None,
+                generador: torch.Generator | None = None):
+    """`perdida` (v1, sin peso) + terminos de textura, perceptual-proxy y adversarial (`texturas.py`, decision 2026-11-21 (18)).
+
+    Devuelve (total, L_v, dict de terminos, x0 predicho desacoplado). Con los tres lambda en 0 el total es exactamente `perdida`.
+    `valido` para la textura: `G` sin `M` dilatada 4 px (cond[:, 6:7] es `M`). Solo cuentan las imagenes con `t < tmax`.
+    """
+    import torch.nn.functional as F
+    from texturas import perdida_textura, perdida_percep, perdida_g_adv
+    b = x0.shape[0]
+    t = torch.randint(0, dif.pasos, (b,), device=x0.device, generator=generador)
+    ruido = torch.randn(x0.shape, device=x0.device, generator=generador)
+    xt, objetivo = dif.ruidoso(x0, t, ruido)
+    xt = xt * g
+    salida = modelo(torch.cat([xt, cond], dim=1), t)
+    err = (salida - objetivo) ** 2 * g
+    n = g.sum(dim=(1, 2, 3)).clamp(min=1.0)
+    l_v = (err.sum(dim=(1, 2, 3)) / (n * x0.shape[1])).mean()
+    x0p = dif.x0_desde(xt, salida, t).clamp(-1.0, 1.0)
+    sel = (t < tmax).to(x0.dtype)
+    M = cond[:, 6:7]
+    terminos = {}
+    total = l_v
+    if lam_tex:
+        valido = g * (1.0 - F.max_pool2d(M, 9, 1, 4))
+        l = (perdida_textura(x0p, x0, valido) * sel).sum() / b
+        total = total + lam_tex * l
+        terminos['tex'] = l.detach()
+    if lam_per:
+        l = (perdida_percep(x0p, x0, g) * sel).sum() / b
+        total = total + lam_per * l
+        terminos['per'] = l.detach()
+    if lam_adv and D is not None:
+        l = (perdida_g_adv(D, x0p, M, g) * sel).sum() / b
+        total = total + lam_adv * l
+        terminos['adv'] = l.detach()
+    return total, l_v.detach(), terminos, x0p.detach(), sel
+
+
 @torch.no_grad()
 def muestrea_ddim(modelo, cond: torch.Tensor, g: torch.Tensor, dif: Difusion,
                   pasos: int = 50, semilla: int = 0, eta: float = 0.0) -> torch.Tensor:

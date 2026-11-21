@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-21 (3) — rama `exp/textura-percep-adv`: perdidas de textura, perceptual-proxy y adversarial; script maestro desatendido
+
+- **Hecho:** `src/renderizador/texturas.py` (perdidas), `difusion.perdida_aux` y banderas `--aux-tex/--aux-per/--aux-adv/--aux-tmax` en `entrenar.py` (sin ellas = run04; con lambda 0 es identica a `perdida`, probado en CPU); `textura_metricas.py`, `veredicto_cascaras.py`, `pipeline_textura.sbatch` (un solo job en la T4: referencias, humos, corrida en prueba de 100:0.3, T, P y A condicionado al reloj), `pipeline_reporte.py`, `evalua_todo_local.sh`. Reglas en `01-decisiones.md` 2026-11-21 (18) y (18-a). Logica del maestro probada con etapas simuladas; el bucle de entrenamiento con datos reales no se ha corrido.
+- **Siguiente:** la autora hace `git pull` y lanza `sbatch experiments/objetivo3/pipeline_textura.sbatch`; al volver, `cat REPORTE.md` y `evalua_todo_local.sh`.
+
 ## 2026-11-21 (2) — rama `exp/b-minima-angular`: corrida en prueba de la variante eta 100:0.3 (regla fijada antes)
 
 - **Hecho:** `a15_final_eta.sbatch` (13 de prueba, 5 semillas, `--incluir-banda`) y `a20_eta_test.sbatch` (a20 base + Delta de validacion); regla en `01-decisiones.md` 2026-11-21 (13); resultados de B/C4 versionados (`c4_b_resultado.md`, `b_veredicto_resultado.md`). B no cumple el criterio (i) (decisiones (12)). Nada lanzado.

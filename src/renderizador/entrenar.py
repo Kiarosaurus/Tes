@@ -51,7 +51,7 @@ for _p in (str(_RAIZ / 'src'), str(Path(__file__).resolve().parent)):
 
 from common.ventanas import verificar as verificar_ventanas  # noqa: E402
 from datos import ParchesMetal, lee_componentes_tornillo, lee_particion  # noqa: E402
-from difusion import Difusion, perdida, perdida_ang  # noqa: E402
+from difusion import Difusion, perdida, perdida_ang, perdida_aux  # noqa: E402
 from modelo import CANALES_ENTRADA, UNetDifusion  # noqa: E402
 
 # Semilla del sorteo de `t` y del ruido en la validacion. Fija y distinta de `--semilla` para que la
@@ -169,6 +169,11 @@ def main() -> None:
                     help='peso del termino de amplitud angular (angular.py); None = sin termino')
     bm.add_argument('--ang-tmax', type=int, default=300, help='el termino solo cuenta con t < tmax')
     bm.add_argument('--ang-k', type=int, default=24, help='sectores angulares')
+    au = p.add_argument_group('perdidas auxiliares (01-decisiones.md 2026-11-21 (18)); sin estas banderas = run04')
+    au.add_argument('--aux-tex', type=float, default=None, help='peso de la perdida de textura')
+    au.add_argument('--aux-per', type=float, default=None, help='peso de la perdida perceptual-proxy (piramide laplaciana)')
+    au.add_argument('--aux-adv', type=float, default=None, help='peso de la perdida adversarial (PatchGAN condicionado)')
+    au.add_argument('--aux-tmax', type=int, default=500, help='los terminos solo cuentan con t < tmax')
     args = p.parse_args()
     if (args.componentes is None) != (args.frac_tornillo is None):
         p.error('--componentes y --frac-tornillo van juntos')
@@ -314,6 +319,16 @@ def main() -> None:
     mejor_p = [float('inf'), -1]
     paso = 0
     ang_ult = (0.0, 0.0)
+    aux_on = bool(args.aux_tex or args.aux_per or args.aux_adv)
+    aux_txt = ''
+    D = optD = None
+    if aux_on:
+        if args.ang_lambda:
+            raise SystemExit('ABORTA: --ang-lambda y --aux-* son excluyentes')
+        if args.aux_adv:
+            from texturas import PatchD, perdida_d
+            D = PatchD().to(args.dispositivo)
+            optD = torch.optim.Adam(D.parameters(), lr=1e-4, betas=(0.5, 0.9))
     modo = 'w'
     ck_previo = args.out / 'ckpt.pt'
     if args.reanudar and ck_previo.exists():
@@ -352,7 +367,14 @@ def main() -> None:
         except StopIteration:
             it = iter(cargador)
             continue
-        if args.ang_lambda:
+        if aux_on:
+            _x0 = lote['x0'].to(args.dispositivo)
+            _c = lote['cond'].to(args.dispositivo)
+            _g = lote['g'].to(args.dispositivo)
+            l, _lv, _tm, _fake, _sel = perdida_aux(modelo, _x0, _c, _g, dif, args.aux_tex or 0.0, args.aux_per or 0.0,
+                                                   args.aux_adv or 0.0, args.aux_tmax, D=D)
+            aux_txt = ' | L_v %.5f ' % float(_lv) + ' '.join('L_%s %.5f' % (k, float(v)) for k, v in _tm.items())
+        elif args.ang_lambda:
             from angular import claves
             _c = lote['cond'].to(args.dispositivo)
             _g = lote['g'].to(args.dispositivo)
@@ -368,6 +390,14 @@ def main() -> None:
         l.backward()
         torch.nn.utils.clip_grad_norm_(modelo.parameters(), 1.0)
         opt.step()
+        if D is not None:
+            from texturas import perdida_d
+            _M = _c[:, 6:7]
+            l_d = perdida_d(D, _x0, _fake, _M, _g, _sel)
+            optD.zero_grad(set_to_none=True)
+            l_d.backward()
+            optD.step()
+            aux_txt += ' L_D %.4f' % float(l_d.detach())
         paso += 1
         if paso % args.cada == 0 or paso == args.pasos:
             gb = (torch.cuda.max_memory_allocated() / 1e9
@@ -385,7 +415,7 @@ def main() -> None:
             txt_val = 'sin val' if pv != pv else f'val {pv:.5f}'
             print(f'paso {paso}/{args.pasos} perdida {val:.5f} {txt_val} '
                   f'{st:.3f} s/paso (tramo) {gb:.1f} GB'
-                  + (f' | L_v {ang_ult[0]:.5f} L_ang {ang_ult[1]:.5f}' if args.ang_lambda else ''), flush=True)
+                  + (f' | L_v {ang_ult[0]:.5f} L_ang {ang_ult[1]:.5f}' if args.ang_lambda else '') + aux_txt, flush=True)
             # El ultimo paso NO es el mejor modelo. En el job 54367 la validacion toco su minimo
             # alrededor del paso 44 000 y al 144 500 estaba al DOBLE, mientras `ckpt.pt` se
             # sobrescribia cada 5 000 pasos: las pesas buenas se perdieron. `mejor.pt` guarda el

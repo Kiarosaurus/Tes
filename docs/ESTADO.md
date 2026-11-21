@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-21 (2) — rama `exp/b-minima-angular`: corrida en prueba de la variante eta 100:0.3 (regla fijada antes)
+
+- **Hecho:** `a15_final_eta.sbatch` (13 de prueba, 5 semillas, `--incluir-banda`) y `a20_eta_test.sbatch` (a20 base + Delta de validacion); regla en `01-decisiones.md` 2026-11-21 (13); resultados de B/C4 versionados (`c4_b_resultado.md`, `b_veredicto_resultado.md`). B no cumple el criterio (i) (decisiones (12)). Nada lanzado.
+- **Siguiente:** la autora hace `git pull` en Khipu y lanza `a15_final_eta.sbatch`; luego `a20_eta_test.sbatch`, y a24 en local.
+
 ## 2026-11-20 (5) — criterio visual (c) a ciegas, plan de B con dos tmax, guarda de ckpt
 
 - **Hecho:** `01-decisiones.md` (9): regla del criterio (c) (puntaje 1-5 a ciegas) y B con tmax 1000 (primario) y 300 (secundario, si hay tiempo). `a7_b_minima.sbatch` aborta si `SALIDA` ya tiene `ckpt.pt` sin `REANUDAR=1`. Observacion visual de la autora registrada como cualitativa no ciega (#204).

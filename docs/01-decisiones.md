@@ -3020,3 +3020,59 @@ Escrito por Claude con permiso directo de la autora; ella pidio la prueba a cieg
    Brazo **secundario: tmax = 300** con lambda recalibrado con la misma regla (0.1 x L_v / L_ang medido), **solo si hay tiempo** (corte duro: sab 2026-11-21 22:00 para
    lanzar). Orden: control (lambda = 0), B tmax = 1000, B tmax = 300. Se reportan todos; la eleccion entre ellos, si se hace, es post-hoc y se declara.
 5. **Guarda operativa:** `a7_b_minima.sbatch` aborta si `SALIDA` ya tiene `ckpt.pt` y no se pasa `REANUDAR=1` (el humo 64389 no entreno ningun paso por un ckpt previo en `b_min_humo3`).
+
+## 2026-11-20 (10) — lambda de B fijado por la regla de (6) y jobs lanzados en la T4 (EXPLORATORIO)
+
+Escrito por Claude con permiso directo de la autora. Los jobs se lanzaron **antes** de redactar esta entrada, pero ninguna cifra de evaluacion se ha leido.
+1. **lambda por la regla (6) punto 7** (0.1 x L_v / L_ang, una cifra significativa, a partir de los humos en A100 a 200 pasos): tmax = 1000 -> L_v 0.04092, L_ang 0.00533 (job 64336) -> **lambda = 0.8**;
+   tmax = 300 -> L_v 0.04099, L_ang 0.00153 (job 64334) -> lambda = 3 (brazo secundario, aun no lanzado). **Por confirmar:** que 64336 usara `ANGTMAX=1000` (`head -3 a7bmin_64336.log` debe decir commit `bb5ce3c`).
+2. **Lanzados (T4, partición `all`, commit `d069690`; corregido 2026-11-20 tras cancelar los primeros envios en `debug-gpu`, que quedaron en PD por `QOSMaxWallDurationPerJobLimit`):** control de ajuste fino **64399** (`LAMBDA=0`, `b_min_l0`); B **64400** (`LAMBDA=0.8`, `ANGTMAX=1000`, `b_min_l0.8_t1000`, `--dependency=afterany:64399`); evaluaciones `a15_val_ckpt.sbatch` **64401** (control, `afterok:64399`) y **64402** (B, `afterok:64400`). 3 000 pasos cada entrenamiento. Ninguna cifra leida.
+3. **Hardware:** B y su control corren en la misma GPU (T4), por lo que se comparan entre si; **no son comparables con run04** (A6000). En un humo de 200 pasos la T4 dio val 0.0666 frente a 0.060-0.061 en A100 y 1.564 s/paso (0.25 en A100); causa no determinada. La curva del control (lambda = 0) permite separar efecto de hardware de efecto del termino.
+4. **Evaluacion:** `a15_val_ckpt.sbatch` sobre el `ckpt.pt` final de cada brazo, con las reglas de (2), (4)-(6) y (9).
+
+## 2026-11-20 (11) — Resultado de B minima en validacion: «no mejora» por la regla fijada; mejora la forma radial (EXPLORATORIO, POST-HOC)
+
+Registrado por Claude con permiso directo de la autora. Fuentes: jobs 64399-64402 (`COMPLETED` segun `sacct`), `experiments/objetivo3/c4_bmin_resultado.md`; integridad de las descargas verificada (64/64 `.nii.gz` con `gzip -t`).
+1. **Criterio (i) (decision (5).3): NO se cumple.** C4 K = 48 residuo: B 0.337 frente al control 0.299 = +0.038 (< 0.05; 0101 +0.069, 0102 +0.008). Guarda K = 12: +0.014 (sin colapso).
+2. **Criterio (ii) se cumple:** 3 de 7 cascaras criticas con p95 dentro de la envolvente real, frente a 0 del control. **Criterio (iii) se cumple:** desviacion en 0-2 mm de 26 HU (exceso 1904) frente a 585 del control (exceso 1345).
+3. **Por la regla de (4)-(5) y (8)-(9): B «no mejora»** (exige las tres). Se informa completo. No se reintenta sin decision escrita; el brazo secundario (tmax = 300, lambda = 3) queda **no lanzado**, y la autora decide.
+4. **Dato descriptivo (no es criterio):** E en 2-10 mm: control 582.0, B 274.8 HU (run04_mejor 532.8; eta 100:0.3 361.5). C4 K = 24 residuo: +0.062 sobre el control. La brecha de escala fina frente a Peters (K = 48: Peters 0.476) no se cierra.
+5. **Lectura permitida:** con lambda = 0.8 el termino mejora el perfil radial y el nivel en 0-2 mm, y solo modestamente la estructura angular fina. No es equivalencia con Peters ni con lo real. Hardware T4 distinto de run04: el contraste valido es B menos control; N = 2, un checkpoint, un lambda.
+6. **Pendiente:** criterio (c) a ciegas (`c2b`), que puntua la autora tras terminar los brazos. Nada de B entra a `overleaf/` como hecho hasta esa decision.
+
+## 2026-11-20 (12) — Se lanza el brazo secundario de B (tmax = 300, lambda = 3) (EXPLORATORIO, POST-HOC)
+
+Escrito por Claude con permiso directo de la autora, que pidio lanzarlo el 2026-11-21 tras ver el resultado de (11).
+1. **Es el brazo ya declarado en (9).4**, no un diseno nuevo: tmax = 300 y lambda = 3, calculado con la regla de (6).7 (0.1 x L_v / L_ang = 0.1 x 0.04099 / 0.00153 = 2.68, una cifra significativa: **3**; humo 64334). Se lanza **despues** de ver que el brazo primario no cumplio (i) en (11); eso se declara aqui. Es el **ultimo** brazo de B: no hay mas reintentos sin decision escrita nueva.
+2. **Condiciones iguales a las del primario y su control:** ajuste fino de `run04_mejor` (paso 16 500), 3 000 pasos, lr 5e-5, lote 16, `ckpt.pt` final, **en la T4** (`-p all --gres=gpu:tesla:1`), para que el contraste valido siga siendo contra el control `b_min_l0` (misma T4). `SALIDA = ~/metalsynth/data/a7/b_min_l3_t300`; evaluacion con `a15_val_ckpt.sbatch` (ETIQ `b_min_l3_t300`), 0101/0102, 5 semillas, 50 pasos, eta 0, delta 0.03.
+3. **Reglas de exito, las de (11):** (i) C4 K = 48 residuo, B2 - control >= +0.05 con guarda K = 12 (no bajar > 0.05); (ii) cascaras criticas A28 con p95 dentro de la envolvente, B2 >= control; (iii) D2, desviacion en 0-2 mm <= 279.6 HU. Se exigen las tres. Se informan los tres brazos (control, B tmax 1000, B tmax 300) y todas las cifras.
+4. **Limites:** 2 pacientes de validacion; un checkpoint por brazo; la eleccion entre B de tmax 1000 y de tmax 300, si se hace, es post-hoc y se declara; nada sustituye a E-A2.
+
+## 2026-11-21 (11) — Entrenamiento de B y su control en la T4: perdida de entrenamiento y validacion (sin evaluacion; EXPLORATORIO)
+
+Registrado por Claude con permiso directo de la autora, a partir de los logs de los jobs 64399 (control, `LAMBDA=0`) y 64400 (B, `LAMBDA=0.8`, `ANGTMAX=1000`) que la autora pego el 2026-11-21. **Ninguna cifra de evaluacion (C4, D2, cotejo) se ha leido.**
+1. **Control (64399), T4, 1.57-1.59 s/paso:** val 0.06422 (paso 1000), 0.06523 (2000), 0.06466 (3000); minimo 0.06338 en el paso 1750. No hay linea `REANUDADO` en ninguno de los dos logs (entrenaron desde cero).
+2. **B (64400), 1.62-1.63 s/paso:** val 0.06728 (1000), 0.06548 (2000), 0.06707 (3000); minimo 0.06535 en el paso 250. `L_ang` de entrenamiento: 0.01455 (1000), 0.00396 (2000), 0.00176 (3000), es decir, el termino baja ~8 veces; `L_v` por lote fluctua (0.0554, 0.0462, 0.0493).
+3. **Lectura permitida:** al final B tiene una validacion de MSE 3.7 % mayor que su control (0.06707 frente a 0.06466): el termino cuesta algo de ajuste al MSE y su valor de entrenamiento se reduce. El control (lambda = 0) ya muestra val ~0.064-0.065 tras el ajuste fino, por encima de los ~0.060-0.061 de los humos en A100 a 200 pasos; no se separa aqui el efecto de la T4 del efecto de seguir entrenando. **No dice nada sobre la apariencia ni sobre la estructura angular:** eso lo miden C4, D2 y el cotejo sobre los volumenes.
+4. **Brazo secundario (`tmax = 300`, `lambda = 3`, carpeta `b_min_l3_t300`, evaluacion job 64468):** existe y su evaluacion termino sin errores (10 `sintetica`), pero su lanzamiento no esta registrado: **pendiente de que la autora confirme ids y parametros** antes de leer cifras.
+
+## 2026-11-21 (12) — Resultado de B (validacion 0101/0102) por la regla de (4)-(5) y (6): NO cumple el criterio (i) (EXPLORATORIO, POST-HOC)
+
+Registrado por Claude con permiso directo de la autora. Fuentes: `experiments/objetivo3/c4_b_resultado.md`, `b_veredicto_resultado.md`, `d2_perfil_sintetico.py` (`outputs/d2_b/d2_perfil.csv`); evaluaciones `a15_val_ckpt.sbatch` sobre el `ckpt.pt` final (paso 3 000), 5 semillas.
+1. **Referencia de comparacion fijada antes: el control de ajuste fino (lambda = 0), no run04.** Todos corrieron en la T4.
+2. **Criterio (iii), D2 (0-2 mm, tope 279.6 HU):** control **585 HU (no pasa)**; B (lambda 0.8, tmax 1000) **26 HU**; B (lambda 3, tmax 300) **152 HU**. E (2-10 mm): control 582.0; B1000 274.8; B300 215.2 (run04 532.8; 100:0.3 361.5).
+3. **Criterio (ii), cascaras criticas con p95 dentro de la envolvente real (de 7):** control 0; B1000 **3** (6, 8, 9 mm); B300 **2** (8, 9 mm). B no es menor que su control. B300 **sobrepasa** el maximo real en 4-7 mm (977, 909, 850 HU frente a 832, 759, 775).
+4. **Criterio (i), C4 K = 48, modo residuo, B menos control (>= 0.05):** B1000 0.337 - 0.299 = **+0.038** (no cumple); B300 0.293 - 0.299 = **-0.006** (no cumple). Guarda K = 12 (no bajar > 0.05): B1000 0.220 frente a 0.206 y B300 0.204 frente a 0.206 (se cumple). Referencia Peters Ti: 0.476.
+5. **Veredicto por la regla fijada: ni B1000 ni B300 "mejoran"** (fallan (i)). B1000 queda a 0.012 del umbral. Esto no se redefine despues de ver las cifras.
+6. **Lectura descriptiva (no es el comparador fijado):** el control de ajuste fino **empeora** el artefacto respecto de run04 (cascaras 603-396 HU frente a 690-403; D2 0-2 mm 1345 frente a 1790) y B1000 lo recupera y lo supera; frente a run04, B1000 sube K = 48 de 0.274 a 0.337 (+0.063), pero ese contraste mezcla el efecto del termino con el del ajuste fino en la T4 y **no** sustituye a la regla.
+7. **Limites:** 2 pacientes de validacion; un checkpoint por brazo; T4, no comparable con run04; el control ya deteriora val (0.0647 frente a ~0.060); criterio visual (c) sin puntuar; sin evaluacion en prueba.
+
+## 2026-11-21 (13) — Evaluacion EN PRUEBA de la variante eta 100:0.3 (EXPLORATORIA, POST-HOC); regla fijada antes de lanzar
+
+Escrito por Claude con permiso directo de la autora, que pidio correr 100:0.3 en los 13 de prueba. **Ningun resultado en prueba existe todavia.**
+1. **Variante fija:** `run04_mejor`, muestreo 100 pasos, eta 0.3, delta 0.03 (la que cumple (a) y (b) en validacion, (6)-(8)). No se elige otra variante despues de ver resultados.
+2. **Corrida:** los 13 pacientes de `casos_ea2_test.txt`, semillas 0-4, `--incluir-banda --particiones test --corrida-final`, con NIfTI (`a15_final_eta.sbatch`, rama `exp/b-minima-angular`).
+3. **Evaluacion:** a20 con la definicion congelada de E-A2 (variante `base`; `a20_eta_test.sbatch`) y a24 con los mismos contrastes (primario frente a Peters Ti, TOST pareado, IC90; sensibilidades; cordura frente a copia y pegado). El `Delta` de la variante se calcula en validacion (0101/0102, 5 semillas) con a20, igual que para run04 y run05a/b.
+4. **Lectura permitida:** se informa la diferencia media (HU) frente a Peters Ti con su IC90 y si cae dentro de [-Delta, +Delta], junto a la de v1 (-301.0 HU, IC90 [-477.0, -124.9], p_TOST 0.845). **No** sustituye a E-A2 ni se presenta como confirmatoria: la prueba ya se vio con v1 y v2 y la variante se eligio en la validacion. Se informa cualquiera sea el resultado.
+5. **Limites:** un checkpoint; la variante es un cambio de muestreo, no de modelo; `Delta` depende de solo 2 pacientes de validacion; Peters es referencia fisica, no "lo real".
+6. **Tesis:** no entra a `overleaf/` como resultado hasta leerlo y decidirlo la autora; se declara como evaluacion posterior y exploratoria.

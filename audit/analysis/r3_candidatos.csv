@@ -1,0 +1,28 @@
+Caso,Archivo,Dataset,Grupo paciente,Metal,particion,cohorte,D_TS_max_mm,L_TS_mejor_mm,estado_TS,volumenes_del_paciente
+dataset6_CLINIC_0002_data,dataset6/dataset6_CLINIC_0002_data.nii.gz,dataset6,P002,no,train,calibracion,9.2,154.0,R1 arriba de TS,1
+dataset6_CLINIC_0003_data,dataset6/dataset6_CLINIC_0003_data.nii.gz,dataset6,P003,no,train,calibracion,9.0,137.0,concordante,1
+dataset6_CLINIC_0004_data,dataset6/dataset6_CLINIC_0004_data.nii.gz,dataset6,P004,no,train,calibracion,9.4,132.0,concordante,1
+dataset6_CLINIC_0020_data,dataset6/dataset6_CLINIC_0020_data.nii.gz,dataset6,P020,no,train,calibracion,11.1,119.0,concordante,1
+dataset6_CLINIC_0023_data,dataset6/dataset6_CLINIC_0023_data.nii.gz,dataset6,P023,no,train,calibracion,13.6,112.0,concordante,1
+dataset6_CLINIC_0025_data,dataset6/dataset6_CLINIC_0025_data.nii.gz,dataset6,P025,no,train,calibracion,11.5,156.0,concordante,1
+dataset6_CLINIC_0026_data,dataset6/dataset6_CLINIC_0026_data.nii.gz,dataset6,P026,no,train,calibracion,12.2,138.0,concordante,1
+dataset6_CLINIC_0033_data,dataset6/dataset6_CLINIC_0033_data.nii.gz,dataset6,P033,no,train,calibracion,9.8,161.0,concordante,1
+dataset6_CLINIC_0035_data,dataset6/dataset6_CLINIC_0035_data.nii.gz,dataset6,P035,no,train,calibracion,9.0,126.0,concordante,1
+dataset6_CLINIC_0039_data,dataset6/dataset6_CLINIC_0039_data.nii.gz,dataset6,P039,no,train,calibracion,12.8,139.0,concordante,1
+dataset6_CLINIC_0043_data,dataset6/dataset6_CLINIC_0043_data.nii.gz,dataset6,P043,no,train,calibracion,11.7,153.0,concordante,1
+dataset6_CLINIC_0049_data,dataset6/dataset6_CLINIC_0049_data.nii.gz,dataset6,P049,no,train,calibracion,10.9,150.0,concordante,1
+dataset6_CLINIC_0050_data,dataset6/dataset6_CLINIC_0050_data.nii.gz,dataset6,P050,no,train,calibracion,9.0,147.0,concordante,1
+dataset6_CLINIC_0051_data,dataset6/dataset6_CLINIC_0051_data.nii.gz,dataset6,P051,no,train,calibracion,10.1,161.0,concordante,1
+dataset6_CLINIC_0055_data,dataset6/dataset6_CLINIC_0055_data.nii.gz,dataset6,P055,no,train,calibracion,13.9,156.0,concordante,1
+dataset6_CLINIC_0061_data,dataset6/dataset6_CLINIC_0061_data.nii.gz,dataset6,P061,no,train,calibracion,11.1,140.0,concordante,1
+dataset6_CLINIC_0064_data,dataset6/dataset6_CLINIC_0064_data.nii.gz,dataset6,P064,no,train,calibracion,9.4,133.0,concordante,1
+dataset6_CLINIC_0073_data,dataset6/dataset6_CLINIC_0073_data.nii.gz,dataset6,P073,no,train,calibracion,12.6,116.0,concordante,1
+dataset6_CLINIC_0077_data,dataset6/dataset6_CLINIC_0077_data.nii.gz,dataset6,P077,no,train,calibracion,9.6,143.0,concordante,1
+dataset6_CLINIC_0079_data,dataset6/dataset6_CLINIC_0079_data.nii.gz,dataset6,P079,no,train,calibracion,12.1,109.0,concordante,1
+dataset6_CLINIC_0081_data,dataset6/dataset6_CLINIC_0081_data.nii.gz,dataset6,P081,no,train,calibracion,9.9,170.0,concordante,1
+dataset6_CLINIC_0082_data,dataset6/dataset6_CLINIC_0082_data.nii.gz,dataset6,P082,no,train,calibracion,15.2,157.0,concordante,1
+dataset6_CLINIC_0083_data,dataset6/dataset6_CLINIC_0083_data.nii.gz,dataset6,P083,no,train,calibracion,9.0,144.0,concordante,1
+dataset6_CLINIC_0086_data,dataset6/dataset6_CLINIC_0086_data.nii.gz,dataset6,P086,no,train,calibracion,14.0,114.0,concordante,1
+dataset6_CLINIC_0088_data,dataset6/dataset6_CLINIC_0088_data.nii.gz,dataset6,P088,no,train,calibracion,10.7,139.0,concordante,1
+dataset6_CLINIC_0092_data,dataset6/dataset6_CLINIC_0092_data.nii.gz,dataset6,P091,no,train,calibracion,13.7,154.0,concordante,1
+dataset6_CLINIC_0094_data,dataset6/dataset6_CLINIC_0094_data.nii.gz,dataset6,P093,no,train,calibracion,12.3,138.0,concordante,1

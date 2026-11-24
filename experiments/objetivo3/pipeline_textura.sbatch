@@ -7,7 +7,7 @@
 #
 # USO (desde ~/metalsynth, rama exp/textura-percep-adv, tras git pull): UN comando
 #   sbatch experiments/objetivo3/pipeline_textura.sbatch
-# Para relanzar tras un corte: el mismo comando (las etapas OK se saltan). Otro corte: DEADLINE=<epoch> sbatch --export=ALL,DEADLINE=...
+# Para relanzar tras un corte: el mismo comando (las etapas OK se saltan). SALTAR=GEN_TEST,TRAIN_A omite etapas por nombre. Otro corte: DEADLINE=<epoch> sbatch --export=ALL,DEADLINE=...
 # Salida: $HOME/metalsynth/data/pipeline_textura/{estado.tsv, REPORTE.md, res/, smoke_*.log, lambda_*.txt}
 #SBATCH --job-name=pipetex
 #SBATCH --partition=all
@@ -50,9 +50,11 @@ etapa() {
     local n=$1 deps=$2 est=$3
     shift 3
     if [ "$(estado_de "$n")" = OK ]; then echo "[$n] ya OK, se salta"; return 0; fi
+    case ",${SALTAR:-}," in
+        *",$n,"*) registra "$n" SALTADA "" "omitida por la autora (SALTAR)"; echo "[$n] omitida (SALTAR)"; return 0;;
+    esac
     local d
-    IFS=',' read -ra DD <<< "$deps"
-    for d in "${DD[@]}"; do
+    for d in $(echo "$deps" | tr ',' ' '); do
         [ -z "$d" ] && continue
         if [ "$(estado_de "$d")" != OK ]; then
             registra "$n" SALTADA "" "depende de $d (estado: $(estado_de "$d"))"
@@ -100,7 +102,8 @@ ref_metricas() {
 }
 
 smoke() {  # T | P | A
-    local V=$1 S=$DATA/a7/aux_smoke_$V LOG=$OUT/smoke_$V.log lote rc=1 ARGS
+    local V=$1
+    local S=$DATA/a7/aux_smoke_$V LOG=$OUT/smoke_$V.log lote rc=1 ARGS
     case $V in T) ARGS="--aux-tex 1.0";; P) ARGS="--aux-per 1.0";; A) ARGS="--aux-adv 0.01";; esac
     for lote in 16 8; do
         rm -rf "$S"
@@ -133,7 +136,8 @@ EOF
 gen_test() { bash "$OBJ3/a15_final_eta.sbatch"; }
 
 train() {  # T | P | A
-    local V=$1 S=$DATA/a7/aux_$V lote ARGS
+    local V=$1
+    local S=$DATA/a7/aux_$V lote ARGS
     lote=$(cat "$OUT/lote_$V.txt")
     case $V in T) ARGS="--aux-tex $(cat "$OUT/lambda_T.txt")";; P) ARGS="--aux-per $(cat "$OUT/lambda_P.txt")";; A) ARGS="--aux-adv 0.01";; esac
     rm -rf "$S"

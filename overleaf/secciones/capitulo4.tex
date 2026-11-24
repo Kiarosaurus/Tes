@@ -89,6 +89,15 @@ La viabilidad del corredor, el segundo componente de SAP, se midió de forma des
 
 \section{Coherencia de apariencia}\label{sec:res-obj3}
 
+La Figura~\ref{fig:ejemplos-implantes} presenta, en la fila superior, la cadena sintética sobre un caso de prueba y, en la inferior, un implante real de la cohorte. El aspecto visual se acompaña de valores medidos porque ninguna de las dos fuentes sustenta por sí sola una conclusión de realismo, que el capítulo no reclama. La figura es descriptiva y las mediciones de las secciones siguientes son las que sustentan la comparación.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figuras/ejemplos_implantes.pdf}
+\caption{Ejemplos de implante sintético y real, en la misma ventana de [$-500$, $1300$]~HU en todos los paneles. Fila superior, cadena sintética en el caso CLINIC\_0012, corte 227, semilla 0, \textit{run04\_mejor}: (a) pelvis sin metal; (b) máscara del implante $M$ (rojo) y región de generación $G$ (azul), con su número de vóxeles; (c) sintético con artefacto, con mediana en $M$ de 3619~HU, 87\,\% de los vóxeles sobre 2500~HU, amplitud de 1338~HU (la \emph{streak amplitude} del contraste primario, medida en el campo de desviación) y valor de Peters para Ti de 1070~HU. Fila inferior, implante real del caso metal\_0039, corte 190: (d) corte original; (e) metal real con HU $>$ 2500 en rojo (125 píxeles en el corte; 5494 vóxeles); (f) histograma de HU del metal real (mediana de 3516~HU, percentil~95 de 5277~HU). La figura es descriptiva, con un caso de prueba, una semilla y un implante real de otro paciente, y no sustituye a las métricas.}
+\label{fig:ejemplos-implantes}
+\end{figure}
+
 \subsection{Contraste primario}\label{sec:res-primario}
 
 El contraste primario compara, por equivalencia, la \emph{streak amplitude} del modelo evaluado con la del protocolo físico con titanio, sobre los 13 pacientes de la síntesis sobre pelvis sin metal (Tabla~\ref{tab:res-tost}). La diferencia media pareada fue de $-301.0$~HU, con un IC del 90\,\% de $-477.0$ a $-124.9$~HU frente al margen $\Delta = 196.3$~HU, y con un IC del 95\,\% de $-516.2$ a $-85.7$~HU. La mediana entre pacientes de la amplitud fue de 1308~HU en el sintetizador y de 1574~HU en el protocolo físico con titanio.

@@ -16,10 +16,11 @@ La cadena recibe un volumen de TC pélvica sin osteosíntesis y devuelve el mism
 
 \begin{figure}[htbp]
 \centering
+\hyphenpenalty=10000 \exhyphenpenalty=10000
 \begin{tikzpicture}[
   node distance=6mm,
   caja/.style={draw, rounded corners=2pt, align=center, font=\small, text width=0.64\linewidth, minimum height=9mm, inner sep=4pt},
-  clave/.style={caja, line width=1pt, fill=gray!15},
+  clave/.style={caja, line width=1pt, fill=lightgray},
   lado/.style={draw, dashed, rounded corners=2pt, align=center, font=\footnotesize, text width=0.24\linewidth, inner sep=4pt},
   flecha/.style={-{Stealth[length=2.4mm]}, thick}]
   \node[caja] (tc) {TC receptora sin osteosíntesis\\ (subconjunto local de CTPelvic1K)};

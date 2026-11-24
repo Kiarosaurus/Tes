@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-24 (2) — script maestro en dos jobs paralelos (T4: prueba; A100/A6000: T, P, A) y control del mismo hardware
+
+- **Hecho:** `GRUPO=test|entrena` y `FACTOR` en `pipeline_textura.sbatch`, etapa `TRAIN_C/EVAL_C/MET_C` (control `aux_C` en la misma GPU), reporte y `evalua_todo_local.sh` con `aux_C`; los tres modos probados con etapas simuladas. Regla en `01-decisiones.md` 2026-11-24 (20).
+- **Siguiente:** la autora comprueba con `--test-only` si la A100 (o la A6000) arranca pronto, y lanza los dos jobs.
+
 ## 2026-11-24 — script maestro: corregido el fallo del primer lanzamiento; relanzamiento
 
 - **Hecho:** el job 64588 fallo a los 4 min por `V: unbound variable` (error mio en `pipeline_textura.sbatch`); no se ejecuto ningun humo ni entrenamiento. Corregido y probado con simulador `set -u`; `SALTAR` para omitir etapas. Registrado en `01-decisiones.md` 2026-11-24 (19).

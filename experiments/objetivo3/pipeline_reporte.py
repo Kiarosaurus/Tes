@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 REAL = {'0-2': 1930.0, '2-4': 1199.0, '4-6': 765.0, '6-8': 473.0, '8-10': 174.0}
-BRAZOS = ['run04_mejor', 'b_min_l0', 'b_min_l0.8_t1000', 'b_min_l3_t300', 'run04_mejor_p100_e0.3', 'aux_T', 'aux_P', 'aux_A']
+BRAZOS = ['run04_mejor', 'b_min_l0', 'b_min_l0.8_t1000', 'b_min_l3_t300', 'run04_mejor_p100_e0.3', 'aux_C', 'aux_T', 'aux_P', 'aux_A']
 
 
 def leer_json(p: Path):
@@ -52,21 +52,22 @@ def f(x, fmt='%.3f'):
 def main() -> None:
     out = Path(sys.argv[1])
     L = ['# REPORTE del script maestro (exploratorio; reglas en docs/01-decisiones.md 2026-11-21 (18) y (18-a))', '']
-    est = out / 'estado.tsv'
-    L += ['## Estado de las etapas', '', '| etapa | estado | inicio | fin | nota |', '|---|---|---|---|---|']
-    if est.exists():
-        for l in est.read_text(encoding='utf-8').splitlines():
-            c = l.split('\t')
-            if len(c) >= 2:
-                L.append('| ' + ' | '.join(c[:5] + [''] * (5 - len(c[:5]))) + ' |')
+    L += ['## Estado de las etapas', '', '| grupo | etapa | estado | inicio | fin | nota |', '|---|---|---|---|---|---|']
+    ests = sorted(out.glob('estado_*.tsv'))
+    if ests:
+        for est in ests:
+            for l in est.read_text(encoding='utf-8').splitlines():
+                c = l.split('\t')
+                if len(c) >= 2:
+                    L.append('| ' + est.stem.replace('estado_', '') + ' | ' + ' | '.join(c[:5] + [''] * (5 - len(c[:5]))) + ' |')
     else:
-        L.append('| (sin estado.tsv) | | | | |')
+        L.append('| (sin estado_*.tsv) | | | | | |')
     for v in ('T', 'P', 'A'):
         p = out / ('lambda_%s.txt' % v)
         if p.exists():
             L.append('')
             L.append('lambda de %s: %s' % (v, p.read_text(encoding='utf-8').strip()))
-    L += ['', '## Metricas por brazo (validacion 0101/0102; comparador = control `b_min_l0`)', '',
+    L += ['', '## Metricas por brazo (validacion 0101/0102; comparador = control `aux_C` (mismo hardware) o, si no existe, `b_min_l0`)', '',
           '| brazo | razon de textura (original: %s) | frac. M < 2500 HU | salto borde G (HU) | cascaras (a) /7 | D2 0-2 mm (dev, tope 279.6) | E 2-10 mm |' %
           f((leer_json(out / 'res' / 'run04_mejor.json') or {}).get('razon_textura_original', {}).get('mediana'), '%.3f'),
           '|---|---|---|---|---|---|---|']
@@ -86,7 +87,7 @@ def main() -> None:
             f(cascaras(ver, b), '%d') if ver.exists() else 'sin dato',
             f(dd[0] if dd else None, '%.0f'), f(dd[1] if dd else None, '%.0f')))
     L += ['', '## Criterios de (18) frente al control (si hay dato)', '']
-    c = leer_json(out / 'res' / 'b_min_l0.json') or {}
+    c = leer_json(out / 'res' / 'aux_C.json') or leer_json(out / 'res' / 'b_min_l0.json') or {}   # control del mismo hardware si existe
     ro = (leer_json(out / 'res' / 'run04_mejor.json') or {}).get('razon_textura_original', {}).get('mediana')
     for v in ('aux_T', 'aux_P', 'aux_A'):
         j = leer_json(out / 'res' / (v + '.json'))

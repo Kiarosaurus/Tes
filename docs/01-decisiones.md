@@ -3138,3 +3138,13 @@ Registrado por Claude con permiso directo de la autora. El job `pipetex` 64588 (
 1. **Correccion:** `local` separado y sin arreglos vacios bajo `set -u`; funciones `smoke`, `train` y `etapa` probadas con un simulador con `set -u` (humos T, P, A y entrenamientos T, P, A; calculo de lambda); nueva variable `SALTAR` para omitir etapas por nombre.
 2. **Relanzamiento (2026-11-24, sin cambio de reglas de (18) y (18-a)):** nuevo corte del reloj: martes 2026-11-24 12:00 (en vez del dom 2026-11-22 11:00), para dejar el resto del dia a la evaluacion a ciegas, la actualizacion de `capitulo3` y la entrega. Las etapas ya OK (`REF`) se saltan.
 3. **Consecuencia declarada:** con ese corte, T y P pueden caber y A casi con seguridad no; si una etapa no se ejecuta, `capitulo3` debe decir "no ejecutado".
+
+## 2026-11-24 (20) — Reparto en dos jobs paralelos y control del mismo hardware para T, P y A (antes de cualquier cifra nueva)
+
+Registrado por Claude con permiso directo de la autora, que pregunto por que no correr ambas opciones si Khipu admite varios jobs. El limite real es la GPU, no el numero de jobs; hay otras GPUs ademas de la T4.
+1. **Job `test` (T4):** `REF` no; `GEN_TEST` (corrida en prueba de 100:0.3 de (13)) y su `a20`. Sin cambio de regla. La generacion esta limitada por CPU y escritura, y la T4 rinde como la A100 (medido en las evaluaciones en validacion).
+2. **Job `entrena` (A100, o RTX A6000 si la A100 no arranca pronto):** `REF`, humos, y los brazos **T, P, A** de (18), con `FACTOR` de reloj (25 % en A100) sobre los tiempos estimados.
+3. **Control nuevo `aux_C`:** ajuste fino de `run04_mejor` con `lambda = 0` (sin ninguna perdida auxiliar), 3 000 pasos, lote igual al de T, **en la misma GPU que T, P y A**. **Desde ahora el comparador de T, P y A es `aux_C` y no `b_min_l0`** (que se entreno en la T4; el ajuste fino en la T4 ya mostro deteriorar el artefacto, (12).6): comparar arms entrenados en A100 con un control de la T4 mezclaria el efecto de la tarjeta con el de la perdida. `b_min_l0` sigue siendo el comparador de B (1000 y 300).
+4. **Criterios (i)-(iv) y (18-a):** sin cambio, solo cambia el comparador a `aux_C`. Todo brazo que llegue a entrenar entra a la sesion a ciegas, junto con `aux_C`.
+5. **Corte:** martes 2026-11-24 12:00 para ambos jobs, como en (19).
+6. **Limites:** un solo control por GPU; N = 2; las cifras de T4 y de A100 no son comparables entre si; el control `aux_C` puede no reproducir la degradacion vista en la T4.

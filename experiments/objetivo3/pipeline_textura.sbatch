@@ -5,8 +5,11 @@
 # dependen de ella; las independientes siguen. Una etapa no arranca si no cabe antes del corte (DEADLINE, por omision dom 2026-11-22 11:00).
 # Al final escribe $OUT/REPORTE.md aunque algo haya fallado.
 #
-# USO (desde ~/metalsynth, rama exp/textura-percep-adv, tras git pull): UN comando
-#   sbatch experiments/objetivo3/pipeline_textura.sbatch
+# USO (desde ~/metalsynth, rama exp/textura-percep-adv, tras git pull):
+#   un solo job (T4):  sbatch experiments/objetivo3/pipeline_textura.sbatch
+#   DOS jobs en paralelo (decision (20)): GRUPO=test en la T4 (GEN_TEST + a20) y GRUPO=entrena en A100/A6000 (humos, control C, T, P, A):
+#     sbatch --export=ALL,GRUPO=test experiments/objetivo3/pipeline_textura.sbatch
+#     sbatch -p all --gres=gpu:a100:1 --export=ALL,GRUPO=entrena,FACTOR=25 experiments/objetivo3/pipeline_textura.sbatch
 # Para relanzar tras un corte: el mismo comando (las etapas OK se saltan). SALTAR=GEN_TEST,TRAIN_A omite etapas por nombre. Otro corte: DEADLINE=<epoch> sbatch --export=ALL,DEADLINE=...
 # Salida: $HOME/metalsynth/data/pipeline_textura/{estado.tsv, REPORTE.md, res/, smoke_*.log, lambda_*.txt}
 #SBATCH --job-name=pipetex
@@ -26,7 +29,9 @@ OBJ3=$REPO/experiments/objetivo3
 OUT=${OUT:-$DATA/pipeline_textura}
 RES=$OUT/res
 mkdir -p "$RES"
-ESTADO=$OUT/estado.tsv
+GRUPO=${GRUPO:-todo}   # todo | test (T4: GEN_TEST + a20) | entrena (A100/A6000: humos, control C, T, P, A)
+FACTOR=${FACTOR:-100}  # % del tiempo estimado (T4 = 100; A100 ~ 25) para la guarda de reloj
+ESTADO=$OUT/estado_$GRUPO.tsv
 touch "$ESTADO"
 DEADLINE=${DEADLINE:-$(date -d "2026-11-22 11:00" +%s)}
 INIT=$DATA/a7/run04/mejor.pt
@@ -49,6 +54,7 @@ registra() { printf '%s\t%s\t%s\t%s\t%s\n' "$1" "$2" "${3:-}" "$(date -Is)" "${4
 etapa() {
     local n=$1 deps=$2 est=$3
     shift 3
+    est=$(( est * FACTOR / 100 ))
     if [ "$(estado_de "$n")" = OK ]; then echo "[$n] ya OK, se salta"; return 0; fi
     case ",${SALTAR:-}," in
         *",$n,"*) registra "$n" SALTADA "" "omitida por la autora (SALTAR)"; echo "[$n] omitida (SALTAR)"; return 0;;
@@ -84,7 +90,7 @@ args_comunes() {  # imprime los argumentos comunes de entrenar.py (ajuste fino d
 
 lista_dirs() {  # directorios a15 de validacion que existen, para metricas y cascaras
     local d
-    for d in "$DATA/obj3_pose/delta/run04_mejor" "$B/b_min_l0" "$B/b_min_l0.8_t1000" "$B/b_min_l3_t300" "$B/run04_mejor_p100_e0.3" "$B/aux_T" "$B/aux_P" "$B/aux_A"; do
+    for d in "$DATA/obj3_pose/delta/run04_mejor" "$B/b_min_l0" "$B/b_min_l0.8_t1000" "$B/b_min_l3_t300" "$B/run04_mejor_p100_e0.3" "$B/aux_C" "$B/aux_T" "$B/aux_P" "$B/aux_A"; do
         [ -d "$d" ] && echo "$d"
     done
 }
@@ -138,8 +144,8 @@ gen_test() { bash "$OBJ3/a15_final_eta.sbatch"; }
 train() {  # T | P | A
     local V=$1
     local S=$DATA/a7/aux_$V lote ARGS
-    lote=$(cat "$OUT/lote_$V.txt")
-    case $V in T) ARGS="--aux-tex $(cat "$OUT/lambda_T.txt")";; P) ARGS="--aux-per $(cat "$OUT/lambda_P.txt")";; A) ARGS="--aux-adv 0.01";; esac
+    if [ "$V" = C ]; then lote=$(cat "$OUT/lote_T.txt" 2>/dev/null || echo 16); else lote=$(cat "$OUT/lote_$V.txt"); fi
+    case $V in T) ARGS="--aux-tex $(cat "$OUT/lambda_T.txt")";; P) ARGS="--aux-per $(cat "$OUT/lambda_P.txt")";; A) ARGS="--aux-adv 0.01";; C) ARGS="";; esac
     rm -rf "$S"
     python -u "$REPO/src/renderizador/entrenar.py" $(args_comunes) --out "$S" --pasos 3000 --cada 250 --lote "$lote" $ARGS > "$OUT/train_$V.log" 2>&1
     local rc=$?
@@ -159,33 +165,44 @@ metricas() {  # T | P | A
     return $rc
 }
 
-# ---- orden fijado en (18) punto 6 ----
-etapa REF "" 20 ref_metricas
-etapa SMOKE_T "" 15 smoke T
-etapa SMOKE_P "" 15 smoke P
-etapa SMOKE_A "" 15 smoke A
-etapa GEN_TEST "" 340 gen_test
-A20PID=""
-if [ "$(estado_de GEN_TEST)" = OK ] && [ "$(estado_de A20_TEST)" != OK ]; then
-    ( bash "$OBJ3/a20_eta_test.sbatch" > "$OUT/a20_eta.log" 2>&1; echo $? > "$OUT/a20_eta.rc" ) &
-    A20PID=$!
-    echo "a20 de la corrida en prueba lanzado en segundo plano (pid $A20PID)"
+# ---- orden fijado en (18) punto 6 y (20) ----
+if [ "$GRUPO" != test ]; then
+    etapa REF "" 20 ref_metricas
+    etapa SMOKE_T "" 15 smoke T
+    etapa SMOKE_P "" 15 smoke P
+    etapa SMOKE_A "" 15 smoke A
 fi
-etapa TRAIN_T SMOKE_T 145 train T
-etapa EVAL_T TRAIN_T 25 evalua T
-etapa MET_T EVAL_T 10 metricas T
-etapa TRAIN_P SMOKE_P 145 train P
-etapa EVAL_P TRAIN_P 25 evalua P
-etapa MET_P EVAL_P 10 metricas P
-etapa TRAIN_A SMOKE_A 215 train A
-etapa EVAL_A TRAIN_A 25 evalua A
-etapa MET_A EVAL_A 10 metricas A
+A20PID=""
+if [ "$GRUPO" != entrena ]; then
+    etapa GEN_TEST "" 340 gen_test
+    if [ "$(estado_de GEN_TEST)" = OK ] && [ "$(estado_de A20_TEST)" != OK ]; then
+        ( bash "$OBJ3/a20_eta_test.sbatch" > "$OUT/a20_eta.log" 2>&1; echo $? > "$OUT/a20_eta.rc" ) &
+        A20PID=$!
+        echo "a20 de la corrida en prueba lanzado en segundo plano (pid $A20PID)"
+    fi
+fi
+if [ "$GRUPO" != test ]; then
+    if [ "$GRUPO" = entrena ]; then   # control del MISMO hardware (decision (20))
+        etapa TRAIN_C "" 145 train C
+        etapa EVAL_C TRAIN_C 25 evalua C
+        etapa MET_C EVAL_C 10 metricas C
+    fi
+    etapa TRAIN_T SMOKE_T 145 train T
+    etapa EVAL_T TRAIN_T 25 evalua T
+    etapa MET_T EVAL_T 10 metricas T
+    etapa TRAIN_P SMOKE_P 145 train P
+    etapa EVAL_P TRAIN_P 25 evalua P
+    etapa MET_P EVAL_P 10 metricas P
+    etapa TRAIN_A SMOKE_A 215 train A
+    etapa EVAL_A TRAIN_A 25 evalua A
+    etapa MET_A EVAL_A 10 metricas A
+fi
 if [ -n "$A20PID" ]; then
     wait "$A20PID"
     if [ "$(cat "$OUT/a20_eta.rc" 2>/dev/null)" = 0 ]; then registra A20_TEST OK "" "a20 de 100:0.3 en prueba"; else registra A20_TEST FALLO "" "ver a20_eta.log"; fi
 fi
 # resumen final (siempre)
 python "$OBJ3/veredicto_cascaras.py" --repo "$REPO" --data "$DATA/extracted" --dirs $(lista_dirs) --out "$RES/veredicto_cascaras.md" > /dev/null 2>&1 || echo "AVISO: cascaras no disponibles"
-python "$OBJ3/pipeline_reporte.py" "$OUT"
+python "$OBJ3/pipeline_reporte.py" "$OUT" || true
 echo "fin $(date -Is)"
 exit 0

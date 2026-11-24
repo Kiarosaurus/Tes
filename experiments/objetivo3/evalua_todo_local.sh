@@ -11,10 +11,10 @@ mkdir -p "$D" "$E"
 echo "== 1/4 REPORTE de Khipu"
 ssh khipu.utec.edu.pe 'cat ~/metalsynth/data/pipeline_textura/REPORTE.md' | tee "$T/REPORTE_pipeline.md"
 echo "== 2/4 NIfTI de los brazos nuevos (sin marcas.npz)"
-ssh khipu.utec.edu.pe 'cd ~/metalsynth/data/obj3_pose/b_min && tar cf - --exclude="*_marcas.npz" $(ls -d aux_T aux_P aux_A 2>/dev/null)' | tar xf - -C "$D"
+ssh khipu.utec.edu.pe 'cd ~/metalsynth/data/obj3_pose/b_min && tar cf - --exclude="*_marcas.npz" $(ls -d aux_C aux_T aux_P aux_A 2>/dev/null)' | tar xf - -C "$D"
 echo "== 3/4 resultados de la corrida en prueba (a20)"
 ssh khipu.utec.edu.pe 'cd ~/metalsynth/data/eta_prueba && tar cf - a20_test_base.csv a20_val.csv a20_delta_*.json 2>/dev/null' | tar xf - -C "$E"
-ARMS=""; for a in aux_T aux_P aux_A; do [ -d "$D/$a" ] && ARMS="$ARMS $a"; done
+ARMS=""; for a in aux_C aux_T aux_P aux_A; do [ -d "$D/$a" ] && ARMS="$ARMS $a"; done
 echo "brazos nuevos disponibles:${ARMS:- ninguno}"
 echo "== 4/4 evaluacion local"
 if [ -n "$ARMS" ]; then

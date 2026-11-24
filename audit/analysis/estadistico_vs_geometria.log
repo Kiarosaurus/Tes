@@ -8,3 +8,14 @@ dataset6_CLINIC_0030_data
 dataset6_CLINIC_0047_data
 dataset6_CLINIC_0059_data
 dataset6_CLINIC_0063_data
+dataset6_CLINIC_0074_data
+dataset6_CLINIC_0090_data
+dataset6_CLINIC_0100_data
+
+ANILLO(mm)  modelo: exceso(D1) | amp(Delta) ||  PetersTi: exceso(D1) | amp(Delta)   [mediana entre 13 pacientes x2 semillas; Peters 13 pacientes]
+0-2       1672     2558   ||      5004     5935
+2-4        786     1630   ||      2558     3110
+4-6        396     1337   ||      1931     2323
+6-8        175     1227   ||      1404     1743
+8-10        107     1035   ||      1054     1391
+10-12         35      887   ||       829     1204

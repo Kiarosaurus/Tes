@@ -192,7 +192,7 @@ def revisar_archivo(ruta: Path, siglas_definidas: set[str], bib: set[str],
             # sujeto de la oracion (ver ESTILO.md E-V1 y E-V3). 'este trabajo' tras preposicion o posesivo no se marca.
             if re.search(r"\bla autora\b", plano, re.I):
                 h(n, "media", "E-V3", f"sujeto personal ('la autora') en: {plano.strip()[:70]}")
-            if re.search(r"(?:^|[.;:?!]\s+|,\s+|\(\s*)este trabajo\b(?!\s*[,.;)])", plano, re.I):
+            if re.search(r"(?:^|[.;:?!]\s+|,\s+|\(\s*)este trabajo\b(?!\s*[,.;)&])", plano, re.I):
                 h(n, "media", "E-V3", f"sujeto personal ('este trabajo') en: {plano.strip()[:70]}")
             if re.search(r"---|—", linea):
                 h(n, "media", "E-IA", "guion largo como inciso")

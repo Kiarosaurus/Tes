@@ -1,0 +1,40 @@
+| media | E-V3 | overleaf/secciones/capitulo1.tex:58 | sujeto personal ('este trabajo') en: Este trabajo usa la codificación multiventana en dos piez
+| media | E-V3 | overleaf/secciones/capitulo1.tex:85 | sujeto personal ('este trabajo') en: De estos mecanismos se siguen dos consecuencias para la s�
+| media | E-V3 | overleaf/secciones/capitulo1.tex:87 | sujeto personal ('este trabajo') en: La MAR reduce el artefacto de una TC ya adquirida, y la si
+| media | E-V3 | overleaf/secciones/capitulo1.tex:89 | sujeto personal ('este trabajo') en: Para cuantificar el artefacto, este trabajo adopta las mé
+| media | E-V3 | overleaf/secciones/capitulo1.tex:97 | sujeto personal ('este trabajo') en: El   tornillo transilíaco-transsacro  (transiliosacro) di
+| media | E-V3 | overleaf/secciones/capitulo1.tex:101 | sujeto personal ('este trabajo') en: El tornillo debe quedar dentro del hueso en una región d
+| media | E-V3 | overleaf/secciones/capitulo1.tex:105 | sujeto personal ('este trabajo') en: Expresar la pose de un tornillo exige un marco de referen
+| media | E-V3 | overleaf/secciones/capitulo1.tex:135 | sujeto personal ('este trabajo') en: La difusión latente separa la generación en dos etapas 
+| media | E-V3 | overleaf/secciones/capitulo1.tex:139 | sujeto personal ('este trabajo') en: El sintetizador es   2.5D : genera un corte axial y recib
+| media | E-V3 | overleaf/secciones/capitulo1.tex:145 | sujeto personal ('este trabajo') en: Para comparar distribuciones de grados, este trabajo usa 
+| media | E-V3 | overleaf/secciones/capitulo1.tex:153 | sujeto personal ('este trabajo') en: Los nombres de los tres desenlaces son de este trabajo, y
+| media | E-V3 | overleaf/secciones/capitulo3.tex:131 | sujeto personal ('este trabajo') en: Las poses se expresan en el marco de referencia de Kaiser
+| media | E-V3 | overleaf/secciones/capitulo3.tex:147 | sujeto personal ('la autora') en: Las cifras principales del Objetivo 2 usan el recorte por de
+| media | E-V3 | overleaf/secciones/capitulo3.tex:155 | sujeto personal ('la autora') en: Este análisis se hizo sobre los 64 pacientes con material o
+| media | E-V3 | overleaf/secciones/capitulo3.tex:157 | sujeto personal ('la autora') en: La autora volvió a juzgar el nivel S1 sobre las mismas 61 l
+| media | E-V3 | overleaf/secciones/capitulo3.tex:226 | sujeto personal ('la autora') en: Bajo el corredor de S1, la búsqueda devuelve un segundo cor
+| media | E-V3 | overleaf/secciones/capitulo3.tex:252 | sujeto personal ('este trabajo') en: La banda  X  extiende la síntesis unos 12 mm más allá 
+| media | E-V3 | overleaf/secciones/capitulo3.tex:264 | sujeto personal ('la autora') en: La colocación del tornillo paramétrico tuvo un error de im
+| media | E-V3 | overleaf/secciones/capitulo3.tex:282 | sujeto personal ('la autora') en: El segundo estadístico es el histograma de HU dentro de  X 
+| media | E-V3 | overleaf/secciones/capitulo3.tex:284 | sujeto personal ('la autora') en: La referencia del cotejo se limita a ese paciente. Los otros
+| media | E-V3 | overleaf/secciones/capitulo3.tex:308 | sujeto personal ('la autora') en: La primera intervención actúa sobre el entrenamiento. Los 
+| media | E-V3 | overleaf/secciones/capitulo3.tex:319 | sujeto personal ('la autora') en: El canal entró en el entrenamiento solo tras pasar una   pr
+| media | E-V3 | overleaf/secciones/capitulo3.tex:329 | sujeto personal ('la autora') en: La   regla de elección  entre los tres modelos la aprobó l
+| media | E-V3 | overleaf/secciones/capitulo3.tex:333 | sujeto personal ('la autora') en: Después de conocer ese resultado, y antes de procesar con l
+| media | E-V3 | overleaf/secciones/capitulo3.tex:393 | sujeto personal ('este trabajo') en: Una distancia grande no se corrige moviendo parámetros d
+| media | E-V3 | overleaf/secciones/capitulo3.tex:411 | sujeto personal ('la autora') en: Las métricas anteriores y el cotejo por cáscaras son radia
+| media | E-V3 | overleaf/secciones/capitulo3.tex:472 | sujeto personal ('la autora') en: Se fijó también un   control de calidad visual , que no es
+| media | E-V3 | overleaf/secciones/capitulo3.tex:572 | sujeto personal ('la autora') en: Una variante cumple la regla de decisión frente al modelo e
+| media | E-V3 | overleaf/secciones/capitulo3.tex:574 | sujeto personal ('la autora') en: Junto a ese diseño hubo una observación informal de la aut
+| media | E-V3 | overleaf/secciones/capitulo3.tex:616 | sujeto personal ('la autora') en: La regla de la referencia de realismo, a diferencia de esas 
+| media | E-V3 | overleaf/secciones/capitulo3.tex:622 | sujeto personal ('la autora') en: La corrección de la pose del tornillo paramétrico (Secció
+| media | E-V3 | overleaf/secciones/capitulo3.tex:642 | sujeto personal ('la autora') en: El ajuste fino del brazo B no sustituye al modelo evaluado, 
+| media | E-V3 | overleaf/secciones/capitulo3.tex:650 | sujeto personal ('este trabajo') en: El nivel de la referencia es un supuesto en una de sus do
+| media | E-V3 | overleaf/secciones/capitulo3.tex:658 | sujeto personal ('la autora') en: El sintetizador se entrena con componentes metálicos de tod
+| media | E-V3 | overleaf/secciones/capitulo3.tex:666 | sujeto personal ('la autora') en: El realismo visual del artefacto sintético no se reclama. L
+| media | E-V3 | overleaf/secciones/capitulo3.tex:670 | sujeto personal ('la autora') en: La cohorte local es una fracción de la colección publicada
+| media | E-V3 | overleaf/secciones/conclusiones.tex:8 | sujeto personal ('este trabajo') en: Este trabajo propuso una cadena de síntesis de dos comp
+| media | E-V3 | overleaf/secciones/introduccion.tex:82 | sujeto personal ('la autora') en: Las cifras principales del Objetivo 2 dependen de una vari
+| media | E-V3 | overleaf/secciones/resumen.tex:4 | sujeto personal ('este trabajo') en: Los implantes metálicos producen rayas y zonas oscuras en la
+| media | E-V3 | overleaf/secciones/trabajosFuturos.tex:19 | sujeto personal ('este trabajo') en: El muestreador se ejecutó en un solo corredor y con

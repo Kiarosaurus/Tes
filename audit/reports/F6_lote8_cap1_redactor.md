@@ -1,0 +1,7 @@
+# F6 lote 8 — capitulo1 (informe del agente redactor, transcrito por el orquestador; el agente no puede escribir informes)
+Aplicado: B-008 (solo texto: hoja de ruta l.13 en 2 frases), B-009 (se elimina el parrafo l.49: TotalSegmentator, recorte 6 mm, mediana 0.42), B-017 (solo cap1: se elimina el parrafo de densidad osea/Arand), B-021 (preinscripcion/multiplicidad y MAISI fusionados; se elimina la nota MAE/RMSE). Sin tocar l.31-45 (cambios sin commitear de la autora).
+texcount 6709 -> 6341 (-368). Lint capitulo1: 0 alta/0 media. Compila, 204 pag.
+Cifras quitadas y donde estan: 0.42 -> cap3 l.133; recorte 6 mm -> cap3 l.135; nota RMSE>=MAE -> cap3 l.113; densidad osea/Arand -> cap2 l.80 y cap3 l.228, 371; regla de la compuerta -> cap3 l.119; preinscripcion -> cap3 l.104; MAISI -> cap3 l.123 y cap4 l.45.
+Dos datos que solo estaban en cap1 y se conservaron: "eleva a siete las combinaciones" (cap4 solo dice "septimo candidato") y "segun la decision que la autorizo, no cambia el diseno del Objetivo 3".
+\cite: arand2019pelvicring sale de cap1 (sigue en cap2 l.80 y cap3 l.228); wasserthal2023 2->1. \ref: se quitan 5 \ref{sec:mt-*} de l.13 (siguen en la figura) y \ref{sec:poses} de l.115. Sin cambios en \label, figuras ni marcas.
+Oraciones con "este trabajo" como sujeto en parrafos NO editados (cap1, numero de linea del archivo con cambios de la autora): 58, 85, 87, 89, 97, 101, 103, 105, 107, 135, 139, 145, 149, 153 (x2), 157; posesivo/complemento: 45, 47 (x2), 87, 93, 137, 153; primera persona plural: l.31 "podemos imaginar" (bloque de la autora).

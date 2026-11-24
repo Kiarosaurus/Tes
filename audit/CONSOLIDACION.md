@@ -24,8 +24,8 @@ Fecha: 2026-11-24. Cada afirmacion grave se contrasto con el material (review/ y
 ## 3. Discrepancias (no resueltas por votacion)
 | Punto | A | B | Resolucion propuesta (requiere decision de la autora) |
 |---|---|---|---|
-| Reduccion de palabras | -13 920 (50 % del alcance) | -8 974 bruto; -6 200 neto esperado | Meta de planificacion = rango de B; A = cota optimista. Conteo unico con texcount |
-| Cap. 2 | 7 072 -> 2 750 | 6 575 -> 4 675 | Autora: los requisitos de la guia mandan (G-B8, G-B10, P-EA3). Comprimir por tabla comparativa, no por eliminacion |
+| Reduccion de palabras | -13 920 (50 % del alcance) | -8 974 bruto; -6 200 neto esperado | **CERRADA (autora, 2026-11-24):** meta = rango de B; A = cota optimista. Conteo unico con texcount |
+| Cap. 2 | 7 072 -> 2 750 | 6 575 -> 4 675 | **CERRADA (autora, 2026-11-24):** meta = rango de B (~4 700 palabras, conteo con texcount); A (~2 750) es solo cota optimista; la guia manda (G-B8, G-B10, P-EA3): comprimir con tabla comparativa y recortar narracion repetida, sin eliminar la comparacion critica ni la brecha |
 | Paginas | ~50 | 16-19 esperado | No verificado con el PDF; medir tras la primera tanda de cambios |
 | Fusionar secciones cap2 | si (A-018) | no | Decidir con la guia |
 | C vs F: como lograr independencia | "validacion 2" de 12-15 pelvis sin metal de train | cohorte independiente nueva | Compatibles si H5 (identidad de volumenes sin metal) sale limpia; primero H5 |

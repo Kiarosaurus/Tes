@@ -39,8 +39,9 @@ imita su vocabulario, y el revisor compara contra ambos. Si chocan, manda la mue
 
 | ID | Regla |
 |---|---|
-| E-V1 | **Voz impersonal con "se"**: "se propone", "se midio", "se declara". Nada de primera persona ("propongo", "proponemos", "nuestro metodo"). Se dice "el metodo propuesto", "este trabajo" |
+| E-V1 | **Voz impersonal con "se"**: "se propone", "se midio", "se declara". Nada de primera persona ("propongo", "proponemos", "nuestro metodo"). Se dice "el metodo propuesto". Ver E-V3 para "este trabajo" y "la autora" |
 | E-V2 | Pasiva perifrastica solo si el agente importa ("fue revisado por un medico"); si no, pasiva refleja ("se reviso") |
+| E-V3 | **Ninguna persona ni agente como sujeto** (pedido de la autora, 2026-11-24): ni "la autora", ni "este trabajo lee/mide/encontro", ni "la tesis propone", ni "los autores" propios. Se usa "se" + verbo ("se juzgo insuficiente"), la medida o el resultado como sujeto ("el resultado visual resulto insuficiente") o la pasiva. Si el hecho necesario es quien decidio: "se decidio, con el asesor, ...". "De este trabajo" como posesivo o complemento no se marca. Los registros de `docs/01-decisiones.md` estan en tercera persona ("la autora fijo"): al trasladarlos al documento se reescriben en voz impersonal. El lint marca E-V3 como media |
 | E-O1 | Oracion media de 20 a 30 palabras. **Mas de 40 es hallazgo** (lint). Una idea por oracion |
 | E-O2 | Parrafo de 3 a 7 oraciones, con la primera como oracion tematica. Un parrafo de una sola oracion es hallazgo, salvo la formulacion del problema |
 | E-O3 | Conectores solo cuando hay relacion logica real (causa, contraste, consecuencia). No se abre cada parrafo con un conector |

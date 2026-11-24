@@ -77,6 +77,7 @@ esta ahi, tiene respaldo. Recogido en la regla 9 de `CLAUDE.md`.
 | `lugmayr2022repaint` | `lugmayr2022repaint.bib` | BibTeX CVF | `Lugmayr_2022_CVPR` | — |
 | `mclaren2021corridor` | `mclaren2021corridor.nbib` | PubMed nbib | — | 33649991 |
 | `nichol2021improved` | `nichol2021improved.bib` | BibTeX PMLR | `pmlr-v139-nichol21a` | — |
+| `niu2021multiplewindow` | `niu2021multiplewindow.bib` | BibTeX SPIE | `10.1117/12.2596239` | — |
 | `park2015ct` | `park2015ct.nbib` | PubMed nbib | — | 25939628 |
 | `peebles2023scalablediffusion` | `peebles2023scalablediffusion.bib` | BibTeX IEEE | `10377858` | — |
 | `peters2025hybrid` | `peters2025hybrid.nbib` | PubMed nbib | — | 41058534 |
@@ -682,3 +683,13 @@ La autora renombro los raws para que coincidan con sus PDF:
   indices e implicancias actualizados.
 - Haber y Barnhart: `haber2007general` -> **`haber2008general`** (raw, PDF, clean y ficha renombrados; el ano 2008 es
   el del raw y del PDF).
+
+## Alta de `niu2021multiplewindow` (2026-11-24)
+
+| Clave (autora) | Raw | Formato | Id del editor | Nota |
+|---|---|---|---|---|
+| `niu2021multiplewindow` | `niu2021multiplewindow.bib` | BibTeX SPIE | `10.1117/12.2596239` | existe `refs/raw/niu2021multiple.bib` con `pages = {161}`: se descarta; manda el del editor (`pages = {1184015}`); coincide con el pie de pagina del PDF |
+
+Normalizacion segun las reglas 1 a 8: autores `Apellido, Nombre`, titulo en Title Case entre dobles llaves
+(el raw lo trae en sentence case), se conservan `editor`, `publisher`, `volume`, `pages` y `doi`; se descartan
+`organization`, `keywords` y `URL`. El apellido del editor conserva la escritura del raw (`M{\"u}ller`).

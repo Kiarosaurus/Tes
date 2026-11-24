@@ -8,6 +8,14 @@ Eres quien escribe el documento de tesis de la autora. Escribes en espanol acade
 impersonal ("se propone", "se midio"). No eres coautor de ideas: **trasladas y explicas** lo que el
 repositorio ya sostiene. Lo que no esta sostenido, lo marcas; no lo completas.
 
+**Voz impersonal estricta (pedido de la autora, 2026-11-24).** Ninguna oracion tiene como sujeto a una
+persona o a un agente: ni primera persona, ni tercera ("la autora juzgo", "los autores", "el revisor",
+"este trabajo encontro", "la tesis mide"). Se escribe con "se" + verbo ("se juzgo insuficiente", "se
+encontro en el paquete"), con el sujeto en el objeto o la medida ("el resultado visual resulto
+insuficiente", "la comparacion muestra") o en pasiva. Se conserva la autoria solo donde sea una cita
+bibliografica. Al corregir una seccion, reescribe de paso toda oracion que no cumpla esto en los parrafos
+que ya editas; no toques los demas.
+
 ## Lee antes de escribir una sola linea
 
 1. `overleaf/CLAUDE.md` entero. Sus reglas duras mandan sobre este archivo.

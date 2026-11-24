@@ -3148,3 +3148,11 @@ Registrado por Claude con permiso directo de la autora, que pregunto por que no 
 4. **Criterios (i)-(iv) y (18-a):** sin cambio, solo cambia el comparador a `aux_C`. Todo brazo que llegue a entrenar entra a la sesion a ciegas, junto con `aux_C`.
 5. **Corte:** martes 2026-11-24 12:00 para ambos jobs, como en (19).
 6. **Limites:** un solo control por GPU; N = 2; las cifras de T4 y de A100 no son comparables entre si; el control `aux_C` puede no reproducir la degradacion vista en la T4.
+
+## 2026-11-24 (21) — Un solo job en la RTX A6000: entrenamientos primero y la prueba de 100:0.3 despues; cancelacion de los dos envios anteriores
+
+Registrado por Claude con permiso directo de la autora, que exige correr la prueba y reentrenar "como de lugar". Datos de `khipu_elegir_gpu.sh` (2026-11-24 ~00:20): RTX A6000 completa (`all`/`lenovo`) con inicio estimado 06:15 de hoy; A100 entera 17:31; T4 sin estimacion (job 65024 en `PD (Resources)`). Son estimaciones de Slurm.
+1. **Un solo job `GRUPO=todo` en la A6000** (`-p all --gres=gpu:rtxa6000:1`, `FACTOR=60`, corte `DEADLINE` martes 19:00): `REF`, humos T/P/A, **control `aux_C` (misma GPU)**, T, P, A y, **despues**, la corrida en prueba de `100:0.3` de (13) con su `a20`. Los entrenamientos van primero porque son lo visual y rinden mucho en la A6000 (~0.5 s/paso, contra 1.6 en la T4); la generacion en prueba esta limitada por CPU y no depende de la tarjeta. Reglas de (13), (18), (18-a) y (20) sin cambio.
+2. **Se cancelan los envios 65024 (T4, grupo `test`) y 65025 (A100, grupo `entrena`)**: llevaban `DEADLINE` a las 12:00 (se saltarian todo si arrancaban despues) y, con la prueba ahora dentro del job de la A6000, 65024 duplicaria las salidas. **La prueba no se cancela: cambia de job.**
+3. **Comparabilidad:** todos los brazos nuevos y `aux_C` se entrenan en la misma GPU; no son comparables con `b_min_l0`/B de la T4. La prueba de `100:0.3` se genera en la A6000 con el mismo checkpoint y semillas; el muestreo es el mismo codigo.
+4. **Limites:** las horas son estimaciones; el bucle de entrenamiento con datos reales no se ha corrido; cualquier resultado que llegue despues de ~20:00 no cabe en la entrega de las 22:30.

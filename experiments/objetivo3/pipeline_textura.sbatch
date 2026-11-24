@@ -1,7 +1,7 @@
 #!/bin/bash
 # SCRIPT MAESTRO DESATENDIDO (docs/01-decisiones.md 2026-11-21 (18) y (18-a)). EXPLORATORIO, POST-HOC.
 # Un solo job en la T4 que corre, en orden y sin intervencion: metricas de referencia -> humos de T, P y A -> corrida en prueba de 100:0.3 (+ a20 en
-# segundo plano) -> T -> P -> A (solo si queda tiempo). Cada etapa es idempotente y deja una fila en estado.tsv. Una etapa fallida marca SALTADAS las que
+# segundo plano) -> T -> P -> A (solo si queda tiempo). [Con GRUPO=todo, ver (21): entrenamientos primero y la prueba al final.] Cada etapa es idempotente y deja una fila en estado.tsv. Una etapa fallida marca SALTADAS las que
 # dependen de ella; las independientes siguen. Una etapa no arranca si no cabe antes del corte (DEADLINE, por omision dom 2026-11-22 11:00).
 # Al final escribe $OUT/REPORTE.md aunque algo haya fallado.
 #
@@ -165,28 +165,15 @@ metricas() {  # T | P | A
     return $rc
 }
 
-# ---- orden fijado en (18) punto 6 y (20) ----
-if [ "$GRUPO" != test ]; then
+# ---- orden (decisiones (18), (20) y (21)): GRUPO=todo = entrenamientos primero y la prueba de 100:0.3 despues ----
+bloque_entrena() {
     etapa REF "" 20 ref_metricas
     etapa SMOKE_T "" 15 smoke T
     etapa SMOKE_P "" 15 smoke P
     etapa SMOKE_A "" 15 smoke A
-fi
-A20PID=""
-if [ "$GRUPO" != entrena ]; then
-    etapa GEN_TEST "" 340 gen_test
-    if [ "$(estado_de GEN_TEST)" = OK ] && [ "$(estado_de A20_TEST)" != OK ]; then
-        ( bash "$OBJ3/a20_eta_test.sbatch" > "$OUT/a20_eta.log" 2>&1; echo $? > "$OUT/a20_eta.rc" ) &
-        A20PID=$!
-        echo "a20 de la corrida en prueba lanzado en segundo plano (pid $A20PID)"
-    fi
-fi
-if [ "$GRUPO" != test ]; then
-    if [ "$GRUPO" = entrena ]; then   # control del MISMO hardware (decision (20))
-        etapa TRAIN_C "" 145 train C
-        etapa EVAL_C TRAIN_C 25 evalua C
-        etapa MET_C EVAL_C 10 metricas C
-    fi
+    etapa TRAIN_C "" 145 train C      # control del MISMO hardware (decision (20))
+    etapa EVAL_C TRAIN_C 25 evalua C
+    etapa MET_C EVAL_C 10 metricas C
     etapa TRAIN_T SMOKE_T 145 train T
     etapa EVAL_T TRAIN_T 25 evalua T
     etapa MET_T EVAL_T 10 metricas T
@@ -196,7 +183,21 @@ if [ "$GRUPO" != test ]; then
     etapa TRAIN_A SMOKE_A 215 train A
     etapa EVAL_A TRAIN_A 25 evalua A
     etapa MET_A EVAL_A 10 metricas A
-fi
+}
+A20PID=""
+bloque_test() {
+    etapa GEN_TEST "" 340 gen_test
+    if [ "$(estado_de GEN_TEST)" = OK ] && [ "$(estado_de A20_TEST)" != OK ]; then
+        ( bash "$OBJ3/a20_eta_test.sbatch" > "$OUT/a20_eta.log" 2>&1; echo $? > "$OUT/a20_eta.rc" ) &
+        A20PID=$!
+        echo "a20 de la corrida en prueba lanzado en segundo plano (pid $A20PID)"
+    fi
+}
+case "$GRUPO" in
+    entrena) bloque_entrena;;
+    test) bloque_test;;
+    *) bloque_entrena; bloque_test;;
+esac
 if [ -n "$A20PID" ]; then
     wait "$A20PID"
     if [ "$(cat "$OUT/a20_eta.rc" 2>/dev/null)" = 0 ]; then registra A20_TEST OK "" "a20 de 100:0.3 en prueba"; else registra A20_TEST FALLO "" "ver a20_eta.log"; fi

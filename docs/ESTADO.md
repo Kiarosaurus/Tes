@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-24 (4) — maestro en un solo job en la A6000: entrenamientos primero, prueba de 100:0.3 al final
+
+- **Hecho:** `GRUPO=todo` ejecuta entrenamientos (control `aux_C`, T, P, A) y luego `GEN_TEST` + `a20`; probado con etapas simuladas. Regla en `01-decisiones.md` 2026-11-24 (21). Cancelar 65024 y 65025.
+- **Siguiente:** la autora lanza el job en la A6000 (inicio estimado 06:15) y mira `estado_todo.tsv` a los 10–15 min de arrancar.
+
 ## 2026-11-24 (3) — entrenamiento del maestro reanudable por ventanas cortas
 
 - **Hecho:** `train` del script maestro usa `--reanudar`, no borra la carpeta y guarda ckpt cada 250 pasos, para poder correr en ventanas cortas (partición de depuración) encadenadas con `--dependency=afterany`: cada ventana continúa desde `ckpt.pt`. Limitación: el discriminador de A no se guarda en el ckpt y se reinicia al reanudar. Probado con simulador `set -u`.

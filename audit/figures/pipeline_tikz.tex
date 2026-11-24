@@ -1,0 +1,25 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=6mm,
+  caja/.style={draw, rounded corners=2pt, align=center, font=\small, text width=0.50\linewidth, minimum height=9mm, inner sep=4pt},
+  clave/.style={caja, line width=1pt, fill=gray!15},
+  lado/.style={draw, dashed, rounded corners=2pt, align=center, font=\footnotesize, text width=0.28\linewidth, inner sep=4pt},
+  flecha/.style={-{Stealth[length=2.4mm]}, thick}]
+  \node[caja] (tc) {TC receptora sin osteosíntesis\\ (subconjunto local de CTPelvic1K)};
+  \node[caja, below=of tc] (mask) {Máscaras anatómicas (TotalSegmentator) y medición\\ del corredor óseo (marco de Kaiser et al.)};
+  \node[clave, below=of mask] (muest) {\textbf{Muestreador de colocación} (Objetivo~2)\\ poses perturbadas alrededor del eje del corredor;\\ SAP frente a las dos distribuciones de la referencia clínica};
+  \node[caja, below=of muest] (tor) {Tornillo paramétrico en la pose muestreada:\\ máscara $M$ y región $G = M \cup B_{\delta}$};
+  \node[clave, below=of tor] (sint) {\textbf{Sintetizador} (Objetivo~3)\\ \emph{inpainting} por difusión en el dominio de imagen dentro de $G$;\\ fuera de $G$ se copia el volumen de origen};
+  \node[caja, below=of sint] (eva) {Evaluación de apariencia: métricas de Peters et al.\\ frente a copia y pegado y al protocolo físico;\\ reconstrucción de implantes reales};
+  \node[lado, right=10mm of tor] (comp) {\emph{Compuerta de representación} (Objetivo~1), previa a la cadena: su resultado negativo descartó la ruta latente y fijó el dominio de imagen};
+  \draw[flecha] (tc) -- (mask);
+  \draw[flecha] (mask) -- (muest);
+  \draw[flecha] (muest) -- (tor);
+  \draw[flecha] (tor) -- (sint);
+  \draw[flecha] (sint) -- (eva);
+  \draw[flecha, dashed] (comp.south) |- ([yshift=1mm]sint.east);
+\end{tikzpicture}
+\caption{Cadena propuesta. Las cajas con borde grueso son los dos componentes que se diseñan y se evalúan por separado; la caja punteada es la compuerta que fijó el dominio del sintetizador.}
+\label{fig:pipeline}
+\end{figure}

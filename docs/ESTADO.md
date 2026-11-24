@@ -2,6 +2,11 @@
 
 > Lo actualiza Claude al cerrar cada sesion. Fuente de verdad de "por donde voy".
 
+## 2026-11-24 (3) — entrenamiento del maestro reanudable por ventanas cortas
+
+- **Hecho:** `train` del script maestro usa `--reanudar`, no borra la carpeta y guarda ckpt cada 250 pasos, para poder correr en ventanas cortas (partición de depuración) encadenadas con `--dependency=afterany`: cada ventana continúa desde `ckpt.pt`. Limitación: el discriminador de A no se guarda en el ckpt y se reinicia al reanudar. Probado con simulador `set -u`.
+- **Siguiente:** la autora mira la disponibilidad real de GPUs en Khipu y elige entre cola grande y ventanas cortas.
+
 ## 2026-11-24 (2) — script maestro en dos jobs paralelos (T4: prueba; A100/A6000: T, P, A) y control del mismo hardware
 
 - **Hecho:** `GRUPO=test|entrena` y `FACTOR` en `pipeline_textura.sbatch`, etapa `TRAIN_C/EVAL_C/MET_C` (control `aux_C` en la misma GPU), reporte y `evalua_todo_local.sh` con `aux_C`; los tres modos probados con etapas simuladas. Regla en `01-decisiones.md` 2026-11-24 (20).

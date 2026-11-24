@@ -84,7 +84,7 @@ etapa() {
 
 args_comunes() {  # imprime los argumentos comunes de entrenar.py (ajuste fino de run04_mejor, como B)
     echo --cache "$DATA/a1b_cache" --particion "$REPO/experiments/objetivo1/p1_particion.csv" --manifiesto "$MAN" \
-         --manifiesto-val "$OBJ3/a5_manifiesto_val.csv" --lr 5e-5 --base 64 --lado 256 --lotes-val 16 --cada-ckpt 1000 \
+         --manifiesto-val "$OBJ3/a5_manifiesto_val.csv" --lr 5e-5 --base 64 --lado 256 --lotes-val 16 --cada-ckpt 250 \
          --trabajadores "${SLURM_CPUS_PER_TASK:-4}" --preinscrito --init-modelo "$INIT"
 }
 
@@ -146,8 +146,8 @@ train() {  # T | P | A
     local S=$DATA/a7/aux_$V lote ARGS
     if [ "$V" = C ]; then lote=$(cat "$OUT/lote_T.txt" 2>/dev/null || echo 16); else lote=$(cat "$OUT/lote_$V.txt"); fi
     case $V in T) ARGS="--aux-tex $(cat "$OUT/lambda_T.txt")";; P) ARGS="--aux-per $(cat "$OUT/lambda_P.txt")";; A) ARGS="--aux-adv 0.01";; C) ARGS="";; esac
-    rm -rf "$S"
-    python -u "$REPO/src/renderizador/entrenar.py" $(args_comunes) --out "$S" --pasos 3000 --cada 250 --lote "$lote" $ARGS > "$OUT/train_$V.log" 2>&1
+    # reanudable: si la ventana del job se corto, la siguiente continua desde ckpt.pt (la carpeta NO se borra)
+    python -u "$REPO/src/renderizador/entrenar.py" $(args_comunes) --out "$S" --pasos 3000 --cada 250 --lote "$lote" --reanudar $ARGS >> "$OUT/train_$V.log" 2>&1
     local rc=$?
     grep -q "^LISTO" "$OUT/train_$V.log" && [ -f "$S/ckpt.pt" ] || return 1
     return $rc

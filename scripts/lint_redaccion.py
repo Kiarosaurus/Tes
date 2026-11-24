@@ -194,6 +194,10 @@ def revisar_archivo(ruta: Path, siglas_definidas: set[str], bib: set[str],
                 h(n, "media", "E-V3", f"sujeto personal ('la autora') en: {plano.strip()[:70]}")
             if re.search(r"(?:^|[.;:?!]\s+|,\s+|\(\s*)este trabajo\b(?!\s*[,.;)&])", plano, re.I):
                 h(n, "media", "E-V3", f"sujeto personal ('este trabajo') en: {plano.strip()[:70]}")
+            elif re.search(r"\b(?:que|como|cuando|donde|porque|si|aunque|y|pero)\s+este trabajo\s+(?:no\s+|lo\s+|la\s+|las\s+|los\s+|se\s+)?"
+                           r"(?:adopt|mid|muestre|corrig|fij|le[eo]|us|propon|calcul|evalu|inform|asum|aport|exclu|reun|incorpor|"
+                           r"present|compar|eleg|trat|defin|hall|encontr|ley|identific|descart|reclam|cuantific)\w*", norm_plano, re.I):
+                h(n, "media", "E-V3", f"sujeto personal ('este trabajo' + verbo) en: {plano.strip()[:70]}")
             if re.search(r"---|—", linea):
                 h(n, "media", "E-IA", "guion largo como inciso")
             if "!" in plano:

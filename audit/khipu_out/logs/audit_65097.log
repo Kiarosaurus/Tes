@@ -1,0 +1,493 @@
+torch 2.14.0+cu130
+inicio 2026-11-24T08:31:27-05:00  nodo ag001  modo r2  commit 9bee18d rama exp/textura-percep-adv
+NVIDIA A100-PCIE-40GB, 40960 MiB
+
+=== run04_mejor_nulo_p50_e0 dataset6_CLINIC_0101_data  2026-11-24T08:31:27-05:00 ===
+caso dataset6_CLINIC_0101_data | D_TS_max 10.6 mm | largo del corredor 150.0 mm
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+volumen (300, 512, 512) | `M` 4788 voxeles | `G` 173182 | diametro medido 5.12 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 25 | con `G`: 55 | se generan 55 (incluye solo banda)
+generaciones: 275 (55 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p50_e0 (paso 16500) | cuda ---
+  [8/275] corte 177 | faltan ~3 min
+  [16/275] corte 185 | faltan ~3 min
+  [24/275] corte 193 | faltan ~3 min
+  [32/275] corte 201 | faltan ~2 min
+  [40/275] corte 209 | faltan ~2 min
+  [48/275] corte 217 | faltan ~2 min
+  HU dentro de `M`: p05 -50 | p50 73 | p95 372 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s0_marcas.npz
+    techo SW: 246 voxeles (0.051) | LW ahi: p05 188 p50 220 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6743 | u_SW p50 0.9424
+    techo MW: 33 voxeles (0.007) | LW ahi: p05 412 p50 474 p95 615 HU, sobre 2500: 0.000 | u_MW p50 0.9699 | u_SW p50 0.9944
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s0_*
+  [56/275] corte 170 | faltan ~6 min
+  [64/275] corte 178 | faltan ~6 min
+  [72/275] corte 186 | faltan ~5 min
+  [80/275] corte 194 | faltan ~4 min
+  [88/275] corte 202 | faltan ~4 min
+  [96/275] corte 210 | faltan ~4 min
+  [104/275] corte 218 | faltan ~3 min
+  HU dentro de `M`: p05 -11 | p50 102 | p95 402 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s1_marcas.npz
+    techo SW: 437 voxeles (0.091) | LW ahi: p05 188 p50 220 p95 268 HU, sobre 2500: 0.000 | u_MW p50 0.6747 | u_SW p50 0.9493
+    techo MW: 38 voxeles (0.008) | LW ahi: p05 445 p50 486 p95 577 HU, sobre 2500: 0.000 | u_MW p50 0.9696 | u_SW p50 0.9992
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s1_*
+  [112/275] corte 171 | faltan ~5 min
+  [120/275] corte 179 | faltan ~4 min
+  [128/275] corte 187 | faltan ~4 min
+  [136/275] corte 195 | faltan ~3 min
+  [144/275] corte 203 | faltan ~3 min
+  [152/275] corte 211 | faltan ~3 min
+  [160/275] corte 219 | faltan ~3 min
+  HU dentro de `M`: p05 -24 | p50 104 | p95 367 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s2_marcas.npz
+    techo SW: 257 voxeles (0.054) | LW ahi: p05 178 p50 209 p95 261 HU, sobre 2500: 0.000 | u_MW p50 0.6778 | u_SW p50 0.9484
+    techo MW: 41 voxeles (0.009) | LW ahi: p05 413 p50 456 p95 487 HU, sobre 2500: 0.000 | u_MW p50 0.9720 | u_SW p50 0.9947
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s2_*
+  [168/275] corte 172 | faltan ~3 min
+  [176/275] corte 180 | faltan ~3 min
+  [184/275] corte 188 | faltan ~2 min
+  [192/275] corte 196 | faltan ~2 min
+  [200/275] corte 204 | faltan ~2 min
+  [208/275] corte 212 | faltan ~2 min
+  [216/275] corte 220 | faltan ~1 min
+  HU dentro de `M`: p05 -41 | p50 101 | p95 428 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s3_marcas.npz
+    techo SW: 370 voxeles (0.077) | LW ahi: p05 175 p50 209 p95 261 HU, sobre 2500: 0.000 | u_MW p50 0.6837 | u_SW p50 0.9523
+    techo MW: 73 voxeles (0.015) | LW ahi: p05 402 p50 452 p95 506 HU, sobre 2500: 0.000 | u_MW p50 0.9712 | u_SW p50 0.9979
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s3_*
+  [224/275] corte 173 | faltan ~1 min
+  [232/275] corte 181 | faltan ~1 min
+  [240/275] corte 189 | faltan ~1 min
+  [248/275] corte 197 | faltan ~1 min
+  [256/275] corte 205 | faltan ~0 min
+  [264/275] corte 213 | faltan ~0 min
+  [272/275] corte 221 | faltan ~0 min
+  HU dentro de `M`: p05 -26 | p50 125 | p95 441 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s4_marcas.npz
+    techo SW: 417 voxeles (0.087) | LW ahi: p05 189 p50 214 p95 252 HU, sobre 2500: 0.000 | u_MW p50 0.6757 | u_SW p50 0.9458
+    techo MW: 111 voxeles (0.023) | LW ahi: p05 404 p50 455 p95 526 HU, sobre 2500: 0.000 | u_MW p50 0.9665 | u_SW p50 0.9996
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+
+=== run04_mejor_nulo_p50_e0 dataset6_CLINIC_0102_data  2026-11-24T08:38:47-05:00 ===
+caso dataset6_CLINIC_0102_data | D_TS_max 12.4 mm | largo del corredor 163.0 mm
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+volumen (326, 512, 512) | `M` 4657 voxeles | `G` 155797 | diametro medido 4.81 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 10 | con `G`: 38 | se generan 38 (incluye solo banda)
+generaciones: 190 (38 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p50_e0 (paso 16500) | cuda ---
+  [8/190] corte 205 | faltan ~2 min
+  [16/190] corte 213 | faltan ~2 min
+  [24/190] corte 221 | faltan ~2 min
+  [32/190] corte 229 | faltan ~2 min
+  HU dentro de `M`: p05 16 | p50 149 | p95 463 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s0_marcas.npz
+    techo SW: 495 voxeles (0.106) | LW ahi: p05 186 p50 214 p95 264 HU, sobre 2500: 0.000 | u_MW p50 0.6753 | u_SW p50 0.9458
+    techo MW: 102 voxeles (0.022) | LW ahi: p05 407 p50 462 p95 649 HU, sobre 2500: 0.000 | u_MW p50 0.9666 | u_SW p50 0.9988
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s0_*
+  [40/190] corte 199 | faltan ~5 min
+  [48/190] corte 207 | faltan ~4 min
+  [56/190] corte 215 | faltan ~4 min
+  [64/190] corte 223 | faltan ~3 min
+  [72/190] corte 231 | faltan ~3 min
+  HU dentro de `M`: p05 -28 | p50 178 | p95 544 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s1_marcas.npz
+    techo SW: 602 voxeles (0.129) | LW ahi: p05 190 p50 221 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6808 | u_SW p50 0.9511
+    techo MW: 83 voxeles (0.018) | LW ahi: p05 408 p50 455 p95 529 HU, sobre 2500: 0.000 | u_MW p50 0.9695 | u_SW p50 0.9983
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s1_*
+  [80/190] corte 201 | faltan ~4 min
+  [88/190] corte 209 | faltan ~3 min
+  [96/190] corte 217 | faltan ~3 min
+  [104/190] corte 225 | faltan ~2 min
+  [112/190] corte 233 | faltan ~2 min
+  HU dentro de `M`: p05 12 | p50 151 | p95 492 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s2_marcas.npz
+    techo SW: 519 voxeles (0.111) | LW ahi: p05 182 p50 215 p95 257 HU, sobre 2500: 0.000 | u_MW p50 0.6807 | u_SW p50 0.9467
+    techo MW: 119 voxeles (0.026) | LW ahi: p05 386 p50 444 p95 516 HU, sobre 2500: 0.000 | u_MW p50 0.9706 | u_SW p50 0.9970
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s2_*
+  [120/190] corte 203 | faltan ~2 min
+  [128/190] corte 211 | faltan ~2 min
+  [136/190] corte 219 | faltan ~2 min
+  [144/190] corte 227 | faltan ~1 min
+  [152/190] corte 235 | faltan ~1 min
+  HU dentro de `M`: p05 0 | p50 130 | p95 590 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s3_marcas.npz
+    techo SW: 312 voxeles (0.067) | LW ahi: p05 178 p50 213 p95 274 HU, sobre 2500: 0.000 | u_MW p50 0.6815 | u_SW p50 0.9475
+    techo MW: 106 voxeles (0.023) | LW ahi: p05 414 p50 457 p95 512 HU, sobre 2500: 0.000 | u_MW p50 0.9691 | u_SW p50 0.9955
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s3_*
+  [160/190] corte 205 | faltan ~1 min
+  [168/190] corte 213 | faltan ~1 min
+  [176/190] corte 221 | faltan ~0 min
+  [184/190] corte 229 | faltan ~0 min
+  HU dentro de `M`: p05 -6 | p50 141 | p95 538 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s4_marcas.npz
+    techo SW: 379 voxeles (0.081) | LW ahi: p05 179 p50 211 p95 255 HU, sobre 2500: 0.000 | u_MW p50 0.6780 | u_SW p50 0.9543
+    techo MW: 91 voxeles (0.020) | LW ahi: p05 398 p50 446 p95 509 HU, sobre 2500: 0.000 | u_MW p50 0.9692 | u_SW p50 0.9976
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+
+=== run04_mejor_nulo_p50_e0.3 dataset6_CLINIC_0101_data  2026-11-24T08:45:29-05:00 ===
+caso dataset6_CLINIC_0101_data | D_TS_max 10.6 mm | largo del corredor 150.0 mm
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+volumen (300, 512, 512) | `M` 4788 voxeles | `G` 173182 | diametro medido 5.12 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 25 | con `G`: 55 | se generan 55 (incluye solo banda)
+generaciones: 275 (55 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p50_e0.3 (paso 16500) | cuda ---
+  [8/275] corte 177 | faltan ~3 min
+  [16/275] corte 185 | faltan ~3 min
+  [24/275] corte 193 | faltan ~3 min
+  [32/275] corte 201 | faltan ~2 min
+  [40/275] corte 209 | faltan ~2 min
+  [48/275] corte 217 | faltan ~2 min
+  HU dentro de `M`: p05 -89 | p50 86 | p95 503 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s0_marcas.npz
+    techo SW: 351 voxeles (0.073) | LW ahi: p05 184 p50 219 p95 262 HU, sobre 2500: 0.000 | u_MW p50 0.6785 | u_SW p50 0.9501
+    techo MW: 91 voxeles (0.019) | LW ahi: p05 423 p50 460 p95 519 HU, sobre 2500: 0.000 | u_MW p50 0.9712 | u_SW p50 0.9975
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s0_*
+  [56/275] corte 170 | faltan ~6 min
+  [64/275] corte 178 | faltan ~6 min
+  [72/275] corte 186 | faltan ~5 min
+  [80/275] corte 194 | faltan ~4 min
+  [88/275] corte 202 | faltan ~4 min
+  [96/275] corte 210 | faltan ~4 min
+  [104/275] corte 218 | faltan ~3 min
+  HU dentro de `M`: p05 -17 | p50 125 | p95 442 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s1_marcas.npz
+    techo SW: 413 voxeles (0.086) | LW ahi: p05 189 p50 221 p95 263 HU, sobre 2500: 0.000 | u_MW p50 0.6774 | u_SW p50 0.9458
+    techo MW: 61 voxeles (0.013) | LW ahi: p05 430 p50 464 p95 556 HU, sobre 2500: 0.000 | u_MW p50 0.9650 | u_SW p50 0.9941
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s1_*
+  [112/275] corte 171 | faltan ~5 min
+  [120/275] corte 179 | faltan ~4 min
+  [128/275] corte 187 | faltan ~4 min
+  [136/275] corte 195 | faltan ~3 min
+  [144/275] corte 203 | faltan ~3 min
+  [152/275] corte 211 | faltan ~3 min
+  [160/275] corte 219 | faltan ~3 min
+  HU dentro de `M`: p05 -51 | p50 164 | p95 510 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s2_marcas.npz
+    techo SW: 557 voxeles (0.116) | LW ahi: p05 184 p50 216 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6820 | u_SW p50 0.9478
+    techo MW: 109 voxeles (0.023) | LW ahi: p05 407 p50 455 p95 523 HU, sobre 2500: 0.000 | u_MW p50 0.9696 | u_SW p50 0.9970
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s2_*
+  [168/275] corte 172 | faltan ~3 min
+  [176/275] corte 180 | faltan ~3 min
+  [184/275] corte 188 | faltan ~2 min
+  [192/275] corte 196 | faltan ~2 min
+  [200/275] corte 204 | faltan ~2 min
+  [208/275] corte 212 | faltan ~2 min
+  [216/275] corte 220 | faltan ~1 min
+  HU dentro de `M`: p05 -92 | p50 62 | p95 363 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s3_marcas.npz
+    techo SW: 267 voxeles (0.056) | LW ahi: p05 185 p50 214 p95 255 HU, sobre 2500: 0.000 | u_MW p50 0.6731 | u_SW p50 0.9429
+    techo MW: 43 voxeles (0.009) | LW ahi: p05 411 p50 458 p95 521 HU, sobre 2500: 0.000 | u_MW p50 0.9716 | u_SW p50 0.9975
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s3_*
+  [224/275] corte 173 | faltan ~1 min
+  [232/275] corte 181 | faltan ~1 min
+  [240/275] corte 189 | faltan ~1 min
+  [248/275] corte 197 | faltan ~1 min
+  [256/275] corte 205 | faltan ~0 min
+  [264/275] corte 213 | faltan ~0 min
+  [272/275] corte 221 | faltan ~0 min
+  HU dentro de `M`: p05 -22 | p50 108 | p95 401 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s4_marcas.npz
+    techo SW: 364 voxeles (0.076) | LW ahi: p05 192 p50 220 p95 263 HU, sobre 2500: 0.000 | u_MW p50 0.6800 | u_SW p50 0.9481
+    techo MW: 47 voxeles (0.010) | LW ahi: p05 403 p50 477 p95 551 HU, sobre 2500: 0.000 | u_MW p50 0.9676 | u_SW p50 0.9947
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p50_e0.3_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+
+=== run04_mejor_nulo_p50_e0.3 dataset6_CLINIC_0102_data  2026-11-24T08:52:30-05:00 ===
+caso dataset6_CLINIC_0102_data | D_TS_max 12.4 mm | largo del corredor 163.0 mm
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+volumen (326, 512, 512) | `M` 4657 voxeles | `G` 155797 | diametro medido 4.81 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 10 | con `G`: 38 | se generan 38 (incluye solo banda)
+generaciones: 190 (38 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p50_e0.3 (paso 16500) | cuda ---
+  [8/190] corte 205 | faltan ~2 min
+  [16/190] corte 213 | faltan ~2 min
+  [24/190] corte 221 | faltan ~2 min
+  [32/190] corte 229 | faltan ~2 min
+  HU dentro de `M`: p05 -34 | p50 178 | p95 469 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s0_marcas.npz
+    techo SW: 534 voxeles (0.115) | LW ahi: p05 188 p50 218 p95 262 HU, sobre 2500: 0.000 | u_MW p50 0.6789 | u_SW p50 0.9464
+    techo MW: 125 voxeles (0.027) | LW ahi: p05 415 p50 455 p95 499 HU, sobre 2500: 0.000 | u_MW p50 0.9678 | u_SW p50 0.9984
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s0_*
+  [40/190] corte 199 | faltan ~5 min
+  [48/190] corte 207 | faltan ~4 min
+  [56/190] corte 215 | faltan ~4 min
+  [64/190] corte 223 | faltan ~3 min
+  [72/190] corte 231 | faltan ~3 min
+  HU dentro de `M`: p05 -51 | p50 151 | p95 650 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s1_marcas.npz
+    techo SW: 402 voxeles (0.086) | LW ahi: p05 183 p50 218 p95 274 HU, sobre 2500: 0.000 | u_MW p50 0.6789 | u_SW p50 0.9477
+    techo MW: 92 voxeles (0.020) | LW ahi: p05 432 p50 474 p95 614 HU, sobre 2500: 0.000 | u_MW p50 0.9673 | u_SW p50 0.9962
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s1_*
+  [80/190] corte 201 | faltan ~4 min
+  [88/190] corte 209 | faltan ~3 min
+  [96/190] corte 217 | faltan ~3 min
+  [104/190] corte 225 | faltan ~2 min
+  [112/190] corte 233 | faltan ~2 min
+  HU dentro de `M`: p05 -20 | p50 189 | p95 562 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s2_marcas.npz
+    techo SW: 649 voxeles (0.139) | LW ahi: p05 185 p50 217 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6819 | u_SW p50 0.9472
+    techo MW: 96 voxeles (0.021) | LW ahi: p05 414 p50 459 p95 541 HU, sobre 2500: 0.000 | u_MW p50 0.9690 | u_SW p50 0.9943
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s2_*
+  [120/190] corte 203 | faltan ~2 min
+  [128/190] corte 211 | faltan ~2 min
+  [136/190] corte 219 | faltan ~2 min
+  [144/190] corte 227 | faltan ~1 min
+  [152/190] corte 235 | faltan ~1 min
+  HU dentro de `M`: p05 -45 | p50 163 | p95 617 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s3_marcas.npz
+    techo SW: 428 voxeles (0.092) | LW ahi: p05 187 p50 213 p95 250 HU, sobre 2500: 0.000 | u_MW p50 0.6750 | u_SW p50 0.9453
+    techo MW: 152 voxeles (0.033) | LW ahi: p05 403 p50 451 p95 514 HU, sobre 2500: 0.000 | u_MW p50 0.9708 | u_SW p50 0.9952
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s3_*
+  [160/190] corte 205 | faltan ~1 min
+  [168/190] corte 213 | faltan ~1 min
+  [176/190] corte 221 | faltan ~0 min
+  [184/190] corte 229 | faltan ~0 min
+  HU dentro de `M`: p05 -35 | p50 136 | p95 570 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s4_marcas.npz
+    techo SW: 392 voxeles (0.084) | LW ahi: p05 181 p50 215 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6779 | u_SW p50 0.9420
+    techo MW: 108 voxeles (0.023) | LW ahi: p05 427 p50 497 p95 684 HU, sobre 2500: 0.000 | u_MW p50 0.9675 | u_SW p50 0.9934
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p50_e0.3_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+
+=== run04_mejor_nulo_p100_e0.3 dataset6_CLINIC_0101_data  2026-11-24T08:59:10-05:00 ===
+caso dataset6_CLINIC_0101_data | D_TS_max 10.6 mm | largo del corredor 150.0 mm
+CONTROL pose dataset6_CLINIC_0101_data: mediana HU en M 84 (eje del Obj 2: 68) | aire 0.000 | > 150 HU 0.34 -> PASA
+volumen (300, 512, 512) | `M` 4788 voxeles | `G` 173182 | diametro medido 5.12 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 25 | con `G`: 55 | se generan 55 (incluye solo banda)
+generaciones: 275 (55 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p100_e0.3 (paso 16500) | cuda ---
+  [8/275] corte 177 | faltan ~6 min
+  [16/275] corte 185 | faltan ~5 min
+  [24/275] corte 193 | faltan ~5 min
+  [32/275] corte 201 | faltan ~5 min
+  [40/275] corte 209 | faltan ~4 min
+  [48/275] corte 217 | faltan ~4 min
+  HU dentro de `M`: p05 -81 | p50 111 | p95 481 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s0_marcas.npz
+    techo SW: 403 voxeles (0.084) | LW ahi: p05 186 p50 217 p95 257 HU, sobre 2500: 0.000 | u_MW p50 0.6790 | u_SW p50 0.9501
+    techo MW: 104 voxeles (0.022) | LW ahi: p05 408 p50 456 p95 537 HU, sobre 2500: 0.000 | u_MW p50 0.9665 | u_SW p50 0.9978
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s0_*
+  [56/275] corte 170 | faltan ~7 min
+  [64/275] corte 178 | faltan ~6 min
+  [72/275] corte 186 | faltan ~6 min
+  [80/275] corte 194 | faltan ~5 min
+  [88/275] corte 202 | faltan ~5 min
+  [96/275] corte 210 | faltan ~5 min
+  [104/275] corte 218 | faltan ~4 min
+  HU dentro de `M`: p05 -30 | p50 118 | p95 435 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s1_marcas.npz
+    techo SW: 395 voxeles (0.082) | LW ahi: p05 182 p50 212 p95 256 HU, sobre 2500: 0.000 | u_MW p50 0.6769 | u_SW p50 0.9472
+    techo MW: 69 voxeles (0.014) | LW ahi: p05 402 p50 455 p95 503 HU, sobre 2500: 0.000 | u_MW p50 0.9694 | u_SW p50 0.9994
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s1_*
+  [112/275] corte 171 | faltan ~5 min
+  [120/275] corte 179 | faltan ~5 min
+  [128/275] corte 187 | faltan ~4 min
+  [136/275] corte 195 | faltan ~4 min
+  [144/275] corte 203 | faltan ~4 min
+  [152/275] corte 211 | faltan ~3 min
+  [160/275] corte 219 | faltan ~3 min
+  HU dentro de `M`: p05 -64 | p50 196 | p95 509 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s2_marcas.npz
+    techo SW: 551 voxeles (0.115) | LW ahi: p05 187 p50 217 p95 255 HU, sobre 2500: 0.000 | u_MW p50 0.6788 | u_SW p50 0.9564
+    techo MW: 99 voxeles (0.021) | LW ahi: p05 410 p50 465 p95 537 HU, sobre 2500: 0.000 | u_MW p50 0.9688 | u_SW p50 0.9975
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s2_*
+  [168/275] corte 172 | faltan ~3 min
+  [176/275] corte 180 | faltan ~3 min
+  [184/275] corte 188 | faltan ~3 min
+  [192/275] corte 196 | faltan ~2 min
+  [200/275] corte 204 | faltan ~2 min
+  [208/275] corte 212 | faltan ~2 min
+  [216/275] corte 220 | faltan ~2 min
+  HU dentro de `M`: p05 -88 | p50 39 | p95 439 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s3_marcas.npz
+    techo SW: 171 voxeles (0.036) | LW ahi: p05 186 p50 222 p95 258 HU, sobre 2500: 0.000 | u_MW p50 0.6794 | u_SW p50 0.9441
+    techo MW: 52 voxeles (0.011) | LW ahi: p05 410 p50 456 p95 520 HU, sobre 2500: 0.000 | u_MW p50 0.9649 | u_SW p50 0.9994
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s3_*
+  [224/275] corte 173 | faltan ~2 min
+  [232/275] corte 181 | faltan ~1 min
+  [240/275] corte 189 | faltan ~1 min
+  [248/275] corte 197 | faltan ~1 min
+  [256/275] corte 205 | faltan ~1 min
+  [264/275] corte 213 | faltan ~0 min
+  [272/275] corte 221 | faltan ~0 min
+  HU dentro de `M`: p05 -37 | p50 90 | p95 441 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4788 -> a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s4_marcas.npz
+    techo SW: 282 voxeles (0.059) | LW ahi: p05 188 p50 221 p95 267 HU, sobre 2500: 0.000 | u_MW p50 0.6771 | u_SW p50 0.9494
+    techo MW: 55 voxeles (0.011) | LW ahi: p05 418 p50 466 p95 565 HU, sobre 2500: 0.000 | u_MW p50 0.9665 | u_SW p50 0.9972
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0101_data_run04_mejor_nulo_p100_e0.3_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0101_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+
+=== run04_mejor_nulo_p100_e0.3 dataset6_CLINIC_0102_data  2026-11-24T09:07:54-05:00 ===
+caso dataset6_CLINIC_0102_data | D_TS_max 12.4 mm | largo del corredor 163.0 mm
+CONTROL pose dataset6_CLINIC_0102_data: mediana HU en M 84 (eje del Obj 2: 76) | aire 0.000 | > 150 HU 0.26 -> PASA
+volumen (326, 512, 512) | `M` 4657 voxeles | `G` 155797 | diametro medido 4.81 mm
+CONTROL 1 receptor limpio: voxeles del original en `G` sobre 2500 HU = 0 -> PASA
+cortes con `M`: 10 | con `G`: 38 | se generan 38 (incluye solo banda)
+generaciones: 190 (38 cortes x 1 checkpoints x 5 semillas)
+
+--- run04_mejor_nulo_p100_e0.3 (paso 16500) | cuda ---
+  [8/190] corte 205 | faltan ~4 min
+  [16/190] corte 213 | faltan ~3 min
+  [24/190] corte 221 | faltan ~3 min
+  [32/190] corte 229 | faltan ~3 min
+  HU dentro de `M`: p05 -11 | p50 192 | p95 588 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 0: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s0_marcas.npz
+    techo SW: 688 voxeles (0.148) | LW ahi: p05 187 p50 217 p95 249 HU, sobre 2500: 0.000 | u_MW p50 0.6780 | u_SW p50 0.9481
+    techo MW: 96 voxeles (0.021) | LW ahi: p05 416 p50 464 p95 609 HU, sobre 2500: 0.000 | u_MW p50 0.9686 | u_SW p50 0.9971
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s0_*
+  [40/190] corte 199 | faltan ~6 min
+  [48/190] corte 207 | faltan ~5 min
+  [56/190] corte 215 | faltan ~5 min
+  [64/190] corte 223 | faltan ~4 min
+  [72/190] corte 231 | faltan ~4 min
+  HU dentro de `M`: p05 -43 | p50 149 | p95 510 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 1: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s1_marcas.npz
+    techo SW: 377 voxeles (0.081) | LW ahi: p05 185 p50 215 p95 257 HU, sobre 2500: 0.000 | u_MW p50 0.6764 | u_SW p50 0.9420
+    techo MW: 147 voxeles (0.032) | LW ahi: p05 402 p50 450 p95 549 HU, sobre 2500: 0.000 | u_MW p50 0.9710 | u_SW p50 0.9988
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s1_*
+  [80/190] corte 201 | faltan ~4 min
+  [88/190] corte 209 | faltan ~4 min
+  [96/190] corte 217 | faltan ~3 min
+  [104/190] corte 225 | faltan ~3 min
+  [112/190] corte 233 | faltan ~3 min
+  HU dentro de `M`: p05 -47 | p50 142 | p95 683 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 2: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s2_marcas.npz
+    techo SW: 389 voxeles (0.084) | LW ahi: p05 187 p50 220 p95 274 HU, sobre 2500: 0.000 | u_MW p50 0.6787 | u_SW p50 0.9506
+    techo MW: 82 voxeles (0.018) | LW ahi: p05 426 p50 473 p95 583 HU, sobre 2500: 0.000 | u_MW p50 0.9697 | u_SW p50 0.9950
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s2_*
+  [120/190] corte 203 | faltan ~3 min
+  [128/190] corte 211 | faltan ~2 min
+  [136/190] corte 219 | faltan ~2 min
+  [144/190] corte 227 | faltan ~2 min
+  [152/190] corte 235 | faltan ~1 min
+  HU dentro de `M`: p05 -39 | p50 119 | p95 746 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 3: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s3_marcas.npz
+    techo SW: 324 voxeles (0.070) | LW ahi: p05 186 p50 220 p95 253 HU, sobre 2500: 0.000 | u_MW p50 0.6811 | u_SW p50 0.9495
+    techo MW: 87 voxeles (0.019) | LW ahi: p05 417 p50 462 p95 587 HU, sobre 2500: 0.000 | u_MW p50 0.9706 | u_SW p50 0.9962
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s3_*
+  [160/190] corte 205 | faltan ~1 min
+  [168/190] corte 213 | faltan ~1 min
+  [176/190] corte 221 | faltan ~1 min
+  [184/190] corte 229 | faltan ~0 min
+  HU dentro de `M`: p05 -22 | p50 143 | p95 560 | fraccion sobre 2500 HU: 0.000
+  cotejo semilla 4: cascaras de 1 mm | M>2500 p50 nan
+  marcas dentro de `M`: n = 4657 -> a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s4_marcas.npz
+    techo SW: 411 voxeles (0.088) | LW ahi: p05 186 p50 223 p95 273 HU, sobre 2500: 0.000 | u_MW p50 0.6795 | u_SW p50 0.9480
+    techo MW: 77 voxeles (0.017) | LW ahi: p05 419 p50 472 p95 669 HU, sobre 2500: 0.000 | u_MW p50 0.9718 | u_SW p50 0.9951
+    LW sola en toda `M`: sobre 2500 HU = 0.000 (la `regla` da 0.000)
+  salidas: a15_dataset6_CLINIC_0102_data_run04_mejor_nulo_p100_e0.3_s4_*
+
+resumen: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_resumen.csv
+cotejo: /home/kiara.balcazar/metalsynth/data/obj3_pose/audit/r2_piso_eta/a15_dataset6_CLINIC_0102_data_cotejo.csv
+
+Los dos estadisticos de aqui se comparan contra los de implantes REALES, que calcula
+`a12_roi_parametros.py` sobre los pacientes de validacion. Ese cotejo es el criterio de
+seleccion de checkpoint fijado en `01-decisiones.md` 2026-10-05 (6). **Ningun checkpoint
+queda elegido por este script**: aqui se mide, la eleccion es de la autora.
+fin 2026-11-24T09:16:32-05:00  rc=0

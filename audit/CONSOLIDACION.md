@@ -36,3 +36,9 @@ R-5 (sd entre semillas de eta2: 0.08-0.09 en run04_mejor); F-H5 (0 grupos en >1 
 
 ## 5. Estado de cobertura
 Informes A..G completos sobre: intro, cap1, cap2, cap3 (A,B: hasta poses y SAP; C,D,E,F,G: completo), cap4, conclusiones. NO cubierto aun: el 75 % de cap3 desde el punto de vista editorial (A,B no revisaron sintetizador v2, protocolo de apariencia ni amenazas), cap4 editorialmente, trabajosFuturos, anexos, resumen/abstract editorialmente.
+
+## 6. Ronda editorial 2 (2026-11-24): cap3 367-525/546-565 y cap4 1-223/234-247 (A2 Codex high; B2 Sonnet high; a ciegas)
+Coincidencias (A2, B2): la prosa de cap4 recita cifras que ya estan en las tablas (tab:res-sap, res-tost, res-anillos, res-integridad, res-ea1); la regla de los tres desenlaces/TOST esta definida en cap3 (496-500) y re-explicada en cap4 (94, 128-130); resultados dentro de metodologia: cap3:389-410 (tab:c4-eta, eta2_exc) y cap3:482-488 (amplitudes de validacion y eleccion de material) deben ir a cap4/anexo; la discusion (cap4 234-247) repite resultados; historia de decisiones y enmiendas dispersa en cap3 (registro/anexo unico).
+Magnitud: A2 -5 700 palabras (13 800 -> 8 100; ~20 pag.); B2 -3 700 neto (12 460 -> ~8 760; rango 2 400-4 500; 8-11 pag., 5-7 conservador). Regla de la autora (2026-11-24): meta = rango de B2; A2 = cota optimista.
+Figuras/tablas propuestas por B2: tabla de sonda de viabilidad (B2-016), regla del material (B2-017), flujo de cohortes 33->19/14->13->10 (B2-007), forest plot con banda +-196.3 HU (B2-031), perfil por anillos (B2-032), cronologia de decisiones en tabla (B2-024).
+Fuera de alcance de esta ronda y pendiente: cap3:526-545 (contraste de realismo, ~1 275 palabras con resultados dentro de metodologia). Cifras de palabras de ambos informes: conteos aproximados, no verificados con texcount.

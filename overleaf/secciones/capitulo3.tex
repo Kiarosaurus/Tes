@@ -124,7 +124,14 @@ Después del veredicto negativo, la compuerta se extendió al autoencoder del ge
 
 \section{Muestreador de colocación quirúrgicamente restringido}\label{sec:muestreador}
 
-El muestreador no busca una trayectoria óptima: perturba una trayectoria ya medida sobre la anatomía de cada paciente. La razón es que no existe una pose canónica que reproducir. Zwingmann et al.~\cite{zwingmann2009navigated} reportan distribuciones de malposición distintas para una serie operada con navegación y otra con técnica convencional; esas dos series forman la \textbf{referencia clínica} de este trabajo. Además, la orientación de las superficies óseas que limitan el corredor tuvo, entre especímenes cadavéricos, coeficientes de variación de 7 a 25\,\% en la mayoría de las superficies y de hasta 140\,\% en el ala superior de S1 \cite{ziran2007fluoroscopic}. El muestreador produce entonces una distribución de poses preinscrita (Sección~\ref{sec:poses}). Cada pose recibe un \textbf{grado de brecha cortical}, que mide cuánto sobresale el implante del hueso (Sección~\ref{sec:sap}), y la distribución de grados que resulta se compara con la referencia clínica sin haberse ajustado a ella.
+El muestreador no busca una trayectoria óptima: perturba una trayectoria ya medida sobre la anatomía de cada paciente. La razón es que no existe una pose canónica que reproducir. Zwingmann et al.~\cite{zwingmann2009navigated} reportan distribuciones de malposición distintas para una serie operada con navegación y otra con técnica convencional; esas dos series forman la \textbf{referencia clínica} de este trabajo. Además, la orientación de las superficies óseas que limitan el corredor tuvo, entre especímenes cadavéricos, coeficientes de variación de 7 a 25\,\% en la mayoría de las superficies y de hasta 140\,\% en el ala superior de S1 \cite{ziran2007fluoroscopic}. El muestreador produce entonces una distribución de poses preinscrita (Sección~\ref{sec:poses}). Cada pose recibe un \textbf{grado de brecha cortical}, que mide cuánto sobresale el implante del hueso (Sección~\ref{sec:sap}), y la distribución de grados que resulta se compara con la referencia clínica sin haberse ajustado a ella. El flujo se ilustra en la Figura~\ref{fig:pipeline-muestreador}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figuras/pipeline_muestreador.pdf}
+\caption{Muestreador de colocación aplicado al receptor de validación 0101, corte axial 197. Se mide el corredor óseo y su eje sobre la TC sin metal, la pose toma ese eje y la máscara $M$ resultante se superpone a la TC. La pose mostrada es la central del corredor, sin perturbar; el eje y el corredor se proyectan sobre el corte.}
+\label{fig:pipeline-muestreador}
+\end{figure}
 
 \subsection{Marco de referencia y medición del corredor}\label{sec:corredor}
 
@@ -231,7 +238,14 @@ Los fenotipos de morfología sacra no se usan como variable de estratificación,
 
 \section{Sintetizador condicionado en el dominio de imagen}\label{sec:sintetizador}
 
-El sintetizador se formula como \emph{inpainting} de la región de generación $G = M \cup B_{\delta}$ mediante un modelo de difusión condicional 2.5D en el dominio de imagen, es decir, sobre valores de TC por vóxel, sin espacio latente ni datos de proyección. El modelo recibe el parche con $G$ borrada, la máscara del implante $M$ y la máscara de la banda, y genera valores de TC solo dentro de $G$. Todo lo que queda fuera de $G$ se copia del volumen de origen, de modo que la preservación fuera de $G$ se cumple por construcción y no por medición. Las entradas y salidas usan la codificación multiventana como representación de canales, sin la etapa de compresión del autoencoder. La codificación es la de compresión arcoseno hiperbólico, en coma flotante de 32 bits: es la primera del orden fijado a priori en la compuerta (Sección~\ref{sec:obj1}) y la del entrenamiento del modelo evaluado.
+El sintetizador se formula como \emph{inpainting} de la región de generación $G = M \cup B_{\delta}$ mediante un modelo de difusión condicional 2.5D en el dominio de imagen, es decir, sobre valores de TC por vóxel, sin espacio latente ni datos de proyección. El modelo recibe el parche con $G$ borrada, la máscara del implante $M$ y la máscara de la banda, y genera valores de TC solo dentro de $G$. Todo lo que queda fuera de $G$ se copia del volumen de origen, de modo que la preservación fuera de $G$ se cumple por construcción y no por medición. Las entradas y salidas usan la codificación multiventana como representación de canales, sin la etapa de compresión del autoencoder. La codificación es la de compresión arcoseno hiperbólico, en coma flotante de 32 bits: es la primera del orden fijado a priori en la compuerta (Sección~\ref{sec:obj1}) y la del entrenamiento del modelo evaluado. El flujo se ilustra en la Figura~\ref{fig:pipeline-sintetizador}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\linewidth]{figuras/pipeline_sintetizador.pdf}
+\caption{Flujo del sintetizador sobre el receptor de validación 0101 (corte 197, semilla 0): la máscara $M$ y la banda $B_\delta$ forman la región $G$, el modelo genera solo dentro de $G$ y el resto se copia del volumen de origen. El último panel es la diferencia entre la salida y la TC original, distinta de cero solo dentro de $G$.}
+\label{fig:pipeline-sintetizador}
+\end{figure}
 
 La codificación multiventana acota por abajo los valores de TC representables, porque su ventana ancha empieza en $-1000$~HU (Sección~\ref{sec:obj1}). Una regla preinscrita debía decidir qué hacer con ese suelo. La regla mide, sin modelo y en la banda $B_{\delta}$ de los pacientes con metal de entrenamiento y validación, cuánto se pierde en la ida y vuelta de la distancia entre las colas del 5\,\% de los HU. Si la pérdida es menor que el margen de equivalencia $\Delta$ (Sección~\ref{sec:ap-analisis}), el suelo queda como limitación de alcance; si es mayor, la regla preveía cambiar la representación. La pérdida se resume por paciente con un percentil que se eligió después de ver su distribución: el percentil~5 de la fracción que sobrevive, que es el percentil~95 de la pérdida.
 
@@ -504,7 +518,14 @@ El diseño del Objetivo~3 ordena tres contrastes: dos sobre la \emph{streak ampl
 
 \subsubsection{Brazos de comparación}\label{sec:ap-brazos}
 
-Los brazos de comparación comparten la anatomía de origen y la pose del implante: el sintetizador propuesto, la inserción por copia y pegado y el protocolo físico de Peters et al. La inserción por copia y pegado es la línea base ingenua, que coloca metal sin artefacto: asigna a todos los vóxeles de $M$ un valor constante de HU y deja intacta la TC fuera de $M$. Ese valor es 5371~HU, la mediana de 1\,781\,741 vóxeles de metal de los 14\,182 parches de los 39 casos de entrenamiento, tomados en el corte central y dentro de la máscara del componente. Ningún paciente de validación ni de prueba interviene en él, y solo fija la línea base del control de cordura. El protocolo físico, implementado con CatSim dentro de XCIST \cite{deman2007catsim,wu2022xcist} y asociado al desafío AAPM CT-MAR \cite{haneda2025aapm}, es el brazo que simula la formación del artefacto. Se adopta en lugar de una reimplementación validada propia de XCIST/CatSim, que queda fuera de alcance.
+Los brazos de comparación comparten la anatomía de origen y la pose del implante: el sintetizador propuesto, la inserción por copia y pegado y el protocolo físico de Peters et al. La inserción por copia y pegado es la línea base ingenua, que coloca metal sin artefacto: asigna a todos los vóxeles de $M$ un valor constante de HU y deja intacta la TC fuera de $M$. Ese valor es 5371~HU, la mediana de 1\,781\,741 vóxeles de metal de los 14\,182 parches de los 39 casos de entrenamiento, tomados en el corte central y dentro de la máscara del componente. Ningún paciente de validación ni de prueba interviene en él, y solo fija la línea base del control de cordura. El protocolo físico, implementado con CatSim dentro de XCIST \cite{deman2007catsim,wu2022xcist} y asociado al desafío AAPM CT-MAR \cite{haneda2025aapm}, es el brazo que simula la formación del artefacto. Se adopta en lugar de una reimplementación validada propia de XCIST/CatSim, que queda fuera de alcance. El flujo del protocolo físico se ilustra en la Figura~\ref{fig:pipeline-peters}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figuras/pipeline_peters.pdf}
+\caption{Protocolo físico híbrido con titanio sobre el receptor de validación 0101 (corte 197; 196 en la simulación): TC sin metal, implante insertado ($M$), artefacto simulado y su diferencia con la simulación sin metal (ventana de $\pm 500$~HU, solo de visualización).}
+\label{fig:pipeline-peters}
+\end{figure}
 
 El \textbf{artefacto paramétrico} es un comparador descriptivo añadido después, que no forma parte del diseño congelado y cuya forma se fijó antes de calcularlo. Su papel es el de un oráculo de nivel: un modelo analítico calibrado con el artefacto real, que muestra a qué amplitud llega sin aprendizaje. No sustituye a la inserción por copia y pegado ni al protocolo físico, y no entra en ninguna decisión. Su amplitud se calculó sobre los 13 pacientes de la síntesis sobre pelvis sin metal (capítulo de resultados).
 
@@ -610,6 +631,13 @@ El coeficiente de variación de la amplitud entre pacientes se da además como d
 \includegraphics[width=0.92\linewidth]{figuras/brazos_mismo_implante.pdf}
 \caption{\REVVISUAL{Una misma pose de tornillo en el receptor de validación 0101 (semilla 0, corte central con $M$), con el artefacto de cada brazo, ordenado de mayor a menor puntaje medio de credibilidad del criterio visual~(c). El protocolo físico y lo real (otro paciente) son referencias; la última casilla es la pelvis sin metal. El puntaje lo asignó, a ciegas, una sola lectora, a la vez redactora de este documento.}}
 \label{fig:brazos-mismo-implante}
+\end{figure} Las etapas de cada variante se comparan en la Figura~\ref{fig:etapas-variantes}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{figuras/tabla_etapas_variantes.pdf}
+\caption{\REVVISUAL{Etapas del pipeline de cada variante del criterio visual~(c) sobre el mismo receptor, corte y semilla: contexto fuera de $G$, salida del modelo y diferencia salida $-$ original dentro de $G$, con escala común de $\pm 1000$~HU (solo de visualización). A la izquierda, el puntaje medio de credibilidad de~(c).}}
+\label{fig:etapas-variantes}
 \end{figure}
 
 \REVVISUAL{Los puntajes de credibilidad del protocolo físico y de lo real son comparables, 5.00 y 4.83, y son la lectura de una lectora, no una prueba de discriminación. Ambos están cerca del techo de la escala, y lo real viene de otro paciente y otro escáner. Después de puntuar se marcaron paneles con «estática», píxeles muy sólidos sobre el implante, con un blanco muy limpio y un gris muy perceptible. También se marcaron paneles con «textura sobrepuesta», un área con una textura que se sobrepone a la de afuera. Los paneles marcados con estática y con textura sobrepuesta, de 6 por brazo, fueron los siguientes. Lo real y el protocolo físico, 0 y 0. El modelo evaluado, 3 y 4. Las variantes 50:0.3 y 100:0.3, 1 y 3 y 2 y 5. El control, 5 y 0. B1000, 5 y 3, y B300, 2 y 3. El puntaje medio fue de 1.56 con estática y de 3.80 sin ella, y de 2.28 con textura sobrepuesta y de 3.37 sin ella. Ninguno de los dos defectos aparece en lo real ni en el protocolo físico. No se establece su causa.}

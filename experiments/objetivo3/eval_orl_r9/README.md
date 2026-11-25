@@ -1,0 +1,6 @@
+# Evaluacion A/B ciega de R-9 (contexto original frente a contexto suavizado)
+EXPLORATORIA y post hoc (bloque perceptual, `docs/01-decisiones.md` 2026-11-24 (22)); NO es la lectura perceptual de (24).5 (real frente a sintetico sobre los 15 casos reservados, que no se tocan aqui).
+- Material: paciente 0101 (validacion), run04_mejor, semillas 0 y 1, 12 cortes con M; cada par son las dos versiones del MISMO corte (`ctxorig` y `ctxsuave`, A/B aleatorio, semilla 20261124); 28 pares = 24 + 4 repetidos con A/B intercambiados. Recorte fijo de 160 px centrado en M, ventana [-500, 1300] HU.
+- Para el lector: `outputs/eval_orl_r9/eval_orl_r9_ciego.html` (se abre en el navegador; al terminar descarga `respuestas_<nombre>.csv`). No contiene la clave.
+- Clave: `clave_r9_NO_ABRIR.csv`; no abrirla hasta que todos terminen. Puntuacion: `python puntuar_eval_r9.py clave_r9_NO_ABRIR.csv respuestas_*.csv`.
+- Limites: 1 paciente de validacion; la diferencia esperada es pequena (el efecto cercano al metal medido por anillos es ~2 % del p95); la autora conoce los modelos (ciego imperfecto); lector no radiologo; descriptivo, sin regla de decision. El puntuador se probo solo con respuestas simuladas al azar.

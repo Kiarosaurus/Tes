@@ -121,16 +121,16 @@ def main() -> None:
     p.add_argument('--particion', type=Path,
                    default=_RAIZ / 'experiments/objetivo1/p1_particion.csv')
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--pasos', type=int, default=200, help='200 = prueba corta de medicion (#89)')
+    p.add_argument('--pasos', type=int, default=200, help='200 = prueba corta de medicion (#89)')  # run04 usa 60000 pasos; los ajustes finos de (c), 3000 (a7_run04.sbatch, pipeline_textura.sbatch).
     p.add_argument('--lote', type=int, default=4)  # Las corridas pasan 16 desde los archivos .sbatch.
     p.add_argument('--lado', type=int, default=256)
     p.add_argument('--base', type=int, default=64)
-    p.add_argument('--lr', type=float, default=1e-4)
+    p.add_argument('--lr', type=float, default=1e-4)  # run04: 1e-4; ajustes finos de (c): 5e-5 (pipeline_textura.sbatch).
     p.add_argument('--objetivo', choices=('v', 'eps'), default='v')
     p.add_argument('--semilla', type=int, default=20260920)
     p.add_argument('--dispositivo', default='cuda' if torch.cuda.is_available() else 'cpu')
     p.add_argument('--trabajadores', type=int, default=2)
-    p.add_argument('--cada', type=int, default=25, help='cada cuantos pasos se registra')
+    p.add_argument('--cada', type=int, default=25, help='cada cuantos pasos se registra')  # run04 pasa 500 desde a7_run04.sbatch.
     p.add_argument('--borrar-contexto', action='store_true',
                    help='brazo de sensibilidad de #96; NO es el piloto')
     p.add_argument('--preinscrito', action='store_true',
@@ -146,6 +146,7 @@ def main() -> None:
     p.add_argument('--lotes-val', type=int, default=16,
                    help='lotes de validacion por medicion; fijo para que la cifra sea comparable '
                         'entre pasos')
+    # run04 pasa 5000 (a7_run04.sbatch); los ajustes finos de (c), 250 (pipeline_textura.sbatch).
     p.add_argument('--cada-ckpt', type=int, default=2000,
                    help='cada cuantos pasos se guarda ckpt reanudable. El limite de cola de Khipu es '
                         'de 24 h: sin esto, un corte pierde toda la corrida')

@@ -32,6 +32,11 @@
 - **Hecho:** `a15_final_eta.sbatch` (13 de prueba, 5 semillas, `--incluir-banda`) y `a20_eta_test.sbatch` (a20 base + Delta de validacion); regla en `01-decisiones.md` 2026-11-21 (13); resultados de B/C4 versionados (`c4_b_resultado.md`, `b_veredicto_resultado.md`). B no cumple el criterio (i) (decisiones (12)). Nada lanzado.
 - **Siguiente:** la autora hace `git pull` en Khipu y lanza `a15_final_eta.sbatch`; luego `a20_eta_test.sbatch`, y a24 en local.
 
+## 2026-11-21 — capitulo3: parrafos exploratorios (C4, barrido eta, B) en subsecciones existentes; una ronda (r29)
+
+- **Hecho:** `capitulo3.tex` (`sec:v2`, `sec:ap-metricas` con `tab:c4-eta`, `sec:ap-realismo` en `\REVVISUAL`, `sec:amenazas`) sin secciones nuevas; r28 (redaccion) y r29 (unica ronda: guia 0/9, estilo 0/15, traza 0/2, asesor A0 B1 C2 D1). Lint de la seccion: alta 0, media 7 (oraciones largas), GAP 0/6/2. PDF 204 pp. en `redaccion/.build/etapas/capitulo3-r29.pdf`.
+- **Siguiente:** la autora decide los `\GAPDEC` (anclas del criterio (c); origen de los umbrales 4 de 7, +0.05, +0.5), nombra y copia la figura a `overleaf/images/`, y se leen los resultados de B (jobs 64399-64402) antes de rellenar los `\GAPDATO`.
+
 ## 2026-11-20 (5) — criterio visual (c) a ciegas, plan de B con dos tmax, guarda de ckpt
 
 - **Hecho:** `01-decisiones.md` (9): regla del criterio (c) (puntaje 1-5 a ciegas) y B con tmax 1000 (primario) y 300 (secundario, si hay tiempo). `a7_b_minima.sbatch` aborta si `SALIDA` ya tiene `ckpt.pt` sin `REANUDAR=1`. Observacion visual de la autora registrada como cualitativa no ciega (#204).
@@ -56,6 +61,26 @@
 
 - **Hecho:** `a15_cadena_completa.py` expone `--eta` (por omisión 0 = idéntico a antes) y `a15_eta_sweep.sbatch` barre pasos DDIM x eta con `run04_mejor` ya entrenado en validación 0101/0102. Todo post-hoc: v1 y v2 se reportan completas. Sin cambios a `tesis/main.tex`, `overleaf/` ni `01-decisiones.md`. Nada lanzado en Khipu.
 - **Siguiente:** la autora fija variantes y umbral, hace `git fetch`/`switch` en Khipu, humo con `CORTES=2` y aprueba cada `sbatch`. Plan: `_plan_urgente_2026-11/tesis/v3_plan.md`. Implicancias abiertas #200 y #201.
+
+## 2026-11-03 (2) — distinción entre sinograma, rayo ideal y medida de detector
+
+- **Hecho:** `overleaf/secciones/capitulo1.tex` aclara que no hay un sinograma por rayo: el sinograma es una tabla por ángulo y posición del detector; cada celda es una medida de detector asociada a una trayectoria ideal y que, en la práctica, integra una pequeña colección de trayectorias. Lint de sección PASA; PDF recompilado con `pdflatex` (195 páginas), etapa `redaccion/.build/etapas/capitulo1-r19-puntual.pdf`.
+- **Siguiente:** anexos l. 5, introducción l. 7 y segunda pasada del documento.
+
+## 2026-11-03 — sinograma explicado con estructura de tabla
+
+- **Hecho:** `overleaf/secciones/capitulo1.tex` aclara que el sinograma almacena mediciones de rayos antes de la reconstrucción, con filas de ángulos y columnas de posiciones del detector, y explica el origen del nombre. Lint de sección PASA (0 alta, 0 media, 1 baja previa); PDF recompilado con `pdflatex` (194 páginas), etapa `redaccion/.build/etapas/capitulo1-r18-puntual.pdf`.
+- **Siguiente:** anexos l. 5, introducción l. 7 y segunda pasada del documento.
+
+## 2026-11-02 — conceptos de rayo, endurecimiento del haz y sinograma aclarados
+
+- **Hecho:** `overleaf/secciones/capitulo1.tex` reescribe el pasaje inicial de TC con definiciones explícitas de rayo, haz policromático, endurecimiento del haz y sinograma. Lint de sección PASA (0 alta, 0 media, 1 baja previa); PDF completo recompilado con `pdflatex` (194 páginas), etapa `redaccion/.build/etapas/capitulo1-r17-puntual.pdf`.
+- **Siguiente:** anexos l. 5, introducción l. 7 y segunda pasada del documento.
+
+## 2026-10-26 — aclaración de Beer--Lambert en el marco teórico
+
+- **Hecho:** `overleaf/secciones/capitulo1.tex` define $N_{\mathrm{in}}$, $N_{\mathrm{d}}$ y $\mathrm{d}l$ en la primera aparición de la ecuación; sin cambios de método ni de resultados. Lint de sección PASA (0 alta, 0 media, 1 baja previa); PDF completo recompilado con `pdflatex` en dos pasadas (194 páginas), etapa `redaccion/.build/etapas/capitulo1-r16-puntual.pdf`.
+- **Siguiente:** anexos l. 5, introducción l. 7 y segunda pasada del documento; responder dudas conceptuales de la autora.
 
 ## 2026-10-19 (2) — título de Trabajos futuros corregido en el índice
 

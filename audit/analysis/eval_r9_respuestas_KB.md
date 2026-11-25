@@ -1,0 +1,6 @@
+# Evaluacion A/B ciega de R-9, lectora KB (la autora), 28 pares (24 + 4 repetidos), paciente 0101, run04_mejor
+Puntuado con eval_orl_r9/puntuar_eval_r9.py y la clave. Respuestas: experiments/objetivo3/eval_orl_r9/respuestas_KB.csv (especialidad y anios en blanco).
+- Prefiere el contexto original: 27 de 28; contexto suavizado: 0; sin diferencia: 1. Entre los que eligio (27): suavizado 0.00, IC95 exacto [0.00, 0.13], p bilateral 1.5e-8.
+- Por semilla: semilla 0, original 13/13; semilla 1, original 14/15 (1 igual).
+- Consistencia en los 4 pares repetidos (A/B intercambiados): 4/4. Seguridad media 2.67 de 3. Tiempo ~10-15 s por par.
+Lectura (descriptiva, exploratoria, un lector no ciego en sentido estricto, una pelvis de validacion; los 12 cortes x 2 semillas no son independientes): con el contexto suavizado la imagen se percibe sistematicamente como MENOS real. Coherente con los anillos: el suavizado de 5 px baja el p95 lejano 5-25 % (anatomia mas lisa) y apenas cambia el artefacto cercano (-2 a -3 %). No hay evidencia de que suavizar el contexto mejore el artefacto; si empeora el aspecto. La lectora conocia que habia dos versiones y que una estaba suavizada: el ciego es imperfecto. Pendiente: la misma lectura por el lector otorrinolaringologo.

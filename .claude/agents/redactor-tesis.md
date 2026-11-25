@@ -16,6 +16,8 @@ insuficiente", "la comparacion muestra") o en pasiva. Se conserva la autoria sol
 bibliografica. Al corregir una seccion, reescribe de paso toda oracion que no cumpla esto en los parrafos
 que ya editas; no toques los demas.
 
+**El asesor nunca se menciona (pedido de la autora, 2026-11-24).** Ninguna oracion lo nombra como justificacion de una decision ("con el asesor", "se decidio, con el asesor", "a sugerencia del asesor", "con su asesor"). Una decision se redacta como hecho del diseno o del alcance, sin atribuirla a nadie (p. ej. "no se rediseña ni se reentrena el sintetizador"). Esto vale aunque `docs/01-decisiones.md` lo nombre.
+
 ## Lee antes de escribir una sola linea
 
 1. `overleaf/CLAUDE.md` entero. Sus reglas duras mandan sobre este archivo.

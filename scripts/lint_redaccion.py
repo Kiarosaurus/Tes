@@ -198,6 +198,9 @@ def revisar_archivo(ruta: Path, siglas_definidas: set[str], bib: set[str],
                            r"(?:adopt|mid|muestre|corrig|fij|le[eo]|us|propon|calcul|evalu|inform|asum|aport|exclu|reun|incorpor|"
                            r"present|compar|eleg|trat|defin|hall|encontr|ley|identific|descart|reclam|cuantific)\w*", norm_plano, re.I):
                 h(n, "media", "E-V3", f"sujeto personal ('este trabajo' + verbo) en: {plano.strip()[:70]}")
+            # E-V4 (2026-11-24, pedido de la autora): el asesor no se menciona nunca como justificacion de una decision.
+            if re.search(r"\basesor(a|es|as)?\b", plano, re.I):
+                h(n, "media", "E-V4", f"mencion del asesor en: {plano.strip()[:70]}")
             if re.search(r"---|—", linea):
                 h(n, "media", "E-IA", "guion largo como inciso")
             if "!" in plano:

@@ -362,7 +362,29 @@ La evaluación exploratoria de la versión~2 ya se ejecutó en prueba, con la pr
 
 \REVVISUAL{Como dato descriptivo, y no como comparador, frente al modelo evaluado B1000 sube el $\eta^2_{\mathrm{exc}}$ con $K = 48$ de 0.274 a 0.337. Ese contraste mezcla el efecto del término con el de seguir entrenando en otra tarjeta, y no sustituye a la regla. No se afirma que el término explique las diferencias, ni equivalencia con el protocolo físico o con lo real, ni mejora. Los límites son dos pacientes de validación, un punto de control por brazo, la tarjeta distinta y un control que ya deteriora la validación. No hay evaluación en prueba. El modelo evaluado sigue siendo el modelo principal.}
 
-\REVVISUAL{Se fijó además la evaluación en prueba de la variante 100:0.3, que cumple en validación los criterios (a) y (b). Se escribió la regla antes de lanzar la corrida y no se elige otra variante después de ver resultados. Se generan los 13 pacientes de la prueba de equivalencia con cinco semillas. Se evalúa con la definición congelada del análisis de equivalencia, el margen $\Delta$ propio de la variante, medido en validación con dos pacientes, y las mismas sensibilidades. Se informa la diferencia media frente al protocolo físico con titanio, su IC del 90\,\% y si cae en $[-\Delta, +\Delta]$, junto a la de la versión~1, cualquiera sea el resultado.} \REVVISUAL{Se mantuvo esa variante tras ver el criterio visual~(c), aunque 100:0.3 tiene la mayor textura sobrepuesta (5 de 6 paneles) y 50:0.3 puntúa más.} \REVVISUAL{La elección siguió los criterios numéricos fijados antes. Es exploratoria y no sustituye a la prueba de equivalencia de la versión~1, porque la prueba ya se había visto y la variante se eligió en validación. Descansa en un solo punto de control, y el cambio es de muestreo y no de modelo. \GAPDATO{resultado de la evaluación en prueba de la variante 100:0.3: pendiente de leer}}
+\REVVISUAL{Se fijó además la evaluación en prueba de la variante 100:0.3, que cumple en validación los criterios (a) y (b). Se escribió la regla antes de lanzar la corrida y no se elige otra variante después de ver resultados. Se generan los 13 pacientes de la prueba de equivalencia con cinco semillas. Se evalúa con la definición congelada del análisis de equivalencia, el margen $\Delta$ propio de la variante, medido en validación con dos pacientes, y las mismas sensibilidades. Se informa la diferencia media frente al protocolo físico con titanio, su IC del 90\,\% y si cae en $[-\Delta, +\Delta]$, junto a la de la versión~1, cualquiera sea el resultado.} \REVVISUAL{Se mantuvo esa variante tras ver el criterio visual~(c), aunque 100:0.3 tiene la mayor textura sobrepuesta (5 de 6 paneles) y 50:0.3 puntúa más.} \REVVISUAL{La elección siguió los criterios numéricos fijados antes. Es exploratoria y no sustituye a la prueba de equivalencia de la versión~1, porque la prueba ya se había visto y la variante se eligió en validación. Descansa en un solo punto de control, y el cambio es de muestreo y no de modelo. La corrida en prueba de la variante 100:0.3 no se ejecutó, de modo que esa variante queda sin evaluar en prueba.}
+
+\REVVISUAL{Posteriormente, y después de ver los resultados anteriores, se hizo un reentrenamiento exploratorio de \texttt{run04\_mejor} con tres pérdidas auxiliares: de textura (T), perceptual-proxy (P) y adversarial condicionada (A). Cada brazo y un control sin pérdida auxiliar se ajustaron 3\,000 pasos en la misma tarjeta y se evaluaron solo en validación. La Tabla~\ref{tab:maestro-exploratorio} resume las métricas. Frente a los criterios fijados antes de entrenar, T cumple el de textura, pero no el de fracción de $M$ bajo 2500~HU. P y A no cumplen ninguno de esos dos. Ningún brazo cumple el de la desviación en 0--2~mm ni mejora las cáscaras críticas. Por la regla de parada, ningún brazo pasa a una segunda validación ni a prueba. El control, solo por seguir entrenando, ya cambia la fracción de $M$ bajo 2500~HU de 0.191 (modelo evaluado) a 0.100, y la desviación en 0--2~mm de unos 233 a 316~HU. Por eso las diferencias de T, P y A frente al control son pequeñas. Este reentrenamiento es exploratorio y posterior a ver resultados. No sustituye al modelo evaluado ni a E-A2, y no se afirma mejora.}
+
+\begin{table}[htbp]\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{\REVVISUAL{Reentrenamiento exploratorio de \texttt{run04\_mejor} en validación: modelo evaluado, control sin pérdida auxiliar y brazos T, P y A.}}
+\label{tab:maestro-exploratorio}
+\begin{tabular}{p{0.19\linewidth} p{0.13\linewidth} p{0.17\linewidth} p{0.17\linewidth} p{0.2\linewidth}}
+\hline
+Brazo & Razón de textura & Fracción de $M$ bajo 2500~HU & Desviación en 0--2~mm (HU) & Cáscaras dentro de la envolvente real (de 7) \\
+\hline
+Modelo evaluado & 1.379 & 0.191 & sin dato & 0 \\
+Control & 1.245 & 0.100 & 316 & 0 \\
+T & 1.329 & 0.128 & 288 & 0 \\
+P & 1.223 & 0.115 & 437 & 0 \\
+A & 1.200 & 0.154 & 408 & 0 \\
+\hline
+\end{tabular}
+
+\vspace{2pt}
+\parbox{0.95\linewidth}{\footnotesize\REVVISUAL{Nota. Razón de textura: desviación estándar de la alta frecuencia dentro de $G$ sobre la de una corona fuera de $G$ (imagen original: 1.358). Tope de la desviación en 0--2~mm: 279.6~HU. Validación con los receptores 0101 y 0102, cinco semillas y un punto de control por brazo. El control, T, P y A comparten tarjeta y condiciones.}}
+\end{table}
 
 \section{Protocolo de evaluación}\label{sec:evaluacion}
 

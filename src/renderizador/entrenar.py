@@ -122,7 +122,7 @@ def main() -> None:
                    default=_RAIZ / 'experiments/objetivo1/p1_particion.csv')
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--pasos', type=int, default=200, help='200 = prueba corta de medicion (#89)')
-    p.add_argument('--lote', type=int, default=4)
+    p.add_argument('--lote', type=int, default=4)  # Las corridas pasan 16 desde los archivos .sbatch.
     p.add_argument('--lado', type=int, default=256)
     p.add_argument('--base', type=int, default=64)
     p.add_argument('--lr', type=float, default=1e-4)
@@ -161,14 +161,16 @@ def main() -> None:
     v2.add_argument('--peso-anillo', type=float, default=1.0,
                     help='D-b: peso del anillo dentro de G (1 = sin efecto)')
     v2.add_argument('--cache-T', type=Path, default=None,
-                    help='B: carpeta de v2_b_cache_T.py (T por parche + escala.json); anade el canal T (12 entradas)')
+                    help='B: carpeta de v2_b_cache_T.py (canal T, Gamma_M en la tesis; no es la perdida de textura T de brazos T/P/A); anade una entrada')
     bm = p.add_argument_group('B minima (01-decisiones.md 2026-11-20 (3)); sin estas banderas = run04')
     bm.add_argument('--init-modelo', type=Path, default=None,
                     help='ajuste fino: carga solo los pesos del modelo de este .pt (p. ej. run04 mejor.pt); paso = 0')
     bm.add_argument('--ang-lambda', type=float, default=None,
                     help='peso del termino de amplitud angular (angular.py); None = sin termino')
-    bm.add_argument('--ang-tmax', type=int, default=300, help='el termino solo cuenta con t < tmax')
-    bm.add_argument('--ang-k', type=int, default=24, help='sectores angulares')
+    bm.add_argument('--ang-tmax', type=int, default=300,
+                    help='el termino solo cuenta con t < tmax; B1000 pasa 1000 mediante ANGTMAX en a7_b_minima.sbatch')
+    bm.add_argument('--ang-k', type=int, default=24,
+                    help='sectores angulares; B pasa 48 desde a7_b_minima.sbatch')
     au = p.add_argument_group('perdidas auxiliares (01-decisiones.md 2026-11-21 (18)); sin estas banderas = run04')
     au.add_argument('--aux-tex', type=float, default=None, help='peso de la perdida de textura')
     au.add_argument('--aux-per', type=float, default=None, help='peso de la perdida perceptual-proxy (piramide laplaciana)')

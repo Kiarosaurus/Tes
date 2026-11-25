@@ -1,0 +1,6 @@
+corte con M: 22
+razon alta frecuencia dentro/fuera de G (mediana de cortes):
+  imagen original (sin sintesis): 1.148
+  ctxorig: semilla 0 1.082 | semilla 1 1.108
+  ctxsuave: semilla 0 0.980 | semilla 1 1.023
+rc=0

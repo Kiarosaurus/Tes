@@ -12700,6 +12700,7 @@ referencia, antes del cotejo. #150 sigue ABIERTA hasta que el cotejo corra.
 - **Limites:** 2 pacientes; referencia del 15-oct no comparable (otro conjunto de pixeles); falta la A100.
 
 - **Procedencia de los perfiles de #212 (2026-11-24, `sacct`):** los generaron los jobs 65232 (T4, `gres/shard=6`, inicio 19:36, 14 min) y 65233 (A6000, `gres/shard=8`, inicio 19:36, 13 min), `COMPLETED` con `ExitCode 0:0`. Los jobs 65248 y 65249 solo los encontraron ya generados y los saltaron.
+- **A100 (2026-11-24, `audit/analysis/r4_a100.md`; job 65280, `ag001`, modo r4, `rc=0`):** A100 - A6000: media por anillo -6.9 / -2.4 / +17.4 HU (p05 / p50 / p95), |diferencia| media 20.9 / 19.9 / 46.3; A100 - T4: -1.0 / +1.5 / +17.0, |diferencia| 22.7 / 23.5 / 50.3. Desviacion entre semillas del p95 por anillo (A100): 93.3 HU. **Las tres tarjetas difieren entre si ~46-50 HU en el p95, menos que la desviacion entre semillas, sin sesgo sistematico mayor que ~17 HU: el efecto de tarjeta sobre los percentiles por anillo es del orden del ruido de semilla tambien en la A100.** Sigue sin recalcularse la D2 0-2 mm del control; no cambia la redaccion de `capitulo3`.
 
 ### 213 — RESULTADO DEL SCRIPT MAESTRO (T, P, A, aux_C): NINGUN BRAZO CUMPLE LOS CRITERIOS DE (18); LA PRUEBA DE 100:0.3 NO SE EJECUTO — ABIERTA
 

@@ -198,6 +198,10 @@ def revisar_archivo(ruta: Path, siglas_definidas: set[str], bib: set[str],
                            r"(?:adopt|mid|muestre|corrig|fij|le[eo]|us|propon|calcul|evalu|inform|asum|aport|exclu|reun|incorpor|"
                            r"present|compar|eleg|trat|defin|hall|encontr|ley|identific|descart|reclam|cuantific)\w*", norm_plano, re.I):
                 h(n, "media", "E-V3", f"sujeto personal ('este trabajo' + verbo) en: {plano.strip()[:70]}")
+            # E-V5 (2026-11-24, pedido de la autora): sin fechas de proceso ("el 15 de octubre", "de noviembre") en el texto.
+            if re.search(r"\b(?:\d{1,2}\s+de\s+)?(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\b", norm_plano, re.I) \
+                    and not re.search(r"\\cite|\bsite\b", plano):
+                h(n, "media", "E-V5", f"fecha de proceso en: {plano.strip()[:70]}")
             # E-V4 (2026-11-24, pedido de la autora): el asesor no se menciona nunca como justificacion de una decision.
             if re.search(r"\basesor(a|es|as)?\b", plano, re.I):
                 h(n, "media", "E-V4", f"mencion del asesor en: {plano.strip()[:70]}")

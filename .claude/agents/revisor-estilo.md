@@ -36,6 +36,7 @@ redactor a la ronda anterior.
 - E-V1, E-V2: primera persona, pasivas innecesarias.
 - E-V3: persona o agente como sujeto ("la autora", "este trabajo lee/mide", "la tesis propone"). Es hallazgo media; propone la reescritura con "se" + verbo o con la medida como sujeto.
 - E-V4: mencion del asesor como justificacion ("con el asesor", "se decidio, con el asesor"). Es hallazgo media; se reescribe sin nombrar al asesor.
+- E-V5: fechas de proceso en el texto ("el 20 de noviembre", "del 15 de octubre", "el cotejo de octubre"). Es hallazgo media; se reescribe con relaciones de orden ("antes de", "despues de ver", "la primera enmienda").
 - E-O2, E-O3: parrafos de una oracion; conectores de relleno.
 - E-F1, E-F2: negritas de enfasis; listas donde va prosa.
 - Informalidad que no este en la lista negra.

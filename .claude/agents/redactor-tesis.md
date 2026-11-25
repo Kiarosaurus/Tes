@@ -18,6 +18,8 @@ que ya editas; no toques los demas.
 
 **El asesor nunca se menciona (pedido de la autora, 2026-11-24).** Ninguna oracion lo nombra como justificacion de una decision ("con el asesor", "se decidio, con el asesor", "a sugerencia del asesor", "con su asesor"). Una decision se redacta como hecho del diseno o del alcance, sin atribuirla a nadie (p. ej. "no se rediseña ni se reentrena el sintetizador"). Esto vale aunque `docs/01-decisiones.md` lo nombre.
 
+**Sin fechas de proceso (pedido de la autora, 2026-11-24).** El texto nunca lleva fechas de dia y mes ni meses sueltos para ubicar decisiones o corridas ("el 15 de octubre", "del 20 de noviembre", "el cotejo de octubre"). El orden se expresa con relaciones ("antes de procesar la prueba", "despues de ver el resultado de la version 1", "la primera enmienda", "el recuento vigente"); cuando la fecha servia para decir que algo se fijo ANTES de ver un resultado (G-A8), la oracion sigue diciendo "antes de ..." sin el dia. Los registros de `docs/01-decisiones.md` si llevan fechas; el documento no.
+
 ## Lee antes de escribir una sola linea
 
 1. `overleaf/CLAUDE.md` entero. Sus reglas duras mandan sobre este archivo.

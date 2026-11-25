@@ -2,8 +2,6 @@
 \addcontentsline{toc}{section}{\bfseries ANEXOS} 
 \markboth{ANEXOS}{ANEXOS} 
 
-\par Los algoritmos desarrollados .....
-
 \setcounter{table}{0}
 \renewcommand{\thetable}{A.\arabic{table}}
 
@@ -13,7 +11,8 @@
 \caption{Comparación de los trabajos revisados con este trabajo.}
 \label{tab:comparacion}
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{0.10\textheight} p{0.16\textheight} p{0.17\textheight} p{0.15\textheight} p{0.34\textheight}}
+\makebox[\linewidth][c]{%
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.0893\textheight} >{\raggedright\arraybackslash}p{0.1868\textheight} >{\raggedright\arraybackslash}p{0.2031\textheight} >{\raggedright\arraybackslash}p{0.1462\textheight} >{\raggedright\arraybackslash}p{0.4013\textheight}}
 \hline
 \textbf{Trabajo} & \textbf{Enfoque} & \textbf{Colocación del objeto} & \textbf{Fuera del objeto} & \textbf{Resultado reportado y su condición} \\
 \hline
@@ -30,5 +29,5 @@ Wang et al.~\cite{wang2025adaptiveweighting} & MAR con tres ventanas de HU en ca
 \hline
 Este trabajo & Muestreador de colocación y sintetizador por difusión en el dominio de imagen. Supuesto: el artefacto puede generarse en el dominio de imagen. Convención: ancho de $B_{\delta}$ & Distribución de poses preinscrita alrededor del corredor medido en cada volumen & Genera dentro de $G = M \cup B_{\delta}$ y copia el resto & SAP frente a la referencia clínica, ya ejecutado. Sintetizador (versión~1) frente al protocolo físico con titanio, contraste primario por \emph{streak amplitude}, en 13 pacientes de prueba sin metal y con el tornillo en el eje del corredor sin perturbar: no concluyente, con la \emph{streak amplitude} del sintetizador por debajo de la del protocolo físico. Copia y pegado solo como control de cordura; contraste de realismo diseñado y no ejecutado \\
 \hline
-\end{tabular}
+\end{tabular}}
 \end{sidewaystable}

@@ -15,11 +15,11 @@ La compuerta del Objetivo~1 midió el error absoluto medio en el hueso de seis c
 
 \begin{table}[htbp]
 \centering
-\small
+\footnotesize
 \caption{Compuerta del Objetivo~1 sobre los 34 pacientes de prueba: error absoluto medio en HU por combinación de variante del autoencoder y codificación.}
 \label{tab:res-compuerta}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{0.16\linewidth} p{0.16\linewidth} p{0.08\linewidth} p{0.17\linewidth} p{0.115\linewidth} p{0.08\linewidth} p{0.1\linewidth}}
+\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.138\linewidth} >{\raggedright\arraybackslash}p{0.2246\linewidth} >{\centering\arraybackslash}p{0.0842\linewidth} >{\centering\arraybackslash}p{0.1778\linewidth} >{\centering\arraybackslash}p{0.1029\linewidth} >{\centering\arraybackslash}p{0.0889\linewidth} >{\centering\arraybackslash}p{0.0842\linewidth}}
 \hline
 \textbf{Variante} & \textbf{Codificación} & \textbf{Media} & \textbf{IC 95\,\%} & \textbf{Mediana} & \textbf{$\geq 25$~HU} & \textbf{Media en $B_{\delta}$} \\
 \hline
@@ -30,7 +30,7 @@ Adaptada & Ventanas publicadas & 72.91 & [59.37, 89.02] & 53.29 & 34/34 & 64.62 
 Adaptada & Techo de 20\,000~HU & 77.03 & [70.12, 84.65] & 70.41 & 34/34 & 88.72 \\
 Adaptada & Arcoseno hiperbólico & 61.72 & [55.12, 68.99] & 53.07 & 34/34 & 69.70 \\
 \hline
-\multicolumn{7}{p{0.9\linewidth}}{\footnotesize La media, el IC y la mediana se calculan sobre el error de cada paciente en el hueso; la última columna es descriptiva y cubre los 21 pacientes de prueba con metal.} \\
+\multicolumn{7}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize La media, el IC y la mediana se calculan sobre el error de cada paciente en el hueso; la última columna es descriptiva y cubre los 21 pacientes de prueba con metal.} \\
 \end{tabular}
 \end{table}
 
@@ -50,11 +50,11 @@ El muestreo preinscrito se ejecutó completo en las dos cohortes y pasó sus con
 
 \begin{table}[htbp]
 \centering
-\small
+\footnotesize
 \caption[Distribución de grados de brecha cortical frente a la referencia clínica]{Distribución de grados de brecha cortical y distancia de Wasserstein-1, en grados, frente a las dos series de la referencia clínica. Calibre de medición de 7.0~mm salvo indicación.}
 \label{tab:res-sap}
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{p{0.29\linewidth} r r r r r r r r}
+\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.3649\linewidth} >{\raggedleft\arraybackslash}p{0.0514\linewidth} >{\raggedleft\arraybackslash}p{0.0725\linewidth} >{\raggedleft\arraybackslash}p{0.0514\linewidth} >{\raggedleft\arraybackslash}p{0.0514\linewidth} >{\raggedleft\arraybackslash}p{0.0514\linewidth} >{\raggedleft\arraybackslash}p{0.0514\linewidth} >{\raggedleft\arraybackslash}p{0.0889\linewidth} >{\raggedleft\arraybackslash}p{0.0889\linewidth}}
 \hline
 \textbf{Conjunto} & \textbf{Pac.} & \textbf{Poses} & \textbf{G0} & \textbf{G1} & \textbf{G2} & \textbf{G3} & \textbf{$W_1$ nav.} & \textbf{$W_1$ conv.} \\
  & & & \multicolumn{4}{c}{\textbf{(\%)}} & & \\
@@ -73,7 +73,7 @@ Cohorte de sensibilidad (preinscrito) & 49 & 2\,450 & 54.9 & 30.4 & 9.9 & 4.8 & 
 \quad corredor de 7.0~mm o más$^{b}$ & 41 & 2\,050 & 64.6 & 26.6 & 6.6 & 2.1 & 0.175 & 0.483 \\
 \quad corredor de menos de 7.0~mm$^{b}$ & 8 & 400 & 5.2 & 49.5 & 26.5 & 18.8 & 1.037 & 0.643 \\
 \hline
-\multicolumn{9}{p{0.9\linewidth}}{\footnotesize $^{a}$Tornillos, no poses. $^{b}$Estratificación post hoc. La distancia entre las dos series se calcula con la Ecuación~\eqref{eq:w1}.} \\
+\multicolumn{9}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize $^{a}$Tornillos, no poses. $^{b}$Estratificación post hoc. La distancia entre las dos series se calcula con la Ecuación~\eqref{eq:w1}.} \\
 \end{tabular}
 \end{table}
 
@@ -104,11 +104,11 @@ El contraste primario compara, por equivalencia, la \emph{streak amplitude} del 
 
 \begin{table}[htbp]
 \centering
-\small
+\footnotesize
 \caption{Comparación de la \emph{streak amplitude} con el protocolo físico en los pacientes de la síntesis sobre pelvis sin metal. Diferencia media pareada (sintetizador menos protocolo físico) e IC del 90\,\% en HU; margen $\Delta = 196.3$~HU salvo indicación.}
 \label{tab:res-tost}
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{p{0.18\linewidth} p{0.225\linewidth} c r p{0.21\linewidth} p{0.14\linewidth}}
+\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.1567\linewidth} >{\raggedright\arraybackslash}p{0.2316\linewidth} >{\centering\arraybackslash}p{0.0327\linewidth} >{\raggedleft\arraybackslash}p{0.1216\linewidth} >{\raggedright\arraybackslash}p{0.1965\linewidth} >{\raggedright\arraybackslash}p{0.1754\linewidth}}
 \hline
 \textbf{Modelo} & \textbf{Contraste} & \textbf{$n$} & \textbf{Diferencia} & \textbf{IC 90\,\%} & \textbf{Desenlace} \\
 \hline
@@ -130,7 +130,7 @@ Modelo con canal$^{b}$ & Titanio; $\Delta$ de 107.1 y 196.3~HU & 13 & $-264.3$ &
 Artefacto paramétrico$^{a}$ & Titanio, banda completa & 13 & $-98.9$ & $[-287.3, +89.4]$ & Descriptivo \\
  & Mismo suelo en los dos brazos & 13 & $-36.3$ & $[-191.5, +118.9]$ & Descriptivo \\
 \hline
-\multicolumn{6}{p{0.9\linewidth}}{\footnotesize Solo la primera fila es confirmatoria; en las demás, la regla de desenlaces se aplica como descripción. $^{a}$Análisis añadido, posterior para la versión~1. $^{b}$Versión~2, posterior y exploratoria.} \\
+\multicolumn{6}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize Solo la primera fila es confirmatoria; en las demás, la regla de desenlaces se aplica como descripción. $^{a}$Análisis añadido, posterior para la versión~1. $^{b}$Versión~2, posterior y exploratoria.} \\
 \end{tabular}
 \end{table}
 
@@ -155,8 +155,8 @@ El contraste pareado refiere el sintetizador a su propia síntesis sin metal, co
 \small
 \caption{Perfil por anillos de la \emph{streak amplitude}: mediana entre los 13 pacientes de prueba, en HU, y razón entre los anillos de 0 a 2 y de 6 a 8~mm por paciente.}
 \label{tab:res-anillos}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{0.15\linewidth} p{0.135\linewidth} p{0.13\linewidth} p{0.13\linewidth} p{0.13\linewidth} p{0.13\linewidth}}
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.2199\linewidth} >{\centering\arraybackslash}p{0.1403\linewidth} >{\centering\arraybackslash}p{0.1357\linewidth} >{\centering\arraybackslash}p{0.1357\linewidth} >{\centering\arraybackslash}p{0.1403\linewidth} >{\centering\arraybackslash}p{0.1146\linewidth}}
 \hline
 \textbf{Anillo (mm)} & \textbf{Protocolo físico Ti} & \textbf{Paramé\-trico} & \textbf{Sinteti\-zador} & \textbf{Sinteti\-zador pareado} & \textbf{Exceso real$^{b}$} \\
 \hline
@@ -170,7 +170,7 @@ El contraste pareado refiere el sintetizador a su propia síntesis sin metal, co
 Razón, mediana & 6.71$^{a}$ & 3.16 & 1.92 & 2.42 & 4.08 \\
 Razón, percentiles 25 y 75 & 5.89 y 7.54 & 3.08 y 3.17 & 1.82 y 2.21 & 2.09 y 2.59 &  \\
 \hline
-\multicolumn{6}{p{0.9\linewidth}}{\footnotesize $^{a}$10 pacientes: en 3, el anillo de 0 a 2~mm no tiene regiones de medición válidas en los cortes que simula el protocolo físico. $^{b}$Exceso de amplitud de los componentes del tamaño de un tornillo (Sección~\ref{sec:v2}), medido en 18 pacientes de entrenamiento y validación con otra métrica; se compara su forma, no su nivel. El registro no resume la dispersión entre pacientes de cada anillo; la de la razón está en la última fila, y la de la diferencia con el protocolo físico en los anillos de 8 a 12~mm, en la Tabla~\ref{tab:res-tost}.} \\
+\multicolumn{6}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize $^{a}$10 pacientes: en 3, el anillo de 0 a 2~mm no tiene regiones de medición válidas en los cortes que simula el protocolo físico. $^{b}$Exceso de amplitud de los componentes del tamaño de un tornillo (Sección~\ref{sec:v2}), medido en 18 pacientes de entrenamiento y validación con otra métrica; se compara su forma, no su nivel. El registro no resume la dispersión entre pacientes de cada anillo; la de la razón está en la última fila, y la de la diferencia con el protocolo físico en los anillos de 8 a 12~mm, en la Tabla~\ref{tab:res-tost}.} \\
 \end{tabular}
 \end{table}
 
@@ -183,8 +183,8 @@ La Tabla~\ref{tab:res-peters-real} compara el protocolo físico con titanio, el 
 \small
 \caption{Perfil por anillos de 2~mm en el plano axial, mediana entre pacientes, en HU: (a) exceso de amplitud (amplitud de la imagen con metal menos la de la misma imagen sin metal), (b) amplitud de la desviación (imagen menos referencia sin metal).}
 \label{tab:res-peters-real}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{0.15\linewidth} p{0.135\linewidth} p{0.135\linewidth} p{0.135\linewidth} p{0.135\linewidth} p{0.135\linewidth}}
+\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.1333\linewidth} >{\centering\arraybackslash}p{0.145\linewidth} >{\centering\arraybackslash}p{0.145\linewidth} >{\centering\arraybackslash}p{0.145\linewidth} >{\centering\arraybackslash}p{0.145\linewidth} >{\centering\arraybackslash}p{0.145\linewidth}}
 \hline
 \textbf{Anillo (mm)} & \textbf{Peters Ti (a)} & \textbf{Sinteti\-zador (a)} & \textbf{Tornillo real (a)} & \textbf{Peters Ti (b)} & \textbf{Sinteti\-zador (b)} \\
 \hline
@@ -194,7 +194,7 @@ La Tabla~\ref{tab:res-peters-real} compara el protocolo físico con titanio, el 
 6 a 8 & 1404 & 73 & 473 & 1743 & 1059 \\
 8 a 10 & 1054 & 45 & 174 & 1391 & 1011 \\
 \hline
-\multicolumn{6}{p{0.9\linewidth}}{\footnotesize Peters Ti (réplica A) y sintetizador (cinco semillas), en los mismos 13 pacientes de prueba; tornillo real, en 18 pacientes de entrenamiento y validación, solo con (a) porque no hay imagen sin metal del mismo corte. Hasta 8 cortes por paciente. La amplitud es el promedio del 5\,\% superior menos el del 5\,\% inferior de los HU, como en la \emph{streak amplitude}, en anillos en el plano axial alrededor de $M$. Descriptivo, sin regla de decisión. Script: \texttt{experiments/objetivo3/d3\_peters\_vs\_real.py}.} \\
+\multicolumn{6}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize Peters Ti (réplica A) y sintetizador (cinco semillas), en los mismos 13 pacientes de prueba; tornillo real, en 18 pacientes de entrenamiento y validación, solo con (a) porque no hay imagen sin metal del mismo corte. Hasta 8 cortes por paciente. La amplitud es el promedio del 5\,\% superior menos el del 5\,\% inferior de los HU, como en la \emph{streak amplitude}, en anillos en el plano axial alrededor de $M$. Descriptivo, sin regla de decisión. Script: \texttt{experiments/objetivo3/d3\_peters\_vs\_real.py}.} \\
 \end{tabular}
 \end{table}
 
@@ -208,11 +208,11 @@ Los componentes de la \emph{bone integrity} y de la \emph{metal integrity}, desc
 
 \begin{table}[htbp]
 \centering
-\small
+\fontsize{9}{10.8}\selectfont
 \caption{Componentes de la \emph{bone integrity} y de la \emph{metal integrity} en la síntesis sobre pelvis sin metal: mediana entre los 13 pacientes de prueba, con el mínimo y el máximo.}
 \label{tab:res-integridad}
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{p{0.2\linewidth} p{0.16\linewidth} p{0.19\linewidth} p{0.16\linewidth} p{0.2\linewidth}}
+\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.1427\linewidth} >{\centering\arraybackslash}p{0.1801\linewidth} >{\centering\arraybackslash}p{0.1965\linewidth} >{\centering\arraybackslash}p{0.1801\linewidth} >{\centering\arraybackslash}p{0.2292\linewidth}}
 \hline
 \textbf{Brazo} & \textbf{Hueso: Sørensen-Dice} & \textbf{Hueso: cambio de volumen} & \textbf{Metal: Sørensen-Dice} & \textbf{Metal: cambio de volumen} \\
 \hline
@@ -220,7 +220,7 @@ Modelo evaluado & 0.677 [0.586, 0.775] & 0.098 [$-0.094$, 0.340] & 0.862 [0.769,
 Protocolo físico, titanio & 0.800 [0.736, 0.876] & 0.121 [$-0.002$, 0.319] & 0.856 [0.820, 0.892] & 0.283 [$-0.117$, 0.334] \\
 Protocolo físico, hierro & 0.707 [0.599, 0.865] & 0.043 [$-0.124$, 0.349] & 0.518 [0.503, 0.668] & 1.683 [0.989, 1.785] \\
 \hline
-\multicolumn{5}{p{0.9\linewidth}}{\footnotesize Resumen descriptivo, calculado después de conocer los desenlaces, sobre componentes que el diseño ya declaraba descriptivos. El hueso se compara con la TC original, y el metal, con la máscara $M$.} \\
+\multicolumn{5}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize Resumen descriptivo, calculado después de conocer los desenlaces, sobre componentes que el diseño ya declaraba descriptivos. El hueso se compara con la TC original, y el metal, con la máscara $M$.} \\
 \end{tabular}
 \end{table}
 
@@ -233,8 +233,8 @@ La reconstrucción de implantes reales, descriptiva y sin prueba de hipótesis, 
 \small
 \caption{Reconstrucción de implantes reales con el modelo evaluado en los pacientes de prueba con metal: mediana entre pacientes, con el mínimo y el máximo.}
 \label{tab:res-ea1}
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{p{0.36\linewidth} p{0.27\linewidth} p{0.27\linewidth}}
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.3579\linewidth} >{\raggedright\arraybackslash}p{0.2924\linewidth} >{\raggedright\arraybackslash}p{0.2924\linewidth}}
 \hline
 \textbf{Medida} & \textbf{Material ortopédico} & \textbf{Objetos no ortopédicos} \\
 \hline
@@ -248,7 +248,7 @@ Metal: coeficiente de Sørensen-Dice & 0.928 [0.846, 0.953] & 0.753 [0.580, 0.87
 Metal: cambio relativo de volumen & $-0.078$ [$-0.151$, $-0.036$] & $-0.255$ [$-0.318$, $-0.204$] \\
 Salto en el borde de $G$, descontado el real (HU) & 6.3 [3.4, 24.1] & 9.0 [4.4, 18.9] \\
 \hline
-\multicolumn{3}{p{0.9\linewidth}}{\footnotesize El mínimo y el máximo dan el rango entre pacientes que prevé el diseño (Sección~\ref{sec:ap-reconstruccion}). Es un resumen descriptivo, calculado después de conocer las medianas, sin prueba de hipótesis.} \\
+\multicolumn{3}{>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2\tabcolsep\relax}}{\footnotesize El mínimo y el máximo dan el rango entre pacientes que prevé el diseño (Sección~\ref{sec:ap-reconstruccion}). Es un resumen descriptivo, calculado después de conocer las medianas, sin prueba de hipótesis.} \\
 \end{tabular}
 \end{table}
 

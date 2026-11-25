@@ -68,12 +68,8 @@
 \AtEndDocument{\immediate\write\@auxout{%
   \string\gdef\string\gapstotales{\arabic{gaplit}/\arabic{gapdato}/\arabic{gapdec}}}}
 \newcommand{\resumengaps}{%
-  \ifentregafinal\else
-    \@ifundefined{gapstotales}{}{%
-      \begin{center}\fbox{\parbox{0.85\linewidth}{\centering\small
-        \textbf{BORRADOR} --- GAP pendientes (literatura / dato / decisión):
-        \textbf{\gapstotales}}}\end{center}}%
-  \fi}
+  % Cuadro 'BORRADOR: GAP' retirado a pedido de la autora (2026-11-24); el conteo sigue en el .aux (gapstotales).
+  }
 \makeatother
 
 \begin{document}
